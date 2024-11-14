@@ -1,0 +1,145 @@
+<template>
+  <div class="card">
+    <h5 class="card-header">
+      Billing Summary
+      <span class="badge bg-label-success float-right"
+        >حجز مؤكد معلق بتحويل المبلغ</span
+      >
+    </h5>
+    <hr class="m-0" />
+    <div class="card-body">
+      <dl class="row mb-0">
+        <dt class="col-6 fw-normal text-heading">Room Charges</dt>
+        <dd class="col-6 text-end">0.00</dd>
+
+        <dt class="col-sm-6 fw-normal">Taxes</dt>
+        <dd class="col-sm-6 text-end">0.00</dd>
+
+        <dt class="col-6 fw-normal text-heading">Due Amount</dt>
+        <dd class="col-6 text-end">£ 0.00</dd>
+      </dl>
+      <div class="row align-items-center">
+        <div class="col-md-9">
+          <div class="input-group">
+            <label class="input-group-text" for="inputGroupSelect01"
+              >Bill To
+            </label>
+            <select class="form-select" id="inputGroupSelect01">
+              <option selected="">Choose...</option>
+              <option value="1">One</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="input-group float-right">
+            <div class="input-group-text border-0 px-2">
+              <label for="inputCheckBox01">Tax Exempt</label>
+              <input
+                id="inputCheckBox01"
+                class="form-check-input mt-0"
+                type="checkbox"
+                value=""
+                aria-label="Checkbox for following text input"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="input-group pl-2">
+        <div class="input-group-text border-0 px-2">
+          <label for="inputCheckBox02">Payment Mode</label>
+          <input
+            v-model="isChecked"
+            @change="handleCheckboxChange"
+            id="inputCheckBox02"
+            class="form-check-input mt-0"
+            type="checkbox"
+            value=""
+            aria-label="Checkbox for following text input"
+            checked
+          />
+        </div>
+      </div>
+
+      <div class="row" v-if="isChecked">
+        <div class="col-md-6 d-flex align-items-center">
+          <div class="input-group">
+            <div class="input-group-text border-0">
+              <label for="inputRadio01">Cash/Bank</label>
+              <input
+                id="inputRadio01"
+                class="form-check-input mt-0"
+                type="radio"
+                value="option01"
+                aria-label="Radio button for following text input"
+                v-model="selectedOption"
+              />
+            </div>
+          </div>
+          <div class="input-group float-right">
+            <div class="input-group-text border-0">
+              <label for="inputRadio02">City Ledger</label>
+              <input
+                id="inputRadio02"
+                class="form-check-input mt-0"
+                type="radio"
+                value="option02"
+                aria-label="Radio button for following text input"
+                v-model="selectedOption"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="input-group">
+            <select class="form-select" id="inputGroupSelect02">
+              <option selected="">Choose...</option>
+              <option value="1">One</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <p v-if="!isChecked && validationMessage" class="validation-message">
+        Payment Mode is required.
+      </p>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "BillingSummary",
+  layout: "component",
+  data() {
+    return {
+      isChecked: false,
+      validationMessage: "",
+      selectedOption: "",
+    };
+  },
+  methods: {
+    handleCheckboxChange() {
+      if (!this.isChecked) {
+        this.validationMessage = "Payment Mode is required.";
+      } else {
+        this.validationMessage = "";
+      }
+    },
+  },
+  mounted() {
+    this.isChecked = true;
+  },
+};
+</script>
+
+<style scoped>
+.validation-message {
+  color: red;
+  font-size: 14px;
+}
+</style>
