@@ -25,13 +25,16 @@ export default {
         src: "/js/bootstrap.min.js",
         body: true,
       },
+
+
+
     ],
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
     "~/assets/css/bootstrap.css",
-    //! Start Css Files
+    //! Start  main Css Files
     "~/assets/css/core-dark.css",
     "~/assets/css/core.css",
     "~/assets/css/theme-bordered-dark.css",
@@ -42,14 +45,17 @@ export default {
     "~/assets/css/theme-raspberry.css",
     "~/assets/css/theme-semi-dark-dark.css",
     "~/assets/css/theme-semi-dark.css",
-
+    // "~/assets/css/main.css",
+    // "~/assets/scss/style.scss",
     //! End Css Files
 
-    // "~/assets/css/main.css",
+    //! Start  libs Css Files
+    "~/assets/vendor/libs/flatpickr/flatpickr.css",
     "~/assets/css/jPinning.css",
-    // "~/assets/scss/style.scss",
     "~/assets/css/animate.css",
     "~/assets/vendor/fonts/fontawesome.css",
+    //! end  libs Css Files
+
 
     // !  changes styles
     "~/assets/css/changes.css",
@@ -69,8 +75,27 @@ export default {
       src: "https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js",
       type: "text/javascript",
     },
+    {
+    src: "~/assets/vendor/libs/flatpickr/flatpickr.js",
+    type: "text/javascript",
+    mode: "client", // This ensures it runs only on the client-side
+    body: true,
+  },
+
     { src: "~/assets/js/jPinning.js", type: "text/javascript", mode: "client" },
   ],
+  server: {
+    host: '0.0.0.0',
+    port: 3000
+  },
+  dev: {
+    hotMiddleware: {
+      client: {
+        overlay: false
+      }
+    }
+  },
+
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: ["~/plugins/vue-wow-config"],
@@ -95,7 +120,8 @@ export default {
         jQuery: "jquery",
       }),
     ],
-    extend(config, { isDev, isClient }) {
+    extend (config, { isDev, isClient })
+    {
       if (isDev && isClient) {
         config.module.rules.push({
           enforce: "pre",
