@@ -6,9 +6,7 @@ export default {
 
   head: {
     title: "delta Dreams",
-    htmlAttrs: {
-      lang: "EN",
-    },
+
     meta: [
       { charset: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
@@ -51,7 +49,7 @@ export default {
     "~/assets/css/jPinning.css",
     // "~/assets/scss/style.scss",
     "~/assets/css/animate.css",
-    "~/assets/css/all.min.css",
+    "~/assets/vendor/fonts/fontawesome.css",
 
     // !  changes styles
     "~/assets/css/changes.css",
