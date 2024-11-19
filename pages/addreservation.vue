@@ -8,7 +8,6 @@
         <BillingSummary />
       </div>
     </div>
-  </div>
 </template>
 
 <script>
