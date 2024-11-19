@@ -1,6 +1,6 @@
 <template>
   <div>
-        <TheHeader />
+    <TheHeader />
 
     <Nuxt />
     <!-- <TheFooter /> -->
@@ -9,9 +9,10 @@
 
 <script>
 import { CursorFx } from "@luxdamore/vue-cursor-fx";
+import TheHeader from "../components/layout/TheHeader.vue";
 
 export default {
-  components: { CursorFx },
+  components: { CursorFx, TheHeader },
 
 
 

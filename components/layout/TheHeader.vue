@@ -103,7 +103,11 @@
 export default {
   name: "Header",
   layout: "component",
-
+  data() {
+    return {
+      mode: 'light', // or some default value, 'light' or 'dark'
+    };
+  }
 };
 </script>
 
