@@ -1,13 +1,16 @@
 <template>
   <div>
-    <div :class="['sidebar', { 'sidebar-open': isSidebarOpen }]">
+    <div v-if="isSidebarOpen" :class="['sidebar', { 'sidebar-open': isSidebarOpen }]" :style="{ width: width }">
       <div class="sidebar-content">
-        <h3>Sidebar Content</h3>
-        <p>This is the content inside the sidebar.</p>
+        <h3>{{ title }}</h3>
+        <slot>
+          <p>This is the default content inside the sidebar.</p>
+        </slot>
         <button @click="$emit('close-sidebar')" class="btn btn-danger">Close</button>
       </div>
     </div>
 
+    <!-- Overlay -->
     <div v-if="isSidebarOpen" class="overlay" @click="$emit('close-sidebar')"></div>
   </div>
 </template>
@@ -16,10 +19,18 @@
 export default {
   name: 'Sidebar',
   layout: "component",
-
   props: {
     isSidebarOpen: {
+      type: Boolean,
       required: true,
+    },
+    title: {
+      type: String,
+      default: 'Sidebar Title',
+    },
+    width: {
+      type: String,
+      default: '1000px',
     },
   },
 };
@@ -30,7 +41,6 @@ export default {
   position: fixed;
   top: 0;
   right: -1000px;
-  width: 1000px;
   height: 100%;
   background-color: #fff;
   box-shadow: -4px 0 6px rgba(0, 0, 0, 0.2);
@@ -46,7 +56,6 @@ export default {
   padding: 20px;
 }
 
-/* Overlay */
 .overlay {
   position: fixed;
   top: 0;
@@ -54,6 +63,6 @@ export default {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1050; /* Lower than sidebar */
+  z-index: 1050;
 }
 </style>
