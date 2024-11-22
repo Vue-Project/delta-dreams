@@ -76,25 +76,15 @@ export default {
       type: "text/javascript",
     },
     {
-    src: "~/assets/vendor/libs/flatpickr/flatpickr.js",
-    type: "text/javascript",
-    mode: "client", // This ensures it runs only on the client-side
-    body: true,
-  },
+      src: "~/assets/vendor/libs/flatpickr/flatpickr.js",
+      type: "text/javascript",
+      mode: "client", // This ensures it runs only on the client-side
+      body: true,
+    },
 
     { src: "~/assets/js/jPinning.js", type: "text/javascript", mode: "client" },
   ],
-  server: {
-    host: '0.0.0.0',
-    port: 3000
-  },
-  dev: {
-    hotMiddleware: {
-      client: {
-        overlay: false
-      }
-    }
-  },
+
 
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
