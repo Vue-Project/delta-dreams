@@ -11,11 +11,6 @@
           <div class="row">
             <div class="col-md-8">
               <div class="row align-items-center">
-                <!--  ! another position to total nights -->
-                <!-- <div class="total-nights">
-                  <span>4</span>
-                  <p class="mb-0">Nights</p>
-                </div> -->
                 <!-- Date Picker-->
                 <div class="col-md-3 col-12 px-0">
                   <label for="flatpickr-date-01" class="form-label">Check-in</label>
@@ -23,15 +18,14 @@
                     id="flatpickr-date-01" ref="datePicker1" />
                 </div>
 
-                <!-- /Date Picker -->
+                <!-- Date Picker -->
 
                 <!-- Time Picker-->
                 <div class="col-md-3 col-12 px-0">
                   <div class="input-group mt-4">
                     <input type="text" class="form-control flatpickr-input" placeholder="HH:MM" id="flatpickr-time-01"
                       ref="timePicker1" />
-                    <span class="input-group-text total-nights" id="basic-addon13">
-                      4 nights</span>
+                    <span class="input-group-text total-nights" id="basic-addon13">4 nights</span>
                   </div>
                 </div>
 

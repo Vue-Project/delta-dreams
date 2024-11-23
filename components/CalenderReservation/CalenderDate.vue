@@ -1,10 +1,9 @@
 <template>
   <div class="card">
     <HeaderCalender/>
-    <!-- <h5 class="card-header">Table Caption</h5> -->
     <FullCalendar :options="calendarOptions" @dateClick="handleDateClick" @select="handleSelect">
       <template v-slot:eventContent="arg">
-        <b>{{ arg.event.title }}</b> <!-- Display Event Title -->
+        <b>{{ arg.event.title }}</b>
       </template>
     </FullCalendar>
 
@@ -52,7 +51,9 @@ export default {
         slotDuration: '24:00', // Slot duration of one day
         slotLabelFormat: {
           day: 'numeric',
-          weekday: 'short'
+          weekday: 'short',
+          month: 'short',
+          // year: 'numeric'
         },
         resourceGroupField: 'groupId',
         resourceLabelText: 'Rooms',
@@ -60,6 +61,7 @@ export default {
     };
   },
   methods: {
+
     createResources ()
     {
       const resources = [];
@@ -131,7 +133,6 @@ export default {
 
 .selectable-date {
   background-color: rgba(0, 0, 255, 0.2);
-  /* Add style for selected days */
   border: 1px solid blue;
 }
 
