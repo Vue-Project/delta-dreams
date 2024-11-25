@@ -1,0 +1,29 @@
+.validation-message {
+  color: red;
+  font-size: 14px;
+
+}
+
+.input-group:focus-within {
+  box-shadow: none;
+}
+
+.form-control:disabled,
+.form-control[readonly] {
+  background-color: white !important;
+}
+
+.input-group-text {
+  padding: 5px;
+}
+
+.table> :not(caption)>*>* {
+  border: 0;
+}
+
+.btn:not(:disabled):not(.disabled) {
+  padding: 10px;
+}
+/* .fc-direction-ltr .fc-button-group > .fc-button:not(:last-child){
+  background-color: red;
+} */

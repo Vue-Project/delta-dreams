@@ -10,9 +10,7 @@
     <!-- Display selected dates -->
     <div v-if="selectedDates.length">
       <h3>Selected Dates:</h3>
-      <ul>
-        <li v-for="(date, index) in selectedDates" :key="index">{{ date }}</li>
-      </ul>
+      <ul><li v-for="(date, index) in selectedDates" :key="index">{{ date }}</li></ul>
     </div>
   </div>
 
@@ -57,6 +55,8 @@ export default {
         },
         resourceGroupField: 'groupId',
         resourceLabelText: 'Rooms',
+        resourceAreaHeaderContent: this.customResourceHeader, // Customize header
+
       }
     };
   },
@@ -72,6 +72,7 @@ export default {
         { id: 'd', title: 'Room D', subrooms: ['D1', 'D2', 'D3'] },
         { id: 'e', title: 'Room E', subrooms: ['E1', 'E2', 'E3'] },
         { id: 'f', title: 'Room F', subrooms: ['F1', 'F2', 'F3'] },
+        { id: 'y', title: 'Room y', subrooms: ['y1', 'y2', 'y3'] },
       ];
 
       roomData.forEach(room =>
@@ -120,8 +121,27 @@ export default {
         this.selectedDates.push(currentDate.toLocaleDateString()); // Push selected date
         currentDate.setDate(currentDate.getDate() + 1); // Move to the next day
       }
+    },
+    customResourceHeader() {
+      // Create the select element
+      const selectElement = document.createElement("select");
+      selectElement.classList.add("form-select");
+
+      // Add options dynamically
+      const options = ["All Resources", "Room A", "Room B", "Room C", "Room D"];
+      options.forEach((option, index) => {
+        const optionElement = document.createElement("option");
+        optionElement.value = index === 0 ? "" : option; // Empty value for "All Resources"
+        optionElement.text = option;
+        selectElement.appendChild(optionElement);
+      });
+
+
+
+      // Return the DOM node
+      return { domNodes: [selectElement] };
     }
-  }
+}
 }
 </script>
 
@@ -141,5 +161,8 @@ export default {
 }
 .fc .fc-toolbar-title {
  display: none !important;
+}
+.fc .fc-datagrid-cell-cushion{
+  width: 100;
 }
 </style>

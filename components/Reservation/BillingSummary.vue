@@ -27,7 +27,7 @@
             <h5 class="mb-0 pt-1 text-nowrap ms-lg-n3 ms-xl-0">20/11/2024</h5>
           </div>
         </div>
-        <dl class="row mb-0">
+        <dl class="row mb-2 bg-light rounded p-2">
           <dt class="col-6 fw-normal text-heading">Room Charges</dt>
           <dd class="col-6 text-end">0.00</dd>
 
@@ -50,9 +50,9 @@
             </div>
           </div>
           <div class="col-md-3">
-            <div class="input-group float-right">
-              <div class="input-group-text border-0 px-2">
-                <label for="inputCheckBox01">Tax Exempt</label>
+            <div class="input-group justify-content-end">
+              <div class="input-group-text border-0 px-2 ">
+                <label  class="pl-1 mb-0" for="inputCheckBox01">Tax Exempt</label>
                 <input id="inputCheckBox01" class="form-check-input mt-0" type="checkbox" value
                   aria-label="Checkbox for following text input" />
               </div>
@@ -60,9 +60,9 @@
           </div>
         </div>
 
-        <div class="input-group pl-2">
+        <div class="input-group ">
           <div class="input-group-text border-0 px-2">
-            <label for="inputCheckBox02">Payment Mode</label>
+            <label class="pl-1 mb-0" for="inputCheckBox02 ">Payment Mode</label>
             <input v-model="isChecked" @change="handleCheckboxChange" id="inputCheckBox02" class="form-check-input mt-0"
               type="checkbox" value aria-label="Checkbox for following text input" />
           </div>
@@ -73,14 +73,14 @@
           <div class="col-md-6 d-flex align-items-center">
             <div class="input-group">
               <div class="input-group-text border-0">
-                <label for="inputRadio01">Cash/Bank</label>
+                <label  class="pl-1 mb-0" for="inputRadio01">Cash/Bank</label>
                 <input id="inputRadio01" class="form-check-input mt-0" type="radio" value="option01"
                   name="paymentMethod" aria-label="Radio button for following text input" checked="" />
               </div>
             </div>
             <div class="input-group float-right">
               <div class="input-group-text border-0">
-                <label for="inputRadio02">City Ledger</label>
+                <label class="pl-1 mb-0" for="inputRadio02">City Ledger</label>
                 <input id="inputRadio02" class="form-check-input mt-0" type="radio" value="option02"
                   name="paymentMethod" aria-label="Radio button for following text input" />
               </div>
@@ -88,8 +88,8 @@
           </div>
           <div class="col-md-6">
             <div class="input-group">
-              <select class="form-select" id="inputGroupSelect02">
-                <option selected>Choose...</option>
+              <select class="form-select" id="PaymentMethods">
+                <option selected>Select...</option>
                 <option value="1">One</option>
                 <option value="2">Two</option>
                 <option value="3">Three</option>
@@ -136,8 +136,5 @@ export default {
 </script>
 
 <style scoped>
-.validation-message {
-  color: red;
-  font-size: 14px;
-}
+
 </style>

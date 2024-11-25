@@ -55,8 +55,8 @@
                 </div>
                 <div class="col-md-9 col-12 mb-4 mt-4">
                   <div class="input-group">
-                    <label class="input-group-text" for="inputGroupSelect01">Reservation Type</label>
-                    <select class="form-select" id="inputGroupSelect01">
+                    <label class="input-group-text" for="reservationType">Reservation Type</label>
+                    <select class="form-select" id="reservationType">
                       <option selected>Choose...</option>
                       <option value="1">One</option>
                       <option value="2">Two</option>
@@ -71,8 +71,8 @@
                 <div class="row">
                   <div class="col-md-6">
                     <div class="input-group">
-                      <label class="input-group-text" for="inputGroupSelect01">Booking Source</label>
-                      <select class="form-select" id="inputGroupSelect01">
+                      <label class="input-group-text" for="bookingSource">Booking Source</label>
+                      <select class="form-select" id="bookingSource">
                         <option selected>Choose...</option>
                         <option value="1">One</option>
                         <option value="2">Two</option>
@@ -82,8 +82,8 @@
                   </div>
                   <div class="col-md-6">
                     <div class="input-group">
-                      <label class="input-group-text" for="inputGroupSelect01">Business Source</label>
-                      <select class="form-select" id="inputGroupSelect01">
+                      <label class="input-group-text" for="businessSource">Business Source</label>
+                      <select class="form-select" id="businessSource">
                         <option selected>Choose...</option>
                         <option value="1">One</option>
                         <option value="2">Two</option>
@@ -106,8 +106,8 @@
                   <div class="col-md-4">Rate Offered:</div>
                   <div class="col-md-8">
                     <div class="form-check">
-                      <input type="checkbox" class="form-check-input" id="basic-default-checkbox" disabled />
-                      <label class="form-check-label" for="basic-default-checkbox">Contract</label>
+                      <input type="checkbox" class="form-check-input" id="rateOfferedContract" disabled />
+                      <label class="form-check-label" for="rateOfferedContract">Contract</label>
                     </div>
                   </div>
                 </div>
@@ -116,31 +116,31 @@
                 <div class="row">
                   <div class="col-md-4">
                     <div class="form-check">
-                      <input type="checkbox" class="form-check-input" id="basic-default-checkbox" required="" />
-                      <label class="form-check-label" for="basic-default-checkbox">Book All Available Rooms</label>
+                      <input type="checkbox" class="form-check-input" id="rateOfferedBookAll" />
+                      <label class="form-check-label" for="rateOfferedBookAll">Book All Available Rooms</label>
                     </div>
                   </div>
                   <div class="col-md-4">
                     <div class="form-check">
-                      <input type="checkbox" class="form-check-input" id="basic-default-checkbox" required="" />
-                      <label class="form-check-label" for="basic-default-checkbox">Quick Group Booking</label>
+                      <input type="checkbox" class="form-check-input" id="rateOfferedQuickGroup" />
+                      <label class="form-check-label" for="rateOfferedQuickGroup">Quick Group Booking</label>
                     </div>
                   </div>
                   <div class="col-md-4">
                     <div class="form-check">
-                      <input type="checkbox" class="form-check-input" id="basic-default-checkbox" required="" />
-                      <label class="form-check-label" for="basic-default-checkbox">Complimentary Room</label>
+                      <input type="checkbox" class="form-check-input" id="rateOfferedComplimentary" />
+                      <label class="form-check-label" for="rateOfferedComplimentary">Complimentary Room</label>
                     </div>
                   </div>
                 </div>
               </div>
               <!--  ! table Header -->
 
-              <div class="card mt-3">
+              <div class="card mt-3 border-0">
                 <div class="card-datatable table-responsive">
                   <table class="datatables-projects table border-top">
                     <thead>
-                      <tr>
+                      <tr class="bg-light rounded-1">
                         <th class="border-0">Room Type</th>
                         <th class="border-0">Rate Type</th>
                         <th class="border-0">Room</th>
@@ -154,7 +154,7 @@
                     <!--  ! table body -->
 
                     <tbody>
-                      <tr v-for="(item, index) in formData" :key="index">
+                      <tr v-for="(item, index) in formData" :key="index" class="mb-2">
                         <td>
                           <select :id="'form-repeater-1-' + index + '-1'" class="form-select" v-model="item.roomType">
                             <option value="Designer">Designer</option>
@@ -197,7 +197,7 @@
                         </td>
                         <td>
                           <div class="row">
-                            <div class="col-md-8">
+                            <div class="col-md-10">
                               <select :id="'form-repeater-1-' + index + '-6'" class="form-select" v-model="item.rate">
                                 <option value="select">select</option>
                                 <option value="Developer">Developer</option>
@@ -205,7 +205,7 @@
                                 <option value="Manager">Manager</option>
                               </select>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-2 p-0">
                               <button class="btn btn-label-danger" type="button" v-if="index >= existingItemsCount"
                                 @click="removeItem(index)">
                                 <i class="fa-solid fa-xmark"></i>
@@ -220,7 +220,7 @@
                     <!--  ! table footer -->
 
                     <tfoot>
-                      <button class="btn btn-primary" type="button" @click="addItem">
+                      <button class="btn btn-primary mt-2" type="button" @click="addItem">
                         Add Room
                       </button>
                     </tfoot>
@@ -315,9 +315,9 @@
                 </ul>
                 <input type="text" class="form-control" aria-label="Text input with 2 dropdown buttons"
                   id="nameGuest" />
-                  <button class="btn btn-outline-primary waves-effect" type="button" @click="toggleSidebar">
-      <i class="fa-solid fa-user-plus"></i>
-    </button>
+                <button class="btn btn-outline-primary waves-effect" type="button" @click="toggleSidebar">
+                  <i class="fa-solid fa-user-plus"></i>
+                </button>
 
                 <!-- Use the Sidebar component -->
                 <Sidebar :isSidebarOpen="isSidebarOpen" @close-sidebar="toggleSidebar" />
@@ -498,9 +498,10 @@ export default
       {
         return index >= this.existingItemsCount;
       },
-      toggleSidebar() {
-      this.isSidebarOpen = !this.isSidebarOpen;
-    },
+      toggleSidebar ()
+      {
+        this.isSidebarOpen = !this.isSidebarOpen;
+      },
 
     },
     mounted ()
