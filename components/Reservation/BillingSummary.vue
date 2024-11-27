@@ -1,5 +1,5 @@
 <template>
-  <div class="summary position-sticky top-0">
+  <section class="summary position-sticky top-0">
     <div class="card">
       <h5 class="card-header">
         Billing Summary
@@ -102,7 +102,7 @@
         </p>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>

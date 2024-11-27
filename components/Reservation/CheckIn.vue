@@ -156,7 +156,7 @@
                     <tbody>
                       <tr v-for="(item, index) in formData" :key="index" class="mb-2">
                         <td>
-                          <select :id="'form-repeater-1-' + index + '-1'" class="form-select" v-model="item.roomType">
+                          <select :id="'form-repeater-0-' + index + '-1'" class="form-select" v-model="item.roomType">
                             <option value="Designer">Designer</option>
                             <option value="Developer">Developer</option>
                             <option value="Tester">Tester</option>
@@ -164,7 +164,7 @@
                           </select>
                         </td>
                         <td>
-                          <select :id="'form-repeater-1-' + index + '-2'" class="form-select" v-model="item.rateType">
+                          <select :id="'form-repeater-0-' + index + '-2'" class="form-select" v-model="item.rateType">
                             <option value="Designer">Designer</option>
                             <option value="Developer">Developer</option>
                             <option value="Tester">Tester</option>
@@ -172,7 +172,7 @@
                           </select>
                         </td>
                         <td>
-                          <select :id="'form-repeater-1-' + index + '-3'" class="form-select" v-model="item.room">
+                          <select :id="'form-repeater-0-' + index + '-3'" class="form-select" v-model="item.room">
                             <option value="Designer">Designer</option>
                             <option value="Developer">Developer</option>
                             <option value="Tester">Tester</option>
@@ -180,7 +180,7 @@
                           </select>
                         </td>
                         <td>
-                          <select :id="'form-repeater-1-' + index + '-4'" class="form-select" v-model="item.adult">
+                          <select :id="'form-repeater-0-' + index + '-4'" class="form-select" v-model="item.adult">
                             <option value="Designer">Designer</option>
                             <option value="Developer">Developer</option>
                             <option value="Tester">Tester</option>
@@ -188,7 +188,7 @@
                           </select>
                         </td>
                         <td>
-                          <select :id="'form-repeater-1-' + index + '-5'" class="form-select" v-model="item.child">
+                          <select :id="'form-repeater-0-' + index + '-5'" class="form-select" v-model="item.child">
                             <option value="Designer">Designer</option>
                             <option value="Developer">Developer</option>
                             <option value="Tester">Tester</option>
@@ -198,7 +198,7 @@
                         <td>
                           <div class="row">
                             <div class="col-md-10">
-                              <select :id="'form-repeater-1-' + index + '-6'" class="form-select" v-model="item.rate">
+                              <select :id="'form-repeater-0-' + index + '-6'" class="form-select" v-model="item.rate">
                                 <option value="select">select</option>
                                 <option value="Developer">Developer</option>
                                 <option value="Tester">Tester</option>
@@ -237,15 +237,17 @@
           <div class="row">
             <div class="col-md-5">
               <div class="row">
-                <div class="col-md-4 col-12 px-0">
-                  <label for="flatpickr-date-03" class="form-label">Hold Release Date & Time
+                <div class="col-md-4 col-12">
+                  <label for="flatpickr-date-03" class="form-label">Hold Release Date
                   </label>
                   <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD"
                     id="flatpickr-date-03" ref="datePicker3" />
                 </div>
-                <div class="col-md-4 col-12 px-0">
-                  <input type="text" class="form-control flatpickr-input mt-4" placeholder="HH:MM" ref="timePicker3"
-                    aria-label="timePicker" />
+                <div class="col-md-4 col-12">
+                  <label for="flatpickr-time-03" class="form-label">Hold Release Time
+                  </label>
+                  <input type="text" class="form-control flatpickr-input" placeholder="HH:MM" ref="timePicker3"
+                    id="flatpickr-time-03" aria-label="timePicker" />
                 </div>
                 <div class="col-md-4 col-12">
                   <label for="releaseTerm" class="form-label">Release Term
@@ -263,7 +265,7 @@
                   <label for="releaseTerm" class="form-label">Remind Guest before
                   </label>
                   <div class="input-group">
-                    <input type="number" class="form-control" placeholder="Remind Guest before" id="releaseTerm" />
+                    <input type="number" class="form-control" placeholder="0" id="releaseTerm" />
                     <span class="input-group-text">Days</span>
                   </div>
                 </div>
@@ -290,29 +292,16 @@
 
           <div class="row">
             <div class="col-md-5">
-              <label for="nameGuest" class=" col-form-label">Guest Name</label>
+              <label for="nameGuest" class="col-form-label">Guest Name</label>
               <div class="input-group">
-                <button class="btn btn-outline-primary dropdown-toggle waves-effect" type="button"
-                  data-bs-toggle="dropdown" aria-expanded="false">
-                  Dropdown
-                </button>
-                <ul class="dropdown-menu">
-                  <li>
-                    <a class="dropdown-item" href="javascript:void(0);">Action before</a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="javascript:void(0);">Another action before</a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="javascript:void(0);">Something else here</a>
-                  </li>
-                  <li>
-                    <hr class="dropdown-divider" />
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="javascript:void(0);">Separated link</a>
-                  </li>
-                </ul>
+                <select class="form-select" id="nameGuest">
+                  <option value="" disabled selected>Select option</option>
+                  <option value="option1">Option 1</option>
+                  <option value="option2">Option 2</option>
+                  <option value="option3">Option 3</option>
+                  <option value="option4">Option 4</option>
+                </select>
+
                 <input type="text" class="form-control" aria-label="Text input with 2 dropdown buttons"
                   id="nameGuest" />
                 <button class="btn btn-outline-primary waves-effect" type="button" @click="toggleSidebar">
@@ -326,46 +315,44 @@
             <div class="col-md-7">
               <div class="row">
                 <div class="col-md-6">
-                  <label for="emailGuest" class=" col-form-label">Email</label>
-                  <input class="form-control" type="email" id="emailGuest" placeholder="Email">
+                  <label for="emailGuest" class="col-form-label">Email</label>
+                  <input class="form-control" type="email" id="emailGuest" placeholder="Email" />
                 </div>
                 <div class="col-md-6">
                   <div class="mb-3 row">
-                    <label for="mobileGuest" class=" col-form-label">Mobile</label>
-                    <input class="form-control" type="tel" id="mobileGuest" placeholder="Mobile">
+                    <label for="mobileGuest" class="col-form-label">Mobile</label>
+                    <input class="form-control" type="tel" id="mobileGuest" placeholder="Mobile" />
                   </div>
                 </div>
               </div>
             </div>
             <div class="col-md-7">
-              <label for="addressGuest" class=" col-form-label">Address</label>
-              <input class="form-control" type="text" id="addressGuest" placeholder="Address">
+              <label for="addressGuest" class="col-form-label">Address</label>
+              <input class="form-control" type="text" id="addressGuest" placeholder="Address" />
             </div>
             <div class="row">
               <div class="col-md-3">
-                <label for="countryGuest" class=" col-form-label">Country</label>
-                <input class="form-control" type="text" id="countryGuest" placeholder="country">
+                <label for="countryGuest" class="col-form-label">Country</label>
+                <input class="form-control" type="text" id="countryGuest" placeholder="country" />
               </div>
               <div class="col-md-3">
-                <label for="stateGuest" class=" col-form-label">State</label>
-                <input class="form-control" type="text" id="stateGuest" placeholder="state">
+                <label for="stateGuest" class="col-form-label">State</label>
+                <input class="form-control" type="text" id="stateGuest" placeholder="state" />
               </div>
               <div class="col-md-3">
-                <label for="cityGuest" class=" col-form-label">City</label>
-                <input class="form-control" type="text" id="cityGuest" placeholder="city">
+                <label for="cityGuest" class="col-form-label">City</label>
+                <input class="form-control" type="text" id="cityGuest" placeholder="city" />
               </div>
               <div class="col-md-3">
-                <label for="ZipGuest" class=" col-form-label">Zip</label>
-                <input class="form-control" type="text" id="ZipGuest" placeholder="Zip">
+                <label for="ZipGuest" class="col-form-label">Zip</label>
+                <input class="form-control" type="text" id="ZipGuest" placeholder="Zip" />
               </div>
             </div>
-
           </div>
 
           <!--  ! Guest Information -->
 
           <!--  ! Other Information -->
-
 
           <hr class="my-4" />
 
@@ -373,8 +360,10 @@
 
           <div class="row">
             <div class="form-check mb-3">
-              <input class="form-check-input" type="checkbox" id="otherInformationCheck01" v-model="showSelect">
-              <label class="form-check-label" for="otherInformationCheck01"> Email Booking Vouchers </label>
+              <input class="form-check-input" type="checkbox" id="otherInformationCheck01" v-model="showSelect" />
+              <label class="form-check-label" for="otherInformationCheck01">
+                Email Booking Vouchers
+              </label>
             </div>
             <div v-if="showSelect" class="mb-3">
               <select id="bookingOptions" class="form-select">
@@ -385,37 +374,43 @@
             </div>
 
             <div class="form-check mb-3">
-              <input class="form-check-input" type="checkbox" id="otherInformationCheck02" v-model="showInput">
-              <label class="form-check-label" for="otherInformationCheck02"> Send email at Check-out </label>
+              <input class="form-check-input" type="checkbox" id="otherInformationCheck02" v-model="showInput" />
+              <label class="form-check-label" for="otherInformationCheck02">
+                Send email at Check-out
+              </label>
             </div>
             <div v-if="showInput" class="mb-3">
               <div class="input-group">
                 <input type="email" id="emailInput" class="form-control"
-                  placeholder="Use comma to add multiple email address" aria-label="send email to check">
-                <button class="btn btn-primary" type="button">Preview Voucher</button>
+                  placeholder="Use comma to add multiple email address" aria-label="send email to check" />
+                <button class="btn btn-primary" type="button">
+                  Preview Voucher
+                </button>
               </div>
             </div>
             <div class="form-check mb-3">
-              <input class="form-check-input" type="checkbox" id="otherInformationCheck03">
-              <label class="form-check-label" for="otherInformationCheck03"> Access To Guest Portal </label>
+              <input class="form-check-input" type="checkbox" id="otherInformationCheck03" />
+              <label class="form-check-label" for="otherInformationCheck03">
+                Access To Guest Portal
+              </label>
             </div>
             <div class="form-check mb-3">
-              <input class="form-check-input" type="checkbox" id="otherInformationCheck04">
-              <label class="form-check-label" for="otherInformationCheck04"> Supress Rate on Registration Card </label>
+              <input class="form-check-input" type="checkbox" id="otherInformationCheck04" />
+              <label class="form-check-label" for="otherInformationCheck04">
+                Supress Rate on Registration Card
+              </label>
             </div>
-
-
           </div>
           <!--  ! Other Information -->
 
           <hr class="my-4" />
 
-          <div class="row ">
+          <div class="row">
             <div class="col-12 text-end">
               <button type="button" class="btn btn-lg btn-secondary waves-effect waves-light">
                 Cancel
               </button>
-              <button type="button" class="btn  btn-lg btn-primary waves-effect waves-light">
+              <button type="button" class="btn btn-lg btn-primary waves-effect waves-light">
                 Reserver
               </button>
             </div>
@@ -424,7 +419,9 @@
       </div>
     </div>
 
+
   </section>
+
 </template>
 
 <script>
@@ -434,115 +431,104 @@ import "flatpickr/dist/flatpickr.min.css";
 import Sidebar from "../layout/Sidebar.vue";
 //  end flatpickr Files
 
-export default
+export default {
+  name: "CheckIn",
+  layout: "component",
+  components: { Sidebar },
 
+  data ()
   {
-    name: "CheckIn",
-    layout: "component",
-    components: { Sidebar },
+    return {
+      roomCount: 1, // Default number of rooms
+      showSelect: false,
+      showInput: false,
+      isSidebarOpen: false,
 
-    data ()
-    {
-      return {
-        roomCount: 1, // Default number of rooms
-        showSelect: false,
-        showInput: false,
-        isSidebarOpen: false,
-
-
-
-        formData: [
-          {
-            rooms: 1,
-          },
-        ],
-        existingItemsCount: 1,
-      };
-    },
-    watch: {
-      roomCount (newVal)
-      {
-        this.updateRepeater();
-      },
-    },
-    methods: {
-      updateRepeater ()
-      {
-        const currentCount = this.formData.length;
-        if (currentCount < this.roomCount) {
-          for (let i = currentCount; i < this.roomCount; i++) {
-            this.formData.push({
-              rooms: 1,
-            });
-          }
-        } else if (currentCount > this.roomCount) {
-          this.formData.splice(this.roomCount);
-        }
-      },
-      addItem ()
-      {
-        this.formData.push({
+      formData: [
+        {
           rooms: 1,
-        });
-        this.roomCount = this.formData.length;
-      },
-      removeItem (index)
-      {
-        if (this.formData.length > 1) {
-          this.formData.splice(index, 1);
-          this.roomCount = this.formData.length;
-        }
-      },
-
-      isNewItem (index)
-      {
-        return index >= this.existingItemsCount;
-      },
-      toggleSidebar ()
-      {
-        this.isSidebarOpen = !this.isSidebarOpen;
-      },
-
-    },
-    mounted ()
+        },
+      ],
+      existingItemsCount: 1,
+    };
+  },
+  watch: {
+    roomCount ()
     {
-      flatpickr(this.$refs.datePicker1, {
-        dateFormat: "Y-m-d",
-      });
-      flatpickr(this.$refs.datePicker2, {
-        dateFormat: "Y-m-d",
-      });
-      flatpickr(this.$refs.datePicker3, {
-        dateFormat: "Y-m-d",
-      });
-      flatpickr(this.$refs.timePicker1, {
-        enableTime: true, // Enable the time picker
-        noCalendar: true, // Disable the calendar (only time selection)
-        dateFormat: "H:i", // Customizable time format (e.g., "H:i" for 24-hour, "h:i K" for 12-hour with AM/PM)
-        time_24hr: true, // Optional: Use 24-hour format, set to false for 12-hour format with AM/PM
-      });
-      flatpickr(this.$refs.timePicker2, {
-        enableTime: true, // Enable the time picker
-        noCalendar: true, // Disable the calendar (only time selection)
-        dateFormat: "H:i", // Customizable time format (e.g., "H:i" for 24-hour, "h:i K" for 12-hour with AM/PM)
-        time_24hr: true, // Optional: Use 24-hour format, set to false for 12-hour format with AM/PM
-      });
-      flatpickr(this.$refs.timePicker3, {
-        enableTime: true, // Enable the time picker
-        noCalendar: true, // Disable the calendar (only time selection)
-        dateFormat: "H:i", // Customizable time format (e.g., "H:i" for 24-hour, "h:i K" for 12-hour with AM/PM)
-        time_24hr: false, // Optional: Use 24-hour format, set to false for 12-hour format with AM/PM
-      });
+      this.updateRepeater();
     },
-  };
+  },
+  methods: {
+    updateRepeater ()
+    {
+      const currentCount = this.formData.length;
+      if (currentCount < this.roomCount) {
+        for (let i = currentCount; i < this.roomCount; i++) {
+          this.formData.push({
+            rooms: 1,
+          });
+        }
+      } else if (currentCount > this.roomCount) {
+        this.formData.splice(this.roomCount);
+      }
+    },
+    addItem ()
+    {
+      this.formData.push({
+        rooms: 1,
+      });
+      this.roomCount = this.formData.length;
+    },
+    removeItem (index)
+    {
+      if (this.formData.length > 1) {
+        this.formData.splice(index, 1);
+        this.roomCount = this.formData.length;
+      }
+    },
+
+    isNewItem (index)
+    {
+      return index >= this.existingItemsCount;
+    },
+    toggleSidebar ()
+    {
+      this.isSidebarOpen = !this.isSidebarOpen;
+    },
+  },
+  mounted ()
+  {
+    flatpickr(this.$refs.datePicker1, {
+      dateFormat: "Y-m-d",
+    });
+    flatpickr(this.$refs.datePicker2, {
+      dateFormat: "Y-m-d",
+    });
+    flatpickr(this.$refs.datePicker3, {
+      dateFormat: "Y-m-d",
+    });
+    flatpickr(this.$refs.timePicker1, {
+      enableTime: true, // Enable the time picker
+      noCalendar: true, // Disable the calendar (only time selection)
+      dateFormat: "H:i", // Customizable time format (e.g., "H:i" for 24-hour, "h:i K" for 12-hour with AM/PM)
+      time_24hr: true, // Optional: Use 24-hour format, set to false for 12-hour format with AM/PM
+    });
+    flatpickr(this.$refs.timePicker2, {
+      enableTime: true, // Enable the time picker
+      noCalendar: true, // Disable the calendar (only time selection)
+      dateFormat: "H:i", // Customizable time format (e.g., "H:i" for 24-hour, "h:i K" for 12-hour with AM/PM)
+      time_24hr: true, // Optional: Use 24-hour format, set to false for 12-hour format with AM/PM
+    });
+    flatpickr(this.$refs.timePicker3, {
+      enableTime: true, // Enable the time picker
+      noCalendar: true, // Disable the calendar (only time selection)
+      dateFormat: "H:i", // Customizable time format (e.g., "H:i" for 24-hour, "h:i K" for 12-hour with AM/PM)
+      time_24hr: false, // Optional: Use 24-hour format, set to false for 12-hour format with AM/PM
+    });
+  },
+};
 </script>
 
 <style>
-.total-nights {
-  background: #596d86;
-  border-radius: 5px;
-  color: white;
-  text-align: center;
-  padding: 5px;
-}
+
 </style>
