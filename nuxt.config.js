@@ -17,14 +17,20 @@ export default {
     script: [
       {
         type: "text/javascript",
-        src: "/js/jquery.min.js",
+        src: "/js/jquery/jquery.min.js",
         body: true,
       },
+      // {
+      //   type: "text/javascript",
+      //   src: "/js/popper/popper.js",
+      //   body: true,
+      // },
       {
         type: "text/javascript",
-        src: "/js/bootstrap.min.js",
+        src: "/js/bootstrap/bootstrap.min.js",
         body: true,
       },
+
 
 
 
@@ -51,8 +57,6 @@ export default {
 
     //! Start  libs Css Files
     "~/assets/vendor/libs/flatpickr/flatpickr.css",
-    "~/assets/css/jPinning.css",
-    "~/assets/css/animate.css",
     "~/assets/vendor/fonts/fontawesome.css",
     //! end  libs Css Files
 
@@ -71,18 +75,8 @@ export default {
       src: "https://code.jquery.com/jquery-migrate-1.2.1.min.js",
       type: "text/javascript",
     },
-    {
-      src: "https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js",
-      type: "text/javascript",
-    },
-    {
-      src: "~/assets/vendor/libs/flatpickr/flatpickr.js",
-      type: "text/javascript",
-      mode: "client", // This ensures it runs only on the client-side
-      body: true,
-    },
 
-    { src: "~/assets/js/jPinning.js", type: "text/javascript", mode: "client" },
+
   ],
 
 
@@ -121,24 +115,5 @@ export default {
       }
     },
   },
-  loading: {
-    color: "DodgerBlue",
-    height: "10px",
-    continuous: true,
-    duration: 3000,
-  },
 
-  passwordProtect: {
-    enabled: false,
-    formPath: "/password",
-    password: "110220330@@@",
-    tokenSeed: 101010,
-    queryString: "_pw",
-    cookieName: "_password",
-    cookie: {
-      prefix: "",
-      expires: 5,
-    },
-    ignoredPaths: [""],
-  },
 };
