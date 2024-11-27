@@ -42,31 +42,6 @@
           <!-- Dynamic text changes based on isOn
           <span class="switch-label">{{ isOn ? 'Switch is ON' : 'Switch is OFF' }}</span> -->
         </label>
-        <!-- Sidebar -->
-        <div>
-          <!-- Button to open the sidebar -->
-          <button
-            @click="openSidebar"
-            type="button"
-            class="btn btn-outline-primary waves-effect"
-          >
-            <i class="fa-solid fa-bed"></i>
-          </button>
-
-          <!-- Sidebar Component -->
-          <Sidebar
-            :isSidebarOpen="isSidebarOpen"
-            :title="'My Dynamic Sidebar'"
-            :width="'400px'"
-            @close-sidebar="closeSidebar"
-          >
-            <!-- Custom content inside the sidebar -->
-            <div>
-              <h4>Custom Sidebar Content</h4>
-              <p>This content was passed using a slot!</p>
-            </div>
-          </Sidebar>
-        </div>
 
         <div @mouseenter="isHovered = true" @mouseleave="isHovered = false">
           <button type="button" class="btn btn-outline-primary waves-effect">
