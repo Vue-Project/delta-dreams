@@ -15,6 +15,7 @@
     "@fullcalendar/vue": "^6.1.15",
     "@luxdamore/vue-cursor-fx": "^1.6.2",
     "core-js": "^3.19.3",
+    "dropzone": "^6.0.0-beta.2",
     "flatpickr": "^4.6.13",
     "jquery": "^3.6.1",
     "nuxt": "^2.15.8",
