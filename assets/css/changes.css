@@ -70,3 +70,53 @@
 .dropzone .dz-preview {
   margin: 10px !important;
 }
+/* .overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000; /* Ensures the overlay is on top of the calendar */
+/* } */
+
+.popover {
+  position: absolute;
+  z-index: 1050; /* Ensure it's on top of other elements */
+  width: auto;
+  min-width: 100px;
+}
+
+.popover-body {
+  font-size: 12px;
+  padding: 10px;
+}
+
+.arrow {
+  z-index: 1040; /* Ensure the arrow is also on top */
+}
+
+.fc-highlight {
+  background-color: rgba(0, 123, 255, 0.2); /* Highlight selected dates */
+}
+
+.selected-days-tooltip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 123, 255, 0.6);
+  color: white;
+  padding: 5px;
+  border-radius: 3px;
+  font-size: 12px;
+}
+
+.circle-shape {
+  display: inline-block;
+  text-align: center;
+  background-color: rgb(236, 243, 248);
+  height: 24px;
+  border-radius: 12px;
+  min-width: 24px;
+  line-height: 24px;
+}
