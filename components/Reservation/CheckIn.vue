@@ -8,7 +8,8 @@
       <div class="card-body">
         <form id="formValidationReservation" class="row g-3 fv-plugins-bootstrap5 fv-plugins-framework">
           <!--  ! Reservation  Details -->
-          <div class="row">
+            <!-- change in size and icons  -->
+          <div class="row cio">
             <div class="col-md-8">
               <div class="row align-items-center">
                 <!-- Date Picker-->
@@ -16,6 +17,7 @@
                   <label for="flatpickr-date-01" class="form-label">Check-in</label>
                   <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD"
                     id="flatpickr-date-01" ref="datePicker1" />
+                    <i class="fa-solid fa-calendar-days date-icon"></i>
                 </div>
 
                 <!-- Date Picker -->
@@ -25,6 +27,7 @@
                   <div class="input-group mt-4">
                     <input type="text" class="form-control flatpickr-input" placeholder="HH:MM" id="flatpickr-time-01"
                       ref="timePicker1" />
+                      <i class="fa-regular fa-clock clock-icon"></i>
                     <span class="input-group-text total-nights" id="basic-addon13">4 nights</span>
                   </div>
                 </div>
@@ -34,15 +37,16 @@
                 <!-- Date Picker-->
                 <div class="col-md-3 col-12 px-0">
                   <label for="flatpickr-date-02" class="form-label">Check-out</label>
-                  <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD"
+                  <input type="text" class="form-control flatpickr-input ms-3" placeholder="YYYY-MM-DD"
                     id="flatpickr-date-02" ref="datePicker2" />
                 </div>
                 <!-- /Date Picker -->
 
                 <!-- Time Picker-->
                 <div class="col-md-3 col-12 px-0">
-                  <input type="text" class="form-control flatpickr-input mt-4" placeholder="HH:MM"
+                  <input type="text" class="form-control flatpickr-input mt-4 ms-3" placeholder="HH:MM"
                     id="flatpickr-time-02" ref="timePicker2" aria-label="close" />
+                  <i class="fa-regular fa-clock clock-icon mt-4 ml-3"></i>
                 </div>
               </div>
             </div>
@@ -53,43 +57,37 @@
                   <input class="form-control" type="number" id="roomCount" v-model="roomCount" min="1"
                     @input="updateRepeater" />
                 </div>
-                <div class="col-md-9 col-12 mb-4 mt-4">
-                  <div class="input-group">
-                    <label class="input-group-text" for="reservationType">Reservation Type</label>
-                    <select class="form-select" id="reservationType">
-                      <option selected>Choose...</option>
-                      <option value="1">One</option>
-                      <option value="2">Two</option>
-                      <option value="3">Three</option>
-                    </select>
-                  </div>
+                <div class="col-md-9 col-12 mb-4">
+                  <!-- change input group  -->
+                  <label for="reservationType" class="form-label">Reservation Type</label>
+                  <select class="form-select" id="reservationType">
+                    <option selected>حجز مؤكد معلق بتحويل المبلغ</option>
+                    <option value="1">حجز مؤكد</option> 
+                  </select>
                 </div>
               </div>
             </div>
             <div class="row">
-              <div class="col-md-6 col-12 mb-4 mt-4">
+              <div class="col-md-6 col-12 mb-4 p-0">
                 <div class="row">
                   <div class="col-md-6">
-                    <div class="input-group">
-                      <label class="input-group-text" for="bookingSource">Booking Source</label>
-                      <select class="form-select" id="bookingSource">
-                        <option selected>Choose...</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                      </select>
-                    </div>
+                    <label  for="bookingSource" class="form-label">Booking Source</label>
+                    <select class="form-select" id="bookingSource">
+                      <option selected>Direct</option>
+                      <option value="1">OTA</option>
+                      <option value="2">Booking Engine</option>
+                      <option value="3">Travel Agent</option>
+                      <option value="3">Company</option>
+                    </select>
                   </div>
                   <div class="col-md-6">
-                    <div class="input-group">
-                      <label class="input-group-text" for="businessSource">Business Source</label>
-                      <select class="form-select" id="businessSource">
-                        <option selected>Choose...</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                      </select>
-                    </div>
+                    <label  for="businessSource" class="form-label">Business Source</label>
+                    <select class="form-select" id="businessSource">
+                      <option selected>Select</option>
+                      <option value="1">One</option>
+                      <option value="2">Two</option>
+                      <option value="3">Three</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -101,9 +99,9 @@
 
           <div class="row mb-3">
             <div class="row">
-              <div class="col-md-5">
+              <div class="col-md-4">
                 <div class="row">
-                  <div class="col-md-4">Rate Offered:</div>
+                  <div class="col-md-4 rateOffer">Rate Offered:</div>
                   <div class="col-md-8">
                     <div class="form-check">
                       <input type="checkbox" class="form-check-input" id="rateOfferedContract" disabled />
@@ -112,7 +110,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-7">
+              <div class="col-md-8">
                 <div class="row">
                   <div class="col-md-4">
                     <div class="form-check">
@@ -136,17 +134,18 @@
               </div>
               <!--  ! table Header -->
 
+              <!-- change width delete border color  -->
               <div class="card mt-3 border-0">
                 <div class="card-datatable table-responsive">
-                  <table class="datatables-projects table border-top">
+                  <table class="datatables-projects table">
                     <thead>
-                      <tr class="bg-light rounded-1">
+                      <tr class="rounded-1">
                         <th class="border-0">Room Type</th>
                         <th class="border-0">Rate Type</th>
                         <th class="border-0">Room</th>
                         <th class="border-0">Adult</th>
                         <th class="border-0">Child</th>
-                        <th class="border-0">Rate(£)(Tax Inc.)</th>
+                        <th class="border-0 ">Rate(£)(Tax Inc.)</th>
                       </tr>
                     </thead>
                     <!--  ! table Header -->
@@ -154,7 +153,7 @@
                     <!--  ! table body -->
 
                     <tbody>
-                      <tr v-for="(item, index) in formData" :key="index" class="mb-2">
+                      <tr v-for="(item, index) in formData" :key="index" class="mb-2 ">
                         <td>
                           <select :id="'form-repeater-0-' + index + '-1'" class="form-select" v-model="item.roomType">
                             <option value="Designer">Designer</option>
@@ -220,7 +219,7 @@
                     <!--  ! table footer -->
 
                     <tfoot>
-                      <button class="btn btn-primary mt-2" type="button" @click="addItem">
+                      <button class="btn btn-primary mt-2 AddButton" type="button" @click="addItem">
                         Add Room
                       </button>
                     </tfoot>
@@ -234,42 +233,40 @@
 
           <hr class="my-4" />
           <!--  ! Hold Release Date & Time -->
+            <!-- put input group & style  -->
           <div class="row">
             <div class="col-md-5">
               <div class="row">
-                <div class="col-md-4 col-12">
-                  <label for="flatpickr-date-03" class="form-label">Hold Release Date
+                <div class="col-md-8 col-12">
+                  <label for="flatpickr-date-03" class="form-label">Hold Release Date & Time
                   </label>
-                  <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD"
-                    id="flatpickr-date-03" ref="datePicker3" />
-                </div>
-                <div class="col-md-4 col-12">
-                  <label for="flatpickr-time-03" class="form-label">Hold Release Time
-                  </label>
-                  <input type="text" class="form-control flatpickr-input" placeholder="HH:MM" ref="timePicker3"
+                  <div class="input-group">
+                    <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD" id="flatpickr-date-03" ref="datePicker3" />
+                    <input type="text" class="form-control flatpickr-input" placeholder="HH:MM" ref="timePicker3"
                     id="flatpickr-time-03" aria-label="timePicker" />
+                  </div>
                 </div>
                 <div class="col-md-4 col-12">
                   <label for="releaseTerm" class="form-label">Release Term
                   </label>
                   <div class="input-group">
                     <input type="text" class="form-control" placeholder="Value" id="releaseTerm" />
-                    <span class="input-group-text">%</span>
+                    <span class="input-group-text " style="background-color:#D1EBF9 ;color:black">%</span>
                   </div>
                 </div>
               </div>
             </div>
             <div class="col-md-7">
               <div class="row">
-                <div class="col-md-3 col-12">
+                <div class="col-md-4 col-12">
                   <label for="releaseTerm" class="form-label">Remind Guest before
                   </label>
                   <div class="input-group">
                     <input type="number" class="form-control" placeholder="0" id="releaseTerm" />
-                    <span class="input-group-text">Days</span>
+                    <span class="input-group-text" style="background-color:#D1EBF9 ;color:black">Days</span>
                   </div>
                 </div>
-                <div class="col-md-9 col-12">
+                <div class="col-md-8 col-12">
                   <div class="d-flex mt-4">
                     <div class="form-check mr-2">
                       <input type="radio" id="hold-release" name="optionRadioDate" class="form-check-input" />
@@ -295,14 +292,17 @@
               <label for="nameGuest" class="col-form-label">Guest Name</label>
               <div class="input-group">
                 <select class="form-select" id="nameGuest">
-                  <option value="" disabled selected>Select option</option>
-                  <option value="option1">Option 1</option>
-                  <option value="option2">Option 2</option>
-                  <option value="option3">Option 3</option>
-                  <option value="option4">Option 4</option>
+                  <option value="" disabled selected>MR.</option>
+                  <option value="option1">DR.</option>
+                  <option value="option2">JN.</option>
+                  <option value="option3">MAM.</option>
+                  <option value="option4">MRs.</option>
+                  <option value="option4">Ms.</option>
+                  <option value="option4">Sir.</option>
+                  <option value="option4">Sr.</option>
                 </select>
 
-                <input type="text" class="form-control" aria-label="Text input with 2 dropdown buttons"
+                <input type="text" class="form-control w-50" aria-label="Text input with 2 dropdown buttons"
                   id="nameGuest" />
                 <button class="btn btn-outline-primary waves-effect" type="button" @click="toggleSidebar">
                   <i class="fa-solid fa-user-plus"></i>
@@ -407,10 +407,10 @@
 
           <div class="row">
             <div class="col-12 text-end">
-              <button type="button" class="btn btn-lg btn-secondary waves-effect waves-light">
+              <button type="button" class="btn btn-lg btn-secondary waves-effect waves-light cancelButton">
                 Cancel
               </button>
-              <button type="button" class="btn btn-lg btn-primary waves-effect waves-light">
+              <button type="button" class="btn btn-lg btn-primary waves-effect waves-light ReserverButton">
                 Reserver
               </button>
             </div>

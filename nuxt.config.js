@@ -55,6 +55,7 @@ export default {
 
     // !  changes styles
     "~/assets/css/changes.css",
+    "~/assets/css/systemirareservation.css",
     // !  changes styles
   ],
 
