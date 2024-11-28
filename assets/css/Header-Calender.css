@@ -15,7 +15,6 @@
   line-height: 26px;
   top: 0;
   left: 0;
-  margin-left: 10px;
 }
 
 .switch .switch-off {
@@ -28,7 +27,7 @@
 .fc .fc-button-primary:not(.fc-prev-button):not(.fc-next-button) {
   position: absolute;
   left: 270px;
-  top: 75px;
+  top: 60px;
 }
 .fc .fc-toolbar-title {
   font-size: 1.5rem;
@@ -54,7 +53,6 @@
   pointer-events: none;
 }
 
- 
 .fullbox {
   position: relative;
   left: -333px;
