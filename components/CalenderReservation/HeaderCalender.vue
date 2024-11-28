@@ -1,14 +1,21 @@
 <template>
   <div class="row align-items-baseline p-2 position-relative">
+    <!-- flatpickr-date -->
     <div class="col-md-1 col-12">
       <input
         type="text"
         class="form-control flatpickr-input"
+        slot-scope=""
         placeholder="YYYY-MM-DD"
         id="flatpickr-date-04"
         ref="datePicker4"
+        aria-label="datePicker"
       />
     </div>
+    <!-- flatpickr-date -->
+
+    <!-- data-Unites -->
+
     <div class="col-md-7 col-12">
       <div class="d-flex items-center gap-4">
         <div v-for="(item, index) in categories" :key="index">
@@ -19,13 +26,15 @@
         </div>
       </div>
     </div>
+    <!-- data-Unites -->
+
     <div class="col-md-4 col-12">
       <div class="d-flex items-center gap-4">
         <div class="input-group">
-          <label class="input-group-text" for="inputGroupSelect01"
+          <label class="input-group-text" for="includedSelect"
             >Reservation Type</label
           >
-          <select class="form-select" id="inputGroupSelect01">
+          <select class="form-select" id="includedSelect">
             <option selected>Choose...</option>
             <option value="1">One</option>
             <option value="2">Two</option>
@@ -33,22 +42,27 @@
           </select>
         </div>
 
+        <!-- switch  Toggle -->
         <label class="switch">
-          <input type="checkbox" class="switch-input" v-model="isOn" />
+          <input
+            type="checkbox"
+            class="switch-input"
+            v-model="isOn"
+            aria-label="Toggle checkbox for switch"
+          />
           <span class="switch-toggle-slider">
             <span class="switch-on">Copy</span>
             <span class="switch-off">compact</span>
           </span>
-          <!-- Dynamic text changes based on isOn
-          <span class="switch-label">{{ isOn ? 'Switch is ON' : 'Switch is OFF' }}</span> -->
         </label>
+        <!-- switch  Toggle -->
 
+        <!-- Hover Menu -->
         <div @mouseenter="isHovered = true" @mouseleave="isHovered = false">
           <button type="button" class="btn btn-outline-primary waves-effect">
             <i class="fa-solid fa-circle-info"></i>
           </button>
 
-          <!-- Hover Menu -->
           <div
             v-show="isHovered"
             class="position-absolute left-0 mt-2 w-40 bg-white shadow-lg"
@@ -365,6 +379,7 @@
               </div>
             </div>
           </div>
+          <!-- Hover Menu -->
         </div>
       </div>
     </div>
@@ -414,29 +429,5 @@ export default {
 </script>
 
 <style scoped>
-.circle-shape {
-  display: inline-block;
-  text-align: center;
-  background-color: rgb(236, 243, 248);
-  height: 24px;
-  border-radius: 12px;
-  min-width: 24px;
-  line-height: 24px;
-}
 
-.switch {
-  width: 200px;
-}
-
-.switch .switch-toggle-slider {
-  width: 5.5rem;
-  height: 30px;
-  line-height: 26px;
-  top: 0;
-  left: 0;
-}
-
-.switch .switch-toggle-slider::after {
-  top: 8px;
-}
 </style>

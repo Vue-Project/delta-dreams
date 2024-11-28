@@ -20,19 +20,11 @@ export default {
         src: "/js/jquery/jquery.min.js",
         body: true,
       },
-      // {
-      //   type: "text/javascript",
-      //   src: "/js/popper/popper.js",
-      //   body: true,
-      // },
       {
         type: "text/javascript",
         src: "/js/bootstrap/bootstrap.min.js",
         body: true,
       },
-
-
-
 
     ],
   },
