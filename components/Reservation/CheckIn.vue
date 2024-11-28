@@ -6,9 +6,9 @@
       </h5>
       <hr class="m-0" />
       <div class="card-body">
-        <form id="formValidationReservation" class="row g-3 fv-plugins-bootstrap5 fv-plugins-framework">
+        <form id="formValidationReservation" class="row g-3 fv-plugins-bootstrap5 fv-plugins-framework mt-1">
           <!--  ! Reservation  Details -->
-            <!-- change in size and icons  -->
+            <!-- change in size and icons -->
           <div class="row cio">
             <div class="col-md-8">
               <div class="row align-items-center">
@@ -17,17 +17,18 @@
                   <label for="flatpickr-date-01" class="form-label">Check-in</label>
                   <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD"
                     id="flatpickr-date-01" ref="datePicker1" />
-                    <i class="fa-solid fa-calendar-days date-icon"></i>
+                  <i class="fa-solid fa-calendar-days date-icon"></i>
                 </div>
 
                 <!-- Date Picker -->
 
                 <!-- Time Picker-->
                 <div class="col-md-3 col-12 px-0">
-                  <div class="input-group mt-4">
+                  <div class="input-group mt-4 ">
                     <input type="text" class="form-control flatpickr-input" placeholder="HH:MM" id="flatpickr-time-01"
                       ref="timePicker1" />
-                      <i class="fa-regular fa-clock clock-icon"></i>
+                    <i class="fa-regular fa-clock clock-icon"></i>
+
                     <span class="input-group-text total-nights" id="basic-addon13">4 nights</span>
                   </div>
                 </div>
@@ -36,9 +37,10 @@
 
                 <!-- Date Picker-->
                 <div class="col-md-3 col-12 px-0">
-                  <label for="flatpickr-date-02" class="form-label">Check-out</label>
+                  <label for="flatpickr-date-02" class="form-label ms-3">Check-out</label>
                   <input type="text" class="form-control flatpickr-input ms-3" placeholder="YYYY-MM-DD"
                     id="flatpickr-date-02" ref="datePicker2" />
+                  <i class="fa-solid fa-calendar-days date-icon ms-3"></i>
                 </div>
                 <!-- /Date Picker -->
 
@@ -47,23 +49,26 @@
                   <input type="text" class="form-control flatpickr-input mt-4 ms-3" placeholder="HH:MM"
                     id="flatpickr-time-02" ref="timePicker2" aria-label="close" />
                   <i class="fa-regular fa-clock clock-icon mt-4 ml-3"></i>
+                  
                 </div>
               </div>
             </div>
             <div class="col-md-4">
-              <div class="row">
+              <div class="row ">
                 <div class="col-md-3 col-12">
                   <label for="roomCount" class="form-label">Room(s)</label>
                   <input class="form-control" type="number" id="roomCount" v-model="roomCount" min="1"
                     @input="updateRepeater" />
                 </div>
-                <div class="col-md-9 col-12 mb-4">
-                  <!-- change input group  -->
+                <div class="col-md-9 col-12 mb-4 ">
                   <label for="reservationType" class="form-label">Reservation Type</label>
                   <select class="form-select" id="reservationType">
                     <option selected>حجز مؤكد معلق بتحويل المبلغ</option>
-                    <option value="1">حجز مؤكد</option> 
+                    <option value="1">حجز مؤكد</option>
+                    
+                    
                   </select>
+                  
                 </div>
               </div>
             </div>
@@ -79,6 +84,7 @@
                       <option value="3">Travel Agent</option>
                       <option value="3">Company</option>
                     </select>
+                    
                   </div>
                   <div class="col-md-6">
                     <label  for="businessSource" class="form-label">Business Source</label>
@@ -145,7 +151,7 @@
                         <th class="border-0">Room</th>
                         <th class="border-0">Adult</th>
                         <th class="border-0">Child</th>
-                        <th class="border-0 ">Rate(£)(Tax Inc.)</th>
+                        <th class="border-0 w-20">Rate(£)(Tax Inc.)</th>
                       </tr>
                     </thead>
                     <!--  ! table Header -->
@@ -153,7 +159,7 @@
                     <!--  ! table body -->
 
                     <tbody>
-                      <tr v-for="(item, index) in formData" :key="index" class="mb-2 ">
+                      <tr v-for="(item, index) in formData" :key="index" class="mb-2 selectStyle">
                         <td>
                           <select :id="'form-repeater-0-' + index + '-1'" class="form-select" v-model="item.roomType">
                             <option value="Designer">Designer</option>
@@ -217,8 +223,9 @@
                     <!--  ! table body -->
 
                     <!--  ! table footer -->
-
+                    
                     <tfoot>
+                      <!--change style button  -->
                       <button class="btn btn-primary mt-2 AddButton" type="button" @click="addItem">
                         Add Room
                       </button>
@@ -233,7 +240,8 @@
 
           <hr class="my-4" />
           <!--  ! Hold Release Date & Time -->
-            <!-- put input group & style  -->
+
+          <!-- change style  -->
           <div class="row">
             <div class="col-md-5">
               <div class="row">
@@ -291,7 +299,7 @@
             <div class="col-md-5">
               <label for="nameGuest" class="col-form-label">Guest Name</label>
               <div class="input-group">
-                <select class="form-select" id="nameGuest">
+                <select class="form-select " id="nameGuest">
                   <option value="" disabled selected>MR.</option>
                   <option value="option1">DR.</option>
                   <option value="option2">JN.</option>
