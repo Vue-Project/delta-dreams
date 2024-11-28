@@ -27,7 +27,7 @@
             <h5 class="mb-0 pt-1 text-nowrap ms-lg-n3 ms-xl-0 fw-bold">20/11/2024</h5>
           </div>
         </div>
-        <dl class="row mb-2 bg-light rounded p-2">
+        <dl class="row mb-2 billingMoney rounded p-2">
           <dt class="col-6 fw-normal text-heading">Room Charges</dt>
           <dd class="col-6 text-end">0.00</dd>
 

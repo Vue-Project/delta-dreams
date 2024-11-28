@@ -1,6 +1,6 @@
 <template>
   <div class="row align-items-baseline p-2 position-relative">
-    <div class="col-md-2 col-12 date">
+    <div class="col-md-2 col-12 calendarDate">
       <input
         type="text"
         class="form-control flatpickr-input"
@@ -8,7 +8,7 @@
         id="flatpickr-date-04"
         ref="datePicker4"
       />
-      <i class="fa-solid fa-calendar-days date-icon date-icon"></i>
+      <i class="fa-solid fa-calendar-days date-icon "></i>
     </div>
     <div class="col-md-6 col-12">
       <div class="d-flex items-center gap-4">
