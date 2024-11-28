@@ -1,22 +1,16 @@
 <template>
   <div class="row align-items-baseline p-2 position-relative">
-    <!-- flatpickr-date -->
-    <div class="col-md-1 col-12">
+    <div class="col-md-2 col-12 date">
       <input
         type="text"
         class="form-control flatpickr-input"
-        slot-scope=""
         placeholder="YYYY-MM-DD"
         id="flatpickr-date-04"
         ref="datePicker4"
-        aria-label="datePicker"
       />
+      <i class="fa-solid fa-calendar-days date-icon date-icon"></i>
     </div>
-    <!-- flatpickr-date -->
-
-    <!-- data-Unites -->
-
-    <div class="col-md-7 col-12">
+    <div class="col-md-6 col-12">
       <div class="d-flex items-center gap-4">
         <div v-for="(item, index) in categories" :key="index">
           <span>{{ item.label }}</span>
@@ -26,47 +20,112 @@
         </div>
       </div>
     </div>
-    <!-- data-Unites -->
-
     <div class="col-md-4 col-12">
       <div class="d-flex items-center gap-4">
-        <div class="input-group">
-          <label class="input-group-text" for="includedSelect"
-            >Reservation Type</label
-          >
-          <select class="form-select" id="includedSelect">
-            <option selected>Choose...</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-          </select>
-        </div>
+        <div class="mb-3">
+                        <select class="form-select" id="exampleFormControlSelect1" aria-label="Default select example">
+                          <option selected>The price is not included</option>
+                          <option value="1">The price includes breakfast</option>
+                          <option value="2">Two</option>
+                          <option value="3">Three</option>
+                        </select>
+                      </div>
 
-        <!-- switch  Toggle -->
         <label class="switch">
-          <input
-            type="checkbox"
-            class="switch-input"
-            v-model="isOn"
-            aria-label="Toggle checkbox for switch"
-          />
+          <input type="checkbox" class="switch-input" v-model="isOn" />
           <span class="switch-toggle-slider">
             <span class="switch-on">Copy</span>
             <span class="switch-off">compact</span>
           </span>
+          <!-- Dynamic text changes based on isOn
+          <span class="switch-label">{{ isOn ? 'Switch is ON' : 'Switch is OFF' }}</span> -->
         </label>
-        <!-- switch  Toggle -->
 
-        <!-- Hover Menu -->
+
         <div @mouseenter="isHovered = true" @mouseleave="isHovered = false">
           <button type="button" class="btn btn-outline-primary waves-effect">
             <i class="fa-solid fa-circle-info"></i>
           </button>
-
+          <!-- Hover Menu -->
           <div
             v-show="isHovered"
             class="position-absolute left-0 mt-2 w-40 bg-white shadow-lg"
           >
+          <!-- start ul -->
+          <div class=" fullbox">
+                  <div class="row">
+                      <h5>Booking Status</h5>
+                      <hr>
+                      <div class="col-6">
+                          <ul class="Booking-Status-First">
+                          <li><i class="fas fa-square"></i>Arrived</li>
+                          <li><i class="fas fa-square"></i>Due Out</li>
+                          <li><i class="fas fa-square"></i>Maintenance Block</li>
+                          <li><i class="fas fa-square"></i>Dayuse Reservation</li>
+                          </ul>
+                      </div>
+                      <div class="col-6">
+                          <ul class="Booking-Status-Secound">
+                          <li><i class="fas fa-square"></i>Checked Out</li>
+                          <li><i class="fas fa-square"></i>Confirmed Reservation</li>
+                          <li><i class="fas fa-square"></i>Stayover</li>
+                          <li><i class="fas fa-square"></i>Dayuse</li>
+                          </ul>
+                      </div>
+                  </div>
+                  <div class="row">
+                      <h5>Booking Indicators</h5>
+                      <hr>
+                      <div class="col-6">
+                          <ul class="Booking-Indicators-First">
+                          <li><i class="fa-solid fa-crown"></i>Group Owner</li>
+                          <li><i class="fa-solid fa-dollar-sign"></i>Payment Pending</li>
+                          <li><i class="fa-solid fa-user"></i>Single Lady</li>
+                          <li><i class="fa-solid fa-arrows-split-up-and-left"></i>Split Reservation</li>
+                          </ul>
+                      </div>
+                      <div class="col-6">
+                          <ul class="Booking-Indicators-Secound">
+                          <li><i class="fa-solid fa-user-group"></i>Group Booking</li>
+                          <li><i class="fa-solid fa-hand"></i>Stop Room Move</li>
+                          <li><i class="fa-solid fa-star"></i>Vip Guest</li>
+                          </ul>
+                      </div>
+                  </div>
+                  <div class="row">
+                      <h5>Room Indicators</h5>
+                      <hr>
+                      <div class="col-6">
+                          <ul class="Room-Indicators-First">
+                          <li><i class="fa-solid fa-ban-smoking"></i>No Smoking</li>
+                          <li><i class="fa-solid fa-broom"></i>Dirty</li>
+                          <li><i class="fa-solid fa-clipboard-check"></i>Work Order</li>
+                          </ul>
+                      </div>
+                      <div class="col-6">
+                          <ul class="Room-Indicators-Secound">
+                          <li><i class="fa-solid fa-smoking"></i>Smoking</li>
+                          <li><i class="fa-solid fa-link"></i>Connected Rooms</li>
+                          </ul>
+                      </div>
+                  </div>
+                  <div class="row">
+                      <hr>
+                      <div class="col-6">
+                          <ul class="Unclassified-First">
+                          <li><i class="fas fa-square"></i>Unassigned Room</li>
+                          <li><i class="fas fa-square"></i>Unconfirm Bookings</li>
+                          </ul>
+                      </div>
+                      <div class="col-6">
+                          <ul class="Unclassified-Secound">
+                          <li><i class="fas fa-square"></i>Inventory</li>
+                          </ul>
+                      </div>
+                  </div>
+          </div>
+          <!-- end ul -->
+            <!-- out side box -->
             <div
               class="ant-popover ant-popover-placement-bottomRight ant-popover-hidden"
               style="left: 586px; top: -999px; transform-origin: 319px -4px"
@@ -77,309 +136,11 @@
                 </div>
                 <div class="ant-popover-inner" role="tooltip">
                   <div class="ant-popover-inner-content">
-                    <div class="sc-dbbhXq fNPngb">
-                      <div>
-                        <label class="title" for="BOOKING_STATUS"
-                          >Booking Status</label
-                        >
-                        <ul id="BOOKING_STATUS">
-                          <li>
-                            <span
-                              class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
-                              ><span
-                                class="ant-badge-status-dot"
-                                style="background: rgb(255, 102, 102)"
-                              ></span
-                              ><span class="ant-badge-status-text"
-                                >Arrived</span
-                              ></span
-                            >
-                          </li>
-                          <li>
-                            <span
-                              class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
-                              ><span
-                                class="ant-badge-status-dot"
-                                style="background: rgb(51, 102, 255)"
-                              ></span
-                              ><span class="ant-badge-status-text"
-                                >Checked Out</span
-                              ></span
-                            >
-                          </li>
-                          <li>
-                            <span
-                              class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
-                              ><span
-                                class="ant-badge-status-dot"
-                                style="background: rgb(102, 102, 102)"
-                              ></span
-                              ><span class="ant-badge-status-text"
-                                >Due Out</span
-                              ></span
-                            >
-                          </li>
-                          <li>
-                            <span
-                              class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
-                              ><span
-                                class="ant-badge-status-dot"
-                                style="background: rgb(51, 204, 0)"
-                              ></span
-                              ><span class="ant-badge-status-text"
-                                >Confirmed Reservation</span
-                              ></span
-                            >
-                          </li>
-                          <li>
-                            <span
-                              class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
-                              ><span
-                                class="ant-badge-status-dot"
-                                style="background: rgb(0, 0, 102)"
-                              ></span
-                              ><span class="ant-badge-status-text"
-                                >Maintenance Block</span
-                              ></span
-                            >
-                          </li>
-                          <li>
-                            <span
-                              class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
-                              ><span
-                                class="ant-badge-status-dot"
-                                style="background: rgb(255, 102, 102)"
-                              ></span
-                              ><span class="ant-badge-status-text"
-                                >Stayover</span
-                              ></span
-                            >
-                          </li>
-                          <li>
-                            <span
-                              class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
-                              ><span
-                                class="ant-badge-status-dot"
-                                style="background: rgb(51, 204, 0)"
-                              ></span
-                              ><span class="ant-badge-status-text"
-                                >Dayuse Reservation</span
-                              ></span
-                            >
-                          </li>
-                          <li>
-                            <span
-                              class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
-                              ><span
-                                class="ant-badge-status-dot"
-                                style="background: rgb(102, 51, 0)"
-                              ></span
-                              ><span class="ant-badge-status-text"
-                                >Dayuse</span
-                              ></span
-                            >
-                          </li>
-                        </ul>
-                      </div>
-                      <div>
-                        <label class="title" for="BOOKING_INDI"
-                          >Booking Indicators</label
-                        >
-                        <ul id="BOOKING_INDI">
-                          <li>
-                            <img
-                              id="info_ico_group_owner"
-                              src="/frontoffice/static/media/ico_group_owner.8da38dcc.svg"
-                              alt="Group Owner"
-                              class="sc-gYMRRK gAGlQu"
-                            /><label
-                              for="info_ico_group_owner"
-                              class="sc-fytwQQ fgpPoR"
-                              >Group Owner</label
-                            >
-                          </li>
-                          <li>
-                            <img
-                              id="info_ico_group"
-                              src="/frontoffice/static/media/ico_group.8fc4a4a3.svg"
-                              alt="Group Booking"
-                              class="sc-gYMRRK gAGlQu"
-                            /><label
-                              for="info_ico_group"
-                              class="sc-fytwQQ fgpPoR"
-                              >Group Booking</label
-                            >
-                          </li>
-                          <li>
-                            <img
-                              id="info_payment-pending"
-                              src="/frontoffice/static/media/payment-pending.115d2a87.svg"
-                              alt="Payment Pending"
-                              class="sc-gYMRRK gAGlQu"
-                            /><label
-                              for="info_payment-pending"
-                              class="sc-fytwQQ fgpPoR"
-                              >Payment Pending</label
-                            >
-                          </li>
-                          <li>
-                            <img
-                              id="info_stop-room-move"
-                              src="/frontoffice/static/media/stop-room-move.92562199.svg"
-                              alt="Stop Room Move"
-                              class="sc-gYMRRK gAGlQu"
-                            /><label
-                              for="info_stop-room-move"
-                              class="sc-fytwQQ fgpPoR"
-                              >Stop Room Move</label
-                            >
-                          </li>
-                          <li>
-                            <img
-                              id="info_ico_single_lady"
-                              src="/frontoffice/static/media/ico_single_lady.3cc07a8c.svg"
-                              alt="Single Lady"
-                              class="sc-gYMRRK gAGlQu"
-                            /><label
-                              for="info_ico_single_lady"
-                              class="sc-fytwQQ fgpPoR"
-                              >Single Lady</label
-                            >
-                          </li>
-                          <li>
-                            <img
-                              id="info_ico_VIP"
-                              src="/frontoffice/static/media/ico_VIP.85e6595a.svg"
-                              alt="VIP Guest"
-                              class="sc-gYMRRK gAGlQu"
-                            /><label for="info_ico_VIP" class="sc-fytwQQ fgpPoR"
-                              >VIP Guest</label
-                            >
-                          </li>
-                          <li>
-                            <img
-                              id="info_Split_Reservation"
-                              src="/frontoffice/static/media/Split_Reservation.d6592bed.svg"
-                              alt="Split Reservation"
-                              class="sc-gYMRRK gAGlQu"
-                            /><label
-                              for="info_Split_Reservation"
-                              class="sc-fytwQQ fgpPoR"
-                              >Split Reservation</label
-                            >
-                          </li>
-                        </ul>
-                      </div>
-                      <div>
-                        <label class="title" for="ROOMINDI"
-                          >Room Indicators</label
-                        >
-                        <ul id="ROOMINDI">
-                          <li>
-                            <img
-                              id="info_nonsmoking"
-                              src="/frontoffice/static/media/nonsmoking.c5bbc91d.svg"
-                              alt="No Smoking"
-                              class="sc-gYMRRK gAGlQu"
-                            /><label
-                              for="info_nonsmoking"
-                              class="sc-fytwQQ fgpPoR"
-                              >No Smoking</label
-                            >
-                          </li>
-                          <li>
-                            <img
-                              id="info_smoking"
-                              src="/frontoffice/static/media/smoking.0f4a6c1a.svg"
-                              alt="Smoking"
-                              class="sc-gYMRRK gAGlQu"
-                            /><label for="info_smoking" class="sc-fytwQQ fgpPoR"
-                              >Smoking</label
-                            >
-                          </li>
-                          <li>
-                            <img
-                              id="info_dirty"
-                              src="/frontoffice/static/media/dirty.f7a48a81.svg"
-                              alt="Dirty"
-                              class="sc-gYMRRK gPNaum"
-                            /><label for="info_dirty" class="sc-fytwQQ fgpPoR"
-                              >Dirty</label
-                            >
-                          </li>
-                          <li>
-                            <img
-                              id="info_connected-rooms"
-                              src="/frontoffice/static/media/connected-rooms.fabc173c.svg"
-                              alt="Connected Rooms"
-                              class="sc-gYMRRK gAGlQu"
-                            /><label
-                              for="info_connected-rooms"
-                              class="sc-fytwQQ fgpPoR"
-                              >Connected Rooms</label
-                            >
-                          </li>
-                          <li>
-                            <img
-                              id="info_workorder"
-                              src="/frontoffice/static/media/workorder.6707db3b.svg"
-                              alt="Work Order"
-                              class="sc-gYMRRK gAGlQu"
-                            /><label
-                              for="info_workorder"
-                              class="sc-fytwQQ fgpPoR"
-                              >Work Order</label
-                            >
-                          </li>
-                        </ul>
-                      </div>
-                      <div>
-                        <ul>
-                          <li>
-                            <span
-                              class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
-                              ><span
-                                class="ant-badge-status-dot"
-                                style="background: rgb(189, 216, 255)"
-                              ></span
-                              ><span class="ant-badge-status-text"
-                                >Unassigned Room</span
-                              ></span
-                            >
-                          </li>
-                          <li>
-                            <span
-                              class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
-                              ><span
-                                class="ant-badge-status-dot"
-                                style="background: rgb(255, 207, 207)"
-                              ></span
-                              ><span class="ant-badge-status-text"
-                                >Inventory</span
-                              ></span
-                            >
-                          </li>
-                          <li>
-                            <span
-                              class="ant-badge ant-badge-status ant-badge-not-a-wrapper"
-                              ><span
-                                class="ant-badge-status-dot"
-                                style="background: rgb(255, 83, 83)"
-                              ></span
-                              ><span class="ant-badge-status-text"
-                                >Unconfirm Bookings</span
-                              ></span
-                            >
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <!-- Hover Menu -->
         </div>
       </div>
     </div>
@@ -429,5 +190,15 @@ export default {
 </script>
 
 <style scoped>
+.circle-shape {
+  display: inline-block;
+  text-align: center;
+  background-color: rgb(236, 243, 248);
+  height: 24px;
+  border-radius: 12px;
+  min-width: 24px;
+  line-height: 24px;
+}
+
 
 </style>

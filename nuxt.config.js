@@ -25,7 +25,6 @@ export default {
         src: "/js/bootstrap/bootstrap.min.js",
         body: true,
       },
-
     ],
   },
 
@@ -52,10 +51,13 @@ export default {
     "~/assets/vendor/fonts/fontawesome.css",
     //! end  libs Css Files
 
-
     // !  changes styles
     "~/assets/css/changes.css",
+<<<<<<< HEAD
     "~/assets/css/systemirareservation.css",
+=======
+    "~/assets/css/Header-Calender.css",
+>>>>>>> origin/momen
     // !  changes styles
   ],
 
@@ -68,11 +70,7 @@ export default {
       src: "https://code.jquery.com/jquery-migrate-1.2.1.min.js",
       type: "text/javascript",
     },
-
-
   ],
-
-
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: ["~/plugins/vue-wow-config"],
@@ -97,8 +95,7 @@ export default {
         jQuery: "jquery",
       }),
     ],
-    extend (config, { isDev, isClient })
-    {
+    extend(config, { isDev, isClient }) {
       if (isDev && isClient) {
         config.module.rules.push({
           enforce: "pre",
@@ -108,5 +105,4 @@ export default {
       }
     },
   },
-
 };
