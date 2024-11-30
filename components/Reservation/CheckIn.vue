@@ -49,7 +49,7 @@
                   <input type="text" class="form-control flatpickr-input mt-4 ms-3" placeholder="HH:MM"
                     id="flatpickr-time-02" ref="timePicker2" aria-label="close" />
                   <i class="fa-regular fa-clock clock-icon mt-4 ml-3"></i>
-                  
+
                 </div>
               </div>
             </div>
@@ -65,10 +65,10 @@
                   <select class="form-select" id="reservationType">
                     <option selected>حجز مؤكد معلق بتحويل المبلغ</option>
                     <option value="1">حجز مؤكد</option>
-                    
-                    
+
+
                   </select>
-                  
+
                 </div>
               </div>
             </div>
@@ -84,7 +84,7 @@
                       <option value="3">Travel Agent</option>
                       <option value="3">Company</option>
                     </select>
-                    
+
                   </div>
                   <div class="col-md-6">
                     <label  for="businessSource" class="form-label">Business Source</label>
@@ -223,7 +223,7 @@
                     <!--  ! table body -->
 
                     <!--  ! table footer -->
-                    
+
                     <tfoot>
                       <!--change style button  -->
                       <button class="btn btn-primary mt-2 AddButton" type="button" @click="addItem">
@@ -359,7 +359,7 @@
           </div>
 
           <!--  ! Guest Information -->
-
+          
           <!--  ! Other Information -->
 
           <hr class="my-4" />
