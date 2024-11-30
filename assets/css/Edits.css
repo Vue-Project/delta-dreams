@@ -1,3 +1,4 @@
+/* start header styling */
 .switch .switch-input:checked ~ .switch-toggle-slider::after {
   left: 4.15rem !important;
 }
@@ -183,3 +184,139 @@
 .fullbox .Unclassified-Secound li:nth-child(1) i {
   color: #ffcfcf;
 }
+
+/* end header styling */
+
+/* start calender styling */
+.sc-iXKDzi .sc-ibMOqO {
+  position: absolute;
+  top: 5px;
+  right: 11px;
+  color: #fd0017;
+  cursor: pointer;
+}
+.sc-iXKDzi button {
+  border: none;
+  background: transparent;
+  color: #2491fc;
+}
+/* end calender styling */
+
+/* start reservation style */
+
+.card-body {
+  font-size: 12px !important;
+  font-family: "Roboto", sans-serif;
+}
+.card-body .cio input,
+.total-nights {
+  border-radius: 0px;
+}
+.total-nights {
+  font-size: 12px;
+}
+#formValidationReservation .cio input,
+select,
+.total-nights {
+  padding: 4px 8px !important;
+  height: 31px !important;
+  font-size: 13px;
+}
+.date-icon {
+  position: absolute;
+  top: 60%;
+  left: 120px;
+  pointer-events: none;
+}
+.clock-icon {
+  position: absolute;
+  top: 9px;
+  left: 43%;
+  pointer-events: none;
+}
+
+#flatpickr-time-02 {
+  width: 95px !important;
+}
+#formValidationReservation label,
+#formValidationReservation input::placeholder,
+#formValidationReservation select {
+  color: black;
+}
+#formValidationReservation input::placeholder {
+  font-size: 12px;
+}
+.card-datatable thead tr {
+  background-color: #fafafa;
+}
+.AddButton {
+  border-radius: 2px;
+  border-color: #1890ff;
+  background-color: white;
+  color: #1890ff;
+  font-weight: 400;
+  height: 32px;
+  width: 92px;
+  padding: 4px 15px;
+  font-size: 13px;
+}
+
+.datatables-projects th,
+.datatables-projects td {
+  padding: 8px 2px;
+  color: black;
+  overflow: hidden;
+}
+.datatables-projects th {
+  font-size: 11px !important;
+  font-weight: bold;
+  color: black !important;
+}
+.form-check-label {
+  font-size: 13px;
+}
+.rateOffer {
+  color: black;
+}
+/* fix it  */
+.input-group .input-group-text,
+.form-select,
+.form-control {
+  height: 31px !important;
+  font-size: 12px;
+  border-radius: 2px !important;
+}
+.input-group i {
+  font-size: 14px;
+  height: 9px;
+}
+h6 {
+  color: black;
+  font-weight: bold;
+}
+.cancelButton,
+.ReserverButton {
+  height: 31px !important;
+  font-size: 12px;
+  border-radius: 2px !important;
+  padding: 4px 15px;
+  width: 120px;
+}
+.cancelButton {
+  background-color: white;
+  color: black;
+  margin-right: 10px;
+}
+.ReserverButton {
+  color: white;
+  background-color: #1890ff;
+  border: none;
+}
+.billingMoney {
+  background-color: rgb(242, 246, 249);
+}
+.summary .card {
+  color: black !important;
+}
+
+/* end reservation style */

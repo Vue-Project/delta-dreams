@@ -53,8 +53,7 @@ export default {
 
     // !  changes styles
     "~/assets/css/changes.css",
-    "~/assets/css/systemirareservation.css",
-    "~/assets/css/Header-Calender.css",
+    "~/assets/css/Edits.css",
     // !  changes styles
   ],
 

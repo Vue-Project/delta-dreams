@@ -18,24 +18,26 @@
       <div class="arrow" :style="{ left: popoverArrowLeft }"></div>
       <div class="popover-body">
         <div class="sc-iXKDzi hYjxWD">
-          <div class="ant-row" style="row-gap: 0px;">
+          <div class="row" style="row-gap: 0px;">
             <!-- Display first selected day -->
-            <div class="ant-col ant-col-12">
-              <div class="sc-dhqjGB ilNAzn">First Day</div>
+            <div class="ant-col col-6">
+              <div class="sc-dhqjGB ilNAzn text-black	fw-bold	">Arrival</div>
               <div class="sc-hDiigY bsfKst">{{ firstSelectedDate }}</div>
             </div>
 
             <!-- Display last selected day -->
-            <div class="ant-col ant-col-12">
-              <div class="sc-dhqjGB ilNAzn">Last Day</div>
+            <div class="ant-col col-6">
+              <div class="sc-dhqjGB ilNAzn text-black	fw-bold	">Departure</div>
               <div>{{ lastSelectedDate }}</div>
             </div>
           </div>
 
-          <div class="sc-dFUPQr jLBeYh">
-            <button type="button" class="ant-btn ant-btn-link ant-btn-block">
+          <div class="row sc-dFUPQr jLBeYh">
+            <hr class="my-2 w-75 mx-auto">
+            <button type="button" class=" ant-btn ant-btn-link ant-btn-block">
               <span>Walk In / Reservation</span>
             </button>
+            <hr class="my-2 w-75 mx-auto">
             <button type="button" class="ant-btn ant-btn-link ant-btn-block">
               <span>Maintenance Block</span>
             </button>
