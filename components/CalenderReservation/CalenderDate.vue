@@ -93,8 +93,8 @@ export default {
         eventOverlap: false, // Disallow overlapping events
         slotDuration: "24:00", // Slot duration of one day
         slotLabelFormat: {
-          day: "numeric",
           weekday: "short",
+          day: "2-digit",
           month: "short",
         },
         resourceGroupField: "groupId",
@@ -163,6 +163,7 @@ export default {
 
       if (dateCell) {
         dateCell.classList.add("fc-highlight");
+
       }
     },
 
@@ -216,12 +217,12 @@ export default {
           const lastHighlight = highlightElements[highlightElements.length - 1];
           const rect = lastHighlight.getBoundingClientRect();
           this.popoverStyle = {
-            left: `${rect.left + window.scrollX + rect.width / 2 - 90}px`, // Adjust alignment
+            left: `${rect.left + rect.width / 2 - 90}px`, // Adjust alignment
             top: `${rect.top + window.scrollY - this.popoverHeight - 90}px`, // Position above
           };
           this.popoverArrowLeft = `${rect.width / 2 - 10}px`;
         } else {
-          console.log("No highlighted elements found.");
+          alert("No highlighted elements found.");
         }
       });
     },

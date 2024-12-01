@@ -210,9 +210,9 @@
   color: #2491fc;
 }
 .popover {
-  max-width: 250px; /* لضبط العرض */
+  max-width: 250px;
   position: absolute;
-  transition: all 0.3s ease; /* لتوفير حركة سلسة عند التحديث */
+  transition: all 0.3s ease;
 }
 
 /* end calender styling */
