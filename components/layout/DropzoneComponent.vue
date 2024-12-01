@@ -1,7 +1,9 @@
 <template>
   <div>
-    <div id="my-dropzone" class="dropzone">
-      <div class="dz-message"> <span><i class="fa-solid fa-plus"></i></span>Upload</div>
+    <div :id="dropzoneId" class="dropzone">
+      <div class="dz-message">
+        <span><i class="fa-solid fa-plus"></i></span>Upload
+      </div>
     </div>
   </div>
 </template>
@@ -12,6 +14,17 @@ import "dropzone/dist/dropzone.css";
 
 export default {
   name: "DropzoneComponent",
+  props: {
+    id: {
+      type: String,
+      required: true,
+    },
+  },
+  computed: {
+    dropzoneId() {
+      return this.id || "my-dropzone"; // Use prop or default to "my-dropzone"
+    },
+  },
   mounted() {
     this.initializeDropzone();
   },
@@ -19,54 +32,47 @@ export default {
     initializeDropzone() {
       Dropzone.autoDiscover = false;
 
-      const dropzoneElement = document.querySelector("#my-dropzone");
+      const dropzoneElement = document.querySelector(`#${this.dropzoneId}`);
 
       if (!dropzoneElement) {
         console.error("Dropzone element not found!");
         return;
       }
 
-      // Initialize Dropzone (without uploading the image)
+      // Initialize Dropzone
       new Dropzone(dropzoneElement, {
-        url: "/upload", // Fake endpoint (not used, no upload happening)
-        maxFilesize: 10, // Max file size in MB
-        acceptedFiles: ".jpg,.png,.gif,.jpeg", // Allowed file types
-        addRemoveLinks: true, // Allow file removal
-        dictRemoveFile: "Remove", // Custom remove button text
-        autoProcessQueue: false, // Prevent auto upload
+        url: "/upload",
+        maxFilesize: 10,
+        acceptedFiles: ".jpg,.png,.gif,.jpeg",
+        addRemoveLinks: true,
+        dictRemoveFile: "Remove",
+        autoProcessQueue: false,
         init() {
-          // File preview (only show images)
           this.on("addedfile", function (file) {
-            // Immediately hide progress bar for image files
             const progressElement = file.previewElement.querySelector(".dz-progress");
             if (file.type.startsWith("image/")) {
-              // Remove progress bar on image file add
-              progressElement.style.display = "none"; // Hide progress bar immediately
-
-              // Load image preview
+              progressElement.style.display = "none";
               const reader = new FileReader();
               reader.onload = function (e) {
                 file.previewElement.querySelector("img").src = e.target.result;
-                // Add success mark (checkmark) once the image is loaded
                 file.previewElement.classList.add("dz-success");
-                file.previewElement.querySelector(".dz-success-mark").style.display = "inline"; // Show checkmark
+                file.previewElement.querySelector(".dz-success-mark").style.display = "inline";
               };
               reader.readAsDataURL(file);
             }
           });
 
           this.on("success", function (file) {
-            //  ! Mark the file as successfully added
             const progressElement = file.previewElement.querySelector(".dz-progress");
-            progressElement.style.display = "none"; // Hide the progress bar after success
-            file.previewElement.classList.add("dz-success"); // Add success class
-            file.previewElement.querySelector(".dz-success-mark").style.display = "inline"; // Show checkmark
+            progressElement.style.display = "none";
+            file.previewElement.classList.add("dz-success");
+            file.previewElement.querySelector(".dz-success-mark").style.display = "inline";
           });
 
           this.on("error", function (file, errorMessage) {
-            file.previewElement.classList.add("dz-error"); // Add error class
+            file.previewElement.classList.add("dz-error");
             console.error("File upload error:", errorMessage);
-            file.previewElement.querySelector(".dz-error-mark").style.display = "inline"; // Show error icon
+            file.previewElement.querySelector(".dz-error-mark").style.display = "inline";
           });
         },
       });
@@ -76,25 +82,18 @@ export default {
 </script>
 
 <style scoped>
-
-.dz-preview .dz-progress {
-  display: none !important;
-}
-
 .dropzone {
   min-height: 150px;
-  border: 2px dashed #868788 ;
+  border: 2px dashed #868788;
   border-radius: 5px;
   padding: 0;
   background: #f7f7f7;
   text-align: center;
 }
-
 .dz-message {
   color: #868788;
   font-size: 15px;
 }
-
 .dz-image img {
   max-width: 100px;
   max-height: 100px;

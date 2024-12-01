@@ -14,7 +14,7 @@
               <div class="col-md-6">
                 <div class="row">
                   <div div class="col-md-4">
-                    <DropzoneComponent />
+                    <DropzoneComponent id="dropzone1" />
                   </div>
                   <div class="col-md-8">
                     <div class="mb-3">
@@ -205,76 +205,75 @@
                 >
                   <!-- Identity Information -->
                   <div class="row accordion-body">
-                    <div class="col-12">Identity Information</div>
-                    <div class="col-md-6">
-                      <div class="row">
-                        <div class="col-md-6">
-                          <div class="mb-3">
-                            <label for="formIdentityInfoId" class="col-form-label"
-                              >ID Number</label
-                            >
-                            <input
-                              class="form-control"
-                              type="number"
-                              value="Id Number"
-                              id="formIdentityInfoId"
-                              aria-label="input id to Gust Identity Information"
-                            />
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="mb-3">
-                            <label for="formGustIdentityIdType" class="col-form-label"
-                              >ID Type</label
-                            >
-                            <select class="form-select" id="formGustIdentityIdType">
-                              <option value="" disabled selected>Select option</option>
-                              <option value="option1">Option 1</option>
-                              <option value="option2">Option 2</option>
-                              <option value="option3">Option 3</option>
-                              <option value="option4">Option 4</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
+                    <div class="col-12 mb-3">Identity Information</div>
+                    <div class="col-md-2">
+                      <DropzoneComponent id="dropzone2" />
                     </div>
-                    <div class="row">
-                      <div class="col-md-3">
-                        <label for="countryGuest" class="col-form-label"
-                          >Issuing Country</label
-                        >
-                        <select class="form-select" id="formGustIssuingCountry">
-                          <option value="" disabled selected>Select option</option>
-                          <option value="option1">Option 1</option>
-                          <option value="option2">Option 2</option>
-                          <option value="option3">Option 3</option>
-                          <option value="option4">Option 4</option>
-                        </select>
+                    <div class="col-md-9">
+                      <div class="row">
+                        <div class="col-md-4 mb-3">
+                          <label for="formIdentityInfoId" class="col-form-label"
+                            >ID Number</label
+                          >
+                          <input
+                            class="form-control"
+                            type="number"
+                            id="formIdentityInfoId"
+                            placeholder="Enter ID Number"
+                            aria-label="Enter ID Number"
+                          />
+                        </div>
+                        <div class="col-md-4 mb-3">
+                          <label for="formGustIdentityIdType" class="col-form-label"
+                            >ID Type</label
+                          >
+                          <select class="form-select" id="formGustIdentityIdType">
+                            <option value="" disabled selected>Select option</option>
+                            <option value="option1">Option 1</option>
+                            <option value="option2">Option 2</option>
+                            <option value="option3">Option 3</option>
+                            <option value="option4">Option 4</option>
+                          </select>
+                        </div>
                       </div>
-                      <div class="col-md-3">
-                        <label for="formGustIssuingCity" class="col-form-label"
-                          >Issuing City</label
-                        >
-                        <input
-                          class="form-control"
-                          type="text"
-                          id="formGustIssuingCity"
-                          placeholder="state"
-                          aria-label="input Text to Gust Issuing City"
-                        />
-                      </div>
-                      <div class="col-md-3">
-                        <label for="formGustExpiryDate" class="col-form-label"
-                          >Expiry Date</label
-                        >
-                        <input
-                          type="text"
-                          class="form-control flatpickr-input"
-                          placeholder="YYYY-MM-DD"
-                          id="flatpickr-date-01"
-                          ref="datePicker1"
-                        />
-                        <i class="fa-solid fa-calendar-days date-icon"></i>
+                      <div class="row">
+                        <div class="col-md-4 mb-3">
+                          <label for="formGustIssuingCountry" class="col-form-label"
+                            >Issuing Country</label
+                          >
+                          <select class="form-select" id="formGustIssuingCountry">
+                            <option value="" disabled selected>Select option</option>
+                            <option value="option1">Option 1</option>
+                            <option value="option2">Option 2</option>
+                            <option value="option3">Option 3</option>
+                            <option value="option4">Option 4</option>
+                          </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                          <label for="formGustIssuingCity" class="col-form-label"
+                            >Issuing City</label
+                          >
+                          <input
+                            class="form-control"
+                            type="text"
+                            id="formGustIssuingCity"
+                            placeholder="City"
+                            aria-label="Enter Issuing City"
+                          />
+                        </div>
+                        <div class="col-md-4 mb-3">
+                          <label for="formGustExpiryDate" class="col-form-label"
+                            >Expiry Date</label
+                          >
+
+                          <input
+                            type="text"
+                            class="form-control"
+                            placeholder="YYYY-MM-DD"
+                            id="flatpickr-date-01"
+                          />
+                          <i class="fa-solid fa-calendar-days date-icon"></i>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -350,9 +349,7 @@
                         </select>
                       </div>
                       <div class="col-md-3">
-                        <label for="VIPGuest" class="col-form-label"
-                          >VIP Status</label
-                        >
+                        <label for="VIPGuest" class="col-form-label">VIP Status</label>
                         <select class="form-select" id="formGustVIP">
                           <option value="" disabled selected>Select option</option>
                           <option value="option1">Option 1</option>
