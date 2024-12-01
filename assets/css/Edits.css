@@ -188,18 +188,33 @@
 /* end header styling */
 
 /* start calender styling */
-.sc-iXKDzi .sc-ibMOqO {
+/* the close button */
+.popoverClose {
+  padding-left:4px;
+  padding-right: 4px;
   position: absolute;
   top: 5px;
   right: 11px;
   color: #fd0017;
   cursor: pointer;
+  border-radius: 3px;
 }
-.sc-iXKDzi button {
+.popoverClose:hover{
+  background-color:#fd0017;
+  color:white;
+  transform: scale(1);
+}
+.popoverContent button {
   border: none;
   background: transparent;
   color: #2491fc;
 }
+.popover {
+  max-width: 250px; /* لضبط العرض */
+  position: absolute;
+  transition: all 0.3s ease; /* لتوفير حركة سلسة عند التحديث */
+}
+
 /* end calender styling */
 
 /* start reservation style */

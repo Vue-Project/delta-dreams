@@ -14,37 +14,37 @@
     <div v-if="isOverlayVisible" class="overlay" @click="closePopover"></div>
 
     <!-- Popover content  -->
-    <div v-if="isPopoverVisible" class="popover fade show bs-popover-top" role="tooltip" :style="popoverStyle" x-placement="top">
+    <div v-if="isPopoverVisible" class="popover fade show bs-popover-top rounded-0" role="tooltip" :style="popoverStyle" x-placement="top">
       <div class="arrow" :style="{ left: popoverArrowLeft }"></div>
       <div class="popover-body">
-        <div class="sc-iXKDzi hYjxWD">
+        <div class="sc-iXKDzi hYjxWD popoverContent text-center">
           <div class="row" style="row-gap: 0px;">
             <!-- Display first selected day -->
             <div class="ant-col col-6">
-              <div class="sc-dhqjGB ilNAzn text-black	fw-bold	">Arrival</div>
+              <div class="sc-dhqjGB ilNAzn text-black fw-bold">Arrival</div>
               <div class="sc-hDiigY bsfKst">{{ firstSelectedDate }}</div>
             </div>
 
             <!-- Display last selected day -->
             <div class="ant-col col-6">
-              <div class="sc-dhqjGB ilNAzn text-black	fw-bold	">Departure</div>
+              <div class="sc-dhqjGB ilNAzn text-black fw-bold">Departure</div>
               <div>{{ lastSelectedDate }}</div>
             </div>
           </div>
 
           <div class="row sc-dFUPQr jLBeYh">
-            <hr class="my-2 w-75 mx-auto">
-            <button type="button" class=" ant-btn ant-btn-link ant-btn-block">
+            <hr class="my-2 w-75 mx-auto" />
+            <button type="button" class="ant-btn ant-btn-link ant-btn-block">
               <span>Walk In / Reservation</span>
             </button>
-            <hr class="my-2 w-75 mx-auto">
+            <hr class="my-2 w-75 mx-auto" />
             <button type="button" class="ant-btn ant-btn-link ant-btn-block">
               <span>Maintenance Block</span>
             </button>
           </div>
 
           <span role="img" aria-label="close" tabindex="-1"
-                class="anticon anticon-close sc-ibMOqO bkIyqW"
+                class="anticon anticon-close sc-ibMOqO bkIyqW popoverClose"
                 @click="closePopover">
                 <i class="fa-solid fa-xmark"></i>
           </span>
@@ -171,7 +171,8 @@ export default {
       console.log(startDate);
 
       const endDate = new Date(end);
-      const totalDays = Math.ceil((endDate - startDate) / (1000 * 3600 * 24)) + 1; // Calculate total days selected
+      const totalDays =
+        Math.ceil((endDate - startDate) / (1000 * 3600 * 24)) + 1; // Calculate total days selected
 
       const calendarEl = document.querySelector(".fc");
       const highlightCells = calendarEl.querySelectorAll(".fc-highlight");
@@ -188,19 +189,41 @@ export default {
       this.showPopover();
     },
 
-    showPopover() {
-      this.isPopoverVisible = true; // Show the popover with selected dates
+    // showPopover() {
+    //   this.isPopoverVisible = true; // Show the popover with selected dates
 
-      // Find the position of the first .fc-highlight element
-      const firstHighlight = document.querySelector(".fc-highlight");
-      if (firstHighlight) {
-        const rect = firstHighlight.getBoundingClientRect();
-        this.popoverStyle = {
-          left: `${rect.left + window.scrollX}px`,
-          top: `${rect.bottom + window.scrollY}px`,
-        };
-        this.popoverArrowLeft = `${(rect.width / 2) - 10}px`; // Position the arrow in the middle
-      }
+    //   // Find the position of the first .fc-highlight element
+    //   const firstHighlight = document.querySelector(".fc-highlight");
+    //   if (firstHighlight) {
+    //     const rect = firstHighlight.getBoundingClientRect();
+    //     this.popoverStyle = {
+    //       left: `${rect.left + window.scrollX}px`,
+    //       top: `${rect.bottom + window.scrollY}px`,
+    //     };
+    //     this.popoverArrowLeft = `${(rect.width / 2) - 10}px`; // Position the arrow in the middle
+    //   }
+    // },
+    
+    // sama function and try the top spacing is correct but the left is need to adjust  
+    showPopover() {
+      this.isPopoverVisible = true; // عرض الـ Popover
+
+      this.$nextTick(() => {
+        const popoverElement = document.querySelector(".popover");
+        this.popoverHeight = popoverElement ? popoverElement.offsetHeight : 0;
+        const highlightElements = document.querySelectorAll(".fc-highlight");
+        if (highlightElements.length > 0) {
+          const lastHighlight = highlightElements[highlightElements.length - 1];
+          const rect = lastHighlight.getBoundingClientRect();
+          this.popoverStyle = {
+            left: `${rect.left + window.scrollX + rect.width / 2 - 90}px`, // Adjust alignment
+            top: `${rect.top + window.scrollY - this.popoverHeight - 90}px`, // Position above
+          };
+          this.popoverArrowLeft = `${rect.width / 2 - 10}px`;
+        } else {
+          console.log("No highlighted elements found.");
+        }
+      });
     },
 
     showOverlay() {
@@ -215,11 +238,8 @@ export default {
     customResourceHeader() {
       return "Rooms";
     },
-
   },
 };
 </script>
 
-<style>
-
-</style>
+<style></style>
