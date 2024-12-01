@@ -203,37 +203,37 @@
                   data-bs-parent="#accordionExample"
                   style=""
                 >
-                <!-- Identity Information -->
+                  <!-- Identity Information -->
                   <div class="row accordion-body">
                     <div class="col-12">Identity Information</div>
                     <div class="col-md-6">
                       <div class="row">
                         <div class="col-md-6">
                           <div class="mb-3">
-                            <label for="formGustInfoPhone" class="col-form-label"
+                            <label for="formIdentityInfoId" class="col-form-label"
                               >ID Number</label
                             >
                             <input
                               class="form-control"
-                              type="tel"
-                              value="Phone"
-                              id="formGustInfoPhone"
-                              aria-label="input tel to Gust Phone"
+                              type="number"
+                              value="Id Number"
+                              id="formIdentityInfoId"
+                              aria-label="input id to Gust Identity Information"
                             />
                           </div>
                         </div>
                         <div class="col-md-6">
                           <div class="mb-3">
-                            <label for="formGustInfoMobile" class="col-form-label"
+                            <label for="formGustIdentityIdType" class="col-form-label"
                               >ID Type</label
                             >
-                            <input
-                              class="form-control"
-                              type="tel"
-                              value="Mobile"
-                              id="formGustInfoMobile"
-                              aria-label="input tel to Gust Mobile"
-                            />
+                            <select class="form-select" id="formGustIdentityIdType">
+                              <option value="" disabled selected>Select option</option>
+                              <option value="option1">Option 1</option>
+                              <option value="option2">Option 2</option>
+                              <option value="option3">Option 3</option>
+                              <option value="option4">Option 4</option>
+                            </select>
                           </div>
                         </div>
                       </div>
@@ -243,7 +243,7 @@
                         <label for="countryGuest" class="col-form-label"
                           >Issuing Country</label
                         >
-                        <select class="form-select" id="formGustInfoName">
+                        <select class="form-select" id="formGustIssuingCountry">
                           <option value="" disabled selected>Select option</option>
                           <option value="option1">Option 1</option>
                           <option value="option2">Option 2</option>
@@ -252,19 +252,19 @@
                         </select>
                       </div>
                       <div class="col-md-3">
-                        <label for="formGustInfoState" class="col-form-label"
+                        <label for="formGustIssuingCity" class="col-form-label"
                           >Issuing City</label
                         >
                         <input
                           class="form-control"
                           type="text"
-                          id="formGustInfoState"
+                          id="formGustIssuingCity"
                           placeholder="state"
-                          aria-label="input Text to Gust state"
+                          aria-label="input Text to Gust Issuing City"
                         />
                       </div>
                       <div class="col-md-3">
-                        <label for="formGustInfoCity" class="col-form-label"
+                        <label for="formGustExpiryDate" class="col-form-label"
                           >Expiry Date</label
                         >
                         <input
@@ -283,10 +283,10 @@
                     <div class="col-12">Payment Method</div>
                     <div class="row">
                       <div class="col-md-3">
-                        <label for="countryGuest" class="col-form-label"
+                        <label for="PaymentMethod" class="col-form-label"
                           >Payment Method</label
                         >
-                        <select class="form-select" id="formGustInfoName">
+                        <select class="form-select" id="formGustPaymentMethod">
                           <option value="" disabled selected>Select option</option>
                           <option value="option1">Option 1</option>
                           <option value="option2">Option 2</option>
@@ -295,10 +295,10 @@
                         </select>
                       </div>
                       <div class="col-md-3">
-                        <label for="countryGuest" class="col-form-label"
+                        <label for="DirectBilling" class="col-form-label"
                           >Direct Billing A/C</label
                         >
-                        <select class="form-select" id="formGustInfoName">
+                        <select class="form-select" id="formGustDirectBilling">
                           <option value="" disabled selected>Select option</option>
                           <option value="option1">Option 1</option>
                           <option value="option2">Option 2</option>
@@ -313,7 +313,7 @@
                     <div class="col-12">Personal Information</div>
                     <div class="row">
                       <div class="col-md-3">
-                        <label for="formGustInfoCity" class="col-form-label"
+                        <label for="formGustPersonalInfoBirth " class="col-form-label"
                           >Birth Date</label
                         >
                         <input
@@ -326,10 +326,10 @@
                         <i class="fa-solid fa-calendar-days date-icon"></i>
                       </div>
                       <div class="col-md-3">
-                        <label for="countryGuest" class="col-form-label"
+                        <label for="BirthCountry" class="col-form-label"
                           >Birth Country</label
                         >
-                        <select class="form-select" id="formGustInfoName">
+                        <select class="form-select" id="formGustBirthCountry">
                           <option value="" disabled selected>Select option</option>
                           <option value="option1">Option 1</option>
                           <option value="option2">Option 2</option>
@@ -338,10 +338,10 @@
                         </select>
                       </div>
                       <div class="col-md-3">
-                        <label for="countryGuest" class="col-form-label"
+                        <label for="NationalityGuest" class="col-form-label"
                           >Nationality</label
                         >
-                        <select class="form-select" id="formGustInfoName">
+                        <select class="form-select" id="formGustNationality">
                           <option value="" disabled selected>Select option</option>
                           <option value="option1">Option 1</option>
                           <option value="option2">Option 2</option>
@@ -350,10 +350,10 @@
                         </select>
                       </div>
                       <div class="col-md-3">
-                        <label for="countryGuest" class="col-form-label"
+                        <label for="VIPGuest" class="col-form-label"
                           >VIP Status</label
                         >
-                        <select class="form-select" id="formGustInfoName">
+                        <select class="form-select" id="formGustVIP">
                           <option value="" disabled selected>Select option</option>
                           <option value="option1">Option 1</option>
                           <option value="option2">Option 2</option>
@@ -367,7 +367,7 @@
                   <div class="row accordion-body">
                     <div class="row">
                       <div class="col-md-3">
-                        <label for="formGustInfoCity" class="col-form-label"
+                        <label for="formGustSpouseBirth" class="col-form-label"
                           >Spouse Birth Date</label
                         >
                         <input
@@ -380,7 +380,7 @@
                         <i class="fa-solid fa-calendar-days date-icon"></i>
                       </div>
                       <div class="col-md-3">
-                        <label for="formGustInfoCity" class="col-form-label"
+                        <label for="formGustWeddingAnni" class="col-form-label"
                           >Wedding Anniversary</label
                         >
                         <input
@@ -393,15 +393,15 @@
                         <i class="fa-solid fa-calendar-days date-icon"></i>
                       </div>
                       <div class="col-md-3">
-                        <label for="formGustInfoState" class="col-form-label"
+                        <label for="formGustRegistration" class="col-form-label"
                           >Registration No</label
                         >
                         <input
                           class="form-control"
                           type="text"
-                          id="formGustInfoState"
+                          id="formGustRegistration"
                           placeholder="Registration No"
-                          aria-label="input Text to Gust state"
+                          aria-label="input Text to Gust Registration"
                         />
                       </div>
                     </div>
@@ -409,8 +409,17 @@
                 </div>
               </div>
             </div>
-            <button @click="$emit('close-sidebar')" class="btn btn-secondary waves-effect waves-light">Close</button>
-            <button type="submit" class="btn btn-primary waves-effect waves-light">Save</button>
+            <div class="mx-2 my-2 gap-2 d-flex justify-content-end">
+              <button
+                @click="$emit('close-sidebar')"
+                class="btn btn-secondary waves-effect waves-light"
+              >
+                Close
+              </button>
+              <button type="submit" class="btn btn-primary waves-effect waves-light">
+                Save
+              </button>
+            </div>
           </form>
         </slot>
       </div>
@@ -449,5 +458,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

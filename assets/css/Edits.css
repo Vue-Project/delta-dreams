@@ -319,4 +319,8 @@ h6 {
   color: black !important;
 }
 
+.sidebar-open {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
 /* end reservation style */
