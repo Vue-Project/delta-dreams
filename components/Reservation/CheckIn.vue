@@ -17,7 +17,7 @@
                   <label for="flatpickr-date-01" class="form-label">Check-in</label>
                   <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD"
                     id="flatpickr-date-01" ref="datePicker1" />
-                  <i class="fa-solid fa-calendar-days date-icon"></i>
+                  <i class="fa-solid fa-calendar-days ci-date-icon"></i>
                 </div>
 
                 <!-- Date Picker -->
@@ -27,7 +27,7 @@
                   <div class="input-group mt-4 ">
                     <input type="text" class="form-control flatpickr-input" placeholder="HH:MM" id="flatpickr-time-01"
                       ref="timePicker1" />
-                    <i class="fa-regular fa-clock clock-icon"></i>
+                    <i class="fa-regular fa-clock ci-clock-icon"></i>
 
                     <span class="input-group-text total-nights" id="basic-addon13">4 nights</span>
                   </div>
@@ -40,7 +40,7 @@
                   <label for="flatpickr-date-02" class="form-label ms-3">Check-out</label>
                   <input type="text" class="form-control flatpickr-input ms-3" placeholder="YYYY-MM-DD"
                     id="flatpickr-date-02" ref="datePicker2" />
-                  <i class="fa-solid fa-calendar-days date-icon ms-3"></i>
+                  <i class="fa-solid fa-calendar-days co-date-icon"></i>
                 </div>
                 <!-- /Date Picker -->
 
@@ -48,7 +48,7 @@
                 <div class="col-md-3 col-12 px-0">
                   <input type="text" class="form-control flatpickr-input mt-4 ms-3" placeholder="HH:MM"
                     id="flatpickr-time-02" ref="timePicker2" aria-label="close" />
-                  <i class="fa-regular fa-clock clock-icon mt-4 ml-3"></i>
+                  <i class="fa-regular fa-clock co-clock-icon"></i>
 
                 </div>
               </div>

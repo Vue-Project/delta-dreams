@@ -237,16 +237,28 @@ select,
   height: 31px !important;
   font-size: 13px;
 }
-.date-icon {
+.ci-date-icon {
   position: absolute;
   top: 60%;
-  left: 120px;
+  left: 140px;
   pointer-events: none;
 }
-.clock-icon {
+.ci-clock-icon {
   position: absolute;
   top: 9px;
-  left: 43%;
+  left: 48%;
+  pointer-events: none;
+}
+.co-date-icon {
+  position: absolute;
+  top: 60%;
+  left: 154px;
+  pointer-events: none;
+}
+.co-clock-icon {
+  position: absolute;
+  top: 34px;
+  left: 48%;
   pointer-events: none;
 }
 
@@ -341,10 +353,10 @@ h6 {
 /* end reservation style */
 
 /* full calendar  */
-th:nth-child(7n + 5) {
+.fc-scrollgrid-sync-table .fc-timeline-header-row th:nth-child(7n + 5) {
   background-color: rgb(255, 248, 225);
 }
-th:nth-child(7n + 6) {
+.fc-scrollgrid-sync-table .fc-timeline-header-row th:nth-child(7n + 6) {
   background-color: rgb(255, 248, 225);
 }
 .selected-days-tooltip {
@@ -360,21 +372,23 @@ td{
   height:38px !important;
 }
 /* full calendar  */
-th:nth-child(7n + 5) {
-  background-color: rgb(255, 248, 225);
+
+td{
+  height:38px !important;
 }
-th:nth-child(7n + 6) {
-  background-color: rgb(255, 248, 225);
+.selected-days-tooltip ,.fc-highlight {
+  border-radius: 2px;
+}
+.fc-highlight {
+  background-color: black !important;
+  color: white !important; 
 }
 .selected-days-tooltip {
-  background-color:rgb(27, 21, 46);
+  background-color:rgba(158, 75, 157, 0.199);
   color:white;
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-td{
-  height:38px !important;
 }
