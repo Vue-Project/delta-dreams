@@ -311,13 +311,14 @@
 
                 <input type="text" class="form-control w-50" aria-label="Text input with 2 dropdown buttons"
                   id="nameGuest" />
+
+                <!-- Use the Sidebar component -->
                 <button class="btn btn-outline-primary waves-effect" type="button" @click="toggleSidebar">
                   <i class="fa-solid fa-user-plus"></i>
                 </button>
-
-                <!-- Use the Sidebar component -->
-                <Sidebar :isSidebarOpen="isSidebarOpen" @close-sidebar="toggleSidebar" />
               </div>
+              <Sidebar :isSidebarOpen="isSidebarOpen" @close-sidebar="toggleSidebar" />
+
             </div>
             <div class="col-md-7">
               <div class="row">
@@ -501,6 +502,7 @@ export default {
     toggleSidebar ()
     {
       this.isSidebarOpen = !this.isSidebarOpen;
+
     },
   },
   mounted ()

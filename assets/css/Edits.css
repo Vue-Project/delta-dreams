@@ -300,6 +300,9 @@ select,
   font-size: 12px;
   border-radius: 2px !important;
 }
+.form-control:focus {
+  outline: red !important;
+}
 .input-group i {
   font-size: 14px;
   height: 9px;
@@ -348,6 +351,9 @@ h6 {
   bottom: 14px;
   right: 20px;
 }
+.sidebar-open::-webkit-scrollbar {
+  display: none;
+}
 /* end sidebar  */
 /* end reservation style */
 
@@ -391,4 +397,9 @@ td {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+body input,
+select {
+  outline: none; /* Disable default outlines */
 }
