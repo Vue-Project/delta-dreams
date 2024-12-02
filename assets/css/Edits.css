@@ -237,29 +237,16 @@ select,
   height: 31px !important;
   font-size: 13px;
 }
-.ci-date-icon {
+
+.Date_Picker i {
   position: absolute;
-  top: 60%;
-  left: 140px;
-  pointer-events: none;
+  top: 32px;
+  right: 5px;
 }
-.ci-clock-icon {
+.Time_Picker i {
   position: absolute;
   top: 9px;
-  left: 48%;
-  pointer-events: none;
-}
-.co-date-icon {
-  position: absolute;
-  top: 60%;
-  left: 154px;
-  pointer-events: none;
-}
-.co-clock-icon {
-  position: absolute;
-  top: 34px;
-  left: 48%;
-  pointer-events: none;
+  right: 62px;
 }
 
 #flatpickr-time-02 {
@@ -351,15 +338,15 @@ h6 {
   overflow-x: hidden;
 }
 
-.sidebar-open span i{
-  position: relative;
-  bottom: 29%;
-  left: 0%;
+.sidebar-open span i {
+  position: absolute;
+  top: 66.5px;
+  left: -45px;
 }
 .sidebar-open i {
-  position: relative;
-  bottom: 29%;
-  left: 85%;
+  position: absolute;
+  bottom: 14px;
+  right: 20px;
 }
 /* end sidebar  */
 /* end reservation style */
