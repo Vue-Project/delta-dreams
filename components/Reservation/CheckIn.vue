@@ -17,7 +17,7 @@
                   <label for="flatpickr-date-01" class="form-label">Check-in</label>
                   <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD"
                     id="flatpickr-date-01" ref="datePicker1" />
-                  <i class="fa-solid fa-calendar-days ci-date-icon"></i>
+                  <i class="fa-regular fa-calendar ci-date-icon"></i>
                 </div>
 
                 <!-- Date Picker -->
@@ -40,8 +40,8 @@
                   <label for="flatpickr-date-02" class="form-label ms-3">Check-out</label>
                   <input type="text" class="form-control flatpickr-input ms-3" placeholder="YYYY-MM-DD"
                     id="flatpickr-date-02" ref="datePicker2" />
-                  <i class="fa-solid fa-calendar-days co-date-icon"></i>
-                </div>
+                    <i class="fa-regular fa-calendar ci-date-icon"></i>
+                  </div>
                 <!-- /Date Picker -->
 
                 <!-- Time Picker-->
@@ -359,7 +359,7 @@
           </div>
 
           <!--  ! Guest Information -->
-          
+
           <!--  ! Other Information -->
 
           <hr class="my-4" />
