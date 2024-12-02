@@ -224,15 +224,15 @@
 select {
   border-radius: 0px;
 }
-.ci-date-icon {
+.Date_Picker i {
   position: absolute;
-  top: 32px;
-  right: 5px;
+  top: 36px;
+  right: 10px;
 }
 .Time_Picker i {
   position: absolute;
-  top: 9px;
-  right: 62px;
+  top: 12px;
+  right: 67px;
 }
 
 #flatpickr-time-02 {
@@ -244,19 +244,7 @@ select {
 .rateOffer {
   color: black;
 }
-/* fix it  */
-.input-group .input-group-text,
-.form-select,
-.form-control {
-  height: 31px !important;
-  font-size: 12px;
-  border-radius: 2px !important;
-}
 
-.input-group i {
-  font-size: 14px;
-  height: 9px;
-}
 .groupStyle {
   color: #7367f0;
   border-color: #7367f0;
@@ -276,14 +264,14 @@ h6 {
   overflow-x: hidden;
 }
 .sidebar-open span i {
-  position: relative;
-  bottom: 29%;
-  left: 0%;
+  position: absolute;
+  bottom: 100.5px;
+  left: -45px;
 }
 .sidebar-open i {
-  position: relative;
-  bottom: 29%;
-  left: 85%;
+  position: absolute;
+  bottom: 12px;
+  right: 20px;
 }
 .sidebar-open::-webkit-scrollbar {
   display: none;
@@ -293,7 +281,7 @@ h6 {
   position: fixed;
   right: 0;
   bottom: 0;
-  width: 58%;
+  width: 65.75%;
   background-color: #fff;
   z-index: 10;
   padding: 10px 20px;
@@ -349,7 +337,12 @@ td {
   justify-content: center;
 }
 
-body input,
-select {
-  outline: none; /* Disable default outlines */
+.flatpickr-current-month {
+  top: 5px;
+}
+select.form-select option {
+  background-color: transparent;
+}
+.accordion-item {
+  border-color: transparent;
 }

@@ -505,36 +505,69 @@ export default {
 
     },
   },
-  mounted ()
-  {
-    flatpickr(this.$refs.datePicker1, {
+  mounted() {
+  // Array of date picker refs or IDs
+  const datePickers = [
+    this.$refs.datePicker1,
+    this.$refs.datePicker2,
+    this.$refs.datePicker3,
+  ];
+
+  // Loop through the date pickers and apply flatpickr
+  datePickers.forEach((picker) => {
+    flatpickr(picker, {
       dateFormat: "Y-m-d",
     });
-    flatpickr(this.$refs.datePicker2, {
-      dateFormat: "Y-m-d",
-    });
-    flatpickr(this.$refs.datePicker3, {
-      dateFormat: "Y-m-d",
-    });
-    flatpickr(this.$refs.timePicker1, {
+  });
+
+  // Array of time picker refs or IDs
+  const timePickers = [
+    this.$refs.timePicker1,
+    this.$refs.timePicker2,
+    this.$refs.timePicker3,
+  ];
+
+  // Loop through the time pickers and apply flatpickr
+  timePickers.forEach((picker, index) => {
+    flatpickr(picker, {
       enableTime: true, // Enable the time picker
       noCalendar: true, // Disable the calendar (only time selection)
-      dateFormat: "H:i", // Customizable time format (e.g., "H:i" for 24-hour, "h:i K" for 12-hour with AM/PM)
-      time_24hr: true, // Optional: Use 24-hour format, set to false for 12-hour format with AM/PM
+      dateFormat: "H:i", // Customizable time format
+      time_24hr: index === 2 ? false : true, // 12-hour format for the third picker, 24-hour for others
     });
-    flatpickr(this.$refs.timePicker2, {
-      enableTime: true, // Enable the time picker
-      noCalendar: true, // Disable the calendar (only time selection)
-      dateFormat: "H:i", // Customizable time format (e.g., "H:i" for 24-hour, "h:i K" for 12-hour with AM/PM)
-      time_24hr: true, // Optional: Use 24-hour format, set to false for 12-hour format with AM/PM
-    });
-    flatpickr(this.$refs.timePicker3, {
-      enableTime: true, // Enable the time picker
-      noCalendar: true, // Disable the calendar (only time selection)
-      dateFormat: "H:i", // Customizable time format (e.g., "H:i" for 24-hour, "h:i K" for 12-hour with AM/PM)
-      time_24hr: false, // Optional: Use 24-hour format, set to false for 12-hour format with AM/PM
-    });
-  },
+  });
+},
+
+  // mounted ()
+  // {
+  //   flatpickr(this.$refs.datePicker1, {
+  //     dateFormat: "Y-m-d",
+  //   });
+  //   flatpickr(this.$refs.datePicker2, {
+  //     dateFormat: "Y-m-d",
+  //   });
+  //   flatpickr(this.$refs.datePicker3, {
+  //     dateFormat: "Y-m-d",
+  //   });
+  //   flatpickr(this.$refs.timePicker1, {
+  //     enableTime: true, // Enable the time picker
+  //     noCalendar: true, // Disable the calendar (only time selection)
+  //     dateFormat: "H:i", // Customizable time format (e.g., "H:i" for 24-hour, "h:i K" for 12-hour with AM/PM)
+  //     time_24hr: true, // Optional: Use 24-hour format, set to false for 12-hour format with AM/PM
+  //   });
+  //   flatpickr(this.$refs.timePicker2, {
+  //     enableTime: true, // Enable the time picker
+  //     noCalendar: true, // Disable the calendar (only time selection)
+  //     dateFormat: "H:i", // Customizable time format (e.g., "H:i" for 24-hour, "h:i K" for 12-hour with AM/PM)
+  //     time_24hr: true, // Optional: Use 24-hour format, set to false for 12-hour format with AM/PM
+  //   });
+  //   flatpickr(this.$refs.timePicker3, {
+  //     enableTime: true, // Enable the time picker
+  //     noCalendar: true, // Disable the calendar (only time selection)
+  //     dateFormat: "H:i", // Customizable time format (e.g., "H:i" for 24-hour, "h:i K" for 12-hour with AM/PM)
+  //     time_24hr: false, // Optional: Use 24-hour format, set to false for 12-hour format with AM/PM
+  //   });
+  // },
 };
 </script>
 

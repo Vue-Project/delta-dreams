@@ -30,7 +30,7 @@
 
                         <input
                           type="text"
-                          class="form-control"
+                          class="form-control w-50"
                           aria-label="Text input with select list"
                           id="formGustInfoName"
                         />
@@ -182,7 +182,7 @@
             </div>
 
             <!-- other information -->
-            <div class="accordion mt-3" id="accordionExample">
+            <div class="accordion mt-3 " id="accordionExample">
               <div class="card accordion-item active">
                 <h2 class="accordion-header" id="headingOne">
                   <button
@@ -270,7 +270,8 @@
                             type="text"
                             class="form-control"
                             placeholder="YYYY-MM-DD"
-                            id="flatpickr-date-01"
+                            id="flatpickr-date-07"
+                            ref="datePicker7"
                           />
                           <i class="fa-solid fa-calendar-days"></i>
                         </div>
@@ -319,8 +320,8 @@
                           type="text"
                           class="form-control flatpickr-input"
                           placeholder="Select Date"
-                          id="flatpickr-date-01"
-                          ref="datePicker1"
+                          id="flatpickr-date-04"
+                          ref="datePicker4"
                         />
                         <i class="fa-solid fa-calendar-days "></i>
                       </div>
@@ -371,8 +372,8 @@
                           type="text"
                           class="form-control flatpickr-input"
                           placeholder="Select Date"
-                          id="flatpickr-date-01"
-                          ref="datePicker1"
+                          id="flatpickr-date-05"
+                          ref="datePicker5"
                         />
                         <i class="fa-solid fa-calendar-days "></i>
                       </div>
@@ -384,8 +385,8 @@
                           type="text"
                           class="form-control flatpickr-input"
                           placeholder="Select Date"
-                          id="flatpickr-date-01"
-                          ref="datePicker1"
+                          id="flatpickr-date-06"
+                          ref="datePicker6"
                         />
                         <i class="fa-solid fa-calendar-days "></i>
                       </div>
@@ -406,7 +407,7 @@
                 </div>
               </div>
             </div>
-            <div class="mr-3 gap-2 d-flex justify-content-end scbuttons">
+            <div class="gap-2 d-flex justify-content-end scbuttons">
               <button
                 @click="$emit('close-sidebar')"
                 class="btn btn-secondary waves-effect waves-light"
@@ -428,6 +429,8 @@
 </template>
 
 <script>
+import flatpickr from "flatpickr";
+import "flatpickr/dist/flatpickr.min.css";
 import DropZone from "dropzone";
 import "dropzone/dist/dropzone.css";
 import DropzoneComponent from "./DropzoneComponent.vue";
@@ -452,6 +455,41 @@ export default {
       default: "1000px",
     },
   },
+  // mounted() {
+  // // Array of date picker refs or IDs
+  // const datePickers = [
+  //   this.$refs.datePicker4,
+  //   this.$refs.datePicker5,
+  //   this.$refs.datePicker6,
+  //   this.$refs.datePicker7,
+  // ];
+
+  // // Loop through the date pickers and apply flatpickr
+  // datePickers.forEach((picker) => {
+  //   flatpickr(picker, {
+  //     dateFormat: "Y-m-d",
+  //   });
+  // });
+
+  // // Array of time picker refs or IDs
+  // const timePickers = [
+  //   this.$refs.timePicker4,
+  //   this.$refs.timePicker5,
+  //   this.$refs.timePicker6,
+  //   this.$refs.timePicker7,
+  // ];
+
+  // // Loop through the time pickers and apply flatpickr
+  // timePickers.forEach((picker, index) => {
+  //   flatpickr(picker, {
+  //     enableTime: true, // Enable the time picker
+  //     noCalendar: true, // Disable the calendar (only time selection)
+  //     dateFormat: "H:i", // Customizable time format
+  //     time_24hr: index === 2 ? false : true, // 12-hour format for the third picker, 24-hour for others
+  //   });
+  // });
+// },
+
 };
 </script>
 
