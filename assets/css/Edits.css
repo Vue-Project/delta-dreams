@@ -190,14 +190,14 @@
 /* start calender styling */
 /* the close button */
 .popoverClose {
-  padding-left: 4px;
-  padding-right: 4px;
   position: absolute;
   top: 5px;
   right: 11px;
+  padding-left: 4px;
+  padding-right: 4px;
+  border-radius: 3px;
   color: #fd0017;
   cursor: pointer;
-  border-radius: 3px;
 }
 .popoverClose:hover {
   background-color: #fd0017;
@@ -210,32 +210,18 @@
   color: #2491fc;
 }
 .popover {
-  max-width: 250px;
   position: absolute;
   transition: all 0.3s ease;
+  max-width: 250px;
 }
 
 /* end calender styling */
 
 /* start reservation style */
 
-.card-body {
-  font-size: 12px !important;
-  font-family: "Roboto", sans-serif;
-}
-.card-body .cio input,
-.total-nights {
+.card-body input,
+.total-nights , select {
   border-radius: 0px;
-}
-.total-nights {
-  font-size: 12px;
-}
-#formValidationReservation .cio input,
-select,
-.total-nights {
-  padding: 4px 8px !important;
-  height: 31px !important;
-  font-size: 13px;
 }
 .ci-date-icon {
   position: absolute;
@@ -265,92 +251,30 @@ select,
 #flatpickr-time-02 {
   width: 95px !important;
 }
-#formValidationReservation label,
-#formValidationReservation input::placeholder,
-#formValidationReservation select {
-  color: black;
-}
-#formValidationReservation input::placeholder {
-  font-size: 12px;
-}
 .card-datatable thead tr {
   background-color: #fafafa;
-}
-.AddButton {
-  border-radius: 2px;
-  border-color: #1890ff;
-  background-color: white;
-  color: #1890ff;
-  font-weight: 400;
-  height: 32px;
-  width: 92px;
-  padding: 4px 15px;
-  font-size: 13px;
-}
-
-.datatables-projects th,
-.datatables-projects td {
-  padding: 8px 2px;
-  color: black;
-  overflow: hidden;
-}
-.datatables-projects th {
-  font-size: 11px !important;
-  font-weight: bold;
-  color: black !important;
-}
-.form-check-label {
-  font-size: 13px;
 }
 .rateOffer {
   color: black;
 }
-/* fix it  */
-.input-group .input-group-text,
-.form-select,
-.form-control {
-  height: 31px !important;
-  font-size: 12px;
-  border-radius: 2px !important;
-}
-.input-group i {
-  font-size: 14px;
-  height: 9px;
+.groupStyle {
+  color:#7367F0 ;
+  border-color:#7367F0;
+  border-radius: 0;
+  z-index: 10;
 }
 h6 {
   color: black;
   font-weight: bold;
 }
-.cancelButton,
-.ReserverButton {
-  height: 31px !important;
-  font-size: 12px;
-  border-radius: 2px !important;
-  padding: 4px 15px;
-  width: 120px;
-}
-.cancelButton {
-  background-color: white;
-  color: black;
-  margin-right: 10px;
-}
-.ReserverButton {
-  color: white;
-  background-color: #1890ff;
-  border: none;
-}
 .billingMoney {
   background-color: rgb(242, 246, 249);
-}
-.summary .card {
-  color: black !important;
 }
 /* start sidebar  */
 .sidebar-open {
   overflow-y: auto;
   overflow-x: hidden;
 }
-
 .sidebar-open span i{
   position: relative;
   bottom: 29%;
@@ -361,6 +285,22 @@ h6 {
   bottom: 29%;
   left: 85%;
 }
+
+.scbuttons {
+  position: fixed;
+  right:0;
+  bottom: 0;
+  width: 58%; 
+  background-color: #fff; 
+  z-index: 10;
+  padding: 10px 20px; 
+  box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1); 
+  text-align: right;
+}
+.sidebar-content{
+  height:1225px;
+}
+
 /* end sidebar  */
 /* end reservation style */
 

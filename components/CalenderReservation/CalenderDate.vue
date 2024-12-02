@@ -32,7 +32,7 @@
             </div>
           </div>
 
-          <div class="row sc-dFUPQr jLBeYh">
+          <div class="row ">
             <hr class="my-2 w-75 mx-auto" />
             <button type="button" class="ant-btn ant-btn-link ant-btn-block">
               <span>Walk In / Reservation</span>
