@@ -272,7 +272,7 @@
                             placeholder="YYYY-MM-DD"
                             id="flatpickr-date-01"
                           />
-                          <i class="fa-solid fa-calendar-days date-icon"></i>
+                          <i class="fa-solid fa-calendar-days"></i>
                         </div>
                       </div>
                     </div>
@@ -322,7 +322,7 @@
                           id="flatpickr-date-01"
                           ref="datePicker1"
                         />
-                        <i class="fa-solid fa-calendar-days date-icon"></i>
+                        <i class="fa-solid fa-calendar-days "></i>
                       </div>
                       <div class="col-md-3">
                         <label for="BirthCountry" class="col-form-label"
@@ -374,7 +374,7 @@
                           id="flatpickr-date-01"
                           ref="datePicker1"
                         />
-                        <i class="fa-solid fa-calendar-days date-icon"></i>
+                        <i class="fa-solid fa-calendar-days "></i>
                       </div>
                       <div class="col-md-3">
                         <label for="formGustWeddingAnni" class="col-form-label"
@@ -387,7 +387,7 @@
                           id="flatpickr-date-01"
                           ref="datePicker1"
                         />
-                        <i class="fa-solid fa-calendar-days date-icon"></i>
+                        <i class="fa-solid fa-calendar-days "></i>
                       </div>
                       <div class="col-md-3">
                         <label for="formGustRegistration" class="col-form-label"
