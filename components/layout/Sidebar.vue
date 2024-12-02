@@ -294,7 +294,7 @@
                 </div>
               </div>
             </div>
-            <div class="mx-2 my-2 gap-2 d-flex justify-content-end">
+            <div class="scbuttons gap-2 d-flex justify-content-end">
               <button
                 @click="$emit('close-sidebar')"
                 class="btn btn-secondary waves-effect waves-light"
