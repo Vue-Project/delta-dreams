@@ -1,16 +1,11 @@
 <template>
   <div class="row align-items-baseline p-2 position-relative">
-    <div class="col-md-2 col-12 calendarDate">
-      <input
-        type="text"
-        class="form-control flatpickr-input"
-        placeholder="YYYY-MM-DD"
-        id="flatpickr-date-04"
-        ref="datePicker4"
-      />
+    <div class="col-md-1 col-12 calendarDate">
+      <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD" id="flatpickr-date-04"
+        ref="datePicker4" />
       <i class="fa-solid fa-calendar-days date-icon"></i>
     </div>
-    <div class="col-md-6 col-12">
+    <div class="col-md-7 col-12">
       <div class="d-flex items-center gap-4">
         <div v-for="(item, index) in categories" :key="index">
           <span>{{ item.label }}</span>
@@ -23,23 +18,17 @@
     <div class="col-md-4 col-12">
       <div class="d-flex items-center gap-4">
         <div class="w-100">
-          <select
-            class="form-select"
-            id="exampleFormControlSelect1"
-            aria-label="Default select example"
-          >
+          <select class="form-select" id="exampleFormControlSelect1" aria-label="Default select example">
             <option selected>The price is not included</option>
             <option value="1">The price includes breakfast</option>
           </select>
         </div>
         <label class="switch">
-          <input type="checkbox" class="switch-input" v-model="isOn" />
+          <input type="checkbox" class="switch-input" v-model="isOn" aria-label="switch input to copy and compact" />
           <span class="switch-toggle-slider">
             <span class="switch-on">Copy</span>
             <span class="switch-off">compact</span>
           </span>
-          <!-- Dynamic text changes based on isOn
-          <span class="switch-label">{{ isOn ? 'Switch is ON' : 'Switch is OFF' }}</span> -->
         </label>
 
         <div @mouseenter="isHovered = true" @mouseleave="isHovered = false">
@@ -47,10 +36,7 @@
             <i class="fa-solid fa-circle-info"></i>
           </button>
           <!-- Hover Menu -->
-          <div
-            v-show="isHovered"
-            class="position-absolute left-0 mt-2 w-40 bg-white shadow-lg"
-          >
+          <div v-show="isHovered" class="position-absolute left-0 mt-2 w-40 bg-white shadow-lg">
             <!-- start ul -->
             <div class="fullbox">
               <div class="row">
@@ -129,10 +115,8 @@
             </div>
             <!-- end ul -->
             <!-- out side box -->
-            <div
-              class="ant-popover ant-popover-placement-bottomRight ant-popover-hidden"
-              style="left: 586px; top: -999px; transform-origin: 319px -4px"
-            >
+            <div class="ant-popover ant-popover-placement-bottomRight ant-popover-hidden"
+              style="left: 586px; top: -999px; transform-origin: 319px -4px">
               <div class="ant-popover-content">
                 <div class="ant-popover-arrow">
                   <span class="ant-popover-arrow-content"></span>
@@ -158,7 +142,8 @@ export default {
   layout: "Component",
   components: { Sidebar },
 
-  data() {
+  data ()
+  {
     return {
       isHovered: false,
       sidebarVisible: false,
@@ -176,14 +161,17 @@ export default {
     };
   },
   methods: {
-    openSidebar() {
+    openSidebar ()
+    {
       this.isSidebarOpen = true;
     },
-    closeSidebar() {
+    closeSidebar ()
+    {
       this.isSidebarOpen = false;
     },
   },
-  mounted() {
+  mounted ()
+  {
     flatpickr(this.$refs.datePicker4, {
       dateFormat: "Y-m-d",
     });

@@ -39,7 +39,7 @@
                   <label for="flatpickr-date-02" class="form-label ms-3">Check-out</label>
                   <input type="text" class="form-control flatpickr-input " placeholder="YYYY-MM-DD"
                     id="flatpickr-date-02" ref="datePicker2" />
-                  <i class="fa-solid fa-calendar-days "></i>
+                  <i class="fa-solid fa-calendar-days co-date-icon"></i>
                 </div>
                 <!-- /Date Picker -->
 
@@ -359,6 +359,7 @@
           </div>
 
           <!--  ! Guest Information -->
+
 
           <!--  ! Other Information -->
 
