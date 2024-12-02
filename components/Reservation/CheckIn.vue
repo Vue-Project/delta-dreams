@@ -6,7 +6,7 @@
       </h5>
       <hr class="m-0" />
       <div class="card-body">
-        <form id="formValidationReservation" class="row g-3 fv-plugins-bootstrap5 fv-plugins-framework mt-1">
+        <form id="formValidationReservation" class="row g-3 fv-plugins-bootstrap5 fv-plugins-framework mt-1 ">
           <!--  ! Reservation  Details -->
             <!-- change in size and icons -->
           <div class="row cio">
@@ -225,7 +225,7 @@
 
                     <tfoot>
                       <!--change style button  -->
-                      <button class="btn btn-primary mt-2 AddButton" type="button" @click="addItem">
+                      <button class="btn btn-primary waves-effect waves-light mt-3" type="button" @click="addItem">
                         Add Room
                       </button>
                     </tfoot>
@@ -258,7 +258,7 @@
                   </label>
                   <div class="input-group">
                     <input type="text" class="form-control" placeholder="Value" id="releaseTerm" />
-                    <span class="input-group-text " style="background-color:#D1EBF9 ;color:black">%</span>
+                    <span class="input-group-text groupStyle">%</span>
                   </div>
                 </div>
               </div>
@@ -270,7 +270,7 @@
                   </label>
                   <div class="input-group">
                     <input type="number" class="form-control" placeholder="0" id="releaseTerm" />
-                    <span class="input-group-text" style="background-color:#D1EBF9 ;color:black">Days</span>
+                    <span class="input-group-text groupStyle">Days</span>
                   </div>
                 </div>
                 <div class="col-md-8 col-12">
@@ -415,10 +415,10 @@
 
           <div class="row">
             <div class="col-12 text-end">
-              <button type="button" class="btn btn-lg btn-secondary waves-effect waves-light cancelButton">
+              <button type="button" class="btn btn-lg btn-secondary waves-effect waves-light">
                 Cancel
               </button>
-              <button type="button" class="btn btn-lg btn-primary waves-effect waves-light ReserverButton">
+              <button type="button" class="btn btn-lg btn-primary waves-effect waves-light">
                 Reserver
               </button>
             </div>
