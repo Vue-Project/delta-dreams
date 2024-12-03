@@ -1,3 +1,13 @@
+/* Helpers */
+.right{
+  right: 10px !important;
+}
+.mt{
+  margin-top: 25px !important;
+}
+
+
+
 /* start header styling */
 .switch .switch-input:checked ~ .switch-toggle-slider::after {
   left: 4.15rem !important;
@@ -216,11 +226,11 @@ right:23px ;  pointer-events: none;
 select {
   border-radius: 0px;
 }
-.Date_Picker i {
-  position: absolute;
-  top: 60%;
-  left: 140px;
-  pointer-events: none;
+  .Date_Picker i {
+    position: absolute;
+    top: 36px;
+    right: 10px;
+
 }
 .Time_Picker i {
   position: absolute;
@@ -228,9 +238,7 @@ select {
   right: 67px;
 }
 
-#flatpickr-time-02 {
-  width: 95px !important;
-}
+
 .card-datatable thead tr {
   background-color: #fafafa;
 }
@@ -244,10 +252,7 @@ select {
   border-radius: 0;
   z-index: 10;
 }
-h6 {
-  color: black;
-  font-weight: bold;
-}
+
 .billingMoney {
   background-color: rgb(242, 246, 249);
 }
@@ -304,14 +309,14 @@ h6 {
   align-items: center;
   justify-content: center;
 }
-td {
-  height: 38px !important;
+.table > :not(caption) > * > * {
+  padding: 5px;
+
 }
+
 /* full calendar  */
 
-td {
-  height: 38px !important;
-}
+
 .selected-days-tooltip,
 .fc-highlight {
   border-radius: 2px;

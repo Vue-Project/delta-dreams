@@ -8,13 +8,14 @@
       <div class="card-body">
         <form id="formValidationReservation" class="row g-3 fv-plugins-bootstrap5 fv-plugins-framework mt-1 ">
           <!--  ! Reservation  Details -->
-            <!-- change in size and icons -->
-          <div class="row cio">
+          <!-- change in size and icons -->
+          <div class="row ">
             <div class="col-md-8">
               <div class="row align-items-center first_add">
                 <!-- Date Picker-->
                 <div class="col-md-3 col-12 Date_Picker px-0">
-                  <label for="flatpickr-date-01" class="form-label">Check-in</label>
+                  <label for="flatpickr-date-01" class="form-label">Check-in
+                  </label>
                   <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD"
                     id="flatpickr-date-01" ref="datePicker1" />
                   <i class="fa-solid fa-calendar-days"></i>
@@ -24,7 +25,7 @@
 
                 <!-- Time Picker-->
                 <div class="col-md-3 col-12 Time_Picker px-0">
-                  <div class="input-group mt-4 ">
+                  <div class="input-group mt ">
                     <input type="text" class="form-control flatpickr-input" placeholder="HH:MM" id="flatpickr-time-01"
                       ref="timePicker1" />
                     <i class="fa-regular fa-clock "></i>
@@ -44,11 +45,10 @@
                 <!-- /Date Picker -->
 
                 <!-- Time Picker-->
-                <div class="col-md-3 col-12 mt-4 Time_Picker px-0">
-                  <input type="text" class="form-control flatpickr-input " placeholder="HH:MM"
-                    id="flatpickr-time-02" ref="timePicker2" aria-label="close" />
-                  <i class="fa-regular fa-clock "></i>
-
+                <div class="col-md-3 col-12 mt Time_Picker px-0">
+                  <input type="text" class="form-control flatpickr-input " placeholder="HH:MM" id="flatpickr-time-02"
+                    ref="timePicker2" aria-label="input time Picker" />
+                  <i class="fa-regular fa-clock  right "></i>
                 </div>
               </div>
             </div>
@@ -75,7 +75,7 @@
               <div class="col-md-6 col-12 mb-4 p-0">
                 <div class="row">
                   <div class="col-md-6">
-                    <label  for="bookingSource" class="form-label">Booking Source</label>
+                    <label for="bookingSource" class="form-label">Booking Source</label>
                     <select class="form-select" id="bookingSource">
                       <option selected>Direct</option>
                       <option value="1">OTA</option>
@@ -86,7 +86,7 @@
 
                   </div>
                   <div class="col-md-6">
-                    <label  for="businessSource" class="form-label">Business Source</label>
+                    <label for="businessSource" class="form-label">Business Source</label>
                     <select class="form-select" id="businessSource">
                       <option selected>Select</option>
                       <option value="1">One</option>
@@ -142,7 +142,7 @@
               <!-- change width delete border color  -->
               <div class="card mt-3 border-0">
                 <div class="card-datatable table-responsive">
-                  <table class="datatables-projects table">
+                  <table class="datatables-projects table overflow-hidden">
                     <thead>
                       <tr class="rounded-1">
                         <th class="border-0">Room Type</th>
@@ -245,13 +245,25 @@
             <div class="col-md-5">
               <div class="row">
                 <div class="col-md-8 col-12">
-                  <label for="flatpickr-date-03" class="form-label">Hold Release Date & Time
-                  </label>
-                  <div class="input-group">
-                    <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD" id="flatpickr-date-03" ref="datePicker3" />
-                    <input type="text" class="form-control flatpickr-input" placeholder="HH:MM" ref="timePicker3"
-                    id="flatpickr-time-03" aria-label="timePicker" />
+                  <div class="row">
+                    <div class="col-md-6 col-12 Date_Picker px-0">
+                      <label for="flatpickr-date-03" class="form-label"> Hold Release Date & Time</label>
+                      <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD"
+                        id="flatpickr-date-03" ref="datePicker3"  />
+                      <i class="fa-solid fa-calendar-days"></i>
+                    </div>
+
+                    <!-- Date Picker -->
+
+                    <!-- Time Picker-->
+                    <div class="col-md-6 col-12 mt Time_Picker px-0">
+                      <input type="text" class="form-control flatpickr-input " placeholder="HH:MM"
+                        id="flatpickr-time-03" ref="timePicker3" aria-label="input time Picker" />
+                      <i class="fa-regular fa-clock  right "></i>
+
+                    </div>
                   </div>
+
                 </div>
                 <div class="col-md-4 col-12">
                   <label for="releaseTerm" class="form-label">Release Term
@@ -506,38 +518,41 @@ export default {
 
     },
   },
-  mounted() {
-  // Array of date picker refs or IDs
-  const datePickers = [
-    this.$refs.datePicker1,
-    this.$refs.datePicker2,
-    this.$refs.datePicker3,
-  ];
+  mounted ()
+  {
+    // Array of date picker refs or IDs
+    const datePickers = [
+      this.$refs.datePicker1,
+      this.$refs.datePicker2,
+      this.$refs.datePicker3,
+    ];
 
-  // Loop through the date pickers and apply flatpickr
-  datePickers.forEach((picker) => {
-    flatpickr(picker, {
-      dateFormat: "Y-m-d",
+    // Loop through the date pickers and apply flatpickr
+    datePickers.forEach((picker) =>
+    {
+      flatpickr(picker, {
+        dateFormat: "Y-m-d",
+      });
     });
-  });
 
-  // Array of time picker refs or IDs
-  const timePickers = [
-    this.$refs.timePicker1,
-    this.$refs.timePicker2,
-    this.$refs.timePicker3,
-  ];
+    // Array of time picker refs or IDs
+    const timePickers = [
+      this.$refs.timePicker1,
+      this.$refs.timePicker2,
+      this.$refs.timePicker3,
+    ];
 
-  // Loop through the time pickers and apply flatpickr
-  timePickers.forEach((picker, index) => {
-    flatpickr(picker, {
-      enableTime: true, // Enable the time picker
-      noCalendar: true, // Disable the calendar (only time selection)
-      dateFormat: "H:i", // Customizable time format
-      time_24hr: index === 2 ? false : true, // 12-hour format for the third picker, 24-hour for others
+    // Loop through the time pickers and apply flatpickr
+    timePickers.forEach((picker, index) =>
+    {
+      flatpickr(picker, {
+        enableTime: true, // Enable the time picker
+        noCalendar: true, // Disable the calendar (only time selection)
+        dateFormat: "H:i", // Customizable time format
+        time_24hr: index === 2 ? false : true, // 12-hour format for the third picker, 24-hour for others
+      });
     });
-  });
-},
+  },
 
   // mounted ()
   // {
@@ -572,6 +587,4 @@ export default {
 };
 </script>
 
-<style>
-
-</style>
+<style></style>
