@@ -53,7 +53,7 @@ export default {
 
     // !  changes styles
     "~/assets/css/changes.css",
-    "~/assets/css/Edits.css",
+    // "~/assets/css/Edits.css",
     // !  changes styles
   ],
 
@@ -91,7 +91,8 @@ export default {
         jQuery: "jquery",
       }),
     ],
-    extend(config, { isDev, isClient }) {
+    extend (config, { isDev, isClient })
+    {
       if (isDev && isClient) {
         config.module.rules.push({
           enforce: "pre",

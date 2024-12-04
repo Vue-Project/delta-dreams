@@ -1,3 +1,17 @@
+/* Helpers */
+.right{
+  right: 10px !important;
+}
+.mt{
+  margin-top: 25px !important;
+}
+.dropzone {
+  border-style: dashed !important;
+  padding:  0 !important;
+}
+
+
+
 /* start header styling */
 .switch .switch-input:checked ~ .switch-toggle-slider::after {
   left: 4.15rem !important;
@@ -216,11 +230,11 @@ right:23px ;  pointer-events: none;
 select {
   border-radius: 0px;
 }
-.Date_Picker i {
-  position: absolute;
-  top: 60%;
-  left: 140px;
-  pointer-events: none;
+  .Date_Picker i {
+    position: absolute;
+    top: 36px;
+    right: 10px;
+
 }
 .Time_Picker i {
   position: absolute;
@@ -228,9 +242,7 @@ select {
   right: 67px;
 }
 
-#flatpickr-time-02 {
-  width: 95px !important;
-}
+
 .card-datatable thead tr {
   background-color: #fafafa;
 }
@@ -244,10 +256,7 @@ select {
   border-radius: 0;
   z-index: 10;
 }
-h6 {
-  color: black;
-  font-weight: bold;
-}
+
 .billingMoney {
   background-color: rgb(242, 246, 249);
 }
@@ -255,16 +264,6 @@ h6 {
 .sidebar-open {
   overflow-y: auto;
   overflow-x: hidden;
-}
-.sidebar-open span i {
-  position: absolute;
-  bottom: 100.5px;
-  left: -45px;
-}
-.sidebar-open i {
-  position: absolute;
-  bottom: 12px;
-  right: 20px;
 }
 .sidebar-open::-webkit-scrollbar {
   display: none;
@@ -274,15 +273,16 @@ h6 {
   position: fixed;
   right: 0;
   bottom: 0;
-  width: 65.75%;
-  background-color: #fff;
+  width: 1000px;
+  max-width: inherit;
   z-index: 10;
   padding: 10px 20px;
   box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1);
   text-align: right;
+  background-color: #fff;
 }
 .sidebar-content {
-  height: 1225px;
+  height: 100vh;
 }
 
 /* end sidebar  */
@@ -304,14 +304,14 @@ h6 {
   align-items: center;
   justify-content: center;
 }
-td {
-  height: 38px !important;
+.table > :not(caption) > * > * {
+  padding: 5px;
+
 }
+
 /* full calendar  */
 
-td {
-  height: 38px !important;
-}
+
 .selected-days-tooltip,
 .fc-highlight {
   border-radius: 2px;

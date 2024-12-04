@@ -6,28 +6,28 @@
       </h5>
       <hr class="m-0" />
       <div class="card-body">
-        <form id="formValidationReservation" class="row g-3 fv-plugins-bootstrap5 fv-plugins-framework mt-1 ">
+        <form id="formValidationReservation" class="row g-3 fv-plugins-bootstrap5 fv-plugins-framework mt-1">
           <!--  ! Reservation  Details -->
-            <!-- change in size and icons -->
-          <div class="row cio">
+          <!-- change in size and icons -->
+          <div class="row">
             <div class="col-md-8">
-              <div class="row align-items-center first_add">
+              <div class="row align-items-center">
                 <!-- Date Picker-->
-                <div class="col-md-3 col-12 Date_Picker px-0">
+                <div class="col-md-3 col-12 px-0">
                   <label for="flatpickr-date-01" class="form-label">Check-in</label>
                   <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD"
                     id="flatpickr-date-01" ref="datePicker1" />
-                  <i class="fa-solid fa-calendar-days"></i>
+                  <i class="fa-solid fa-calendar-days icon-date"></i>
                 </div>
 
                 <!-- Date Picker -->
 
                 <!-- Time Picker-->
-                <div class="col-md-3 col-12 Time_Picker px-0">
-                  <div class="input-group mt-4 ">
+                <div class="col-md-3 col-12 px-0">
+                  <div class="input-group mt">
                     <input type="text" class="form-control flatpickr-input" placeholder="HH:MM" id="flatpickr-time-01"
                       ref="timePicker1" />
-                    <i class="fa-regular fa-clock "></i>
+                    <i class="fa-regular fa-clock icon-time"></i>
                     <span class="input-group-text total-nights" id="basic-addon13">4 nights</span>
                   </div>
                 </div>
@@ -35,39 +35,35 @@
                 <!-- Time Picker-->
 
                 <!-- Date Picker-->
-                <div class="col-md-3 col-12  Date_Picker px-0">
+                <div class="col-md-3 col-12 px-0">
                   <label for="flatpickr-date-02" class="form-label ms-3">Check-out</label>
-                  <input type="text" class="form-control flatpickr-input " placeholder="YYYY-MM-DD"
+                  <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD"
                     id="flatpickr-date-02" ref="datePicker2" />
-                  <i class="fa-solid fa-calendar-days co-date-icon"></i>
+                  <i class="fa-solid fa-calendar-days icon-date"></i>
                 </div>
                 <!-- /Date Picker -->
 
                 <!-- Time Picker-->
-                <div class="col-md-3 col-12 mt-4 Time_Picker px-0">
-                  <input type="text" class="form-control flatpickr-input " placeholder="HH:MM"
-                    id="flatpickr-time-02" ref="timePicker2" aria-label="close" />
-                  <i class="fa-regular fa-clock "></i>
-
+                <div class="col-md-3 col-12 mt Time_Picker px-0">
+                  <input type="text" class="form-control flatpickr-input" placeholder="HH:MM" id="flatpickr-time-02"
+                    ref="timePicker2" aria-label="input time Picker" />
+                  <i class="fa-regular fa-clock icon-time right"></i>
                 </div>
               </div>
             </div>
             <div class="col-md-4">
-              <div class="row ">
+              <div class="row">
                 <div class="col-md-3 col-12">
                   <label for="roomCount" class="form-label">Room(s)</label>
                   <input class="form-control" type="number" id="roomCount" v-model="roomCount" min="1"
                     @input="updateRepeater" />
                 </div>
-                <div class="col-md-9 col-12 mb-4 ">
+                <div class="col-md-9 col-12 mb-4">
                   <label for="reservationType" class="form-label">Reservation Type</label>
                   <select class="form-select" id="reservationType">
                     <option selected>حجز مؤكد معلق بتحويل المبلغ</option>
                     <option value="1">حجز مؤكد</option>
-
-
                   </select>
-
                 </div>
               </div>
             </div>
@@ -75,7 +71,7 @@
               <div class="col-md-6 col-12 mb-4 p-0">
                 <div class="row">
                   <div class="col-md-6">
-                    <label  for="bookingSource" class="form-label">Booking Source</label>
+                    <label for="bookingSource" class="form-label">Booking Source</label>
                     <select class="form-select" id="bookingSource">
                       <option selected>Direct</option>
                       <option value="1">OTA</option>
@@ -83,10 +79,9 @@
                       <option value="3">Travel Agent</option>
                       <option value="3">Company</option>
                     </select>
-
                   </div>
                   <div class="col-md-6">
-                    <label  for="businessSource" class="form-label">Business Source</label>
+                    <label for="businessSource" class="form-label">Business Source</label>
                     <select class="form-select" id="businessSource">
                       <option selected>Select</option>
                       <option value="1">One</option>
@@ -142,7 +137,7 @@
               <!-- change width delete border color  -->
               <div class="card mt-3 border-0">
                 <div class="card-datatable table-responsive">
-                  <table class="datatables-projects table">
+                  <table class="datatables-projects table overflow-hidden">
                     <thead>
                       <tr class="rounded-1">
                         <th class="border-0">Room Type</th>
@@ -240,17 +235,27 @@
           <hr class="my-4" />
           <!--  ! Hold Release Date & Time -->
 
-          <!-- change style  -->
           <div class="row">
             <div class="col-md-5">
               <div class="row">
                 <div class="col-md-8 col-12">
-                  <label for="flatpickr-date-03" class="form-label">Hold Release Date & Time
-                  </label>
-                  <div class="input-group">
-                    <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD" id="flatpickr-date-03" ref="datePicker3" />
-                    <input type="text" class="form-control flatpickr-input" placeholder="HH:MM" ref="timePicker3"
-                    id="flatpickr-time-03" aria-label="timePicker" />
+                  <div class="row">
+                    <div class="col-md-6 col-12 Date_Picker px-0">
+                      <label for="flatpickr-date-03" class="form-label">
+                        Hold Release Date & Time</label>
+                      <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD"
+                        id="flatpickr-date-03" ref="datePicker3" />
+                      <i class="fa-solid fa-calendar-days icon-date"></i>
+                    </div>
+
+                    <!-- Date Picker -->
+
+                    <!-- Time Picker-->
+                    <div class="col-md-6 col-12 mt Time_Picker px-0">
+                      <input type="text" class="form-control flatpickr-input" placeholder="HH:MM" id="flatpickr-time-03"
+                        ref="timePicker3" aria-label="input time Picker" />
+                      <i class="fa-regular fa-clock icon-time right"></i>
+                    </div>
                   </div>
                 </div>
                 <div class="col-md-4 col-12">
@@ -298,7 +303,7 @@
             <div class="col-md-5">
               <label for="nameGuest" class="col-form-label">Guest Name</label>
               <div class="input-group">
-                <select class="form-select " id="nameGuest">
+                <select class="form-select" id="nameGuest">
                   <option value="" disabled selected>MR.</option>
                   <option value="option1">DR.</option>
                   <option value="option2">JN.</option>
@@ -318,7 +323,6 @@
                 </button>
               </div>
               <Sidebar :isSidebarOpen="isSidebarOpen" @close-sidebar="toggleSidebar" />
-
             </div>
             <div class="col-md-7">
               <div class="row">
@@ -359,7 +363,6 @@
           </div>
 
           <!--  ! Guest Information -->
-
 
           <!--  ! Other Information -->
 
@@ -427,18 +430,12 @@
         </form>
       </div>
     </div>
-
-
   </section>
-
 </template>
 
 <script>
-//  start flatpickr Files
-import flatpickr from "flatpickr";
-import "flatpickr/dist/flatpickr.min.css";
+import flatpickrMixin from "../Mixin/flatpickrMixin";
 import Sidebar from "../layout/Sidebar.vue";
-//  end flatpickr Files
 
 export default {
   name: "CheckIn",
@@ -503,75 +500,10 @@ export default {
     toggleSidebar ()
     {
       this.isSidebarOpen = !this.isSidebarOpen;
-
     },
   },
-  mounted() {
-  // Array of date picker refs or IDs
-  const datePickers = [
-    this.$refs.datePicker1,
-    this.$refs.datePicker2,
-    this.$refs.datePicker3,
-  ];
-
-  // Loop through the date pickers and apply flatpickr
-  datePickers.forEach((picker) => {
-    flatpickr(picker, {
-      dateFormat: "Y-m-d",
-    });
-  });
-
-  // Array of time picker refs or IDs
-  const timePickers = [
-    this.$refs.timePicker1,
-    this.$refs.timePicker2,
-    this.$refs.timePicker3,
-  ];
-
-  // Loop through the time pickers and apply flatpickr
-  timePickers.forEach((picker, index) => {
-    flatpickr(picker, {
-      enableTime: true, // Enable the time picker
-      noCalendar: true, // Disable the calendar (only time selection)
-      dateFormat: "H:i", // Customizable time format
-      time_24hr: index === 2 ? false : true, // 12-hour format for the third picker, 24-hour for others
-    });
-  });
-},
-
-  // mounted ()
-  // {
-  //   flatpickr(this.$refs.datePicker1, {
-  //     dateFormat: "Y-m-d",
-  //   });
-  //   flatpickr(this.$refs.datePicker2, {
-  //     dateFormat: "Y-m-d",
-  //   });
-  //   flatpickr(this.$refs.datePicker3, {
-  //     dateFormat: "Y-m-d",
-  //   });
-  //   flatpickr(this.$refs.timePicker1, {
-  //     enableTime: true, // Enable the time picker
-  //     noCalendar: true, // Disable the calendar (only time selection)
-  //     dateFormat: "H:i", // Customizable time format (e.g., "H:i" for 24-hour, "h:i K" for 12-hour with AM/PM)
-  //     time_24hr: true, // Optional: Use 24-hour format, set to false for 12-hour format with AM/PM
-  //   });
-  //   flatpickr(this.$refs.timePicker2, {
-  //     enableTime: true, // Enable the time picker
-  //     noCalendar: true, // Disable the calendar (only time selection)
-  //     dateFormat: "H:i", // Customizable time format (e.g., "H:i" for 24-hour, "h:i K" for 12-hour with AM/PM)
-  //     time_24hr: true, // Optional: Use 24-hour format, set to false for 12-hour format with AM/PM
-  //   });
-  //   flatpickr(this.$refs.timePicker3, {
-  //     enableTime: true, // Enable the time picker
-  //     noCalendar: true, // Disable the calendar (only time selection)
-  //     dateFormat: "H:i", // Customizable time format (e.g., "H:i" for 24-hour, "h:i K" for 12-hour with AM/PM)
-  //     time_24hr: false, // Optional: Use 24-hour format, set to false for 12-hour format with AM/PM
-  //   });
-  // },
+  mixins: [flatpickrMixin],
 };
 </script>
 
-<style>
-
-</style>
+<style></style>
