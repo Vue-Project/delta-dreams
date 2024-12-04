@@ -246,12 +246,10 @@
                         class="form-control flatpickr-input" ref="datePicker3" />
                       <i class="fa-solid fa-calendar-days icon-date"></i>
                     </div>
-                    <div class="col-md-6 col-12 px-0">
-                      <div class="input-group mt-4">
-                        <input type="text" placeholder="HH:MM" id="flatpickr-time-03"
-                          class="form-control flatpickr-input" ref="timePicker3" />
-                        <i class="fa-regular fa-clock icon-time right"></i>
-                      </div>
+                    <div class="col-md-6 col-12 px-0 mt">
+                      <input type="text" placeholder="HH:MM" id="flatpickr-time-03" class="form-control flatpickr-input"
+                        ref="timePicker3" />
+                      <i class="fa-regular fa-clock icon-time right"></i>
                     </div>
                   </div>
 
