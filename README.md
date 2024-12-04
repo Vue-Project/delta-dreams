@@ -1,4 +1,4 @@
-# corptia-nuxt
+# deltaDream-nuxt
 
 ## Build Setup
 
