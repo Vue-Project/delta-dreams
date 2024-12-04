@@ -17,19 +17,14 @@
                       <label for="formGustInfoName" class="col-form-label"> Name</label>
                       <div class="input-group">
                         <select class="form-select" id="formGustInfoName">
-                          <option value="" disabled selected>Select option</option>
+                          <option value="" disabled selected>MR</option>
                           <option value="option1">Option 1</option>
                           <option value="option2">Option 2</option>
                           <option value="option3">Option 3</option>
                           <option value="option4">Option 4</option>
                         </select>
-
-                        <input
-                          type="text"
-                          class="form-control w-50"
-                          aria-label="Text input with select list"
-                          id="formGustInfoName"
-                        />
+                        <input type="text" class="form-control w-50" aria-label="Text input with select list"
+                          id="formGustInfoName" />
                       </div>
                     </div>
                     <div class="mb-3">
@@ -129,64 +124,76 @@
                   <!-- Identity Information -->
                   <div class="row accordion-body">
                     <div class="col-12 mb-3">Identity Information</div>
-                    <div class="col-md-2">
-                      <DropzoneComponent id="dropzone2" />
-                    </div>
-                    <div class="col-md-9">
-                      <div class="row">
-                        <div class="col-md-4 mb-3">
-                          <label for="formIdentityInfoId" class="col-form-label">ID Number</label>
-                          <input class="form-control" type="number" id="formIdentityInfoId"
-                            placeholder="Enter ID Number" aria-label="Enter ID Number" />
-                        </div>
-                        <div class="col-md-4 mb-3">
-                          <label for="formGustIdentityIdType" class="col-form-label">ID Type</label>
-                          <select class="form-select" id="formGustIdentityIdType">
-                            <option value="" disabled selected>Select option</option>
-                            <option value="option1">Option 1</option>
-                            <option value="option2">Option 2</option>
-                            <option value="option3">Option 3</option>
-                            <option value="option4">Option 4</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-4 mb-3">
-                          <label for="formGustIssuingCountry" class="col-form-label">Issuing Country</label>
-                          <select class="form-select" id="formGustIssuingCountry">
-                            <option value="" disabled selected>Select option</option>
-                            <option value="option1">Option 1</option>
-                            <option value="option2">Option 2</option>
-                            <option value="option3">Option 3</option>
-                            <option value="option4">Option 4</option>
-                          </select>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                          <label for="formGustIssuingCity" class="col-form-label">Issuing City</label>
-                          <input class="form-control" type="text" id="formGustIssuingCity" placeholder="City"
-                            aria-label="Enter Issuing City" />
-                        </div>
-                        <div class="col-md-4 mb-3">
-                          <label for="formGustExpiryDate" class="col-form-label">Expiry Date</label>
 
-                          <input
-                            type="text"
-                            class="form-control"
-                            placeholder="YYYY-MM-DD"
-                            id="flatpickr-date-01"
-                          />
-                          <i class="fa-solid fa-calendar-days date-icon"></i>
+                    <div class="row p-3 mb-2">
+                      <div class="col-md-6">
+                        <div class="row">
+                          <div div class="col-md-4">
+                            <DropzoneComponent id="dropzone2" />
+                          </div>
+                          <div class="col-md-8">
+                            <div class="mb-3">
+                              <label for="formIdentityInfoId" class="col-form-label">ID Number</label>
+                              <input class="form-control" type="text" id="formIdentityInfoId"
+                                placeholder="Enter ID Number" aria-label="Enter ID Number Guest" />
+                            </div>
+                            <div class="mb-3">
+                              <label for="formGustIssuingCountry" class="col-form-label">Issuing Country</label>
+                              <select class="form-select" id="formGustIssuingCountry"
+                                aria-label="select Issuing Country">
+                                <option value="" disabled selected>Select option</option>
+                                <option value="option1">Option 1</option>
+                                <option value="option2">Option 2</option>
+                                <option value="option3">Option 3</option>
+                                <option value="option4">Option 4</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-md-6">
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="mb-3">
+                              <label for="formGustIdentityIdType" class="col-form-label">ID Type</label>
+                              <select class="form-select" id="formGustIdentityIdType" aria-label="select ID Type">
+                                <option value="" disabled selected>Select option</option>
+                                <option value="option1">Option 1</option>
+                                <option value="option2">Option 2</option>
+                                <option value="option3">Option 3</option>
+                                <option value="option4">Option 4</option>
+                              </select>
+                            </div>
+                          </div>
+
+                        </div>
+                        <div class="mb-0">
+                          <div class="row">
+                            <div class="col-md-6">
+                              <div class="mb-2">
+                                <label for="formGustIssuingCity" class="col-form-label">Issuing City</label>
+                                <input class="form-control" type="text" id="formGustIssuingCity" placeholder="City"
+                                  aria-label="Enter Issuing City" />
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <label for="flatpickr-date-04" class="col-form-label">Expiry Date</label>
+                              <input type="text" class="form-control" placeholder="YYYY-MM-D " id="flatpickr-date-04"
+                                ref="datePicker4" aria-label="input Text to Expiry Date" />
+                              <i class="fa-solid fa-calendar-days icon-date top"></i>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <!-- Payment Method -->
-                  <div class="row accordion-body">
-                    <div class="col-12">Payment Method</div>
-                    <div class="row">
+                    <!-- Payment Method -->
+
+                    <div class="col-12 mb-3">Payment Method</div>
+                    <div class="row mb-3">
                       <div class="col-md-3">
                         <label for="PaymentMethod" class="col-form-label">Payment Method</label>
-                        <select class="form-select" id="formGustPaymentMethod">
+                        <select class="form-select" id="formGustPaymentMethod" aria-label="select Payment Method">
                           <option value="" disabled selected>Select option</option>
                           <option value="option1">Option 1</option>
                           <option value="option2">Option 2</option>
@@ -196,7 +203,7 @@
                       </div>
                       <div class="col-md-3">
                         <label for="DirectBilling" class="col-form-label">Direct Billing A/C</label>
-                        <select class="form-select" id="formGustDirectBilling">
+                        <select class="form-select" id="formGustDirectBilling" aria-label="select Direct Billing A/C">
                           <option value="" disabled selected>Select option</option>
                           <option value="option1">Option 1</option>
                           <option value="option2">Option 2</option>
@@ -205,27 +212,18 @@
                         </select>
                       </div>
                     </div>
-                  </div>
-                  <!-- Personal Information part 1 -->
-                  <div class="row accordion-body">
-                    <div class="col-12">Personal Information</div>
-                    <div class="row">
+                    <!-- Personal Information part 1 -->
+                    <div class="col-12 mb-3">Personal Information</div>
+                    <div class="row mb-3">
                       <div class="col-md-3">
-                        <label for="formGustPersonalInfoBirth " class="col-form-label"
-                          >Birth Date</label
-                        >
-                        <input
-                          type="text"
-                          class="form-control flatpickr-input"
-                          placeholder="Select Date"
-                          id="flatpickr-date-01"
-                          ref="datePicker1"
-                        />
-                        <i class="fa-solid fa-calendar-days date-icon"></i>
+                        <label for="formGustPersonalInfoBirth " class="col-form-label">Birth Date</label>
+                        <input type="text" class="form-control flatpickr-input" placeholder="Select Date"
+                          id="flatpickr-date-05" ref="datePicker5" aria-label="input Text to Birth Date" />
+                        <i class="fa-solid fa-calendar-days icon-date top"></i>
                       </div>
                       <div class="col-md-3">
                         <label for="BirthCountry" class="col-form-label">Birth Country</label>
-                        <select class="form-select" id="formGustBirthCountry">
+                        <select class="form-select" id="formGustBirthCountry" aria-label="select Birth Country">
                           <option value="" disabled selected>Select option</option>
                           <option value="option1">Option 1</option>
                           <option value="option2">Option 2</option>
@@ -235,7 +233,7 @@
                       </div>
                       <div class="col-md-3">
                         <label for="NationalityGuest" class="col-form-label">Nationality</label>
-                        <select class="form-select" id="formGustNationality">
+                        <select class="form-select" id="formGustNationality" aria-label="select Nationality">
                           <option value="" disabled selected>Select option</option>
                           <option value="option1">Option 1</option>
                           <option value="option2">Option 2</option>
@@ -245,7 +243,7 @@
                       </div>
                       <div class="col-md-3">
                         <label for="VIPGuest" class="col-form-label">VIP Status</label>
-                        <select class="form-select" id="formGustVIP">
+                        <select class="form-select" id="formGustVIP" aria-label="select VIP">
                           <option value="" disabled selected>Select option</option>
                           <option value="option1">Option 1</option>
                           <option value="option2">Option 2</option>
@@ -254,35 +252,21 @@
                         </select>
                       </div>
                     </div>
-                  </div>
-                  <!-- Personal Information part 2 -->
-                  <div class="row accordion-body">
+                    <!-- Personal Information part 2 -->
+
                     <div class="row">
                       <div class="col-md-3">
-                        <label for="formGustSpouseBirth" class="col-form-label"
-                          >Spouse Birth Date</label
-                        >
-                        <input
-                          type="text"
-                          class="form-control flatpickr-input"
-                          placeholder="Select Date"
-                          id="flatpickr-date-01"
-                          ref="datePicker1"
-                        />
-                        <i class="fa-solid fa-calendar-days date-icon"></i>
+                        <label for="formGustSpouseBirth" class="col-form-label">Spouse Birth Date</label>
+                        <input type="text" class="form-control flatpickr-input" placeholder="Select Date"
+                          id="flatpickr-date-06" ref="datePicker6" aria-label="input Text to Spouse Birth Date" />
+                        <i class="fa-solid fa-calendar-days icon-date top"></i>
                       </div>
                       <div class="col-md-3">
-                        <label for="formGustWeddingAnni" class="col-form-label"
-                          >Wedding Anniversary</label
-                        >
-                        <input
-                          type="text"
-                          class="form-control flatpickr-input"
-                          placeholder="Select Date"
-                          id="flatpickr-date-01"
-                          ref="datePicker1"
-                        />
-                        <i class="fa-solid fa-calendar-days date-icon"></i>
+                        <label for="flatpickr-date-07" class="col-form-label">Wedding
+                          Anniversary</label>
+                        <input type="text" class="form-control flatpickr-input" placeholder="Select Date"
+                          id="flatpickr-date-07" ref="datePicker7" aria-label="input Text to Wedding Anniversary" />
+                        <i class="fa-solid fa-calendar-days icon-date top"></i>
                       </div>
                       <div class="col-md-3">
                         <label for="formGustRegistration" class="col-form-label">Registration No</label>
@@ -294,11 +278,9 @@
                 </div>
               </div>
             </div>
+
             <div class="scbuttons gap-2 d-flex justify-content-end">
-              <button
-                @click="$emit('close-sidebar')"
-                class="btn btn-secondary waves-effect waves-light"
-              >
+              <button @click="$emit('close-sidebar')" class="btn btn-secondary waves-effect waves-light">
                 Close
               </button>
               <button type="submit" class="btn btn-primary waves-effect waves-light">
@@ -316,10 +298,7 @@
 </template>
 
 <script>
-import flatpickr from "flatpickr";
-import "flatpickr/dist/flatpickr.min.css";
-import DropZone from "dropzone";
-import "dropzone/dist/dropzone.css";
+import flatpickrMixin from "../Mixin/flatpickrMixin";
 import DropzoneComponent from "./DropzoneComponent.vue";
 export default {
   name: "Sidebar",
@@ -342,40 +321,15 @@ export default {
       default: "1000px",
     },
   },
-  // mounted() {
-  // // Array of date picker refs or IDs
-  // const datePickers = [
-  //   this.$refs.datePicker4,
-  //   this.$refs.datePicker5,
-  //   this.$refs.datePicker6,
-  //   this.$refs.datePicker7,
-  // ];
-
-  // // Loop through the date pickers and apply flatpickr
-  // datePickers.forEach((picker) => {
-  //   flatpickr(picker, {
-  //     dateFormat: "Y-m-d",
-  //   });
-  // });
-
-  // // Array of time picker refs or IDs
-  // const timePickers = [
-  //   this.$refs.timePicker4,
-  //   this.$refs.timePicker5,
-  //   this.$refs.timePicker6,
-  //   this.$refs.timePicker7,
-  // ];
-
-  // // Loop through the time pickers and apply flatpickr
-  // timePickers.forEach((picker, index) => {
-  //   flatpickr(picker, {
-  //     enableTime: true, // Enable the time picker
-  //     noCalendar: true, // Disable the calendar (only time selection)
-  //     dateFormat: "H:i", // Customizable time format
-  //     time_24hr: index === 2 ? false : true, // 12-hour format for the third picker, 24-hour for others
-  //   });
-  // });
-// },
+  mixins: [flatpickrMixin],
+  watch: {
+    isSidebarOpen (newVal)
+    {
+      if (newVal) {
+        this.initFlatpickers(); // Re-initialize Flatpickr when sidebar opens
+      }
+    },
+  },
 
 };
 </script>
