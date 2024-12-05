@@ -15,38 +15,29 @@
                 <!-- Date Picker-->
                 <div class="col-md-3 col-12 px-0">
                   <label for="flatpickr-date-01" class="form-label">Check-in</label>
-                  <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD"
-                    id="flatpickr-date-01" ref="datePicker1" />
+                  <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD" id="flatpickr-date-01" ref="datePicker1" />
                   <i class="fa-solid fa-calendar-days icon-date"></i>
                 </div>
-
                 <!-- Date Picker -->
-
                 <!-- Time Picker-->
                 <div class="col-md-3 col-12 px-0">
                   <div class="input-group mt-4">
-                    <input type="text" class="form-control flatpickr-input" placeholder="HH:MM" id="flatpickr-time-01"
-                      ref="timePicker1" />
+                    <input type="text" class="form-control flatpickr-input" placeholder="HH:MM" id="flatpickr-time-01" ref="timePicker1" aria-label="input Text to Time" />
                     <i class="fa-regular fa-clock icon-time"></i>
                     <span class="input-group-text total-nights" id="basic-addon13">4 nights</span>
                   </div>
                 </div>
-
                 <!-- Time Picker-->
-
                 <!-- Date Picker-->
                 <div class="col-md-3 col-12 px-0">
                   <label for="flatpickr-date-02" class="form-label ms-3">Check-out</label>
-                  <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD"
-                    id="flatpickr-date-02" ref="datePicker2" />
+                  <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD" id="flatpickr-date-02" ref="datePicker2" />
                   <i class="fa-solid fa-calendar-days icon-date"></i>
                 </div>
                 <!-- /Date Picker -->
-
                 <!-- Time Picker-->
                 <div class="col-md-3 col-12 mt-4 px-0">
-                  <input type="text" class="form-control flatpickr-input" placeholder="HH:MM" id="flatpickr-time-02"
-                    ref="timePicker2" aria-label="close" />
+                  <input type="text" class="form-control flatpickr-input" placeholder="HH:MM" id="flatpickr-time-02" ref="timePicker2" aria-label="close" />
                   <i class="fa-regular fa-clock icon-time right"></i>
                 </div>
               </div>
@@ -55,8 +46,7 @@
               <div class="row">
                 <div class="col-md-3 col-12">
                   <label for="roomCount" class="form-label">Room(s)</label>
-                  <input class="form-control" type="number" id="roomCount" v-model="roomCount" min="1"
-                    @input="updateRepeater" />
+                  <input class="form-control" type="number" id="roomCount" v-model="roomCount" min="1" @input="updateRepeater" />
                 </div>
                 <div class="col-md-9 col-12 mb-4">
                   <label for="reservationType" class="form-label">Reservation Type</label>
@@ -93,10 +83,8 @@
               </div>
             </div>
           </div>
-
           <hr class="my-4" />
           <!--   ! check inputs and repeater -->
-
           <div class="row mb-3">
             <div class="row">
               <div class="col-md-4">
@@ -133,7 +121,6 @@
                 </div>
               </div>
               <!--  ! table Header -->
-
               <!-- change width delete border color  -->
               <div class="card mt-3 border-0">
                 <div class="card-datatable table-responsive">
@@ -149,9 +136,7 @@
                       </tr>
                     </thead>
                     <!--  ! table Header -->
-
                     <!--  ! table body -->
-
                     <tbody>
                       <tr v-for="(item, index) in formData" :key="index" class="mb-2 selectStyle">
                         <td>
@@ -205,8 +190,7 @@
                               </select>
                             </div>
                             <div class="col-md-2 p-0">
-                              <button class="btn btn-label-danger" type="button" v-if="index >= existingItemsCount"
-                                @click="removeItem(index)">
+                              <button class="btn btn-label-danger" type="button" v-if="index >= existingItemsCount" @click="removeItem(index)">
                                 <i class="fa-solid fa-xmark"></i>
                               </button>
                             </div>
@@ -215,9 +199,7 @@
                       </tr>
                     </tbody>
                     <!--  ! table body -->
-
                     <!--  ! table footer -->
-
                     <tfoot>
                       <!--change style button  -->
                       <button class="btn btn-primary waves-effect waves-light mt-3" type="button" @click="addItem">
@@ -231,10 +213,8 @@
               <!--   ! check inputs and repeater -->
             </div>
           </div>
-
           <hr class="my-4" />
           <!--  ! Hold Release Date & Time -->
-
           <div class="row">
             <div class="col-md-5">
               <div class="row">
@@ -242,21 +222,15 @@
                   <div class="row">
                     <div class="col-md-6 col-12 px-0">
                       <label for="flatpickr-date-03" class="form-label">Hold Release Date & Time</label>
-                      <input type="text" placeholder="YYYY-MM-DD" id="flatpickr-date-03"
-                        class="form-control flatpickr-input" ref="datePicker3" />
+                      <input type="text" placeholder="YYYY-MM-DD" id="flatpickr-date-03" class="form-control flatpickr-input" ref="datePicker3" />
                       <i class="fa-solid fa-calendar-days icon-date"></i>
                     </div>
                     <div class="col-md-6 col-12 px-0 mt">
-                      <input type="text" placeholder="HH:MM" id="flatpickr-time-03" class="form-control flatpickr-input"
-                        ref="timePicker3" />
+                      <input type="text" placeholder="HH:MM" id="flatpickr-time-03" class="form-control flatpickr-input" ref="timePicker3" />
                       <i class="fa-regular fa-clock icon-time right"></i>
                     </div>
                   </div>
-
-
                 </div>
-
-
                 <div class="col-md-4 col-12">
                   <label for="releaseTerm" class="form-label">Release Term
                   </label>
@@ -293,11 +267,9 @@
             </div>
           </div>
           <!--  ! Hold Release Date & Time -->
-
           <hr class="my-4" />
           <!--  ! Guest Information -->
           <h6 class="mb-2">Guest Information</h6>
-
           <div class="row">
             <div class="col-md-5">
               <label for="nameGuest" class="col-form-label">Guest Name</label>
@@ -312,10 +284,7 @@
                   <option value="option4">Sir.</option>
                   <option value="option4">Sr.</option>
                 </select>
-
-                <input type="text" class="form-control w-50" aria-label="Text input with 2 dropdown buttons"
-                  id="nameGuest" />
-
+                <input type="text" class="form-control w-50" aria-label="Text input with 2 dropdown buttons" id="nameGuest" />
                 <!-- Use the Sidebar component -->
                 <button class="btn btn-outline-primary waves-effect" type="button" @click="toggleSidebar">
                   <i class="fa-solid fa-user-plus"></i>
@@ -360,15 +329,10 @@
               </div>
             </div>
           </div>
-
           <!--  ! Guest Information -->
-
           <!--  ! Other Information -->
-
           <hr class="my-4" />
-
           <h6 class="mb-3">Other Information</h6>
-
           <div class="row">
             <div class="form-check mb-3">
               <input class="form-check-input" type="checkbox" id="otherInformationCheck01" v-model="showSelect" />
@@ -383,7 +347,6 @@
                 <option value="option3">Option 3</option>
               </select>
             </div>
-
             <div class="form-check mb-3">
               <input class="form-check-input" type="checkbox" id="otherInformationCheck02" v-model="showInput" />
               <label class="form-check-label" for="otherInformationCheck02">
@@ -392,8 +355,7 @@
             </div>
             <div v-if="showInput" class="mb-3">
               <div class="input-group">
-                <input type="email" id="emailInput" class="form-control"
-                  placeholder="Use comma to add multiple email address" aria-label="send email to check" />
+                <input type="email" id="emailInput" class="form-control" placeholder="Use comma to add multiple email address" aria-label="send email to check" />
                 <button class="btn btn-primary" type="button">
                   Preview Voucher
                 </button>
@@ -410,12 +372,11 @@
               <label class="form-check-label" for="otherInformationCheck04">
                 Supress Rate on Registration Card
               </label>
+              vwv
             </div>
           </div>
           <!--  ! Other Information -->
-
           <hr class="my-4" />
-
           <div class="row">
             <div class="col-12 text-end">
               <button type="button" class="btn btn-lg btn-secondary waves-effect waves-light">
@@ -431,79 +392,5 @@
     </div>
   </section>
 </template>
-
-<script>
-import flatpickrMixin from "../Mixin/flatpickrMixin";
-import Sidebar from "../layout/Sidebar.vue";
-
-export default {
-  name: "CheckIn",
-  layout: "component",
-  components: { Sidebar },
-
-  data ()
-  {
-    return {
-      roomCount: 1, // Default number of rooms
-      showSelect: false,
-      showInput: false,
-      isSidebarOpen: false,
-
-      formData: [
-        {
-          rooms: 1,
-        },
-      ],
-      existingItemsCount: 1,
-    };
-  },
-  watch: {
-    roomCount ()
-    {
-      this.updateRepeater();
-    },
-  },
-  methods: {
-    updateRepeater ()
-    {
-      const currentCount = this.formData.length;
-      if (currentCount < this.roomCount) {
-        for (let i = currentCount; i < this.roomCount; i++) {
-          this.formData.push({
-            rooms: 1,
-          });
-        }
-      } else if (currentCount > this.roomCount) {
-        this.formData.splice(this.roomCount);
-      }
-    },
-    addItem ()
-    {
-      this.formData.push({
-        rooms: 1,
-      });
-      this.roomCount = this.formData.length;
-    },
-    removeItem (index)
-    {
-      if (this.formData.length > 1) {
-        this.formData.splice(index, 1);
-        this.roomCount = this.formData.length;
-      }
-    },
-
-    isNewItem (index)
-    {
-      return index >= this.existingItemsCount;
-    },
-    toggleSidebar ()
-    {
-      this.isSidebarOpen = !this.isSidebarOpen;
-    },
-  },
-
-  mixins: [flatpickrMixin],
-};
-</script>
-
+<script>import flatpickrMixin from "../Mixin/flatpickrMixin"; import Sidebar from "../layout/Sidebar.vue"; export default { name: "CheckIn", layout: "component", components: { Sidebar }, data () { return { roomCount: 1, // Default number of rooms showSelect: false, showInput: false, isSidebarOpen: false, formData: [ { rooms: 1, }, ], existingItemsCount: 1, }; }, watch: { roomCount () { this.updateRepeater(); }, }, methods: { updateRepeater () { const currentCount = this.formData.length; if (currentCount < this.roomCount) { for (let i = currentCount; i < this.roomCount; i++) { this.formData.push({ rooms: 1, }); } } else if (currentCount > this.roomCount) { this.formData.splice(this.roomCount); } }, addItem () { this.formData.push({ rooms: 1, }); this.roomCount = this.formData.length; }, removeItem (index) { if (this.formData.length > 1) { this.formData.splice(index, 1); this.roomCount = this.formData.length; } }, isNewItem (index) { return index >= this.existingItemsCount; }, toggleSidebar () { this.isSidebarOpen = !this.isSidebarOpen; }, }, mixins: [flatpickrMixin], }; </script>
 <style></style>
