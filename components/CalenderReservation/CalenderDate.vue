@@ -7,32 +7,32 @@
         <b>{{ arg.event.title }}</b>
       </template>
     </FullCalendar>
+
     <!-- FullCalendar -->
 
     <!-- Overlay -->
     <div v-if="isOverlayVisible" class="overlay" @click="closePopover"></div>
 
     <!-- Popover content  -->
-    <div v-if="isPopoverVisible" class="popover fade show bs-popover-top rounded-0" role="tooltip" :style="popoverStyle"
-      x-placement="top">
+    <div v-if="isPopoverVisible" class="popover fade show bs-popover-top rounded-0" role="tooltip" :style="popoverStyle" x-placement="top">
       <div class="arrow" :style="{ left: popoverArrowLeft }"></div>
       <div class="popover-body">
-        <div class="sc-iXKDzi hYjxWD popoverContent text-center">
+        <div class="popoverContent text-center">
           <div class="row" style="row-gap: 0px">
             <!-- Display first selected day -->
             <div class="ant-col col-6">
-              <div class="sc-dhqjGB ilNAzn text-black fw-bold">Arrival</div>
-              <div class="sc-hDiigY bsfKst">{{ firstSelectedDate }}</div>
+              <div class="text-black fw-bold">Arrival</div>
+              <div class="">{{ firstSelectedDate }}</div>
             </div>
 
             <!-- Display last selected day -->
             <div class="ant-col col-6">
-              <div class="sc-dhqjGB ilNAzn text-black fw-bold">Departure</div>
+              <div class="text-black fw-bold">Departure</div>
               <div>{{ lastSelectedDate }}</div>
             </div>
           </div>
 
-          <div class="row ">
+          <div class="row">
             <hr class="my-2 w-75 mx-auto" />
             <button type="button" class="ant-btn ant-btn-link ant-btn-block">
               <span>Walk In / Reservation</span>
@@ -43,8 +43,7 @@
             </button>
           </div>
 
-          <span role="img" aria-label="close" tabindex="-1" class="anticon anticon-close sc-ibMOqO bkIyqW popoverClose"
-            @click="closePopover">
+          <span role="img" aria-label="close" tabindex="-1" class="anticon anticon-close sc-ibMOqO bkIyqW popoverClose" @click="closePopover">
             <i class="fa-solid fa-xmark"></i>
           </span>
         </div>
@@ -74,13 +73,15 @@ export default {
       popoverStyle: {}, // Inline style for popover positioning
       popoverArrowLeft: "0px", // Inline style for arrow positioning
       firstSelectedDate: "", // Store first selected date
-      lastSelectedDate: "", // Store last selected date
+      lastSelectedDate: "",
+      // Store last selected date
       calendarOptions: {
         plugins: [resourceTimelinePlugin, interactionPlugin],
         initialView: "resourceTimeline",
         duration: { days: 20 },
         weekends: true,
         resources: this.createResources(),
+
         selectable: true, // Enable date selection
         selectMirror: true, // Make the selection draggable
         eventTimeFormat: {
@@ -103,10 +104,10 @@ export default {
 
             return {
               html: `
-        <div class="custom-slot-label">
-          <div class="slot-month">${month}</div>
-        </div>
-      `,
+          <div class="custom-slot-label">
+            <div class="slot-month">${month}</div>
+          </div>
+        `,
             };
           }
 
@@ -119,11 +120,11 @@ export default {
 
             return {
               html: `
-        <div class="custom-slot-label">
-          <div class="slot-day">${day}</div>
-          <div class="slot-weekday">${weekday}</div>
-        </div>
-      `,
+          <div class="custom-slot-label">
+            <div class="slot-day">${day}</div>
+            <div class="slot-weekday">${weekday}</div>
+          </div>
+        `,
             };
           }
 
@@ -131,18 +132,16 @@ export default {
         },
 
         resourceGroupField: "groupId",
-        resourceLabelText: "Rooms",
         resourceAreaHeaderContent: this.customResourceHeader, // Customize header
         dateClick: this.handleDateClick,
         select: this.handleSelect,
         events: [], // Store events programmatically
-        isExpanded: true, // Toggle for expanding/collapsing resources
-
       },
     };
   },
   methods: {
-    createResources() {
+    createResources ()
+    {
       const roomData = [
         { id: "a", title: "Room A", subrooms: ["A1", "A2", "A3"] },
         { id: "b", title: "Room B", subrooms: ["B1", "B2", "B3"] },
@@ -150,52 +149,28 @@ export default {
       ];
       const resources = [];
 
-      roomData.forEach((room) => {
+      roomData.forEach((room) =>
+      {
         resources.push({
           id: room.id,
           title: room.title,
           groupId: room.id,
-          classNames: ['resource'], // Add class to easily select room cells
+          classNames: ["resource"], // Add class to easily select room cells
         });
 
-        room.subrooms.forEach((subroom) => {
+        room.subrooms.forEach((subroom) =>
+        {
           resources.push({
             id: `${room.id}-${subroom}`,
             title: subroom,
             resourceId: room.id,
             groupId: room.id,
-            classNames: ['subroom'], // Add class to easily select subroom cells
+            classNames: ["subroom"], // Add class to easily select subroom cells
           });
         });
       });
 
       return resources;
-    },
-
-    toggleResourceExpand() {
-      this.isExpanded = !this.isExpanded; // Toggle expand/collapse state
-
-      // Get all rows for rooms and subrooms
-      const resourceCells = document.querySelectorAll('.fc-datagrid-cell.fc-resource'); // Select all resource rows
-      const subroomCells = document.querySelectorAll('.fc-datagrid-cell.fc-subroom'); // Select all subroom rows
-
-      resourceCells.forEach((cell) => {
-        // Collapse or expand all cells under the room id
-        const roomId = cell.dataset.resourceId;
-        if (this.isExpanded) {
-          // Expand: Remove collapsed class
-          document.querySelectorAll(`[data-resource-id='${roomId}']`).forEach((subCell) => {
-            subCell.classList.remove('collapsed');
-          });
-        } else {
-          // Collapse: Add collapsed class
-          document.querySelectorAll(`[data-resource-id='${roomId}']`).forEach((subCell) => {
-            subCell.classList.add('collapsed');
-          });
-        }
-      });
-
-      this.calendarOptions.resources = this.createResources(); // Recreate the resource list
     },
 
     handleSelect (info)
@@ -259,39 +234,30 @@ export default {
       this.showPopover();
     },
 
-    // showPopover() {
-    //   this.isPopoverVisible = true; // Show the popover with selected dates
-
-    //   // Find the position of the first .fc-highlight element
-    //   const firstHighlight = document.querySelector(".fc-highlight");
-    //   if (firstHighlight) {
-    //     const rect = firstHighlight.getBoundingClientRect();
-    //     this.popoverStyle = {
-    //       left: `${rect.left + window.scrollX}px`,
-    //       top: `${rect.bottom + window.scrollY}px`,
-    //     };
-    //     this.popoverArrowLeft = `${(rect.width / 2) - 10}px`; // Position the arrow in the middle
-    //   }
-    // },
-
-    // sama function and try the top spacing is correct but the left is need to adjust
     showPopover ()
     {
-      this.isPopoverVisible = true; // عرض الـ Popover
+      this.isPopoverVisible = true; // Show the Popover
 
       this.$nextTick(() =>
       {
         const popoverElement = document.querySelector(".popover");
         this.popoverHeight = popoverElement ? popoverElement.offsetHeight : 0;
+
         const highlightElements = document.querySelectorAll(".fc-highlight");
+
         if (highlightElements.length > 0) {
           const lastHighlight = highlightElements[highlightElements.length - 1];
           const rect = lastHighlight.getBoundingClientRect();
+
+          // Position the popover centered on top of the last highlighted element
           this.popoverStyle = {
-            left: `${rect.left + rect.width / 2 - 90}px`, // Adjust alignment
-            top: `${rect.top + window.scrollY - this.popoverHeight - 90}px`, // Position above
+            left: `${rect.left + rect.width / 2 - popoverElement.offsetWidth / 50
+              }px`, // Center horizontally
+            top: `${rect.top + window.scrollY - this.popoverHeight - 90}px`, // Position above the element
           };
-          this.popoverArrowLeft = `${rect.width / 2 - 10}px`;
+
+          // Center the arrow horizontally in the popover
+          this.popoverArrowLeft = `${popoverElement.offsetWidth / 2 - 10}px`; // Adjust arrow to the center of the popover
         } else {
           alert("No highlighted elements found.");
         }
@@ -309,117 +275,165 @@ export default {
       this.isOverlayVisible = false;
     },
 
-    customResourceHeader() {
+    customResourceHeader ()
+    {
       const container = document.createElement("div");
       container.classList.add("resource-header");
+      container.style.position = "relative"; // Ensure parent has position: relative
 
-      const title = document.createElement("span");
-      title.textContent = "Rooms";
+      // Create the select element directly
+      const dropdownSelect = document.createElement("select");
+      dropdownSelect.classList.add("dropdown-menu");
+      dropdownSelect.style.position = "relative";
+      dropdownSelect.style.width = "465px";
+      dropdownSelect.style.backgroundColor = "white";
+      dropdownSelect.style.border = "1px solid #ccc";
+      dropdownSelect.style.padding = "10px";
+      dropdownSelect.style.display = "block"; // Show select box when clicked
 
+      // Create a container to display the default selected option (e.g., "Select Room")
+      const displaySelectedText = document.createElement("span");
+      displaySelectedText.textContent = "Select Room"; // Default text
+      dropdownSelect.appendChild(displaySelectedText);
+
+      // Add the options for each room (and their subrooms)
+      const roomData = this.createResources(); // Assuming createResources() returns room data with subrooms
+      roomData.forEach((resource) =>
+      {
+        const option = document.createElement("option");
+        option.value = resource.id;
+        option.textContent = `Room: ${resource.title}`;
+        dropdownSelect.appendChild(option);
+
+        // Add options for subrooms if available
+        if (resource.subrooms && Array.isArray(resource.subrooms)) {
+          resource.subrooms.forEach((subroom) =>
+          {
+            const subOption = document.createElement("option");
+            subOption.value = subroom.id;
+            subOption.textContent = `Subroom: ${subroom.title}`;
+            dropdownSelect.appendChild(subOption);
+          });
+        }
+
+        // Toggle resource expand/collapse based on room selection
+        option.addEventListener("change", () =>
+        {
+          if (option.selected) {
+            this.toggleResourceExpand(resource.id);
+            // Select subrooms if the parent room is selected
+            if (resource.subrooms) {
+              resource.subrooms.forEach((subroom) =>
+              {
+                this.toggleResourceExpand(subroom.id);
+              });
+            }
+          }
+        });
+      });
+
+      // Handle "Select All" functionality
+      const selectAllOption = document.createElement("option");
+      selectAllOption.value = "selectAll";
+      selectAllOption.textContent = "Select All";
+      dropdownSelect.insertBefore(selectAllOption, dropdownSelect.firstChild); // Add Select All as the first option
+
+      // Function to update the dropdown text based on selected options
+      function updateSelectedText ()
+      {
+        const selectedOptions = dropdownSelect.selectedOptions;
+        const selectedTitles = Array.from(selectedOptions)
+          .map((option) => option.textContent)
+          .join(", ");
+
+        // Update the displayed text inside the select box
+        displaySelectedText.textContent = selectedTitles || "Select Room";
+
+        // Show the "Select All" option only when nothing is selected
+        selectAllOption.style.display =
+          selectedOptions.length > 0 ? "none" : "block";
+      }
+
+      // Attach event to update selected options when selection changes
+      dropdownSelect.addEventListener("change", updateSelectedText);
+
+      // Add the collapse/expand icon
       const icon = document.createElement("i");
       icon.classList.add("fa-solid", this.isExpanded ? "fa-minus" : "fa-plus");
       icon.style.cursor = "pointer";
       icon.style.marginLeft = "8px";
 
-      icon.addEventListener("click", this.toggleResourceExpand); // Toggle expand/collapse when clicked
+      // Click event to toggle collapse/expand all
+      icon.addEventListener("click", () =>
+      {
+        this.toggleResourceExpand(); // Toggle expand/collapse all
+      });
 
-      container.appendChild(title);
-      container.appendChild(icon);
+      container.appendChild(icon); // Append icon first
+
+      // Ensure that the dropdown is added to the DOM
+      container.appendChild(dropdownSelect);
 
       return { domNodes: [container] };
     },
 
+    toggleResourceExpand (selectedRoomId = null)
+    {
+      this.isExpanded = !this.isExpanded; // Toggle expand/collapse state
 
+      const resourceCells = document.querySelectorAll(
+        ".fc-datagrid-cell.fc-resource"
+      );
+      const subroomCells = document.querySelectorAll(
+        ".fc-datagrid-cell.fc-subroom"
+      );
 
+      // If a room is selected, collapse or expand that specific resource
+      if (selectedRoomId) {
+        const resourceCell = document.querySelector(
+          `[data-resource-id='${selectedRoomId}']`
+        );
+        if (resourceCell) {
+          const subCells = document.querySelectorAll(
+            `[data-resource-id='${selectedRoomId}']`
+          );
+          subCells.forEach((subCell) =>
+          {
+            if (this.isExpanded) {
+              subCell.classList.remove("collapsed");
+            } else {
+              subCell.classList.add("collapsed");
+            }
+          });
+        }
+      } else {
+        // If no specific room is selected, toggle all rooms
+        resourceCells.forEach((cell) =>
+        {
+          const roomId = cell.dataset.resourceId;
+          if (this.isExpanded) {
+            document
+              .querySelectorAll(`[data-resource-id='${roomId}']`)
+              .forEach((subCell) =>
+              {
+                subCell.classList.remove("collapsed");
+              });
+          } else {
+            document
+              .querySelectorAll(`[data-resource-id='${roomId}']`)
+              .forEach((subCell) =>
+              {
+                subCell.classList.add("collapsed");
+              });
+          }
+        });
+      }
 
-
-
-
-
-
-
-
+      // Recreate the resources to apply changes
+      // this.calendarOptions.resources = this.createResources();
+    },
   },
 };
 </script>
 
-<style>
-.fc-timeline-slot-frame {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.slot-label-weekday {
-  font-weight: bold;
-}
-
-.slot-label-day {
-  font-size: 16px;
-}
-
-.slot-label-month {
-  font-size: 12px;
-  color: gray;
-}
-
-.fc-timeline-header-row th {
-  border: 0;
-  border-right: 1px solid #D1D4D9;
-  border-left: 1px solid #D1D4D9;
-}
-
-.fc-timeline-header-row-chrono {
-  border-bottom: 1px solid #D1D4D9;
-
-}
-
-.fc .fc-timeline-header-row-chrono .fc-timeline-slot-frame {
-  justify-content: flex-end;
-}
-
-.fc .fc-timeline-header-row:last-child .fc-timeline-slot-frame {
-  overflow: visible;
-}
-
-.resource-header-container {
-  width: 200px;
-  font-family: Arial, sans-serif;
-}
-
-.resource-header-select {
-  border: 1px solid #ccc;
-  padding: 8px;
-  border-radius: 4px;
-  background-color: white;
-}
-
-.resource-header-selected-label {
-  font-weight: bold;
-  padding-right: 5px;
-}
-
-.checkbox-container {
-  margin-top: 5px;
-  padding: 10px;
-  border-top: 1px solid #ccc;
-  display: none;
-  max-height: 150px;
-  overflow-y: auto;
-  background-color: white;
-}
-
-.checkbox-option-wrapper {
-  margin-bottom: 8px;
-}
-
-.resource-header-checkbox {
-  margin-right: 10px;
-}
-
-.fc .fc-timeline-slot-cushion {
-
-  position: relative;
-  top: -4px;
-}
-</style>
+<style></style>

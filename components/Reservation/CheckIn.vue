@@ -226,14 +226,13 @@
                       <i class="fa-solid fa-calendar-days icon-date"></i>
                     </div>
                     <div class="col-md-6 col-12 px-0 mt">
-                      <input type="text" placeholder="HH:MM" id="flatpickr-time-03" class="form-control flatpickr-input" ref="timePicker3" />
+                      <input type="text" placeholder="HH:MM" id="flatpickr-time-03" class="form-control flatpickr-input" ref="timePicker3" aria-label="input Text to Time" />
                       <i class="fa-regular fa-clock icon-time right"></i>
                     </div>
                   </div>
                 </div>
                 <div class="col-md-4 col-12">
-                  <label for="releaseTerm" class="form-label">Release Term
-                  </label>
+                  <label for="releaseTerm" class="form-label">Release Term</label>
                   <div class="input-group">
                     <input type="text" class="form-control" placeholder="Value" id="releaseTerm" />
                     <span class="input-group-text groupStyle">%</span>
@@ -244,8 +243,7 @@
             <div class="col-md-7">
               <div class="row">
                 <div class="col-md-4 col-12">
-                  <label for="releaseTerm" class="form-label">Remind Guest before
-                  </label>
+                  <label for="releaseTerm" class="form-label">Remind Guest before</label>
                   <div class="input-group">
                     <input type="number" class="form-control" placeholder="0" id="releaseTerm" />
                     <span class="input-group-text groupStyle">Days</span>
@@ -349,9 +347,7 @@
             </div>
             <div class="form-check mb-3">
               <input class="form-check-input" type="checkbox" id="otherInformationCheck02" v-model="showInput" />
-              <label class="form-check-label" for="otherInformationCheck02">
-                Send email at Check-out
-              </label>
+              <label class="form-check-label" for="otherInformationCheck02"> Send email at Check-out </label>
             </div>
             <div v-if="showInput" class="mb-3">
               <div class="input-group">
@@ -392,5 +388,78 @@
     </div>
   </section>
 </template>
-<script>import flatpickrMixin from "../Mixin/flatpickrMixin"; import Sidebar from "../layout/Sidebar.vue"; export default { name: "CheckIn", layout: "component", components: { Sidebar }, data () { return { roomCount: 1, // Default number of rooms showSelect: false, showInput: false, isSidebarOpen: false, formData: [ { rooms: 1, }, ], existingItemsCount: 1, }; }, watch: { roomCount () { this.updateRepeater(); }, }, methods: { updateRepeater () { const currentCount = this.formData.length; if (currentCount < this.roomCount) { for (let i = currentCount; i < this.roomCount; i++) { this.formData.push({ rooms: 1, }); } } else if (currentCount > this.roomCount) { this.formData.splice(this.roomCount); } }, addItem () { this.formData.push({ rooms: 1, }); this.roomCount = this.formData.length; }, removeItem (index) { if (this.formData.length > 1) { this.formData.splice(index, 1); this.roomCount = this.formData.length; } }, isNewItem (index) { return index >= this.existingItemsCount; }, toggleSidebar () { this.isSidebarOpen = !this.isSidebarOpen; }, }, mixins: [flatpickrMixin], }; </script>
+<script>
+import flatpickrMixin from "../Mixin/flatpickrMixin";
+import Sidebar from "../layout/Sidebar.vue";
+
+export default {
+  name: "CheckIn",
+  layout: "component",
+  components: { Sidebar },
+
+  data ()
+  {
+    return {
+      roomCount: 1, // Default number of rooms
+      showSelect: false,
+      showInput: false,
+      isSidebarOpen: false,
+
+      formData: [
+        {
+          rooms: 1,
+        },
+      ],
+      existingItemsCount: 1,
+    };
+  },
+  watch: {
+    roomCount ()
+    {
+      this.updateRepeater();
+    },
+  },
+  methods: {
+    updateRepeater ()
+    {
+      const currentCount = this.formData.length;
+      if (currentCount < this.roomCount) {
+        for (let i = currentCount; i < this.roomCount; i++) {
+          this.formData.push({
+            rooms: 1,
+          });
+        }
+      } else if (currentCount > this.roomCount) {
+        this.formData.splice(this.roomCount);
+      }
+    },
+    addItem ()
+    {
+      this.formData.push({
+        rooms: 1,
+      });
+      this.roomCount = this.formData.length;
+    },
+    removeItem (index)
+    {
+      if (this.formData.length > 1) {
+        this.formData.splice(index, 1);
+        this.roomCount = this.formData.length;
+      }
+    },
+
+    isNewItem (index)
+    {
+      return index >= this.existingItemsCount;
+    },
+    toggleSidebar ()
+    {
+      this.isSidebarOpen = !this.isSidebarOpen;
+    },
+  },
+
+  mixins: [flatpickrMixin],
+};
+</script>
+
 <style></style>

@@ -112,6 +112,95 @@
   min-width: 24px;
   line-height: 24px;
 }
+.fc-timeline-slot-frame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.slot-label-weekday {
+  font-weight: bold;
+}
+
+.slot-label-day {
+  font-size: 16px;
+}
+
+.slot-label-month {
+  font-size: 12px;
+  color: gray;
+}
+.fc-timeline-header-row th {
+  border: 0;
+  border-right: 1px solid #D1D4D9;
+  border-left: 1px solid #D1D4D9;
+}
+
+.fc-timeline-header-row-chrono {
+  border-bottom: 1px solid #D1D4D9;
+
+}
+
+.collapsed {
+  display: none;
+}
+.fc .fc-timeline-header-row-chrono .fc-timeline-slot-frame {
+  justify-content: flex-end;
+}
+
+.fc .fc-timeline-header-row:last-child .fc-timeline-slot-frame {
+  overflow: visible;
+}
+
+
+.resource-header-select {
+  border: 1px solid #ccc;
+  padding: 8px;
+  border-radius: 4px;
+  background-color: white;
+}
+
+.resource-header-selected-label {
+  font-weight: bold;
+  padding-right: 5px;
+}
+
+.checkbox-container {
+  margin-top: 5px;
+  padding: 10px;
+  border-top: 1px solid #ccc;
+  display: none;
+  max-height: 150px;
+  overflow-y: auto;
+  background-color: white;
+}
+
+.checkbox-option-wrapper {
+  margin-bottom: 8px;
+}
+
+.resource-header-checkbox {
+  margin-right: 10px;
+}
+
+.fc .fc-timeline-slot-cushion {
+
+  position: relative;
+  top: -4px;
+}
+/* .fc .fc-datagrid-cell-cushion{
+  width: 100% !important;
+}
+.resource-header{
+  display: flex;
+  align-items: center;
+}
+.dropdown-toggle{
+  width: 100vh;
+  background: transparent;
+  text-align: center;
+} */
+
 
 
 
