@@ -6,68 +6,54 @@
       </h5>
       <hr class="m-0" />
       <div class="card-body">
-        <form id="formValidationReservation" class="row g-3 fv-plugins-bootstrap5 fv-plugins-framework mt-1 ">
+        <form id="formValidationReservation" class="row g-3 fv-plugins-bootstrap5 fv-plugins-framework mt-1">
           <!--  ! Reservation  Details -->
           <!-- change in size and icons -->
-          <div class="row ">
+          <div class="row">
             <div class="col-md-8">
-              <div class="row align-items-center first_add">
+              <div class="row align-items-center">
                 <!-- Date Picker-->
-                <div class="col-md-3 col-12 Date_Picker px-0">
-                  <label for="flatpickr-date-01" class="form-label">Check-in
-                  </label>
-                  <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD"
-                    id="flatpickr-date-01" ref="datePicker1" />
-                  <i class="fa-solid fa-calendar-days"></i>
+                <div class="col-md-3 col-12 px-0">
+                  <label for="flatpickr-date-01" class="form-label">Check-in</label>
+                  <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD" id="flatpickr-date-01" ref="datePicker1" />
+                  <i class="fa-solid fa-calendar-days icon-date"></i>
                 </div>
-
                 <!-- Date Picker -->
-
                 <!-- Time Picker-->
-                <div class="col-md-3 col-12 Time_Picker px-0">
-                  <div class="input-group mt ">
-                    <input type="text" class="form-control flatpickr-input" placeholder="HH:MM" id="flatpickr-time-01"
-                      ref="timePicker1" />
-                    <i class="fa-regular fa-clock "></i>
+                <div class="col-md-3 col-12 px-0">
+                  <div class="input-group mt-4">
+                    <input type="text" class="form-control flatpickr-input" placeholder="HH:MM" id="flatpickr-time-01" ref="timePicker1" aria-label="input Text to Time" />
+                    <i class="fa-regular fa-clock icon-time"></i>
                     <span class="input-group-text total-nights" id="basic-addon13">4 nights</span>
                   </div>
                 </div>
-
                 <!-- Time Picker-->
-
                 <!-- Date Picker-->
-                <div class="col-md-3 col-12  Date_Picker px-0">
+                <div class="col-md-3 col-12 px-0">
                   <label for="flatpickr-date-02" class="form-label ms-3">Check-out</label>
-                  <input type="text" class="form-control flatpickr-input " placeholder="YYYY-MM-DD"
-                    id="flatpickr-date-02" ref="datePicker2" />
-                  <i class="fa-solid fa-calendar-days co-date-icon"></i>
+                  <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD" id="flatpickr-date-02" ref="datePicker2" />
+                  <i class="fa-solid fa-calendar-days icon-date"></i>
                 </div>
                 <!-- /Date Picker -->
-
                 <!-- Time Picker-->
-                <div class="col-md-3 col-12 mt Time_Picker px-0">
-                  <input type="text" class="form-control flatpickr-input " placeholder="HH:MM" id="flatpickr-time-02"
-                    ref="timePicker2" aria-label="input time Picker" />
-                  <i class="fa-regular fa-clock  right "></i>
+                <div class="col-md-3 col-12 mt-4 px-0">
+                  <input type="text" class="form-control flatpickr-input" placeholder="HH:MM" id="flatpickr-time-02" ref="timePicker2" aria-label="close" />
+                  <i class="fa-regular fa-clock icon-time right"></i>
                 </div>
               </div>
             </div>
             <div class="col-md-4">
-              <div class="row ">
+              <div class="row">
                 <div class="col-md-3 col-12">
                   <label for="roomCount" class="form-label">Room(s)</label>
-                  <input class="form-control" type="number" id="roomCount" v-model="roomCount" min="1"
-                    @input="updateRepeater" />
+                  <input class="form-control" type="number" id="roomCount" v-model="roomCount" min="1" @input="updateRepeater" />
                 </div>
-                <div class="col-md-9 col-12 mb-4 ">
+                <div class="col-md-9 col-12 mb-4">
                   <label for="reservationType" class="form-label">Reservation Type</label>
                   <select class="form-select" id="reservationType">
                     <option selected>حجز مؤكد معلق بتحويل المبلغ</option>
                     <option value="1">حجز مؤكد</option>
-
-
                   </select>
-
                 </div>
               </div>
             </div>
@@ -83,7 +69,6 @@
                       <option value="3">Travel Agent</option>
                       <option value="3">Company</option>
                     </select>
-
                   </div>
                   <div class="col-md-6">
                     <label for="businessSource" class="form-label">Business Source</label>
@@ -98,10 +83,8 @@
               </div>
             </div>
           </div>
-
           <hr class="my-4" />
           <!--   ! check inputs and repeater -->
-
           <div class="row mb-3">
             <div class="row">
               <div class="col-md-4">
@@ -138,7 +121,6 @@
                 </div>
               </div>
               <!--  ! table Header -->
-
               <!-- change width delete border color  -->
               <div class="card mt-3 border-0">
                 <div class="card-datatable table-responsive">
@@ -154,9 +136,7 @@
                       </tr>
                     </thead>
                     <!--  ! table Header -->
-
                     <!--  ! table body -->
-
                     <tbody>
                       <tr v-for="(item, index) in formData" :key="index" class="mb-2 selectStyle">
                         <td>
@@ -210,8 +190,7 @@
                               </select>
                             </div>
                             <div class="col-md-2 p-0">
-                              <button class="btn btn-label-danger" type="button" v-if="index >= existingItemsCount"
-                                @click="removeItem(index)">
+                              <button class="btn btn-label-danger" type="button" v-if="index >= existingItemsCount" @click="removeItem(index)">
                                 <i class="fa-solid fa-xmark"></i>
                               </button>
                             </div>
@@ -220,9 +199,7 @@
                       </tr>
                     </tbody>
                     <!--  ! table body -->
-
                     <!--  ! table footer -->
-
                     <tfoot>
                       <!--change style button  -->
                       <button class="btn btn-primary waves-effect waves-light mt-3" type="button" @click="addItem">
@@ -236,38 +213,26 @@
               <!--   ! check inputs and repeater -->
             </div>
           </div>
-
           <hr class="my-4" />
           <!--  ! Hold Release Date & Time -->
-
-          <!-- change style  -->
           <div class="row">
             <div class="col-md-5">
               <div class="row">
-                <div class="col-md-8 col-12">
+                <div class="col-md-8">
                   <div class="row">
-                    <div class="col-md-6 col-12 Date_Picker px-0">
-                      <label for="flatpickr-date-03" class="form-label"> Hold Release Date & Time</label>
-                      <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD"
-                        id="flatpickr-date-03" ref="datePicker3"  />
-                      <i class="fa-solid fa-calendar-days"></i>
+                    <div class="col-md-6 col-12 px-0">
+                      <label for="flatpickr-date-03" class="form-label">Hold Release Date & Time</label>
+                      <input type="text" placeholder="YYYY-MM-DD" id="flatpickr-date-03" class="form-control flatpickr-input" ref="datePicker3" />
+                      <i class="fa-solid fa-calendar-days icon-date"></i>
                     </div>
-
-                    <!-- Date Picker -->
-
-                    <!-- Time Picker-->
-                    <div class="col-md-6 col-12 mt Time_Picker px-0">
-                      <input type="text" class="form-control flatpickr-input " placeholder="HH:MM"
-                        id="flatpickr-time-03" ref="timePicker3" aria-label="input time Picker" />
-                      <i class="fa-regular fa-clock  right "></i>
-
+                    <div class="col-md-6 col-12 px-0 mt">
+                      <input type="text" placeholder="HH:MM" id="flatpickr-time-03" class="form-control flatpickr-input" ref="timePicker3" aria-label="input Text to Time" />
+                      <i class="fa-regular fa-clock icon-time right"></i>
                     </div>
                   </div>
-
                 </div>
                 <div class="col-md-4 col-12">
-                  <label for="releaseTerm" class="form-label">Release Term
-                  </label>
+                  <label for="releaseTerm" class="form-label">Release Term</label>
                   <div class="input-group">
                     <input type="text" class="form-control" placeholder="Value" id="releaseTerm" />
                     <span class="input-group-text groupStyle">%</span>
@@ -278,8 +243,7 @@
             <div class="col-md-7">
               <div class="row">
                 <div class="col-md-4 col-12">
-                  <label for="releaseTerm" class="form-label">Remind Guest before
-                  </label>
+                  <label for="releaseTerm" class="form-label">Remind Guest before</label>
                   <div class="input-group">
                     <input type="number" class="form-control" placeholder="0" id="releaseTerm" />
                     <span class="input-group-text groupStyle">Days</span>
@@ -301,16 +265,14 @@
             </div>
           </div>
           <!--  ! Hold Release Date & Time -->
-
           <hr class="my-4" />
           <!--  ! Guest Information -->
           <h6 class="mb-2">Guest Information</h6>
-
           <div class="row">
             <div class="col-md-5">
               <label for="nameGuest" class="col-form-label">Guest Name</label>
               <div class="input-group">
-                <select class="form-select " id="nameGuest">
+                <select class="form-select" id="nameGuest">
                   <option value="" disabled selected>MR.</option>
                   <option value="option1">DR.</option>
                   <option value="option2">JN.</option>
@@ -320,17 +282,13 @@
                   <option value="option4">Sir.</option>
                   <option value="option4">Sr.</option>
                 </select>
-
-                <input type="text" class="form-control w-50" aria-label="Text input with 2 dropdown buttons"
-                  id="nameGuest" />
-
+                <input type="text" class="form-control w-50" aria-label="Text input with 2 dropdown buttons" id="nameGuest" />
                 <!-- Use the Sidebar component -->
                 <button class="btn btn-outline-primary waves-effect" type="button" @click="toggleSidebar">
                   <i class="fa-solid fa-user-plus"></i>
                 </button>
               </div>
               <Sidebar :isSidebarOpen="isSidebarOpen" @close-sidebar="toggleSidebar" />
-
             </div>
             <div class="col-md-7">
               <div class="row">
@@ -369,16 +327,10 @@
               </div>
             </div>
           </div>
-
           <!--  ! Guest Information -->
-
-
           <!--  ! Other Information -->
-
           <hr class="my-4" />
-
           <h6 class="mb-3">Other Information</h6>
-
           <div class="row">
             <div class="form-check mb-3">
               <input class="form-check-input" type="checkbox" id="otherInformationCheck01" v-model="showSelect" />
@@ -393,17 +345,13 @@
                 <option value="option3">Option 3</option>
               </select>
             </div>
-
             <div class="form-check mb-3">
               <input class="form-check-input" type="checkbox" id="otherInformationCheck02" v-model="showInput" />
-              <label class="form-check-label" for="otherInformationCheck02">
-                Send email at Check-out
-              </label>
+              <label class="form-check-label" for="otherInformationCheck02"> Send email at Check-out </label>
             </div>
             <div v-if="showInput" class="mb-3">
               <div class="input-group">
-                <input type="email" id="emailInput" class="form-control"
-                  placeholder="Use comma to add multiple email address" aria-label="send email to check" />
+                <input type="email" id="emailInput" class="form-control" placeholder="Use comma to add multiple email address" aria-label="send email to check" />
                 <button class="btn btn-primary" type="button">
                   Preview Voucher
                 </button>
@@ -420,12 +368,11 @@
               <label class="form-check-label" for="otherInformationCheck04">
                 Supress Rate on Registration Card
               </label>
+              vwv
             </div>
           </div>
           <!--  ! Other Information -->
-
           <hr class="my-4" />
-
           <div class="row">
             <div class="col-12 text-end">
               <button type="button" class="btn btn-lg btn-secondary waves-effect waves-light">
@@ -439,18 +386,11 @@
         </form>
       </div>
     </div>
-
-
   </section>
-
 </template>
-
 <script>
-//  start flatpickr Files
-import flatpickr from "flatpickr";
-import "flatpickr/dist/flatpickr.min.css";
+import flatpickrMixin from "../Mixin/flatpickrMixin";
 import Sidebar from "../layout/Sidebar.vue";
-//  end flatpickr Files
 
 export default {
   name: "CheckIn",
@@ -515,75 +455,10 @@ export default {
     toggleSidebar ()
     {
       this.isSidebarOpen = !this.isSidebarOpen;
-
     },
   },
-  mounted ()
-  {
-    // Array of date picker refs or IDs
-    const datePickers = [
-      this.$refs.datePicker1,
-      this.$refs.datePicker2,
-      this.$refs.datePicker3,
-    ];
 
-    // Loop through the date pickers and apply flatpickr
-    datePickers.forEach((picker) =>
-    {
-      flatpickr(picker, {
-        dateFormat: "Y-m-d",
-      });
-    });
-
-    // Array of time picker refs or IDs
-    const timePickers = [
-      this.$refs.timePicker1,
-      this.$refs.timePicker2,
-      this.$refs.timePicker3,
-    ];
-
-    // Loop through the time pickers and apply flatpickr
-    timePickers.forEach((picker, index) =>
-    {
-      flatpickr(picker, {
-        enableTime: true, // Enable the time picker
-        noCalendar: true, // Disable the calendar (only time selection)
-        dateFormat: "H:i", // Customizable time format
-        time_24hr: index === 2 ? false : true, // 12-hour format for the third picker, 24-hour for others
-      });
-    });
-  },
-
-  // mounted ()
-  // {
-  //   flatpickr(this.$refs.datePicker1, {
-  //     dateFormat: "Y-m-d",
-  //   });
-  //   flatpickr(this.$refs.datePicker2, {
-  //     dateFormat: "Y-m-d",
-  //   });
-  //   flatpickr(this.$refs.datePicker3, {
-  //     dateFormat: "Y-m-d",
-  //   });
-  //   flatpickr(this.$refs.timePicker1, {
-  //     enableTime: true, // Enable the time picker
-  //     noCalendar: true, // Disable the calendar (only time selection)
-  //     dateFormat: "H:i", // Customizable time format (e.g., "H:i" for 24-hour, "h:i K" for 12-hour with AM/PM)
-  //     time_24hr: true, // Optional: Use 24-hour format, set to false for 12-hour format with AM/PM
-  //   });
-  //   flatpickr(this.$refs.timePicker2, {
-  //     enableTime: true, // Enable the time picker
-  //     noCalendar: true, // Disable the calendar (only time selection)
-  //     dateFormat: "H:i", // Customizable time format (e.g., "H:i" for 24-hour, "h:i K" for 12-hour with AM/PM)
-  //     time_24hr: true, // Optional: Use 24-hour format, set to false for 12-hour format with AM/PM
-  //   });
-  //   flatpickr(this.$refs.timePicker3, {
-  //     enableTime: true, // Enable the time picker
-  //     noCalendar: true, // Disable the calendar (only time selection)
-  //     dateFormat: "H:i", // Customizable time format (e.g., "H:i" for 24-hour, "h:i K" for 12-hour with AM/PM)
-  //     time_24hr: false, // Optional: Use 24-hour format, set to false for 12-hour format with AM/PM
-  //   });
-  // },
+  mixins: [flatpickrMixin],
 };
 </script>
 

@@ -1,8 +1,7 @@
 <template>
   <div class="row align-items-baseline p-2 position-relative">
     <div class="col-md-1 col-12 calendarDate">
-      <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD" id="flatpickr-date-04"
-        ref="datePicker4" />
+      <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD" id="flatpickr-date-04" ref="datePicker4" aria-label="input for date " />
       <i class="fa-solid fa-calendar-days date-icon"></i>
     </div>
     <div class="col-md-7 col-12">
@@ -65,7 +64,9 @@
                 <div class="col-6">
                   <ul class="Booking-Indicators-First">
                     <li><i class="fa-solid fa-crown"></i>Group Owner</li>
-                    <li><i class="fa-solid fa-dollar-sign"></i>Payment Pending</li>
+                    <li>
+                      <i class="fa-solid fa-dollar-sign"></i>Payment Pending
+                    </li>
                     <li><i class="fa-solid fa-user"></i>Single Lady</li>
                     <li>
                       <i class="fa-solid fa-arrows-split-up-and-left"></i>Split
@@ -88,7 +89,9 @@
                   <ul class="Room-Indicators-First">
                     <li><i class="fa-solid fa-ban-smoking"></i>No Smoking</li>
                     <li><i class="fa-solid fa-broom"></i>Dirty</li>
-                    <li><i class="fa-solid fa-clipboard-check"></i>Work Order</li>
+                    <li>
+                      <i class="fa-solid fa-clipboard-check"></i>Work Order
+                    </li>
                   </ul>
                 </div>
                 <div class="col-6">
@@ -115,8 +118,7 @@
             </div>
             <!-- end ul -->
             <!-- out side box -->
-            <div class="ant-popover ant-popover-placement-bottomRight ant-popover-hidden"
-              style="left: 586px; top: -999px; transform-origin: 319px -4px">
+            <div class="ant-popover ant-popover-placement-bottomRight ant-popover-hidden" style="left: 586px; top: -999px; transform-origin: 319px -4px">
               <div class="ant-popover-content">
                 <div class="ant-popover-arrow">
                   <span class="ant-popover-arrow-content"></span>
@@ -179,14 +181,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.circle-shape {
-  display: inline-block;
-  text-align: center;
-  background-color: rgb(236, 243, 248);
-  height: 24px;
-  border-radius: 12px;
-  min-width: 24px;
-  line-height: 24px;
-}
-</style>
+<style scoped></style>
