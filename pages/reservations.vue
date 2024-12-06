@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import HeaderReservation from "../components/ALLReservation/HeaderReservation.vue";
+import HeaderReservation from "../components/AllReservation/HeaderReservation.vue";
 
 
 export default {
