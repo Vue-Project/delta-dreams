@@ -140,6 +140,24 @@ export default {
     };
   },
   methods: {
+    /**
+     * Generates a list of resources from predefined room data.
+     *
+     * This function iterates over a set of room data, each containing a list of subrooms,
+     * and constructs a resources array. Each room and subroom is transformed into a resource
+     * object with specific properties like `id`, `title`, `groupId`, and `classNames`.
+     *
+     * - Rooms are identified by their `id` and `title`, and are assigned a `groupId` corresponding
+     *   to their `id`. They are also given a "resource" class for easy selection.
+     *
+     * - Subrooms are identified by a composite `id` (combining room and subroom identifiers),
+     *   `title`, `resourceId` (corresponding to the parent room's `id`), and `groupId`.
+     *   They are given a "subroom" class for easy selection.
+     *
+     * @returns {Array} An array of resources, where each resource represents a room or subroom
+     *                  with specific attributes for identification and styling.
+     */
+
     createResources ()
     {
       const roomData = [
@@ -173,6 +191,17 @@ export default {
       return resources;
     },
 
+    /**
+     * Handles date selection event from FullCalendar.
+     *
+     * Given the date range selection, it loops through the selected dates and
+     * highlights the corresponding cells in the calendar, and stores the
+     * dates in the `selectedDates` array.
+     *
+     * After selection, it updates the highlighted text and shows the popover.
+     *
+     * @param {Object} info - Selection info object containing `start` and `end` dates
+     */
     handleSelect (info)
     {
       const { start, end } = info;
@@ -197,9 +226,16 @@ export default {
       this.lastSelectedDate = this.selectedDates[this.selectedDates.length - 1];
 
       this.showOverlay();
-
     },
 
+    /**
+     * Highlights the cell for a given date in the calendar.
+     *
+     * It does this by adding the `fc-highlight` class to the cell with the
+     * `data-date` attribute equal to the given date string.
+     *
+     * @param  {String} dateStr - The date string to highlight, in format "YYYY-MM-DD".
+     */
     highlightDate (dateStr)
     {
       const calendarEl = document.querySelector(".fc");
@@ -210,6 +246,19 @@ export default {
       }
     },
 
+    /**
+     * Updates the highlighted text after a date range is selected.
+     *
+     * This function works by first calculating the total number of days selected
+     * by subtracting the start date from the end date. It then finds all the
+     * highlighted cells (`fc-highlight` class) and appends a child element
+     * containing the total number of days selected.
+     *
+     * Finally, it shows the popover after the overlay is visible.
+     *
+     * @param {String} start - The start date of the selection in format "YYYY-MM-DD".
+     * @param {String} end - The end date of the selection in format "YYYY-MM-DD".
+     */
     updateHighlightedText (start, end)
     {
       const startDate = new Date(start);
@@ -276,6 +325,14 @@ export default {
       this.isOverlayVisible = false;
     },
 
+    /**
+     * Generates a custom resource header to display a dropdown to select a room (and its subrooms).
+     * The dropdown shows a "Select All" option when nothing is selected.
+     * When a room is selected, the subrooms under that room are also selected.
+     * The dropdown text is updated based on the selected options.
+     * The resource header also includes a toggle icon to collapse/expand all resources.
+     * @returns {Object} - An object containing the custom resource header DOM nodes.
+     */
     customResourceHeader ()
     {
       const container = document.createElement("div");
@@ -378,6 +435,17 @@ export default {
       return { domNodes: [container] };
     },
 
+    /**
+     * Toggles the expand/collapse state of resources in a calendar view.
+     *
+     * If a specific room ID is provided, it will toggle the visibility of
+     * subrooms associated with that room. If no room ID is provided, it will
+     * toggle the visibility of all resources.
+     *
+     * @param {string|null} selectedRoomId - The ID of the room to toggle. If null,
+     * toggles all rooms.
+     */
+
     toggleResourceExpand (selectedRoomId = null)
     {
       this.isExpanded = !this.isExpanded; // Toggle expand/collapse state
@@ -430,8 +498,7 @@ export default {
         });
       }
 
-      // Recreate the resources to apply changes
-      // this.calendarOptions.resources = this.createResources();
+
     },
   },
 };
