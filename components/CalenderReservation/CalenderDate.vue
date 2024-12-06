@@ -197,6 +197,7 @@ export default {
       this.lastSelectedDate = this.selectedDates[this.selectedDates.length - 1];
 
       this.showOverlay();
+
     },
 
     highlightDate (dateStr)
