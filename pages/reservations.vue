@@ -281,10 +281,89 @@
                 <button class="btn btn-sm btn-primary">Export</button>
               </div>
             </ul>
-            <button class="ms-1 btn btn-primary">
+            <button
+              class="btn btn-primary waves-effect waves-light"
+              type="button"
+              data-bs-toggle="offcanvas"
+              data-bs-target="#offcanvasEnd"
+              aria-controls="offcanvasEnd"
+            >
               <i class="fs-6 me-1 fa-solid fa-magnifying-glass"></i>
               Search
             </button>
+            <div id="form-tabs-Reservations">
+              <div
+                class="offcanvas offcanvas-end"
+                tabindex="-1"
+                id="offcanvasEnd"
+                aria-labelledby="offcanvasEndLabel"
+              >
+                <div class="offcanvas-header">
+                  <h5 id="offcanvasEndLabel" class="offcanvas-title">Offcanvas End</h5>
+                  <button
+                    type="button"
+                    class="btn-close text-reset"
+                    data-bs-dismiss="offcanvas"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <hr />
+                <div class="row">
+                  <div class="col-md-10 m-auto">
+                    <label for="MarketCode" class="col-form-label">Business Source</label>
+                    <select class="form-select mb-2" id="MarketCode">
+                      <option value="" disabled selected>-select-</option>
+                      <option value="option1">item</option>
+                      <option value="option2">item</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-10 m-auto">
+                    <label for="MarketCode" class="col-form-label"> Travel Agent </label>
+                    <select class="form-select mb-2" id="MarketCode">
+                      <option value="" disabled selected>-select-</option>
+                      <option value="option1">item</option>
+                      <option value="option2">item</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-10 m-auto">
+                    <label for="MarketCode" class="col-form-label">Company</label>
+                    <select class="form-select mb-2" id="MarketCode">
+                      <option value="" disabled selected>-select-</option>
+                      <option value="option1">item</option>
+                      <option value="option2">item</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-10 m-auto">
+                    <label for="MarketCode" class="col-form-label">Room Type</label>
+                    <select class="form-select mb-2" id="MarketCode">
+                      <option value="" disabled selected>-select-</option>
+                      <option value="option1">item</option>
+                      <option value="option2">item</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-10 m-auto">
+                    <label for="MarketCode" class="col-form-label">Room</label>
+                    <select class="form-select mb-2" id="MarketCode">
+                      <option value="" disabled selected>-select-</option>
+                      <option value="option1">item</option>
+                      <option value="option2">item</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="gap-2 d-flex justify-content-end">
+                  <button class="btn btn-secondary">Reset</button>
+                  <button class="btn btn-primary">Search</button>
+                </div>
+              </div>
+            </div>
           </div>
         </template>
         <template #content>
