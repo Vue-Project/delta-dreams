@@ -291,84 +291,156 @@
               <i class="fs-6 me-1 fa-solid fa-magnifying-glass"></i>
               Search
             </button>
-            <div id="form-tabs-Reservations">
-              <div
-                class="offcanvas offcanvas-end"
-                tabindex="-1"
-                id="offcanvasEnd"
-                aria-labelledby="offcanvasEndLabel"
-              >
-                <div class="offcanvas-header">
-                  <h5 id="offcanvasEndLabel" class="offcanvas-title">Offcanvas End</h5>
-                  <button
-                    type="button"
-                    class="btn-close text-reset"
-                    data-bs-dismiss="offcanvas"
-                    aria-label="Close"
-                  ></button>
+            <div
+              class="offcanvas offcanvas-end"
+              tabindex="-1"
+              id="offcanvasEnd"
+              aria-labelledby="offcanvasEndLabel"
+            >
+              <div class="offcanvas-header">
+                <h5 id="offcanvasEndLabel" class="offcanvas-title">Offcanvas End</h5>
+                <button
+                  type="button"
+                  class="btn-close text-reset"
+                  data-bs-dismiss="offcanvas"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <hr />
+              <div class="row">
+                <div class="col-md-10 m-auto">
+                  <label for="MarketCode" class="col-form-label">Business Source</label>
+                  <select class="form-select mb-2" id="MarketCode">
+                    <option value="" disabled selected>-select-</option>
+                    <option value="option1">item</option>
+                    <option value="option2">item</option>
+                  </select>
                 </div>
-                <hr />
-                <div class="row">
-                  <div class="col-md-10 m-auto">
-                    <label for="MarketCode" class="col-form-label">Business Source</label>
-                    <select class="form-select mb-2" id="MarketCode">
-                      <option value="" disabled selected>-select-</option>
-                      <option value="option1">item</option>
-                      <option value="option2">item</option>
-                    </select>
-                  </div>
+              </div>
+              <div class="row">
+                <div class="col-md-10 m-auto">
+                  <label for="MarketCode" class="col-form-label"> Travel Agent </label>
+                  <select class="form-select mb-2" id="MarketCode">
+                    <option value="" disabled selected>-select-</option>
+                    <option value="option1">item</option>
+                    <option value="option2">item</option>
+                  </select>
                 </div>
-                <div class="row">
-                  <div class="col-md-10 m-auto">
-                    <label for="MarketCode" class="col-form-label"> Travel Agent </label>
-                    <select class="form-select mb-2" id="MarketCode">
-                      <option value="" disabled selected>-select-</option>
-                      <option value="option1">item</option>
-                      <option value="option2">item</option>
-                    </select>
-                  </div>
+              </div>
+              <div class="row">
+                <div class="col-md-10 m-auto">
+                  <label for="MarketCode" class="col-form-label">Company</label>
+                  <select class="form-select mb-2" id="MarketCode">
+                    <option value="" disabled selected>-select-</option>
+                    <option value="option1">item</option>
+                    <option value="option2">item</option>
+                  </select>
                 </div>
-                <div class="row">
-                  <div class="col-md-10 m-auto">
-                    <label for="MarketCode" class="col-form-label">Company</label>
-                    <select class="form-select mb-2" id="MarketCode">
-                      <option value="" disabled selected>-select-</option>
-                      <option value="option1">item</option>
-                      <option value="option2">item</option>
-                    </select>
-                  </div>
+              </div>
+              <div class="row">
+                <div class="col-md-10 m-auto">
+                  <label for="MarketCode" class="col-form-label">Room Type</label>
+                  <select class="form-select mb-2" id="MarketCode">
+                    <option value="" disabled selected>-select-</option>
+                    <option value="option1">item</option>
+                    <option value="option2">item</option>
+                  </select>
                 </div>
-                <div class="row">
-                  <div class="col-md-10 m-auto">
-                    <label for="MarketCode" class="col-form-label">Room Type</label>
-                    <select class="form-select mb-2" id="MarketCode">
-                      <option value="" disabled selected>-select-</option>
-                      <option value="option1">item</option>
-                      <option value="option2">item</option>
-                    </select>
-                  </div>
+              </div>
+              <div class="row">
+                <div class="col-md-10 m-auto">
+                  <label for="MarketCode" class="col-form-label">Room</label>
+                  <select class="form-select mb-2" id="MarketCode">
+                    <option value="" disabled selected>-select-</option>
+                    <option value="option1">item</option>
+                    <option value="option2">item</option>
+                  </select>
                 </div>
-                <div class="row">
-                  <div class="col-md-10 m-auto">
-                    <label for="MarketCode" class="col-form-label">Room</label>
-                    <select class="form-select mb-2" id="MarketCode">
-                      <option value="" disabled selected>-select-</option>
-                      <option value="option1">item</option>
-                      <option value="option2">item</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="gap-2 d-flex justify-content-end">
-                  <button class="btn btn-secondary">Reset</button>
-                  <button class="btn btn-primary">Search</button>
-                </div>
+              </div>
+              <div class="gap-2 d-flex justify-content-end">
+                <button class="btn btn-secondary">Reset</button>
+                <button class="btn btn-primary">Search</button>
               </div>
             </div>
           </div>
         </template>
         <template #content>
-          <!-- Reservations  -->
           <div class="tab-pane fade" id="form-tabs-Reservations" role="tabpanel">
+            <div class="table-responsive text-nowrap">
+              <table class="table">
+                <thead class="table-light">
+                  <tr>
+                    <th>Guest Name</th>
+                    <th>Res. No. Voucher No</th>
+                    <th>Arrival</th>
+                    <th>Departure</th>
+                    <th>Room Details</th>
+                    <th>Total ($)</th>
+                    <th>Paid ($)</th>
+                    <th>Balance ($)</th>
+                  </tr>
+                </thead>
+                <tbody class="table-border-bottom-0">
+                  <tr class="border-bottom">
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <i class="text-primary fa-solid fa-hotel fs-3 mr-2 mb-2"></i>
+                        <div class="card-title mb-0">
+                          <h5 class="m-0 me-2">مصطفي مدبولي</h5>
+                          <div>
+                            <i class="fa-solid fa-person m-2"></i>3
+                            <i class="fa-solid fa-child m-2"></i>2
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>14527</td>
+                    <td>
+                      <div class="text-dark">02/12/2024</div>
+                      <div>08:43:01 pm</div>
+                    </td>
+                    <td>
+                      <div class="text-dark">02/12/2024</div>
+                      <div>08:43:01 pm</div>
+                    </td>
+                    <td>202 - Suite الفندق غرفتين وصاله السعر غير شامل</td>
+                    <td>$230</td>
+                    <td>$250</td>
+                    <td class="text-danger">$20</td>
+                  </tr>
+                  <tr class="border-bottom">
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <i class="text-primary fa-solid fa-hotel fs-3 mr-2 mb-2"></i>
+                        <div class="card-title mb-0">
+                          <h5 class="m-0 me-2">مصطفي مدبولي</h5>
+                          <div>
+                            <i class="fa-solid fa-person m-2"></i>3
+                            <i class="fa-solid fa-child m-2"></i>2
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>14527</td>
+                    <td>
+                      <div class="text-dark">02/12/2024</div>
+                      <div>08:43:01 pm</div>
+                    </td>
+                    <td>
+                      <div class="text-dark">02/12/2024</div>
+                      <div>08:43:01 pm</div>
+                    </td>
+                    <td>202 - Suite الفندق غرفتين وصاله السعر غير شامل</td>
+                    <td>$230</td>
+                    <td>$250</td>
+                    <td class="text-danger">$20</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <!-- Reservations  -->
+          <!-- <div class="tab-pane fade" id="form-tabs-Reservations" role="tabpanel">
             <div class="col-12 col-md-6 col-lg-4 mb-4 order-1 order-xl-0">
               <div class="card h-100">
                 <div class="card-header d-flex align-items-center">
@@ -408,8 +480,8 @@
                       </div>
                       <div class="col-md-2">
                         <div>
-                          <i class="fa-solid fa-person m-1"></i>3
-                          <i class="fa-solid fa-child m-1"></i>2
+                          <i class="fa-solid fa-person"></i>3
+                          <i class="fa-solid fa-child"></i>2
                         </div>
                       </div>
                       <div class="col-md-12">
@@ -422,14 +494,14 @@
                       <div class="col-md-2">$230</div>
                       <div class="col-md-10">Paid</div>
                       <div class="col-md-2">$250</div>
-                      <div class="col-md-10">Balance</div>
-                      <div class="col-md-2">$20</div>
+                      <div class="col-md-10 text-danger text-danger">Balance</div>
+                      <div class="col-md-2 text-danger text-danger">$20</div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
           <!-- Arrivals  -->
           <div class="tab-pane fade" id="form-tabs-Arrivals" role="tabpanel">
             <div class="col-12 col-md-6 col-lg-4 mb-4 order-1 order-xl-0">
@@ -471,8 +543,8 @@
                       </div>
                       <div class="col-md-2">
                         <div>
-                          <i class="fa-solid fa-person m-1"></i>3
-                          <i class="fa-solid fa-child m-1"></i>2
+                          <i class="fa-solid fa-person"></i>3
+                          <i class="fa-solid fa-child"></i>2
                         </div>
                       </div>
                       <div class="col-md-12">
@@ -485,8 +557,8 @@
                       <div class="col-md-2">$230</div>
                       <div class="col-md-10">Paid</div>
                       <div class="col-md-2">$250</div>
-                      <div class="col-md-10">Balance</div>
-                      <div class="col-md-2">$20</div>
+                      <div class="col-md-10 text-danger">Balance</div>
+                      <div class="col-md-2 text-danger">$20</div>
                     </div>
                   </div>
                 </div>
@@ -534,8 +606,8 @@
                       </div>
                       <div class="col-md-2">
                         <div>
-                          <i class="fa-solid fa-person m-1"></i>3
-                          <i class="fa-solid fa-child m-1"></i>2
+                          <i class="fa-solid fa-person"></i>3
+                          <i class="fa-solid fa-child"></i>2
                         </div>
                       </div>
                       <div class="col-md-12">
@@ -548,8 +620,8 @@
                       <div class="col-md-2">$230</div>
                       <div class="col-md-10">Paid</div>
                       <div class="col-md-2">$250</div>
-                      <div class="col-md-10">Balance</div>
-                      <div class="col-md-2">$20</div>
+                      <div class="col-md-10 text-danger">Balance</div>
+                      <div class="col-md-2 text-danger">$20</div>
                     </div>
                   </div>
                 </div>
@@ -597,8 +669,8 @@
                       </div>
                       <div class="col-md-2">
                         <div>
-                          <i class="fa-solid fa-person m-1"></i>3
-                          <i class="fa-solid fa-child m-1"></i>2
+                          <i class="fa-solid fa-person"></i>3
+                          <i class="fa-solid fa-child"></i>2
                         </div>
                       </div>
                       <div class="col-md-12">
@@ -611,8 +683,8 @@
                       <div class="col-md-2">$230</div>
                       <div class="col-md-10">Paid</div>
                       <div class="col-md-2">$250</div>
-                      <div class="col-md-10">Balance</div>
-                      <div class="col-md-2">$20</div>
+                      <div class="col-md-10 text-danger">Balance</div>
+                      <div class="col-md-2 text-danger">$20</div>
                     </div>
                   </div>
                 </div>
