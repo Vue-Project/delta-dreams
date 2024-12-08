@@ -1,12 +1,17 @@
 <template>
-    <div>
-      <div v-if="isSidebarOpen" :class="['sidebar', { 'sidebar-open': isSidebarOpen }]" :style="{ width: width }">
-        <div class="sidebar-content">
-            <h3>{{ title }}</h3>
-            <hr class="my-2" />
-        </div>
-      </div>
-      <div v-if="isSidebarOpen" class="overlay" @click="$emit('close-sidebar')"></div>
+  <div>
+    <div
+      v-if="isSidebarOpen"
+      :class="['sidebar', { 'sidebar-open': isSidebarOpen }]"
+      :style="{ width: width }"
+    >
+      <slot name="SidebarContent"></slot>
+    </div>
+    <div
+      v-if="isSidebarOpen"
+      class="overlay"
+      @click="$emit('close-sidebar')"
+    ></div>
   </div>
 </template>
 
@@ -14,10 +19,7 @@
 
 
 export default {
-  name: "Sidebar",
-  layout: "component",
-  
-
+  name: "Side",
   props: {
     isSidebarOpen: {
       type: Boolean,
@@ -29,7 +31,7 @@ export default {
     },
     width: {
       type: String,
-      default: "1000px",
+      default: "500px",
     },
   },
 };

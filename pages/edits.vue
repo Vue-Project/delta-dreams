@@ -565,10 +565,16 @@
                           <button
                             class="btn btn-outline-primary waves-effect"
                             type="button"
+                            @click="toggleSidebar"
                           >
                             <i class="fa-solid fa-user"></i>
                           </button>
                         </div>
+                        <Side :isSidebarOpen="isSidebarOpen" @close-sidebar="toggleSidebar">
+                            <template #SidebarContent>
+                                <p>test</p>
+                            </template>
+                        </Side>
 
                         <label for="CommissionPlan" class="col-form-label"
                           >Commission Plan</label
@@ -1394,13 +1400,27 @@
 
 <script>
 import HeaderReservation from "../components/AllReservation/HeaderReservation.vue";
+import Side from "../components/AllReservation/SidebarReservation.vue";
 
 export default {
   name: "edits",
   layout: "main",
-  components: {
+  components:{
     HeaderReservation,
+    Side,
   },
+
+  data(){
+    return {
+        isSidebarOpen: false,
+    };
+  },
+  methods:{
+    toggleSidebar ()
+    {
+      this.isSidebarOpen = !this.isSidebarOpen;
+    },
+  }
 };
 </script>
 
