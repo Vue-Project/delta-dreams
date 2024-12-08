@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div class="row mx-auto my-3">
     <div class="col-md-12">
       <HeaderReservation>
         <template #button>
