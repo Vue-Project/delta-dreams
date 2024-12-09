@@ -74,7 +74,7 @@
           <div class="btn-group ms-auto">
             <button
               type="button"
-              class="btn btn-primary dropdown-toggle waves-effect waves-light"
+              class="btn btn-outline-primary dropdown-toggle waves-effect waves-light"
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
@@ -82,10 +82,14 @@
             </button>
             <ul class="dropdown-menu" style="">
               <li>
-                <a class="dropdown-item" href="javascript:void(0);">Print invoice</a>
+                <a class="dropdown-item" href="javascript:void(0);"
+                  >Print invoice</a
+                >
               </li>
               <li>
-                <a class="dropdown-item" href="javascript:void(0);">Send invoice</a>
+                <a class="dropdown-item" href="javascript:void(0);"
+                  >Send invoice</a
+                >
               </li>
             </ul>
           </div>
@@ -214,7 +218,9 @@
                           >
                         </li>
                         <li>
-                          <a class="dropdown-item" href="javascript:void(0);">Transfer</a>
+                          <a class="dropdown-item" href="javascript:void(0);"
+                            >Transfer</a
+                          >
                         </li>
                         <li>
                           <a class="dropdown-item" href="javascript:void(0);"
@@ -242,11 +248,17 @@
 
                   <div class="d-flex justify-content-end mt-2">
                     <span class="me-2"
-                      ><i class="fa-solid fa-square me-2" style="color: #ffd43b"></i
+                      ><i
+                        class="fa-solid fa-square me-2"
+                        style="color: #ffd43b"
+                      ></i
                       >UnPosted</span
                     >
                     <span class="me-2"
-                      ><i class="fa-solid fa-square me-2" style="color: #c3c6d1"></i
+                      ><i
+                        class="fa-solid fa-square me-2"
+                        style="color: #c3c6d1"
+                      ></i
                       >Posted</span
                     >
                     <i class="fa-solid fa-list-ul me-2 mt-1"></i>
@@ -305,7 +317,11 @@
             </div>
           </div>
           <!-- Booking Details  -->
-          <div class="tab-pane fade" id="form-tabs-BookingDetails" role="tabpanel">
+          <div
+            class="tab-pane fade"
+            id="form-tabs-BookingDetails"
+            role="tabpanel"
+          >
             <div class="row">
               <!-- inside tabs  -->
               <div class="col-12">
@@ -412,7 +428,7 @@
                     id="form-tabs-Task"
                     role="tabpanel"
                   >
-                  <div class="d-flex">
+                    <div class="d-flex">
                       <i class="fa-solid fa-chevron-left mt-1 me-3"></i>
                       <p>Tasks</p>
                     </div>
@@ -438,7 +454,7 @@
                     id="form-tabs-Message"
                     role="tabpanel"
                   >
-                  <div class="d-flex">
+                    <div class="d-flex">
                       <i class="fa-solid fa-chevron-left mt-1 me-3"></i>
                       <p>Messages</p>
                     </div>
@@ -463,7 +479,7 @@
                     id="form-tabs-Preference"
                     role="tabpanel"
                   >
-                  <div class="d-flex">
+                    <div class="d-flex">
                       <i class="fa-solid fa-chevron-left mt-1 me-3"></i>
                       <p>Preferences</p>
                     </div>
@@ -492,7 +508,9 @@
                   <form>
                     <div class="row">
                       <div class="col-6">
-                        <label for="BillTo" class="col-form-label">Bill To</label>
+                        <label for="BillTo" class="col-form-label"
+                          >Bill To</label
+                        >
                         <select class="form-select mb-2" id="BillTo">
                           <option value="" disabled selected>MR.</option>
                           <option value="option1">DR.</option>
@@ -566,7 +584,9 @@
                           </div>
                         </div>
                         <div>
-                          <label for="defaultFormControlInput" class="form-label mb-3"
+                          <label
+                            for="defaultFormControlInput"
+                            class="form-label mb-3"
                             >Registration No</label
                           >
                           <input
@@ -584,7 +604,9 @@
 
                 <!-- horizintal line  -->
                 <div class="col-1 d-flex justify-content-center">
-                  <span style="border-left: 1px solid #e1e0e3; height: auto"></span>
+                  <span
+                    style="border-left: 1px solid #e1e0e3; height: auto"
+                  ></span>
                 </div>
 
                 <!-- source information section  -->
@@ -593,7 +615,9 @@
                   <form>
                     <div class="row">
                       <div class="col-6">
-                        <label for="MarketCode" class="col-form-label">Market Code</label>
+                        <label for="MarketCode" class="col-form-label"
+                          >Market Code</label
+                        >
                         <select class="form-select mb-2" id="MarketCode">
                           <option value="" disabled selected>-select-</option>
                           <option value="option1">item</option>
@@ -902,7 +926,9 @@
                           <option value="4">Option4</option>
                         </select>
 
-                        <label for="Company" class="col-form-label">Company</label>
+                        <label for="Company" class="col-form-label"
+                          >Company</label
+                        >
                         <div class="input-group">
                           <select
                             class="form-select"
@@ -925,9 +951,502 @@
                         <Side
                           :isSidebarOpen="activeSidebar === 'sidebar1'"
                           @close-sidebar="toggleSidebar('sidebar1')"
+                          :width="'50%'"
                         >
                           <template #SidebarContent>
-                            <p>hil</p>
+                            <h4 class="p-1">Add Company</h4>
+                            <hr my-2 />
+                            <div class="row px-2">
+                              <div class="col">
+                                <label for="AgentName" class="form-label"
+                                  >Agent Name</label
+                                >
+                                <input
+                                  type="text"
+                                  class="form-control mb-3"
+                                  id="AgentName"
+                                  placeholder="Agent Name"
+                                  aria-describedby="defaultFormControlHelp"
+                                />
+                              </div>
+                              <div class="col">
+                                <label for="ContactPerson" class="form-label"
+                                  >Contact Person</label
+                                >
+                                <div class="input-group">
+                                  <button
+                                    class="btn btn-outline-secondary dropdown-toggle waves-effect"
+                                    type="button"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false"
+                                  >
+                                    Mr.
+                                  </button>
+                                  <ul class="dropdown-menu" style="">
+                                    <li>
+                                      <a
+                                        class="dropdown-item"
+                                        href="javascript:void(0);"
+                                        >DR.</a
+                                      >
+                                    </li>
+                                    <li>
+                                      <a
+                                        class="dropdown-item"
+                                        href="javascript:void(0);"
+                                        >Jn.</a
+                                      >
+                                    </li>
+                                    <li>
+                                      <a
+                                        class="dropdown-item"
+                                        href="javascript:void(0);"
+                                        >Mam.</a
+                                      >
+                                    </li>
+                                    <li>
+                                      <hr class="dropdown-divider" />
+                                    </li>
+                                    <li>
+                                      <a
+                                        class="dropdown-item"
+                                        href="javascript:void(0);"
+                                        >Mr.</a
+                                      >
+                                    </li>
+                                    <li>
+                                      <a
+                                        class="dropdown-item"
+                                        href="javascript:void(0);"
+                                        >Mrs.</a
+                                      >
+                                    </li>
+                                    <li>
+                                      <a
+                                        class="dropdown-item"
+                                        href="javascript:void(0);"
+                                        >Ms.</a
+                                      >
+                                    </li>
+                                    <li>
+                                      <a
+                                        class="dropdown-item"
+                                        href="javascript:void(0);"
+                                        >Sir.</a
+                                      >
+                                    </li>
+                                    <li>
+                                      <a
+                                        class="dropdown-item"
+                                        href="javascript:void(0);"
+                                        >Sr.</a
+                                      >
+                                    </li>
+                                  </ul>
+                                  <input
+                                    type="text"
+                                    class="form-control"
+                                    aria-label="Text input with dropdown button"
+                                    placeholder="Contact Person"
+                                  />
+                                </div>
+                              </div>
+                              <div class="col">
+                                <div class="form-check mt-4">
+                                  <input
+                                    type="checkbox"
+                                    value=""
+                                    id="defaultCheck5"
+                                    checked="checked"
+                                    class="form-check-input"
+                                  />
+                                  <label
+                                    for="defaultCheck5"
+                                    class="form-check-label"
+                                  >
+                                    Create User
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row px-2">
+                              <div class="col">
+                                <div>
+                                  <label for="AgentEmail" class="form-label"
+                                    >Email</label
+                                  >
+                                  <input
+                                    type="email"
+                                    class="form-control mb-3"
+                                    id="AgentEmail"
+                                    placeholder="Email"
+                                    aria-describedby="defaultFormControlHelp"
+                                  />
+                                </div>
+                              </div>
+                              <div class="col">
+                                <div>
+                                  <label for="AgentPhone" class="form-label"
+                                    >Phone</label
+                                  >
+                                  <input
+                                    type="text"
+                                    class="form-control mb-3"
+                                    id="AgentPhone"
+                                    placeholder="Phone"
+                                    aria-describedby="defaultFormControlHelp"
+                                  />
+                                </div>
+                              </div>
+                              <div class="col">
+                                <div>
+                                  <label for="AgentMobile" class="form-label"
+                                    >Mobile</label
+                                  >
+                                  <input
+                                    type="text"
+                                    class="form-control mb-3"
+                                    id="AgentMobile"
+                                    placeholder="Mobile"
+                                    aria-describedby="defaultFormControlHelp"
+                                  />
+                                </div>
+                              </div>
+                              <div class="col">
+                                <div>
+                                  <label for="ShortCode" class="form-label"
+                                    >Short Code</label
+                                  >
+                                  <input
+                                    type="text"
+                                    class="form-control mb-3"
+                                    id="ShortCode"
+                                    placeholder="ShortCode"
+                                    aria-describedby="defaultFormControlHelp"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                            <h5 class="fw-b p-1">Account Details</h5>
+                            <div class="row px-2">
+                              <div class="col-3">
+                                <div>
+                                  <label for="RegistrationNo" class="form-label"
+                                    >Registration No</label
+                                  >
+                                  <input
+                                    type="text"
+                                    class="form-control mb-3"
+                                    id="RegistrationNo"
+                                    placeholder="Registration No"
+                                    aria-describedby="defaultFormControlHelp"
+                                  />
+                                </div>
+                              </div>
+                              <div class="col-3">
+                                <div>
+                                  <label for="TaxID" class="form-label"
+                                    >Tax ID</label
+                                  >
+                                  <input
+                                    type="text"
+                                    class="form-control mb-3"
+                                    id="TaxID"
+                                    placeholder="Tax ID"
+                                    aria-describedby="defaultFormControlHelp"
+                                  />
+                                </div>
+                              </div>
+                              <div class="col-6"></div>
+                            </div>
+                            <div class="row px-2">
+                              <div class="col-3">
+                                <div>
+                                  <label for="OpeningBalance" class="form-label"
+                                    >Opening Balance</label
+                                  >
+                                  <div class="input-group">
+                                    <button
+                                      class="btn btn-outline-secondary waves-effect"
+                                      type="button"
+                                      id="OpeningBalance"
+                                    >
+                                      <i class="fa-solid fa-sterling-sign"></i>
+                                    </button>
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      placeholder="0.00"
+                                      aria-label="Example text with button addon"
+                                      aria-describedby="button-addon1"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-3">
+                                <div>
+                                  <label for="CreditLimit" class="form-label"
+                                    >Credit Limit</label
+                                  >
+                                  <div class="input-group">
+                                    <button
+                                      class="btn btn-outline-secondary waves-effect"
+                                      type="button"
+                                      id="CreditLimit"
+                                    >
+                                      <i class="fa-solid fa-sterling-sign"></i>
+                                    </button>
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      placeholder="0.00"
+                                      aria-label="Example text with button addon"
+                                      aria-describedby="button-addon1"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-6"></div>
+                            </div>
+                            <div class="row px-2">
+                              <div class="col d-flex justify-content-end">
+                                <button
+                                  type="button"
+                                  class="btn btn-outline-primary waves-effect"
+                                >
+                                  <i class="fa-solid fa-plus me-2"></i> Add Card
+                                </button>
+                              </div>
+                            </div>
+                            <h5 class="fw-b p-1">Credit Card Details</h5>
+                            <div class="row px-2">
+                              <!-- Card Number Field -->
+                              <div
+                                class="col-5 position-relative input-with-icon"
+                              >
+                                <label for="CardNumber" class="form-label"
+                                  >Card Number</label
+                                >
+                                <div class="input-wrapper">
+                                  <i
+                                    class="fa-regular fa-credit-card input-icon"
+                                  ></i>
+                                  <input
+                                    type="text"
+                                    class="form-control icon-input"
+                                    id="CardNumber"
+                                    placeholder="Card Number"
+                                  />
+                                  <i
+                                    class="fa-solid fa-check input-icon-right"
+                                  ></i>
+                                </div>
+                              </div>
+
+                              <!-- Card Holder Name Field -->
+                              <div
+                                class="col-5 position-relative input-with-icon"
+                              >
+                                <label for="CardHolderName" class="form-label"
+                                  >Card Holder Name</label
+                                >
+                                <div class="input-wrapper">
+                                  <input
+                                    type="text"
+                                    class="form-control icon-input"
+                                    id="CardHolderName"
+                                    placeholder="Card Holder Name"
+                                  />
+                                  <i
+                                    class="fa-solid fa-user input-icon-right"
+                                  ></i>
+                                </div>
+                              </div>
+
+                              <!-- Delete Icon -->
+                              <div
+                                class="col-1 d-flex align-items-center justify-content-center d-none"
+                                
+                              >
+                                <i
+                                  class="fa-solid fa-trash-can bg-danger p-2 rounded-1 text-white mt-4"
+                                ></i>
+                              </div>
+                            </div>
+                            <div class="row px-2">
+                              <div class="col-5">
+                                <div class="row mt-2">
+                                  <div class="col-6">
+                                    <label
+                                      for="CardHolderName"
+                                      class="form-label"
+                                      >Expiry Date</label
+                                    >
+                                    <select
+                                      class="form-select"
+                                      id="Company"
+                                      aria-label="Example select with button addon"
+                                    >
+                                      <option selected="">-select-</option>
+                                      <option value="1">One</option>
+                                      <option value="2">Two</option>
+                                      <option value="3">Three</option>
+                                    </select>
+                                  </div>
+                                  <div class="col-6">
+                                    <select
+                                      class="form-select mt-4"
+                                      id="Company"
+                                      aria-label="Example select with button addon"
+                                    >
+                                      <option selected="">-select-</option>
+                                      <option value="1">One</option>
+                                      <option value="2">Two</option>
+                                      <option value="3">Three</option>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-5 mt-2">
+                                <label
+                                  for="multicol-password"
+                                  class="form-label"
+                                  >CVV</label
+                                >
+                                <div class="input-group input-group-merge">
+                                  <input
+                                    type="password"
+                                    id="multicol-password"
+                                    class="form-control"
+                                    placeholder="CVV"
+                                    aria-describedby="multicol-password2"
+                                  />
+                                  <span
+                                    class="input-group-text cursor-pointer"
+                                    id="multicol-password2"
+                                    ><i class="fa-solid fa-eye-slash fs-5"></i
+                                  ></span>
+                                </div>
+                              </div>
+                              <div
+                                class="col-1 d-flex align-items-center justify-content-center d-none"
+                                
+                              >
+                                <i
+                                  class="fa-solid fa-trash-can bg-danger p-2 rounded-1 text-white mt-4"
+                                ></i>
+                              </div>
+                            </div>
+                            <h5 class="fw-b p-1 mt-4">Address</h5>
+                            <div class="row px-2">
+                              <div class="col-8">
+                                <label
+                                  for="multicol-password"
+                                  class="form-label"
+                                  >Address</label
+                                >
+                                <textarea
+                                  class="form-control"
+                                  id="exampleFormControlTextarea1"
+                                  rows="2"
+                                ></textarea>
+                              </div>
+                            </div>
+                            <div class="row px-2 mt-3">
+                              <div class="col-2">
+                                <label for="Country" class="form-label"
+                                  >Country</label
+                                >
+                                <select
+                                  class="form-select"
+                                  id="Country"
+                                  aria-label="Example select with button addon"
+                                >
+                                  <option selected="">-select-</option>
+                                  <option value="1">One</option>
+                                  <option value="2">Two</option>
+                                  <option value="3">Three</option>
+                                </select>
+                              </div>
+                              <div class="col-2">
+                                <div>
+                                  <label for="State" class="form-label"
+                                    >State</label
+                                  >
+                                  <input
+                                    type="text"
+                                    class="form-control mb-3"
+                                    id="State"
+                                    placeholder="State"
+                                    aria-describedby="defaultFormControlHelp"
+                                  />
+                                </div>
+                              </div>
+                              <div class="col-2">
+                                <div>
+                                  <label for="City" class="form-label"
+                                    >City</label
+                                  >
+                                  <input
+                                    type="text"
+                                    class="form-control mb-3"
+                                    id="City"
+                                    placeholder="City"
+                                    aria-describedby="defaultFormControlHelp"
+                                  />
+                                </div>
+                              </div>
+                              <div class="col-2">
+                                <div>
+                                  <label for="Zip" class="form-label"
+                                    >Zip</label
+                                  >
+                                  <input
+                                    type="text"
+                                    class="form-control mb-3"
+                                    id="Zip"
+                                    placeholder="Zip"
+                                    aria-describedby="defaultFormControlHelp"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row px-2 mt-3">
+                              <div class="col-4">
+                                <div class="form-check me-3">
+                                  <input
+                                    type="checkbox"
+                                    value=""
+                                    id="defaultCheck3"
+                                    checked="checked"
+                                    class="form-check-input"
+                                  />
+                                  <label
+                                    for="defaultCheck3"
+                                    class="form-check-label"
+                                  >
+                                  Add To Business Source
+                                  </label>
+                                </div>
+                              </div>
+                              <div class="col-7">
+                                <div class="form-check me-3">
+                                  <input
+                                    type="checkbox"
+                                    value=""
+                                    id="defaultCheck3"
+                                    checked="checked"
+                                    class="form-check-input"
+                                  />
+                                  <label
+                                    for="defaultCheck3"
+                                    class="form-check-label"
+                                  >
+                                  Don't count in city ledger. Consider only for stock purchase.
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
                           </template>
                         </Side>
                       </div>
@@ -952,7 +1471,9 @@
                           <option value="4">Option4</option>
                         </select>
                         <div>
-                          <label for="VoucherNO" class="form-label">Voucher No.</label>
+                          <label for="VoucherNO" class="form-label"
+                            >Voucher No.</label
+                          >
                           <input
                             type="text"
                             class="form-control mb-3"
@@ -961,7 +1482,9 @@
                             aria-describedby="defaultFormControlHelp"
                           />
                         </div>
-                        <label for="PlanValue" class="col-form-label">Plan Value</label>
+                        <label for="PlanValue" class="col-form-label"
+                          >Plan Value</label
+                        >
                         <div class="input-group mb-2">
                           <input
                             id="PlanValue"
@@ -1007,14 +1530,6 @@
                 >
                   Send Email
                 </button>
-                <Side
-                  :isSidebarOpen="activeSidebar === 'sidebar3'"
-                  @close-sidebar="toggleSidebar('sidebar3')"
-                >
-                  <template #SidebarContent>
-                    <p>nljb/</p>
-                  </template>
-                </Side>
 
                 <div class="form-check mt-2">
                   <input
@@ -1024,7 +1539,9 @@
                     id="defaultCheck3"
                     checked=""
                   />
-                  <label class="form-check-label" for="defaultCheck3"> Checked </label>
+                  <label class="form-check-label" for="defaultCheck3">
+                    Checked
+                  </label>
                 </div>
                 <select id="MarketCode" class="form-select w-25">
                   <option value="" disabled="disabled" selected="selected">
@@ -1073,7 +1590,11 @@
           </div>
 
           <!-- Guest Details  -->
-          <div class="tab-pane fade" id="form-tabs-GuestDetails" role="tabpanel">
+          <div
+            class="tab-pane fade"
+            id="form-tabs-GuestDetails"
+            role="tabpanel"
+          >
             <div class="row">
               <div class="col-3 px-0" style="border-right: 1px solid #e1e0e3">
                 <div class="d-flex justify-content-between">
@@ -1141,8 +1662,8 @@
                               <div class="row accordion-body">
                                 <div>
                                   <div>
-                                    <i class="fa-solid fa-hexagon -nodes"></i>Mr. مستر
-                                    شريف ضيافه محمد ذكى
+                                    <i class="fa-solid fa-hexagon -nodes"></i
+                                    >Mr. مستر شريف ضيافه محمد ذكى
                                   </div>
                                 </div>
                               </div>
@@ -1165,7 +1686,10 @@
                         </div>
                         <div class="col-md-8 mb-1">
                           <div class="mb-4">
-                            <label for="formGustInfoName" class="col-form-label">
+                            <label
+                              for="formGustInfoName"
+                              class="col-form-label"
+                            >
                               Name</label
                             >
                             <div class="input-group">
@@ -1205,7 +1729,9 @@
                         <!-- Phone Field (Half width) -->
                         <div class="col-md-6">
                           <div class="">
-                            <label for="formGustInfoPhone" class="col-form-label"
+                            <label
+                              for="formGustInfoPhone"
+                              class="col-form-label"
                               >Phone</label
                             >
                             <input
@@ -1221,7 +1747,9 @@
                         <!-- Mobile Field (Half width) -->
                         <div class="col-md-6 mb-3">
                           <div class="">
-                            <label for="formGustInfoMobile" class="col-form-label"
+                            <label
+                              for="formGustInfoMobile"
+                              class="col-form-label"
                               >Mobile</label
                             >
                             <input
@@ -1237,7 +1765,9 @@
                         <!-- ID Type Field (Half width) -->
                         <div class="col-md-3">
                           <div class="mb-3">
-                            <label for="formGustIdentityIdType" class="col-form-label"
+                            <label
+                              for="formGustIdentityIdType"
+                              class="col-form-label"
                               >Gender</label
                             >
                             <select
@@ -1245,7 +1775,9 @@
                               id="formGustIdentityIdType"
                               aria-label="select ID Type"
                             >
-                              <option value="" disabled selected>-Select-</option>
+                              <option value="" disabled selected>
+                                -Select-
+                              </option>
                               <option value="option1">Male</option>
                               <option value="option2">Female</option>
                               <option value="option3">Other</option>
@@ -1254,7 +1786,9 @@
                         </div>
                         <div class="col-md-3">
                           <div class="mb-3">
-                            <label for="formGustIdentityIdType" class="col-form-label"
+                            <label
+                              for="formGustIdentityIdType"
+                              class="col-form-label"
                               >Guest Type</label
                             >
                             <select
@@ -1262,7 +1796,9 @@
                               id="formGustIdentityIdType"
                               aria-label="select ID Type"
                             >
-                              <option value="" disabled selected>-Select-</option>
+                              <option value="" disabled selected>
+                                -Select-
+                              </option>
                               <option value="option1">Adult</option>
                               <option value="option2">Child</option>
                             </select>
@@ -1270,7 +1806,10 @@
                         </div>
                         <div class="col-md-6">
                           <div class="mb-3">
-                            <label for="formGustIdentityIdType" class="col-form-label">
+                            <label
+                              for="formGustIdentityIdType"
+                              class="col-form-label"
+                            >
                               VIP Status</label
                             >
                             <select
@@ -1278,7 +1817,9 @@
                               id="formGustIdentityIdType"
                               aria-label="select ID Type"
                             >
-                              <option value="" disabled selected>-Select-</option>
+                              <option value="" disabled selected>
+                                -Select-
+                              </option>
                               <option value="option1">Option 1</option>
                               <option value="option2">Option 2</option>
                               <option value="option3">Option 3</option>
@@ -1303,7 +1844,9 @@
                     </div>
                     <div class="row mt-2">
                       <div class="col-md-3">
-                        <label for="countryGuest" class="col-form-label">Country</label>
+                        <label for="countryGuest" class="col-form-label"
+                          >Country</label
+                        >
                         <input
                           class="form-control"
                           type="text"
@@ -1325,7 +1868,9 @@
                         />
                       </div>
                       <div class="col-md-3">
-                        <label for="formGustInfoCity" class="col-form-label">City</label>
+                        <label for="formGustInfoCity" class="col-form-label"
+                          >City</label
+                        >
                         <input
                           class="form-control"
                           type="text"
@@ -1335,7 +1880,9 @@
                         />
                       </div>
                       <div class="col-md-3">
-                        <label for="formGustInfoZip" class="col-form-label">Zip</label>
+                        <label for="formGustInfoZip" class="col-form-label"
+                          >Zip</label
+                        >
                         <input
                           class="form-control"
                           type="text"
@@ -1371,7 +1918,9 @@
                         />
                       </div>
                       <div class="col-md-3">
-                        <label for="formGustInfoCity" class="col-form-label">Fax</label>
+                        <label for="formGustInfoCity" class="col-form-label"
+                          >Fax</label
+                        >
                         <input
                           class="form-control"
                           type="text"
@@ -1429,7 +1978,9 @@
                                 </div>
                                 <div class="col-md-8">
                                   <div class="mb-3">
-                                    <label for="formIdentityInfoId" class="col-form-label"
+                                    <label
+                                      for="formIdentityInfoId"
+                                      class="col-form-label"
                                       >ID Number</label
                                     >
                                     <input
@@ -1508,7 +2059,9 @@
                                     </div>
                                   </div>
                                   <div class="col-md-6">
-                                    <label for="flatpickr-date-04" class="col-form-label"
+                                    <label
+                                      for="flatpickr-date-04"
+                                      class="col-form-label"
                                       >Expiry Date</label
                                     >
                                     <input
@@ -1571,7 +2124,9 @@
                                 ref="datePicker5"
                                 aria-label="input Text to Birth Date"
                               />
-                              <i class="fa-solid fa-calendar-days icon-date top"></i>
+                              <i
+                                class="fa-solid fa-calendar-days icon-date top"
+                              ></i>
                             </div>
                             <div class="col-md-3">
                               <label for="BirthCity" class="col-form-label"
@@ -1594,7 +2149,9 @@
                                 id="formGustBirthCountry"
                                 aria-label="select Birth Country"
                               >
-                                <option value="" disabled selected>Select option</option>
+                                <option value="" disabled selected>
+                                  Select option
+                                </option>
                                 <option value="option1">Option 1</option>
                                 <option value="option2">Option 2</option>
                                 <option value="option3">Option 3</option>
@@ -1606,7 +2163,9 @@
 
                           <div class="row">
                             <div class="col-md-3">
-                              <label for="formGustSpouseBirth" class="col-form-label"
+                              <label
+                                for="formGustSpouseBirth"
+                                class="col-form-label"
                                 >Spouse Birth Date</label
                               >
                               <input
@@ -1617,10 +2176,14 @@
                                 ref="datePicker6"
                                 aria-label="input Text to Spouse Birth Date"
                               />
-                              <i class="fa-solid fa-calendar-days icon-date top"></i>
+                              <i
+                                class="fa-solid fa-calendar-days icon-date top"
+                              ></i>
                             </div>
                             <div class="col-md-3">
-                              <label for="flatpickr-date-07" class="col-form-label"
+                              <label
+                                for="flatpickr-date-07"
+                                class="col-form-label"
                                 >Wedding Anniversary</label
                               >
                               <input
@@ -1631,27 +2194,42 @@
                                 ref="datePicker7"
                                 aria-label="input Text to Wedding Anniversary"
                               />
-                              <i class="fa-solid fa-calendar-days icon-date top"></i>
+                              <i
+                                class="fa-solid fa-calendar-days icon-date top"
+                              ></i>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-
-                  <div class="scbuttons gap-2 d-flex justify-content-end">
-                    <button
-                      @click="$emit('close-sidebar')"
-                      class="btn btn-secondary waves-effect waves-light"
-                    >
-                      Close
-                    </button>
-                    <button
-                      type="submit"
-                      class="btn btn-primary waves-effect waves-light"
-                    >
-                      Save
-                    </button>
+                  <hr m-0>
+                  <div class="row">
+                    <div class="col-3">
+                      <button type="button" class="btn btn-outline-primary waves-effect">Black List</button>
+                    </div>
+                    <div class="col-9 d-flex justify-content-end">
+                      <button type="button" class="btn btn-outline-primary waves-effect me-1">Pick Up / Drop off</button>
+                      <button type="button" class="btn btn-outline-primary waves-effect me-1">Add  Signature</button>
+                      <div class="btn-group">
+                      <button
+                        type="button"
+                        class="btn btn-outline-secondary dropdown-toggle waves-effect me-1"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        More
+                      </button>
+                      <ul class="dropdown-menu" style="">
+                        <li>
+                          <a class="dropdown-item" href="javascript:void(0);"
+                            >Print GR Card</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                      <button type="button" class="btn btn-outline-primary waves-effect" disabled>Save</button>
+                    </div>
                   </div>
                 </form>
               </div>
@@ -1719,7 +2297,6 @@
               class="btn btn-outline-secondary waves-effect mb-2"
             >
               Add Card
-              
             </button>
             <Side
               :isSidebarOpen="activeSidebar === 'sidebar11'"
@@ -1797,4 +2374,37 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+/* حقل الإدخال مع أيقونات */
+/* الحقل مع الأيقونات */
+.input-with-icon .icon-input {
+  padding-left: 35px;
+  padding-right: 35px; /* مساحة للأيقونة اليمنى */
+  height: 40px;
+  font-size: 1rem;
+}
+
+/* تصميم الحاوية */
+.input-with-icon .input-wrapper {
+  position: relative;
+}
+
+/* الأيقونة في البداية */
+.input-with-icon .input-icon {
+  position: absolute;
+  left: 10px; /* ضعها في الجانب الأيسر */
+  top: 50%;
+  transform: translateY(-50%);
+  color: #aaa;
+}
+
+/* الأيقونة في النهاية */
+.input-with-icon .input-icon-right {
+  position: absolute;
+  right: 10px; /* ضعها في الجانب الأيمن */
+  top: 50%;
+  transform: translateY(-50%);
+  color: #aaa;
+  pointer-events: none; /* يمنع تفاعل المستخدم مع الأيقونة */
+}
+</style>
