@@ -1,5 +1,5 @@
 <template>
-  <div class="row mx-auto my-3">
+  <div class="row mx-auto my-3 overflow-y-auto">
     <div class="col-md-12">
       <HeaderReservation>
         <template #button>
@@ -71,6 +71,24 @@
               Audit Trail
             </button>
           </li>
+          <div class="btn-group ms-auto">
+            <button
+              type="button"
+              class="btn btn-primary dropdown-toggle waves-effect waves-light"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              print/Send
+            </button>
+            <ul class="dropdown-menu" style="">
+              <li>
+                <a class="dropdown-item" href="javascript:void(0);">Print invoice</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="javascript:void(0);">Send invoice</a>
+              </li>
+            </ul>
+          </div>
         </template>
         <template #content>
           <!-- Folio Operation  -->
@@ -196,9 +214,7 @@
                           >
                         </li>
                         <li>
-                          <a class="dropdown-item" href="javascript:void(0);"
-                            >Transfer</a
-                          >
+                          <a class="dropdown-item" href="javascript:void(0);">Transfer</a>
                         </li>
                         <li>
                           <a class="dropdown-item" href="javascript:void(0);"
@@ -226,17 +242,11 @@
 
                   <div class="d-flex justify-content-end mt-2">
                     <span class="me-2"
-                      ><i
-                        class="fa-solid fa-square me-2"
-                        style="color: #ffd43b"
-                      ></i
+                      ><i class="fa-solid fa-square me-2" style="color: #ffd43b"></i
                       >UnPosted</span
                     >
                     <span class="me-2"
-                      ><i
-                        class="fa-solid fa-square me-2"
-                        style="color: #c3c6d1"
-                      ></i
+                      ><i class="fa-solid fa-square me-2" style="color: #c3c6d1"></i
                       >Posted</span
                     >
                     <i class="fa-solid fa-list-ul me-2 mt-1"></i>
@@ -295,11 +305,7 @@
             </div>
           </div>
           <!-- Booking Details  -->
-          <div
-            class="tab-pane fade"
-            id="form-tabs-BookingDetails"
-            role="tabpanel"
-          >
+          <div class="tab-pane fade" id="form-tabs-BookingDetails" role="tabpanel">
             <div class="row">
               <!-- inside tabs  -->
               <div class="col-12">
@@ -406,7 +412,7 @@
                     id="form-tabs-Task"
                     role="tabpanel"
                   >
-                    <div class="d-flex">
+                  <div class="d-flex">
                       <i class="fa-solid fa-chevron-left mt-1 me-3"></i>
                       <p>Tasks</p>
                     </div>
@@ -432,7 +438,7 @@
                     id="form-tabs-Message"
                     role="tabpanel"
                   >
-                    <div class="d-flex">
+                  <div class="d-flex">
                       <i class="fa-solid fa-chevron-left mt-1 me-3"></i>
                       <p>Messages</p>
                     </div>
@@ -457,7 +463,7 @@
                     id="form-tabs-Preference"
                     role="tabpanel"
                   >
-                    <div class="d-flex">
+                  <div class="d-flex">
                       <i class="fa-solid fa-chevron-left mt-1 me-3"></i>
                       <p>Preferences</p>
                     </div>
@@ -486,9 +492,7 @@
                   <form>
                     <div class="row">
                       <div class="col-6">
-                        <label for="BillTo" class="col-form-label"
-                          >Bill To</label
-                        >
+                        <label for="BillTo" class="col-form-label">Bill To</label>
                         <select class="form-select mb-2" id="BillTo">
                           <option value="" disabled selected>MR.</option>
                           <option value="option1">DR.</option>
@@ -562,9 +566,7 @@
                           </div>
                         </div>
                         <div>
-                          <label
-                            for="defaultFormControlInput"
-                            class="form-label mb-3"
+                          <label for="defaultFormControlInput" class="form-label mb-3"
                             >Registration No</label
                           >
                           <input
@@ -582,9 +584,7 @@
 
                 <!-- horizintal line  -->
                 <div class="col-1 d-flex justify-content-center">
-                  <span
-                    style="border-left: 1px solid #e1e0e3; height: auto"
-                  ></span>
+                  <span style="border-left: 1px solid #e1e0e3; height: auto"></span>
                 </div>
 
                 <!-- source information section  -->
@@ -593,9 +593,7 @@
                   <form>
                     <div class="row">
                       <div class="col-6">
-                        <label for="MarketCode" class="col-form-label"
-                          >Market Code</label
-                        >
+                        <label for="MarketCode" class="col-form-label">Market Code</label>
                         <select class="form-select mb-2" id="MarketCode">
                           <option value="" disabled selected>-select-</option>
                           <option value="option1">item</option>
@@ -904,9 +902,7 @@
                           <option value="4">Option4</option>
                         </select>
 
-                        <label for="Company" class="col-form-label"
-                          >Company</label
-                        >
+                        <label for="Company" class="col-form-label">Company</label>
                         <div class="input-group">
                           <select
                             class="form-select"
@@ -956,9 +952,7 @@
                           <option value="4">Option4</option>
                         </select>
                         <div>
-                          <label for="VoucherNO" class="form-label"
-                            >Voucher No.</label
-                          >
+                          <label for="VoucherNO" class="form-label">Voucher No.</label>
                           <input
                             type="text"
                             class="form-control mb-3"
@@ -967,9 +961,7 @@
                             aria-describedby="defaultFormControlHelp"
                           />
                         </div>
-                        <label for="PlanValue" class="col-form-label"
-                          >Plan Value</label
-                        >
+                        <label for="PlanValue" class="col-form-label">Plan Value</label>
                         <div class="input-group mb-2">
                           <input
                             id="PlanValue"
@@ -1012,7 +1004,6 @@
                 <button
                   type="button"
                   class="btn btn-outline-primary waves-effect"
-                  @click="toggleSidebar('sidebar3')"
                 >
                   Send Email
                 </button>
@@ -1033,9 +1024,7 @@
                     id="defaultCheck3"
                     checked=""
                   />
-                  <label class="form-check-label" for="defaultCheck3">
-                    Checked
-                  </label>
+                  <label class="form-check-label" for="defaultCheck3"> Checked </label>
                 </div>
                 <select id="MarketCode" class="form-select w-25">
                   <option value="" disabled="disabled" selected="selected">
@@ -1084,11 +1073,7 @@
           </div>
 
           <!-- Guest Details  -->
-          <div
-            class="tab-pane fade"
-            id="form-tabs-GuestDetails"
-            role="tabpanel"
-          >
+          <div class="tab-pane fade" id="form-tabs-GuestDetails" role="tabpanel">
             <div class="row">
               <div class="col-3 px-0" style="border-right: 1px solid #e1e0e3">
                 <div class="d-flex justify-content-between">
@@ -1108,6 +1093,66 @@
                     </button>
                   </div>
                 </div>
+                <div class="accordion mt-3" id="accordionExample">
+                  <div class="card accordion-item active">
+                    <h2 class="accordion-header" id="headingOne">
+                      <button
+                        type="button"
+                        class="accordion-button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#accordionfour"
+                        aria-expanded="true"
+                        aria-controls="accordionfour"
+                      >
+                        Suite الفندق غرفتين وصاله
+                      </button>
+                    </h2>
+
+                    <div
+                      id="accordionfour"
+                      class="accordion-collapse collapse show"
+                      data-bs-parent="#accordionExample"
+                      style=""
+                    >
+                      <!-- Identity Information -->
+                      <div class="row accordion-body">
+                        <div class="accordion mt-3" id="accordionExample">
+                          <div class="card accordion-item active">
+                            <h2 class="accordion-header" id="headingOne">
+                              <button
+                                type="button"
+                                class="accordion-button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#accordionfour"
+                                aria-expanded="true"
+                                aria-controls="accordionfour"
+                              >
+                                105
+                              </button>
+                            </h2>
+
+                            <div
+                              id="accordionfour"
+                              class="accordion-collapse collapse show"
+                              data-bs-parent="#accordionExample"
+                              style=""
+                            >
+                              <!-- Identity Information -->
+                              <div class="row accordion-body">
+                                <div>
+                                  <div>
+                                    <i class="fa-solid fa-hexagon -nodes"></i>Mr. مستر
+                                    شريف ضيافه محمد ذكى
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 <hr class="m-0" />
               </div>
               <div class="col-9">
@@ -1116,14 +1161,11 @@
                     <div class="col-md-6">
                       <div class="row">
                         <div div class="col-md-4">
-                          <DropzoneComponent id="dropzone1" />
+                          <DropzoneComponent id="dropzone3" />
                         </div>
-                        <div class="col-md-8">
-                          <div class="mb-3">
-                            <label
-                              for="formGustInfoName"
-                              class="col-form-label"
-                            >
+                        <div class="col-md-8 mb-1">
+                          <div class="mb-4">
+                            <label for="formGustInfoName" class="col-form-label">
                               Name</label
                             >
                             <div class="input-group">
@@ -1160,11 +1202,10 @@
 
                     <div class="col-md-6">
                       <div class="row">
+                        <!-- Phone Field (Half width) -->
                         <div class="col-md-6">
-                          <div class="mb-3">
-                            <label
-                              for="formGustInfoPhone"
-                              class="col-form-label"
+                          <div class="">
+                            <label for="formGustInfoPhone" class="col-form-label"
                               >Phone</label
                             >
                             <input
@@ -1176,11 +1217,11 @@
                             />
                           </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="mb-3">
-                            <label
-                              for="formGustInfoMobile"
-                              class="col-form-label"
+
+                        <!-- Mobile Field (Half width) -->
+                        <div class="col-md-6 mb-3">
+                          <div class="">
+                            <label for="formGustInfoMobile" class="col-form-label"
                               >Mobile</label
                             >
                             <input
@@ -1192,62 +1233,63 @@
                             />
                           </div>
                         </div>
-                      </div>
-                      <div class="mb-0">
-                        <label class="d-block form-label mb-3">Gender</label>
-                        <div class="row">
-                          <div class="col-md-4">
-                            <div class="form-check mb-2">
-                              <input
-                                type="radio"
-                                id="formGustInfoMale"
-                                name="formGustInfoGender"
-                                class="form-check-input"
-                                aria-label="input radio to Gust Gender Male"
-                              />
-                              <label
-                                class="form-check-label"
-                                for="formGustInfoMale"
-                                >Male</label
-                              >
-                            </div>
+
+                        <!-- ID Type Field (Half width) -->
+                        <div class="col-md-3">
+                          <div class="mb-3">
+                            <label for="formGustIdentityIdType" class="col-form-label"
+                              >Gender</label
+                            >
+                            <select
+                              class="form-select"
+                              id="formGustIdentityIdType"
+                              aria-label="select ID Type"
+                            >
+                              <option value="" disabled selected>-Select-</option>
+                              <option value="option1">Male</option>
+                              <option value="option2">Female</option>
+                              <option value="option3">Other</option>
+                            </select>
                           </div>
-                          <div class="col-md-4">
-                            <div class="form-check">
-                              <input
-                                type="radio"
-                                id="formGustInfoFemale"
-                                name="formGustInfoGender"
-                                class="form-check-input"
-                                aria-label="input radio to Gust Gender Female"
-                              />
-                              <label
-                                class="form-check-label"
-                                for="formGustInfoFemale"
-                                >Female</label
-                              >
-                            </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="mb-3">
+                            <label for="formGustIdentityIdType" class="col-form-label"
+                              >Guest Type</label
+                            >
+                            <select
+                              class="form-select"
+                              id="formGustIdentityIdType"
+                              aria-label="select ID Type"
+                            >
+                              <option value="" disabled selected>-Select-</option>
+                              <option value="option1">Adult</option>
+                              <option value="option2">Child</option>
+                            </select>
                           </div>
-                          <div class="col-md-4">
-                            <div class="form-check">
-                              <input
-                                type="radio"
-                                id="formGustInfoOther"
-                                name="formGustInfoGender"
-                                class="form-check-input"
-                                aria-label="input radio to Gust Gender Other"
-                              />
-                              <label
-                                class="form-check-label"
-                                for="formGustInfoOther"
-                                >Other</label
-                              >
-                            </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="mb-3">
+                            <label for="formGustIdentityIdType" class="col-form-label">
+                              VIP Status</label
+                            >
+                            <select
+                              class="form-select"
+                              id="formGustIdentityIdType"
+                              aria-label="select ID Type"
+                            >
+                              <option value="" disabled selected>-Select-</option>
+                              <option value="option1">Option 1</option>
+                              <option value="option2">Option 2</option>
+                              <option value="option3">Option 3</option>
+                              <option value="option4">Option 4</option>
+                            </select>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div class="col-md-7">
+
+                    <div class="col-md-12">
                       <label for="formGustInfoAddress" class="col-form-label"
                         >Address</label
                       >
@@ -1259,11 +1301,9 @@
                         aria-label="input Text to Gust Address"
                       />
                     </div>
-                    <div class="row">
+                    <div class="row mt-2">
                       <div class="col-md-3">
-                        <label for="countryGuest" class="col-form-label"
-                          >Country</label
-                        >
+                        <label for="countryGuest" class="col-form-label">Country</label>
                         <input
                           class="form-control"
                           type="text"
@@ -1285,9 +1325,53 @@
                         />
                       </div>
                       <div class="col-md-3">
-                        <label for="formGustInfoCity" class="col-form-label"
-                          >City</label
+                        <label for="formGustInfoCity" class="col-form-label">City</label>
+                        <input
+                          class="form-control"
+                          type="text"
+                          id="formGustInfoCity"
+                          placeholder="city"
+                          aria-label="input Text to Gust city"
+                        />
+                      </div>
+                      <div class="col-md-3">
+                        <label for="formGustInfoZip" class="col-form-label">Zip</label>
+                        <input
+                          class="form-control"
+                          type="text"
+                          id="formGustInfoZip"
+                          placeholder="Zip"
+                          aria-label="input Text to Gust Zip"
+                        />
+                      </div>
+                    </div>
+                    <div class="row mt-2">
+                      <div class="col-md-3">
+                        <label for="countryGuest" class="col-form-label"
+                          >Nationality</label
                         >
+                        <input
+                          class="form-control"
+                          type="text"
+                          id="countryGuest"
+                          placeholder="country"
+                          aria-label="input Text to Gust country"
+                        />
+                      </div>
+                      <div class="col-md-3">
+                        <label for="formGustInfoState" class="col-form-label"
+                          >Company</label
+                        >
+                        <input
+                          class="form-control"
+                          type="text"
+                          id="formGustInfoState"
+                          placeholder="state"
+                          aria-label="input Text to Gust state"
+                        />
+                      </div>
+                      <div class="col-md-3">
+                        <label for="formGustInfoCity" class="col-form-label">Fax</label>
                         <input
                           class="form-control"
                           type="text"
@@ -1298,8 +1382,8 @@
                       </div>
                       <div class="col-md-3">
                         <label for="formGustInfoZip" class="col-form-label"
-                          >Zip</label
-                        >
+                          >Registration No
+                        </label>
                         <input
                           class="form-control"
                           type="text"
@@ -1341,13 +1425,11 @@
                             <div class="col-md-6">
                               <div class="row">
                                 <div div class="col-md-4">
-                                  <DropzoneComponent id="dropzone2" />
+                                  <DropzoneComponent id="dropzone4" />
                                 </div>
                                 <div class="col-md-8">
                                   <div class="mb-3">
-                                    <label
-                                      for="formIdentityInfoId"
-                                      class="col-form-label"
+                                    <label for="formIdentityInfoId" class="col-form-label"
                                       >ID Number</label
                                     >
                                     <input
@@ -1426,9 +1508,7 @@
                                     </div>
                                   </div>
                                   <div class="col-md-6">
-                                    <label
-                                      for="flatpickr-date-04"
-                                      class="col-form-label"
+                                    <label for="flatpickr-date-04" class="col-form-label"
                                       >Expiry Date</label
                                     >
                                     <input
@@ -1447,47 +1527,33 @@
                               </div>
                             </div>
                           </div>
-                          <!-- Payment Method -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="accordion mt-3" id="accordionExample">
+                    <div class="card accordion-item active">
+                      <h2 class="accordion-header" id="headingOne">
+                        <button
+                          type="button"
+                          class="accordion-button"
+                          data-bs-toggle="collapse"
+                          data-bs-target="#accordionOne"
+                          aria-expanded="true"
+                          aria-controls="accordionOne"
+                        >
+                          Other Information
+                        </button>
+                      </h2>
 
-                          <div class="col-12 mb-3">Payment Method</div>
-                          <div class="row mb-3">
-                            <div class="col-md-3">
-                              <label for="PaymentMethod" class="col-form-label"
-                                >Payment Method</label
-                              >
-                              <select
-                                class="form-select"
-                                id="formGustPaymentMethod"
-                                aria-label="select Payment Method"
-                              >
-                                <option value="" disabled selected>
-                                  Select option
-                                </option>
-                                <option value="option1">Option 1</option>
-                                <option value="option2">Option 2</option>
-                                <option value="option3">Option 3</option>
-                                <option value="option4">Option 4</option>
-                              </select>
-                            </div>
-                            <div class="col-md-3">
-                              <label for="DirectBilling" class="col-form-label"
-                                >Direct Billing A/C</label
-                              >
-                              <select
-                                class="form-select"
-                                id="formGustDirectBilling"
-                                aria-label="select Direct Billing A/C"
-                              >
-                                <option value="" disabled selected>
-                                  Select option
-                                </option>
-                                <option value="option1">Option 1</option>
-                                <option value="option2">Option 2</option>
-                                <option value="option3">Option 3</option>
-                                <option value="option4">Option 4</option>
-                              </select>
-                            </div>
-                          </div>
+                      <div
+                        id="accordionOne"
+                        class="accordion-collapse collapse show"
+                        data-bs-parent="#accordionExample"
+                        style=""
+                      >
+                        <!-- Identity Information -->
+                        <div class="row accordion-body">
                           <!-- Personal Information part 1 -->
                           <div class="col-12 mb-3">Personal Information</div>
                           <div class="row mb-3">
@@ -1505,9 +1571,19 @@
                                 ref="datePicker5"
                                 aria-label="input Text to Birth Date"
                               />
-                              <i
-                                class="fa-solid fa-calendar-days icon-date top"
-                              ></i>
+                              <i class="fa-solid fa-calendar-days icon-date top"></i>
+                            </div>
+                            <div class="col-md-3">
+                              <label for="BirthCity" class="col-form-label"
+                                >Birth City</label
+                              >
+                              <input
+                                class="form-control"
+                                type="text"
+                                id="formGustIssuingCity"
+                                placeholder="City"
+                                aria-label="Enter Issuing City"
+                              />
                             </div>
                             <div class="col-md-3">
                               <label for="BirthCountry" class="col-form-label"
@@ -1518,47 +1594,7 @@
                                 id="formGustBirthCountry"
                                 aria-label="select Birth Country"
                               >
-                                <option value="" disabled selected>
-                                  Select option
-                                </option>
-                                <option value="option1">Option 1</option>
-                                <option value="option2">Option 2</option>
-                                <option value="option3">Option 3</option>
-                                <option value="option4">Option 4</option>
-                              </select>
-                            </div>
-                            <div class="col-md-3">
-                              <label
-                                for="NationalityGuest"
-                                class="col-form-label"
-                                >Nationality</label
-                              >
-                              <select
-                                class="form-select"
-                                id="formGustNationality"
-                                aria-label="select Nationality"
-                              >
-                                <option value="" disabled selected>
-                                  Select option
-                                </option>
-                                <option value="option1">Option 1</option>
-                                <option value="option2">Option 2</option>
-                                <option value="option3">Option 3</option>
-                                <option value="option4">Option 4</option>
-                              </select>
-                            </div>
-                            <div class="col-md-3">
-                              <label for="VIPGuest" class="col-form-label"
-                                >VIP Status</label
-                              >
-                              <select
-                                class="form-select"
-                                id="formGustVIP"
-                                aria-label="select VIP"
-                              >
-                                <option value="" disabled selected>
-                                  Select option
-                                </option>
+                                <option value="" disabled selected>Select option</option>
                                 <option value="option1">Option 1</option>
                                 <option value="option2">Option 2</option>
                                 <option value="option3">Option 3</option>
@@ -1570,9 +1606,7 @@
 
                           <div class="row">
                             <div class="col-md-3">
-                              <label
-                                for="formGustSpouseBirth"
-                                class="col-form-label"
+                              <label for="formGustSpouseBirth" class="col-form-label"
                                 >Spouse Birth Date</label
                               >
                               <input
@@ -1583,14 +1617,10 @@
                                 ref="datePicker6"
                                 aria-label="input Text to Spouse Birth Date"
                               />
-                              <i
-                                class="fa-solid fa-calendar-days icon-date top"
-                              ></i>
+                              <i class="fa-solid fa-calendar-days icon-date top"></i>
                             </div>
                             <div class="col-md-3">
-                              <label
-                                for="flatpickr-date-07"
-                                class="col-form-label"
+                              <label for="flatpickr-date-07" class="col-form-label"
                                 >Wedding Anniversary</label
                               >
                               <input
@@ -1601,23 +1631,7 @@
                                 ref="datePicker7"
                                 aria-label="input Text to Wedding Anniversary"
                               />
-                              <i
-                                class="fa-solid fa-calendar-days icon-date top"
-                              ></i>
-                            </div>
-                            <div class="col-md-3">
-                              <label
-                                for="formGustRegistration"
-                                class="col-form-label"
-                                >Registration No</label
-                              >
-                              <input
-                                class="form-control"
-                                type="text"
-                                id="formGustRegistration"
-                                placeholder="Registration No"
-                                aria-label="input Text to Gust Registration"
-                              />
+                              <i class="fa-solid fa-calendar-days icon-date top"></i>
                             </div>
                           </div>
                         </div>
@@ -1703,7 +1717,6 @@
             <button
               type="button"
               class="btn btn-outline-secondary waves-effect mb-2"
-              @click="toggleSidebar('sidebar11')"
             >
               Add Card
               
@@ -1778,6 +1791,7 @@ export default {
         this.activeSidebar === sidebarName ? null : sidebarName;
     },
   },
+  mixins: [flatpickrMixin],
 };
 </script>
 
