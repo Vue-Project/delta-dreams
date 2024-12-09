@@ -485,10 +485,10 @@ select {
 }
 /* momen change the buttons positions and width */
 .scbuttons {
-  position: absolute;
+  position: fixed;
   right: 0;
   bottom: 0;
-  width: 100%;
+  width: 1000px;
   max-width: inherit;
   z-index: 10;
   padding: 10px 20px;
