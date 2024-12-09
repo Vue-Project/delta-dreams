@@ -1769,6 +1769,8 @@
 </template>
 
 <script>
+import flatpickrMixin from "../components/Mixin/flatpickrMixin";
+import DropzoneComponent from "../components/layout/DropzoneComponent.vue";
 import HeaderReservation from "../components/AllReservation/HeaderReservation.vue";
 import Side from "../components/AllReservation/SidebarReservation.vue";
 
@@ -1778,8 +1780,8 @@ export default {
   components: {
     HeaderReservation,
     Side,
+    DropzoneComponent,
   },
-
   data() {
     return {
       activeSidebar: null,
