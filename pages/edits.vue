@@ -114,11 +114,104 @@
                   </button>
                 </div>
                 <Side
+                  :width="'25%'"
                   :isSidebarOpen="activeSidebar === 'sidebar4'"
                   @close-sidebar="toggleSidebar('sidebar4')"
                 >
                   <template #SidebarContent>
-                    <p>test</p>
+                    <div class="row">
+                      <div class="col-md-10 m-auto">
+                        <h3>New Folio</h3>
+                      </div>
+                      <div class="col-md-2 m-auto">
+                        <button
+                          type="button"
+                          class="btn-close text-reset"
+                          data-bs-dismiss="offcanvas"
+                          aria-label="Close"
+                        ></button>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-10 m-auto">
+                        <label for="CreditLimit" class="form-label">Sharer</label>
+                        <div class="input-group">
+                          <select
+                            class="form-select"
+                            id="formGustIdentityIdType"
+                            aria-label="select ID Type"
+                          >
+                            <option value="" disabled selected>-Select-</option>
+                            <option value="option1">Mr.test</option>
+                            <option value="option2">test</option>
+                            <option value="option3">test</option>
+                          </select>
+                          <button
+                            class="btn btn-outline-secondary waves-effect"
+                            type="button"
+                            id="CreditLimit"
+                          >
+                            <i class="fa-solid fa-sterling-sign"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-10 m-auto my-3">
+                        <label for="CreditLimit" class="form-label"
+                          >Registration No</label
+                        >
+                        <input
+                          type="text"
+                          class="form-control"
+                          placeholder="Registration No"
+                          aria-label="Example text with button addon"
+                          aria-describedby="button-addon1"
+                        />
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-10 m-auto">
+                        <div class="form-check my-3">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            value=""
+                            id="defaultCheck3"
+                            checked=""
+                          />
+                          <label class="form-check-label" for="defaultCheck3">
+                            Show Tariff on Print Folio</label
+                          >
+                        </div>
+                        <div class="form-check my-3">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            value=""
+                            id="defaultCheck3"
+                            checked=""
+                          />
+                          <label class="form-check-label" for="defaultCheck3">
+                            Generate Invoice Number On/Post Checkout
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="scbuttons gap-2 d-flex justify-content-end">
+                      <button
+                        @click="$emit('close-sidebar')"
+                        class="btn btn-secondary waves-effect waves-light"
+                      >
+                        Close
+                      </button>
+                      <button
+                        type="submit"
+                        class="btn btn-primary waves-effect waves-light"
+                      >
+                        Save
+                      </button>
+                    </div>
                   </template>
                 </Side>
 
@@ -140,12 +233,139 @@
                       Add Payment
                     </button>
                     <Side
+                      :width="'25%'"
                       :isSidebarOpen="activeSidebar === 'sidebar5'"
                       @close-sidebar="toggleSidebar('sidebar5')"
                     >
                       <template #SidebarContent>
-                        <p>ff</p>
-                        >
+                        <div class="row">
+                          <div class="col-md-10 m-auto">
+                            <h3>New Folio</h3>
+                          </div>
+                          <div class="col-md-2 m-auto">
+                            <button
+                              type="button"
+                              class="btn-close text-reset"
+                              data-bs-dismiss="offcanvas"
+                              aria-label="Close"
+                            ></button>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-10 m-auto my-2">
+                            <label for="flatpickr-date-04" class="col-form-label"
+                              >Date</label
+                            >
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="YYYY-MM-D "
+                              id="flatpickr-date-04"
+                              ref="datePicker4"
+                              aria-label="input Text to Expiry Date"
+                            />
+                            <i class="fa-solid fa-calendar-days icon-date top"></i>
+                          </div>
+                          <div class="col-md-10 m-auto my-2">
+                            <label for="CreditLimit" class="form-label"> Folio</label>
+
+                            <select
+                              class="form-select"
+                              id="formGustIdentityIdType"
+                              aria-label="select ID Type"
+                            >
+                              <option value="" disabled selected>-Select-</option>
+                              <option value="option1">Mr.test</option>
+                              <option value="option2">test</option>
+                              <option value="option3">test</option>
+                            </select>
+                          </div>
+                          <div class="col-md-10 m-auto my-2">
+                            <label for="CreditLimit" class="form-label">Rec/Vou #</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Registration No"
+                              aria-label="Example text with button addon"
+                              aria-describedby="button-addon1"
+                            />
+                          </div>
+                          <div class="col-md-4 m-auto my-2">
+                            <label for="CreditLimit" class="form-label">Type</label>
+                            <select
+                              class="form-select"
+                              id="formGustIdentityIdType"
+                              aria-label="select ID Type"
+                            >
+                              <option value="" disabled selected>-Select-</option>
+                              <option value="option1">Mr.test</option>
+                              <option value="option2">test</option>
+                              <option value="option3">test</option>
+                            </select>
+                          </div>
+                          <div class="col-md-4 m-auto my-2">
+                            <label for="CreditLimit" class="form-label">Method</label>
+                            <select
+                              class="form-select"
+                              id="formGustIdentityIdType"
+                              aria-label="select ID Type"
+                            >
+                              <option value="" disabled selected>-Select-</option>
+                              <option value="option1">Mr.test</option>
+                              <option value="option2">test</option>
+                              <option value="option3">test</option>
+                            </select>
+                          </div>
+                          <div class="col-md-10 m-auto my-2">
+                            <label for="ContactPerson" class="form-label">Amount</label>
+                            <div class="input-group">
+                              <button
+                                class="w-25 btn btn-outline-secondary dropdown-toggle waves-effect"
+                                type="button"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                              >
+                                -select-
+                              </button>
+                              <ul class="dropdown-menu" style="">
+                                <li>
+                                  <a class="dropdown-item" href="javascript:void(0);"
+                                    >EGP (£)</a
+                                  >
+                                </li>
+                                <li>
+                                  <a class="dropdown-item" href="javascript:void(0);"
+                                    >EUR (â‚¬)</a
+                                  >
+                                </li>
+                              </ul>
+                              <input
+                                type="text"
+                                class="form-control"
+                                aria-label="Text input with dropdown button"
+                                placeholder=""
+                              />
+                            </div>
+                          </div>
+                          <div class="col-md-10 m-auto my-2">
+                            <label for="CreditLimit" class="form-label">Comment</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Add Your Comment"
+                              aria-label="Example text with button addon"
+                              aria-describedby="button-addon1"
+                            />
+                          </div>
+                        </div>
+                        <div class="scbuttons gap-2 d-flex justify-content-end">
+                          <button
+                            type="submit"
+                            class="btn btn-primary waves-effect waves-light"
+                          >
+                            Add
+                          </button>
+                        </div>
                       </template>
                     </Side>
 
@@ -157,11 +377,179 @@
                       Add Charges
                     </button>
                     <Side
+                      :width="'25%'"
                       :isSidebarOpen="activeSidebar === 'sidebar6'"
                       @close-sidebar="toggleSidebar('sidebar6')"
                     >
                       <template #SidebarContent>
-                        <h5>Content for Sidebar 6</h5>
+                        <div class="row">
+                          <div class="col-md-10 m-auto">
+                            <h3>Add Charge</h3>
+                          </div>
+                          <div class="col-md-2 m-auto">
+                            <button
+                              type="button"
+                              class="btn-close text-reset"
+                              data-bs-dismiss="offcanvas"
+                              aria-label="Close"
+                            ></button>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-10 m-auto my-2">
+                            <label for="flatpickr-date-04" class="col-form-label"
+                              >Date</label
+                            >
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="YYYY-MM-D "
+                              id="flatpickr-date-04"
+                              ref="datePicker4"
+                              aria-label="input Text to Expiry Date"
+                            />
+                            <i class="fa-solid fa-calendar-days icon-date top"></i>
+                          </div>
+                          <div class="col-md-10 m-auto my-2">
+                            <label for="CreditLimit" class="form-label"> Folio</label>
+
+                            <select
+                              class="form-select"
+                              id="formGustIdentityIdType"
+                              aria-label="select ID Type"
+                            >
+                              <option value="" disabled selected>-Select-</option>
+                              <option value="option1">Mr.test</option>
+                              <option value="option2">test</option>
+                              <option value="option3">test</option>
+                            </select>
+                          </div>
+                          <div class="col-md-10 m-auto my-2">
+                            <label for="CreditLimit" class="form-label">Rec/Vou #</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Registration No"
+                              aria-label="Example text with button addon"
+                              aria-describedby="button-addon1"
+                            />
+                          </div>
+                          <div class="col-md-10 m-auto my-2">
+                            <label for="CreditLimit" class="form-label">Charge</label>
+                            <select
+                              class="form-select"
+                              id="formGustIdentityIdType"
+                              aria-label="select ID Type"
+                            >
+                              <option value="" disabled selected>-Select-</option>
+                              <option value="option1">Mr.test</option>
+                              <option value="option2">test</option>
+                              <option value="option3">test</option>
+                            </select>
+                          </div>
+                          <div class="col-md-10 m-auto">
+                            <div class="form-check my-2">
+                              <input
+                                class="form-check-input"
+                                type="checkbox"
+                                value=""
+                                id="defaultCheck3"
+                                checked=""
+                              />
+                              <label class="form-check-label" for="defaultCheck3">
+                                Add as Inclusion</label
+                              >
+                            </div>
+                          </div>
+                          <div class="col-md-4 m-auto my-2">
+                            <label for="CreditLimit" class="form-label">Posting</label>
+                            <select
+                              class="form-select"
+                              id="formGustIdentityIdType"
+                              aria-label="select ID Type"
+                            >
+                              <option value="" disabled selected>-Select-</option>
+                              <option value="option1">Mr.test</option>
+                              <option value="option2">test</option>
+                              <option value="option3">test</option>
+                            </select>
+                          </div>
+                          <div class="col-md-4 m-auto my-2">
+                            <label for="CreditLimit" class="form-label"
+                              >Charge Rule</label
+                            >
+                            <select
+                              class="form-select"
+                              id="formGustIdentityIdType"
+                              aria-label="select ID Type"
+                            >
+                              <option value="" disabled selected>-Select-</option>
+                              <option value="option1">Mr.test</option>
+                              <option value="option2">test</option>
+                              <option value="option3">test</option>
+                            </select>
+                          </div>
+                          <!-- work if the button is clicked -->
+                          <!-- <div class="col-md-4 m-auto my-2">
+                            <label for="CreditLimit" class="form-label">Qty</label>
+                            <input
+                              type="number"
+                              class="form-control"
+                              placeholder=""
+                              aria-label="Example text with button addon"
+                              aria-describedby="button-addon1"
+                            />
+                          </div> -->
+                          <div class="col-md-10 m-auto my-2">
+                            <label for="ContactPerson" class="form-label">Amount</label>
+                            <div class="input-group">
+                              <button
+                                class="w-25 btn btn-outline-secondary dropdown-toggle waves-effect"
+                                type="button"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                              >
+                                -select-
+                              </button>
+                              <ul class="dropdown-menu" style="">
+                                <li>
+                                  <a class="dropdown-item" href="javascript:void(0);"
+                                    >EGP (£)</a
+                                  >
+                                </li>
+                                <li>
+                                  <a class="dropdown-item" href="javascript:void(0);"
+                                    >EUR (â‚¬)</a
+                                  >
+                                </li>
+                              </ul>
+                              <input
+                                type="text"
+                                class="form-control"
+                                aria-label="Text input with dropdown button"
+                                placeholder=""
+                              />
+                            </div>
+                          </div>
+                          <div class="col-md-10 m-auto my-2">
+                            <label for="CreditLimit" class="form-label">Comment</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Add Your Comment"
+                              aria-label="Example text with button addon"
+                              aria-describedby="button-addon1"
+                            />
+                          </div>
+                        </div>
+                        <div class="scbuttons gap-2 d-flex justify-content-end">
+                          <button
+                            type="submit"
+                            class="btn btn-primary waves-effect waves-light"
+                          >
+                            Add
+                          </button>
+                        </div>
                       </template>
                     </Side>
 
@@ -173,11 +561,120 @@
                       Apply Discount
                     </button>
                     <Side
+                      :width="'25%'"
                       :isSidebarOpen="activeSidebar === 'sidebar7'"
                       @close-sidebar="toggleSidebar('sidebar7')"
                     >
                       <template #SidebarContent>
-                        <h5>Content for Sidebar 7</h5>
+                        <div class="row">
+                          <div class="col-md-10 m-auto">
+                            <h3>Apply Discount</h3>
+                          </div>
+                          <div class="col-md-2 m-auto">
+                            <button
+                              type="button"
+                              class="btn-close text-reset"
+                              data-bs-dismiss="offcanvas"
+                              aria-label="Close"
+                            ></button>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-10 m-auto my-2">
+                            <label for="flatpickr-date-04" class="col-form-label"
+                              >Date</label
+                            >
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="YYYY-MM-D "
+                              id="flatpickr-date-04"
+                              ref="datePicker4"
+                              aria-label="input Text to Expiry Date"
+                            />
+                            <i class="fa-solid fa-calendar-days icon-date top"></i>
+                          </div>
+                          <div class="col-md-10 m-auto my-2">
+                            <label for="CreditLimit" class="form-label">
+                              Discount Type
+                            </label>
+
+                            <select
+                              class="form-select"
+                              id="formGustIdentityIdType"
+                              aria-label="select ID Type"
+                            >
+                              <option value="" disabled selected>-Select-</option>
+                              <option value="option1">Mr.test</option>
+                              <option value="option2">test</option>
+                              <option value="option3">test</option>
+                            </select>
+                          </div>
+                          <div class="col-md-10 m-auto my-2">
+                            <label for="CreditLimit" class="form-label"> Folio </label>
+
+                            <select
+                              class="form-select"
+                              id="formGustIdentityIdType"
+                              aria-label="select ID Type"
+                            >
+                              <option value="" disabled selected>-Select-</option>
+                              <option value="option1">Mr.test</option>
+                              <option value="option2">test</option>
+                              <option value="option3">test</option>
+                            </select>
+                          </div>
+
+                          <div class="col-md-10 m-auto my-2">
+                            <label for="ContactPerson" class="form-label">Amount</label>
+                            <div class="input-group">
+                              <button
+                                class="w-25 btn btn-outline-secondary dropdown-toggle waves-effect"
+                                type="button"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                              >
+                                -select-
+                              </button>
+                              <ul class="dropdown-menu" style="">
+                                <li>
+                                  <a class="dropdown-item" href="javascript:void(0);"
+                                    >EGP (£)</a
+                                  >
+                                </li>
+                                <li>
+                                  <a class="dropdown-item" href="javascript:void(0);"
+                                    >EUR (â‚¬)</a
+                                  >
+                                </li>
+                              </ul>
+                              <input
+                                type="text"
+                                class="form-control"
+                                aria-label="Text input with dropdown button"
+                                placeholder=""
+                              />
+                            </div>
+                          </div>
+                          <div class="col-md-10 m-auto my-2">
+                            <label for="CreditLimit" class="form-label">Comment</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder="Add Your Comment"
+                              aria-label="Example text with button addon"
+                              aria-describedby="button-addon1"
+                            />
+                          </div>
+                        </div>
+                        <div class="scbuttons gap-2 d-flex justify-content-end">
+                          <button
+                            type="submit"
+                            class="btn btn-primary waves-effect waves-light"
+                          >
+                            Add
+                          </button>
+                        </div>
                       </template>
                     </Side>
 
@@ -642,6 +1139,7 @@
                             <i class="fa-solid fa-user"></i>
                           </button>
                         </div>
+                        <!--sidebartest -->
                         <Side
                           :isSidebarOpen="activeSidebar === 'sidebar2'"
                           @close-sidebar="toggleSidebar('sidebar2')"
@@ -664,6 +1162,432 @@
                                     aria-describedby="defaultFormControlHelp"
                                   />
                                 </div>
+                              </div>
+                              <div class="col">
+                                <label for="ContactPerson" class="form-label"
+                                  >Contact Person</label
+                                >
+                                <div class="input-group">
+                                  <button
+                                    class="btn btn-outline-secondary dropdown-toggle waves-effect"
+                                    type="button"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false"
+                                  >
+                                    Mr.
+                                  </button>
+                                  <ul class="dropdown-menu" style="">
+                                    <li>
+                                      <a class="dropdown-item" href="javascript:void(0);"
+                                        >DR.</a
+                                      >
+                                    </li>
+                                    <li>
+                                      <a class="dropdown-item" href="javascript:void(0);"
+                                        >Jn.</a
+                                      >
+                                    </li>
+                                    <li>
+                                      <a class="dropdown-item" href="javascript:void(0);"
+                                        >Mam.</a
+                                      >
+                                    </li>
+                                    <li>
+                                      <hr class="dropdown-divider" />
+                                    </li>
+                                    <li>
+                                      <a class="dropdown-item" href="javascript:void(0);"
+                                        >Mr.</a
+                                      >
+                                    </li>
+                                    <li>
+                                      <a class="dropdown-item" href="javascript:void(0);"
+                                        >Mrs.</a
+                                      >
+                                    </li>
+                                    <li>
+                                      <a class="dropdown-item" href="javascript:void(0);"
+                                        >Ms.</a
+                                      >
+                                    </li>
+                                    <li>
+                                      <a class="dropdown-item" href="javascript:void(0);"
+                                        >Sir.</a
+                                      >
+                                    </li>
+                                    <li>
+                                      <a class="dropdown-item" href="javascript:void(0);"
+                                        >Sr.</a
+                                      >
+                                    </li>
+                                  </ul>
+                                  <input
+                                    type="text"
+                                    class="form-control"
+                                    aria-label="Text input with dropdown button"
+                                    placeholder="Contact Person"
+                                  />
+                                </div>
+                              </div>
+                              <div class="col">
+                                <div class="form-check mt-4">
+                                  <input
+                                    type="checkbox"
+                                    value=""
+                                    id="defaultCheck5"
+                                    checked="checked"
+                                    class="form-check-input"
+                                  />
+                                  <label for="defaultCheck5" class="form-check-label">
+                                    Create User
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row px-2">
+                              <div class="col">
+                                <div>
+                                  <label for="AgentEmail" class="form-label">Email</label>
+                                  <input
+                                    type="email"
+                                    class="form-control mb-3"
+                                    id="AgentEmail"
+                                    placeholder="Email"
+                                    aria-describedby="defaultFormControlHelp"
+                                  />
+                                </div>
+                              </div>
+                              <div class="col">
+                                <div>
+                                  <label for="AgentPhone" class="form-label">Phone</label>
+                                  <input
+                                    type="text"
+                                    class="form-control mb-3"
+                                    id="AgentPhone"
+                                    placeholder="Phone"
+                                    aria-describedby="defaultFormControlHelp"
+                                  />
+                                </div>
+                              </div>
+                              <div class="col">
+                                <div>
+                                  <label for="AgentMobile" class="form-label"
+                                    >Mobile</label
+                                  >
+                                  <input
+                                    type="text"
+                                    class="form-control mb-3"
+                                    id="AgentMobile"
+                                    placeholder="Mobile"
+                                    aria-describedby="defaultFormControlHelp"
+                                  />
+                                </div>
+                              </div>
+                              <div class="col">
+                                <div>
+                                  <label for="ShortCode" class="form-label"
+                                    >Short Code</label
+                                  >
+                                  <input
+                                    type="text"
+                                    class="form-control mb-3"
+                                    id="ShortCode"
+                                    placeholder="ShortCode"
+                                    aria-describedby="defaultFormControlHelp"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                            <h5 class="fw-b p-1">Account Details</h5>
+                            <div class="row px-2">
+                              <div class="col-3">
+                                <div>
+                                  <label for="RegistrationNo" class="form-label"
+                                    >Registration No</label
+                                  >
+                                  <input
+                                    type="text"
+                                    class="form-control mb-3"
+                                    id="RegistrationNo"
+                                    placeholder="Registration No"
+                                    aria-describedby="defaultFormControlHelp"
+                                  />
+                                </div>
+                              </div>
+                              <div class="col-3">
+                                <div>
+                                  <label for="TaxID" class="form-label">Tax ID</label>
+                                  <input
+                                    type="text"
+                                    class="form-control mb-3"
+                                    id="TaxID"
+                                    placeholder="Tax ID"
+                                    aria-describedby="defaultFormControlHelp"
+                                  />
+                                </div>
+                              </div>
+                              <div class="col-6"></div>
+                            </div>
+                            <div class="row px-2">
+                              <div class="col-3">
+                                <div>
+                                  <label for="OpeningBalance" class="form-label"
+                                    >Opening Balance</label
+                                  >
+                                  <div class="input-group">
+                                    <button
+                                      class="btn btn-outline-secondary waves-effect"
+                                      type="button"
+                                      id="OpeningBalance"
+                                    >
+                                      <i class="fa-solid fa-sterling-sign"></i>
+                                    </button>
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      placeholder="0.00"
+                                      aria-label="Example text with button addon"
+                                      aria-describedby="button-addon1"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-3">
+                                <div>
+                                  <label for="CreditLimit" class="form-label"
+                                    >Credit Limit</label
+                                  >
+                                  <div class="input-group">
+                                    <button
+                                      class="btn btn-outline-secondary waves-effect"
+                                      type="button"
+                                      id="CreditLimit"
+                                    >
+                                      <i class="fa-solid fa-sterling-sign"></i>
+                                    </button>
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      placeholder="0.00"
+                                      aria-label="Example text with button addon"
+                                      aria-describedby="button-addon1"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-6"></div>
+                              <div class="accordion mt-3" id="accordionExample">
+                                <div class="card accordion-item active">
+                                  <h2 class="accordion-header" id="headingOne">
+                                    <button
+                                      type="button"
+                                      class="accordion-button"
+                                      data-bs-toggle="collapse"
+                                      data-bs-target="#accordionOne"
+                                      aria-expanded="true"
+                                      aria-controls="accordionOne"
+                                    >
+                                      Other Information
+                                    </button>
+                                  </h2>
+
+                                  <div
+                                    id="accordionOne"
+                                    class="accordion-collapse collapse show"
+                                    data-bs-parent="#accordionExample"
+                                    style=""
+                                  >
+                                    <!-- Identity Information -->
+                                    <div class="row accordion-body">
+                                      <div class="row">
+                                        <div class="col-md-3">
+                                          <label
+                                            for="formGustIdentityIdType"
+                                            class="col-form-label"
+                                            >Gender</label
+                                          >
+                                          <select
+                                            class="form-select"
+                                            id="formGustIdentityIdType"
+                                            aria-label="select ID Type"
+                                          >
+                                            <option value="" disabled selected>
+                                              -Select-
+                                            </option>
+                                            <option value="option1">Male</option>
+                                            <option value="option2">Female</option>
+                                            <option value="option3">Other</option>
+                                          </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                          <label for="CreditLimit" class="form-label"
+                                            >Credit Limit</label
+                                          >
+                                          <div class="input-group">
+                                            <input
+                                              type="text"
+                                              class="form-control"
+                                              placeholder="0.00"
+                                              aria-label="Example text with button addon"
+                                              aria-describedby="button-addon1"
+                                            />
+                                            <button
+                                              class="btn btn-outline-secondary waves-effect"
+                                              type="button"
+                                              id="CreditLimit"
+                                            >
+                                              <i class="fa-solid fa-sterling-sign"></i>
+                                            </button>
+                                          </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                          <label for="CreditLimit" class="form-label"
+                                            >Credit Limit</label
+                                          >
+                                          <div class="input-group">
+                                            <input
+                                              type="text"
+                                              class="form-control"
+                                              placeholder="0.00"
+                                              aria-label="Example text with button addon"
+                                              aria-describedby="button-addon1"
+                                            />
+                                            <button
+                                              class="btn btn-outline-secondary waves-effect"
+                                              type="button"
+                                              id="CreditLimit"
+                                            >
+                                              <i class="fa-solid fa-sterling-sign"></i>
+                                            </button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="col-md-7">
+                                        <label for="addressGuest" class="col-form-label"
+                                          >Address</label
+                                        >
+                                        <input
+                                          class="form-control"
+                                          type="text"
+                                          id="addressGuest"
+                                          placeholder="Address"
+                                        />
+                                      </div>
+                                      <div class="row">
+                                        <div class="col-md-3">
+                                          <label for="countryGuest" class="col-form-label"
+                                            >Country</label
+                                          >
+                                          <input
+                                            class="form-control"
+                                            type="text"
+                                            id="countryGuest"
+                                            placeholder="country"
+                                          />
+                                        </div>
+                                        <div class="col-md-3">
+                                          <label for="stateGuest" class="col-form-label"
+                                            >State</label
+                                          >
+                                          <input
+                                            class="form-control"
+                                            type="text"
+                                            id="stateGuest"
+                                            placeholder="state"
+                                          />
+                                        </div>
+                                        <div class="col-md-3">
+                                          <label for="cityGuest" class="col-form-label"
+                                            >City</label
+                                          >
+                                          <input
+                                            class="form-control"
+                                            type="text"
+                                            id="cityGuest"
+                                            placeholder="city"
+                                          />
+                                        </div>
+                                        <div class="col-md-3">
+                                          <label for="ZipGuest" class="col-form-label"
+                                            >Zip</label
+                                          >
+                                          <input
+                                            class="form-control"
+                                            type="text"
+                                            id="ZipGuest"
+                                            placeholder="Zip"
+                                          />
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </template>
+                        </Side>
+
+                        <label for="CommissionPlan" class="col-form-label"
+                          >Commission Plan</label
+                        >
+                        <select
+                          id="CommissionPlane"
+                          class="select2 form-select select2-hidden-accessible mb-2"
+                          disabled=""
+                          data-select2-id="select2Disabled"
+                          tabindex="-1"
+                          aria-hidden="true"
+                        >
+                          <option value="1">Option1</option>
+                          <option value="2" selected="" data-select2-id="10">
+                            -select-
+                          </option>
+                          <option value="3">Option3</option>
+                          <option value="4">Option4</option>
+                        </select>
+
+                        <label for="Company" class="col-form-label"
+                          >Company</label
+                        >
+                        <div class="input-group">
+                          <select
+                            class="form-select"
+                            id="Company"
+                            aria-label="Example select with button addon"
+                          >
+                            <option selected="">-select-</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                          </select>
+                          <button
+                            class="btn btn-outline-primary waves-effect"
+                            type="button"
+                            @click="toggleSidebar('sidebar1')"
+                          >
+                            <i class="fa-solid fa-building"></i>
+                          </button>
+                        </div>
+                        <Side
+                          :isSidebarOpen="activeSidebar === 'sidebar1'"
+                          @close-sidebar="toggleSidebar('sidebar1')"
+                          :width="'50%'"
+                        >
+                          <template #SidebarContent>
+                            <h4 class="p-1">Add Company</h4>
+                            <hr my-2 />
+                            <div class="row px-2">
+                              <div class="col">
+                                <label for="AgentName" class="form-label"
+                                  >Agent Name</label
+                                >
+                                <input
+                                  type="text"
+                                  class="form-control mb-3"
+                                  id="AgentName"
+                                  placeholder="Agent Name"
+                                  aria-describedby="defaultFormControlHelp"
+                                />
                               </div>
                               <div class="col">
                                 <label for="ContactPerson" class="form-label"
@@ -903,6 +1827,153 @@
                                 </div>
                               </div>
                               <div class="col-6"></div>
+                              <div class="accordion mt-3" id="accordionExample">
+                                <div class="card accordion-item active">
+                                  <h2 class="accordion-header" id="headingOne">
+                                    <button
+                                      type="button"
+                                      class="accordion-button"
+                                      data-bs-toggle="collapse"
+                                      data-bs-target="#accordionOne"
+                                      aria-expanded="true"
+                                      aria-controls="accordionOne"
+                                    >
+                                      Other Information
+                                    </button>
+                                  </h2>
+
+                                  <div
+                                    id="accordionOne"
+                                    class="accordion-collapse collapse show"
+                                    data-bs-parent="#accordionExample"
+                                    style=""
+                                  >
+                                    <!-- Identity Information -->
+                                    <div class="row accordion-body">
+                                      <div class="row">
+                                        <div class="col-md-3">
+                                          <label
+                                            for="formGustIdentityIdType"
+                                            class="col-form-label"
+                                            >Gender</label
+                                          >
+                                          <select
+                                            class="form-select"
+                                            id="formGustIdentityIdType"
+                                            aria-label="select ID Type"
+                                          >
+                                            <option value="" disabled selected>
+                                              -Select-
+                                            </option>
+                                            <option value="option1">Male</option>
+                                            <option value="option2">Female</option>
+                                            <option value="option3">Other</option>
+                                          </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                          <label for="CreditLimit" class="form-label"
+                                            >Credit Limit</label
+                                          >
+                                          <div class="input-group">
+                                            <input
+                                              type="text"
+                                              class="form-control"
+                                              placeholder="0.00"
+                                              aria-label="Example text with button addon"
+                                              aria-describedby="button-addon1"
+                                            />
+                                            <button
+                                              class="btn btn-outline-secondary waves-effect"
+                                              type="button"
+                                              id="CreditLimit"
+                                            >
+                                              <i class="fa-solid fa-sterling-sign"></i>
+                                            </button>
+                                          </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                          <label for="CreditLimit" class="form-label"
+                                            >Credit Limit</label
+                                          >
+                                          <div class="input-group">
+                                            <input
+                                              type="text"
+                                              class="form-control"
+                                              placeholder="0.00"
+                                              aria-label="Example text with button addon"
+                                              aria-describedby="button-addon1"
+                                            />
+                                            <button
+                                              class="btn btn-outline-secondary waves-effect"
+                                              type="button"
+                                              id="CreditLimit"
+                                            >
+                                              <i class="fa-solid fa-sterling-sign"></i>
+                                            </button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="col-md-7">
+                                        <label for="addressGuest" class="col-form-label"
+                                          >Address</label
+                                        >
+                                        <input
+                                          class="form-control"
+                                          type="text"
+                                          id="addressGuest"
+                                          placeholder="Address"
+                                        />
+                                      </div>
+                                      <div class="row">
+                                        <div class="col-md-3">
+                                          <label for="countryGuest" class="col-form-label"
+                                            >Country</label
+                                          >
+                                          <input
+                                            class="form-control"
+                                            type="text"
+                                            id="countryGuest"
+                                            placeholder="country"
+                                          />
+                                        </div>
+                                        <div class="col-md-3">
+                                          <label for="stateGuest" class="col-form-label"
+                                            >State</label
+                                          >
+                                          <input
+                                            class="form-control"
+                                            type="text"
+                                            id="stateGuest"
+                                            placeholder="state"
+                                          />
+                                        </div>
+                                        <div class="col-md-3">
+                                          <label for="cityGuest" class="col-form-label"
+                                            >City</label
+                                          >
+                                          <input
+                                            class="form-control"
+                                            type="text"
+                                            id="cityGuest"
+                                            placeholder="city"
+                                          />
+                                        </div>
+                                        <div class="col-md-3">
+                                          <label for="ZipGuest" class="col-form-label"
+                                            >Zip</label
+                                          >
+                                          <input
+                                            class="form-control"
+                                            type="text"
+                                            id="ZipGuest"
+                                            placeholder="Zip"
+                                          />
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
                           </template>
                         </Side>
@@ -926,9 +1997,7 @@
                           <option value="4">Option4</option>
                         </select>
 
-                        <label for="Company" class="col-form-label"
-                          >Company</label
-                        >
+                        <label for="Company" class="col-form-label">Company</label>
                         <div class="input-group">
                           <select
                             class="form-select"
@@ -1524,10 +2593,7 @@
             <!-- booking footer  -->
             <div class="row">
               <div class="bottom d-flex justify-content-between col-6">
-                <button
-                  type="button"
-                  class="btn btn-outline-primary waves-effect"
-                >
+                <button type="button" class="btn btn-outline-primary waves-effect">
                   Send Email
                 </button>
 
@@ -1609,9 +2675,18 @@
                     <button
                       type="button"
                       class="btn btn-outline-primary waves-effect mb-2"
+                      @click="toggleSidebar('sidebar12')"
                     >
                       <i class="fa-solid fa-plus"></i>
                     </button>
+                    <Side
+                      :isSidebarOpen="activeSidebar === 'sidebar12'"
+                      @close-sidebar="toggleSidebar('sidebar12')"
+                    >
+                      <template #SidebarContent>
+                        <p>kjnckjwehevluerriahuyrgfh</p>
+                      </template>
+                    </Side>
                   </div>
                 </div>
                 <div class="accordion mt-3" id="accordionExample">
@@ -2246,11 +3321,210 @@
                 Update Details
               </button>
               <Side
+                :width="'35%'"
                 :isSidebarOpen="activeSidebar === 'sidebar9'"
                 @close-sidebar="toggleSidebar('sidebar9')"
               >
                 <template #SidebarContent>
-                  <h5>Content for Sidebar 9</h5>
+                  <div class="row">
+                    <div class="col-md-10 m-auto">
+                      <h3>Update Details</h3>
+                    </div>
+                    <div class="col-md-2 m-auto">
+                      <button
+                        type="button"
+                        class="btn-close text-reset"
+                        data-bs-dismiss="offcanvas"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-10 m-auto my-2">
+                      <label for="flatpickr-date-04" class="col-form-label">Date</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="YYYY-MM-D "
+                        id="flatpickr-date-04"
+                        ref="datePicker4"
+                        aria-label="input Text to Expiry Date"
+                      />
+                      <i class="fa-solid fa-calendar-days icon-date top"></i>
+                    </div>
+                    <div class="col-md-10 m-auto my-2">
+                      <label for="CreditLimit" class="form-label">Rate Type</label>
+                      <div class="input-group">
+                        <select
+                          class="form-select"
+                          id="formGustIdentityIdType"
+                          aria-label="select ID Type"
+                        >
+                          <option value="" disabled selected>-Select-</option>
+                          <option value="option1">السعر غير شامل</option>
+                          <option value="option2">السعر شامل الافطار</option>
+                        </select>
+                        <button
+                          class="btn btn-outline-secondary waves-effect"
+                          type="button"
+                          id="CreditLimit"
+                        >
+                          <i class="fa-solid fa-sterling-sign"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="col-md-4 m-auto my-2">
+                      <label for="CreditLimit" class="form-label">Pax (A/C)</label>
+                      <select
+                        class="form-select"
+                        id="formGustIdentityIdType"
+                        aria-label="select ID Type"
+                      >
+                        <option value="" disabled selected>-Select-</option>
+                        <option value="option1">Mr.test</option>
+                        <option value="option2">test</option>
+                        <option value="option3">test</option>
+                      </select>
+                    </div>
+                    <div class="col-md-4 m-auto my-2">
+                      <label for="CreditLimit" class="form-label">Pax (A/C)</label>
+                      <select
+                        class="form-select"
+                        id="formGustIdentityIdType"
+                        aria-label="select ID Type"
+                      >
+                        <option value="" disabled selected>-Select-</option>
+                        <option value="option1">Mr.test</option>
+                        <option value="option2">test</option>
+                        <option value="option3">test</option>
+                      </select>
+                    </div>
+                    <div class="col-md-10 m-auto my-2">
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          value=""
+                          id="defaultCheck3"
+                          checked=""
+                        />
+                        <label class="form-check-label" for="defaultCheck3">
+                          Override Rates
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-md-10 m-auto my-2">
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          value=""
+                          id="defaultCheck3"
+                          checked=""
+                        />
+                        <label class="form-check-label" for="defaultCheck3">
+                          Complimentary Room
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-md-10 m-auto my-2">
+                      <label for="ContactPerson" class="form-label">Rate</label>
+                      <div class="input-group">
+                        <button
+                          class="w-25 btn btn-outline-secondary dropdown-toggle waves-effect"
+                          type="button"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                        >
+                          -select-
+                        </button>
+                        <ul class="dropdown-menu" style="">
+                          <li>
+                            <a class="dropdown-item" href="javascript:void(0);"
+                              >EGP (£)</a
+                            >
+                          </li>
+                          <li>
+                            <a class="dropdown-item" href="javascript:void(0);"
+                              >EUR (â‚¬)</a
+                            >
+                          </li>
+                        </ul>
+                        <input
+                          type="text"
+                          class="form-control"
+                          aria-label="Text input with dropdown button"
+                          placeholder=""
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-10 m-auto my-2">
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          value=""
+                          id="defaultCheck3"
+                          checked=""
+                        />
+                        <label class="form-check-label" for="defaultCheck3">
+                          Rates Inclusive Tax
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-md-10 m-auto my-2">
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          value=""
+                          id="defaultCheck3"
+                          checked=""
+                        />
+                        <label class="form-check-label" for="defaultCheck3">
+                          Update Meal Plan
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-md-4 m-auto my-2">
+                      <div class="form-check">
+                        <input
+                          name="default-radio-1"
+                          class="form-check-input"
+                          type="radio"
+                          value=""
+                          id="defaultRadio2"
+                          checked=""
+                        />
+                        <label class="form-check-label" for="defaultRadio2">
+                          Apply on Selected Dates
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-md-4 m-auto my-2">
+                      <div class="form-check">
+                        <input
+                          name="default-radio-1"
+                          class="form-check-input"
+                          type="radio"
+                          value=""
+                          id="defaultRadio2"
+                          checked=""
+                        />
+                        <label class="form-check-label" for="defaultRadio2">
+                          Apply on whole stay
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="scbuttons gap-2 d-flex justify-content-end">
+                    <button
+                      type="submit"
+                      class="btn btn-primary waves-effect waves-light"
+                    >
+                      Apply
+                    </button>
+                  </div>
                 </template>
               </Side>
 
@@ -2292,10 +3566,7 @@
           </div>
           <!--Credit Card  -->
           <div class="tab-pane fade" id="form-tabs-CreditCard" role="tabpanel">
-            <button
-              type="button"
-              class="btn btn-outline-secondary waves-effect mb-2"
-            >
+            <button type="button" class="btn btn-outline-secondary waves-effect mb-2">
               Add Card
             </button>
             <Side
@@ -2366,8 +3637,7 @@ export default {
   },
   methods: {
     toggleSidebar(sidebarName) {
-      this.activeSidebar =
-        this.activeSidebar === sidebarName ? null : sidebarName;
+      this.activeSidebar = this.activeSidebar === sidebarName ? null : sidebarName;
     },
   },
   mixins: [flatpickrMixin],
