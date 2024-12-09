@@ -483,12 +483,12 @@ select {
 .sidebar-open::-webkit-scrollbar {
   display: none;
 }
-
+/* momen change the buttons positions and width */
 .scbuttons {
-  position: fixed;
+  position: absolute;
   right: 0;
   bottom: 0;
-  width: 1000px;
+  width: 100%;
   max-width: inherit;
   z-index: 10;
   padding: 10px 20px;

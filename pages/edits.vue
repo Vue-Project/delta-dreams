@@ -110,15 +110,16 @@
                   </button>
                 </div>
                 <Side
+                  :width="'25%'"
                   :isSidebarOpen="activeSidebar === 'sidebar4'"
                   @close-sidebar="toggleSidebar('sidebar4')"
                 >
                   <template #SidebarContent>
                     <div class="row">
-                      <div class="col-md-11 m-auto">
+                      <div class="col-md-10 m-auto">
                         <h3>New Folio</h3>
                       </div>
-                      <div class="col-md-1 m-auto">
+                      <div class="col-md-2 m-auto">
                         <button
                           type="button"
                           class="btn-close text-reset"
@@ -228,15 +229,16 @@
                       Add Payment
                     </button>
                     <Side
+                      :width="'25%'"
                       :isSidebarOpen="activeSidebar === 'sidebar5'"
                       @close-sidebar="toggleSidebar('sidebar5')"
                     >
                       <template #SidebarContent>
                         <div class="row">
-                          <div class="col-md-11 m-auto">
+                          <div class="col-md-10 m-auto">
                             <h3>New Folio</h3>
                           </div>
-                          <div class="col-md-1 m-auto">
+                          <div class="col-md-2 m-auto">
                             <button
                               type="button"
                               class="btn-close text-reset"
@@ -371,15 +373,16 @@
                       Add Charges
                     </button>
                     <Side
+                      :width="'25%'"
                       :isSidebarOpen="activeSidebar === 'sidebar6'"
                       @close-sidebar="toggleSidebar('sidebar6')"
                     >
                       <template #SidebarContent>
                         <div class="row">
-                          <div class="col-md-11 m-auto">
+                          <div class="col-md-10 m-auto">
                             <h3>Add Charge</h3>
                           </div>
-                          <div class="col-md-1 m-auto">
+                          <div class="col-md-2 m-auto">
                             <button
                               type="button"
                               class="btn-close text-reset"
@@ -554,15 +557,16 @@
                       Apply Discount
                     </button>
                     <Side
+                      :width="'25%'"
                       :isSidebarOpen="activeSidebar === 'sidebar7'"
                       @close-sidebar="toggleSidebar('sidebar7')"
                     >
                       <template #SidebarContent>
                         <div class="row">
-                          <div class="col-md-11 m-auto">
+                          <div class="col-md-10 m-auto">
                             <h3>Apply Discount</h3>
                           </div>
-                          <div class="col-md-1 m-auto">
+                          <div class="col-md-2 m-auto">
                             <button
                               type="button"
                               class="btn-close text-reset"
@@ -1689,9 +1693,18 @@
                     <button
                       type="button"
                       class="btn btn-outline-primary waves-effect mb-2"
+                      @click="toggleSidebar('sidebar12')"
                     >
                       <i class="fa-solid fa-plus"></i>
                     </button>
+                    <Side
+                      :isSidebarOpen="activeSidebar === 'sidebar12'"
+                      @close-sidebar="toggleSidebar('sidebar12')"
+                    >
+                      <template #SidebarContent>
+                        <p>kjnckjwehevluerriahuyrgfh</p>
+                      </template>
+                    </Side>
                   </div>
                 </div>
                 <div class="accordion mt-3" id="accordionExample">
@@ -2269,11 +2282,210 @@
                 Update Details
               </button>
               <Side
+                :width="'35%'"
                 :isSidebarOpen="activeSidebar === 'sidebar9'"
                 @close-sidebar="toggleSidebar('sidebar9')"
               >
                 <template #SidebarContent>
-                  <h5>Content for Sidebar 9</h5>
+                  <div class="row">
+                    <div class="col-md-10 m-auto">
+                      <h3>Update Details</h3>
+                    </div>
+                    <div class="col-md-2 m-auto">
+                      <button
+                        type="button"
+                        class="btn-close text-reset"
+                        data-bs-dismiss="offcanvas"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-10 m-auto my-2">
+                      <label for="flatpickr-date-04" class="col-form-label">Date</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        placeholder="YYYY-MM-D "
+                        id="flatpickr-date-04"
+                        ref="datePicker4"
+                        aria-label="input Text to Expiry Date"
+                      />
+                      <i class="fa-solid fa-calendar-days icon-date top"></i>
+                    </div>
+                    <div class="col-md-10 m-auto my-2">
+                      <label for="CreditLimit" class="form-label">Rate Type</label>
+                      <div class="input-group">
+                        <select
+                          class="form-select"
+                          id="formGustIdentityIdType"
+                          aria-label="select ID Type"
+                        >
+                          <option value="" disabled selected>-Select-</option>
+                          <option value="option1">السعر غير شامل</option>
+                          <option value="option2">السعر شامل الافطار</option>
+                        </select>
+                        <button
+                          class="btn btn-outline-secondary waves-effect"
+                          type="button"
+                          id="CreditLimit"
+                        >
+                          <i class="fa-solid fa-sterling-sign"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="col-md-4 m-auto my-2">
+                      <label for="CreditLimit" class="form-label">Pax (A/C)</label>
+                      <select
+                        class="form-select"
+                        id="formGustIdentityIdType"
+                        aria-label="select ID Type"
+                      >
+                        <option value="" disabled selected>-Select-</option>
+                        <option value="option1">Mr.test</option>
+                        <option value="option2">test</option>
+                        <option value="option3">test</option>
+                      </select>
+                    </div>
+                    <div class="col-md-4 m-auto my-2">
+                      <label for="CreditLimit" class="form-label">Pax (A/C)</label>
+                      <select
+                        class="form-select"
+                        id="formGustIdentityIdType"
+                        aria-label="select ID Type"
+                      >
+                        <option value="" disabled selected>-Select-</option>
+                        <option value="option1">Mr.test</option>
+                        <option value="option2">test</option>
+                        <option value="option3">test</option>
+                      </select>
+                    </div>
+                    <div class="col-md-10 m-auto my-2">
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          value=""
+                          id="defaultCheck3"
+                          checked=""
+                        />
+                        <label class="form-check-label" for="defaultCheck3">
+                          Override Rates
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-md-10 m-auto my-2">
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          value=""
+                          id="defaultCheck3"
+                          checked=""
+                        />
+                        <label class="form-check-label" for="defaultCheck3">
+                          Complimentary Room
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-md-10 m-auto my-2">
+                      <label for="ContactPerson" class="form-label">Rate</label>
+                      <div class="input-group">
+                        <button
+                          class="w-25 btn btn-outline-secondary dropdown-toggle waves-effect"
+                          type="button"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                        >
+                          -select-
+                        </button>
+                        <ul class="dropdown-menu" style="">
+                          <li>
+                            <a class="dropdown-item" href="javascript:void(0);"
+                              >EGP (£)</a
+                            >
+                          </li>
+                          <li>
+                            <a class="dropdown-item" href="javascript:void(0);"
+                              >EUR (â‚¬)</a
+                            >
+                          </li>
+                        </ul>
+                        <input
+                          type="text"
+                          class="form-control"
+                          aria-label="Text input with dropdown button"
+                          placeholder=""
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-10 m-auto my-2">
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          value=""
+                          id="defaultCheck3"
+                          checked=""
+                        />
+                        <label class="form-check-label" for="defaultCheck3">
+                          Rates Inclusive Tax
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-md-10 m-auto my-2">
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="checkbox"
+                          value=""
+                          id="defaultCheck3"
+                          checked=""
+                        />
+                        <label class="form-check-label" for="defaultCheck3">
+                          Update Meal Plan
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-md-4 m-auto my-2">
+                      <div class="form-check">
+                        <input
+                          name="default-radio-1"
+                          class="form-check-input"
+                          type="radio"
+                          value=""
+                          id="defaultRadio2"
+                          checked=""
+                        />
+                        <label class="form-check-label" for="defaultRadio2">
+                          Apply on Selected Dates
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-md-4 m-auto my-2">
+                      <div class="form-check">
+                        <input
+                          name="default-radio-1"
+                          class="form-check-input"
+                          type="radio"
+                          value=""
+                          id="defaultRadio2"
+                          checked=""
+                        />
+                        <label class="form-check-label" for="defaultRadio2">
+                          Apply on whole stay
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="scbuttons gap-2 d-flex justify-content-end">
+                    <button
+                      type="submit"
+                      class="btn btn-primary waves-effect waves-light"
+                    >
+                      Apply
+                    </button>
+                  </div>
                 </template>
               </Side>
 
