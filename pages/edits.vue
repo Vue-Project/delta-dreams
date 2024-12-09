@@ -82,14 +82,10 @@
             </button>
             <ul class="dropdown-menu" style="">
               <li>
-                <a class="dropdown-item" href="javascript:void(0);"
-                  >Print invoice</a
-                >
+                <a class="dropdown-item" href="javascript:void(0);">Print invoice</a>
               </li>
               <li>
-                <a class="dropdown-item" href="javascript:void(0);"
-                  >Send invoice</a
-                >
+                <a class="dropdown-item" href="javascript:void(0);">Send invoice</a>
               </li>
             </ul>
           </div>
@@ -681,18 +677,9 @@
                     <button
                       type="button"
                       class="btn btn-outline-secondary waves-effect me-1"
-                      @click="toggleSidebar('sidebar8')"
                     >
                       Folio Operation
                     </button>
-                    <Side
-                      :isSidebarOpen="activeSidebar === 'sidebar8'"
-                      @close-sidebar="toggleSidebar('sidebar8')"
-                    >
-                      <template #SidebarContent>
-                        <h5>Content for Sidebar 8</h5>
-                      </template>
-                    </Side>
 
                     <div class="btn-group">
                       <button
@@ -715,9 +702,7 @@
                           >
                         </li>
                         <li>
-                          <a class="dropdown-item" href="javascript:void(0);"
-                            >Transfer</a
-                          >
+                          <a class="dropdown-item" href="javascript:void(0);">Transfer</a>
                         </li>
                         <li>
                           <a class="dropdown-item" href="javascript:void(0);"
@@ -745,17 +730,11 @@
 
                   <div class="d-flex justify-content-end mt-2">
                     <span class="me-2"
-                      ><i
-                        class="fa-solid fa-square me-2"
-                        style="color: #ffd43b"
-                      ></i
+                      ><i class="fa-solid fa-square me-2" style="color: #ffd43b"></i
                       >UnPosted</span
                     >
                     <span class="me-2"
-                      ><i
-                        class="fa-solid fa-square me-2"
-                        style="color: #c3c6d1"
-                      ></i
+                      ><i class="fa-solid fa-square me-2" style="color: #c3c6d1"></i
                       >Posted</span
                     >
                     <i class="fa-solid fa-list-ul me-2 mt-1"></i>
@@ -814,11 +793,7 @@
             </div>
           </div>
           <!-- Booking Details  -->
-          <div
-            class="tab-pane fade"
-            id="form-tabs-BookingDetails"
-            role="tabpanel"
-          >
+          <div class="tab-pane fade" id="form-tabs-BookingDetails" role="tabpanel">
             <div class="row">
               <!-- inside tabs  -->
               <div class="col-12">
@@ -920,11 +895,7 @@
                     </table>
                   </div>
                   <!-- task  -->
-                  <div
-                    class="tab-pane fade"
-                    id="form-tabs-Task"
-                    role="tabpanel"
-                  >
+                  <div class="tab-pane fade" id="form-tabs-Task" role="tabpanel">
                     <div class="d-flex">
                       <i class="fa-solid fa-chevron-left mt-1 me-3"></i>
                       <p>Tasks</p>
@@ -946,11 +917,7 @@
                     </table>
                   </div>
                   <!-- message  -->
-                  <div
-                    class="tab-pane fade"
-                    id="form-tabs-Message"
-                    role="tabpanel"
-                  >
+                  <div class="tab-pane fade" id="form-tabs-Message" role="tabpanel">
                     <div class="d-flex">
                       <i class="fa-solid fa-chevron-left mt-1 me-3"></i>
                       <p>Messages</p>
@@ -971,11 +938,7 @@
                     </table>
                   </div>
                   <!-- pereference  -->
-                  <div
-                    class="tab-pane fade"
-                    id="form-tabs-Preference"
-                    role="tabpanel"
-                  >
+                  <div class="tab-pane fade" id="form-tabs-Preference" role="tabpanel">
                     <div class="d-flex">
                       <i class="fa-solid fa-chevron-left mt-1 me-3"></i>
                       <p>Preferences</p>
@@ -1005,9 +968,7 @@
                   <form>
                     <div class="row">
                       <div class="col-6">
-                        <label for="BillTo" class="col-form-label"
-                          >Bill To</label
-                        >
+                        <label for="BillTo" class="col-form-label">Bill To</label>
                         <select class="form-select mb-2" id="BillTo">
                           <option value="" disabled selected>MR.</option>
                           <option value="option1">DR.</option>
@@ -1081,9 +1042,7 @@
                           </div>
                         </div>
                         <div>
-                          <label
-                            for="defaultFormControlInput"
-                            class="form-label mb-3"
+                          <label for="defaultFormControlInput" class="form-label mb-3"
                             >Registration No</label
                           >
                           <input
@@ -1101,9 +1060,7 @@
 
                 <!-- horizintal line  -->
                 <div class="col-1 d-flex justify-content-center">
-                  <span
-                    style="border-left: 1px solid #e1e0e3; height: auto"
-                  ></span>
+                  <span style="border-left: 1px solid #e1e0e3; height: auto"></span>
                 </div>
 
                 <!-- source information section  -->
@@ -1112,9 +1069,7 @@
                   <form>
                     <div class="row">
                       <div class="col-6">
-                        <label for="MarketCode" class="col-form-label"
-                          >Market Code</label
-                        >
+                        <label for="MarketCode" class="col-form-label">Market Code</label>
                         <select class="form-select mb-2" id="MarketCode">
                           <option value="" disabled selected>-select-</option>
                           <option value="option1">item</option>
@@ -1546,9 +1501,7 @@
                           <option value="4">Option4</option>
                         </select>
 
-                        <label for="Company" class="col-form-label"
-                          >Company</label
-                        >
+                        <label for="Company" class="col-form-label">Company</label>
                         <div class="input-group">
                           <select
                             class="form-select"
@@ -1604,23 +1557,17 @@
                                   </button>
                                   <ul class="dropdown-menu" style="">
                                     <li>
-                                      <a
-                                        class="dropdown-item"
-                                        href="javascript:void(0);"
+                                      <a class="dropdown-item" href="javascript:void(0);"
                                         >DR.</a
                                       >
                                     </li>
                                     <li>
-                                      <a
-                                        class="dropdown-item"
-                                        href="javascript:void(0);"
+                                      <a class="dropdown-item" href="javascript:void(0);"
                                         >Jn.</a
                                       >
                                     </li>
                                     <li>
-                                      <a
-                                        class="dropdown-item"
-                                        href="javascript:void(0);"
+                                      <a class="dropdown-item" href="javascript:void(0);"
                                         >Mam.</a
                                       >
                                     </li>
@@ -1628,37 +1575,27 @@
                                       <hr class="dropdown-divider" />
                                     </li>
                                     <li>
-                                      <a
-                                        class="dropdown-item"
-                                        href="javascript:void(0);"
+                                      <a class="dropdown-item" href="javascript:void(0);"
                                         >Mr.</a
                                       >
                                     </li>
                                     <li>
-                                      <a
-                                        class="dropdown-item"
-                                        href="javascript:void(0);"
+                                      <a class="dropdown-item" href="javascript:void(0);"
                                         >Mrs.</a
                                       >
                                     </li>
                                     <li>
-                                      <a
-                                        class="dropdown-item"
-                                        href="javascript:void(0);"
+                                      <a class="dropdown-item" href="javascript:void(0);"
                                         >Ms.</a
                                       >
                                     </li>
                                     <li>
-                                      <a
-                                        class="dropdown-item"
-                                        href="javascript:void(0);"
+                                      <a class="dropdown-item" href="javascript:void(0);"
                                         >Sir.</a
                                       >
                                     </li>
                                     <li>
-                                      <a
-                                        class="dropdown-item"
-                                        href="javascript:void(0);"
+                                      <a class="dropdown-item" href="javascript:void(0);"
                                         >Sr.</a
                                       >
                                     </li>
@@ -1680,10 +1617,7 @@
                                     checked="checked"
                                     class="form-check-input"
                                   />
-                                  <label
-                                    for="defaultCheck5"
-                                    class="form-check-label"
-                                  >
+                                  <label for="defaultCheck5" class="form-check-label">
                                     Create User
                                   </label>
                                 </div>
@@ -1692,9 +1626,7 @@
                             <div class="row px-2">
                               <div class="col">
                                 <div>
-                                  <label for="AgentEmail" class="form-label"
-                                    >Email</label
-                                  >
+                                  <label for="AgentEmail" class="form-label">Email</label>
                                   <input
                                     type="email"
                                     class="form-control mb-3"
@@ -1706,9 +1638,7 @@
                               </div>
                               <div class="col">
                                 <div>
-                                  <label for="AgentPhone" class="form-label"
-                                    >Phone</label
-                                  >
+                                  <label for="AgentPhone" class="form-label">Phone</label>
                                   <input
                                     type="text"
                                     class="form-control mb-3"
@@ -1765,9 +1695,7 @@
                               </div>
                               <div class="col-3">
                                 <div>
-                                  <label for="TaxID" class="form-label"
-                                    >Tax ID</label
-                                  >
+                                  <label for="TaxID" class="form-label">Tax ID</label>
                                   <input
                                     type="text"
                                     class="form-control mb-3"
@@ -1978,45 +1906,6 @@
                           </template>
                         </Side>
 
-                        <label for="CommissionPlan" class="col-form-label"
-                          >Commission Plan</label
-                        >
-                        <select
-                          id="CommissionPlane"
-                          class="select2 form-select select2-hidden-accessible mb-2"
-                          disabled=""
-                          data-select2-id="select2Disabled"
-                          tabindex="-1"
-                          aria-hidden="true"
-                        >
-                          <option value="1">Option1</option>
-                          <option value="2" selected="" data-select2-id="10">
-                            -select-
-                          </option>
-                          <option value="3">Option3</option>
-                          <option value="4">Option4</option>
-                        </select>
-
-                        <label for="Company" class="col-form-label">Company</label>
-                        <div class="input-group">
-                          <select
-                            class="form-select"
-                            id="Company"
-                            aria-label="Example select with button addon"
-                          >
-                            <option selected="">-select-</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                          </select>
-                          <button
-                            class="btn btn-outline-primary waves-effect"
-                            type="button"
-                            @click="toggleSidebar('sidebar1')"
-                          >
-                            <i class="fa-solid fa-building"></i>
-                          </button>
-                        </div>
                         <Side
                           :isSidebarOpen="activeSidebar === 'sidebar1'"
                           @close-sidebar="toggleSidebar('sidebar1')"
@@ -2053,23 +1942,17 @@
                                   </button>
                                   <ul class="dropdown-menu" style="">
                                     <li>
-                                      <a
-                                        class="dropdown-item"
-                                        href="javascript:void(0);"
+                                      <a class="dropdown-item" href="javascript:void(0);"
                                         >DR.</a
                                       >
                                     </li>
                                     <li>
-                                      <a
-                                        class="dropdown-item"
-                                        href="javascript:void(0);"
+                                      <a class="dropdown-item" href="javascript:void(0);"
                                         >Jn.</a
                                       >
                                     </li>
                                     <li>
-                                      <a
-                                        class="dropdown-item"
-                                        href="javascript:void(0);"
+                                      <a class="dropdown-item" href="javascript:void(0);"
                                         >Mam.</a
                                       >
                                     </li>
@@ -2077,37 +1960,27 @@
                                       <hr class="dropdown-divider" />
                                     </li>
                                     <li>
-                                      <a
-                                        class="dropdown-item"
-                                        href="javascript:void(0);"
+                                      <a class="dropdown-item" href="javascript:void(0);"
                                         >Mr.</a
                                       >
                                     </li>
                                     <li>
-                                      <a
-                                        class="dropdown-item"
-                                        href="javascript:void(0);"
+                                      <a class="dropdown-item" href="javascript:void(0);"
                                         >Mrs.</a
                                       >
                                     </li>
                                     <li>
-                                      <a
-                                        class="dropdown-item"
-                                        href="javascript:void(0);"
+                                      <a class="dropdown-item" href="javascript:void(0);"
                                         >Ms.</a
                                       >
                                     </li>
                                     <li>
-                                      <a
-                                        class="dropdown-item"
-                                        href="javascript:void(0);"
+                                      <a class="dropdown-item" href="javascript:void(0);"
                                         >Sir.</a
                                       >
                                     </li>
                                     <li>
-                                      <a
-                                        class="dropdown-item"
-                                        href="javascript:void(0);"
+                                      <a class="dropdown-item" href="javascript:void(0);"
                                         >Sr.</a
                                       >
                                     </li>
@@ -2129,10 +2002,7 @@
                                     checked="checked"
                                     class="form-check-input"
                                   />
-                                  <label
-                                    for="defaultCheck5"
-                                    class="form-check-label"
-                                  >
+                                  <label for="defaultCheck5" class="form-check-label">
                                     Create User
                                   </label>
                                 </div>
@@ -2141,9 +2011,7 @@
                             <div class="row px-2">
                               <div class="col">
                                 <div>
-                                  <label for="AgentEmail" class="form-label"
-                                    >Email</label
-                                  >
+                                  <label for="AgentEmail" class="form-label">Email</label>
                                   <input
                                     type="email"
                                     class="form-control mb-3"
@@ -2155,9 +2023,7 @@
                               </div>
                               <div class="col">
                                 <div>
-                                  <label for="AgentPhone" class="form-label"
-                                    >Phone</label
-                                  >
+                                  <label for="AgentPhone" class="form-label">Phone</label>
                                   <input
                                     type="text"
                                     class="form-control mb-3"
@@ -2214,9 +2080,7 @@
                               </div>
                               <div class="col-3">
                                 <div>
-                                  <label for="TaxID" class="form-label"
-                                    >Tax ID</label
-                                  >
+                                  <label for="TaxID" class="form-label">Tax ID</label>
                                   <input
                                     type="text"
                                     class="form-control mb-3"
@@ -2290,32 +2154,24 @@
                             <h5 class="fw-b p-1">Credit Card Details</h5>
                             <div class="row px-2">
                               <!-- Card Number Field -->
-                              <div
-                                class="col-5 position-relative input-with-icon"
-                              >
+                              <div class="col-5 position-relative input-with-icon">
                                 <label for="CardNumber" class="form-label"
                                   >Card Number</label
                                 >
                                 <div class="input-wrapper">
-                                  <i
-                                    class="fa-regular fa-credit-card input-icon"
-                                  ></i>
+                                  <i class="fa-regular fa-credit-card input-icon"></i>
                                   <input
                                     type="text"
                                     class="form-control icon-input"
                                     id="CardNumber"
                                     placeholder="Card Number"
                                   />
-                                  <i
-                                    class="fa-solid fa-check input-icon-right"
-                                  ></i>
+                                  <i class="fa-solid fa-check input-icon-right"></i>
                                 </div>
                               </div>
 
                               <!-- Card Holder Name Field -->
-                              <div
-                                class="col-5 position-relative input-with-icon"
-                              >
+                              <div class="col-5 position-relative input-with-icon">
                                 <label for="CardHolderName" class="form-label"
                                   >Card Holder Name</label
                                 >
@@ -2326,16 +2182,13 @@
                                     id="CardHolderName"
                                     placeholder="Card Holder Name"
                                   />
-                                  <i
-                                    class="fa-solid fa-user input-icon-right"
-                                  ></i>
+                                  <i class="fa-solid fa-user input-icon-right"></i>
                                 </div>
                               </div>
 
                               <!-- Delete Icon -->
                               <div
                                 class="col-1 d-flex align-items-center justify-content-center d-none"
-                                
                               >
                                 <i
                                   class="fa-solid fa-trash-can bg-danger p-2 rounded-1 text-white mt-4"
@@ -2346,9 +2199,7 @@
                               <div class="col-5">
                                 <div class="row mt-2">
                                   <div class="col-6">
-                                    <label
-                                      for="CardHolderName"
-                                      class="form-label"
+                                    <label for="CardHolderName" class="form-label"
                                       >Expiry Date</label
                                     >
                                     <select
@@ -2377,9 +2228,7 @@
                                 </div>
                               </div>
                               <div class="col-5 mt-2">
-                                <label
-                                  for="multicol-password"
-                                  class="form-label"
+                                <label for="multicol-password" class="form-label"
                                   >CVV</label
                                 >
                                 <div class="input-group input-group-merge">
@@ -2399,7 +2248,6 @@
                               </div>
                               <div
                                 class="col-1 d-flex align-items-center justify-content-center d-none"
-                                
                               >
                                 <i
                                   class="fa-solid fa-trash-can bg-danger p-2 rounded-1 text-white mt-4"
@@ -2409,9 +2257,7 @@
                             <h5 class="fw-b p-1 mt-4">Address</h5>
                             <div class="row px-2">
                               <div class="col-8">
-                                <label
-                                  for="multicol-password"
-                                  class="form-label"
+                                <label for="multicol-password" class="form-label"
                                   >Address</label
                                 >
                                 <textarea
@@ -2423,9 +2269,7 @@
                             </div>
                             <div class="row px-2 mt-3">
                               <div class="col-2">
-                                <label for="Country" class="form-label"
-                                  >Country</label
-                                >
+                                <label for="Country" class="form-label">Country</label>
                                 <select
                                   class="form-select"
                                   id="Country"
@@ -2439,9 +2283,7 @@
                               </div>
                               <div class="col-2">
                                 <div>
-                                  <label for="State" class="form-label"
-                                    >State</label
-                                  >
+                                  <label for="State" class="form-label">State</label>
                                   <input
                                     type="text"
                                     class="form-control mb-3"
@@ -2453,9 +2295,7 @@
                               </div>
                               <div class="col-2">
                                 <div>
-                                  <label for="City" class="form-label"
-                                    >City</label
-                                  >
+                                  <label for="City" class="form-label">City</label>
                                   <input
                                     type="text"
                                     class="form-control mb-3"
@@ -2467,9 +2307,7 @@
                               </div>
                               <div class="col-2">
                                 <div>
-                                  <label for="Zip" class="form-label"
-                                    >Zip</label
-                                  >
+                                  <label for="Zip" class="form-label">Zip</label>
                                   <input
                                     type="text"
                                     class="form-control mb-3"
@@ -2490,11 +2328,8 @@
                                     checked="checked"
                                     class="form-check-input"
                                   />
-                                  <label
-                                    for="defaultCheck3"
-                                    class="form-check-label"
-                                  >
-                                  Add To Business Source
+                                  <label for="defaultCheck3" class="form-check-label">
+                                    Add To Business Source
                                   </label>
                                 </div>
                               </div>
@@ -2507,11 +2342,9 @@
                                     checked="checked"
                                     class="form-check-input"
                                   />
-                                  <label
-                                    for="defaultCheck3"
-                                    class="form-check-label"
-                                  >
-                                  Don't count in city ledger. Consider only for stock purchase.
+                                  <label for="defaultCheck3" class="form-check-label">
+                                    Don't count in city ledger. Consider only for stock
+                                    purchase.
                                   </label>
                                 </div>
                               </div>
@@ -2540,9 +2373,7 @@
                           <option value="4">Option4</option>
                         </select>
                         <div>
-                          <label for="VoucherNO" class="form-label"
-                            >Voucher No.</label
-                          >
+                          <label for="VoucherNO" class="form-label">Voucher No.</label>
                           <input
                             type="text"
                             class="form-control mb-3"
@@ -2551,9 +2382,7 @@
                             aria-describedby="defaultFormControlHelp"
                           />
                         </div>
-                        <label for="PlanValue" class="col-form-label"
-                          >Plan Value</label
-                        >
+                        <label for="PlanValue" class="col-form-label">Plan Value</label>
                         <div class="input-group mb-2">
                           <input
                             id="PlanValue"
@@ -2605,9 +2434,7 @@
                     id="defaultCheck3"
                     checked=""
                   />
-                  <label class="form-check-label" for="defaultCheck3">
-                    Checked
-                  </label>
+                  <label class="form-check-label" for="defaultCheck3"> Checked </label>
                 </div>
                 <select id="MarketCode" class="form-select w-25">
                   <option value="" disabled="disabled" selected="selected">
@@ -2656,11 +2483,7 @@
           </div>
 
           <!-- Guest Details  -->
-          <div
-            class="tab-pane fade"
-            id="form-tabs-GuestDetails"
-            role="tabpanel"
-          >
+          <div class="tab-pane fade" id="form-tabs-GuestDetails" role="tabpanel">
             <div class="row">
               <div class="col-3 px-0" style="border-right: 1px solid #e1e0e3">
                 <div class="d-flex justify-content-between">
@@ -2737,8 +2560,8 @@
                               <div class="row accordion-body">
                                 <div>
                                   <div>
-                                    <i class="fa-solid fa-hexagon -nodes"></i
-                                    >Mr. مستر شريف ضيافه محمد ذكى
+                                    <i class="fa-solid fa-hexagon -nodes"></i>Mr. مستر
+                                    شريف ضيافه محمد ذكى
                                   </div>
                                 </div>
                               </div>
@@ -2761,10 +2584,7 @@
                         </div>
                         <div class="col-md-8 mb-1">
                           <div class="mb-4">
-                            <label
-                              for="formGustInfoName"
-                              class="col-form-label"
-                            >
+                            <label for="formGustInfoName" class="col-form-label">
                               Name</label
                             >
                             <div class="input-group">
@@ -2804,9 +2624,7 @@
                         <!-- Phone Field (Half width) -->
                         <div class="col-md-6">
                           <div class="">
-                            <label
-                              for="formGustInfoPhone"
-                              class="col-form-label"
+                            <label for="formGustInfoPhone" class="col-form-label"
                               >Phone</label
                             >
                             <input
@@ -2822,9 +2640,7 @@
                         <!-- Mobile Field (Half width) -->
                         <div class="col-md-6 mb-3">
                           <div class="">
-                            <label
-                              for="formGustInfoMobile"
-                              class="col-form-label"
+                            <label for="formGustInfoMobile" class="col-form-label"
                               >Mobile</label
                             >
                             <input
@@ -2840,9 +2656,7 @@
                         <!-- ID Type Field (Half width) -->
                         <div class="col-md-3">
                           <div class="mb-3">
-                            <label
-                              for="formGustIdentityIdType"
-                              class="col-form-label"
+                            <label for="formGustIdentityIdType" class="col-form-label"
                               >Gender</label
                             >
                             <select
@@ -2850,9 +2664,7 @@
                               id="formGustIdentityIdType"
                               aria-label="select ID Type"
                             >
-                              <option value="" disabled selected>
-                                -Select-
-                              </option>
+                              <option value="" disabled selected>-Select-</option>
                               <option value="option1">Male</option>
                               <option value="option2">Female</option>
                               <option value="option3">Other</option>
@@ -2861,9 +2673,7 @@
                         </div>
                         <div class="col-md-3">
                           <div class="mb-3">
-                            <label
-                              for="formGustIdentityIdType"
-                              class="col-form-label"
+                            <label for="formGustIdentityIdType" class="col-form-label"
                               >Guest Type</label
                             >
                             <select
@@ -2871,9 +2681,7 @@
                               id="formGustIdentityIdType"
                               aria-label="select ID Type"
                             >
-                              <option value="" disabled selected>
-                                -Select-
-                              </option>
+                              <option value="" disabled selected>-Select-</option>
                               <option value="option1">Adult</option>
                               <option value="option2">Child</option>
                             </select>
@@ -2881,10 +2689,7 @@
                         </div>
                         <div class="col-md-6">
                           <div class="mb-3">
-                            <label
-                              for="formGustIdentityIdType"
-                              class="col-form-label"
-                            >
+                            <label for="formGustIdentityIdType" class="col-form-label">
                               VIP Status</label
                             >
                             <select
@@ -2892,9 +2697,7 @@
                               id="formGustIdentityIdType"
                               aria-label="select ID Type"
                             >
-                              <option value="" disabled selected>
-                                -Select-
-                              </option>
+                              <option value="" disabled selected>-Select-</option>
                               <option value="option1">Option 1</option>
                               <option value="option2">Option 2</option>
                               <option value="option3">Option 3</option>
@@ -2919,9 +2722,7 @@
                     </div>
                     <div class="row mt-2">
                       <div class="col-md-3">
-                        <label for="countryGuest" class="col-form-label"
-                          >Country</label
-                        >
+                        <label for="countryGuest" class="col-form-label">Country</label>
                         <input
                           class="form-control"
                           type="text"
@@ -2943,9 +2744,7 @@
                         />
                       </div>
                       <div class="col-md-3">
-                        <label for="formGustInfoCity" class="col-form-label"
-                          >City</label
-                        >
+                        <label for="formGustInfoCity" class="col-form-label">City</label>
                         <input
                           class="form-control"
                           type="text"
@@ -2955,9 +2754,7 @@
                         />
                       </div>
                       <div class="col-md-3">
-                        <label for="formGustInfoZip" class="col-form-label"
-                          >Zip</label
-                        >
+                        <label for="formGustInfoZip" class="col-form-label">Zip</label>
                         <input
                           class="form-control"
                           type="text"
@@ -2993,9 +2790,7 @@
                         />
                       </div>
                       <div class="col-md-3">
-                        <label for="formGustInfoCity" class="col-form-label"
-                          >Fax</label
-                        >
+                        <label for="formGustInfoCity" class="col-form-label">Fax</label>
                         <input
                           class="form-control"
                           type="text"
@@ -3053,9 +2848,7 @@
                                 </div>
                                 <div class="col-md-8">
                                   <div class="mb-3">
-                                    <label
-                                      for="formIdentityInfoId"
-                                      class="col-form-label"
+                                    <label for="formIdentityInfoId" class="col-form-label"
                                       >ID Number</label
                                     >
                                     <input
@@ -3134,9 +2927,7 @@
                                     </div>
                                   </div>
                                   <div class="col-md-6">
-                                    <label
-                                      for="flatpickr-date-04"
-                                      class="col-form-label"
+                                    <label for="flatpickr-date-04" class="col-form-label"
                                       >Expiry Date</label
                                     >
                                     <input
@@ -3199,9 +2990,7 @@
                                 ref="datePicker5"
                                 aria-label="input Text to Birth Date"
                               />
-                              <i
-                                class="fa-solid fa-calendar-days icon-date top"
-                              ></i>
+                              <i class="fa-solid fa-calendar-days icon-date top"></i>
                             </div>
                             <div class="col-md-3">
                               <label for="BirthCity" class="col-form-label"
@@ -3224,9 +3013,7 @@
                                 id="formGustBirthCountry"
                                 aria-label="select Birth Country"
                               >
-                                <option value="" disabled selected>
-                                  Select option
-                                </option>
+                                <option value="" disabled selected>Select option</option>
                                 <option value="option1">Option 1</option>
                                 <option value="option2">Option 2</option>
                                 <option value="option3">Option 3</option>
@@ -3238,9 +3025,7 @@
 
                           <div class="row">
                             <div class="col-md-3">
-                              <label
-                                for="formGustSpouseBirth"
-                                class="col-form-label"
+                              <label for="formGustSpouseBirth" class="col-form-label"
                                 >Spouse Birth Date</label
                               >
                               <input
@@ -3251,14 +3036,10 @@
                                 ref="datePicker6"
                                 aria-label="input Text to Spouse Birth Date"
                               />
-                              <i
-                                class="fa-solid fa-calendar-days icon-date top"
-                              ></i>
+                              <i class="fa-solid fa-calendar-days icon-date top"></i>
                             </div>
                             <div class="col-md-3">
-                              <label
-                                for="flatpickr-date-07"
-                                class="col-form-label"
+                              <label for="flatpickr-date-07" class="col-form-label"
                                 >Wedding Anniversary</label
                               >
                               <input
@@ -3269,41 +3050,57 @@
                                 ref="datePicker7"
                                 aria-label="input Text to Wedding Anniversary"
                               />
-                              <i
-                                class="fa-solid fa-calendar-days icon-date top"
-                              ></i>
+                              <i class="fa-solid fa-calendar-days icon-date top"></i>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <hr m-0>
+                  <hr m-0 />
                   <div class="row">
                     <div class="col-3">
-                      <button type="button" class="btn btn-outline-primary waves-effect">Black List</button>
+                      <button type="button" class="btn btn-outline-primary waves-effect">
+                        Black List
+                      </button>
                     </div>
                     <div class="col-9 d-flex justify-content-end">
-                      <button type="button" class="btn btn-outline-primary waves-effect me-1">Pick Up / Drop off</button>
-                      <button type="button" class="btn btn-outline-primary waves-effect me-1">Add  Signature</button>
-                      <div class="btn-group">
                       <button
                         type="button"
-                        class="btn btn-outline-secondary dropdown-toggle waves-effect me-1"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
+                        class="btn btn-outline-primary waves-effect me-1"
                       >
-                        More
+                        Pick Up / Drop off
                       </button>
-                      <ul class="dropdown-menu" style="">
-                        <li>
-                          <a class="dropdown-item" href="javascript:void(0);"
-                            >Print GR Card</a
-                          >
-                        </li>
-                      </ul>
-                    </div>
-                      <button type="button" class="btn btn-outline-primary waves-effect" disabled>Save</button>
+                      <button
+                        type="button"
+                        class="btn btn-outline-primary waves-effect me-1"
+                      >
+                        Add Signature
+                      </button>
+                      <div class="btn-group">
+                        <button
+                          type="button"
+                          class="btn btn-outline-secondary dropdown-toggle waves-effect me-1"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                        >
+                          More
+                        </button>
+                        <ul class="dropdown-menu" style="">
+                          <li>
+                            <a class="dropdown-item" href="javascript:void(0);"
+                              >Print GR Card</a
+                            >
+                          </li>
+                        </ul>
+                      </div>
+                      <button
+                        type="button"
+                        class="btn btn-outline-primary waves-effect"
+                        disabled
+                      >
+                        Save
+                      </button>
                     </div>
                   </div>
                 </form>

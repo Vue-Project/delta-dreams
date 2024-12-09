@@ -365,7 +365,7 @@
           </div>
         </template>
         <template #content>
-          <div class="tab-pane fade" id="form-tabs-Reservations" role="tabpanel">
+          <div class="tab-pane fade active show" id="form-tabs-Reservations" role="tabpanel">
             <div class="table-responsive text-nowrap">
               <table class="table">
                 <thead class="table-light">
