@@ -86,10 +86,20 @@
                   <button
                     type="button"
                     class="btn btn-outline-primary waves-effect mb-2 me-2"
+                    @click="toggleSidebar('sidebar4')"
                   >
                     <i class="fa-solid fa-plus"></i>
                   </button>
                 </div>
+                <Side
+                  :isSidebarOpen="activeSidebar === 'sidebar4'"
+                  @close-sidebar="toggleSidebar('sidebar4')"
+                >
+                  <template #SidebarContent>
+                    <p>test</p>
+                  </template>
+                </Side>
+
                 <hr class="m-0" />
               </div>
 
@@ -103,27 +113,68 @@
                     <button
                       type="button"
                       class="btn btn-outline-secondary waves-effect me-1"
+                      @click="toggleSidebar('sidebar5')"
                     >
                       Add Payment
                     </button>
+                    <Side
+                      :isSidebarOpen="activeSidebar === 'sidebar5'"
+                      @close-sidebar="toggleSidebar('sidebar5')"
+                    >
+                      <template #SidebarContent>
+                        <p>ff</p>
+                        >
+                      </template>
+                    </Side>
+
                     <button
                       type="button"
                       class="btn btn-outline-secondary waves-effect me-1"
+                      @click="toggleSidebar('sidebar6')"
                     >
                       Add Charges
                     </button>
+                    <Side
+                      :isSidebarOpen="activeSidebar === 'sidebar6'"
+                      @close-sidebar="toggleSidebar('sidebar6')"
+                    >
+                      <template #SidebarContent>
+                        <h5>Content for Sidebar 6</h5>
+                      </template>
+                    </Side>
+
                     <button
                       type="button"
                       class="btn btn-outline-secondary waves-effect me-1"
+                      @click="toggleSidebar('sidebar7')"
                     >
                       Apply Discount
                     </button>
+                    <Side
+                      :isSidebarOpen="activeSidebar === 'sidebar7'"
+                      @close-sidebar="toggleSidebar('sidebar7')"
+                    >
+                      <template #SidebarContent>
+                        <h5>Content for Sidebar 7</h5>
+                      </template>
+                    </Side>
+
                     <button
                       type="button"
                       class="btn btn-outline-secondary waves-effect me-1"
+                      @click="toggleSidebar('sidebar8')"
                     >
                       Folio Operation
                     </button>
+                    <Side
+                      :isSidebarOpen="activeSidebar === 'sidebar8'"
+                      @close-sidebar="toggleSidebar('sidebar8')"
+                    >
+                      <template #SidebarContent>
+                        <h5>Content for Sidebar 8</h5>
+                      </template>
+                    </Side>
+
                     <div class="btn-group">
                       <button
                         type="button"
@@ -249,9 +300,8 @@
             id="form-tabs-BookingDetails"
             role="tabpanel"
           >
-            
             <div class="row">
-                <!-- inside tabs  -->
+              <!-- inside tabs  -->
               <div class="col-12">
                 <!-- header  -->
                 <div class="card-header pt-2">
@@ -336,7 +386,7 @@
                       <i class="fa-solid fa-chevron-left mt-1 me-3"></i>
                       <p>Remarks</p>
                     </div>
-                    <hr class="m-0 text-secondary"/>
+                    <hr class="m-0 text-secondary" />
                     <table class="table">
                       <thead class="table-light">
                         <tr>
@@ -356,11 +406,11 @@
                     id="form-tabs-Task"
                     role="tabpanel"
                   >
-                  <div class="d-flex">
+                    <div class="d-flex">
                       <i class="fa-solid fa-chevron-left mt-1 me-3"></i>
                       <p>Tasks</p>
                     </div>
-                    <hr class="m-0 text-secondary"/>
+                    <hr class="m-0 text-secondary" />
                     <table class="table">
                       <thead class="table-light">
                         <tr>
@@ -374,18 +424,19 @@
                       <tbody class="table-border-bottom-0">
                         <td></td>
                       </tbody>
-                    </table></div>
+                    </table>
+                  </div>
                   <!-- message  -->
                   <div
                     class="tab-pane fade"
                     id="form-tabs-Message"
                     role="tabpanel"
                   >
-                  <div class="d-flex">
+                    <div class="d-flex">
                       <i class="fa-solid fa-chevron-left mt-1 me-3"></i>
                       <p>Messages</p>
                     </div>
-                    <hr class="m-0 text-secondary"/>
+                    <hr class="m-0 text-secondary" />
                     <table class="table">
                       <thead class="table-light">
                         <tr>
@@ -399,18 +450,18 @@
                         <td></td>
                       </tbody>
                     </table>
-                </div>
+                  </div>
                   <!-- pereference  -->
                   <div
                     class="tab-pane fade"
                     id="form-tabs-Preference"
                     role="tabpanel"
                   >
-                  <div class="d-flex">
+                    <div class="d-flex">
                       <i class="fa-solid fa-chevron-left mt-1 me-3"></i>
                       <p>Preferences</p>
                     </div>
-                    <hr class="m-0 text-secondary"/>
+                    <hr class="m-0 text-secondary" />
                     <table class="table">
                       <thead class="table-light">
                         <tr>
@@ -423,13 +474,12 @@
                         <td></td>
                       </tbody>
                     </table>
-                </div>
+                  </div>
                 </div>
               </div>
               <hr />
 
-            
-            <div class="row" style="height: 60vh">
+              <div class="row" style="height: 60vh">
                 <!-- Billing imformation section  -->
                 <div class="col-5">
                   <h4 class="text-center fw-bold">Billing Information</h4>
@@ -565,15 +615,274 @@
                           <button
                             class="btn btn-outline-primary waves-effect"
                             type="button"
-                            @click="toggleSidebar"
+                            @click="toggleSidebar('sidebar2')"
                           >
                             <i class="fa-solid fa-user"></i>
                           </button>
                         </div>
-                        <Side :isSidebarOpen="isSidebarOpen" @close-sidebar="toggleSidebar">
-                            <template #SidebarContent>
-                                <p>test</p>
-                            </template>
+                        <Side
+                          :isSidebarOpen="activeSidebar === 'sidebar2'"
+                          @close-sidebar="toggleSidebar('sidebar2')"
+                          :width="'50%'"
+                        >
+                          <template #SidebarContent>
+                            <h4 class="p-1">Travel Agent</h4>
+                            <hr my-2 />
+                            <div class="row px-2">
+                              <div class="col">
+                                <div>
+                                  <label for="AgentName" class="form-label"
+                                    >Agent Name</label
+                                  >
+                                  <input
+                                    type="text"
+                                    class="form-control mb-3"
+                                    id="AgentName"
+                                    placeholder="Agent Name"
+                                    aria-describedby="defaultFormControlHelp"
+                                  />
+                                </div>
+                              </div>
+                              <div class="col">
+                                <label for="ContactPerson" class="form-label"
+                                  >Contact Person</label
+                                >
+                                <div class="input-group">
+                                  <button
+                                    class="btn btn-outline-secondary dropdown-toggle waves-effect"
+                                    type="button"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false"
+                                  >
+                                    Mr.
+                                  </button>
+                                  <ul class="dropdown-menu" style="">
+                                    <li>
+                                      <a
+                                        class="dropdown-item"
+                                        href="javascript:void(0);"
+                                        >DR.</a
+                                      >
+                                    </li>
+                                    <li>
+                                      <a
+                                        class="dropdown-item"
+                                        href="javascript:void(0);"
+                                        >Jn.</a
+                                      >
+                                    </li>
+                                    <li>
+                                      <a
+                                        class="dropdown-item"
+                                        href="javascript:void(0);"
+                                        >Mam.</a
+                                      >
+                                    </li>
+                                    <li>
+                                      <hr class="dropdown-divider" />
+                                    </li>
+                                    <li>
+                                      <a
+                                        class="dropdown-item"
+                                        href="javascript:void(0);"
+                                        >Mr.</a
+                                      >
+                                    </li>
+                                    <li>
+                                      <a
+                                        class="dropdown-item"
+                                        href="javascript:void(0);"
+                                        >Mrs.</a
+                                      >
+                                    </li>
+                                    <li>
+                                      <a
+                                        class="dropdown-item"
+                                        href="javascript:void(0);"
+                                        >Ms.</a
+                                      >
+                                    </li>
+                                    <li>
+                                      <a
+                                        class="dropdown-item"
+                                        href="javascript:void(0);"
+                                        >Sir.</a
+                                      >
+                                    </li>
+                                    <li>
+                                      <a
+                                        class="dropdown-item"
+                                        href="javascript:void(0);"
+                                        >Sr.</a
+                                      >
+                                    </li>
+                                  </ul>
+                                  <input
+                                    type="text"
+                                    class="form-control"
+                                    aria-label="Text input with dropdown button"
+                                    placeholder="Contact Person"
+                                  />
+                                </div>
+                              </div>
+                              <div class="col">
+                                <div class="form-check mt-4">
+                                  <input
+                                    type="checkbox"
+                                    value=""
+                                    id="defaultCheck5"
+                                    checked="checked"
+                                    class="form-check-input"
+                                  />
+                                  <label
+                                    for="defaultCheck5"
+                                    class="form-check-label"
+                                  >
+                                    Create User
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row px-2">
+                              <div class="col">
+                                <div>
+                                  <label for="AgentEmail" class="form-label"
+                                    >Email</label
+                                  >
+                                  <input
+                                    type="email"
+                                    class="form-control mb-3"
+                                    id="AgentEmail"
+                                    placeholder="Email"
+                                    aria-describedby="defaultFormControlHelp"
+                                  />
+                                </div>
+                              </div>
+                              <div class="col">
+                                <div>
+                                  <label for="AgentPhone" class="form-label"
+                                    >Phone</label
+                                  >
+                                  <input
+                                    type="text"
+                                    class="form-control mb-3"
+                                    id="AgentPhone"
+                                    placeholder="Phone"
+                                    aria-describedby="defaultFormControlHelp"
+                                  />
+                                </div>
+                              </div>
+                              <div class="col">
+                                <div>
+                                  <label for="AgentMobile" class="form-label"
+                                    >Mobile</label
+                                  >
+                                  <input
+                                    type="text"
+                                    class="form-control mb-3"
+                                    id="AgentMobile"
+                                    placeholder="Mobile"
+                                    aria-describedby="defaultFormControlHelp"
+                                  />
+                                </div>
+                              </div>
+                              <div class="col">
+                                <div>
+                                  <label for="ShortCode" class="form-label"
+                                    >Short Code</label
+                                  >
+                                  <input
+                                    type="text"
+                                    class="form-control mb-3"
+                                    id="ShortCode"
+                                    placeholder="ShortCode"
+                                    aria-describedby="defaultFormControlHelp"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                            <h5 class="fw-b p-1">Account Details</h5>
+                            <div class="row px-2">
+                              <div class="col-3">
+                                <div>
+                                  <label for="RegistrationNo" class="form-label"
+                                    >Registration No</label
+                                  >
+                                  <input
+                                    type="text"
+                                    class="form-control mb-3"
+                                    id="RegistrationNo"
+                                    placeholder="Registration No"
+                                    aria-describedby="defaultFormControlHelp"
+                                  />
+                                </div>
+                              </div>
+                              <div class="col-3">
+                                <div>
+                                  <label for="TaxID" class="form-label"
+                                    >Tax ID</label
+                                  >
+                                  <input
+                                    type="text"
+                                    class="form-control mb-3"
+                                    id="TaxID"
+                                    placeholder="Tax ID"
+                                    aria-describedby="defaultFormControlHelp"
+                                  />
+                                </div>
+                              </div>
+                              <div class="col-6"></div>
+                            </div>
+                            <div class="row px-2">
+                              <div class="col-3">
+                                <div>
+                                  <label for="OpeningBalance" class="form-label"
+                                    >Opening Balance</label
+                                  >
+                                  <div class="input-group">
+                                    <button
+                                      class="btn btn-outline-secondary waves-effect"
+                                      type="button"
+                                      id="OpeningBalance"
+                                    >
+                                      <i class="fa-solid fa-sterling-sign"></i>
+                                    </button>
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      placeholder="0.00"
+                                      aria-label="Example text with button addon"
+                                      aria-describedby="button-addon1"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-3">
+                                <div>
+                                  <label for="CreditLimit" class="form-label"
+                                    >Credit Limit</label
+                                  >
+                                  <div class="input-group">
+                                    <button
+                                      class="btn btn-outline-secondary waves-effect"
+                                      type="button"
+                                      id="CreditLimit"
+                                    >
+                                      <i class="fa-solid fa-sterling-sign"></i>
+                                    </button>
+                                    <input
+                                      type="text"
+                                      class="form-control"
+                                      placeholder="0.00"
+                                      aria-label="Example text with button addon"
+                                      aria-describedby="button-addon1"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-6"></div>
+                            </div>
+                          </template>
                         </Side>
 
                         <label for="CommissionPlan" class="col-form-label"
@@ -612,10 +921,19 @@
                           <button
                             class="btn btn-outline-primary waves-effect"
                             type="button"
+                            @click="toggleSidebar('sidebar1')"
                           >
                             <i class="fa-solid fa-building"></i>
                           </button>
                         </div>
+                        <Side
+                          :isSidebarOpen="activeSidebar === 'sidebar1'"
+                          @close-sidebar="toggleSidebar('sidebar1')"
+                        >
+                          <template #SidebarContent>
+                            <p>hil</p>
+                          </template>
+                        </Side>
                       </div>
 
                       <div class="col-6">
@@ -684,7 +1002,7 @@
                     </div>
                   </form>
                 </div>
-            </div>
+              </div>
             </div>
             <hr />
 
@@ -694,9 +1012,19 @@
                 <button
                   type="button"
                   class="btn btn-outline-primary waves-effect"
+                  @click="toggleSidebar('sidebar3')"
                 >
                   Send Email
                 </button>
+                <Side
+                  :isSidebarOpen="activeSidebar === 'sidebar3'"
+                  @close-sidebar="toggleSidebar('sidebar3')"
+                >
+                  <template #SidebarContent>
+                    <p>nljb/</p>
+                  </template>
+                </Side>
+
                 <div class="form-check mt-2">
                   <input
                     class="form-check-input"
@@ -1321,15 +1649,34 @@
               <button
                 type="button"
                 class="btn btn-outline-secondary waves-effect mb-2 me-3"
+                @click="toggleSidebar('sidebar9')"
               >
                 Update Details
               </button>
+              <Side
+                :isSidebarOpen="activeSidebar === 'sidebar9'"
+                @close-sidebar="toggleSidebar('sidebar9')"
+              >
+                <template #SidebarContent>
+                  <h5>Content for Sidebar 9</h5>
+                </template>
+              </Side>
+
               <button
                 type="button"
                 class="btn btn-outline-secondary waves-effect mb-2"
+                @click="toggleSidebar('sidebar10')"
               >
                 Apply Discount
               </button>
+              <Side
+                :isSidebarOpen="activeSidebar === 'sidebar10'"
+                @close-sidebar="toggleSidebar('sidebar10')"
+              >
+                <template #SidebarContent>
+                  <h5>Content for Sidebar 10</h5>
+                </template>
+              </Side>
             </div>
 
             <div class="table-responsive text-nowrap">
@@ -1356,9 +1703,19 @@
             <button
               type="button"
               class="btn btn-outline-secondary waves-effect mb-2"
+              @click="toggleSidebar('sidebar11')"
             >
               Add Card
+              
             </button>
+            <Side
+              :isSidebarOpen="activeSidebar === 'sidebar11'"
+              @close-sidebar="toggleSidebar('sidebar11')"
+            >
+              <template #SidebarContent>
+                <h5>Content for Sidebar 11</h5>
+              </template>
+            </Side>
             <div class="table-responsive text-nowrap">
               <table class="table">
                 <thead class="table-light">
@@ -1405,22 +1762,22 @@ import Side from "../components/AllReservation/SidebarReservation.vue";
 export default {
   name: "edits",
   layout: "main",
-  components:{
+  components: {
     HeaderReservation,
     Side,
   },
 
-  data(){
+  data() {
     return {
-        isSidebarOpen: false,
+      activeSidebar: null,
     };
   },
-  methods:{
-    toggleSidebar ()
-    {
-      this.isSidebarOpen = !this.isSidebarOpen;
+  methods: {
+    toggleSidebar(sidebarName) {
+      this.activeSidebar =
+        this.activeSidebar === sidebarName ? null : sidebarName;
     },
-  }
+  },
 };
 </script>
 

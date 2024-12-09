@@ -31,7 +31,7 @@ export default {
     },
     width: {
       type: String,
-      default: "500px",
+      default: "1000px",
     },
   },
 };
