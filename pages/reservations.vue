@@ -4,64 +4,37 @@
       <HeaderReservation>
         <template #button>
           <li class="nav-item" role="presentation">
-            <button
-              class="nav-link active"
-              data-bs-toggle="tab"
-              data-bs-target="#form-tabs-Reservations"
-              role="tab"
-              aria-selected="false"
-              tabindex="-1"
-            >
+            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#form-tabs-Reservations" role="tab" aria-selected="false" tabindex="-1">
               Reservations
+              <span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-label-danger ms-1">2</span>
             </button>
           </li>
           <li class="nav-item" role="presentation">
-            <button
-              class="nav-link"
-              data-bs-toggle="tab"
-              data-bs-target="#form-tabs-Arrivals"
-              role="tab"
-              aria-selected="false"
-              tabindex="-1"
-            >
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-Arrivals" role="tab" aria-selected="false" tabindex="-1">
               Arrivals
+              <span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-label-danger ms-1">1</span>
             </button>
           </li>
           <li class="nav-item" role="presentation">
-            <button
-              class="nav-link"
-              data-bs-toggle="tab"
-              data-bs-target="#form-tabs-Departures"
-              role="tab"
-              aria-selected="true"
-            >
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-Departures" role="tab" aria-selected="true">
               Departures
+              <span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-label-danger ms-1">1</span>
             </button>
           </li>
           <li class="nav-item" role="presentation">
-            <button
-              class="nav-link"
-              data-bs-toggle="tab"
-              data-bs-target="#form-tabs-In-house"
-              role="tab"
-              aria-selected="true"
-            >
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-In-house" role="tab" aria-selected="true">
               In-house
+              <span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-label-danger ms-1">1</span>
             </button>
           </li>
           <div class="ms-auto me-3">
-            <button class="btn btn-primary">
+            <button class="btn" :class="{ 'btn-primary': viewMode === 'card', 'btn-secondary': viewMode !== 'card' }" @click="setViewMode('card')">
               <i class="fa-solid fa-grip"></i>
             </button>
-            <button class="ms-0 btn btn-secondary">
+            <button class="btn" :class="{ 'btn-primary': viewMode === 'list', 'btn-secondary': viewMode !== 'list' }" @click="setViewMode('list')">
               <i class="fa-solid fa-list"></i>
             </button>
-            <button
-              type="button"
-              class="ms-3 btn btn-primary dropdown-toggle waves-effect waves-light"
-              data-bs-toggle="dropdown"
-              aria-expanded="true"
-            >
+            <button type="button" class="ms-3 btn btn-primary dropdown-toggle waves-effect waves-light" data-bs-toggle="dropdown" aria-expanded="true">
               <i class="fs-6 me-1 fa-solid fa-arrow-up-right-from-square"></i>
               Export
             </button>
@@ -70,25 +43,11 @@
               <hr class="mb-2 m-0" />
               <div class="d-flex justify-content-around mb-3">
                 <div class="form-check">
-                  <input
-                    name="default-radio-1"
-                    class="form-check-input"
-                    type="radio"
-                    value=""
-                    id="defaultRadio2"
-                    checked=""
-                  />
+                  <input name="default-radio-1" class="form-check-input" type="radio" value="" id="defaultRadio2" checked="" />
                   <label class="form-check-label" for="defaultRadio2">PDF</label>
                 </div>
                 <div class="form-check">
-                  <input
-                    name="default-radio-1"
-                    class="form-check-input"
-                    type="radio"
-                    value=""
-                    id="defaultRadio2"
-                    checked=""
-                  />
+                  <input name="default-radio-1" class="form-check-input" type="radio" value="" id="defaultRadio2" checked="" />
                   <label class="form-check-label" for="defaultRadio2">Excel</label>
                 </div>
               </div>
@@ -96,183 +55,75 @@
               <hr class="mb-2 m-0" />
               <div class="app-calendar-events-filter ms-3">
                 <div class="form-check form-check-primary mb-2">
-                  <input
-                    class="form-check-input input-filter"
-                    type="checkbox"
-                    id="select-personal"
-                    data-value="personal"
-                    checked=""
-                  />
+                  <input class="form-check-input input-filter" type="checkbox" id="select-personal" data-value="personal" checked="" />
                   <label class="form-check-label" for="select-personal">Personal</label>
                 </div>
                 <div class="form-check form-check-primary mb-2">
-                  <input
-                    class="form-check-input input-filter"
-                    type="checkbox"
-                    id="select-personal"
-                    data-value="personal"
-                    checked=""
-                  />
+                  <input class="form-check-input input-filter" type="checkbox" id="select-personal" data-value="personal" checked="" />
                   <label class="form-check-label" for="select-personal">Personal</label>
                 </div>
                 <div class="form-check form-check-primary mb-2">
-                  <input
-                    class="form-check-input input-filter"
-                    type="checkbox"
-                    id="select-personal"
-                    data-value="personal"
-                    checked=""
-                  />
+                  <input class="form-check-input input-filter" type="checkbox" id="select-personal" data-value="personal" checked="" />
                   <label class="form-check-label" for="select-personal">Personal</label>
                 </div>
                 <div class="form-check form-check-primary mb-2">
-                  <input
-                    class="form-check-input input-filter"
-                    type="checkbox"
-                    id="select-personal"
-                    data-value="personal"
-                    checked=""
-                  />
+                  <input class="form-check-input input-filter" type="checkbox" id="select-personal" data-value="personal" checked="" />
                   <label class="form-check-label" for="select-personal">Personal</label>
                 </div>
                 <div class="form-check form-check-primary mb-2">
-                  <input
-                    class="form-check-input input-filter"
-                    type="checkbox"
-                    id="select-personal"
-                    data-value="personal"
-                    checked=""
-                  />
+                  <input class="form-check-input input-filter" type="checkbox" id="select-personal" data-value="personal" checked="" />
                   <label class="form-check-label" for="select-personal">Personal</label>
                 </div>
                 <div class="form-check form-check-primary mb-2">
-                  <input
-                    class="form-check-input input-filter"
-                    type="checkbox"
-                    id="select-personal"
-                    data-value="personal"
-                    checked=""
-                  />
+                  <input class="form-check-input input-filter" type="checkbox" id="select-personal" data-value="personal" checked="" />
                   <label class="form-check-label" for="select-personal">Personal</label>
                 </div>
                 <div class="form-check form-check-primary mb-2">
-                  <input
-                    class="form-check-input input-filter"
-                    type="checkbox"
-                    id="select-personal"
-                    data-value="personal"
-                    checked=""
-                  />
+                  <input class="form-check-input input-filter" type="checkbox" id="select-personal" data-value="personal" checked="" />
                   <label class="form-check-label" for="select-personal">Personal</label>
                 </div>
                 <div class="form-check form-check-primary mb-2">
-                  <input
-                    class="form-check-input input-filter"
-                    type="checkbox"
-                    id="select-personal"
-                    data-value="personal"
-                    checked=""
-                  />
+                  <input class="form-check-input input-filter" type="checkbox" id="select-personal" data-value="personal" checked="" />
                   <label class="form-check-label" for="select-personal">Personal</label>
                 </div>
                 <div class="form-check form-check-primary mb-2">
-                  <input
-                    class="form-check-input input-filter"
-                    type="checkbox"
-                    id="select-personal"
-                    data-value="personal"
-                    checked=""
-                  />
+                  <input class="form-check-input input-filter" type="checkbox" id="select-personal" data-value="personal" checked="" />
                   <label class="form-check-label" for="select-personal">Personal</label>
                 </div>
                 <div class="form-check form-check-primary mb-2">
-                  <input
-                    class="form-check-input input-filter"
-                    type="checkbox"
-                    id="select-personal"
-                    data-value="personal"
-                    checked=""
-                  />
+                  <input class="form-check-input input-filter" type="checkbox" id="select-personal" data-value="personal" checked="" />
                   <label class="form-check-label" for="select-personal">Personal</label>
                 </div>
                 <div class="form-check form-check-primary mb-2">
-                  <input
-                    class="form-check-input input-filter"
-                    type="checkbox"
-                    id="select-personal"
-                    data-value="personal"
-                    checked=""
-                  />
+                  <input class="form-check-input input-filter" type="checkbox" id="select-personal" data-value="personal" checked="" />
                   <label class="form-check-label" for="select-personal">Personal</label>
                 </div>
                 <div class="form-check form-check-primary mb-2">
-                  <input
-                    class="form-check-input input-filter"
-                    type="checkbox"
-                    id="select-personal"
-                    data-value="personal"
-                    checked=""
-                  />
+                  <input class="form-check-input input-filter" type="checkbox" id="select-personal" data-value="personal" checked="" />
                   <label class="form-check-label" for="select-personal">Personal</label>
                 </div>
                 <div class="form-check form-check-primary mb-2">
-                  <input
-                    class="form-check-input input-filter"
-                    type="checkbox"
-                    id="select-personal"
-                    data-value="personal"
-                    checked=""
-                  />
+                  <input class="form-check-input input-filter" type="checkbox" id="select-personal" data-value="personal" checked="" />
                   <label class="form-check-label" for="select-personal">Personal</label>
                 </div>
                 <div class="form-check form-check-primary mb-2">
-                  <input
-                    class="form-check-input input-filter"
-                    type="checkbox"
-                    id="select-personal"
-                    data-value="personal"
-                    checked=""
-                  />
+                  <input class="form-check-input input-filter" type="checkbox" id="select-personal" data-value="personal" checked="" />
                   <label class="form-check-label" for="select-personal">Personal</label>
                 </div>
                 <div class="form-check form-check-primary mb-2">
-                  <input
-                    class="form-check-input input-filter"
-                    type="checkbox"
-                    id="select-personal"
-                    data-value="personal"
-                    checked=""
-                  />
+                  <input class="form-check-input input-filter" type="checkbox" id="select-personal" data-value="personal" checked="" />
                   <label class="form-check-label" for="select-personal">Personal</label>
                 </div>
                 <div class="form-check form-check-primary mb-2">
-                  <input
-                    class="form-check-input input-filter"
-                    type="checkbox"
-                    id="select-personal"
-                    data-value="personal"
-                    checked=""
-                  />
+                  <input class="form-check-input input-filter" type="checkbox" id="select-personal" data-value="personal" checked="" />
                   <label class="form-check-label" for="select-personal">Personal</label>
                 </div>
                 <div class="form-check form-check-primary mb-2">
-                  <input
-                    class="form-check-input input-filter"
-                    type="checkbox"
-                    id="select-personal"
-                    data-value="personal"
-                    checked=""
-                  />
+                  <input class="form-check-input input-filter" type="checkbox" id="select-personal" data-value="personal" checked="" />
                   <label class="form-check-label" for="select-personal">Personal</label>
                 </div>
                 <div class="form-check form-check-primary mb-2">
-                  <input
-                    class="form-check-input input-filter"
-                    type="checkbox"
-                    id="select-personal"
-                    data-value="personal"
-                    checked=""
-                  />
+                  <input class="form-check-input input-filter" type="checkbox" id="select-personal" data-value="personal" checked="" />
                   <label class="form-check-label" for="select-personal">Personal</label>
                 </div>
               </div>
@@ -281,30 +132,16 @@
                 <button class="btn btn-sm btn-primary">Export</button>
               </div>
             </ul>
-            <button
-              class="btn btn-primary waves-effect waves-light"
-              type="button"
-              data-bs-toggle="offcanvas"
-              data-bs-target="#offcanvasEnd"
-              aria-controls="offcanvasEnd"
-            >
+            <button class="btn btn-primary waves-effect waves-light" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" aria-controls="offcanvasEnd">
               <i class="fs-6 me-1 fa-solid fa-magnifying-glass"></i>
               Search
             </button>
-            <div
-              class="offcanvas offcanvas-end"
-              tabindex="-1"
-              id="offcanvasEnd"
-              aria-labelledby="offcanvasEndLabel"
-            >
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEnd" aria-labelledby="offcanvasEndLabel">
               <div class="offcanvas-header">
-                <h5 id="offcanvasEndLabel" class="offcanvas-title">Offcanvas End</h5>
-                <button
-                  type="button"
-                  class="btn-close text-reset"
-                  data-bs-dismiss="offcanvas"
-                  aria-label="Close"
-                ></button>
+                <h5 id="offcanvasEndLabel" class="offcanvas-title">
+                  Offcanvas End
+                </h5>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
               </div>
               <hr />
               <div class="row">
@@ -319,7 +156,9 @@
               </div>
               <div class="row">
                 <div class="col-md-10 m-auto">
-                  <label for="MarketCode" class="col-form-label"> Travel Agent </label>
+                  <label for="MarketCode" class="col-form-label">
+                    Travel Agent
+                  </label>
                   <select class="form-select mb-2" id="MarketCode">
                     <option value="" disabled selected>-select-</option>
                     <option value="option1">item</option>
@@ -366,7 +205,7 @@
         </template>
         <template #content>
           <div class="tab-pane fade active show" id="form-tabs-Reservations" role="tabpanel">
-            <div class="table-responsive text-nowrap">
+            <div v-if="viewMode === 'list'" class="table-responsive text-nowrap">
               <table class="table">
                 <thead class="table-light">
                   <tr>
@@ -438,10 +277,8 @@
                 </tbody>
               </table>
             </div>
-          </div>
-          <!-- Reservations  -->
-          <!-- <div class="tab-pane fade" id="form-tabs-Reservations" role="tabpanel">
-            <div class="col-12 col-md-6 col-lg-4 mb-4 order-1 order-xl-0">
+
+            <div v-else class="col-12 col-md-6 col-lg-4 mb-4 order-1 order-xl-0">
               <div class="card h-100">
                 <div class="card-header d-flex align-items-center">
                   <i class="text-primary fa-solid fa-hotel fs-3 mr-2 mb-2"></i>
@@ -449,80 +286,25 @@
                     <h5 class="m-0 me-2">مصطفي مدبولي</h5>
                     <p>14527</p>
                   </div>
-                  <div class="dropdown ms-auto">
-                    <button class="btn btn-outline-secondary waves-effect">
+
+                  <div class="btn-group" id="hover-dropdown-demo " @mouseenter="isHovered = true" @mouseleave="isHovered = false">
+                    <button type="button" class="btn btn-primary  waves-effect waves-light show">
                       <i class="fa-solid fa-ellipsis-vertical"></i>
                     </button>
+                    <ul v-show="isHovered" class="dropdown-menu show" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(0px, 40px);" data-popper-placement="bottom-start">
+                      <li><a class="dropdown-item" href="#">Print Invoice</a></li>
+                      <li><a class="dropdown-item" href="#">Add New Booking</a></li>
+                      <li><a class="dropdown-item" href="#">Audit Trail</a></li>
+                      <li>
+                        <hr class="dropdown-divider">
+                      </li>
+                    </ul>
+
                   </div>
                 </div>
                 <div class="card-body">
                   <div id="deliveryExceptionsChart">
-                    <div
-                      class="row d-flex align-items-center justify-content-center text-center mb-3"
-                    >
-                      <div class="bg-light col-md-5">
-                        <div class="text-dark">02/12/2024</div>
-                        <div>08:43:01 pm</div>
-                      </div>
-                      <div class="bg-secondary col-md-2">
-                        <div class="text-dark">5</div>
-                        <div>Nights</div>
-                      </div>
-                      <div class="bg-light col-md-5">
-                        <div class="text-dark">02/12/2024</div>
-                        <div>08:43:01 pm</div>
-                      </div>
-                    </div>
-                    <div class="row mb-5">
-                      <div class="col-md-10">
-                        <div>Booking Date</div>
-                        <div>02/12/2024</div>
-                      </div>
-                      <div class="col-md-2">
-                        <div>
-                          <i class="fa-solid fa-person"></i>3
-                          <i class="fa-solid fa-child"></i>2
-                        </div>
-                      </div>
-                      <div class="col-md-12">
-                        <div>Room / Rate Type</div>
-                        <div>202 / السعر غير شامل</div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-10">Total</div>
-                      <div class="col-md-2">$230</div>
-                      <div class="col-md-10">Paid</div>
-                      <div class="col-md-2">$250</div>
-                      <div class="col-md-10 text-danger text-danger">Balance</div>
-                      <div class="col-md-2 text-danger text-danger">$20</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div> -->
-          <!-- Arrivals  -->
-          <div class="tab-pane fade" id="form-tabs-Arrivals" role="tabpanel">
-            <div class="col-12 col-md-6 col-lg-4 mb-4 order-1 order-xl-0">
-              <div class="card h-100">
-                <div class="card-header d-flex align-items-center">
-                  <i class="text-primary fa-solid fa-hotel fs-3 mr-2 mb-2"></i>
-                  <div class="card-title mb-0">
-                    <h5 class="m-0 me-2">مصطفي مدبولي</h5>
-                    <p>14527</p>
-                  </div>
-                  <div class="dropdown ms-auto">
-                    <button class="btn btn-outline-secondary waves-effect">
-                      <i class="fa-solid fa-ellipsis-vertical"></i>
-                    </button>
-                  </div>
-                </div>
-                <div class="card-body">
-                  <div id="deliveryExceptionsChart">
-                    <div
-                      class="row d-flex align-items-center justify-content-center text-center mb-3"
-                    >
+                    <div class="row d-flex align-items-center justify-content-center text-center mb-3">
                       <div class="bg-light col-md-5">
                         <div class="text-dark">02/12/2024</div>
                         <div>08:43:01 pm</div>
@@ -564,134 +346,27 @@
                 </div>
               </div>
             </div>
+
+
+
+          </div>
+
+
+
+          <!-- Arrivals  -->
+          <div class="tab-pane fade" id="form-tabs-Arrivals" role="tabpanel">
+
           </div>
           <!-- Departures  -->
           <div class="tab-pane fade" id="form-tabs-Departures" role="tabpanel">
-            <div class="col-12 col-md-6 col-lg-4 mb-4 order-1 order-xl-0">
-              <div class="card h-100">
-                <div class="card-header d-flex align-items-center">
-                  <i class="text-primary fa-solid fa-hotel fs-3 mr-2 mb-2"></i>
-                  <div class="card-title mb-0">
-                    <h5 class="m-0 me-2">مصطفي مدبولي</h5>
-                    <p>14527</p>
-                  </div>
-                  <div class="dropdown ms-auto">
-                    <button class="btn btn-outline-secondary waves-effect">
-                      <i class="fa-solid fa-ellipsis-vertical"></i>
-                    </button>
-                  </div>
-                </div>
-                <div class="card-body">
-                  <div id="deliveryExceptionsChart">
-                    <div
-                      class="row d-flex align-items-center justify-content-center text-center mb-3"
-                    >
-                      <div class="bg-light col-md-5">
-                        <div class="text-dark">02/12/2024</div>
-                        <div>08:43:01 pm</div>
-                      </div>
-                      <div class="bg-secondary col-md-2">
-                        <div class="text-dark">5</div>
-                        <div>Nights</div>
-                      </div>
-                      <div class="bg-light col-md-5">
-                        <div class="text-dark">02/12/2024</div>
-                        <div>08:43:01 pm</div>
-                      </div>
-                    </div>
-                    <div class="row mb-5">
-                      <div class="col-md-10">
-                        <div>Booking Date</div>
-                        <div>02/12/2024</div>
-                      </div>
-                      <div class="col-md-2">
-                        <div>
-                          <i class="fa-solid fa-person"></i>3
-                          <i class="fa-solid fa-child"></i>2
-                        </div>
-                      </div>
-                      <div class="col-md-12">
-                        <div>Room / Rate Type</div>
-                        <div>202 / السعر غير شامل</div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-10">Total</div>
-                      <div class="col-md-2">$230</div>
-                      <div class="col-md-10">Paid</div>
-                      <div class="col-md-2">$250</div>
-                      <div class="col-md-10 text-danger">Balance</div>
-                      <div class="col-md-2 text-danger">$20</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+
           </div>
           <!-- In-house  -->
           <div class="tab-pane fade" id="form-tabs-In-house" role="tabpanel">
-            <div class="col-12 col-md-6 col-lg-4 mb-4 order-1 order-xl-0">
-              <div class="card h-100">
-                <div class="card-header d-flex align-items-center">
-                  <i class="text-primary fa-solid fa-hotel fs-3 mr-2 mb-2"></i>
-                  <div class="card-title mb-0">
-                    <h5 class="m-0 me-2">مصطفي مدبولي</h5>
-                    <p>14527</p>
-                  </div>
-                  <div class="dropdown ms-auto">
-                    <button class="btn btn-outline-secondary waves-effect">
-                      <i class="fa-solid fa-ellipsis-vertical"></i>
-                    </button>
-                  </div>
-                </div>
-                <div class="card-body">
-                  <div id="deliveryExceptionsChart">
-                    <div
-                      class="row d-flex align-items-center justify-content-center text-center mb-3"
-                    >
-                      <div class="bg-light col-md-5">
-                        <div class="text-dark">02/12/2024</div>
-                        <div>08:43:01 pm</div>
-                      </div>
-                      <div class="bg-secondary col-md-2">
-                        <div class="text-dark">5</div>
-                        <div>Nights</div>
-                      </div>
-                      <div class="bg-light col-md-5">
-                        <div class="text-dark">02/12/2024</div>
-                        <div>08:43:01 pm</div>
-                      </div>
-                    </div>
-                    <div class="row mb-5">
-                      <div class="col-md-10">
-                        <div>Booking Date</div>
-                        <div>02/12/2024</div>
-                      </div>
-                      <div class="col-md-2">
-                        <div>
-                          <i class="fa-solid fa-person"></i>3
-                          <i class="fa-solid fa-child"></i>2
-                        </div>
-                      </div>
-                      <div class="col-md-12">
-                        <div>Room / Rate Type</div>
-                        <div>202 / السعر غير شامل</div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-10">Total</div>
-                      <div class="col-md-2">$230</div>
-                      <div class="col-md-10">Paid</div>
-                      <div class="col-md-2">$250</div>
-                      <div class="col-md-10 text-danger">Balance</div>
-                      <div class="col-md-2 text-danger">$20</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+
           </div>
         </template>
+
       </HeaderReservation>
     </div>
   </div>
@@ -705,7 +380,38 @@ export default {
   layout: "main",
   components: {
     HeaderReservation,
+  }, data ()
+  {
+    return {
+      viewMode: 'card', // default view mode is card view
+      isHovered: false,
+
+      reservations: [
+        {
+          id: 1,
+          guestName: "مصطفي مدبولي",
+          reservationNo: "14527",
+          arrivalDate: "02/12/2024",
+          arrivalTime: "08:43:01 pm",
+          departureDate: "02/12/2024",
+          departureTime: "08:43:01 pm",
+          roomDetails: "202 - Suite الفندق غرفتين وصاله السعر غير شامل",
+          total: 230,
+          paid: 250,
+          balance: -20,
+          adults: 3,
+          children: 2,
+          nights: 5,
+        },
+      ]
+    };
   },
+  methods: {
+    setViewMode (mode)
+    {
+      this.viewMode = mode;
+    }
+  }
 };
 </script>
 
