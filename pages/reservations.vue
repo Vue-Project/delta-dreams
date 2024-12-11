@@ -4,34 +4,41 @@
       <HeaderReservation>
         <template #button>
           <li class="nav-item" role="presentation">
-            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#form-tabs-Reservations" role="tab" aria-selected="false" tabindex="-1">
+            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#form-tabs-Reservations" role="tab" aria-selected="false" tabindex="-1" :class="{ active: activeTab === 'reservations' }" @click="setActiveTab('reservations')">
               Reservations
               <span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-label-danger ms-1">2</span>
             </button>
           </li>
           <li class="nav-item" role="presentation">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-Arrivals" role="tab" aria-selected="false" tabindex="-1">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-Arrivals" role="tab" aria-selected="false" tabindex="-1" :class="{ active: activeTab === 'arrivals' }" @click="setActiveTab('arrivals')">
               Arrivals
               <span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-label-danger ms-1">1</span>
             </button>
           </li>
           <li class="nav-item" role="presentation">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-Departures" role="tab" aria-selected="true">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-Departures" role="tab" aria-selected="true" :class="{ active: activeTab === 'departures' }" @click="setActiveTab('departures')">
               Departures
               <span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-label-danger ms-1">1</span>
             </button>
           </li>
           <li class="nav-item" role="presentation">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-In-house" role="tab" aria-selected="true">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-In-house" role="tab" aria-selected="true" :class="{ active: activeTab === 'inHouse' }" @click="setActiveTab('inHouse')">
               In-house
               <span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-label-danger ms-1">1</span>
             </button>
           </li>
+
           <div class="ms-auto me-3">
-            <button class="btn" :class="{ 'btn-primary': viewMode === 'card', 'btn-secondary': viewMode !== 'card' }" @click="setViewMode('card')">
+            <button class="btn" :class="{
+              'btn-primary': viewMode === 'card',
+              'btn-secondary': viewMode !== 'card',
+            }" @click="setViewMode('card')">
               <i class="fa-solid fa-grip"></i>
             </button>
-            <button class="btn" :class="{ 'btn-primary': viewMode === 'list', 'btn-secondary': viewMode !== 'list' }" @click="setViewMode('list')">
+            <button class="btn" :class="{
+              'btn-primary': viewMode === 'list',
+              'btn-secondary': viewMode !== 'list',
+            }" @click="setViewMode('list')">
               <i class="fa-solid fa-list"></i>
             </button>
             <button type="button" class="ms-3 btn btn-primary dropdown-toggle waves-effect waves-light" data-bs-toggle="dropdown" aria-expanded="true">
@@ -151,51 +158,67 @@
                     <option value="" disabled selected>-select-</option>
                     <option value="option1">item</option>
                     <option value="option2">item</option>
+                    <h3>geong3ng4iong</h3>
                   </select>
                 </div>
               </div>
-              <div class="row">
-                <div class="col-md-10 m-auto">
-                  <label for="MarketCode" class="col-form-label">
-                    Travel Agent
-                  </label>
-                  <select class="form-select mb-2" id="MarketCode">
-                    <option value="" disabled selected>-select-</option>
-                    <option value="option1">item</option>
-                    <option value="option2">item</option>
-                  </select>
+
+              <!-- Dynamic Content Based on Active Tab -->
+              <div v-if="activeTab === 'reservations'">
+                <div class="row">
+                  <div class="col-md-10 m-auto">
+                    <label for="MarketCode" class="col-form-label">Travel Agent</label>
+                    <select class="form-select mb-2" id="MarketCode">
+                      <option value="" disabled selected>-select-</option>
+                      <option value="option1">item</option>
+                      <option value="option2">item</option>
+                    </select>
+                    <h1>thisgeignwiogn</h1>
+                  </div>
                 </div>
               </div>
-              <div class="row">
-                <div class="col-md-10 m-auto">
-                  <label for="MarketCode" class="col-form-label">Company</label>
-                  <select class="form-select mb-2" id="MarketCode">
-                    <option value="" disabled selected>-select-</option>
-                    <option value="option1">item</option>
-                    <option value="option2">item</option>
-                  </select>
+
+              <div v-if="activeTab === 'arrivals'">
+                <div class="row">
+                  <div class="col-md-10 m-auto">
+                    <label for="MarketCode" class="col-form-label">Company</label>
+                    <select class="form-select mb-2" id="MarketCode">
+                      <option value="" disabled selected>-select-</option>
+                      <option value="option1">item</option>
+                      <option value="option2">item</option>
+                    </select>
+                    <h1>Arrrrr</h1>
+                  </div>
                 </div>
               </div>
-              <div class="row">
-                <div class="col-md-10 m-auto">
-                  <label for="MarketCode" class="col-form-label">Room Type</label>
-                  <select class="form-select mb-2" id="MarketCode">
-                    <option value="" disabled selected>-select-</option>
-                    <option value="option1">item</option>
-                    <option value="option2">item</option>
-                  </select>
+
+              <div v-if="activeTab === 'departures'">
+                <div class="row">
+                  <div class="col-md-10 m-auto">
+                    <label for="MarketCode" class="col-form-label">Room Type</label>
+                    <select class="form-select mb-2" id="MarketCode">
+                      <option value="" disabled selected>-select-</option>
+                      <option value="option1">item</option>
+                      <option value="option2">item</option>
+                    </select>
+                  </div>
                 </div>
               </div>
-              <div class="row">
-                <div class="col-md-10 m-auto">
-                  <label for="MarketCode" class="col-form-label">Room</label>
-                  <select class="form-select mb-2" id="MarketCode">
-                    <option value="" disabled selected>-select-</option>
-                    <option value="option1">item</option>
-                    <option value="option2">item</option>
-                  </select>
+
+              <div v-if="activeTab === 'inHouse'">
+                <div class="row">
+                  <div class="col-md-10 m-auto">
+                    <label for="MarketCode" class="col-form-label">Room</label>
+                    <select class="form-select mb-2" id="MarketCode">
+                      <option value="" disabled selected>-select-</option>
+                      <option value="option1">item</option>
+                      <option value="option2">item</option>
+                    </select>
+                    <h1>fn3fn3iofg3nifn3io</h1>
+                  </div>
                 </div>
               </div>
+
               <div class="gap-2 d-flex justify-content-end">
                 <button class="btn btn-secondary">Reset</button>
                 <button class="btn btn-primary">Search</button>
@@ -206,7 +229,7 @@
         <template #content>
           <div class="tab-pane fade active show" id="form-tabs-Reservations" role="tabpanel">
             <div v-if="viewMode === 'list'" class="table-responsive text-nowrap">
-              <table class="table">
+              <table class="table" style="overflow: hidden;">
                 <thead class="table-light">
                   <tr>
                     <th>Guest Name</th>
@@ -246,6 +269,25 @@
                     <td>$230</td>
                     <td>$250</td>
                     <td class="text-danger">$20</td>
+                    <td>
+                      <div class="btn-group" id="hover-dropdown-demo " @mouseenter="isHovered = true" @mouseleave="isHovered = false">
+                        <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none;">
+                          <i class="fa-solid fa-ellipsis-vertical"></i>
+                        </button>
+                        <ul v-show="isHovered" class="dropdown-menu show" data-popper-placement=" bottom-end">
+                          <li>
+                            <a class="dropdown-item" href="#">Print Invoice</a>
+                          </li>
+                          <li>
+                            <a class="dropdown-item" href="#">Add New Booking</a>
+                          </li>
+                          <li><a class="dropdown-item" href="#">Audit Trail</a></li>
+                          <li>
+                            <hr class="dropdown-divider" />
+                          </li>
+                        </ul>
+                      </div>
+                    </td>
                   </tr>
                   <tr class="border-bottom">
                     <td>
@@ -273,6 +315,25 @@
                     <td>$230</td>
                     <td>$250</td>
                     <td class="text-danger">$20</td>
+                    <td>
+                      <div class=" btn-group" id="hover-dropdown-demo " @mouseenter="isHovered = true" @mouseleave="isHovered = false">
+                        <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none;">
+                          <i class="fa-solid fa-ellipsis-vertical"></i>
+                        </button>
+                        <ul v-show="isHovered" class="dropdown-menu show" data-popper-placement=" bottom-end">
+                          <li>
+                            <a class="dropdown-item" href="#">Print Invoice</a>
+                          </li>
+                          <li>
+                            <a class="dropdown-item" href="#">Add New Booking</a>
+                          </li>
+                          <li><a class="dropdown-item" href="#">Audit Trail</a></li>
+                          <li>
+                            <hr class="dropdown-divider" />
+                          </li>
+                        </ul>
+                      </div>
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -280,26 +341,31 @@
 
             <div v-else class="col-12 col-md-6 col-lg-4 mb-4 order-1 order-xl-0">
               <div class="card h-100">
-                <div class="card-header d-flex align-items-center">
-                  <i class="text-primary fa-solid fa-hotel fs-3 mr-2 mb-2"></i>
-                  <div class="card-title mb-0">
+                <div class="card-header d-flex align-items-center justify-content-between">
+                  <div class="card-title mb-0 d-flex">
+                    <i class="text-primary fa-solid fa-hotel fs-3 mr-2 mb-2"></i>
                     <h5 class="m-0 me-2">مصطفي مدبولي</h5>
                     <p>14527</p>
                   </div>
 
                   <div class="btn-group" id="hover-dropdown-demo " @mouseenter="isHovered = true" @mouseleave="isHovered = false">
-                    <button type="button" class="btn btn-primary  waves-effect waves-light show">
-                      <i class="fa-solid fa-ellipsis-vertical"></i>
-                    </button>
-                    <ul v-show="isHovered" class="dropdown-menu show" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(0px, 40px);" data-popper-placement="bottom-start">
-                      <li><a class="dropdown-item" href="#">Print Invoice</a></li>
-                      <li><a class="dropdown-item" href="#">Add New Booking</a></li>
-                      <li><a class="dropdown-item" href="#">Audit Trail</a></li>
-                      <li>
-                        <hr class="dropdown-divider">
-                      </li>
-                    </ul>
-
+                    <div class="btn-group" id="hover-dropdown-demo " @mouseenter="isHovered = true" @mouseleave="isHovered = false">
+                      <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none;">
+                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                      </button>
+                      <ul v-show="isHovered" class="dropdown-menu show" data-popper-placement=" bottom-end">
+                        <li>
+                          <a class="dropdown-item" href="#">Print Invoice</a>
+                        </li>
+                        <li>
+                          <a class="dropdown-item" href="#">Add New Booking</a>
+                        </li>
+                        <li><a class="dropdown-item" href="#">Audit Trail</a></li>
+                        <li>
+                          <hr class="dropdown-divider" />
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
                 <div class="card-body">
@@ -346,27 +412,15 @@
                 </div>
               </div>
             </div>
-
-
-
           </div>
-
-
 
           <!-- Arrivals  -->
-          <div class="tab-pane fade" id="form-tabs-Arrivals" role="tabpanel">
-
-          </div>
+          <div class="tab-pane fade" id="form-tabs-Arrivals" role="tabpanel"></div>
           <!-- Departures  -->
-          <div class="tab-pane fade" id="form-tabs-Departures" role="tabpanel">
-
-          </div>
+          <div class="tab-pane fade" id="form-tabs-Departures" role="tabpanel"></div>
           <!-- In-house  -->
-          <div class="tab-pane fade" id="form-tabs-In-house" role="tabpanel">
-
-          </div>
+          <div class="tab-pane fade" id="form-tabs-In-house" role="tabpanel"></div>
         </template>
-
       </HeaderReservation>
     </div>
   </div>
@@ -380,11 +434,13 @@ export default {
   layout: "main",
   components: {
     HeaderReservation,
-  }, data ()
+  },
+  data ()
   {
     return {
-      viewMode: 'card', // default view mode is card view
+      viewMode: "card", // default view mode is card view
       isHovered: false,
+      activeTab: "reservations", // Default active tab
 
       reservations: [
         {
@@ -403,15 +459,19 @@ export default {
           children: 2,
           nights: 5,
         },
-      ]
+      ],
     };
   },
   methods: {
     setViewMode (mode)
     {
       this.viewMode = mode;
-    }
-  }
+    },
+    setActiveTab (tab)
+    {
+      this.activeTab = tab;
+    },
+  },
 };
 </script>
 

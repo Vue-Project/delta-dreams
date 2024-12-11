@@ -188,6 +188,13 @@
   position: relative;
   top: -4px;
 }
+.btn .btn-primary .waves-effect .waves-light .show{
+  border: 0;
+  box-shadow: none;
+}
+.btn btn-primary .waves-effect .waves-light .show :hover{
+ background-color: red;
+}
 /* .fc .fc-datagrid-cell-cushion{
   width: 100% !important;
 }
