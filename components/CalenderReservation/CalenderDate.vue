@@ -34,9 +34,7 @@
 
           <div class="row">
             <hr class="my-2 w-75 mx-auto" />
-            <button type="button" class="ant-btn ant-btn-link ant-btn-block">
-              <span>Walk In / Reservation</span>
-            </button>
+            <NuxtLink to="/addreservation">Go to Add Reservation</NuxtLink>
             <hr class="my-2 w-75 mx-auto" />
             <button type="button" class="ant-btn ant-btn-link ant-btn-block">
               <span>Maintenance Block</span>
