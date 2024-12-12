@@ -17,9 +17,9 @@
   padding: 5px;
 }
 
-.table> :not(caption)>*>* {
+/* .table> :not(caption)>*>* {
   border: 0;
-}
+} */
 
 .btn:not(:disabled):not(.disabled) {
   padding: 10px;
@@ -526,10 +526,10 @@ select {
   align-items: center;
   justify-content: center;
 }
-.table > :not(caption) > * > * {
+/* .table > :not(caption) > * > * {
   padding: 5px;
 
-}
+} */
 
 /* full calendar  */
 

@@ -1,17 +1,9 @@
 <template>
   <div>
-    <div
-      v-if="isSidebarOpen"
-      :class="['sidebar', { 'sidebar-open': isSidebarOpen }]"
-      :style="{ width: width }"
-    >
+    <div v-if="isSidebarOpen" :class="['sidebar', { 'sidebar-open': isSidebarOpen }]" :style="{ width: width }">
       <slot name="SidebarContent"></slot>
     </div>
-    <div
-      v-if="isSidebarOpen"
-      class="overlay"
-      @click="$emit('close-sidebar')"
-    ></div>
+    <div v-if="isSidebarOpen" class="overlay" @click="$emit('close-sidebar')"></div>
   </div>
 </template>
 
@@ -31,7 +23,7 @@ export default {
     },
     width: {
       type: String,
-      default: "1000px",
+      default: "700px",
     },
   },
 };
