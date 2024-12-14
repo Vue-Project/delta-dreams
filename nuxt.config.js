@@ -13,7 +13,24 @@ export default {
       { hid: "description", name: "description", content: "" },
       { name: "format-detection", content: "telephone=no" },
     ],
-    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
+    link: [
+      { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
+      // { rel: "stylesheet", href: "/css/fontawesome.css" },
+      // { rel: "stylesheet", href: "/css/bootstrap/bootstrap.min.css" },
+      // { rel: "stylesheet", href: "/css/core.css" },
+      // { rel: "stylesheet", href: "/css/theme-default.css" },
+      // { rel: "stylesheet", href: "/css/theme-default.css" },
+      // { rel: "stylesheet", href: "/css/theme-default.css" },
+      // { rel: "stylesheet", href: "/css/theme-default.css" },
+      // { rel: "stylesheet", href: "/css/theme-default.css" },
+      // { rel: "stylesheet", href: "/css/theme-default.css" },
+      // { rel: "stylesheet", href: "/css/theme-default.css" },
+      // { rel: "stylesheet", href: "/css/theme-default.css" },
+      // { rel: "stylesheet", href: "/css/theme-default.css" },
+      // { rel: "stylesheet", href: "/css/theme-default.css" },
+      // { rel: "stylesheet", href: "/css/theme-default.css" },
+
+    ],
     script: [
       {
         type: "text/javascript",
@@ -47,7 +64,6 @@ export default {
     //! End Css Files
 
     //! Start  libs Css Files
-    "~/assets/vendor/libs/flatpickr/flatpickr.css",
     "~/assets/vendor/fonts/fontawesome.css",
     //! end  libs Css Files
 
@@ -102,4 +118,19 @@ export default {
       }
     },
   },
+  static: {
+    prefix: false, // Ensures static files are served as-is
+  },
+
+
+
+  generate: {
+    fallback: true, // Ensures SPA fallback
+    subFolders: false,
+    exclude: [/admin/]
+
+
+  },
+
+
 };
