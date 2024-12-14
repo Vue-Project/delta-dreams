@@ -2,9 +2,6 @@
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 
-
-
-
 export default {
   mounted ()
   {
@@ -50,8 +47,28 @@ export default {
             dateFormat: "H:i", // Set time format
           });
         });
+
+        // Array of range pickers (1 to 4)
+        const rangePickers = [
+          this.$refs.rangePicker1,
+          this.$refs.rangePicker2,
+          this.$refs.rangePicker3,
+          this.$refs.rangePicker4,
+        ].filter(Boolean); // Filter out undefined refs
+
+        // Initialize range pickers
+        rangePickers.forEach((picker) =>
+        {
+          flatpickr(picker, {
+            mode: "range", // Enable range selection
+            dateFormat: "Y-m-d", // Set the desired date format
+            onChange: (selectedDates, dateStr) =>
+            {
+              console.log("Range Selected:", dateStr); // Optional: Handle date change
+            },
+          });
+        });
       });
     },
   },
 };
-
