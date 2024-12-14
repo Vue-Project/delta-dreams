@@ -218,6 +218,10 @@
 .right{
   right: 10px !important;
 }
+.right-0{
+  right: 0px !important;
+  left: auto;
+}
 .top{
   top: 47px !important;
   right: 20px !important;

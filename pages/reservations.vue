@@ -29,16 +29,10 @@
           </li>
 
           <div class="ms-auto me-3">
-            <button class="btn" :class="{
-              'btn-primary': viewMode === 'card',
-              'btn-secondary': viewMode !== 'card',
-            }" @click="setViewMode('card')">
+            <button class="btn" :class="{ 'btn-primary': viewMode === 'card', 'btn-secondary': viewMode !== 'card', }" @click="setViewMode('card')">
               <i class="fa-solid fa-grip"></i>
             </button>
-            <button class="btn" :class="{
-              'btn-primary': viewMode === 'list',
-              'btn-secondary': viewMode !== 'list',
-            }" @click="setViewMode('list')">
+            <button class="btn" :class="{ 'btn-primary': viewMode === 'list', 'btn-secondary': viewMode !== 'list' }" @click="setViewMode('list')">
               <i class="fa-solid fa-list"></i>
             </button>
             <button type="button" class="ms-3 btn btn-primary dropdown-toggle waves-effect waves-light" data-bs-toggle="dropdown" aria-expanded="true">
@@ -46,95 +40,97 @@
               Export
             </button>
             <ul style="height: 400px; overflow-y: auto" class="dropdown-menu">
-              <label class="ms-2">Export As </label>
+              <label class="ms-2">Export As</label>
               <hr class="mb-2 m-0" />
               <div class="d-flex justify-content-around mb-3">
                 <div class="form-check">
-                  <input name="default-radio-1" class="form-check-input" type="radio" value="" id="defaultRadio2" checked="" />
-                  <label class="form-check-label" for="defaultRadio2">PDF</label>
+                  <input name="default-radio-1" class="form-check-input" type="radio" value="PDF" id="exportAsPdf" />
+                  <label class="form-check-label" for="exportAsPdf">PDF</label>
                 </div>
                 <div class="form-check">
-                  <input name="default-radio-1" class="form-check-input" type="radio" value="" id="defaultRadio2" checked="" />
-                  <label class="form-check-label" for="defaultRadio2">Excel</label>
+                  <input name="default-radio-1" class="form-check-input" type="radio" value="Excel" id="exportAsExcel" />
+                  <label class="form-check-label" for="exportAsExcel">Excel</label>
                 </div>
               </div>
-              <label for="" class="ms-2">Select Column</label>
+              <label class="ms-2">Select Column</label>
               <hr class="mb-2 m-0" />
               <div class="app-calendar-events-filter ms-3">
                 <div class="form-check form-check-primary mb-2">
-                  <input class="form-check-input input-filter" type="checkbox" id="select-personal" data-value="personal" checked="" />
-                  <label class="form-check-label" for="select-personal">Personal</label>
+                  <input class="form-check-input input-filter" type="checkbox" id="exportAsResNo" data-value="Res No" />
+                  <label class="form-check-label" for="exportAsResNo">Res No.</label>
                 </div>
                 <div class="form-check form-check-primary mb-2">
-                  <input class="form-check-input input-filter" type="checkbox" id="select-personal" data-value="personal" checked="" />
-                  <label class="form-check-label" for="select-personal">Personal</label>
+                  <input class="form-check-input input-filter" type="checkbox" id="exportAsArrivalDate" data-value="Arrival Date" />
+                  <label class="form-check-label" for="exportAsArrivalDate"> Arrival Date
+                  </label>
                 </div>
                 <div class="form-check form-check-primary mb-2">
-                  <input class="form-check-input input-filter" type="checkbox" id="select-personal" data-value="personal" checked="" />
-                  <label class="form-check-label" for="select-personal">Personal</label>
+                  <input class="form-check-input input-filter" type="checkbox" id="exportAsDepartureDate" data-value="Departure Date" />
+                  <label class="form-check-label" for="exportAsDepartureDate">Departure Date</label>
                 </div>
                 <div class="form-check form-check-primary mb-2">
-                  <input class="form-check-input input-filter" type="checkbox" id="select-personal" data-value="personal" checked="" />
-                  <label class="form-check-label" for="select-personal">Personal</label>
+                  <input class="form-check-input input-filter" type="checkbox" id="exportAsGuestName" data-value="Guest Name" />
+                  <label class="form-check-label" for="exportAsGuestName">Guest Name</label>
                 </div>
                 <div class="form-check form-check-primary mb-2">
-                  <input class="form-check-input input-filter" type="checkbox" id="select-personal" data-value="personal" checked="" />
-                  <label class="form-check-label" for="select-personal">Personal</label>
+                  <input class="form-check-input input-filter" type="checkbox" id="exportAsVipGuestStatus" data-value="VIP/Guest Status" />
+                  <label class="form-check-label" for="exportAsVipGuestStatus">VIP/Guest Status</label>
                 </div>
                 <div class="form-check form-check-primary mb-2">
-                  <input class="form-check-input input-filter" type="checkbox" id="select-personal" data-value="personal" checked="" />
-                  <label class="form-check-label" for="select-personal">Personal</label>
+                  <input class="form-check-input input-filter" type="checkbox" id="exportAsRoom" data-value="Room" />
+                  <label class="form-check-label" for="exportAsRoom">Room</label>
                 </div>
                 <div class="form-check form-check-primary mb-2">
-                  <input class="form-check-input input-filter" type="checkbox" id="select-personal" data-value="personal" checked="" />
-                  <label class="form-check-label" for="select-personal">Personal</label>
+                  <input class="form-check-input input-filter" type="checkbox" id="exportAsRate" data-value="Rate" />
+                  <label class="form-check-label" for="exportAsRate">Rate</label>
                 </div>
                 <div class="form-check form-check-primary mb-2">
-                  <input class="form-check-input input-filter" type="checkbox" id="select-personal" data-value="personal" checked="" />
-                  <label class="form-check-label" for="select-personal">Personal</label>
+                  <input class="form-check-input input-filter" type="checkbox" id="exportAsRateType" data-value="Rate Type" />
+                  <label class="form-check-label" for="exportAsRateType">Rate Type</label>
                 </div>
                 <div class="form-check form-check-primary mb-2">
-                  <input class="form-check-input input-filter" type="checkbox" id="select-personal" data-value="personal" checked="" />
-                  <label class="form-check-label" for="select-personal">Personal</label>
+                  <input class="form-check-input input-filter" type="checkbox" id="exportAsBusinessSource" data-value="Business Source" />
+                  <label class="form-check-label" for="exportAsBusinessSource">Business Source</label>
                 </div>
                 <div class="form-check form-check-primary mb-2">
-                  <input class="form-check-input input-filter" type="checkbox" id="select-personal" data-value="personal" checked="" />
-                  <label class="form-check-label" for="select-personal">Personal</label>
+                  <input class="form-check-input input-filter" type="checkbox" id="exportAsTravelAgent" data-value="Travel Agent" />
+                  <label class="form-check-label" for="exportAsTravelAgent">Travel Agent</label>
                 </div>
                 <div class="form-check form-check-primary mb-2">
-                  <input class="form-check-input input-filter" type="checkbox" id="select-personal" data-value="personal" checked="" />
-                  <label class="form-check-label" for="select-personal">Personal</label>
+                  <input class="form-check-input input-filter" type="checkbox" id="exportAsCompany" data-value="Company" />
+                  <label class="form-check-label" for="exportAsCompany">Company
+                  </label>
                 </div>
                 <div class="form-check form-check-primary mb-2">
-                  <input class="form-check-input input-filter" type="checkbox" id="select-personal" data-value="personal" checked="" />
-                  <label class="form-check-label" for="select-personal">Personal</label>
+                  <input class="form-check-input input-filter" type="checkbox" id="exportAsPax" data-value="PAX" />
+                  <label class="form-check-label" for="exportAsPax">PAX</label>
                 </div>
                 <div class="form-check form-check-primary mb-2">
-                  <input class="form-check-input input-filter" type="checkbox" id="select-personal" data-value="personal" checked="" />
-                  <label class="form-check-label" for="select-personal">Personal</label>
+                  <input class="form-check-input input-filter" type="checkbox" id="exportAsNationality" data-value="Nationality" />
+                  <label class="form-check-label" for="exportAsNationality">Nationality</label>
                 </div>
                 <div class="form-check form-check-primary mb-2">
-                  <input class="form-check-input input-filter" type="checkbox" id="select-personal" data-value="personal" checked="" />
-                  <label class="form-check-label" for="select-personal">Personal</label>
+                  <input class="form-check-input input-filter" type="checkbox" id="exportAsResType" data-value="  Res. Type" />
+                  <label class="form-check-label" for="exportAsResType"> Res. Type</label>
                 </div>
                 <div class="form-check form-check-primary mb-2">
-                  <input class="form-check-input input-filter" type="checkbox" id="select-personal" data-value="personal" checked="" />
-                  <label class="form-check-label" for="select-personal">Personal</label>
+                  <input class="form-check-input input-filter" type="checkbox" id="exportAsPhone" data-value="Phone" />
+                  <label class="form-check-label" for="exportAsPhone">Phone</label>
                 </div>
                 <div class="form-check form-check-primary mb-2">
-                  <input class="form-check-input input-filter" type="checkbox" id="select-personal" data-value="personal" checked="" />
-                  <label class="form-check-label" for="select-personal">Personal</label>
+                  <input class="form-check-input input-filter" type="checkbox" id="exportAsEmail" data-value="Email" />
+                  <label class="form-check-label" for="exportAsEmail">Email</label>
                 </div>
                 <div class="form-check form-check-primary mb-2">
-                  <input class="form-check-input input-filter" type="checkbox" id="select-personal" data-value="personal" checked="" />
-                  <label class="form-check-label" for="select-personal">Personal</label>
+                  <input class="form-check-input input-filter" type="checkbox" id="exportAsRemarks" data-value="Remarks" />
+                  <label class="form-check-label" for="exportAsRemarks">Remarks</label>
                 </div>
                 <div class="form-check form-check-primary mb-2">
-                  <input class="form-check-input input-filter" type="checkbox" id="select-personal" data-value="personal" checked="" />
-                  <label class="form-check-label" for="select-personal">Personal</label>
+                  <input class="form-check-input input-filter" type="checkbox" id="exportAsPreferences" data-value="Preferences" />
+                  <label class="form-check-label" for="exportAsPreferences">Preferences</label>
                 </div>
               </div>
-              <div class="gap-2 d-flex justify-content-end">
+              <div class="gap-2 d-flex justify-content-center">
                 <button class="btn btn-sm btn-secondary">Close</button>
                 <button class="btn btn-sm btn-primary">Export</button>
               </div>
@@ -223,478 +219,865 @@
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
               </div>
               <hr />
+              <div class="offcanvas-body mx-0 flex-grow-0 pt-0">
 
-              <!-- Dynamic Content Based on Active Tab -->
-              <div v-if="activeTab === 'reservations'">
-                <div class="row">
-                  <div class="col-md-10 m-auto">
-                    <!-- Only show the heading if no card is selected -->
-                    <div v-if="!selectedCard">
-                      <div class="form-check form-check-primary mb-2">
-                        <input class="form-check-input input-filter" type="checkbox" id=">ResDate" data-value="personal" checked="" />
-                        <label class="form-check-label" for=">ResDate">Res Date</label>
 
-                        <!-- date input   -->
+                <!-- Dynamic Content Based on Active Tab -->
+                <div v-if="activeTab === 'reservations'">
+                  <!-- Only show the heading if no card is selected -->
+                  <div v-if="!selectedCard">
+                    <div class="form-check form-check-primary mb-2">
+                      <input class="form-check-input input-filter" type="checkbox" id="reservationsSearchResDate" data-value="ResDate" aria-label="input  for ResDate" />
+                      <label class="form-check-label" for="reservationsSearchResDate">Res Date</label>
+                    </div>
+                    <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD to YYYY-MM-DD" id="flatpickr-range-01" ref="rangePicker1" aria-label="input Text to Date">
 
-                        <div class="form-check form-check-primary mb-2">
-                          <input class="form-check-input input-filter" type="checkbox" id="Arrival" data-value="personal" checked="" />
-                          <label class="form-check-label" for="Arrival">Arrival</label>
-                          <!-- Date input  -->
-                        </div>
-                        <label for="MarketCode" class="col-form-label">Business Source</label>
-                        <select class="form-select mb-2" id="MarketCode">
-                          <option value="" disabled selected>-select-</option>
+
+                    <div class="form-check form-check-primary mb-2">
+                      <input class="form-check-input input-filter" type="checkbox" id="reservationsSearchArrival" data-value="Arrival" />
+                      <label class="form-check-label" for="reservationsSearchArrival">Arrival</label>
+                    </div>
+                    <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD to YYYY-MM-DD" id="flatpickr-range-01" ref="rangePicker2" aria-label="input Text to Date">
+
+                    <label for="reservationsBusinessSource" class="col-form-label">Business Source</label>
+                    <select class="form-select mb-2" id="reservationsBusinessSource">
+                      <option value="" disabled selected>-select-</option>
+                      <option value="option1">item</option>
+                      <option value="option2">item</option>
+                    </select>
+                    <label for="reservationsSearchTravelAgent" class="col-form-label">Travel Agent</label>
+                    <select class="form-select mb-2" id="reservationsSearchTravelAgent">
+                      <option value="" disabled selected>-select-</option>
+                      <option value="option1">item</option>
+                      <option value="option2">item</option>
+                    </select>
+                    <label for="reservationsSearchCompany" class="col-form-label">Company</label>
+                    <select class="form-select mb-2" id="reservationsSearchCompany">
+                      <option value="" disabled selected>-select-</option>
+                      <option value="option1">item</option>
+                      <option value="option2">item</option>
+                    </select>
+                    <label for="reservationsSearchRoomtype" class="col-form-label">Room Type</label>
+                    <select class="form-select mb-2" id="reservationsSearchRoomtype">
+                      <option value="" disabled selected>-select-</option>
+                      <option value="option1">item</option>
+                      <option value="option2">item</option>
+                    </select>
+                    <div class="row">
+                      <div class="col-6">
+                        <label for="reservationsSearchStatus" class="col-form-label">Status</label>
+                        <select class="form-select mb-2" id="reservationsSearchStatus">
+                          <option value="" disabled selected>Active</option>
                           <option value="option1">item</option>
                           <option value="option2">item</option>
                         </select>
-                        <label for="MarketCode" class="col-form-label">Travel Agent</label>
-                        <select class="form-select mb-2" id="MarketCode">
-                          <option value="" disabled selected>-select-</option>
+                      </div>
+                      <div class="col-6">
+                        <label for="reservationsSearchResType" class="col-form-label">Res. Type</label>
+                        <select class="form-select mb-2" id="reservationsSearchResType">
+                          <option value="" disabled selected>
+                            -Select-
+                          </option>
+                          <option value="option1">All</option>
+                          <option value="option2">Active</option>
+                          <option value="option2">Cancelled</option>
+                          <option value="option2">No Show</option>
+                          <option value="option2">Void</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-check mt-3">
+                      <input class="form-check-input" type="checkbox" value="UnassignedRoom" id="reservationsSearchUnassignedRoom" />
+                      <label class="form-check-label" for="reservationsSearchUnassignedRoom">
+                        Show Unassigned Rooms
+                      </label>
+                    </div>
+                    <div class="form-check mt-3">
+                      <input class="form-check-input" type="checkbox" value="Hotel Collect" id="reservationsSearchHotelCollect" />
+                      <label class="form-check-label" for="reservationsSearchHotelCollect">
+                        Hotel Collect
+                      </label>
+                    </div>
+                    <div class="form-check mt-3">
+                      <input class="form-check-input" type="checkbox" value="Channel Collect and with Deposit" id="reservationsSearchChannelCollect" />
+                      <label class="form-check-label" for="reservationsSearchChannelCollect">
+                        Channel Collect and with Deposit
+                      </label>
+                    </div>
+                    <div class="form-check mt-3">
+                      <input class="form-check-input" type="checkbox" value="WithoutDeposit" id="reservationsSearchWithoutDeposit" />
+                      <label class="form-check-label" for="reservationsSearchWithoutDeposit">
+                        Without Deposit
+                      </label>
+                    </div>
+                  </div>
+
+
+                  <!-- Only display data if a card is selected -->
+                  <div v-if="selectedCard" class="mt-4">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <ul class="list-unstyled mb-0">
+                          <li class="mb-3 pb-1">
+                            <div class="d-flex align-items-start">
+                              <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                <div class="me-2">
+                                  <h6 class="mb-0">Reservation Number</h6>
+                                  <small class="text-muted">{{ selectedCard.reservationNo }}</small>
+                                </div>
+
+                              </div>
+                            </div>
+                          </li>
+                          <li class="mb-3 pb-1">
+                            <div class="d-flex align-items-start">
+                              <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                <div class="me-2">
+                                  <h6 class="mb-0">Arrival Date
+                                  </h6>
+                                  <small class="text-muted">{{ selectedCard.arrivalDate }}
+                                    {{ selectedCard.arrivalTime }}</small>
+                                </div>
+
+                              </div>
+                            </div>
+                          </li>
+                          <li class="mb-3 pb-1">
+                            <div class="d-flex align-items-start">
+                              <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                <div class="me-2">
+                                  <h6 class="mb-0">Booking Date</h6>
+                                  <small class="text-muted">{{ selectedCard.bookingDate }}
+                                    {{ selectedCard.bookingTime }}</small>
+                                </div>
+
+                              </div>
+                            </div>
+                          </li>
+                          <li class="mb-3 pb-1">
+                            <div class="d-flex align-items-start">
+                              <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                <div class="me-2">
+                                  <h6 class="mb-0">Room Number</h6>
+                                  <small class="text-muted"> {{ selectedCard.roomNumber }}</small>
+                                </div>
+
+                              </div>
+                            </div>
+                          </li>
+                          <li class="mb-3 pb-1">
+                            <div class="d-flex align-items-start">
+                              <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                <div class="me-2">
+                                  <h6 class="mb-0"> <i class="fa-solid fa-person"></i>
+                                    <i class="fa-solid fa-child"></i>
+                                  </h6>
+                                  <small class="text-muted">{{ selectedCard.adults }} {{ selectedCard.children }}</small>
+
+                                </div>
+
+                              </div>
+                            </div>
+                          </li>
+
+                        </ul>
+                      </div>
+                      <div class="col-md-6">
+                        <ul class="list-unstyled mb-0">
+
+                          <li class="mb-3 pb-1">
+                            <div class="d-flex align-items-start">
+                              <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                <div class="me-2">
+                                  <h6 class="mb-0">Departure Date
+
+                                  </h6>
+                                  <small class="text-muted">{{ selectedCard.departureDate }}
+                                    {{ selectedCard.departureTime }}</small>
+                                </div>
+
+                              </div>
+                            </div>
+                          </li>
+                          <li class="mb-3 pb-1">
+                            <div class="d-flex align-items-start">
+                              <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                <div class="me-2">
+                                  <h6 class="mb-0">Status
+
+                                  </h6>
+                                  <small class="text-muted badge bg-label-danger ms-1">{{ selectedCard.status }}
+                                  </small>
+                                </div>
+
+                              </div>
+                            </div>
+                          </li>
+                          <li class="mb-3 pb-1">
+                            <div class="d-flex align-items-start">
+                              <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                <div class="me-2">
+                                  <h6 class="mb-0">Room Type
+                                  </h6>
+                                  <small class="text-muted">{{ selectedCard.roomType }}
+                                  </small>
+                                </div>
+
+                              </div>
+                            </div>
+                          </li>
+                          <li class="mb-3 pb-1">
+                            <div class="d-flex align-items-start">
+                              <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                <div class="me-2">
+                                  <h6 class="mb-0">Rate Plan
+                                  </h6>
+                                  <small class="text-muted"> {{ selectedCard.ratePlan }}</small>
+                                </div>
+
+                              </div>
+                            </div>
+                          </li>
+                          <li class="mb-3 pb-1">
+                            <div class="d-flex align-items-start">
+                              <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                <div class="me-2">
+                                  <h6 class="mb-0"> Avg. Daily Rate
+
+                                  </h6>
+                                  <small class="text-muted">{{ selectedCard.dailyRate }} </small>
+
+                                </div>
+
+                              </div>
+                            </div>
+                          </li>
+
+                        </ul>
+                      </div>
+                    </div>
+
+
+                  </div>
+
+                </div>
+
+                <div v-if="activeTab === 'arrivals'">
+                  <!-- Only show the heading if no card is selected -->
+                  <div v-if="!selectedCard">
+
+                    <div class="form-check form-check-primary mb-2">
+                      <input class="form-check-input input-filter" type="checkbox" id="arrivalsSearchArrival" data-value="Arrival" />
+                      <label class="form-check-label" for="arrivalsSearchArrival">Arrival</label>
+                    </div>
+                    <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD to YYYY-MM-DD" id="flatpickr-range-01" ref="rangePicker2" aria-label="input Text to Date">
+
+                    <label for="arrivalsBusinessSource" class="col-form-label">Business Source</label>
+                    <select class="form-select mb-2" id="arrivalsBusinessSource">
+                      <option value="" disabled selected>-select-</option>
+                      <option value="option1">item</option>
+                      <option value="option2">item</option>
+                    </select>
+                    <label for="arrivalsSearchTravelAgent" class="col-form-label">Travel Agent</label>
+                    <select class="form-select mb-2" id="arrivalsSearchTravelAgent">
+                      <option value="" disabled selected>-select-</option>
+                      <option value="option1">item</option>
+                      <option value="option2">item</option>
+                    </select>
+                    <label for="arrivalsSearchCompany" class="col-form-label">Company</label>
+                    <select class="form-select mb-2" id="arrivalsSearchCompany">
+                      <option value="" disabled selected>-select-</option>
+                      <option value="option1">item</option>
+                      <option value="option2">item</option>
+                    </select>
+                    <label for="arrivalsSearchRoomtype" class="col-form-label">Room Type</label>
+                    <select class="form-select mb-2" id="arrivalsSearchRoomtype">
+                      <option value="" disabled selected>-select-</option>
+                      <option value="option1">item</option>
+                      <option value="option2">item</option>
+                    </select>
+                    <div class="row">
+                      <div class="col-6">
+                        <label for="arrivalsSearchStatus" class="col-form-label">Room</label>
+                        <select class="form-select mb-2" id="arrivalsSearchStatus">
+                          <option value="" disabled selected>Active</option>
                           <option value="option1">item</option>
                           <option value="option2">item</option>
                         </select>
-                        <label for="MarketCode" class="col-form-label">Company</label>
-                        <select class="form-select mb-2" id="Company">
-                          <option value="" disabled selected>-select-</option>
+                      </div>
+                      <div class="col-6">
+                        <label for="arrivalsSearchResType" class="col-form-label">Res. Type</label>
+                        <select class="form-select mb-2" id="arrivalsSearchResType">
+                          <option value="" disabled selected>
+                            -Select-
+                          </option>
+                          <option value="option1">All</option>
+                          <option value="option2">Active</option>
+                          <option value="option2">Cancelled</option>
+                          <option value="option2">No Show</option>
+                          <option value="option2">Void</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-check mt-3">
+                      <input class="form-check-input" type="checkbox" value="Guest Checked In Today " id="arrivalsSearchGuestChecked" />
+                      <label class="form-check-label" for="arrivalsSearchGuestChecked">
+
+                        Guest Checked In Today </label>
+                    </div>
+
+                  </div>
+
+
+                  <!-- Only display data if a card is selected -->
+                  <div v-if="selectedCard" class="mt-4">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <ul class="list-unstyled mb-0">
+                          <li class="mb-3 pb-1">
+                            <div class="d-flex align-items-start">
+                              <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                <div class="me-2">
+                                  <h6 class="mb-0">Reservation Number</h6>
+                                  <small class="text-muted">{{ selectedCard.reservationNo }}</small>
+                                </div>
+
+                              </div>
+                            </div>
+                          </li>
+                          <li class="mb-3 pb-1">
+                            <div class="d-flex align-items-start">
+                              <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                <div class="me-2">
+                                  <h6 class="mb-0">Arrival Date
+                                  </h6>
+                                  <small class="text-muted">{{ selectedCard.arrivalDate }}
+                                    {{ selectedCard.arrivalTime }}</small>
+                                </div>
+
+                              </div>
+                            </div>
+                          </li>
+                          <li class="mb-3 pb-1">
+                            <div class="d-flex align-items-start">
+                              <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                <div class="me-2">
+                                  <h6 class="mb-0">Booking Date</h6>
+                                  <small class="text-muted">{{ selectedCard.bookingDate }}
+                                    {{ selectedCard.bookingTime }}</small>
+                                </div>
+
+                              </div>
+                            </div>
+                          </li>
+                          <li class="mb-3 pb-1">
+                            <div class="d-flex align-items-start">
+                              <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                <div class="me-2">
+                                  <h6 class="mb-0">Room Number</h6>
+                                  <small class="text-muted"> {{ selectedCard.roomNumber }}</small>
+                                </div>
+
+                              </div>
+                            </div>
+                          </li>
+                          <li class="mb-3 pb-1">
+                            <div class="d-flex align-items-start">
+                              <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                <div class="me-2">
+                                  <h6 class="mb-0"> <i class="fa-solid fa-person"></i>
+                                    <i class="fa-solid fa-child"></i>
+                                  </h6>
+                                  <small class="text-muted">{{ selectedCard.adults }} {{ selectedCard.children }}</small>
+
+                                </div>
+
+                              </div>
+                            </div>
+                          </li>
+
+                        </ul>
+                      </div>
+                      <div class="col-md-6">
+                        <ul class="list-unstyled mb-0">
+
+                          <li class="mb-3 pb-1">
+                            <div class="d-flex align-items-start">
+                              <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                <div class="me-2">
+                                  <h6 class="mb-0">Departure Date
+
+                                  </h6>
+                                  <small class="text-muted">{{ selectedCard.departureDate }}
+                                    {{ selectedCard.departureTime }}</small>
+                                </div>
+
+                              </div>
+                            </div>
+                          </li>
+                          <li class="mb-3 pb-1">
+                            <div class="d-flex align-items-start">
+                              <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                <div class="me-2">
+                                  <h6 class="mb-0">Status
+
+                                  </h6>
+                                  <small class="text-muted badge bg-label-danger ms-1">{{ selectedCard.status }}
+                                  </small>
+                                </div>
+
+                              </div>
+                            </div>
+                          </li>
+                          <li class="mb-3 pb-1">
+                            <div class="d-flex align-items-start">
+                              <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                <div class="me-2">
+                                  <h6 class="mb-0">Room Type
+                                  </h6>
+                                  <small class="text-muted">{{ selectedCard.roomType }}
+                                  </small>
+                                </div>
+
+                              </div>
+                            </div>
+                          </li>
+                          <li class="mb-3 pb-1">
+                            <div class="d-flex align-items-start">
+                              <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                <div class="me-2">
+                                  <h6 class="mb-0">Rate Plan
+                                  </h6>
+                                  <small class="text-muted"> {{ selectedCard.ratePlan }}</small>
+                                </div>
+
+                              </div>
+                            </div>
+                          </li>
+                          <li class="mb-3 pb-1">
+                            <div class="d-flex align-items-start">
+                              <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                <div class="me-2">
+                                  <h6 class="mb-0"> Avg. Daily Rate
+
+                                  </h6>
+                                  <small class="text-muted">{{ selectedCard.dailyRate }} </small>
+
+                                </div>
+
+                              </div>
+                            </div>
+                          </li>
+
+                        </ul>
+                      </div>
+                    </div>
+
+
+                  </div>
+
+
+                </div>
+
+                <div v-if="activeTab === 'departures'">
+                  <!-- Only show the heading if no card is selected -->
+                  <div v-if="!selectedCard">
+
+                    <div class="form-check form-check-primary mb-2">
+                      <input class="form-check-input input-filter" type="checkbox" id="departuresSearchDepartureDate" data-value="Departure Date" />
+                      <label class="form-check-label" for="departuresSearchDepartureDate">Departure Date</label>
+                    </div>
+                    <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD to YYYY-MM-DD" id="flatpickr-range-01" ref="rangePicker2" aria-label="input Text to Date">
+
+
+
+
+                    <label for="departuresSearchRoomtype" class="col-form-label">Room Type</label>
+                    <select class="form-select mb-2" id="departuresSearchRoomtype">
+                      <option value="" disabled selected>-select-</option>
+                      <option value="option1">item</option>
+                      <option value="option2">item</option>
+                    </select>
+                    <div class="row">
+                      <div class="col-6">
+                        <label for="departuresSearchStatus" class="col-form-label">Room</label>
+                        <select class="form-select mb-2" id="arrivalsSearchStatus">
+                          <option value="" disabled selected>Active</option>
                           <option value="option1">item</option>
                           <option value="option2">item</option>
                         </select>
-                        <label for="MarketCode" class="col-form-label">Room Type</label>
-                        <select class="form-select mb-2" id="Roomtype">
-                          <option value="" disabled selected>-select-</option>
+                      </div>
+
+                    </div>
+                    <div class="form-check mt-3">
+                      <input class="form-check-input" type="checkbox" value="Guest Checked In Today " id="departuresSearchGuestChecked" />
+                      <label class="form-check-label" for="departuresSearchGuestChecked">Guest Checked In Today </label>
+                    </div>
+                    <div class="form-check mt-3">
+                      <input class="form-check-input" type="checkbox" value="Past Guest Check outs " id="departuresSearchPastGuest" />
+                      <label class="form-check-label" for="departuresSearchPastGuest"> Past Guest Check outs </label>
+                    </div>
+                    <div class="form-check mt-3">
+                      <input class="form-check-input" type="checkbox" value="Guest With Balance " id="departuresSearchGuestWith Balance" />
+                      <label class="form-check-label" for="departuresSearchGuestWith Balance"> Guest With Balance </label>
+                    </div>
+
+                  </div>
+
+
+                  <!-- Only display data if a card is selected -->
+                  <div v-if="selectedCard" class="mt-4">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <ul class="list-unstyled mb-0">
+                          <li class="mb-3 pb-1">
+                            <div class="d-flex align-items-start">
+                              <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                <div class="me-2">
+                                  <h6 class="mb-0">Reservation Number</h6>
+                                  <small class="text-muted">{{ selectedCard.reservationNo }}</small>
+                                </div>
+
+                              </div>
+                            </div>
+                          </li>
+                          <li class="mb-3 pb-1">
+                            <div class="d-flex align-items-start">
+                              <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                <div class="me-2">
+                                  <h6 class="mb-0">Arrival Date
+                                  </h6>
+                                  <small class="text-muted">{{ selectedCard.arrivalDate }}
+                                    {{ selectedCard.arrivalTime }}</small>
+                                </div>
+
+                              </div>
+                            </div>
+                          </li>
+                          <li class="mb-3 pb-1">
+                            <div class="d-flex align-items-start">
+                              <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                <div class="me-2">
+                                  <h6 class="mb-0">Booking Date</h6>
+                                  <small class="text-muted">{{ selectedCard.bookingDate }}
+                                    {{ selectedCard.bookingTime }}</small>
+                                </div>
+
+                              </div>
+                            </div>
+                          </li>
+                          <li class="mb-3 pb-1">
+                            <div class="d-flex align-items-start">
+                              <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                <div class="me-2">
+                                  <h6 class="mb-0">Room Number</h6>
+                                  <small class="text-muted"> {{ selectedCard.roomNumber }}</small>
+                                </div>
+
+                              </div>
+                            </div>
+                          </li>
+                          <li class="mb-3 pb-1">
+                            <div class="d-flex align-items-start">
+                              <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                <div class="me-2">
+                                  <h6 class="mb-0"> <i class="fa-solid fa-person"></i>
+                                    <i class="fa-solid fa-child"></i>
+                                  </h6>
+                                  <small class="text-muted">{{ selectedCard.adults }} {{ selectedCard.children }}</small>
+
+                                </div>
+
+                              </div>
+                            </div>
+                          </li>
+
+                        </ul>
+                      </div>
+                      <div class="col-md-6">
+                        <ul class="list-unstyled mb-0">
+
+                          <li class="mb-3 pb-1">
+                            <div class="d-flex align-items-start">
+                              <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                <div class="me-2">
+                                  <h6 class="mb-0">Departure Date
+
+                                  </h6>
+                                  <small class="text-muted">{{ selectedCard.departureDate }}
+                                    {{ selectedCard.departureTime }}</small>
+                                </div>
+
+                              </div>
+                            </div>
+                          </li>
+                          <li class="mb-3 pb-1">
+                            <div class="d-flex align-items-start">
+                              <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                <div class="me-2">
+                                  <h6 class="mb-0">Status
+
+                                  </h6>
+                                  <small class="text-muted badge bg-label-danger ms-1">{{ selectedCard.status }}
+                                  </small>
+                                </div>
+
+                              </div>
+                            </div>
+                          </li>
+                          <li class="mb-3 pb-1">
+                            <div class="d-flex align-items-start">
+                              <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                <div class="me-2">
+                                  <h6 class="mb-0">Room Type
+                                  </h6>
+                                  <small class="text-muted">{{ selectedCard.roomType }}
+                                  </small>
+                                </div>
+
+                              </div>
+                            </div>
+                          </li>
+                          <li class="mb-3 pb-1">
+                            <div class="d-flex align-items-start">
+                              <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                <div class="me-2">
+                                  <h6 class="mb-0">Rate Plan
+                                  </h6>
+                                  <small class="text-muted"> {{ selectedCard.ratePlan }}</small>
+                                </div>
+
+                              </div>
+                            </div>
+                          </li>
+                          <li class="mb-3 pb-1">
+                            <div class="d-flex align-items-start">
+                              <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                <div class="me-2">
+                                  <h6 class="mb-0"> Avg. Daily Rate
+
+                                  </h6>
+                                  <small class="text-muted">{{ selectedCard.dailyRate }} </small>
+
+                                </div>
+
+                              </div>
+                            </div>
+                          </li>
+
+                        </ul>
+                      </div>
+                    </div>
+
+
+                  </div>
+
+                </div>
+
+                <div v-if="activeTab === 'inHouse'">
+                  <!-- Only show the heading if no card is selected -->
+                  <div v-if="!selectedCard">
+                    <label for="inHouseSearchBusinessSource" class="col-form-label">Business Source</label>
+                    <select class="form-select mb-2" id="inHouseSearchBusinessSource">
+                      <option value="" disabled selected>-select-</option>
+                      <option value="option1">item</option>
+                      <option value="option2">item</option>
+                    </select>
+                    <label for="inHouseseTravelAgent" class="col-form-label">Travel Agent</label>
+                    <select class="form-select mb-2" id="inHouseSearchTravelAgent">
+                      <option value="" disabled selected>-select-</option>
+                      <option value="option1">item</option>
+                      <option value="option2">item</option>
+                    </select>
+                    <label for="inHouseSearchCompany" class="col-form-label">Company</label>
+                    <select class="form-select mb-2" id="inHouseSearchCompany">
+                      <option value="" disabled selected>-select-</option>
+                      <option value="option1">item</option>
+                      <option value="option2">item</option>
+                    </select>
+                    <label for="inHouseSearchRoomtype" class="col-form-label">Room Type</label>
+                    <select class="form-select mb-2" id="inHouseSearchRoomtype">
+                      <option value="" disabled selected>-select-</option>
+                      <option value="option1">item</option>
+                      <option value="option2">item</option>
+                    </select>
+                    <div class="row">
+                      <div class="col-6">
+                        <label for="inHouseSearchRoom" class="col-form-label">Room</label>
+                        <select class="form-select mb-2" id="inHouseSearchRoom">
+                          <option value="" disabled selected>Active</option>
                           <option value="option1">item</option>
                           <option value="option2">item</option>
                         </select>
-                        <div class="row">
-                          <div class="col-6">
-                            <label for="MarketCode" class="col-form-label">Status</label>
-                            <select class="form-select mb-2" id="Status">
-                              <option value="" disabled selected>Active</option>
-                              <option value="option1">item</option>
-                              <option value="option2">item</option>
-                            </select>
-                          </div>
-                          <div class="col-6">
-                            <label for="MarketCode" class="col-form-label">Res. Type</label>
-                            <select class="form-select mb-2" id="Status">
-                              <option value="" disabled selected>
-                                -Select-
-                              </option>
-                              <option value="option1">All</option>
-                              <option value="option2">Active</option>
-                              <option value="option2">Cancelled</option>
-                              <option value="option2">No Show</option>
-                              <option value="option2">Void</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div class="form-check mt-3">
-                          <input class="form-check-input" type="checkbox" value="" id="Arrival" checked="" />
-                          <label class="form-check-label" for="UnassignedRoom">
-                            Show Unassigned Rooms
-                          </label>
-                        </div>
-                        <div class="form-check mt-3">
-                          <input class="form-check-input" type="checkbox" value="" id="UnassignedRoom" checked="" />
-                          <label class="form-check-label" for="HotelCollect">
-                            Hotel Collect
-                          </label>
-                        </div>
-                        <div class="form-check mt-3">
-                          <input class="form-check-input" type="checkbox" value="" id="HotelCollect" checked="" />
-                          <label class="form-check-label" for="Arrival">
-                            Channel Collect and with Deposit
-                          </label>
-                        </div>
-                        <div class="form-check mt-3">
-                          <input class="form-check-input" type="checkbox" value="" id="Arrival" checked="" />
-                          <label class="form-check-label" for="Arrival">
-                            Without Deposit
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- Only display data if a card is selected -->
-                    <div v-if="selectedCard" class="mt-4">
-                      <div class="row">
-                        <div class="col-md-6">
-                          <ul class="list-unstyled mb-0">
-                            <li class="mb-3 pb-1">
-                              <div class="d-flex align-items-start">
-                                <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
-                                  <div class="me-2">
-                                    <h6 class="mb-0">Reservation Number</h6>
-                                    <small class="text-muted">{{ selectedCard.reservationNo }}</small>
-                                  </div>
-
-                                </div>
-                              </div>
-                            </li>
-                            <li class="mb-3 pb-1">
-                              <div class="d-flex align-items-start">
-                                <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
-                                  <div class="me-2">
-                                    <h6 class="mb-0">Arrival Date
-                                    </h6>
-                                    <small class="text-muted">{{ selectedCard.arrivalDate }}
-                                      {{ selectedCard.arrivalTime }}</small>
-                                  </div>
-
-                                </div>
-                              </div>
-                            </li>
-                            <li class="mb-3 pb-1">
-                              <div class="d-flex align-items-start">
-                                <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
-                                  <div class="me-2">
-                                    <h6 class="mb-0">Booking Date</h6>
-                                    <small class="text-muted">{{ selectedCard.bookingDate }}
-                                      {{ selectedCard.bookingTime }}</small>
-                                  </div>
-
-                                </div>
-                              </div>
-                            </li>
-                            <li class="mb-3 pb-1">
-                              <div class="d-flex align-items-start">
-                                <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
-                                  <div class="me-2">
-                                    <h6 class="mb-0">Room Number</h6>
-                                    <small class="text-muted"> {{ selectedCard.roomNumber }}</small>
-                                  </div>
-
-                                </div>
-                              </div>
-                            </li>
-                            <li class="mb-3 pb-1">
-                              <div class="d-flex align-items-start">
-                                <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
-                                  <div class="me-2">
-                                    <h6 class="mb-0"> <i class="fa-solid fa-person"></i>
-                                      <i class="fa-solid fa-child"></i>
-                                    </h6>
-                                    <small class="text-muted">{{ selectedCard.adults }} {{ selectedCard.children }}</small>
-
-                                  </div>
-
-                                </div>
-                              </div>
-                            </li>
-
-                          </ul>
-                        </div>
-                        <div class="col-md-6">
-                          <ul class="list-unstyled mb-0">
-
-                            <li class="mb-3 pb-1">
-                              <div class="d-flex align-items-start">
-                                <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
-                                  <div class="me-2">
-                                    <h6 class="mb-0">Departure Date
-
-                                    </h6>
-                                    <small class="text-muted">{{ selectedCard.departureDate }}
-                                      {{ selectedCard.departureTime }}</small>
-                                  </div>
-
-                                </div>
-                              </div>
-                            </li>
-                            <li class="mb-3 pb-1">
-                              <div class="d-flex align-items-start">
-                                <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
-                                  <div class="me-2">
-                                    <h6 class="mb-0">Status
-
-                                    </h6>
-                                    <small class="text-muted badge bg-label-danger ms-1">{{ selectedCard.status }}
-                                    </small>
-                                  </div>
-
-                                </div>
-                              </div>
-                            </li>
-                            <li class="mb-3 pb-1">
-                              <div class="d-flex align-items-start">
-                                <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
-                                  <div class="me-2">
-                                    <h6 class="mb-0">Room Type
-                                    </h6>
-                                    <small class="text-muted">{{ selectedCard.roomType }}
-                                    </small>
-                                  </div>
-
-                                </div>
-                              </div>
-                            </li>
-                            <li class="mb-3 pb-1">
-                              <div class="d-flex align-items-start">
-                                <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
-                                  <div class="me-2">
-                                    <h6 class="mb-0">Rate Plan
-                                    </h6>
-                                    <small class="text-muted"> {{ selectedCard.ratePlan }}</small>
-                                  </div>
-
-                                </div>
-                              </div>
-                            </li>
-                            <li class="mb-3 pb-1">
-                              <div class="d-flex align-items-start">
-                                <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
-                                  <div class="me-2">
-                                    <h6 class="mb-0"> Avg. Daily Rate
-
-                                    </h6>
-                                    <small class="text-muted">{{ selectedCard.dailyRate }} </small>
-
-                                  </div>
-
-                                </div>
-                              </div>
-                            </li>
-
-                          </ul>
-                        </div>
-                      </div>
-
-
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div v-if="activeTab === 'arrivals'">
-                <div v-if="!selectedCard">
-                  <div class="row">
-                    <div class="col-md-10 m-auto">
-                      <div class="form-check form-check-primary mb-2 mt-3">
-                        <input class="form-check-input input-filter" type="checkbox" id="Arrival" data-value="personal" checked="" />
-                        <label class="form-check-label" for="Arrival">Arrival</label>
-                        <!-- Date input  -->
-                      </div>
-                      <label for="MarketCode" class="col-form-label">Business Source</label>
-                      <select class="form-select mb-2" id="TravelAgent">
-                        <option value="" disabled selected>-select-</option>
-                        <option value="option1">item</option>
-                        <option value="option2">item</option>
-                      </select>
-                      <label for="TravelAgent" class="col-form-label">Travel Agent</label>
-                      <select class="form-select mb-2" id="MarketCode">
-                        <option value="" disabled selected>-select-</option>
-                        <option value="option1">item</option>
-                        <option value="option2">item</option>
-                      </select>
-                      <h1>arrivals</h1>
-                      <label for="MarketCode" class="col-form-label">Company</label>
-                      <select class="form-select mb-2" id="MarketCode">
-                        <option value="" disabled selected>-select-</option>
-                        <option value="option1">item</option>
-                        <option value="option2">item</option>
-                      </select>
-
-                      <label for="MarketCode" class="col-form-label">Room Type</label>
-                      <select class="form-select mb-2" id="Roomtype">
-                        <option value="" disabled selected>-select-</option>
-                        <option value="option1">item</option>
-                        <option value="option2">item</option>
-                      </select>
-                      <div class="row">
-                        <div class="col-6">
-                          <label for="MarketCode" class="col-form-label">Room</label>
-                          <select class="form-select mb-2" id="Status">
-                            <option value="" disabled selected>Active</option>
-                            <option value="option1">item</option>
-                            <option value="option2">item</option>
-                          </select>
-                        </div>
-                        <div class="col-6">
-                          <label for="MarketCode" class="col-form-label">Res. Type</label>
-                          <select class="form-select mb-2" id="Status">
-                            <option value="" disabled selected>-Select-</option>
-                            <option value="option1">All</option>
-                            <option value="option2">Active</option>
-                            <option value="option2">Cancelled</option>
-                            <option value="option2">No Show</option>
-                            <option value="option2">Void</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="form-check mt-3">
-                        <input class="form-check-input" type="checkbox" value="" id="Arrival" checked="" />
-                        <label class="form-check-label" for="Arrival">
-                          Guest Checked in Details
-                        </label>
                       </div>
                     </div>
                   </div>
-                </div>
+                  <!-- Only display data if a card is selected -->
+                  <div v-if="selectedCard" class="mt-4">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <ul class="list-unstyled mb-0">
+                          <li class="mb-3 pb-1">
+                            <div class="d-flex align-items-start">
+                              <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                <div class="me-2">
+                                  <h6 class="mb-0">Reservation Number</h6>
+                                  <small class="text-muted">{{ selectedCard.reservationNo }}</small>
+                                </div>
 
-                <!-- Only display data if a card is selected -->
-                <div v-if="selectedCard" class="mt-4">
-                  <h1>{{ selectedCard.guestName }}</h1>
-                  <p>Reservation No: {{ selectedCard.reservationNo }}</p>
-                  <p>
-                    Arrival: {{ selectedCard.arrivalDate }}
-                    {{ selectedCard.arrivalTime }}
-                  </p>
-                  <p>
-                    Departure: {{ selectedCard.departureDate }}
-                    {{ selectedCard.departureTime }}
-                  </p>
-                  <p>Room Details: {{ selectedCard.roomDetails }}</p>
-                  <p>Total: {{ selectedCard.total }} USD</p>
-                  <p>Paid: {{ selectedCard.paid }} USD</p>
-                  <p>Balance: {{ selectedCard.balance }} USD</p>
-                </div>
-              </div>
+                              </div>
+                            </div>
+                          </li>
+                          <li class="mb-3 pb-1">
+                            <div class="d-flex align-items-start">
+                              <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                <div class="me-2">
+                                  <h6 class="mb-0">Arrival Date
+                                  </h6>
+                                  <small class="text-muted">{{ selectedCard.arrivalDate }}
+                                    {{ selectedCard.arrivalTime }}</small>
+                                </div>
 
-              <div v-if="activeTab === 'departures'">
-                <div v-if="!selectedCard">
-                  <div class="row">
-                    <div class="col-md-10 m-auto">
-                      <diV>
-                        <label class="form-check-label" for="DepratureDate">Deprature Date</label>
-                        <!-- Date input  -->
-                      </diV>
+                              </div>
+                            </div>
+                          </li>
+                          <li class="mb-3 pb-1">
+                            <div class="d-flex align-items-start">
+                              <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                <div class="me-2">
+                                  <h6 class="mb-0">Booking Date</h6>
+                                  <small class="text-muted">{{ selectedCard.bookingDate }}
+                                    {{ selectedCard.bookingTime }}</small>
+                                </div>
 
-                      <label for="MarketCode" class="col-form-label">Room Type</label>
-                      <select class="form-select mb-2" id="MarketCode">
-                        <option value="" disabled selected>-select-</option>
-                        <option value="option1">item</option>
-                        <option value="option2">item</option>
-                      </select>
-                      <div class="row">
-                        <div class="col-6">
-                          <label for="MarketCode" class="col-form-label">Room</label>
-                          <select class="form-select mb-2" id="MarketCode">
-                            <option value="" disabled selected>-select-</option>
-                            <option value="option1">item</option>
-                            <option value="option2">item</option>
-                          </select>
-                        </div>
+                              </div>
+                            </div>
+                          </li>
+                          <li class="mb-3 pb-1">
+                            <div class="d-flex align-items-start">
+                              <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                <div class="me-2">
+                                  <h6 class="mb-0">Room Number</h6>
+                                  <small class="text-muted"> {{ selectedCard.roomNumber }}</small>
+                                </div>
+
+                              </div>
+                            </div>
+                          </li>
+                          <li class="mb-3 pb-1">
+                            <div class="d-flex align-items-start">
+                              <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                <div class="me-2">
+                                  <h6 class="mb-0"> <i class="fa-solid fa-person"></i>
+                                    <i class="fa-solid fa-child"></i>
+                                  </h6>
+                                  <small class="text-muted">{{ selectedCard.adults }} {{ selectedCard.children }}</small>
+
+                                </div>
+
+                              </div>
+                            </div>
+                          </li>
+
+                        </ul>
                       </div>
-                      <div class="form-check mt-3">
-                        <input class="form-check-input" type="checkbox" value="" id="HotelCollect" checked="" />
-                        <label class="form-check-label" for="Arrival">
-                          Guest Checked Out Today
-                        </label>
-                      </div>
-                      <div class="form-check mt-3">
-                        <input class="form-check-input" type="checkbox" value="" id="HotelCollect" checked="" />
-                        <label class="form-check-label" for="Arrival">
-                          Past Guest Check outs
-                        </label>
-                      </div>
-                      <div class="form-check mt-3">
-                        <input class="form-check-input" type="checkbox" value="" id="HotelCollect" checked="" />
-                        <label class="form-check-label" for="Arrival">
-                          Guest With Balance
-                        </label>
+                      <div class="col-md-6">
+                        <ul class="list-unstyled mb-0">
+
+                          <li class="mb-3 pb-1">
+                            <div class="d-flex align-items-start">
+                              <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                <div class="me-2">
+                                  <h6 class="mb-0">Departure Date
+
+                                  </h6>
+                                  <small class="text-muted">{{ selectedCard.departureDate }}
+                                    {{ selectedCard.departureTime }}</small>
+                                </div>
+
+                              </div>
+                            </div>
+                          </li>
+                          <li class="mb-3 pb-1">
+                            <div class="d-flex align-items-start">
+                              <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                <div class="me-2">
+                                  <h6 class="mb-0">Status
+
+                                  </h6>
+                                  <small class="text-muted badge bg-label-danger ms-1">{{ selectedCard.status }}
+                                  </small>
+                                </div>
+
+                              </div>
+                            </div>
+                          </li>
+                          <li class="mb-3 pb-1">
+                            <div class="d-flex align-items-start">
+                              <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                <div class="me-2">
+                                  <h6 class="mb-0">Room Type
+                                  </h6>
+                                  <small class="text-muted">{{ selectedCard.roomType }}
+                                  </small>
+                                </div>
+
+                              </div>
+                            </div>
+                          </li>
+                          <li class="mb-3 pb-1">
+                            <div class="d-flex align-items-start">
+                              <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                <div class="me-2">
+                                  <h6 class="mb-0">Rate Plan
+                                  </h6>
+                                  <small class="text-muted"> {{ selectedCard.ratePlan }}</small>
+                                </div>
+
+                              </div>
+                            </div>
+                          </li>
+                          <li class="mb-3 pb-1">
+                            <div class="d-flex align-items-start">
+                              <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                <div class="me-2">
+                                  <h6 class="mb-0"> Avg. Daily Rate
+
+                                  </h6>
+                                  <small class="text-muted">{{ selectedCard.dailyRate }} </small>
+
+                                </div>
+
+                              </div>
+                            </div>
+                          </li>
+
+                        </ul>
                       </div>
                     </div>
+
+
                   </div>
                 </div>
 
-                <!-- Only display data if a card is selected -->
-                <div v-if="selectedCard" class="mt-4">
-                  <h1>{{ selectedCard.guestName }}</h1>
-                  <p>Reservation No: {{ selectedCard.reservationNo }}</p>
-                  <p>
-                    Arrival: {{ selectedCard.arrivalDate }}
-                    {{ selectedCard.arrivalTime }}
-                  </p>
-                  <p>
-                    Departure: {{ selectedCard.departureDate }}
-                    {{ selectedCard.departureTime }}
-                  </p>
-                  <p>Room Details: {{ selectedCard.roomDetails }}</p>
-                  <p>Total: {{ selectedCard.total }} USD</p>
-                  <p>Paid: {{ selectedCard.paid }} USD</p>
-                  <p>Balance: {{ selectedCard.balance }} USD</p>
+                <div v-if="!selectedCard" class="gap-2 d-flex" style="position: absolute; bottom: 15px; right: 0">
+                  <button class="btn btn-secondary">Reset</button>
+                  <button class="btn btn-primary">Search</button>
                 </div>
-              </div>
+                <div v-if="selectedCard" class="new-div mt-3" style="position: absolute; bottom: 15px; right: 0; width: 100%; padding: 0 15px;">
+                  <dl class="row mb-0">
+                    <dt class="col-6 fw-normal text-heading">Total</dt>
+                    <dd class="col-6 text-end">{{ selectedCard.total }} $</dd>
 
-              <div v-if="activeTab === 'inHouse'">
-                <div v-if="!selectedCard">
-                  <div class="row">
-                    <div class="col-md-10 m-auto">
-                      <label for="MarketCode" class="col-form-label">Business Source</label>
-                      <select class="form-select mb-2" id="TravelAgent">
-                        <option value="" disabled selected>-select-</option>
-                        <option value="option1">item</option>
-                        <option value="option2">item</option>
-                      </select>
-                      <h1>inHouse</h1>
-                      <label for="MarketCode" class="col-form-label">Travel Agent</label>
-                      <select class="form-select mb-2" id="TravelAgent">
-                        <option value="" disabled selected>-select-</option>
-                        <option value="option1">item</option>
-                        <option value="option2">item</option>
-                      </select>
-                      <label for="MarketCode" class="col-form-label">Company</label>
-                      <select class="form-select mb-2" id="Company">
-                        <option value="" disabled selected>-select-</option>
-                        <option value="option1">item</option>
-                        <option value="option2">item</option>
-                      </select>
-                      <label for="MarketCode" class="col-form-label">Room Type</label>
-                      <select class="form-select mb-2" id="RoomType">
-                        <option value="" disabled selected>-select-</option>
-                        <option value="option1">item</option>
-                        <option value="option2">item</option>
-                      </select>
-                      <div class="row">
-                        <div class="col-6">
-                          <label for="MarketCode" class="col-form-label">Room</label>
-                          <select class="form-select mb-2" id="MarketCode">
-                            <option value="" disabled selected>-select-</option>
-                            <option value="option1">item</option>
-                            <option value="option2">item</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                    <dt class="col-sm-6 fw-normal">Paid</dt>
+                    <dd class="col-sm-6 text-end">{{ selectedCard.paid }}$</dd>
+
+                    <dt class="col-6 fw-normal   text-danger ">Balance</dt>
+                    <dd class="col-6 text-end text-danger">{{ selectedCard.balance }}$</dd>
+
+
+                  </dl>
                 </div>
-
-                <!-- Only display data if a card is selected -->
-                <div v-if="selectedCard" class="mt-4">
-                  <h1>{{ selectedCard.guestName }}</h1>
-                  <p>Reservation No: {{ selectedCard.reservationNo }}</p>
-                  <p>
-                    Arrival: {{ selectedCard.arrivalDate }}
-                    {{ selectedCard.arrivalTime }}
-                  </p>
-                  <p>
-                    Departure: {{ selectedCard.departureDate }}
-                    {{ selectedCard.departureTime }}
-                  </p>
-                  <p>Room Details: {{ selectedCard.roomDetails }}</p>
-                  <p>Total: {{ selectedCard.total }} USD</p>
-                  <p>Paid: {{ selectedCard.paid }} USD</p>
-                  <p>Balance: {{ selectedCard.balance }} USD</p>
-                </div>
-              </div>
-
-              <div v-if="!selectedCard" class="gap-2 d-flex" style="position: absolute; bottom: 15px; right: 0">
-                <button class="btn btn-secondary">Reset</button>
-                <button class="btn btn-primary">Search</button>
-              </div>
-              <div v-if="selectedCard" class="new-div mt-3" style="position: absolute; bottom: 15px; right: 0; width: 100%; padding: 0 15px;">
-                <dl class="row mb-0">
-                  <dt class="col-6 fw-normal text-heading">Total</dt>
-                  <dd class="col-6 text-end">{{ selectedCard.total }} $</dd>
-
-                  <dt class="col-sm-6 fw-normal">Paid</dt>
-                  <dd class="col-sm-6 text-end">{{ selectedCard.paid }}$</dd>
-
-                  <dt class="col-6 fw-normal   text-danger ">Balance</dt>
-                  <dd class="col-6 text-end text-danger">{{ selectedCard.balance }}$</dd>
-
-
-                </dl>
               </div>
             </div>
           </div>
@@ -702,8 +1085,8 @@
         <template #content>
           <div class=" tab-pane fade active show" id="form-tabs-Reservations" role="tabpanel" v-if="activeTab === 'reservations'">
             <div class="row">
-              <div v-if="viewMode === 'list'" class="table-responsive text-nowrap" @click="openOffcanvas(card)">
-                <table class="table" style="overflow: hidden">
+              <div v-if="viewMode === 'list'" class="table-responsive text-nowrap" style="overflow: visible;">
+                <table class=" table">
                   <thead class="table-light">
                     <tr>
                       <th>Guest Name</th>
@@ -717,98 +1100,92 @@
                     </tr>
                   </thead>
                   <tbody class="table-border-bottom-0">
-                    <tr class="border-bottom" @click="openOffcanvas(list)">
+                    <tr v-for="card in reservations" :key="card.id" class="border-bottom" @click="openOffcanvas(card)" style="cursor: pointer">
                       <td>
                         <div class="d-flex align-items-center">
                           <i class="text-primary fa-solid fa-hotel fs-3 mr-2 mb-2"></i>
                           <div class="card-title mb-0">
-                            <h5 class="m-0 me-2">مصطفي مدبولي</h5>
+                            <h5 class="m-0 me-2">{{ card.guestName }}</h5>
                             <div>
-                              <i class="fa-solid fa-person m-2"></i>3
-                              <i class="fa-solid fa-child m-2"></i>2
+                              <i class="fa-solid fa-person m-2"></i>{{ card.adults }}
+                              <i class="fa-solid fa-child m-2"></i>{{ card.children }}
                             </div>
                           </div>
                         </div>
                       </td>
-                      <td>14527</td>
+                      <td>{{ card.reservationNo }}</td>
                       <td>
-                        <div class="text-dark">02/12/2024</div>
-                        <div>08:43:01 pm</div>
+                        <div class="text-dark">{{ card.arrivalDate }}</div>
+                        <div>{{ card.arrivalTime }}</div>
                       </td>
                       <td>
-                        <div class="text-dark">02/12/2024</div>
-                        <div>08:43:01 pm</div>
+                        <div class="text-dark">{{ card.departureDate }}</div>
+                        <div>{{ card.departureTime }}</div>
                       </td>
-                      <td>202 - Suite الفندق غرفتين وصاله السعر غير شامل</td>
-                      <td>$230</td>
-                      <td>$250</td>
-                      <td class="text-danger">$20</td>
-                      <td>
-                        <div class="btn-group" id="hover-dropdown-demo " @mouseenter="isHovered = true" @mouseleave="isHovered = false">
+                      <td>{{ card.roomNumber }} - {{ card.roomType }}</td>
+                      <td>${{ card.total }}</td>
+                      <td>${{ card.paid }}</td>
+                      <td> <span :class="{ 'text-danger': card.balance < 0 }">${{ card.balance }}</span>
+                        <div class="btn-group" id="hover-dropdown-demo " style="float: inline-end;" @mouseenter="isHovered = true" @mouseleave="isHovered = false">
                           <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none">
                             <i class="fa-solid fa-ellipsis-vertical"></i>
                           </button>
-                          <ul v-show="isHovered" class="dropdown-menu show" data-popper-placement=" bottom-end">
+                          <ul v-show="isHovered" class="dropdown-menu show right-0" data-popper-placement=" bottom-end">
                             <li>
-                              <a class="dropdown-item" href="#">Print Invoice</a>
+                              <a class="dropdown-item" href="#"><i class="fa-solid fa-file-circle-plus mr-2"></i>Print Invoice</a>
                             </li>
                             <li>
-                              <a class="dropdown-item" href="#">Add New Booking</a>
+                              <a class="dropdown-item" href="#"><i class="fa-solid fa-calendar-plus mr-2"></i>Add New Booking</a>
                             </li>
                             <li>
-                              <a class="dropdown-item" href="#">Audit Trail</a>
+                              <a class="dropdown-item" href="#"><i class="fa-solid fa-list-check mr-2"></i>Audit Trail</a>
                             </li>
-                            <li>
-                              <hr class="dropdown-divider" />
-                            </li>
+
                           </ul>
                         </div>
                       </td>
                     </tr>
-                    <tr class="border-bottom">
+                    <tr v-for="card in reservations" :key="card.id" class="border-bottom" @click="openOffcanvas(card)" style="cursor: pointer">
                       <td>
                         <div class="d-flex align-items-center">
                           <i class="text-primary fa-solid fa-hotel fs-3 mr-2 mb-2"></i>
                           <div class="card-title mb-0">
-                            <h5 class="m-0 me-2">مصطفي مدبولي</h5>
+                            <h5 class="m-0 me-2">{{ card.guestName }}</h5>
                             <div>
-                              <i class="fa-solid fa-person m-2"></i>3
-                              <i class="fa-solid fa-child m-2"></i>2
+                              <i class="fa-solid fa-person m-2"></i>{{ card.adults }}
+                              <i class="fa-solid fa-child m-2"></i>{{ card.children }}
                             </div>
                           </div>
                         </div>
                       </td>
-                      <td>14527</td>
+                      <td>{{ card.reservationNo }}</td>
                       <td>
-                        <div class="text-dark">02/12/2024</div>
-                        <div>08:43:01 pm</div>
+                        <div class="text-dark">{{ card.arrivalDate }}</div>
+                        <div>{{ card.arrivalTime }}</div>
                       </td>
                       <td>
-                        <div class="text-dark">02/12/2024</div>
-                        <div>08:43:01 pm</div>
+                        <div class="text-dark">{{ card.departureDate }}</div>
+                        <div>{{ card.departureTime }}</div>
                       </td>
-                      <td>202 - Suite الفندق غرفتين وصاله السعر غير شامل</td>
-                      <td>$230</td>
-                      <td>$250</td>
-                      <td class="text-danger">$20</td>
-                      <td>
-                        <div class="btn-group" id="hover-dropdown-demo " @mouseenter="isHovered = true" @mouseleave="isHovered = false">
+                      <td>{{ card.roomNumber }} - {{ card.roomType }}</td>
+                      <td>${{ card.total }}</td>
+                      <td>${{ card.paid }}</td>
+                      <td> <span :class="{ 'text-danger': card.balance < 0 }">${{ card.balance }}</span>
+                        <div class="btn-group" id="hover-dropdown-demo " style="float: inline-end;" @mouseenter="isHovered = true" @mouseleave="isHovered = false">
                           <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none">
                             <i class="fa-solid fa-ellipsis-vertical"></i>
                           </button>
-                          <ul v-show="isHovered" class="dropdown-menu show" data-popper-placement=" bottom-end">
+                          <ul v-show="isHovered" class="dropdown-menu show right-0" data-popper-placement=" bottom-end">
                             <li>
-                              <a class="dropdown-item" href="#">Print Invoice</a>
+                              <a class="dropdown-item" href="#"><i class="fa-solid fa-file-circle-plus mr-2"></i>Print Invoice</a>
                             </li>
                             <li>
-                              <a class="dropdown-item" href="#">Add New Booking</a>
+                              <a class="dropdown-item" href="#"><i class="fa-solid fa-calendar-plus mr-2"></i>Add New Booking</a>
                             </li>
                             <li>
-                              <a class="dropdown-item" href="#">Audit Trail</a>
+                              <a class="dropdown-item" href="#"><i class="fa-solid fa-list-check mr-2"></i>Audit Trail</a>
                             </li>
-                            <li>
-                              <hr class="dropdown-divider" />
-                            </li>
+
                           </ul>
                         </div>
                       </td>
@@ -816,6 +1193,10 @@
                   </tbody>
                 </table>
               </div>
+
+
+
+
 
               <div v-else class="col-12 col-md-6 col-lg-4 mb-4 order-1 order-xl-0" @click="openOffcanvas(card)" v-for="card in reservations" :key="card.reservationNo">
                 <div class="card h-100">
@@ -831,19 +1212,17 @@
                         <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none">
                           <i class="fa-solid fa-ellipsis-vertical"></i>
                         </button>
-                        <ul v-show="isHovered" class="dropdown-menu show" data-popper-placement=" bottom-end">
+                        <ul v-show="isHovered" class="dropdown-menu show " data-popper-placement=" bottom-end">
                           <li>
-                            <a class="dropdown-item" href="#">Print Invoice</a>
+                            <a class="dropdown-item" href="#"><i class="fa-solid fa-file-circle-plus mr-2"></i>Print Invoice</a>
                           </li>
                           <li>
-                            <a class="dropdown-item" href="#">Add New Booking</a>
+                            <a class="dropdown-item" href="#"><i class="fa-solid fa-calendar-plus mr-2"></i>Add New Booking</a>
                           </li>
                           <li>
-                            <a class="dropdown-item" href="#">Audit Trail</a>
+                            <a class="dropdown-item" href="#"><i class="fa-solid fa-list-check mr-2"></i>Audit Trail</a>
                           </li>
-                          <li>
-                            <hr class="dropdown-divider" />
-                          </li>
+
                         </ul>
                       </div>
                     </div>
@@ -909,14 +1288,15 @@
 
 <script>
 import HeaderReservation from "../components/AllReservation/HeaderReservation.vue";
-import HeaderSelectedCard from "../components/layout/HeaderSelectedCard.vue";
+import flatpickrMixin from "../components/Mixin/flatpickrMixin";
+
 
 export default {
   name: "reservations",
   layout: "main",
   components: {
     HeaderReservation,
-    HeaderSelectedCard
+
 
   },
   data ()
@@ -925,10 +1305,7 @@ export default {
       viewMode: "card", // default view mode is card view
       isHovered: false,
       selectedCard: null, // Store the data for the selected card
-      selectedList: null, // Store the data for the selected card
-
       activeTab: "reservations", // Default active tab
-
       reservations: [
         {
           id: 1,
@@ -967,15 +1344,13 @@ export default {
     {
       this.activeTab = tab;
     },
-    openOffcanvas (card, list = null)
+    openOffcanvas (card)
     {
-      this.selectedCard = card; // Set selected card
-      this.selectedList = list; // Set selected list (optional)
+      this.selectedCard = card; // Set the selected card
 
-      const offcanvas = new bootstrap.Offcanvas(
-        document.getElementById("offcanvasEnd")
-      );
-      offcanvas.show(); // Show the sidebar
+      // Open the off-canvas
+      const offcanvas = new bootstrap.Offcanvas(document.getElementById("offcanvasEnd"));
+      offcanvas.show();
     },
     resetSelections ()
     {
@@ -995,7 +1370,11 @@ export default {
     const offcanvas = document.getElementById("offcanvasEnd");
     offcanvas.removeEventListener("hidden.bs.offcanvas", this.resetSelections);
   },
-};
+  mixins: [flatpickrMixin],
+
+
+}
+
 </script>
 
 <style></style>
