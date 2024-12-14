@@ -2,7 +2,8 @@
   <div class="row p-3">
 
     <div class="col-md-12">
-      <CalenderDate/>
+
+      <CalenderDate />
     </div>
   </div>
 </template>

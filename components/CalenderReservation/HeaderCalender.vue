@@ -1,5 +1,5 @@
 <template>
-  <div class="row align-items-baseline p-2 position-relative">
+  <div class="row  d-flex justify-content-between p-2 position-relative ">
     <div class="col-md-1 col-12 calendarDate">
       <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD" id="flatpickr-date-04" ref="datePicker4" aria-label="input for date " />
       <i class="fa-solid fa-calendar-days date-icon"></i>
