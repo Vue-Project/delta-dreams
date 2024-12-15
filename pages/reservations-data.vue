@@ -29,10 +29,16 @@
           </li>
 
           <div class="ms-auto me-3">
-            <button class="btn" :class="{ 'btn-primary': viewMode === 'card', 'btn-secondary': viewMode !== 'card', }" @click="setViewMode('card')">
+            <button class="btn" :class="{
+              'btn-primary': viewMode === 'card',
+              'btn-secondary': viewMode !== 'card',
+            }" @click="setViewMode('card')">
               <i class="fa-solid fa-grip"></i>
             </button>
-            <button class="btn" :class="{ 'btn-primary': viewMode === 'list', 'btn-secondary': viewMode !== 'list' }" @click="setViewMode('list')">
+            <button class="btn" :class="{
+              'btn-primary': viewMode === 'list',
+              'btn-secondary': viewMode !== 'list',
+            }" @click="setViewMode('list')">
               <i class="fa-solid fa-list"></i>
             </button>
             <button type="button" class="ms-3 btn btn-primary dropdown-toggle waves-effect waves-light" data-bs-toggle="dropdown" aria-expanded="true">
@@ -61,7 +67,8 @@
                 </div>
                 <div class="form-check form-check-primary mb-2">
                   <input class="form-check-input input-filter" type="checkbox" id="exportAsArrivalDate" data-value="Arrival Date" />
-                  <label class="form-check-label" for="exportAsArrivalDate"> Arrival Date
+                  <label class="form-check-label" for="exportAsArrivalDate">
+                    Arrival Date
                   </label>
                 </div>
                 <div class="form-check form-check-primary mb-2">
@@ -111,7 +118,8 @@
                 </div>
                 <div class="form-check form-check-primary mb-2">
                   <input class="form-check-input input-filter" type="checkbox" id="exportAsResType" data-value="  Res. Type" />
-                  <label class="form-check-label" for="exportAsResType"> Res. Type</label>
+                  <label class="form-check-label" for="exportAsResType">
+                    Res. Type</label>
                 </div>
                 <div class="form-check form-check-primary mb-2">
                   <input class="form-check-input input-filter" type="checkbox" id="exportAsPhone" data-value="Phone" />
@@ -144,16 +152,24 @@
               <div class="offcanvas-header">
                 <h5 id="offcanvasEndLabel" class="offcanvas-title">
                   <template v-if="selectedCard">
-                    <h6><i class="text-primary fa-solid fa-hotel fs-3 mr-2 mb-2"></i> {{ selectedCard.guestName }}</h6>
+                    <h6>
+                      <i class="text-primary fa-solid fa-hotel fs-3 mr-2 mb-2"></i>
+                      {{ selectedCard.guestName }}
+                    </h6>
                     <div>
-                      <span class="mr-1"><i class=" text-primary fa-solid fa-location-dot"></i> {{ selectedCard.location }}</span>
-                      <span><i class=" text-primary fa-solid fa-phone"></i> {{ selectedCard.phone }}</span>
+                      <span class="mr-1"><i class="text-primary fa-solid fa-location-dot"></i>
+                        {{ selectedCard.location }}</span>
+                      <span><i class="text-primary fa-solid fa-phone"></i>
+                        {{ selectedCard.phone }}</span>
                     </div>
                     <div class="row mt-4">
                       <div class="col-md-4">
-
-                        <NuxtLink type="button" class="btn btn-primary waves-effect waves-light btn-block" to="/edits"> Edit</NuxtLink>
-
+                        <NuxtLink :to="{
+                          path: '/edits-reservation',
+                          query: { cardData: JSON.stringify(selectedCard) },
+                        }" type="button" class="btn btn-primary waves-effect waves-light btn-block">
+                          Edit
+                        </NuxtLink>
                       </div>
                       <div class="col-md-4">
                         <div class="demo-inline-spacing">
@@ -173,22 +189,25 @@
                               </li>
 
                               <li>
-                                <a href="#" class="dropdown-item d-flex align-items-center"><i class="fa-solid fa-bed mr-2"></i>Room Move</a>
+                                <a href="#" class="dropdown-item d-flex align-items-center"><i class="fa-solid fa-bed mr-2"></i>Room
+                                  Move</a>
                               </li>
                               <li>
-                                <a href="#" class="dropdown-item d-flex align-items-center"><i class="fa-solid fa-arrow-right-arrow-left mr-2"></i> Exchange Room</a>
+                                <a href="#" class="dropdown-item d-flex align-items-center"><i class="fa-solid fa-arrow-right-arrow-left mr-2"></i>
+                                  Exchange Room</a>
                               </li>
                               <li>
-                                <a href="#" class="dropdown-item d-flex align-items-center"><i class="fa-solid fa-hand mr-2"></i>Stop Room Move</a>
+                                <a href="#" class="dropdown-item d-flex align-items-center"><i class="fa-solid fa-hand mr-2"></i>Stop
+                                  Room Move</a>
                               </li>
                               <li>
-                                <a href="#" class="dropdown-item d-flex align-items-center"><i class="fa-solid fa-utensils mr-2"></i> Inclusion List</a>
+                                <a href="#" class="dropdown-item d-flex align-items-center"><i class="fa-solid fa-utensils mr-2"></i>
+                                  Inclusion List</a>
                               </li>
                               <li>
                                 <a href="#" class="dropdown-item d-flex align-items-center"><i class="fa-regular fa-circle-xmark mr-2"></i>Void Reservation</a>
                               </li>
                             </ul>
-
                           </div>
                         </div>
                       </div>
@@ -208,20 +227,13 @@
                         </div>
                       </div>
                     </div>
-
-
-
                   </template>
-                  <template v-else>
-                    Search
-                  </template>
+                  <template v-else> Search </template>
                 </h5>
                 <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
               </div>
               <hr />
               <div class="offcanvas-body mx-0 flex-grow-0 pt-0">
-
-
                 <!-- Dynamic Content Based on Active Tab -->
                 <div v-if="activeTab === 'reservations'">
                   <!-- Only show the heading if no card is selected -->
@@ -230,14 +242,13 @@
                       <input class="form-check-input input-filter" type="checkbox" id="reservationsSearchResDate" data-value="ResDate" aria-label="input  for ResDate" />
                       <label class="form-check-label" for="reservationsSearchResDate">Res Date</label>
                     </div>
-                    <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD to YYYY-MM-DD" id="flatpickr-range-01" ref="rangePicker1" aria-label="input Text to Date">
-
+                    <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD to YYYY-MM-DD" id="flatpickr-range-01" ref="rangePicker1" aria-label="input Text to Date" />
 
                     <div class="form-check form-check-primary mb-2">
                       <input class="form-check-input input-filter" type="checkbox" id="reservationsSearchArrival" data-value="Arrival" />
                       <label class="form-check-label" for="reservationsSearchArrival">Arrival</label>
                     </div>
-                    <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD to YYYY-MM-DD" id="flatpickr-range-01" ref="rangePicker2" aria-label="input Text to Date">
+                    <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD to YYYY-MM-DD" id="flatpickr-range-01" ref="rangePicker2" aria-label="input Text to Date" />
 
                     <label for="reservationsBusinessSource" class="col-form-label">Business Source</label>
                     <select class="form-select mb-2" id="reservationsBusinessSource">
@@ -275,9 +286,7 @@
                       <div class="col-6">
                         <label for="reservationsSearchResType" class="col-form-label">Res. Type</label>
                         <select class="form-select mb-2" id="reservationsSearchResType">
-                          <option value="" disabled selected>
-                            -Select-
-                          </option>
+                          <option value="" disabled selected>-Select-</option>
                           <option value="option1">All</option>
                           <option value="option2">Active</option>
                           <option value="option2">Cancelled</option>
@@ -312,7 +321,6 @@
                     </div>
                   </div>
 
-
                   <!-- Only display data if a card is selected -->
                   <div v-if="selectedCard" class="mt-4">
                     <div class="row">
@@ -323,9 +331,10 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Reservation Number</h6>
-                                  <small class="text-muted">{{ selectedCard.reservationNo }}</small>
+                                  <small class="text-muted">{{
+                                    selectedCard.reservationNo
+                                    }}</small>
                                 </div>
-
                               </div>
                             </div>
                           </li>
@@ -333,12 +342,10 @@
                             <div class="d-flex align-items-start">
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
-                                  <h6 class="mb-0">Arrival Date
-                                  </h6>
+                                  <h6 class="mb-0">Arrival Date</h6>
                                   <small class="text-muted">{{ selectedCard.arrivalDate }}
                                     {{ selectedCard.arrivalTime }}</small>
                                 </div>
-
                               </div>
                             </div>
                           </li>
@@ -350,7 +357,6 @@
                                   <small class="text-muted">{{ selectedCard.bookingDate }}
                                     {{ selectedCard.bookingTime }}</small>
                                 </div>
-
                               </div>
                             </div>
                           </li>
@@ -359,9 +365,9 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Room Number</h6>
-                                  <small class="text-muted"> {{ selectedCard.roomNumber }}</small>
+                                  <small class="text-muted">
+                                    {{ selectedCard.roomNumber }}</small>
                                 </div>
-
                               </div>
                             </div>
                           </li>
@@ -369,33 +375,28 @@
                             <div class="d-flex align-items-start">
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
-                                  <h6 class="mb-0"> <i class="fa-solid fa-person"></i>
+                                  <h6 class="mb-0">
+                                    <i class="fa-solid fa-person"></i>
                                     <i class="fa-solid fa-child"></i>
                                   </h6>
-                                  <small class="text-muted">{{ selectedCard.adults }} {{ selectedCard.children }}</small>
-
+                                  <small class="text-muted">{{ selectedCard.adults }}
+                                    {{ selectedCard.children }}</small>
                                 </div>
-
                               </div>
                             </div>
                           </li>
-
                         </ul>
                       </div>
                       <div class="col-md-6">
                         <ul class="list-unstyled mb-0">
-
                           <li class="mb-3 pb-1">
                             <div class="d-flex align-items-start">
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
-                                  <h6 class="mb-0">Departure Date
-
-                                  </h6>
+                                  <h6 class="mb-0">Departure Date</h6>
                                   <small class="text-muted">{{ selectedCard.departureDate }}
                                     {{ selectedCard.departureTime }}</small>
                                 </div>
-
                               </div>
                             </div>
                           </li>
@@ -403,13 +404,10 @@
                             <div class="d-flex align-items-start">
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
-                                  <h6 class="mb-0">Status
-
-                                  </h6>
+                                  <h6 class="mb-0">Status</h6>
                                   <small class="text-muted badge bg-label-danger ms-1">{{ selectedCard.status }}
                                   </small>
                                 </div>
-
                               </div>
                             </div>
                           </li>
@@ -417,12 +415,10 @@
                             <div class="d-flex align-items-start">
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
-                                  <h6 class="mb-0">Room Type
-                                  </h6>
+                                  <h6 class="mb-0">Room Type</h6>
                                   <small class="text-muted">{{ selectedCard.roomType }}
                                   </small>
                                 </div>
-
                               </div>
                             </div>
                           </li>
@@ -430,11 +426,10 @@
                             <div class="d-flex align-items-start">
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
-                                  <h6 class="mb-0">Rate Plan
-                                  </h6>
-                                  <small class="text-muted"> {{ selectedCard.ratePlan }}</small>
+                                  <h6 class="mb-0">Rate Plan</h6>
+                                  <small class="text-muted">
+                                    {{ selectedCard.ratePlan }}</small>
                                 </div>
-
                               </div>
                             </div>
                           </li>
@@ -442,35 +437,27 @@
                             <div class="d-flex align-items-start">
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
-                                  <h6 class="mb-0"> Avg. Daily Rate
-
-                                  </h6>
-                                  <small class="text-muted">{{ selectedCard.dailyRate }} </small>
-
+                                  <h6 class="mb-0">Avg. Daily Rate</h6>
+                                  <small class="text-muted">{{ selectedCard.dailyRate }}
+                                  </small>
                                 </div>
-
                               </div>
                             </div>
                           </li>
-
                         </ul>
                       </div>
                     </div>
-
-
                   </div>
-
                 </div>
 
                 <div v-if="activeTab === 'arrivals'">
                   <!-- Only show the heading if no card is selected -->
                   <div v-if="!selectedCard">
-
                     <div class="form-check form-check-primary mb-2">
                       <input class="form-check-input input-filter" type="checkbox" id="arrivalsSearchArrival" data-value="Arrival" />
                       <label class="form-check-label" for="arrivalsSearchArrival">Arrival</label>
                     </div>
-                    <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD to YYYY-MM-DD" id="flatpickr-range-01" ref="rangePicker2" aria-label="input Text to Date">
+                    <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD to YYYY-MM-DD" id="flatpickr-range-01" ref="rangePicker2" aria-label="input Text to Date" />
 
                     <label for="arrivalsBusinessSource" class="col-form-label">Business Source</label>
                     <select class="form-select mb-2" id="arrivalsBusinessSource">
@@ -508,9 +495,7 @@
                       <div class="col-6">
                         <label for="arrivalsSearchResType" class="col-form-label">Res. Type</label>
                         <select class="form-select mb-2" id="arrivalsSearchResType">
-                          <option value="" disabled selected>
-                            -Select-
-                          </option>
+                          <option value="" disabled selected>-Select-</option>
                           <option value="option1">All</option>
                           <option value="option2">Active</option>
                           <option value="option2">Cancelled</option>
@@ -522,12 +507,10 @@
                     <div class="form-check mt-3">
                       <input class="form-check-input" type="checkbox" value="Guest Checked In Today " id="arrivalsSearchGuestChecked" />
                       <label class="form-check-label" for="arrivalsSearchGuestChecked">
-
-                        Guest Checked In Today </label>
+                        Guest Checked In Today
+                      </label>
                     </div>
-
                   </div>
-
 
                   <!-- Only display data if a card is selected -->
                   <div v-if="selectedCard" class="mt-4">
@@ -539,9 +522,10 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Reservation Number</h6>
-                                  <small class="text-muted">{{ selectedCard.reservationNo }}</small>
+                                  <small class="text-muted">{{
+                                    selectedCard.reservationNo
+                                    }}</small>
                                 </div>
-
                               </div>
                             </div>
                           </li>
@@ -549,12 +533,10 @@
                             <div class="d-flex align-items-start">
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
-                                  <h6 class="mb-0">Arrival Date
-                                  </h6>
+                                  <h6 class="mb-0">Arrival Date</h6>
                                   <small class="text-muted">{{ selectedCard.arrivalDate }}
                                     {{ selectedCard.arrivalTime }}</small>
                                 </div>
-
                               </div>
                             </div>
                           </li>
@@ -566,7 +548,6 @@
                                   <small class="text-muted">{{ selectedCard.bookingDate }}
                                     {{ selectedCard.bookingTime }}</small>
                                 </div>
-
                               </div>
                             </div>
                           </li>
@@ -575,9 +556,9 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Room Number</h6>
-                                  <small class="text-muted"> {{ selectedCard.roomNumber }}</small>
+                                  <small class="text-muted">
+                                    {{ selectedCard.roomNumber }}</small>
                                 </div>
-
                               </div>
                             </div>
                           </li>
@@ -585,33 +566,28 @@
                             <div class="d-flex align-items-start">
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
-                                  <h6 class="mb-0"> <i class="fa-solid fa-person"></i>
+                                  <h6 class="mb-0">
+                                    <i class="fa-solid fa-person"></i>
                                     <i class="fa-solid fa-child"></i>
                                   </h6>
-                                  <small class="text-muted">{{ selectedCard.adults }} {{ selectedCard.children }}</small>
-
+                                  <small class="text-muted">{{ selectedCard.adults }}
+                                    {{ selectedCard.children }}</small>
                                 </div>
-
                               </div>
                             </div>
                           </li>
-
                         </ul>
                       </div>
                       <div class="col-md-6">
                         <ul class="list-unstyled mb-0">
-
                           <li class="mb-3 pb-1">
                             <div class="d-flex align-items-start">
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
-                                  <h6 class="mb-0">Departure Date
-
-                                  </h6>
+                                  <h6 class="mb-0">Departure Date</h6>
                                   <small class="text-muted">{{ selectedCard.departureDate }}
                                     {{ selectedCard.departureTime }}</small>
                                 </div>
-
                               </div>
                             </div>
                           </li>
@@ -619,13 +595,10 @@
                             <div class="d-flex align-items-start">
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
-                                  <h6 class="mb-0">Status
-
-                                  </h6>
+                                  <h6 class="mb-0">Status</h6>
                                   <small class="text-muted badge bg-label-danger ms-1">{{ selectedCard.status }}
                                   </small>
                                 </div>
-
                               </div>
                             </div>
                           </li>
@@ -633,12 +606,10 @@
                             <div class="d-flex align-items-start">
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
-                                  <h6 class="mb-0">Room Type
-                                  </h6>
+                                  <h6 class="mb-0">Room Type</h6>
                                   <small class="text-muted">{{ selectedCard.roomType }}
                                   </small>
                                 </div>
-
                               </div>
                             </div>
                           </li>
@@ -646,11 +617,10 @@
                             <div class="d-flex align-items-start">
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
-                                  <h6 class="mb-0">Rate Plan
-                                  </h6>
-                                  <small class="text-muted"> {{ selectedCard.ratePlan }}</small>
+                                  <h6 class="mb-0">Rate Plan</h6>
+                                  <small class="text-muted">
+                                    {{ selectedCard.ratePlan }}</small>
                                 </div>
-
                               </div>
                             </div>
                           </li>
@@ -658,39 +628,27 @@
                             <div class="d-flex align-items-start">
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
-                                  <h6 class="mb-0"> Avg. Daily Rate
-
-                                  </h6>
-                                  <small class="text-muted">{{ selectedCard.dailyRate }} </small>
-
+                                  <h6 class="mb-0">Avg. Daily Rate</h6>
+                                  <small class="text-muted">{{ selectedCard.dailyRate }}
+                                  </small>
                                 </div>
-
                               </div>
                             </div>
                           </li>
-
                         </ul>
                       </div>
                     </div>
-
-
                   </div>
-
-
                 </div>
 
                 <div v-if="activeTab === 'departures'">
                   <!-- Only show the heading if no card is selected -->
                   <div v-if="!selectedCard">
-
                     <div class="form-check form-check-primary mb-2">
                       <input class="form-check-input input-filter" type="checkbox" id="departuresSearchDepartureDate" data-value="Departure Date" />
                       <label class="form-check-label" for="departuresSearchDepartureDate">Departure Date</label>
                     </div>
-                    <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD to YYYY-MM-DD" id="flatpickr-range-01" ref="rangePicker2" aria-label="input Text to Date">
-
-
-
+                    <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD to YYYY-MM-DD" id="flatpickr-range-01" ref="rangePicker2" aria-label="input Text to Date" />
 
                     <label for="departuresSearchRoomtype" class="col-form-label">Room Type</label>
                     <select class="form-select mb-2" id="departuresSearchRoomtype">
@@ -707,23 +665,25 @@
                           <option value="option2">item</option>
                         </select>
                       </div>
-
                     </div>
                     <div class="form-check mt-3">
                       <input class="form-check-input" type="checkbox" value="Guest Checked In Today " id="departuresSearchGuestChecked" />
-                      <label class="form-check-label" for="departuresSearchGuestChecked">Guest Checked In Today </label>
+                      <label class="form-check-label" for="departuresSearchGuestChecked">Guest Checked In Today
+                      </label>
                     </div>
                     <div class="form-check mt-3">
                       <input class="form-check-input" type="checkbox" value="Past Guest Check outs " id="departuresSearchPastGuest" />
-                      <label class="form-check-label" for="departuresSearchPastGuest"> Past Guest Check outs </label>
+                      <label class="form-check-label" for="departuresSearchPastGuest">
+                        Past Guest Check outs
+                      </label>
                     </div>
                     <div class="form-check mt-3">
                       <input class="form-check-input" type="checkbox" value="Guest With Balance " id="departuresSearchGuestWith Balance" />
-                      <label class="form-check-label" for="departuresSearchGuestWith Balance"> Guest With Balance </label>
+                      <label class="form-check-label" for="departuresSearchGuestWith Balance">
+                        Guest With Balance
+                      </label>
                     </div>
-
                   </div>
-
 
                   <!-- Only display data if a card is selected -->
                   <div v-if="selectedCard" class="mt-4">
@@ -735,9 +695,10 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Reservation Number</h6>
-                                  <small class="text-muted">{{ selectedCard.reservationNo }}</small>
+                                  <small class="text-muted">{{
+                                    selectedCard.reservationNo
+                                    }}</small>
                                 </div>
-
                               </div>
                             </div>
                           </li>
@@ -745,12 +706,10 @@
                             <div class="d-flex align-items-start">
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
-                                  <h6 class="mb-0">Arrival Date
-                                  </h6>
+                                  <h6 class="mb-0">Arrival Date</h6>
                                   <small class="text-muted">{{ selectedCard.arrivalDate }}
                                     {{ selectedCard.arrivalTime }}</small>
                                 </div>
-
                               </div>
                             </div>
                           </li>
@@ -762,7 +721,6 @@
                                   <small class="text-muted">{{ selectedCard.bookingDate }}
                                     {{ selectedCard.bookingTime }}</small>
                                 </div>
-
                               </div>
                             </div>
                           </li>
@@ -771,9 +729,9 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Room Number</h6>
-                                  <small class="text-muted"> {{ selectedCard.roomNumber }}</small>
+                                  <small class="text-muted">
+                                    {{ selectedCard.roomNumber }}</small>
                                 </div>
-
                               </div>
                             </div>
                           </li>
@@ -781,33 +739,28 @@
                             <div class="d-flex align-items-start">
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
-                                  <h6 class="mb-0"> <i class="fa-solid fa-person"></i>
+                                  <h6 class="mb-0">
+                                    <i class="fa-solid fa-person"></i>
                                     <i class="fa-solid fa-child"></i>
                                   </h6>
-                                  <small class="text-muted">{{ selectedCard.adults }} {{ selectedCard.children }}</small>
-
+                                  <small class="text-muted">{{ selectedCard.adults }}
+                                    {{ selectedCard.children }}</small>
                                 </div>
-
                               </div>
                             </div>
                           </li>
-
                         </ul>
                       </div>
                       <div class="col-md-6">
                         <ul class="list-unstyled mb-0">
-
                           <li class="mb-3 pb-1">
                             <div class="d-flex align-items-start">
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
-                                  <h6 class="mb-0">Departure Date
-
-                                  </h6>
+                                  <h6 class="mb-0">Departure Date</h6>
                                   <small class="text-muted">{{ selectedCard.departureDate }}
                                     {{ selectedCard.departureTime }}</small>
                                 </div>
-
                               </div>
                             </div>
                           </li>
@@ -815,13 +768,10 @@
                             <div class="d-flex align-items-start">
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
-                                  <h6 class="mb-0">Status
-
-                                  </h6>
+                                  <h6 class="mb-0">Status</h6>
                                   <small class="text-muted badge bg-label-danger ms-1">{{ selectedCard.status }}
                                   </small>
                                 </div>
-
                               </div>
                             </div>
                           </li>
@@ -829,12 +779,10 @@
                             <div class="d-flex align-items-start">
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
-                                  <h6 class="mb-0">Room Type
-                                  </h6>
+                                  <h6 class="mb-0">Room Type</h6>
                                   <small class="text-muted">{{ selectedCard.roomType }}
                                   </small>
                                 </div>
-
                               </div>
                             </div>
                           </li>
@@ -842,11 +790,10 @@
                             <div class="d-flex align-items-start">
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
-                                  <h6 class="mb-0">Rate Plan
-                                  </h6>
-                                  <small class="text-muted"> {{ selectedCard.ratePlan }}</small>
+                                  <h6 class="mb-0">Rate Plan</h6>
+                                  <small class="text-muted">
+                                    {{ selectedCard.ratePlan }}</small>
                                 </div>
-
                               </div>
                             </div>
                           </li>
@@ -854,24 +801,17 @@
                             <div class="d-flex align-items-start">
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
-                                  <h6 class="mb-0"> Avg. Daily Rate
-
-                                  </h6>
-                                  <small class="text-muted">{{ selectedCard.dailyRate }} </small>
-
+                                  <h6 class="mb-0">Avg. Daily Rate</h6>
+                                  <small class="text-muted">{{ selectedCard.dailyRate }}
+                                  </small>
                                 </div>
-
                               </div>
                             </div>
                           </li>
-
                         </ul>
                       </div>
                     </div>
-
-
                   </div>
-
                 </div>
 
                 <div v-if="activeTab === 'inHouse'">
@@ -922,9 +862,10 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Reservation Number</h6>
-                                  <small class="text-muted">{{ selectedCard.reservationNo }}</small>
+                                  <small class="text-muted">{{
+                                    selectedCard.reservationNo
+                                    }}</small>
                                 </div>
-
                               </div>
                             </div>
                           </li>
@@ -932,12 +873,10 @@
                             <div class="d-flex align-items-start">
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
-                                  <h6 class="mb-0">Arrival Date
-                                  </h6>
+                                  <h6 class="mb-0">Arrival Date</h6>
                                   <small class="text-muted">{{ selectedCard.arrivalDate }}
                                     {{ selectedCard.arrivalTime }}</small>
                                 </div>
-
                               </div>
                             </div>
                           </li>
@@ -949,7 +888,6 @@
                                   <small class="text-muted">{{ selectedCard.bookingDate }}
                                     {{ selectedCard.bookingTime }}</small>
                                 </div>
-
                               </div>
                             </div>
                           </li>
@@ -958,9 +896,9 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Room Number</h6>
-                                  <small class="text-muted"> {{ selectedCard.roomNumber }}</small>
+                                  <small class="text-muted">
+                                    {{ selectedCard.roomNumber }}</small>
                                 </div>
-
                               </div>
                             </div>
                           </li>
@@ -968,33 +906,28 @@
                             <div class="d-flex align-items-start">
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
-                                  <h6 class="mb-0"> <i class="fa-solid fa-person"></i>
+                                  <h6 class="mb-0">
+                                    <i class="fa-solid fa-person"></i>
                                     <i class="fa-solid fa-child"></i>
                                   </h6>
-                                  <small class="text-muted">{{ selectedCard.adults }} {{ selectedCard.children }}</small>
-
+                                  <small class="text-muted">{{ selectedCard.adults }}
+                                    {{ selectedCard.children }}</small>
                                 </div>
-
                               </div>
                             </div>
                           </li>
-
                         </ul>
                       </div>
                       <div class="col-md-6">
                         <ul class="list-unstyled mb-0">
-
                           <li class="mb-3 pb-1">
                             <div class="d-flex align-items-start">
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
-                                  <h6 class="mb-0">Departure Date
-
-                                  </h6>
+                                  <h6 class="mb-0">Departure Date</h6>
                                   <small class="text-muted">{{ selectedCard.departureDate }}
                                     {{ selectedCard.departureTime }}</small>
                                 </div>
-
                               </div>
                             </div>
                           </li>
@@ -1002,13 +935,10 @@
                             <div class="d-flex align-items-start">
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
-                                  <h6 class="mb-0">Status
-
-                                  </h6>
+                                  <h6 class="mb-0">Status</h6>
                                   <small class="text-muted badge bg-label-danger ms-1">{{ selectedCard.status }}
                                   </small>
                                 </div>
-
                               </div>
                             </div>
                           </li>
@@ -1016,12 +946,10 @@
                             <div class="d-flex align-items-start">
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
-                                  <h6 class="mb-0">Room Type
-                                  </h6>
+                                  <h6 class="mb-0">Room Type</h6>
                                   <small class="text-muted">{{ selectedCard.roomType }}
                                   </small>
                                 </div>
-
                               </div>
                             </div>
                           </li>
@@ -1029,11 +957,10 @@
                             <div class="d-flex align-items-start">
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
-                                  <h6 class="mb-0">Rate Plan
-                                  </h6>
-                                  <small class="text-muted"> {{ selectedCard.ratePlan }}</small>
+                                  <h6 class="mb-0">Rate Plan</h6>
+                                  <small class="text-muted">
+                                    {{ selectedCard.ratePlan }}</small>
                                 </div>
-
                               </div>
                             </div>
                           </li>
@@ -1041,22 +968,16 @@
                             <div class="d-flex align-items-start">
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
-                                  <h6 class="mb-0"> Avg. Daily Rate
-
-                                  </h6>
-                                  <small class="text-muted">{{ selectedCard.dailyRate }} </small>
-
+                                  <h6 class="mb-0">Avg. Daily Rate</h6>
+                                  <small class="text-muted">{{ selectedCard.dailyRate }}
+                                  </small>
                                 </div>
-
                               </div>
                             </div>
                           </li>
-
                         </ul>
                       </div>
                     </div>
-
-
                   </div>
                 </div>
 
@@ -1064,7 +985,13 @@
                   <button class="btn btn-secondary">Reset</button>
                   <button class="btn btn-primary">Search</button>
                 </div>
-                <div v-if="selectedCard" class="new-div mt-3" style="position: absolute; bottom: 15px; right: 0; width: 100%; padding: 0 15px;">
+                <div v-if="selectedCard" class="new-div mt-3" style="
+                    position: absolute;
+                    bottom: 15px;
+                    right: 0;
+                    width: 100%;
+                    padding: 0 15px;
+                  ">
                   <dl class="row mb-0">
                     <dt class="col-6 fw-normal text-heading">Total</dt>
                     <dd class="col-6 text-end">{{ selectedCard.total }} $</dd>
@@ -1072,10 +999,10 @@
                     <dt class="col-sm-6 fw-normal">Paid</dt>
                     <dd class="col-sm-6 text-end">{{ selectedCard.paid }}$</dd>
 
-                    <dt class="col-6 fw-normal   text-danger ">Balance</dt>
-                    <dd class="col-6 text-end text-danger">{{ selectedCard.balance }}$</dd>
-
-
+                    <dt class="col-6 fw-normal text-danger">Balance</dt>
+                    <dd class="col-6 text-end text-danger">
+                      {{ selectedCard.balance }}$
+                    </dd>
                   </dl>
                 </div>
               </div>
@@ -1083,10 +1010,10 @@
           </div>
         </template>
         <template #content>
-          <div class=" tab-pane fade active show" id="form-tabs-Reservations" role="tabpanel" v-if="activeTab === 'reservations'">
+          <div class="tab-pane fade active show" id="form-tabs-Reservations" role="tabpanel" v-if="activeTab === 'reservations'">
             <div class="row">
-              <div v-if="viewMode === 'list'" class="table-responsive text-nowrap" style="overflow: visible;">
-                <table class=" table">
+              <div v-if="viewMode === 'list'" class="table-responsive text-nowrap" style="overflow: visible">
+                <table class="table">
                   <thead class="table-light">
                     <tr>
                       <th>Guest Name</th>
@@ -1125,8 +1052,9 @@
                       <td>{{ card.roomNumber }} - {{ card.roomType }}</td>
                       <td>${{ card.total }}</td>
                       <td>${{ card.paid }}</td>
-                      <td> <span :class="{ 'text-danger': card.balance < 0 }">${{ card.balance }}</span>
-                        <div class="btn-group" id="hover-dropdown-demo " style="float: inline-end;" @mouseenter="isHovered = true" @mouseleave="isHovered = false">
+                      <td>
+                        <span :class="{ 'text-danger': card.balance < 0 }">${{ card.balance }}</span>
+                        <div class="btn-group" id="hover-dropdown-demo " style="float: inline-end" @mouseenter="isHovered = true" @mouseleave="isHovered = false">
                           <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none">
                             <i class="fa-solid fa-ellipsis-vertical"></i>
                           </button>
@@ -1140,7 +1068,6 @@
                             <li>
                               <a class="dropdown-item" href="#"><i class="fa-solid fa-list-check mr-2"></i>Audit Trail</a>
                             </li>
-
                           </ul>
                         </div>
                       </td>
@@ -1170,8 +1097,9 @@
                       <td>{{ card.roomNumber }} - {{ card.roomType }}</td>
                       <td>${{ card.total }}</td>
                       <td>${{ card.paid }}</td>
-                      <td> <span :class="{ 'text-danger': card.balance < 0 }">${{ card.balance }}</span>
-                        <div class="btn-group" id="hover-dropdown-demo " style="float: inline-end;" @mouseenter="isHovered = true" @mouseleave="isHovered = false">
+                      <td>
+                        <span :class="{ 'text-danger': card.balance < 0 }">${{ card.balance }}</span>
+                        <div class="btn-group" id="hover-dropdown-demo " style="float: inline-end" @mouseenter="isHovered = true" @mouseleave="isHovered = false">
                           <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none">
                             <i class="fa-solid fa-ellipsis-vertical"></i>
                           </button>
@@ -1185,7 +1113,6 @@
                             <li>
                               <a class="dropdown-item" href="#"><i class="fa-solid fa-list-check mr-2"></i>Audit Trail</a>
                             </li>
-
                           </ul>
                         </div>
                       </td>
@@ -1193,10 +1120,6 @@
                   </tbody>
                 </table>
               </div>
-
-
-
-
 
               <div v-else class="col-12 col-md-6 col-lg-4 mb-4 order-1 order-xl-0" @click="openOffcanvas(card)" v-for="card in reservations" :key="card.reservationNo">
                 <div class="card h-100">
@@ -1212,17 +1135,18 @@
                         <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none">
                           <i class="fa-solid fa-ellipsis-vertical"></i>
                         </button>
-                        <ul v-show="isHovered" class="dropdown-menu show " data-popper-placement=" bottom-end">
+                        <ul v-show="isHovered" class="dropdown-menu show" data-popper-placement=" bottom-end">
                           <li>
                             <a class="dropdown-item" href="#"><i class="fa-solid fa-file-circle-plus mr-2"></i>Print Invoice</a>
                           </li>
                           <li>
-                            <a class="dropdown-item" href="#"><i class="fa-solid fa-calendar-plus mr-2"></i>Add New Booking</a>
+                            <a class="dropdown-item" href="#"><i class="fa-solid fa-calendar-plus mr-2"></i>Add
+                              New Booking</a>
                           </li>
                           <li>
-                            <a class="dropdown-item" href="#"><i class="fa-solid fa-list-check mr-2"></i>Audit Trail</a>
+                            <a class="dropdown-item" href="#"><i class="fa-solid fa-list-check mr-2"></i>Audit
+                              Trail</a>
                           </li>
-
                         </ul>
                       </div>
                     </div>
@@ -1290,14 +1214,11 @@
 import HeaderReservation from "../components/AllReservation/HeaderReservation.vue";
 import flatpickrMixin from "../components/Mixin/flatpickrMixin";
 
-
 export default {
   name: "reservations",
   layout: "main",
   components: {
     HeaderReservation,
-
-
   },
   data ()
   {
@@ -1349,7 +1270,9 @@ export default {
       this.selectedCard = card; // Set the selected card
 
       // Open the off-canvas
-      const offcanvas = new bootstrap.Offcanvas(document.getElementById("offcanvasEnd"));
+      const offcanvas = new bootstrap.Offcanvas(
+        document.getElementById("offcanvasEnd")
+      );
       offcanvas.show();
     },
     resetSelections ()
@@ -1371,10 +1294,7 @@ export default {
     offcanvas.removeEventListener("hidden.bs.offcanvas", this.resetSelections);
   },
   mixins: [flatpickrMixin],
-
-
-}
-
+};
 </script>
 
 <style></style>

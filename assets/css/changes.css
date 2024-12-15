@@ -229,6 +229,9 @@
 .mt{
   margin-top: 25px !important;
 }
+.mt-40{
+  margin-top: 40px !important;
+}
 .dropzone {
   border-style: dashed !important;
   padding:  0 !important;

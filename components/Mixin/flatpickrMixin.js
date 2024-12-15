@@ -21,6 +21,8 @@ export default {
           this.$refs.datePicker5,
           this.$refs.datePicker6,
           this.$refs.datePicker7,
+          this.$refs.datePicker8,
+          this.$refs.datePicker9,
         ].filter(Boolean); // Filter out undefined refs
 
         // Initialize date pickers
