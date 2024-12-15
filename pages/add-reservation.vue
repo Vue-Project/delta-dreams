@@ -10,8 +10,8 @@
 </template>
 
 <script>
-import CheckIn from "../components/Reservation/CheckIn.vue";
-import BillingSummary from "../components/Reservation/BillingSummary.vue";
+import CheckIn from "../components/AddReservation/CheckIn.vue";
+import BillingSummary from "../components/AddReservation/BillingSummary.vue";
 
 export default {
   name: "AddReservation",
