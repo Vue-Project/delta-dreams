@@ -991,7 +991,7 @@
   "resolved" "https://registry.npmjs.org/@csstools/convert-colors/-/convert-colors-1.4.0.tgz"
   "version" "1.4.0"
 
-"@fullcalendar/core@~6.1.15":
+"@fullcalendar/core@^6.1.15", "@fullcalendar/core@~6.1.15":
   "integrity" "sha512-BuX7o6ALpLb84cMw1FCB9/cSgF4JbVO894cjJZ6kP74jzbUZNjtwffwRdA+Id8rrLjT30d/7TrkW90k4zbXB5Q=="
   "resolved" "https://registry.npmjs.org/@fullcalendar/core/-/core-6.1.15.tgz"
   "version" "6.1.15"
@@ -8195,7 +8195,7 @@
   dependencies:
     "vue" "^2.5.2"
 
-"vue@*", "vue@^2.0.0", "vue@^2.5.16", "vue@^2.5.2", "vue@^2.6.11", "vue@^2.6.12", "vue@^2.6.14 || ^3.2.0", "vue@^2.7.14":
+"vue@*", "vue@^2.0.0", "vue@^2.5.16", "vue@^2.5.2", "vue@^2.6.11", "vue@^2.6.12", "vue@^2.6.14 || ^3.2.0", "vue@^2.6.4", "vue@^2.7.14":
   "integrity" "sha512-b2qkFyOM0kwqWFuQmgd4o+uHGU7T+2z3T+WQp8UBjADfEv2n4FEMffzBmCKNP0IGzOEEfYjvtcC62xaSKeQDrQ=="
   "resolved" "https://registry.npmjs.org/vue/-/vue-2.7.14.tgz"
   "version" "2.7.14"
@@ -8207,6 +8207,11 @@
   "integrity" "sha512-HosQXtbFr7qexeLTb6k7H+2Q7iODELGRalRDmPviMulSLDUBub8lmeVjda8TK3IcKpD0wma0A7bg085HtwDiRg=="
   "resolved" "https://registry.npmjs.org/vueperslides/-/vueperslides-2.16.0.tgz"
   "version" "2.16.0"
+
+"vuetify@^2.7.2":
+  "integrity" "sha512-qr04ww7uzAPQbpk751x4fSdjsJ+zREzjQ/rBlcQGuWS6MIMFMXcXcwvp4+/tnGsULZxPMWfQ0kmZmg5Yc/XzgQ=="
+  "resolved" "https://registry.npmjs.org/vuetify/-/vuetify-2.7.2.tgz"
+  "version" "2.7.2"
 
 "vuex@^3.6.2":
   "integrity" "sha512-ETW44IqCgBpVomy520DT5jf8n0zoCac+sxWnn+hMe/CzaSejb/eVw2YToiXYX+Ex/AuHHia28vWTq4goAexFbw=="

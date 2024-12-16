@@ -9,6 +9,7 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
+    "@fullcalendar/core": "^6.1.15",
     "@fullcalendar/daygrid": "^6.1.15",
     "@fullcalendar/interaction": "^6.1.15",
     "@fullcalendar/resource-timeline": "^6.1.15",
@@ -27,6 +28,7 @@
     "vue-template-compiler": "^2.7.14",
     "vue-wow": "^1.2.0",
     "vueperslides": "^2.16.0",
+    "vuetify": "^2.7.2",
     "webpack": "^4.46.0"
   },
   "devDependencies": {
