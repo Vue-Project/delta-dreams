@@ -141,9 +141,9 @@
 
 }
 
-.collapsed {
+/* .collapsed {
   display: none;
-}
+} */
 .fc .fc-timeline-header-row-chrono .fc-timeline-slot-frame {
   justify-content: flex-end;
 }
