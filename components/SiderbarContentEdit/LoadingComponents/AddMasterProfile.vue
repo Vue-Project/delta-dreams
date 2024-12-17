@@ -3,7 +3,7 @@
     <button type="button" class="btn btn-outline-secondary mb-3" @click="$emit('goBack')">
       <i class="fa-solid fa-angle-left pr-2" style="color: #6f6b7d"></i>
 
-      Add Room Sharer
+      Add Master Profile
     </button>
     <form id="formGustDetails">
       <div class="row p-3 mb-5">
@@ -294,7 +294,6 @@
     </form>
   </div>
 </template>
-
 
 <script>
 import DropzoneComponent from "../../layout/DropzoneComponent.vue";

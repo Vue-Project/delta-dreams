@@ -135,7 +135,7 @@
       <div class="card accordion-item active">
         <h2 class="accordion-header" id="headingOne">
           <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionOne" aria-expanded="false" aria-controls="accordionOne">
-            Accordion Item 1
+            Identity Information
           </button>
         </h2>
 
@@ -196,7 +196,7 @@
                       </div>
                     </div>
                     <div class="col-md-6">
-                      <label for="flatpickr-date-04" class="col-form-label">Expiry Date</label>
+                      <label for="flatpickr-date-10" class="col-form-label">Expiry Date</label>
                       <input type="text" class="form-control" placeholder="YYYY-MM-D " id="flatpickr-date-04" ref="datePicker4" aria-label="input Text to Expiry Date" />
                       <i class="fa-solid fa-calendar-days icon-date top"></i>
                     </div>
@@ -210,7 +210,7 @@
       <div class="card accordion-item ">
         <h2 class="accordion-header" id="headingTwo">
           <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionTwo" aria-expanded="true" aria-controls="accordionTwo">
-            Accordion Item 2
+            Other Information
           </button>
         </h2>
         <div id="accordionTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo" data-bs-parent="#accordionExampleveveve" style="">
@@ -293,11 +293,15 @@
 
 <script>
 import DropzoneComponent from "../../layout/DropzoneComponent.vue";
+import flatpickrMixin from "../../Mixin/flatpickrMixin";
 
 export default {
   name: "DefaultContent",
+
   components: {
     DropzoneComponent
-  }
+  },
+  mixins: [flatpickrMixin],
+
 };
 </script>
