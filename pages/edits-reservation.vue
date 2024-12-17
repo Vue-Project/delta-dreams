@@ -50,7 +50,7 @@
                 <h6>Status</h6>
                 <small class="text-muted badge bg-label-danger">{{
                   card.status
-                  }}</small>
+                }}</small>
               </div>
             </div>
           </div>
@@ -93,12 +93,12 @@
           <button type="button" class="btn btn-outline-primary dropdown-toggle waves-effect waves-light" data-bs-toggle="dropdown" aria-expanded="false">
             print/Send
           </button>
-          <ul class="dropdown-menu" style="">
+          <ul class="dropdown-menu">
             <li>
-              <a class="dropdown-item" href="#;">Print invoice</a>
+              <a class="dropdown-item" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('printinvoice', 'Print Invoice', 'Send Email')">Print invoice</a>
             </li>
             <li>
-              <a class="dropdown-item" href="#">Send invoice</a>
+              <a class="dropdown-item" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('sendinvoice', 'Send Invoice', 'Send Email')">Send invoice</a>
             </li>
           </ul>
 
@@ -137,12 +137,18 @@
               <div v-if="currentContent === 'applydiscount'">
                 <ApplyDiscount />
               </div>
-              <div v-if="currentContent === 'addtravel'">
+              <div v-if="currentContent === 'printinvoice'">
+                <print-invoice />
+              </div>
+              <div v-if="currentContent === 'sendinvoice'">
+                <send-invoice />
+              </div>
+              <!-- <div v-if="currentContent === 'addtravel'">
                 <AddTravel />
               </div>
               <div v-if="currentContent === 'applydiscount'">
                 <ApplyDiscount />
-              </div>
+              </div> -->
 
               <div class="gap-2 d-flex" style="position: absolute; bottom: 15px; right: 0">
                 <button class="btn btn-secondary" data-bs-dismiss="offcanvas">
@@ -193,6 +199,7 @@
           </div>
         </div>
         <!-- Booking Details  -->
+
         <div class="tab-pane fade" id="form-tabs-BookingDetails" role="tabpanel">
           <div class="row">
             <!-- inside tabs  -->
@@ -254,11 +261,13 @@
                 <!-- pereference  -->
                 <div class="tab-pane fade" id="form-tabs-Preference" role="tabpanel" :class="{ 'show active': activeTab === 'Preference' }"></div>
               </div>
-              <component :is="bookingDetailsComponent" @goBack="goBack" :setOffcanvasContent="setOffcanvasContent" />
+              <!-- <div v-if="bookingDetailsComponent === 'MainComponent'" class="pe-2">
+
+                <component :is="bookingDetailsComponent" @goBack="goBack" :setOffcanvasContent="setOffcanvasContent" />
+              </div> -->
             </div>
           </div>
         </div>
-
         <!-- Guest Details  -->
         <div class="tab-pane fade" id="form-tabs-GuestDetails" role="tabpanel">
           <div class="row">
@@ -266,12 +275,13 @@
             <div class="col-3 px-0" style="border-right: 1px solid #e1e0e3">
               <div class="d-flex justify-content-between">
                 <h6>Guest</h6>
-                <div v-if="activeComponent === 'DefaultContent'" class="pe-2">
+                <div v-if="activeComponent === 'DefaultComponentGuest'" class="pe-2">
                   <div class="pe-2">
                     <button type="button" class="btn btn-outline-primary waves-effect mb-2" @click="loadComponent('AddMasterProfile')">
                       <i class="fa-solid fa-user"></i>
                     </button>
-                    <button type="button" class="btn btn-outline-primary waves-effect mb-2" @click="loadComponent('NewGuest')">
+                    <button type="button" class="btn btn-outline-primary waves-effect mb-2" @click="loadComponent('AddRoomSharer')">
+
                       <i class="fa-solid fa-plus"></i>
                     </button>
                   </div>
@@ -330,7 +340,7 @@
               Update Details
             </button>
             <button class="btn btn-outline-secondary waves-effect me-1" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="
-              setOffcanvasContent('applydiscount', 'ApplyDiscount', '1200px')
+              setOffcanvasContent('applydiscount', 'ApplyDiscount', 'save', '1200px')
               ">
               Apply Discount
             </button>
@@ -495,14 +505,16 @@ import AddCard from "../components/SiderbarContentEdit/AddCard.vue";
 import AddTravel from "../components/SiderbarContentEdit/AddTravel.vue";
 import UpdateDetails from "../components/SiderbarContentEdit/UpdateDetails.vue";
 import ApplyDiscount from "../components/SiderbarContentEdit/ApplyDiscount.vue";
-import DefaultContent from "../components/SiderbarContentEdit/LoadingComponents/DefaultContent.vue";
-import NewGuest from "../components/SiderbarContentEdit/LoadingComponents/NewGuest.vue";
-import AddMasterProfile from "../components/SiderbarContentEdit/LoadingComponents/AddMasterProfile.vue";
-import MainComponent from "../components/SiderbarContentEdit/BookingDetailsComponents/DefualtContent.vue";
+import DefaultComponentGuest from "../components/SiderbarContentEdit/GuestDetailsComponents/DefaultComponentGuest.vue";
+import AddRoomSharer from "../components/SiderbarContentEdit/GuestDetailsComponents/AddRoomSharer.vue";
+import AddMasterProfile from "../components/SiderbarContentEdit/GuestDetailsComponents/AddMasterProfile.vue";
+// import MainComponent from "../components/SiderbarContentEdit/BookingDetailsComponents/DefualtContent.vue";
 import MessageContent from "../components/SiderbarContentEdit/BookingDetailsComponents/MessageContent.vue";
 import PreferenceContent from "../components/SiderbarContentEdit/BookingDetailsComponents/PreferenceContent.vue";
 import RemarksContent from "../components/SiderbarContentEdit/BookingDetailsComponents/RemarksContent.vue";
 import TaskContent from "../components/SiderbarContentEdit/BookingDetailsComponents/TaskContent.vue";
+import SendInvoice from '../components/SiderbarContentEdit/SendInvoice.vue';
+import PrintInvoice from '../components/SiderbarContentEdit/PrintInvoice.vue';
 export default {
   name: "EditsPage",
   layout: "main",
@@ -512,15 +524,19 @@ export default {
     AddCard,
     UpdateDetails,
     ApplyDiscount,
-    DefaultContent,
-    NewGuest,
+    DefaultComponentGuest,
+    AddRoomSharer,
     AddMasterProfile,
-    MainComponent,
+    // MainComponent,
     MessageContent,
     PreferenceContent,
     RemarksContent,
     TaskContent,
-    AddTravel
+    AddTravel,
+    SendInvoice,
+    PrintInvoice,
+    PrintInvoice,
+    SendInvoice
   },
   data ()
   {
@@ -530,7 +546,7 @@ export default {
       offcanvasTitle: "",
       sidebarWidth: "400px",
       dynamicButtonText: "Save",
-      activeComponent: "DefaultContent",
+      activeComponent: "DefaultComponentGuest",
       bookingDetailsComponent: "MainComponent",
       activeTab: null, // No tab is active by default
     };
@@ -540,7 +556,7 @@ export default {
     {
       this.activeTab = tab;
     },
-    setOffcanvasContent (content, title, width = "400px", buttonText = "Save")
+    setOffcanvasContent (content, title, buttonText = "Save", width = "400px")
     {
       this.currentContent = content; // Set the content type
       this.offcanvasTitle = title; // Set the title for the offcanvas
@@ -554,7 +570,7 @@ export default {
     },
     goBack ()
     {
-      this.activeComponent = "DefaultContent";
+      this.activeComponent = "DefaultComponentGuest";
       this.bookingDetailsComponent = "MainComponent";
     },
   },
