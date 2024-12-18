@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button type="button" class="btn btn-outline-secondary mb-3 mt-2" @click="$emit('goBack')">
+    <button type="button" class="btn btn-outline-secondary mb-3 mt-2" @click="$emit('goBack', 'bookingDetailsComponent')">
       <i class="fa-solid fa-angle-left pr-2" style="color: #6f6b7d"></i>
 
       Massage

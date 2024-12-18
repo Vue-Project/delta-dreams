@@ -847,14 +847,14 @@
 <script>
 
 export default {
-  name: "MainTesting",
+  name: "DefaultContentBooking",
   layout: "component",
-  props: {
-    setOffcanvasContent: {
-      type: Function,
-      required: true, // Ensure the parent passes the method
-    },
+  // props: {
+  //   setOffcanvasContent: {
+  //     type: Function,
+  //     required: true, // Ensure the parent passes the method
+  //   },
 
-  }
+  // }
 }
 </script>
