@@ -20,13 +20,13 @@
         <div class="popoverContent text-center">
           <div class="row" style="row-gap: 0px">
             <!-- Display first selected day -->
-            <div class="ant-col col-6">
+            <div class="col-6">
               <div class="text-black fw-bold">Arrival</div>
               <div class="">{{ firstSelectedDate }}</div>
             </div>
 
             <!-- Display last selected day -->
-            <div class="ant-col col-6">
+            <div class="col-6">
               <div class="text-black fw-bold">Departure</div>
               <div>{{ lastSelectedDate }}</div>
             </div>
@@ -162,6 +162,10 @@ export default {
         { id: "a", title: "Room A", subrooms: ["A1", "A2", "A3"] },
         { id: "b", title: "Room B", subrooms: ["B1", "B2", "B3"] },
         { id: "c", title: "Room C", subrooms: ["C1", "C2", "C3"] },
+        { id: "5", title: "Room C", subrooms: ["C1", "C2", "C3"] },
+        { id: "6", title: "Room C", subrooms: ["C1", "C2", "C3"] },
+        { id: "7", title: "Room C", subrooms: ["C1", "C2", "C3"] },
+        { id: "8", title: "Room C", subrooms: ["C1", "C2", "C3"] },
       ];
       const resources = [];
 
@@ -333,104 +337,127 @@ export default {
      */
     customResourceHeader ()
     {
-      const container = document.createElement("div");
-      container.classList.add("resource-header");
-      container.style.position = "relative"; // Ensure parent has position: relative
-
-      // Create the select element directly
-      const dropdownSelect = document.createElement("select");
-      dropdownSelect.classList.add("dropdown-menu");
-      dropdownSelect.style.position = "relative";
-      dropdownSelect.style.width = "465px";
-      dropdownSelect.style.backgroundColor = "white";
-      dropdownSelect.style.border = "1px solid #ccc";
-      dropdownSelect.style.padding = "10px";
-      dropdownSelect.style.display = "block"; // Show select box when clicked
-
-      // Create a container to display the default selected option (e.g., "Select Room")
-      const displaySelectedText = document.createElement("span");
-      displaySelectedText.textContent = "Select Room"; // Default text
-      dropdownSelect.appendChild(displaySelectedText);
-
-      // Add the options for each room (and their subrooms)
       const roomData = this.createResources(); // Assuming createResources() returns room data with subrooms
+
+      let htmlContent = `
+    <div class="resource-header" style="position: relative;">
+      <div class="btn-group" style="width: 100%;">
+        <button class="btn btn-primary dropdown-toggle waves-effect waves-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Select Room
+        </button>
+        <ul class="dropdown-menu" style="width: 100%;">
+          <li>
+            <a class="dropdown-item" href="javascript:void(0);" onclick="this.selectAll()">Select All</a>
+          </li>
+  `;
+
+      // Add room and subroom options with checkboxes
       roomData.forEach((resource) =>
       {
-        const option = document.createElement("option");
-        option.value = resource.id;
-        option.textContent = `Room: ${resource.title}`;
-        dropdownSelect.appendChild(option);
+        htmlContent += `
+      <li>
+        <div class="form-check" style="padding:10px 40px"">
+                            <input type="checkbox" class="form-check-input" id="bs-validation-checkbox"  data-id="${resource.id}" onchange="this.filterData()">
+                            <label class="form-check-label" for="bs-validation-checkbox">   Room: ${resource.title}</label>
+                            <div class="invalid-feedback">You must agree before submitting.</div>
+                          </div>
 
-        // Add options for subrooms if available
+      </li>
+    `;
+
         if (resource.subrooms && Array.isArray(resource.subrooms)) {
           resource.subrooms.forEach((subroom) =>
           {
-            const subOption = document.createElement("option");
-            subOption.value = subroom.id;
-            subOption.textContent = `Subroom: ${subroom.title}`;
-            dropdownSelect.appendChild(subOption);
+            htmlContent += `
+          <li>
+            <label class="dropdown-item">
+              <input type="checkbox" class="subroom-checkbox" data-id="${subroom.id}" data-room-id="${resource.id}" onchange="this.filterData()">
+              Subroom: ${subroom.title}
+            </label>
+          </li>
+        `;
           });
         }
+      });
 
-        // Toggle resource expand/collapse based on room selection
-        option.addEventListener("change", () =>
+      htmlContent += `
+        </ul>
+      </div>
+      <i class="fa-solid ${this.isExpanded ? "fa-minus" : "fa-plus"
+        }" style="cursor: pointer; margin-left: 8px;" onclick="this.toggleResourceExpand();"></i>
+    </div>
+
+    <!-- Table to display filtered data -->
+    <table class="table table-bordered mt-3" id="resourceTable">
+      <thead>
+        <tr>
+          <th>Room</th>
+          <th>Subroom</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Dynamic rows will go here -->
+      </tbody>
+    </table>
+  `;
+
+      // Convert the HTML string to a DOM node
+      const div = document.createElement("div");
+      div.innerHTML = htmlContent.trim(); // Use trim() to remove unnecessary whitespace
+
+      // Return the DOM node
+      return { domNodes: [div.firstElementChild] };
+    },
+
+    // Method to filter data based on selected checkboxes
+    filterData ()
+    {
+      // Get all checked checkboxes
+      const checkedRooms = Array.from(
+        document.querySelectorAll(".room-checkbox:checked")
+      ).map((checkbox) => checkbox.dataset.id);
+      const checkedSubrooms = Array.from(
+        document.querySelectorAll(".subroom-checkbox:checked")
+      ).map((checkbox) => checkbox.dataset.id);
+
+      // Filter the rooms and subrooms based on selected checkboxes
+      const filteredData = this.createResources().filter((resource) =>
+      {
+        const roomSelected = checkedRooms.includes(resource.id.toString());
+        const subroomsSelected =
+          resource.subrooms &&
+          resource.subrooms.some((subroom) =>
+            checkedSubrooms.includes(subroom.id.toString())
+          );
+        return roomSelected || subroomsSelected;
+      });
+
+      // Update the table with filtered data
+      const tableBody = document.querySelector("#resourceTable tbody");
+      tableBody.innerHTML = ""; // Clear existing rows
+
+      filteredData.forEach((resource) =>
+      {
+        resource.subrooms.forEach((subroom) =>
         {
-          if (option.selected) {
-            this.toggleResourceExpand(resource.id);
-            // Select subrooms if the parent room is selected
-            if (resource.subrooms) {
-              resource.subrooms.forEach((subroom) =>
-              {
-                this.toggleResourceExpand(subroom.id);
-              });
-            }
-          }
+          const row = document.createElement("tr");
+          row.innerHTML = `
+        <td>${resource.title}</td>
+        <td>${subroom.title}</td>
+      `;
+          tableBody.appendChild(row);
         });
       });
+    },
 
-      // Handle "Select All" functionality
-      const selectAllOption = document.createElement("option");
-      selectAllOption.value = "selectAll";
-      selectAllOption.textContent = "Select All";
-      dropdownSelect.insertBefore(selectAllOption, dropdownSelect.firstChild); // Add Select All as the first option
-
-      // Function to update the dropdown text based on selected options
-      function updateSelectedText ()
-      {
-        const selectedOptions = dropdownSelect.selectedOptions;
-        const selectedTitles = Array.from(selectedOptions)
-          .map((option) => option.textContent)
-          .join(", ");
-
-        // Update the displayed text inside the select box
-        displaySelectedText.textContent = selectedTitles || "Select Room";
-
-        // Show the "Select All" option only when nothing is selected
-        selectAllOption.style.display =
-          selectedOptions.length > 0 ? "none" : "block";
-      }
-
-      // Attach event to update selected options when selection changes
-      dropdownSelect.addEventListener("change", updateSelectedText);
-
-      // Add the collapse/expand icon
-      const icon = document.createElement("i");
-      icon.classList.add("fa-solid", this.isExpanded ? "fa-minus" : "fa-plus");
-      icon.style.cursor = "pointer";
-      icon.style.marginLeft = "8px";
-
-      // Click event to toggle collapse/expand all
-      icon.addEventListener("click", () =>
-      {
-        this.toggleResourceExpand(); // Toggle expand/collapse all
-      });
-
-      container.appendChild(icon); // Append icon first
-
-      // Ensure that the dropdown is added to the DOM
-      container.appendChild(dropdownSelect);
-
-      return { domNodes: [container] };
+    // Optional: Select all checkboxes
+    selectAll ()
+    {
+      const allCheckboxes = document.querySelectorAll(
+        ".room-checkbox, .subroom-checkbox"
+      );
+      allCheckboxes.forEach((checkbox) => (checkbox.checked = true));
+      this.filterData();
     },
 
     /**
@@ -495,11 +522,23 @@ export default {
           }
         });
       }
-
-
     },
   },
 };
 </script>
 
-<style></style>
+<style scoped>
+.fc .fc-datagrid-cell-cushion,
+.fc .fc-scroller-harness,
+.fc-scroller {
+  overflow: visible !important;
+}
+
+.fc-scrollgrid-sync-inner {
+  width: 100%;
+}
+
+.fc-datagrid-expander-placeholder {
+  display: none !important;
+}
+</style>
