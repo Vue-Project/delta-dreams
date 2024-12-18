@@ -61,10 +61,7 @@ export default {
   name: "AddCard",
   layout: "component",
 
-  data ()
-  {
 
-  },
 
 };
 </script>

@@ -59,6 +59,8 @@
     </div>
     <HeaderReservation>
       <template #button>
+        <!--  Start Nav Tabs -->
+
         <li class="nav-item" role="presentation">
           <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#form-tabs-FolioOperation" role="tab" aria-selected="false" tabindex="-1">
             Folio Operations
@@ -89,6 +91,9 @@
             Audit Trail
           </button>
         </li>
+        <!--  End Nav Tabs -->
+
+        <!--  Start print/Send Menu -->
         <div class="btn-group ms-auto">
           <button type="button" class="btn btn-outline-primary dropdown-toggle waves-effect waves-light" data-bs-toggle="dropdown" aria-expanded="false">
             print/Send
@@ -102,7 +107,11 @@
             </li>
           </ul>
 
-          <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEnd" aria-labelledby="offcanvasEndLabel" :style="{ width: sidebarWidth }">
+          <!--  End print/Send Menu -->
+
+          <!--  Start  offcanvas Menu -->
+
+          <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEnd" aria-labelledby="offcanvasEndLabel" :style="{ width: sidebarWidth }" ref="offcanvas">
             <div class="offcanvas-header">
               <h5 id="offcanvasEndLabel" class="offcanvas-title">
                 {{ offcanvasTitle }}
@@ -158,10 +167,13 @@
               </div>
             </div>
           </div>
+          <!--  End  offcanvas Menu -->
+
         </div>
+
       </template>
       <template #content>
-        <!-- Folio Operation  -->
+        <!-- Start Folio Operation Tab  -->
         <div class="tab-pane fade active show" id="form-tabs-FolioOperation" role="tabpanel">
           <div class="row">
             <div class="col-3 p-0" style="border-right: 1px solid #e1e0e3">
@@ -198,8 +210,9 @@
             </div>
           </div>
         </div>
-        <!-- Booking Details  -->
+        <!-- End Folio Operation Tab   -->
 
+        <!-- Start Booking Details Tab -->
         <div class="tab-pane fade" id="form-tabs-BookingDetails" role="tabpanel">
           <div class="row">
             <!-- inside tabs  -->
@@ -268,7 +281,9 @@
             </div>
           </div>
         </div>
-        <!-- Guest Details  -->
+        <!-- End Booking Details Tab -->
+
+        <!-- Start Guest Details Tab -->
         <div class="tab-pane fade" id="form-tabs-GuestDetails" role="tabpanel">
           <div class="row">
             <!-- Sidebar -->
@@ -333,7 +348,9 @@
             </div>
           </div>
         </div>
-        <!-- Room Charges  -->
+        <!-- End Guest Details Tab -->
+
+        <!-- Start Room Charges Tab  -->
         <div class="tab-pane fade" id="form-tabs-RoomCharges" role="tabpanel">
           <div class="d-flex">
             <button class="btn btn-outline-secondary waves-effect me-1" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('updatedetails', 'Updatedetails')">
@@ -391,7 +408,9 @@
             </table>
           </div>
         </div>
-        <!--Credit Card  -->
+        <!-- End  Room Charges Tab  -->
+
+        <!-- Start Credit Card  tab -->
         <div class="tab-pane fade" id="form-tabs-CreditCard" role="tabpanel">
           <button class="btn btn-outline-secondary waves-effect me-1" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('addcard', 'Merchant')">
             Add Card
@@ -413,7 +432,9 @@
             </table>
           </div>
         </div>
-        <!-- Audit Trail  -->
+        <!-- eND Credit Card  tab -->
+
+        <!--  Start Audit Trail tab  -->
         <div class="tab-pane fade" id="form-tabs-AuditTrail" role="tabpanel">
           <div class="table-responsive text-nowrap">
             <table class="table">
@@ -488,6 +509,8 @@
             </table>
           </div>
         </div>
+        <!--  End Audit Trail tab  -->
+
       </template>
     </HeaderReservation>
   </div>
@@ -563,6 +586,12 @@ export default {
       this.sidebarWidth = width; // Set the sidebar width
       this.dynamicButtonText = buttonText; // Set the button text dynamically
     },
+    clearOffcanvasContent ()
+    {
+      this.currentContent = null; // Reset the content
+      this.offcanvasTitle = ''; // Reset the title
+      this.sidebarWidth = '400px'; // Reset the sidebar width
+    },
     loadComponent (componentName)
     {
       this.activeComponent = componentName;
@@ -581,49 +610,38 @@ export default {
       ? JSON.parse(this.$route.query.cardData)
       : null;
     this.card = cardData;
+
+    // Add the event listener for offcanvas close
+    this.$nextTick(() =>
+    {
+      const offcanvasElement = this.$refs.offcanvas;
+      if (offcanvasElement) {
+        offcanvasElement.addEventListener(
+          "hidden.bs.offcanvas",
+          this.clearOffcanvasContent
+        );
+      } else {
+        console.error("Offcanvas ref not found.");
+      }
+    });
   },
-};
+
+  beforeDestroy ()
+  {
+    const offcanvasElement = this.$refs.offcanvas;
+    if (offcanvasElement) {
+      offcanvasElement.removeEventListener(
+        "hidden.bs.offcanvas",
+        this.clearOffcanvasContent
+      );
+    } else {
+      console.warn("Offcanvas ref not found during beforeDestroy.");
+    }
+  },
+
+
+}
+  ;
 </script>
 
-<style>
-/* حقل الإدخال مع أيقونات */
-/* الحقل مع الأيقونات */
-.input-with-icon .icon-input {
-  padding-left: 35px;
-  padding-right: 35px;
-  /* مساحة للأيقونة اليمنى */
-  height: 40px;
-  font-size: 1rem;
-}
-
-/* تصميم الحاوية */
-.input-with-icon .input-wrapper {
-  position: relative;
-}
-
-/* الأيقونة في البداية */
-.input-with-icon .input-icon {
-  position: absolute;
-  left: 10px;
-  /* ضعها في الجانب الأيسر */
-  top: 50%;
-  transform: translateY(-50%);
-  color: #aaa;
-}
-
-/* الأيقونة في النهاية */
-.input-with-icon .input-icon-right {
-  position: absolute;
-  right: 10px;
-  /* ضعها في الجانب الأيمن */
-  top: 50%;
-  transform: translateY(-50%);
-  color: #aaa;
-  pointer-events: none;
-  /* يمنع تفاعل المستخدم مع الأيقونة */
-}
-
-.me-2 h6 {
-  margin-bottom: 5px;
-}
-</style>
+<style></style>

@@ -119,7 +119,7 @@ export default {
   name: "UpdateDetails",
   layout: "component",
 
-  data () { },
+
   mixins: [flatpickrMixin],
 };
 </script>

@@ -81,7 +81,7 @@ export default {
   name: "ApplyDiscount",
   layout: "component",
 
-  data () { },
+
   mixins: [flatpickrMixin],
 };
 </script>
