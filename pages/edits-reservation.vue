@@ -100,10 +100,22 @@
           </button>
           <ul class="dropdown-menu">
             <li>
-              <a class="dropdown-item" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('printinvoice', 'Print Invoice', 'Send Email')">Print invoice</a>
+              <a class="dropdown-item" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="
+                setOffcanvasContent(
+                  'printinvoice',
+                  'Print Invoice',
+                  'Send Email'
+                )
+                ">Print invoice</a>
             </li>
             <li>
-              <a class="dropdown-item" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('sendinvoice', 'Send Invoice', 'Send Email')">Send invoice</a>
+              <a class="dropdown-item" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="
+                setOffcanvasContent(
+                  'sendinvoice',
+                  'Send Invoice',
+                  'Send Email'
+                )
+                ">Send invoice</a>
             </li>
           </ul>
 
@@ -120,38 +132,50 @@
             </div>
             <hr />
             <div class="offcanvas-body mx-0 flex-grow-0 pt-0">
-              <div v-if="currentContent === 'payment'">
-                <h1>Add Payment</h1>
-                <p>Content for adding payment.</p>
+              <!--  start sidebar content for tap Folio Operation -->
+              <div v-if="currentContent === 'newfolio'">
+                <NewFolio />
               </div>
-              <div v-if="currentContent === 'charges'">
-                <h1>Add Charges</h1>
-                <p>Content for adding charges.</p>
+              <div v-if="currentContent === 'addpayment'">
+                <AddPayment />
               </div>
-              <div v-if="currentContent === 'discount'">
-                <h1>Apply Discount</h1>
-                <p>Content for applying discount.</p>
+              <div v-if="currentContent === 'addcharges'">
+                <AddCharges />
               </div>
-              <div v-if="currentContent === 'operation'">
-                <h1>Folio Operation</h1>
-                <p>Content for folio operation.</p>
+              <div v-if="currentContent === 'adddiscount'">
+                <AddDiscount />
               </div>
+              <div v-if="currentContent === 'addoperation'">
+                <AddOperation />
+              </div>
+              <!--  end sidebar content for tap Folio Operation -->
+
+              <!--  start sidebar content for tap Credit Card -->
 
               <div v-if="currentContent === 'addcard'">
                 <AddCard />
               </div>
+              <!--  End sidebar content for tap Credit Card -->
+
+              <!--  start sidebar content for tap Room Charges -->
               <div v-if="currentContent === 'updatedetails'">
                 <UpdateDetails />
               </div>
               <div v-if="currentContent === 'applydiscount'">
                 <ApplyDiscount />
               </div>
+              <!--  End sidebar content for tap Room Charges -->
+
+              <!--  start sidebar content for PRint and send menu -->
+
               <div v-if="currentContent === 'printinvoice'">
                 <print-invoice />
               </div>
               <div v-if="currentContent === 'sendinvoice'">
                 <send-invoice />
               </div>
+              <!--  End  sidebar content for PRint and send menu -->
+
               <!-- <div v-if="currentContent === 'addtravel'">
                 <AddTravel />
               </div>
@@ -168,9 +192,7 @@
             </div>
           </div>
           <!--  End  offcanvas Menu -->
-
         </div>
-
       </template>
       <template #content>
         <!-- Start Folio Operation Tab  -->
@@ -179,34 +201,112 @@
             <div class="col-3 p-0" style="border-right: 1px solid #e1e0e3">
               <div class="d-flex justify-content-between">
                 <h6>Room/Folio</h6>
-                <button type="button" class="btn btn-outline-primary waves-effect mb-2 me-2" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('payment', 'Add Payment')">
+                <button type="button" class="btn btn-outline-primary waves-effect mb-2 me-2" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('newfolio', 'New folio')">
                   <i class="fa-solid fa-plus"></i>
                 </button>
+              </div>
+              <div class="accordion mt-3" id="accordionExample">
+                <div class="card accordion-item active">
+                  <h2 class="accordion-header" id="headingOne">
+                    <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionfour" aria-expanded="true" aria-controls="accordionfour">
+                      Suite الفندق غرفتين وصاله
+                    </button>
+                  </h2>
+
+                  <div id="accordionfour" class="accordion-collapse collapse show" data-bs-parent="#accordionExample" style="">
+                    <!-- Identity Information -->
+                    <div class="row accordion-body">
+                      <div class="accordion mt-3" id="accordionExample">
+                        <div class="card accordion-item active">
+                          <h2 class="accordion-header" id="headingOne">
+                            <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionfour" aria-expanded="true" aria-controls="accordionfour">
+                              105
+                            </button>
+                          </h2>
+
+                          <div id="accordionfour" class="accordion-collapse collapse show" data-bs-parent="#accordionExample" style="">
+                            <!-- Identity Information -->
+                            <div class="row accordion-body">
+                              <div>
+                                <div>
+                                  <i class="fa-solid fa-hexagon -nodes"></i>Mr.
+                                  مستر شريف ضيافه محمد ذكى
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
               <hr class="m-0" />
             </div>
 
             <div class="col-9">
-              <div class="d-flex justify-content-between">
-                <div class="d-flex">
-                  <button class="btn btn-outline-secondary waves-effect me-1" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('payment', 'Add Payment')">
-                    Add payment
-                  </button>
+              <div class="d-flex mb-2">
+                <button class="btn btn-outline-secondary waves-effect me-1" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('addpayment', 'Add Payment')">
+                  Add payment
+                </button>
 
-                  <button type="button" class="btn btn-outline-secondary waves-effect me-1" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('charges', 'Add Charges')">
-                    Add Charges
-                  </button>
+                <button type="button" class="btn btn-outline-secondary waves-effect me-1" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('addcharges', 'Add Charges')">
+                  Add Charges
+                </button>
 
-                  <button type="button" class="btn btn-outline-secondary waves-effect me-1" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('discount', 'Apply Discount')">
-                    Apply Discount
-                  </button>
+                <button type="button" class="btn btn-outline-secondary waves-effect me-1" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('adddiscount', 'Apply Discount')">
+                  Apply Discount
+                </button>
 
-                  <button type="button" class="btn btn-outline-secondary waves-effect me-1" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('operation', 'Folio Operation')">
-                    Folio Operation
-                  </button>
-                </div>
+                <button type="button" class="btn btn-outline-secondary waves-effect me-1" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('addoperation', 'Add Operation')">
+                  Folio Operation
+                </button>
               </div>
-              <hr class="m-0" />
+
+              <div class="table-responsive text-nowrap">
+                <table class="table">
+                  <thead class="table-light">
+                    <tr>
+                      <th>
+                        <div class="form-check text-left">
+                          <input class="form-check-input" type="checkbox" id="userManagementRead" />
+                          <label class="form-check-label" for="userManagementRead">
+                            08/12/2024 Sun
+                          </label>
+                        </div>
+                      </th>
+                      <th>Room</th>
+                      <th>Rate Type</th>
+                      <th>Pax(A/C)</th>
+                      <th>Charge</th>
+                      <th>Discount</th>
+                      <th>Tax</th>
+                      <th>Adjustment</th>
+                      <th>Net Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody class="table-border-bottom-0">
+                    <tr>
+                      <td>
+                        <div class="form-check me-3 me-lg-5">
+                          <input class="form-check-input" type="checkbox" id="userManagementRead" />
+                          <label class="form-check-label" for="userManagementRead">
+                            08/12/2024 Sun
+                          </label>
+                        </div>
+                      </td>
+                      <td>252-Test</td>
+                      <td>السعر شامل الافطار</td>
+                      <td>1/0</td>
+                      <td>100.00</td>
+                      <td>0.0</td>
+                      <td>0.00</td>
+                      <td>0.00</td>
+                      <td>100.00</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
@@ -216,14 +316,14 @@
         <div class="tab-pane fade" id="form-tabs-BookingDetails" role="tabpanel">
           <div class="row">
             <!-- inside tabs  -->
-            <div class="col-12">
-              <!-- header  -->
-              <div class="card-header pt-2">
+            <!-- header  -->
+            <div class="card-header pt-2">
+              <div v-if="bookingDetailsComponent === 'DefaultContentBooking'" class="pe-2">
                 <ul class="nav nav-tabs card-header-tabs justify-content-end" role="tablist">
                   <li class="nav-item" role="presentation">
                     <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-Remark" role="tab" aria-selected="false" tabindex="-1" @click="
-                      loadComponent('RemarksContent');
-                    setActiveTab('Remark');
+                      setActiveTab('Remark');
+                    loadComponent('RemarksContent', 'bookingDetailsComponent');
                     " :class="{ active: activeTab === 'Remark' }">
                       <span>Remark</span>
                       <span class="badge badge-center rounded-pill bg-label-primary ms-1">0</span>
@@ -231,8 +331,11 @@
                   </li>
                   <li class="nav-item" role="presentation">
                     <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-Task" role="tab" aria-selected="false" tabindex="-1" :class="{ active: activeTab === 'Task' }" @click="
-                      setActiveTab('Task');
-                    loadComponent('TaskContent');
+                      setActiveTab('Preference');
+                    loadComponent(
+                      'TaskContent',
+                      'bookingDetailsComponent'
+                    );
                     ">
                       <span>Task</span>
                       <span class="badge badge-center rounded-pill bg-label-primary ms-1">0</span>
@@ -241,43 +344,39 @@
                   <li class="nav-item" role="presentation">
                     <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-Message" role="tab" aria-selected="true" :class="{ active: activeTab === 'Message' }" @click="
                       setActiveTab('Message');
-                    loadComponent('MessageContent');
+                    loadComponent('MessageContent', 'bookingDetailsComponent');
                     ">
-                      >
                       <span>Message</span>
                       <span class="badge badge-center rounded-pill bg-label-primary ms-1">0</span>
                     </button>
                   </li>
                   <li class="nav-item" role="presentation">
-                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-Preference" role="tab" aria-selected="true" :class="{ active: activeTab === 'Preference' }" @click="
-                      setActiveTab('Preference');
-                    loadComponent('PreferenceContent');
-                    ">
-                      >
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-Preference" role="tab" aria-selected="true" @click="
+                      setActiveTab('Preference'),
+                      loadComponent('PreferenceContent', 'bookingDetailsComponent')
+                      ">
                       <span>Preference</span>
                       <span class="badge badge-center rounded-pill bg-label-primary ms-1">0</span>
                     </button>
                   </li>
                 </ul>
               </div>
-
-              <!-- content  -->
-              <div class="tab-content d-none">
-                <!-- remark  -->
-                <div class="tab-pane fade" id="form-tabs-Remark" role="tabpanel" :style="{
-                  display: activeTab === 'Remark' ? 'block' : 'none',
-                }"></div>
-                <!-- task  -->
-                <div class="tab-pane fade" id="form-tabs-Task" role="tabpanel" :class="{ 'show active': activeTab === 'Task' }"></div>
-                <!-- message  -->
-                <div class="tab-pane fade" id="form-tabs-Message" role="tabpanel" :class="{ 'show active': activeTab === 'Message' }"></div>
-                <!-- pereference  -->
-                <div class="tab-pane fade" id="form-tabs-Preference" role="tabpanel" :class="{ 'show active': activeTab === 'Preference' }"></div>
-              </div>
-              <!-- <div v-if="bookingDetailsComponent === 'MainComponent'" class="pe-2">
-
-                <component :is="bookingDetailsComponent" @goBack="goBack" :setOffcanvasContent="setOffcanvasContent" />
+            </div>
+            <!-- <div class="col-9">
+                <component :is="activeComponent" @goBack="goBack" />
               </div> -->
+            <div class="col-12">
+              <component :is="bookingDetailsComponent" @goBack="goBack" />
+            </div>
+            <!-- content  -->
+            <div class="tab-content">
+              <div class="tab-pane fade" id="form-tabs-Remark" role="tabpanel" :class="{ 'show active': activeTab === 'Remark' }"></div>
+              <!-- task  -->
+              <div class="tab-pane fade" id="form-tabs-Task" role="tabpanel" :class="{ 'show active': activeTab === 'Task' }"></div>
+              <!-- message  -->
+              <div class="tab-pane fade" id="form-tabs-Message" role="tabpanel" :class="{ 'show active': activeTab === 'Message' }"></div>
+              <!-- pereference  -->
+              <div class="tab-pane fade" id="form-tabs-Preference" role="tabpanel" :class="{ 'show active': activeTab === 'Preference' }"></div>
             </div>
           </div>
         </div>
@@ -296,7 +395,6 @@
                       <i class="fa-solid fa-user"></i>
                     </button>
                     <button type="button" class="btn btn-outline-primary waves-effect mb-2" @click="loadComponent('AddRoomSharer')">
-
                       <i class="fa-solid fa-plus"></i>
                     </button>
                   </div>
@@ -352,12 +450,17 @@
 
         <!-- Start Room Charges Tab  -->
         <div class="tab-pane fade" id="form-tabs-RoomCharges" role="tabpanel">
-          <div class="d-flex">
+          <div class="d-flex mb-2">
             <button class="btn btn-outline-secondary waves-effect me-1" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('updatedetails', 'Updatedetails')">
               Update Details
             </button>
             <button class="btn btn-outline-secondary waves-effect me-1" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="
-              setOffcanvasContent('applydiscount', 'ApplyDiscount', 'save', '1200px')
+              setOffcanvasContent(
+                'applydiscount',
+                'ApplyDiscount',
+                'save',
+                '1200px'
+              )
               ">
               Apply Discount
             </button>
@@ -510,7 +613,6 @@
           </div>
         </div>
         <!--  End Audit Trail tab  -->
-
       </template>
     </HeaderReservation>
   </div>
@@ -531,13 +633,18 @@ import ApplyDiscount from "../components/SiderbarContentEdit/ApplyDiscount.vue";
 import DefaultComponentGuest from "../components/SiderbarContentEdit/GuestDetailsComponents/DefaultComponentGuest.vue";
 import AddRoomSharer from "../components/SiderbarContentEdit/GuestDetailsComponents/AddRoomSharer.vue";
 import AddMasterProfile from "../components/SiderbarContentEdit/GuestDetailsComponents/AddMasterProfile.vue";
-// import MainComponent from "../components/SiderbarContentEdit/BookingDetailsComponents/DefualtContent.vue";
+import DefaultContentBooking from "../components/SiderbarContentEdit/BookingDetailsComponents/DefaultContentBooking.vue";
 import MessageContent from "../components/SiderbarContentEdit/BookingDetailsComponents/MessageContent.vue";
 import PreferenceContent from "../components/SiderbarContentEdit/BookingDetailsComponents/PreferenceContent.vue";
 import RemarksContent from "../components/SiderbarContentEdit/BookingDetailsComponents/RemarksContent.vue";
 import TaskContent from "../components/SiderbarContentEdit/BookingDetailsComponents/TaskContent.vue";
-import SendInvoice from '../components/SiderbarContentEdit/SendInvoice.vue';
-import PrintInvoice from '../components/SiderbarContentEdit/PrintInvoice.vue';
+import SendInvoice from "../components/SiderbarContentEdit/SendInvoice.vue";
+import PrintInvoice from "../components/SiderbarContentEdit/PrintInvoice.vue";
+import NewFolio from "../components/SiderbarContentEdit/NewFolio.vue";
+import AddPayment from "../components/SiderbarContentEdit/AddPayment.vue";
+import AddCharges from "../components/SiderbarContentEdit/AddCharges.vue";
+import AddDiscount from "../components/SiderbarContentEdit/AddDiscount.vue";
+import AddOperation from "../components/SiderbarContentEdit/AddOperation.vue";
 export default {
   name: "EditsPage",
   layout: "main",
@@ -550,7 +657,7 @@ export default {
     DefaultComponentGuest,
     AddRoomSharer,
     AddMasterProfile,
-    // MainComponent,
+    DefaultContentBooking,
     MessageContent,
     PreferenceContent,
     RemarksContent,
@@ -559,7 +666,12 @@ export default {
     SendInvoice,
     PrintInvoice,
     PrintInvoice,
-    SendInvoice
+    SendInvoice,
+    NewFolio,
+    AddPayment,
+    AddCharges,
+    AddOperation,
+    AddDiscount,
   },
   data ()
   {
@@ -570,7 +682,7 @@ export default {
       sidebarWidth: "400px",
       dynamicButtonText: "Save",
       activeComponent: "DefaultComponentGuest",
-      bookingDetailsComponent: "MainComponent",
+      bookingDetailsComponent: "DefaultContentBooking",
       activeTab: null, // No tab is active by default
     };
   },
@@ -589,18 +701,29 @@ export default {
     clearOffcanvasContent ()
     {
       this.currentContent = null; // Reset the content
-      this.offcanvasTitle = ''; // Reset the title
-      this.sidebarWidth = '400px'; // Reset the sidebar width
+      this.offcanvasTitle = ""; // Reset the title
+      this.sidebarWidth = "400px"; // Reset the sidebar width
     },
-    loadComponent (componentName)
+    // Load a new active component (specific for guest or another area)
+    loadComponent (componentName, target = "activeComponent")
     {
-      this.activeComponent = componentName;
-      this.bookingDetailsComponent = componentName;
+      if (target === "activeComponent") {
+        this.activeComponent = componentName;
+      } else if (target === "bookingDetailsComponent") {
+        this.bookingDetailsComponent = componentName;
+      }
     },
-    goBack ()
+    // Reset each component independently
+    goBack (target = "activeComponent")
     {
-      this.activeComponent = "DefaultComponentGuest";
-      this.bookingDetailsComponent = "MainComponent";
+      if (target === "activeComponent") {
+        this.activeComponent = "DefaultComponentGuest"; // Reset for activeComponent
+      } else if (target === "bookingDetailsComponent") {
+        this.bookingDetailsComponent = "DefaultContentBooking"; // Reset for bookingDetailsComponent
+        console.log("Reset bookingDetailsComponent to DefaultContentBooking");
+      } else {
+        console.warn(`Invalid target: ${target}`);
+      }
     },
   },
   mixins: [flatpickrMixin],
@@ -638,10 +761,7 @@ export default {
       console.warn("Offcanvas ref not found during beforeDestroy.");
     }
   },
-
-
-}
-  ;
+};
 </script>
 
 <style></style>
