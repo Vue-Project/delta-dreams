@@ -7,6 +7,24 @@
         <b>{{ arg.event.title }}</b>
       </template>
     </FullCalendar>
+    <div id="calendar-footer">
+      <table class="ant-table">
+        <tbody class="ant-table-tbody">
+          <tr style="background: #F1F1F1;">
+            <!-- Title Column -->
+            <td title="Room Occupancy %" colspan="2" style="text-align: left; padding: 0 15px;">
+              Room Occupancy %
+            </td>
+
+            <!-- Data Columns -->
+            <td v-for="(data, index) in occupancyData" :key="index">
+              {{ data }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
 
     <!-- FullCalendar -->
 
@@ -72,7 +90,8 @@ export default {
       popoverArrowLeft: "0px", // Inline style for arrow positioning
       firstSelectedDate: "", // Store first selected date
       lastSelectedDate: "",
-      // Store last selected date
+      occupancyData: [1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 50, 0, 0, 20, 80, 19, 100],
+
       calendarOptions: {
         plugins: [resourceTimelinePlugin, interactionPlugin],
         initialView: "resourceTimeline",
@@ -92,48 +111,111 @@ export default {
         slotDuration: "24:00", // Slot duration of one day
 
         // Customize only the required slot level
+        // slotLabelContent: (arg) =>
+        // {
+        //   const date = new Date(arg.date);
+
+        //   if (arg.level === 0) {
+        //     // Higher-level: Months
+        //     const month = date.toLocaleDateString("en-US", { month: "short" });
+
+        //     return {
+        //       html: `
+        //   <div class="custom-slot-label">
+        //     <div class="slot-month">${month}</div>
+        //   </div>
+        // `,
+        //     };
+        //   }
+
+        //   if (arg.level === 1) {
+        //     // Lower-level: Days
+        //     const day = date.toLocaleDateString("en-US", { day: "2-digit" });
+        //     const weekday = date.toLocaleDateString("en-US", {
+        //       weekday: "short",
+        //     });
+
+        //     return {
+        //       html: `
+        //   <div class="custom-slot-label">
+        //     <div class="slot-day">${day}</div>
+        //     <div class="slot-weekday">${weekday}</div>
+        //   </div>
+        // `,
+        //     };
+        //   }
+
+        //   return null; // For other levels, return null (if any)
+        // },
         slotLabelContent: (arg) =>
         {
           const date = new Date(arg.date);
+          const units = 50; // Example static units (can be dynamically set)
+          const price = "$200"; // Example static price (can be dynamically set)
 
+          // For level 0 (Months), show only the month
           if (arg.level === 0) {
-            // Higher-level: Months
             const month = date.toLocaleDateString("en-US", { month: "short" });
-
             return {
               html: `
-          <div class="custom-slot-label">
-            <div class="slot-month">${month}</div>
-          </div>
-        `,
+              <div class="custom-slot-label">
+                <div class="slot-month">${month}</div>
+              </div>
+            `,
             };
           }
 
+          // For level 1 (Days), show only the day and weekday
           if (arg.level === 1) {
-            // Lower-level: Days
             const day = date.toLocaleDateString("en-US", { day: "2-digit" });
-            const weekday = date.toLocaleDateString("en-US", {
-              weekday: "short",
-            });
-
+            const weekday = date.toLocaleDateString("en-US", { weekday: "short" });
             return {
               html: `
-          <div class="custom-slot-label">
-            <div class="slot-day">${day}</div>
-            <div class="slot-weekday">${weekday}</div>
-          </div>
-        `,
+              <div class="custom-slot-label">
+                <div class="slot-day">${day}</div>
+                <div class="slot-weekday">${weekday}</div>
+              </div>
+            `,
             };
           }
 
           return null; // For other levels, return null (if any)
         },
 
+        datesSet: function (info)
+        {
+          console.log("datesSet called", info); // Debugging
+          // Inject custom content for each slot lane dynamically (if necessary)
+          document.querySelectorAll('.fc-timeline-slot-lane').forEach((slotLane) =>
+          {
+            const units = 50; // Adjust logic to get correct unit data
+            const price = "$200"; // Adjust logic to get correct price data
+
+            // Check if the slot lane is not already having units and price added
+            if (!slotLane.querySelector('.custom-slot-content')) {
+              const customContent = document.createElement('div');
+              customContent.className = 'custom-slot-content';
+              customContent.innerHTML = `
+              <div class="slot-units">Units: ${units}</div>
+              <div class="slot-price">Price: ${price}</div>
+            `;
+              slotLane.appendChild(customContent); // Append content to the slot lane
+            }
+          });
+        },
+
+
+
         resourceGroupField: "groupId",
         resourceAreaHeaderContent: this.customResourceHeader, // Customize header
         dateClick: this.handleDateClick,
         select: this.handleSelect,
         events: [], // Store events programmatically
+        footerToolbar: {
+          left: '',
+          center: '',
+          right: ''
+        },
       },
     };
   },
@@ -164,8 +246,6 @@ export default {
         { id: "c", title: "Room C", subrooms: ["C1", "C2", "C3"] },
         { id: "5", title: "Room C", subrooms: ["C1", "C2", "C3"] },
         { id: "6", title: "Room C", subrooms: ["C1", "C2", "C3"] },
-        { id: "7", title: "Room C", subrooms: ["C1", "C2", "C3"] },
-        { id: "8", title: "Room C", subrooms: ["C1", "C2", "C3"] },
       ];
       const resources = [];
 
@@ -525,21 +605,18 @@ export default {
       }
     },
   },
+  mounted ()
+  {
+    // Add a delay to ensure FullCalendar renders first
+    this.$nextTick(() =>
+    {
+      const footerElement = document.querySelector('#calendar-footer');
+      if (footerElement) {
+        footerElement.style.display = 'block'; // Ensure the footer is displayed
+      }
+    });
+  }
 };
 </script>
 
-<style>
-.fc .fc-datagrid-cell-cushion,
-.fc .fc-scroller-harness,
-.fc-scroller {
-  overflow: visible !important;
-}
-
-.fc-scrollgrid-sync-inner {
-  width: 100%;
-}
-
-.fc-datagrid-expander-placeholder {
-  display: none !important;
-}
-</style>
+<style></style>
