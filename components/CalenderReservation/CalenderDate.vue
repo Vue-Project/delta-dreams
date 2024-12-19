@@ -354,13 +354,33 @@ export default {
       // Add room and subroom options with checkboxes
       roomData.forEach((resource) =>
       {
+        //            htmlContent += `
+        //       </ul>
+        //     </div>
+        //     <i class="fa-solid ${this.isExpanded ? "fa-minus" : "fa-plus"
+        //       }" style="cursor: pointer; margin-left: 8px;" onclick="this.toggleResourceExpand();"></i>
+        //   </div>
+
+        //   <!-- Table to display filtered data -->
+        //   <table class="table table-bordered mt-3" id="resourceTable">
+        //     <thead>
+        //       <tr>
+        //         <th>Room</th>
+        //         <th>Subroom</th>
+        //       </tr>
+        //     </thead>
+        //     <tbody>
+        //       <!-- Dynamic rows will go here -->
+        //     </tbody>
+        //   </table>
+        // `
         htmlContent += `
       <li>
         <div class="form-check" style="padding:10px 40px"">
-                            <input type="checkbox" class="form-check-input" id="bs-validation-checkbox"  data-id="${resource.id}" onchange="this.filterData()">
-                            <label class="form-check-label" for="bs-validation-checkbox">   Room: ${resource.title}</label>
-                            <div class="invalid-feedback">You must agree before submitting.</div>
-                          </div>
+            <input type="checkbox" class="form-check-input" id="bs-validation-checkbox"  data-id="${resource.id}" onchange="this.filterData()">
+            <label class="form-check-label" for="bs-validation-checkbox">   Room: ${resource.title}</label>
+            <div class="invalid-feedback">You must agree before submitting.</div>
+        </div>
 
       </li>
     `;
@@ -380,26 +400,7 @@ export default {
         }
       });
 
-      htmlContent += `
-        </ul>
-      </div>
-      <i class="fa-solid ${this.isExpanded ? "fa-minus" : "fa-plus"
-        }" style="cursor: pointer; margin-left: 8px;" onclick="this.toggleResourceExpand();"></i>
-    </div>
-
-    <!-- Table to display filtered data -->
-    <table class="table table-bordered mt-3" id="resourceTable">
-      <thead>
-        <tr>
-          <th>Room</th>
-          <th>Subroom</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Dynamic rows will go here -->
-      </tbody>
-    </table>
-  `;
+      ;
 
       // Convert the HTML string to a DOM node
       const div = document.createElement("div");
@@ -527,7 +528,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .fc .fc-datagrid-cell-cushion,
 .fc .fc-scroller-harness,
 .fc-scroller {
