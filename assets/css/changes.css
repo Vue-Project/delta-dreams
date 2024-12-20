@@ -568,37 +568,11 @@ select.form-select option {
 .accordion-item {
   border-color: transparent;
 }
-.fa-ban-smoking {
+.icon-position {
   position: absolute;
-  top: -11px;
-  right: 5px;
-  border-radius: 50%;
-  color: black;
-  cursor: pointer;
-  width: 25px;
-  height: 25px;
-  text-align: center;
-  line-height: 25px;
-  background: #FFCFCF;
-  cursor: pointer;
-
+  top: -12px;
+  right: 7px;
 }
-
-.fa-broom {
-  position: absolute;
-  bottom: 7px;
-  left: 5px;
-  color: #cacaca;
-  cursor: pointer;
-  width: 25px;
-  height: 25px;
-  text-align: center;
-  line-height: 25px;
-  cursor: pointer;
-  border: 1px solid #FFCFCF;
-
-}
-
 .room-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
@@ -612,25 +586,6 @@ select.form-select option {
   text-align: center;
 }
 
-.room.available {
-  background-color: #DBF1DB;
-  color: #4CD120 !important;
-}
-
-.room.unavailable {
-  background-color: white;
-  color: #262626 !important;
-}
-
-.room.Block {
-  background-color: #DBF1DB;
-  color: #000065 !important;
-}
-
-.room.danger {
-  background-color: #DBF1DB;
-  color: #FF6666 !important;
-}
 
 .room-number {
   font-weight: bold;
@@ -646,35 +601,6 @@ select.form-select option {
   margin-top: 5px;
   font-style: italic;
   color: #333;
-}.fa-ban-smoking {
-  position: absolute;
-  top: -11px;
-  right: 5px;
-  border-radius: 50%;
-  color: black;
-  cursor: pointer;
-  width: 25px;
-  height: 25px;
-  text-align: center;
-  line-height: 25px;
-  background: #FFCFCF;
-  cursor: pointer;
-
-}
-
-.fa-broom {
-  position: absolute;
-  bottom: 7px;
-  left: 5px;
-  color: #cacaca;
-  cursor: pointer;
-  width: 25px;
-  height: 25px;
-  text-align: center;
-  line-height: 25px;
-  cursor: pointer;
-  border: 1px solid #FFCFCF;
-
 }
 
 .room-grid {
@@ -683,12 +609,6 @@ select.form-select option {
   gap: 10px;
 }
 
-.room {
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 10px;
-  text-align: center;
-}
 
 .room.available {
   background-color: #DBF1DB;
@@ -700,12 +620,12 @@ select.form-select option {
   color: #262626 !important;
 }
 
-.room.Block {
+.room.blocked {
   background-color: #DBF1DB;
   color: #000065 !important;
 }
 
-.room.danger {
+.room.reserved {
   background-color: #DBF1DB;
   color: #FF6666 !important;
 }
