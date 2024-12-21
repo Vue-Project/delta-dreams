@@ -1,6 +1,6 @@
 <template>
   <section class="card">
-    <HeaderCalender />
+    <HeaderCalender :statistics="statistics" />
     <!-- FullCalendar -->
     <FullCalendar :options="calendarOptions" @select="handleSelect">
       <template v-slot:eventContent="arg">
@@ -10,9 +10,9 @@
     <div id="calendar-footer">
       <table class="ant-table">
         <tbody class="ant-table-tbody">
-          <tr style="background: #F1F1F1;">
+          <tr style="background: #f1f1f1">
             <!-- Title Column -->
-            <td title="Room Occupancy %" colspan="2" style="text-align: left; padding: 0 15px;">
+            <td title="Room Occupancy %" colspan="2" style="text-align: left; padding: 0 15px">
               Room Occupancy %
             </td>
 
@@ -23,7 +23,6 @@
           </tr>
         </tbody>
       </table>
-
     </div>
 
     <!-- FullCalendar -->
@@ -90,9 +89,14 @@ export default {
       popoverArrowLeft: "0px", // Inline style for arrow positioning
       firstSelectedDate: "", // Store first selected date
       lastSelectedDate: "",
-      occupancyData: [1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 50, 0, 0, 20, 80, 19, 100],
+      occupancyData: [
+        1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 50, 0, 0, 20, 80, 19, 100,
+      ],
 
       calendarOptions: {
+        // events: this.fetchEvents(),
+        // resources: this.fetchResources(),
+        // eventContent: this.eventContent, // Customize event rendering
         plugins: [resourceTimelinePlugin, interactionPlugin],
         initialView: "resourceTimeline",
         duration: { days: 20 },
@@ -168,7 +172,9 @@ export default {
           // For level 1 (Days), show only the day and weekday
           if (arg.level === 1) {
             const day = date.toLocaleDateString("en-US", { day: "2-digit" });
-            const weekday = date.toLocaleDateString("en-US", { weekday: "short" });
+            const weekday = date.toLocaleDateString("en-US", {
+              weekday: "short",
+            });
             return {
               html: `
               <div class="custom-slot-label">
@@ -182,29 +188,64 @@ export default {
           return null; // For other levels, return null (if any)
         },
 
-        datesSet: function (info)
-        {
-          console.log("datesSet called", info); // Debugging
-          // Inject custom content for each slot lane dynamically (if necessary)
-          document.querySelectorAll('.fc-timeline-slot-lane').forEach((slotLane) =>
-          {
-            const units = 50; // Adjust logic to get correct unit data
-            const price = "$200"; // Adjust logic to get correct price data
+        //   datesSet: function (info)
+        //   {
+        //     console.log("datesSet called", info); // Debugging
 
-            // Check if the slot lane is not already having units and price added
-            if (!slotLane.querySelector('.custom-slot-content')) {
-              const customContent = document.createElement('div');
-              customContent.className = 'custom-slot-content';
-              customContent.innerHTML = `
-              <div class="slot-units">Units: ${units}</div>
-              <div class="slot-price">Price: ${price}</div>
-            `;
-              slotLane.appendChild(customContent); // Append content to the slot lane
-            }
-          });
-        },
+        //     // Room data with sub-rooms, units, and prices
+        //     const roomData = [
+        //       {
+        //         id: "a",
+        //         title: "Room A",
+        //         units: 30,
+        //         price: "$100",
+        //         subrooms: ["A1", "A2", "A3"],
+        //       },
+        //       // { id: "b", title: "Room B", units: 40, price: "$150", subrooms: ["B1", "B2", "B3"] },
+        //       // { id: "c", title: "Room C", units: 50, price: "$200", subrooms: ["C1", "C2", "C3"] },
+        //       // { id: "5", title: "Room D", units: 60, price: "$250", subrooms: ["D1", "D2", "D3"] },
+        //       // { id: "6", title: "Room E", units: 70, price: "$300", subrooms: ["E1", "E2", "E3"] }
+        //     ];
 
+        //     // Iterate over all the slot lanes in the FullCalendar
+        //     document
+        //       .querySelectorAll(".fc-timeline-slot-lane")
+        //       .forEach((slotLane) =>
+        //       {
+        //         // Clear previous custom content if it exists
+        //         const existingContent = slotLane.querySelector(
+        //           ".custom-slot-content"
+        //         );
+        //         if (existingContent) {
+        //           existingContent.remove();
+        //         }
 
+        //         // Create a container for the room and sub-room rows
+        //         const subRoomContainer = document.createElement("div");
+        //         subRoomContainer.className = "custom-slot-content";
+
+        //         // Loop through roomData to create content for each room
+        //         roomData.forEach((room) =>
+        //         {
+        //           // Create a row for each room
+        //           const subRoomRow = document.createElement("div");
+        //           subRoomRow.className = "sub-room-row";
+
+        //           // Add room details dynamically (name, units, price)
+        //           subRoomRow.innerHTML = `
+        //   <div class="sub-room-name">${room.title}</div>
+        //   <div class="sub-room-units">Units: ${room.units}</div>
+        //   <div class="sub-room-price">Price: ${room.price}</div>
+        // `;
+
+        //           // Append the room row to the sub-room container
+        //           subRoomContainer.appendChild(subRoomRow);
+        //         });
+
+        //         // Append the sub-room container to the slot lane
+        //         slotLane.appendChild(subRoomContainer);
+        //       });
+        //   },
 
         resourceGroupField: "groupId",
         resourceAreaHeaderContent: this.customResourceHeader, // Customize header
@@ -212,14 +253,75 @@ export default {
         select: this.handleSelect,
         events: [], // Store events programmatically
         footerToolbar: {
-          left: '',
-          center: '',
-          right: ''
+          left: "",
+          center: "",
+          right: "",
         },
       },
     };
   },
   methods: {
+    fetchEvents ()
+    {
+      // Custom method to fetch events data (subrooms with units, price)
+      return [
+        { id: '1', title: 'Room A', start: '2024-12-21', end: '2024-12-22', resourceId: 'a' },
+        { id: '2', title: 'Room B', start: '2024-12-23', end: '2024-12-24', resourceId: 'b' }
+      ];
+    },
+    fetchResources ()
+    {
+      // Custom method to fetch room resources (rooms or subrooms)
+      return [
+        { id: 'a', title: 'Room A', extendedProps: { subrooms: this.fetchSubrooms('Room A') } },
+        { id: 'b', title: 'Room B', extendedProps: { subrooms: this.fetchSubrooms('Room B') } },
+        { id: 'c', title: 'Room c', extendedProps: { subrooms: this.fetchSubrooms('Room B') } }
+      ];
+    },
+    fetchSubrooms (roomName)
+    {
+      // Subrooms data based on room name
+      if (roomName === 'Room A') {
+        return [
+          { name: 'Subroom A1', units: 30, price: 100 },
+          { name: 'Subroom A2', units: 25, price: 90 }
+        ];
+      }
+      return [
+        { name: 'Subroom B1', units: 35, price: 110 },
+        { name: 'Subroom B2', units: 20, price: 80 }
+      ];
+    },
+    eventContent (eventInfo)
+    {
+      // Custom event content renderer
+      const subrooms = eventInfo.event.extendedProps?.subrooms || [];
+
+      // Render each subroom in a separate <tr> with 20 <td> elements
+      return {
+        html: `
+          <table class="custom-event-table">
+            <tbody>
+              ${subrooms.map(subroom => `
+                <tr class="subroom-row">
+                  <td class="subroom-name">${subroom.name}</td>
+                  <td class="subroom-units">${subroom.units}</td>
+                  <td class="subroom-price">${subroom.price}</td>
+
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        `
+      };
+    },
+    removeDefaultContent (info)
+    {
+      // This ensures the default content does not show up.
+      info.el.innerHTML = ''; // Remove any default rendering.
+    }
+    ,
+
     /**
      * Generates a list of resources from predefined room data.
      *
@@ -238,26 +340,30 @@ export default {
      *                  with specific attributes for identification and styling.
      */
 
-    createResources ()
+    createResources: function ()
     {
       const roomData = [
         { id: "a", title: "Room A", subrooms: ["A1", "A2", "A3"] },
         { id: "b", title: "Room B", subrooms: ["B1", "B2", "B3"] },
         { id: "c", title: "Room C", subrooms: ["C1", "C2", "C3"] },
-        { id: "5", title: "Room C", subrooms: ["C1", "C2", "C3"] },
-        { id: "6", title: "Room C", subrooms: ["C1", "C2", "C3"] },
+        { id: "5", title: "Room D", subrooms: ["D1", "D2", "D3"] },
+        { id: "6", title: "Room E", subrooms: ["E1", "E2", "E3"] },
       ];
+
       const resources = [];
 
+      // Loop through roomData and create resources for each room and its subrooms
       roomData.forEach((room) =>
       {
+        // Add main room as a resource
         resources.push({
           id: room.id,
           title: room.title,
           groupId: room.id,
-          classNames: ["resource"], // Add class to easily select room cells
+          classNames: ["resource"], // Add class for styling
         });
 
+        // Loop through subrooms and add them as resources
         room.subrooms.forEach((subroom) =>
         {
           resources.push({
@@ -265,7 +371,7 @@ export default {
             title: subroom,
             resourceId: room.id,
             groupId: room.id,
-            classNames: ["subroom"], // Add class to easily select subroom cells
+            classNames: ["subroom"], // Add class for subroom cells
           });
         });
       });
@@ -480,8 +586,6 @@ export default {
         }
       });
 
-      ;
-
       // Convert the HTML string to a DOM node
       const div = document.createElement("div");
       div.innerHTML = htmlContent.trim(); // Use trim() to remove unnecessary whitespace
@@ -610,13 +714,49 @@ export default {
     // Add a delay to ensure FullCalendar renders first
     this.$nextTick(() =>
     {
-      const footerElement = document.querySelector('#calendar-footer');
+      const footerElement = document.querySelector("#calendar-footer");
       if (footerElement) {
-        footerElement.style.display = 'block'; // Ensure the footer is displayed
+        footerElement.style.display = "block"; // Ensure the footer is displayed
       }
     });
-  }
+  },
+  props: {
+    statistics: {
+      type: Object,
+      required: true,
+    },
+  },
 };
 </script>
 
-<style></style>
+<style>
+.custom-event-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.subroom-row td {
+  padding: 8px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+.subroom-name {
+  font-weight: bold;
+}
+
+.subroom-units,
+.subroom-price {
+  font-size: 0.9em;
+  color: #555;
+}
+
+.subroom-row td:nth-child(n+4) {
+  background-color: #f8f8f8;
+}
+
+/* .fc .fc-timeline-slots>table {
+
+  display: none;
+} */
+</style>
