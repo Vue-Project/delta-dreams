@@ -1,5 +1,5 @@
 {
-  "name": "corptia-nuxt",
+  "name": "DeltaDreams-nuxt",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -15,7 +15,7 @@
     "@fullcalendar/resource-timeline": "^6.1.15",
     "@fullcalendar/vue": "^6.1.15",
     "@luxdamore/vue-cursor-fx": "^1.6.2",
-    "axios": "^1.7.9",
+    "axios": "^0.27.2",
     "core-js": "^3.19.3",
     "dropzone": "^6.0.0-beta.2",
     "flatpickr": "^4.6.13",
@@ -36,5 +36,6 @@
     "@nuxtjs/vuetify": "^1.12.3",
     "sass": "^1.54.5",
     "sass-loader": "^10.3.1"
-  }
+  },
+  "type": "module"
 }
