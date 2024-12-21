@@ -1,15 +1,15 @@
 <template>
-  <div class="row  d-flex justify-content-between p-2 position-relative ">
+  <div class="row d-flex justify-content-between p-2 position-relative">
     <div class="col-md-1 col-12 calendarDate">
-      <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD" id="flatpickr-date-04" ref="datePicker4" aria-label="input for date " />
+      <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD" id="flatpickr-date-04" ref="datePicker4" aria-label="input for date" />
       <i class="fa-solid fa-calendar-days date-icon"></i>
     </div>
     <div class="col-md-7 col-12">
       <div class="d-flex items-center gap-4">
-        <div v-for="(item, index) in categories" :key="index">
-          <span>{{ item.label }}</span>
-          <span class="circle-shape">
-            {{ item.count }}
+        <div v-for="(count, label) in statistics" :key="label">
+          <span>{{ label }}</span>
+          <span class="statistics-count">
+            {{ count }}
           </span>
         </div>
       </div>
@@ -117,17 +117,6 @@
               </div>
             </div>
             <!-- end ul -->
-            <!-- out side box -->
-            <div class="ant-popover ant-popover-placement-bottomRight ant-popover-hidden" style="left: 586px; top: -999px; transform-origin: 319px -4px">
-              <div class="ant-popover-content">
-                <div class="ant-popover-arrow">
-                  <span class="ant-popover-arrow-content"></span>
-                </div>
-                <div class="ant-popover-inner" role="tooltip">
-                  <div class="ant-popover-inner-content"></div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -136,32 +125,21 @@
 </template>
 
 <script>
-import flatpickr from "flatpickr";
-import "flatpickr/dist/flatpickr.min.css";
-import Sidebar from "../layout/Sidebar.vue";
+import flatpickrMixin from "../Mixin/flatpickrMixin";
 export default {
-  name: "HeadlerCalender",
+  name: "HeaderCalender",
   layout: "Component",
-  components: { Sidebar },
 
   data ()
   {
     return {
       isHovered: false,
       sidebarVisible: false,
-      categories: [
-        { label: "All", count: 3 },
-        { label: "Vacant", count: 3 },
-        { label: "Occupied", count: 0 },
-        { label: "Reserved", count: 0 },
-        { label: "Blocked", count: 0 },
-        { label: "Due Out", count: 0 },
-        { label: "Dirty", count: 3 },
-      ],
       isOn: false,
       isSidebarOpen: false,
     };
   },
+
   methods: {
     openSidebar ()
     {
@@ -172,13 +150,12 @@ export default {
       this.isSidebarOpen = false;
     },
   },
-  mounted ()
-  {
-    flatpickr(this.$refs.datePicker4, {
-      dateFormat: "Y-m-d",
-    });
+  mixins: [flatpickrMixin],
+  props: {
+    statistics: {
+      type: Object,
+      required: true,
+    },
   },
 };
 </script>
-
-<style scoped></style>

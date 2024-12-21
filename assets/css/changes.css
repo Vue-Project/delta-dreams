@@ -103,14 +103,18 @@
   font-size: 12px;
 }
 
-.circle-shape {
+.statistics-count {
   display: inline-block;
   text-align: center;
   background-color: rgb(236, 243, 248);
-  height: 24px;
-  border-radius: 12px;
-  min-width: 24px;
-  line-height: 24px;
+  height: 33px;
+  border-radius: 50%;
+  min-width: 33px;
+  line-height: 33px;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
 }
 .fc-timeline-slot-frame {
   display: flex;
@@ -570,7 +574,7 @@ select.form-select option {
 }
 .icon-position {
   position: absolute;
-  top: -12px;
+  top: -14px;
   right: 7px;
 }
 .room-grid {
