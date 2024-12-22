@@ -52,9 +52,11 @@
                 </div>
                 <div class="col-md-9 col-12 mb-4">
                   <label for="reservationType" class="form-label">Reservation Type</label>
-                  <select class="form-select" id="reservationType">
-                    <option selected>حجز مؤكد معلق بتحويل المبلغ</option>
-                    <option value="1">حجز مؤكد</option>
+                  <select class="form-select" id="reservationType" v-model="selectedOptionReservation">
+                    <option disabled value="">Select</option>
+                    <option v-for="source in reservationTypes" :key="source.id" :value="source.id">
+                      {{ source.name }}
+                    </option>
                   </select>
                 </div>
               </div>
@@ -64,27 +66,27 @@
                 <div class="row">
                   <div class="col-md-6">
                     <label for="bookingSource" class="form-label">Booking Source</label>
-                    <select class="form-select" id="bookingSource">
-                      <option selected>Direct</option>
-                      <option value="1">OTA</option>
-                      <option value="2">Booking Engine</option>
-                      <option value="3">Travel Agent</option>
-                      <option value="3">Company</option>
+                    <select class="form-select" id="bookingSource" v-model="selectedOptionBooking">
+                      <option disabled value="">Select</option>
+                      <option v-for="source in bookingSources" :key="source.id" :value="source.id">
+                        {{ source.name }}
+                      </option>
                     </select>
                   </div>
                   <div class="col-md-6">
                     <label for="businessSource" class="form-label">Business Source</label>
-                    <select class="form-select" id="businessSource">
-                      <option selected>Select</option>
-                      <option value="1">One</option>
-                      <option value="2">Two</option>
-                      <option value="3">Three</option>
+                    <select class="form-select" id="businessSource" v-model="selectedOptionBusiness">
+                      <option disabled value="">Select</option>
+                      <option v-for="source in businessSources" :key="source.id" :value="source.id">
+                        {{ source.name }}
+                      </option>
                     </select>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+
           <hr class="my-4" />
           <!--   ! check inputs and repeater -->
           <div class="row mb-3">
@@ -274,23 +276,29 @@
             <div class="col-md-5">
               <label for="nameGuest" class="col-form-label">Guest Name</label>
               <div class="input-group">
-                <select class="form-select" id="nameGuest">
-                  <option value="" disabled selected>MR.</option>
-                  <option value="option1">DR.</option>
-                  <option value="option2">JN.</option>
-                  <option value="option3">MAM.</option>
-                  <option value="option4">MRs.</option>
-                  <option value="option4">Ms.</option>
-                  <option value="option4">Sir.</option>
-                  <option value="option4">Sr.</option>
+                <select class="form-select" v-model="selectedTitle">
+                  <option value="" disabled>MR.</option>
+                  <option v-for="title in titles" :key="title" :value="title">
+                    {{ title }}
+                  </option>
                 </select>
-                <input type="text" class="form-control w-50" aria-label="Text input with 2 dropdown buttons" id="nameGuest" />
-                <!-- Use the Sidebar component -->
+
+                <div class="position-relative flex-grow-1">
+                  <input type="text" class="form-control w-100" v-model="inputValue" @input="handleInput" @focus="showDropdown = true" @blur="handleBlur" />
+
+                  <!-- Suggestions Dropdown -->
+                  <div v-if="showDropdown && filteredNames.length > 0" class="position-absolute w-100 mt-1 bg-white border rounded shadow">
+                    <div v-for="name in filteredNames" :key="typeof name === 'object' ? name.id : name" class="p-2 cursor-pointer hover:bg-light" @mousedown.prevent="selectName(name)">
+                      {{ typeof name === "object" ? name.name : name }}
+                    </div>
+                  </div>
+                </div>
+
                 <button class="btn btn-outline-primary waves-effect" type="button" @click="toggleSidebar">
                   <i class="fa-solid fa-user-plus"></i>
                 </button>
               </div>
-              <Sidebar :isSidebarOpen="isSidebarOpen" @close-sidebar="toggleSidebar" />
+              <Sidebar :is-sidebar-open="isSidebarOpen" @close-sidebar="toggleSidebar" />
             </div>
             <div class="col-md-7">
               <div class="row">
@@ -393,6 +401,13 @@
   </section>
 </template>
 <script>
+import
+{
+  getBookingSources,
+  getBusinessSources,
+  getReservationTypes,
+  getUsers,
+} from "../Api/api";
 import flatpickrMixin from "../Mixin/flatpickrMixin";
 import Sidebar from "../layout/Sidebar.vue";
 
@@ -408,6 +423,19 @@ export default {
       showSelect: false,
       showInput: false,
       isSidebarOpen: false,
+      businessSources: [],
+      bookingSources: [],
+      reservationTypes: [],
+      users: [],
+      selectedOptionBusiness: "",
+      selectedOptionBooking: "",
+      selectedOptionReservation: "",
+      selectedOptionUser: "",
+      selectedTitle: "MR.",
+      inputValue: "",
+      showDropdown: false,
+      titles: ["MR.", "DR.", "JN.", "MAM.", "MRS.", "MS.", "SIR.", "SR."],
+      names: [],
 
       formData: [
         {
@@ -424,6 +452,22 @@ export default {
     },
   },
   methods: {
+    handleInput ()
+    {
+      this.showDropdown = true;
+    },
+    handleBlur ()
+    {
+      setTimeout(() =>
+      {
+        this.showDropdown = false;
+      }, 200);
+    },
+    selectName (name)
+    {
+      this.inputValue = name;
+      this.showDropdown = false;
+    },
     updateRepeater ()
     {
       const currentCount = this.formData.length;
@@ -460,10 +504,82 @@ export default {
     {
       this.isSidebarOpen = !this.isSidebarOpen;
     },
+    handleInput ()
+    {
+      this.showDropdown = true;
+    },
+    handleBlur ()
+    {
+      // Small delay to allow for mousedown on suggestion
+      setTimeout(() =>
+      {
+        this.showDropdown = false;
+      }, 20000);
+    },
+    selectName (name)
+    {
+      this.inputValue = name;
+      this.showDropdown = false;
+    },
+    selectName (name)
+    {
+      // Handle both string and object formats
+      this.inputValue = typeof name === "object" ? name.name : name;
+      this.showDropdown = false;
+    },
   },
+  async mounted ()
+  {
+    try {
+      const [
+        businessSourcesResponse,
+        bookingSourcesResponse,
+        reservationTypesResponse,
+        usersResponse,
+      ] = await Promise.all([
+        getBusinessSources(),
+        getBookingSources(),
+        getReservationTypes(),
+        getUsers(),
+      ]);
 
+      this.businessSources = businessSourcesResponse.data.data;
+      this.bookingSources = bookingSourcesResponse.data.data;
+      this.reservationTypes = reservationTypesResponse.data.data;
+      this.names = usersResponse.data.data;
+    } catch (error) {
+      console.error("Error loading data:", error);
+    }
+  },
+  computed: {
+    filteredNames ()
+    {
+      if (!this.inputValue) return [];
+      const searchTerm = this.inputValue.toLowerCase();
+
+      return this.names.filter((name) =>
+      {
+        // Handle both string and object formats
+        const nameValue = typeof name === "object" ? name.name : name;
+        return nameValue.toLowerCase().startsWith(searchTerm);
+      });
+    },
+  },
   mixins: [flatpickrMixin],
 };
 </script>
 
-<style></style>
+<style scoped>
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.hover\:bg-light:hover {
+  background-color: #f8f9fa;
+}
+
+.position-absolute {
+  position: absolute;
+  z-index: 9999;
+}
+</style>

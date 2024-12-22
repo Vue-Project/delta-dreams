@@ -19,6 +19,11 @@ export default {
       type: String,
       required: true,
     },
+
+    formData: {
+      type: Object,
+      required: true,
+    },
   },
   computed: {
     dropzoneId ()
@@ -43,22 +48,23 @@ export default {
       }
 
       // Initialize Dropzone
-      new Dropzone(dropzoneElement, {
+      const dz = new Dropzone(dropzoneElement, {
         url: "/upload",
-        maxFilesize: 10,
+        maxFilesize: 10, // Max file size in MB
         acceptedFiles: ".jpg,.png,.gif,.jpeg",
         addRemoveLinks: true,
         dictRemoveFile: "Remove",
-        autoProcessQueue: false,
+        autoProcessQueue: false, // Do not auto-upload immediately
         init ()
         {
-          this.on("addedfile", function (file)
+          // Handle file added to the dropzone
+          this.on("addedfile", (file) =>
           {
             const progressElement = file.previewElement.querySelector(".dz-progress");
             if (file.type.startsWith("image/")) {
-              progressElement.style.display = "none";
+              progressElement.style.display = "none"; // Hide the progress bar
               const reader = new FileReader();
-              reader.onload = function (e)
+              reader.onload = (e) =>
               {
                 file.previewElement.querySelector("img").src = e.target.result;
                 file.previewElement.classList.add("dz-success");
@@ -68,15 +74,20 @@ export default {
             }
           });
 
-          this.on("success", function (file)
+          // Handle successful file upload
+          this.on("success", (file) =>
           {
             const progressElement = file.previewElement.querySelector(".dz-progress");
             progressElement.style.display = "none";
             file.previewElement.classList.add("dz-success");
             file.previewElement.querySelector(".dz-success-mark").style.display = "inline";
+
+            // Emit the file to the parent component
+            this.$emit("file-uploaded", file);
           });
 
-          this.on("error", function (file, errorMessage)
+          // Handle file upload error
+          this.on("error", (file, errorMessage) =>
           {
             file.previewElement.classList.add("dz-error");
             console.error("File upload error:", errorMessage);
@@ -84,11 +95,14 @@ export default {
           });
         },
       });
+
+      // Prevent the file from being automatically removed from the dropzone
+      dz.on("removedfile", (file) =>
+      {
+        // Do not remove the file automatically, we will handle it in the parent component
+        console.log("File removed:", file);
+      });
     },
   },
 };
 </script>
-
-<style scoped>
-
-</style>
