@@ -6,25 +6,25 @@
           <li class="nav-item" role="presentation">
             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-Reservations" role="tab" aria-selected="false" tabindex="-1" :class="{ active: activeTab === 'reservations' }" @click="setActiveTab('reservations')">
               Reservations
-              <span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-label-danger ms-1">2</span>
+              <span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-label-danger ms-1">{{ reservationsCount.reservations }}</span>
             </button>
           </li>
           <li class="nav-item" role="presentation">
             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-Arrivals" role="tab" aria-selected="false" tabindex="-1" :class="{ active: activeTab === 'arrivals' }" @click="setActiveTab('arrivals')">
               Arrivals
-              <span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-label-danger ms-1">1</span>
+              <span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-label-danger ms-1">{{ reservationsCount.arrivals }}</span>
             </button>
           </li>
           <li class="nav-item" role="presentation">
             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-Departures" role="tab" aria-selected="true" :class="{ active: activeTab === 'departures' }" @click="setActiveTab('departures')">
               Departures
-              <span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-label-danger ms-1">1</span>
+              <span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-label-danger ms-1">{{ reservationsCount.departures }}</span>
             </button>
           </li>
           <li class="nav-item" role="presentation">
             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-In-house" role="tab" aria-selected="true" :class="{ active: activeTab === 'inHouse' }" @click="setActiveTab('inHouse')">
               In-house
-              <span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-label-danger ms-1">1</span>
+              <span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-label-danger ms-1">{{ reservationsCount.in_house }}</span>
             </button>
           </li>
 
@@ -333,7 +333,7 @@
                                   <h6 class="mb-0">Reservation Number</h6>
                                   <small class="text-muted">{{
                                     selectedCard.reservationNo
-                                    }}</small>
+                                  }}</small>
                                 </div>
                               </div>
                             </div>
@@ -524,7 +524,7 @@
                                   <h6 class="mb-0">Reservation Number</h6>
                                   <small class="text-muted">{{
                                     selectedCard.reservationNo
-                                    }}</small>
+                                  }}</small>
                                 </div>
                               </div>
                             </div>
@@ -697,7 +697,7 @@
                                   <h6 class="mb-0">Reservation Number</h6>
                                   <small class="text-muted">{{
                                     selectedCard.reservationNo
-                                    }}</small>
+                                  }}</small>
                                 </div>
                               </div>
                             </div>
@@ -864,7 +864,7 @@
                                   <h6 class="mb-0">Reservation Number</h6>
                                   <small class="text-muted">{{
                                     selectedCard.reservationNo
-                                    }}</small>
+                                  }}</small>
                                 </div>
                               </div>
                             </div>
@@ -1011,6 +1011,14 @@
         </template>
         <template #content>
           <div class="tab-pane fade active show" id="form-tabs-Reservations" role="tabpanel" v-if="activeTab === 'reservations'">
+
+          </div>
+          <!-- Arrivals  -->
+          <div class="tab-pane fade" id="form-tabs-Arrivals" role="tabpanel"></div>
+          <!-- Departures  -->
+          <div class="tab-pane fade" id="form-tabs-Departures" role="tabpanel"></div>
+          <!-- In-house  -->
+          <div class="tab-pane fade" id="form-tabs-In-house" role="tabpanel">
             <div class="row">
               <div v-if="viewMode === 'list'" class="table-responsive text-nowrap" style="overflow: visible">
                 <table class="table">
@@ -1072,62 +1080,20 @@
                         </div>
                       </td>
                     </tr>
-                    <tr v-for="card in reservations" :key="card.id" class="border-bottom" @click="openOffcanvas(card)" style="cursor: pointer">
-                      <td>
-                        <div class="d-flex align-items-center">
-                          <i class="text-primary fa-solid fa-hotel fs-3 mr-2 mb-2"></i>
-                          <div class="card-title mb-0">
-                            <h5 class="m-0 me-2">{{ card.guestName }}</h5>
-                            <div>
-                              <i class="fa-solid fa-person m-2"></i>{{ card.adults }}
-                              <i class="fa-solid fa-child m-2"></i>{{ card.children }}
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                      <td>{{ card.reservationNo }}</td>
-                      <td>
-                        <div class="text-dark">{{ card.arrivalDate }}</div>
-                        <div>{{ card.arrivalTime }}</div>
-                      </td>
-                      <td>
-                        <div class="text-dark">{{ card.departureDate }}</div>
-                        <div>{{ card.departureTime }}</div>
-                      </td>
-                      <td>{{ card.roomNumber }} - {{ card.roomType }}</td>
-                      <td>${{ card.total }}</td>
-                      <td>${{ card.paid }}</td>
-                      <td>
-                        <span :class="{ 'text-danger': card.balance < 0 }">${{ card.balance }}</span>
-                        <div class="btn-group" id="hover-dropdown-demo " style="float: inline-end" @mouseenter="isHovered = true" @mouseleave="isHovered = false">
-                          <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none">
-                            <i class="fa-solid fa-ellipsis-vertical"></i>
-                          </button>
-                          <ul v-show="isHovered" class="dropdown-menu show right-0" data-popper-placement=" bottom-end">
-                            <li>
-                              <a class="dropdown-item" href="#"><i class="fa-solid fa-file-circle-plus mr-2"></i>Print Invoice</a>
-                            </li>
-                            <li>
-                              <a class="dropdown-item" href="#"><i class="fa-solid fa-calendar-plus mr-2"></i>Add New Booking</a>
-                            </li>
-                            <li>
-                              <a class="dropdown-item" href="#"><i class="fa-solid fa-list-check mr-2"></i>Audit Trail</a>
-                            </li>
-                          </ul>
-                        </div>
-                      </td>
-                    </tr>
+
                   </tbody>
                 </table>
+                <p>{{
+                  reservations }}</p>
               </div>
 
-              <div v-else class="col-12 col-md-6 col-lg-4 mb-4 order-1 order-xl-0" @click="openOffcanvas(card)" v-for="card in reservations" :key="card.reservationNo">
+              <div v-else class="col-12 col-md-6 col-lg-4 mb-4 order-1 order-xl-0" @click="openOffcanvas(card)" v-for="card in reservations" :key="card.id">
                 <div class="card h-100">
                   <div class="card-header d-flex align-items-center justify-content-between">
                     <div class="card-title mb-0 d-flex">
                       <i class="text-primary fa-solid fa-hotel fs-3 mr-2 mb-2"></i>
-                      <h5 class="m-0 me-2">{{ card.guestName }}</h5>
-                      <p>14527</p>
+                      <h5 class="m-0 me-2">{{ card.reserved_by.name }}</h5>
+                      <p>{{ card.}}</p>
                     </div>
 
                     <div class="btn-group" id="hover-dropdown-demo " @mouseenter="isHovered = true" @mouseleave="isHovered = false">
@@ -1197,12 +1163,7 @@
               </div>
             </div>
           </div>
-          <!-- Arrivals  -->
-          <div class="tab-pane fade" id="form-tabs-Arrivals" role="tabpanel"></div>
-          <!-- Departures  -->
-          <div class="tab-pane fade" id="form-tabs-Departures" role="tabpanel"></div>
-          <!-- In-house  -->
-          <div class="tab-pane fade" id="form-tabs-In-house" role="tabpanel"></div>
+
         </template>
       </HeaderReservation>
     </div>
@@ -1212,6 +1173,7 @@
 
 <script>
 import HeaderReservation from "../components/AllReservation/HeaderReservation.vue";
+import { getReservationData } from "../components/Api/api";
 import flatpickrMixin from "../components/Mixin/flatpickrMixin";
 
 export default {
@@ -1228,32 +1190,36 @@ export default {
       selectedCard: null, // Store the data for the selected card
       activeTab: "reservations", // Default active tab
       reservations: [
-        {
-          id: 1,
-          guestName: "مصطفي مدبولي",
-          location: " Egypt",
-          phone: " 01012345678",
-          reservationNo: "14527",
-          arrivalDate: "02/12/2024",
-          arrivalTime: "08:43:01 pm",
-          bookingDate: "02/12/2024",
-          bookingTime: "10:17:41 AM",
-          departureDate: "02/12/2024",
-          departureTime: "08:43:01 pm",
-          roomNumber: "202",
-          roomType: " Suite الفندق غرفتين وصاله   ",
-          total: 230,
-          paid: 250,
-          balance: -20,
-          adults: 3,
-          children: 2,
-          nights: 5,
-          dailyRate: "0.0$",
-          ratePlan: "السعر غير شامل",
-          status: "Stayover",
-          createdAt: "01/12/2024 09:00 AM", // Added creation date
-        },
+        // {
+        //   id: 1,
+        //   guestName: "مصطفي مدبولي",
+        //   location: " Egypt",
+        //   phone: " 01012345678",
+        //   reservationNo: "14527",
+        //   arrivalDate: "02/12/2024",
+        //   arrivalTime: "08:43:01 pm",
+        //   bookingDate: "02/12/2024",
+        //   bookingTime: "10:17:41 AM",
+        //   departureDate: "02/12/2024",
+        //   departureTime: "08:43:01 pm",
+        //   roomNumber: "202",
+        //   roomType: " Suite الفندق غرفتين وصاله   ",
+        //   total: 230,
+        //   paid: 250,
+        //   balance: -20,
+        //   adults: 3,
+        //   children: 2,
+        //   nights: 5,
+        //   dailyRate: "0.0$",
+        //   ratePlan: "السعر غير شامل",
+        //   status: "Stayover",
+        //   createdAt: "01/12/2024 09:00 AM", // Added creation date
+        // },
       ],
+      reservationsCount: [
+
+      ]
+
     };
   },
   methods: {
@@ -1284,6 +1250,25 @@ export default {
   mounted ()
   {
     // Add event listener to reset selections when the sidebar is closed
+
+  },
+  async mounted ()
+  {
+    try {
+      const [
+        ReservationDataResponse,
+
+      ] = await Promise.all([
+        getReservationData(),
+
+      ]);
+
+      this.reservations = ReservationDataResponse.data.data;
+      this.reservationsCount = ReservationDataResponse.data.reservations_count;
+
+    } catch (error) {
+      console.error("Error loading data:", error);
+    }
     const offcanvas = document.getElementById("offcanvasEnd");
     offcanvas.addEventListener("hidden.bs.offcanvas", this.resetSelections);
   },

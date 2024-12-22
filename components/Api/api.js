@@ -77,6 +77,23 @@ export const postUsers = async (body) =>
     throw error;
   }
 };
+export const getReservationData = async () =>
+{
+  try {
+    const response = await apiClient.get('/reservations', {
+      params: {
+        type: 'in_house'
+      }
+    });
+    // console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching reservations:', error);
+    throw error;
+  }
+};
+
+
 
 
 export default {
