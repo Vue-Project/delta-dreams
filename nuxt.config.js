@@ -5,7 +5,7 @@ export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
 
   head: {
-    title: "delta Dreams",
+    title: "deltaDreams",
 
     meta: [
       { charset: "utf-8" },
@@ -15,20 +15,7 @@ export default {
     ],
     link: [
       { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
-      // { rel: "stylesheet", href: "/css/fontawesome.css" },
-      // { rel: "stylesheet", href: "/css/bootstrap/bootstrap.min.css" },
-      // { rel: "stylesheet", href: "/css/core.css" },
-      // { rel: "stylesheet", href: "/css/theme-default.css" },
-      // { rel: "stylesheet", href: "/css/theme-default.css" },
-      // { rel: "stylesheet", href: "/css/theme-default.css" },
-      // { rel: "stylesheet", href: "/css/theme-default.css" },
-      // { rel: "stylesheet", href: "/css/theme-default.css" },
-      // { rel: "stylesheet", href: "/css/theme-default.css" },
-      // { rel: "stylesheet", href: "/css/theme-default.css" },
-      // { rel: "stylesheet", href: "/css/theme-default.css" },
-      // { rel: "stylesheet", href: "/css/theme-default.css" },
-      // { rel: "stylesheet", href: "/css/theme-default.css" },
-      // { rel: "stylesheet", href: "/css/theme-default.css" },
+
 
     ],
     script: [
@@ -92,10 +79,6 @@ export default {
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
-    // '@nuxtjs/vuetify',
-
-    // // With options
-    // ['@nuxtjs/vuetify', { /* module options */ }]
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -126,6 +109,8 @@ export default {
   static: {
     prefix: false, // Ensures static files are served as-is
   },
+  ignoredPaths: [""],
+
 
 
 
