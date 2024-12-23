@@ -347,6 +347,9 @@ export default {
       // Send data to the server using Fetch API
       fetch("https://deltadream.swevey.com/api/users", {
         method: "POST",
+        headers: {
+          "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+        },
         body: formData,
       })
         .then((response) => response.json())

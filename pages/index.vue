@@ -3,8 +3,8 @@
 
     <div class="col-md-12">
 
-      <CalenderDate />
-      <!-- <DataTable /> -->
+      <!-- <CalenderDate /> -->
+      <DataTable />
     </div>
   </div>
 </template>

@@ -165,11 +165,11 @@
                     <div class="row mt-4">
                       <div class="col-md-4">
                         <NuxtLink :to="{
-                          path: '/edits-reservation',
-                          query: { cardData: JSON.stringify(selectedCard) },
+                          path: `/edits-reservation/${selectedCard.id}`
                         }" type="button" class="btn btn-primary waves-effect waves-light btn-block">
                           Edit
                         </NuxtLink>
+
                       </div>
                       <div class="col-md-4">
                         <div class="demo-inline-spacing">
@@ -1093,7 +1093,7 @@
                     <div class="card-title mb-0 d-flex">
                       <i class="text-primary fa-solid fa-hotel fs-3 mr-2 mb-2"></i>
                       <h5 class="m-0 me-2">{{ card.reserved_by.name }}</h5>
-                      <p>{{ card.}}</p>
+                      <p>{{ card.id }}</p>
                     </div>
 
                     <div class="btn-group" id="hover-dropdown-demo " @mouseenter="isHovered = true" @mouseleave="isHovered = false">
@@ -1190,31 +1190,170 @@ export default {
       selectedCard: null, // Store the data for the selected card
       activeTab: "reservations", // Default active tab
       reservations: [
-        // {
-        //   id: 1,
-        //   guestName: "مصطفي مدبولي",
-        //   location: " Egypt",
-        //   phone: " 01012345678",
-        //   reservationNo: "14527",
-        //   arrivalDate: "02/12/2024",
-        //   arrivalTime: "08:43:01 pm",
-        //   bookingDate: "02/12/2024",
-        //   bookingTime: "10:17:41 AM",
-        //   departureDate: "02/12/2024",
-        //   departureTime: "08:43:01 pm",
-        //   roomNumber: "202",
-        //   roomType: " Suite الفندق غرفتين وصاله   ",
-        //   total: 230,
-        //   paid: 250,
-        //   balance: -20,
-        //   adults: 3,
-        //   children: 2,
-        //   nights: 5,
-        //   dailyRate: "0.0$",
-        //   ratePlan: "السعر غير شامل",
-        //   status: "Stayover",
-        //   createdAt: "01/12/2024 09:00 AM", // Added creation date
-        // },
+        {
+          "id": 5,
+          "checkin_date": "2024-12-01T00:00:00.000000Z",
+          "checkin_time": "11:51:00",
+          "checkout_date": "2024-12-06T00:00:00.000000Z",
+          "checkout_time": "10:00:00",
+          "number_of_rooms": 1,
+          "rate_type": "standard",
+          "adults": 1,
+          "children": 2,
+          "reserved_by": {
+            "id": 0,
+            "name": "Unknown User"
+          },
+          "items": [
+            {
+              "id": 3,
+              "reservation_id": 5,
+              "unit_id": 1,
+              "booking_date": "2024-12-01T00:00:00.000000Z",
+              "checkin_time": "2024-12-23T11:51:00.000000Z",
+              "checkout_time": null,
+              "adults": 1,
+              "children": 2,
+              "status": "reserved",
+              "rate_type": null,
+              "rate_amount": null,
+              "price": 1,
+              "total": 1,
+              "unit": {
+                "id": 1,
+                "name": "Unit 263",
+                "code": "UNIT-1119",
+                "is_smoking": 1,
+                "is_clean": 0,
+                "status": "unavailable",
+                "price": 882,
+                "unit_type": null,
+                "status_description": "reserved",
+                "reserved_by": {
+                  "id": 1,
+                  "name": "mohamed elsherbiny"
+                }
+              }
+            },
+            {
+              "id": 4,
+              "reservation_id": 5,
+              "unit_id": 1,
+              "booking_date": "2024-12-02T00:00:00.000000Z",
+              "checkin_time": null,
+              "checkout_time": null,
+              "adults": 1,
+              "children": 2,
+              "status": "reserved",
+              "rate_type": null,
+              "rate_amount": null,
+              "price": 1,
+              "total": 1,
+              "unit": {
+                "id": 1,
+                "name": "Unit 263",
+                "code": "UNIT-1119",
+                "is_smoking": 1,
+                "is_clean": 0,
+                "status": "unavailable",
+                "price": 882,
+                "unit_type": null,
+                "status_description": "reserved",
+                "reserved_by": {
+                  "id": 1,
+                  "name": "mohamed elsherbiny"
+                }
+              }
+            },
+            {
+              "id": 5,
+              "reservation_id": 5,
+              "unit_id": 5,
+              "booking_date": "2024-12-03T00:00:00.000000Z",
+              "checkin_time": "2024-12-23T12:10:00.000000Z",
+              "checkout_time": null,
+              "adults": 1,
+              "children": 2,
+              "status": "reserved",
+              "rate_type": "with breakfast",
+              "rate_amount": null,
+              "price": 1,
+              "total": 1,
+              "unit": {
+                "id": 5,
+                "name": "Unit 251",
+                "code": "UNIT-4275",
+                "is_smoking": 0,
+                "is_clean": 0,
+                "status": "reserved",
+                "price": 777,
+                "unit_type": null,
+                "status_description": "",
+                "reserved_by": null
+              }
+            },
+            {
+              "id": 6,
+              "reservation_id": 5,
+              "unit_id": 1,
+              "booking_date": "2024-12-04T00:00:00.000000Z",
+              "checkin_time": null,
+              "checkout_time": null,
+              "adults": 1,
+              "children": 2,
+              "status": "reserved",
+              "rate_type": null,
+              "rate_amount": null,
+              "price": 1,
+              "total": 1,
+              "unit": {
+                "id": 1,
+                "name": "Unit 263",
+                "code": "UNIT-1119",
+                "is_smoking": 1,
+                "is_clean": 0,
+                "status": "unavailable",
+                "price": 882,
+                "unit_type": null,
+                "status_description": "reserved",
+                "reserved_by": {
+                  "id": 1,
+                  "name": "mohamed elsherbiny"
+                }
+              }
+            },
+            {
+              "id": 7,
+              "reservation_id": 5,
+              "unit_id": 1,
+              "booking_date": "2024-12-05T00:00:00.000000Z",
+              "checkin_time": null,
+              "checkout_time": "2024-12-23T10:00:00.000000Z",
+              "adults": 1,
+              "children": 2,
+              "status": "reserved",
+              "rate_type": null,
+              "rate_amount": null,
+              "price": 1,
+              "total": 1,
+              "unit": {
+                "id": 1,
+                "name": "Unit 263",
+                "code": "UNIT-1119",
+                "is_smoking": 1,
+                "is_clean": 0,
+                "status": "unavailable",
+                "price": 882,
+                "unit_type": null,
+                "status_description": "reserved",
+                "reserved_by": {
+                  "id": 1,
+                  "name": "mohamed elsherbiny"
+                }
+              }
+            }
+          ]
+        }
       ],
       reservationsCount: [
 
@@ -1223,6 +1362,10 @@ export default {
     };
   },
   methods: {
+    viewCardDetails (id)
+    {
+      this.$router.push(`/reservations-data/${id}`);
+    },
     setViewMode (mode)
     {
       this.viewMode = mode;

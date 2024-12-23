@@ -92,6 +92,20 @@ export const getReservationData = async () =>
     throw error;
   }
 };
+export const geDataId = async (id) =>
+{
+  try {
+    const response = await apiClient.get(`/reservations/${id}`
+
+    );
+    // console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching reservations:', error);
+    throw error;
+  }
+};
+
 
 
 
