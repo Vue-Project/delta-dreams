@@ -1035,56 +1035,88 @@
                     </tr>
                   </thead>
                   <tbody class="table-border-bottom-0">
-                    <tr v-for="card in reservations" :key="card.id" class="border-bottom" @click="openOffcanvas(card)" style="cursor: pointer">
-                      <td>
-                        <div class="d-flex align-items-center">
-                          <i class="text-primary fa-solid fa-hotel fs-3 mr-2 mb-2"></i>
-                          <div class="card-title mb-0">
-                            <h5 class="m-0 me-2">{{ card.guestName }}</h5>
-                            <div>
-                              <i class="fa-solid fa-person m-2"></i>{{ card.adults }}
-                              <i class="fa-solid fa-child m-2"></i>{{ card.children }}
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                      <td>{{ card.reservationNo }}</td>
-                      <td>
-                        <div class="text-dark">{{ card.arrivalDate }}</div>
-                        <div>{{ card.arrivalTime }}</div>
-                      </td>
-                      <td>
-                        <div class="text-dark">{{ card.departureDate }}</div>
-                        <div>{{ card.departureTime }}</div>
-                      </td>
-                      <td>{{ card.roomNumber }} - {{ card.roomType }}</td>
-                      <td>${{ card.total }}</td>
-                      <td>${{ card.paid }}</td>
-                      <td>
-                        <span :class="{ 'text-danger': card.balance < 0 }">${{ card.balance }}</span>
-                        <div class="btn-group" id="hover-dropdown-demo " style="float: inline-end" @mouseenter="isHovered = true" @mouseleave="isHovered = false">
-                          <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none">
-                            <i class="fa-solid fa-ellipsis-vertical"></i>
-                          </button>
-                          <ul v-show="isHovered" class="dropdown-menu show right-0" data-popper-placement=" bottom-end">
-                            <li>
-                              <a class="dropdown-item" href="#"><i class="fa-solid fa-file-circle-plus mr-2"></i>Print Invoice</a>
-                            </li>
-                            <li>
-                              <a class="dropdown-item" href="#"><i class="fa-solid fa-calendar-plus mr-2"></i>Add New Booking</a>
-                            </li>
-                            <li>
-                              <a class="dropdown-item" href="#"><i class="fa-solid fa-list-check mr-2"></i>Audit Trail</a>
-                            </li>
-                          </ul>
-                        </div>
-                      </td>
-                    </tr>
+
+
 
                   </tbody>
                 </table>
-                <p>{{
-                  reservations }}</p>
+                <div class="row ">
+                  <div class="col-12 col-md-12  mb-4 " @click="openOffcanvas(card)" v-for="card in reservations" :key="card.id">
+                    <div class="card h-100">
+                      <div class="card-header d-flex align-items-center justify-content-between">
+                        <div class="card-title mb-0 d-flex">
+                          <i class="text-primary fa-solid fa-hotel fs-3 mr-2 mb-2"></i>
+                          <h5 class="m-0 me-2">{{ card.reserved_by.name }}</h5>
+                          <p>{{ card.id }}</p>
+                        </div>
+
+                        <div class="btn-group" id="hover-dropdown-demo " @mouseenter="isHovered = true" @mouseleave="isHovered = false">
+                          <div class="btn-group" id="hover-dropdown-demo " @mouseenter="isHovered = true" @mouseleave="isHovered = false">
+                            <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none">
+                              <i class="fa-solid fa-ellipsis-vertical"></i>
+                            </button>
+                            <ul v-show="isHovered" class="dropdown-menu show" data-popper-placement=" bottom-end">
+                              <li>
+                                <a class="dropdown-item" href="#"><i class="fa-solid fa-file-circle-plus mr-2"></i>Print Invoice</a>
+                              </li>
+                              <li>
+                                <a class="dropdown-item" href="#"><i class="fa-solid fa-calendar-plus mr-2"></i>Add
+                                  New Booking</a>
+                              </li>
+                              <li>
+                                <a class="dropdown-item" href="#"><i class="fa-solid fa-list-check mr-2"></i>Audit
+                                  Trail</a>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card-body">
+                        <div id="deliveryExceptionsChart">
+                          <div class="row d-flex align-items-center justify-content-center text-center mb-3">
+                            <div class="bg-light col-md-5">
+                              <div class="text-dark">02/12/2024</div>
+                              <div>08:43:01 pm</div>
+                            </div>
+                            <div class="bg-secondary col-md-2">
+                              <div class="text-dark">5</div>
+                              <div>Nights</div>
+                            </div>
+                            <div class="bg-light col-md-5">
+                              <div class="text-dark">02/12/2024</div>
+                              <div>08:43:01 pm</div>
+                            </div>
+                          </div>
+                          <div class="row mb-5">
+                            <div class="col-md-10">
+                              <div>Booking Date</div>
+                              <div>02/12/2024</div>
+                            </div>
+                            <div class="col-md-2">
+                              <div>
+                                <i class="fa-solid fa-person"></i>3
+                                <i class="fa-solid fa-child"></i>2
+                              </div>
+                            </div>
+                            <div class="col-md-12">
+                              <div>Room / Rate Type</div>
+                              <div>202 / السعر غير شامل</div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-10">Total</div>
+                            <div class="col-md-2">$230</div>
+                            <div class="col-md-10">Paid</div>
+                            <div class="col-md-2">$250</div>
+                            <div class="col-md-10 text-danger">Balance</div>
+                            <div class="col-md-2 text-danger">$20</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
               </div>
 
               <div v-else class="col-12 col-md-6 col-lg-4 mb-4 order-1 order-xl-0" @click="openOffcanvas(card)" v-for="card in reservations" :key="card.id">
@@ -1190,170 +1222,7 @@ export default {
       selectedCard: null, // Store the data for the selected card
       activeTab: "reservations", // Default active tab
       reservations: [
-        {
-          "id": 5,
-          "checkin_date": "2024-12-01T00:00:00.000000Z",
-          "checkin_time": "11:51:00",
-          "checkout_date": "2024-12-06T00:00:00.000000Z",
-          "checkout_time": "10:00:00",
-          "number_of_rooms": 1,
-          "rate_type": "standard",
-          "adults": 1,
-          "children": 2,
-          "reserved_by": {
-            "id": 0,
-            "name": "Unknown User"
-          },
-          "items": [
-            {
-              "id": 3,
-              "reservation_id": 5,
-              "unit_id": 1,
-              "booking_date": "2024-12-01T00:00:00.000000Z",
-              "checkin_time": "2024-12-23T11:51:00.000000Z",
-              "checkout_time": null,
-              "adults": 1,
-              "children": 2,
-              "status": "reserved",
-              "rate_type": null,
-              "rate_amount": null,
-              "price": 1,
-              "total": 1,
-              "unit": {
-                "id": 1,
-                "name": "Unit 263",
-                "code": "UNIT-1119",
-                "is_smoking": 1,
-                "is_clean": 0,
-                "status": "unavailable",
-                "price": 882,
-                "unit_type": null,
-                "status_description": "reserved",
-                "reserved_by": {
-                  "id": 1,
-                  "name": "mohamed elsherbiny"
-                }
-              }
-            },
-            {
-              "id": 4,
-              "reservation_id": 5,
-              "unit_id": 1,
-              "booking_date": "2024-12-02T00:00:00.000000Z",
-              "checkin_time": null,
-              "checkout_time": null,
-              "adults": 1,
-              "children": 2,
-              "status": "reserved",
-              "rate_type": null,
-              "rate_amount": null,
-              "price": 1,
-              "total": 1,
-              "unit": {
-                "id": 1,
-                "name": "Unit 263",
-                "code": "UNIT-1119",
-                "is_smoking": 1,
-                "is_clean": 0,
-                "status": "unavailable",
-                "price": 882,
-                "unit_type": null,
-                "status_description": "reserved",
-                "reserved_by": {
-                  "id": 1,
-                  "name": "mohamed elsherbiny"
-                }
-              }
-            },
-            {
-              "id": 5,
-              "reservation_id": 5,
-              "unit_id": 5,
-              "booking_date": "2024-12-03T00:00:00.000000Z",
-              "checkin_time": "2024-12-23T12:10:00.000000Z",
-              "checkout_time": null,
-              "adults": 1,
-              "children": 2,
-              "status": "reserved",
-              "rate_type": "with breakfast",
-              "rate_amount": null,
-              "price": 1,
-              "total": 1,
-              "unit": {
-                "id": 5,
-                "name": "Unit 251",
-                "code": "UNIT-4275",
-                "is_smoking": 0,
-                "is_clean": 0,
-                "status": "reserved",
-                "price": 777,
-                "unit_type": null,
-                "status_description": "",
-                "reserved_by": null
-              }
-            },
-            {
-              "id": 6,
-              "reservation_id": 5,
-              "unit_id": 1,
-              "booking_date": "2024-12-04T00:00:00.000000Z",
-              "checkin_time": null,
-              "checkout_time": null,
-              "adults": 1,
-              "children": 2,
-              "status": "reserved",
-              "rate_type": null,
-              "rate_amount": null,
-              "price": 1,
-              "total": 1,
-              "unit": {
-                "id": 1,
-                "name": "Unit 263",
-                "code": "UNIT-1119",
-                "is_smoking": 1,
-                "is_clean": 0,
-                "status": "unavailable",
-                "price": 882,
-                "unit_type": null,
-                "status_description": "reserved",
-                "reserved_by": {
-                  "id": 1,
-                  "name": "mohamed elsherbiny"
-                }
-              }
-            },
-            {
-              "id": 7,
-              "reservation_id": 5,
-              "unit_id": 1,
-              "booking_date": "2024-12-05T00:00:00.000000Z",
-              "checkin_time": null,
-              "checkout_time": "2024-12-23T10:00:00.000000Z",
-              "adults": 1,
-              "children": 2,
-              "status": "reserved",
-              "rate_type": null,
-              "rate_amount": null,
-              "price": 1,
-              "total": 1,
-              "unit": {
-                "id": 1,
-                "name": "Unit 263",
-                "code": "UNIT-1119",
-                "is_smoking": 1,
-                "is_clean": 0,
-                "status": "unavailable",
-                "price": 882,
-                "unit_type": null,
-                "status_description": "reserved",
-                "reserved_by": {
-                  "id": 1,
-                  "name": "mohamed elsherbiny"
-                }
-              }
-            }
-          ]
-        }
+
       ],
       reservationsCount: [
 
