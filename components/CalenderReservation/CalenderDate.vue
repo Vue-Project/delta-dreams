@@ -1,6 +1,6 @@
 <template>
   <section class="card">
-    <HeaderCalender :statistics="statistics" />
+    <HeaderCalender />
     <!-- FullCalendar -->
     <FullCalendar :options="calendarOptions" @select="handleSelect">
       <template v-slot:eventContent="arg">
@@ -51,9 +51,9 @@
 
           <div class="row">
             <hr class="my-2 w-75 mx-auto" />
-            <NuxtLink to="/addreservation">Go to Add Reservation</NuxtLink>
+            <NuxtLink to="/add-reservation">Go to Add Reservation</NuxtLink>
             <hr class="my-2 w-75 mx-auto" />
-            <button type="button" class="ant-btn ant-btn-link ant-btn-block">
+            <button type="button" class="ant-btn ant-btn-link ant-btn-block" @click="toggleSidebar">
               <span>Maintenance Block</span>
             </button>
           </div>
@@ -65,6 +65,21 @@
       </div>
     </div>
     <!-- Popover content  -->
+    <Sidebar :is-sidebar-open="isSidebarOpen" title="Custom Sidebar Title" width="400px" @close-sidebar="toggleSidebar">
+      <!-- Custom Content for Sidebar -->
+      <div>
+        <h4>Custom Content</h4>
+        <p>This content is injected from the parent component.</p>
+        <div class=" gap-2 d-flex justify-content-end">
+          <button class="btn btn-secondary waves-effect waves-light">
+            Clear
+          </button>
+          <button type="submit" class="btn btn-primary waves-effect waves-light">
+            Save
+          </button>
+        </div>
+      </div>
+    </Sidebar>
   </section>
 </template>
 
@@ -73,15 +88,19 @@ import FullCalendar from "@fullcalendar/vue";
 import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
 import interactionPlugin from "@fullcalendar/interaction";
 import HeaderCalender from "./HeaderCalender.vue";
+import Sidebar from "../layout/Sidebar.vue";
 
 export default {
   components: {
     FullCalendar,
     HeaderCalender,
+    Sidebar,
   },
   data ()
   {
     return {
+      isSidebarOpen: false,
+      isPopoverBodyVisible: true, // Body visibility
       selectedDates: [], // Array to store selected dates
       isPopoverVisible: false, // State to control popover visibility
       isOverlayVisible: false, // State to control overlay visibility
@@ -94,9 +113,6 @@ export default {
       ],
 
       calendarOptions: {
-        // events: this.fetchEvents(),
-        // resources: this.fetchResources(),
-        // eventContent: this.eventContent, // Customize event rendering
         plugins: [resourceTimelinePlugin, interactionPlugin],
         initialView: "resourceTimeline",
         duration: { days: 20 },
@@ -105,52 +121,10 @@ export default {
 
         selectable: true, // Enable date selection
         selectMirror: true, // Make the selection draggable
-        eventTimeFormat: {
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: false,
-          meridiem: false,
-        },
+
         eventOverlap: false, // Disallow overlapping events
         slotDuration: "24:00", // Slot duration of one day
 
-        // Customize only the required slot level
-        // slotLabelContent: (arg) =>
-        // {
-        //   const date = new Date(arg.date);
-
-        //   if (arg.level === 0) {
-        //     // Higher-level: Months
-        //     const month = date.toLocaleDateString("en-US", { month: "short" });
-
-        //     return {
-        //       html: `
-        //   <div class="custom-slot-label">
-        //     <div class="slot-month">${month}</div>
-        //   </div>
-        // `,
-        //     };
-        //   }
-
-        //   if (arg.level === 1) {
-        //     // Lower-level: Days
-        //     const day = date.toLocaleDateString("en-US", { day: "2-digit" });
-        //     const weekday = date.toLocaleDateString("en-US", {
-        //       weekday: "short",
-        //     });
-
-        //     return {
-        //       html: `
-        //   <div class="custom-slot-label">
-        //     <div class="slot-day">${day}</div>
-        //     <div class="slot-weekday">${weekday}</div>
-        //   </div>
-        // `,
-        //     };
-        //   }
-
-        //   return null; // For other levels, return null (if any)
-        // },
         slotLabelContent: (arg) =>
         {
           const date = new Date(arg.date);
@@ -251,7 +225,32 @@ export default {
         resourceAreaHeaderContent: this.customResourceHeader, // Customize header
         dateClick: this.handleDateClick,
         select: this.handleSelect,
-        events: [], // Store events programmatically
+        events: [
+          {
+            id: "1",
+            resourceId: "a",
+            title: "Room A Reservation 100",
+            start: "2024-12-24",
+            end: "2025-01-12",
+            color: "#4CAF50",
+          },
+          {
+            id: "2",
+            resourceId: "b-B1", // For specific subroom
+            title: "Room B1 Reservation 100",
+            start: "2024-12-25",
+            end: "2025-01-02",
+            color: "#2196F3",
+          },
+          {
+            id: "3",
+            resourceId: "c-C1", // For specific subroom
+            title: "Room B1 Reservation 100",
+            start: "2024-12-25",
+            end: "2025-01-02",
+            color: "#2896F3",
+          },
+        ], // Store events programmatically
         footerToolbar: {
           left: "",
           center: "",
@@ -261,66 +260,6 @@ export default {
     };
   },
   methods: {
-    fetchEvents ()
-    {
-      // Custom method to fetch events data (subrooms with units, price)
-      return [
-        { id: '1', title: 'Room A', start: '2024-12-21', end: '2024-12-22', resourceId: 'a' },
-        { id: '2', title: 'Room B', start: '2024-12-23', end: '2024-12-24', resourceId: 'b' }
-      ];
-    },
-    fetchResources ()
-    {
-      // Custom method to fetch room resources (rooms or subrooms)
-      return [
-        { id: 'a', title: 'Room A', extendedProps: { subrooms: this.fetchSubrooms('Room A') } },
-        { id: 'b', title: 'Room B', extendedProps: { subrooms: this.fetchSubrooms('Room B') } },
-        { id: 'c', title: 'Room c', extendedProps: { subrooms: this.fetchSubrooms('Room B') } }
-      ];
-    },
-    fetchSubrooms (roomName)
-    {
-      // Subrooms data based on room name
-      if (roomName === 'Room A') {
-        return [
-          { name: 'Subroom A1', units: 30, price: 100 },
-          { name: 'Subroom A2', units: 25, price: 90 }
-        ];
-      }
-      return [
-        { name: 'Subroom B1', units: 35, price: 110 },
-        { name: 'Subroom B2', units: 20, price: 80 }
-      ];
-    },
-    eventContent (eventInfo)
-    {
-      // Custom event content renderer
-      const subrooms = eventInfo.event.extendedProps?.subrooms || [];
-
-      // Render each subroom in a separate <tr> with 20 <td> elements
-      return {
-        html: `
-          <table class="custom-event-table">
-            <tbody>
-              ${subrooms.map(subroom => `
-                <tr class="subroom-row">
-                  <td class="subroom-name">${subroom.name}</td>
-                  <td class="subroom-units">${subroom.units}</td>
-                  <td class="subroom-price">${subroom.price}</td>
-
-                </tr>
-              `).join('')}
-            </tbody>
-          </table>
-        `
-      };
-    },
-    removeDefaultContent (info)
-    {
-      // This ensures the default content does not show up.
-      info.el.innerHTML = ''; // Remove any default rendering.
-    }
-    ,
 
     /**
      * Generates a list of resources from predefined room data.
@@ -392,7 +331,7 @@ export default {
      */
     handleSelect (info)
     {
-      const { start, end } = info;
+      const { start, end, resource } = info; // Destructure the resource object
 
       let currentDate = new Date(start);
       const endDate = new Date(end);
@@ -408,10 +347,19 @@ export default {
         currentDate.setDate(currentDate.getDate() + 1);
       }
 
-      //  After selection, update highlighted text and show the popover
+      // After selection, update highlighted text and show the popover
       this.updateHighlightedText(start, end);
       this.firstSelectedDate = this.selectedDates[0];
       this.lastSelectedDate = this.selectedDates[this.selectedDates.length - 1];
+
+      // Capture the resource ID
+      if (resource) {
+        this.selectedResourceId = resource.id; // Save the resource ID for further use
+        console.log("Selected Resource ID:", this.selectedResourceId); // Log for debugging
+      } else {
+        this.selectedResourceId = null; // Handle cases where no resource is selected
+        console.log("No resource selected.");
+      }
 
       this.showOverlay();
     },
@@ -453,6 +401,8 @@ export default {
       console.log(startDate);
 
       const endDate = new Date(end);
+      console.log(endDate);
+
       const totalDays =
         Math.ceil((endDate - startDate) / (1000 * 3600 * 24)) + 1; // Calculate total days selected
 
@@ -474,7 +424,8 @@ export default {
 
     showPopover ()
     {
-      this.isPopoverVisible = true; // Show the Popover
+      this.isPopoverVisible = true;
+      this.isPopoverBodyVisible = true; // Ensure body is visible when popover shows
 
       this.$nextTick(() =>
       {
@@ -482,20 +433,16 @@ export default {
         this.popoverHeight = popoverElement ? popoverElement.offsetHeight : 0;
 
         const highlightElements = document.querySelectorAll(".fc-highlight");
-
         if (highlightElements.length > 0) {
           const lastHighlight = highlightElements[highlightElements.length - 1];
           const rect = lastHighlight.getBoundingClientRect();
 
-          // Position the popover centered on top of the last highlighted element
           this.popoverStyle = {
-            left: `${rect.left + rect.width / 2 - popoverElement.offsetWidth / 50
-              }px`, // Center horizontally
-            top: `${rect.top + window.scrollY - this.popoverHeight - 90}px`, // Position above the element
+            left: `${rect.left + rect.width / 2 - popoverElement.offsetWidth / 2}px`,
+            top: `${rect.top + window.scrollY - this.popoverHeight - 90}px`,
           };
 
-          // Center the arrow horizontally in the popover
-          this.popoverArrowLeft = `${popoverElement.offsetWidth / 2 - 10}px`; // Adjust arrow to the center of the popover
+          this.popoverArrowLeft = `${popoverElement.offsetWidth / 2 - 10}px`;
         } else {
           alert("No highlighted elements found.");
         }
@@ -540,26 +487,7 @@ export default {
       // Add room and subroom options with checkboxes
       roomData.forEach((resource) =>
       {
-        //            htmlContent += `
-        //       </ul>
-        //     </div>
-        //     <i class="fa-solid ${this.isExpanded ? "fa-minus" : "fa-plus"
-        //       }" style="cursor: pointer; margin-left: 8px;" onclick="this.toggleResourceExpand();"></i>
-        //   </div>
 
-        //   <!-- Table to display filtered data -->
-        //   <table class="table table-bordered mt-3" id="resourceTable">
-        //     <thead>
-        //       <tr>
-        //         <th>Room</th>
-        //         <th>Subroom</th>
-        //       </tr>
-        //     </thead>
-        //     <tbody>
-        //       <!-- Dynamic rows will go here -->
-        //     </tbody>
-        //   </table>
-        // `
         htmlContent += `
       <li>
         <div class="form-check" style="padding:10px 40px"">
@@ -578,7 +506,7 @@ export default {
           <li>
             <label class="dropdown-item">
               <input type="checkbox" class="subroom-checkbox" data-id="${subroom.id}" data-room-id="${resource.id}" onchange="this.filterData()">
-              Subroom: ${subroom.title}
+              Subroom: f3ef3fg34g43${subroom.title}
             </label>
           </li>
         `;
@@ -586,11 +514,9 @@ export default {
         }
       });
 
-      // Convert the HTML string to a DOM node
       const div = document.createElement("div");
-      div.innerHTML = htmlContent.trim(); // Use trim() to remove unnecessary whitespace
+      div.innerHTML = htmlContent.trim();
 
-      // Return the DOM node
       return { domNodes: [div.firstElementChild] };
     },
 
@@ -708,6 +634,12 @@ export default {
         });
       }
     },
+    toggleSidebar ()
+    {
+      this.isSidebarOpen = !this.isSidebarOpen;
+      this.isPopoverVisible = false;
+      this.isOverlayVisible = false;
+    },
   },
   mounted ()
   {
@@ -720,43 +652,8 @@ export default {
       }
     });
   },
-  props: {
-    statistics: {
-      type: Object,
-      required: true,
-    },
-  },
-};
+
+}
 </script>
 
-<style>
-.custom-event-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.subroom-row td {
-  padding: 8px;
-  border: 1px solid #ddd;
-  text-align: center;
-}
-
-.subroom-name {
-  font-weight: bold;
-}
-
-.subroom-units,
-.subroom-price {
-  font-size: 0.9em;
-  color: #555;
-}
-
-.subroom-row td:nth-child(n+4) {
-  background-color: #f8f8f8;
-}
-
-/* .fc .fc-timeline-slots>table {
-
-  display: none;
-} */
-</style>
+<style></style>

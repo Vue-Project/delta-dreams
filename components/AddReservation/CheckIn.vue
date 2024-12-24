@@ -523,7 +523,6 @@ export default {
     },
     selectName (name)
     {
-      // Handle both string and object formats
       this.inputValue = typeof name === "object" ? name.name : name;
       this.showDropdown = false;
     },
