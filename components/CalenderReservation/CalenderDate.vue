@@ -65,11 +65,14 @@
       </div>
     </div>
     <!-- Popover content  -->
-    <Sidebar :is-sidebar-open="isSidebarOpen" title="Custom Sidebar Title" width="400px" @close-sidebar="toggleSidebar">
+    <Sidebar :is-sidebar-open="isSidebarOpen" title="Block Room" width="400px" @close-sidebar="toggleSidebar">
       <!-- Custom Content for Sidebar -->
       <div>
-        <h4>Custom Content</h4>
-        <p>This content is injected from the parent component.</p>
+        <div class="col-md-12col-12 px-0">
+          <label for="flatpickr-date-01" class="form-label">Check-in</label>
+          <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD to YYYY-MM-DD" id="flatpickr-range-01" ref="rangePicker5" aria-label="input Text to Date" />
+        </div>
+
         <div class=" gap-2 d-flex justify-content-end">
           <button class="btn btn-secondary waves-effect waves-light">
             Clear
@@ -89,6 +92,8 @@ import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
 import interactionPlugin from "@fullcalendar/interaction";
 import HeaderCalender from "./HeaderCalender.vue";
 import Sidebar from "../layout/Sidebar.vue";
+import BlindingData from "../Api/data.local.json";
+import flatpickrMixin from "../Mixin/flatpickrMixin";
 
 export default {
   components: {
@@ -99,6 +104,8 @@ export default {
   data ()
   {
     return {
+      data: BlindingData,
+
       isSidebarOpen: false,
       isPopoverBodyVisible: true, // Body visibility
       selectedDates: [], // Array to store selected dates
@@ -279,44 +286,40 @@ export default {
      *                  with specific attributes for identification and styling.
      */
 
-    createResources: function ()
+    createResources ()
     {
-      const roomData = [
-        { id: "a", title: "Room A", subrooms: ["A1", "A2", "A3"] },
-        { id: "b", title: "Room B", subrooms: ["B1", "B2", "B3"] },
-        { id: "c", title: "Room C", subrooms: ["C1", "C2", "C3"] },
-        { id: "5", title: "Room D", subrooms: ["D1", "D2", "D3"] },
-        { id: "6", title: "Room E", subrooms: ["E1", "E2", "E3"] },
-      ];
-
       const resources = [];
 
-      // Loop through roomData and create resources for each room and its subrooms
-      roomData.forEach((room) =>
-      {
-        // Add main room as a resource
-        resources.push({
-          id: room.id,
-          title: room.title,
-          groupId: room.id,
-          classNames: ["resource"], // Add class for styling
-        });
-
-        // Loop through subrooms and add them as resources
-        room.subrooms.forEach((subroom) =>
+      // Ensure roomData is defined and is an array
+      if (Array.isArray(this.data)) {
+        this.data.forEach((building) =>
         {
+          // Add main room as a resource
+
           resources.push({
-            id: `${room.id}-${subroom}`,
-            title: subroom,
-            resourceId: room.id,
-            groupId: room.id,
-            classNames: ["subroom"], // Add class for subroom cells
+            id: building.name, // Unique identifier for main room
+            groupId: building.name, // Groups related rooms together
+            title: building.name, // Display name for the room
+            classNames: ["build"], // CSS class for styling
+          });
+          // Add each subroom as a resource linked to main room
+
+          building.units.data.forEach((unit) =>
+          {
+            resources.push({
+              id: `${building.id}-${unit.id}`, // Combines parent and subroom IDs
+              resourceId: building.id, // Links to parent room
+              title: unit.code,
+              groupId: building.name,
+              classNames: ["unit"], // Groups with parent room
+            });
           });
         });
-      });
+      }
 
       return resources;
     },
+
 
     /**
      * Handles date selection event from FullCalendar.
@@ -470,55 +473,118 @@ export default {
      */
     customResourceHeader ()
     {
-      const roomData = this.createResources(); // Assuming createResources() returns room data with subrooms
+      const buildingData = this.createResources(); // This now includes both rooms and subrooms
 
       let htmlContent = `
     <div class="resource-header" style="position: relative;">
       <div class="btn-group" style="width: 100%;">
         <button class="btn btn-primary dropdown-toggle waves-effect waves-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-          Select Room
+          Room Type
         </button>
         <ul class="dropdown-menu" style="width: 100%;">
           <li>
-            <a class="dropdown-item" href="javascript:void(0);" onclick="this.selectAll()">Select All</a>
+            <!-- "Select All" functionality -->
+            <a class="dropdown-item" href="javascript:void(0);" onclick="this.toggleSelectAll(event)">Select All</a>
           </li>
   `;
 
-      // Add room and subroom options with checkboxes
-      roomData.forEach((resource) =>
+      // Add only the main room options (without subrooms)
+      buildingData.forEach((resource) =>
       {
-
-        htmlContent += `
-      <li>
-        <div class="form-check" style="padding:10px 40px"">
-            <input type="checkbox" class="form-check-input" id="bs-validation-checkbox"  data-id="${resource.id}" onchange="this.filterData()">
-            <label class="form-check-label" for="bs-validation-checkbox">   Room: ${resource.title}</label>
-            <div class="invalid-feedback">You must agree before submitting.</div>
-        </div>
-
-      </li>
-    `;
-
-        if (resource.subrooms && Array.isArray(resource.subrooms)) {
-          resource.subrooms.forEach((subroom) =>
-          {
-            htmlContent += `
-          <li>
-            <label class="dropdown-item">
-              <input type="checkbox" class="subroom-checkbox" data-id="${subroom.id}" data-room-id="${resource.id}" onchange="this.filterData()">
-              Subroom: f3ef3fg34g43${subroom.title}
-            </label>
-          </li>
-        `;
-          });
+        if (!resource.classNames.includes('subroom')) {  // Skip subrooms
+          htmlContent += `
+        <li>
+          <div class="form-check" style="padding:10px 40px;">
+            <input type="checkbox" class="form-check-input" id="bs-validation-checkbox-${resource.id}" data-id="${resource.id}">
+            <label class="form-check-label" for="bs-validation-checkbox-${resource.id}">${resource.title}</label>
+          </div>
+        </li>
+      `;
         }
       });
 
+      htmlContent += `
+        </ul>
+      </div>
+    </div>
+  `;
+
+      // Convert the HTML content to a DOM element and return it
       const div = document.createElement("div");
       div.innerHTML = htmlContent.trim();
 
+      // Attach the event listeners for the checkboxes
+      div.querySelectorAll('input[type="checkbox"]').forEach(checkbox =>
+      {
+        checkbox.addEventListener('change', this.handleCheckboxChange.bind(this)); // Bind the handler
+      });
+
       return { domNodes: [div.firstElementChild] };
     },
+
+    // New function to handle "Select All" logic
+    // toggleSelectAll (event)
+    // {
+    //   // Get all checkboxes inside the dropdown
+    //   const checkboxes = document.querySelectorAll('.resource-header input[type="checkbox"]');
+
+    //   // Check if all checkboxes are already selected
+    //   const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
+
+    //   // Toggle checkboxes based on the current state (select or deselect all)
+    //   checkboxes.forEach(checkbox =>
+    //   {
+    //     checkbox.checked = !allChecked;
+    //   });
+
+    //   // Optionally update the button label (this depends on how you'd like to implement it)
+    //   if (allChecked) {
+    //     event.target.textContent = "Select All";
+    //   } else {
+    //     event.target.textContent = "Deselect All";
+    //   }
+
+    //   // Trigger change event to handle the visibility of data
+    //   this.updateVisibleRooms();
+    // },
+
+    // Handle individual checkbox change
+    handleCheckboxChange (event)
+    {
+      // Trigger the update for visibility when a checkbox is clicked
+      this.updateVisibleRooms();
+    },
+
+    // Function to update the visibility of rooms based on selected checkboxes
+    updateVisibleRooms ()
+    {
+      // Get all checkboxes inside the dropdown
+      const checkboxes = document.querySelectorAll('.resource-header input[type="checkbox"]');
+      // alert(checkboxes);
+
+      // Loop through each checkbox
+      checkboxes.forEach((checkbox) =>
+      {
+        const roomId = checkbox.dataset.id;
+        const roomElement = document.getElementById(`room-${roomId}`); // Ensure this element exists
+
+        // Check if the room element exists before modifying its style
+        if (roomElement) {
+          // Show or hide the room based on checkbox state
+          if (checkbox.checked) {
+            roomElement.style.display = "block";  // Show room
+          } else {
+            roomElement.style.display = "none";   // Hide room
+          }
+        }
+      });
+    }
+
+
+
+
+
+    ,
 
     // Method to filter data based on selected checkboxes
     filterData ()
@@ -643,6 +709,7 @@ export default {
   },
   mounted ()
   {
+    this.calendarOptions.resources = this.createResources();
     // Add a delay to ensure FullCalendar renders first
     this.$nextTick(() =>
     {
@@ -652,6 +719,8 @@ export default {
       }
     });
   },
+  mixins: [flatpickrMixin],
+
 
 }
 </script>

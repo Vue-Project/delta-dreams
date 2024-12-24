@@ -105,6 +105,16 @@ export const geDataId = async (id) =>
     throw error;
   }
 };
+export const getCalenderData = async () =>
+{
+  try {
+    const response = await apiClient.get(`/units`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching reservations:', error);
+    throw error;
+  }
+};
 
 
 

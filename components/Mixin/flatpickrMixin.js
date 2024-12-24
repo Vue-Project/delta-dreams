@@ -61,6 +61,7 @@ export default {
           this.$refs.rangePicker2,
           this.$refs.rangePicker3,
           this.$refs.rangePicker4,
+          this.$refs.rangePicker5,
         ].filter(Boolean); // Filter out undefined refs
 
         // Initialize range pickers
