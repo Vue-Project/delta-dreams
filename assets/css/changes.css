@@ -690,11 +690,11 @@ select.form-select option {
   margin-bottom: 5px;
 }
 
-.fc .fc-datagrid-cell-cushion,
+/* .fc .fc-datagrid-cell-cushion,
 .fc .fc-scroller-harness,
 .fc-scroller {
   overflow: visible !important;
-}
+} */
 
 .fc-scrollgrid-sync-inner {
   width: 100%;

@@ -65,23 +65,9 @@
       </div>
     </div>
     <!-- Popover content  -->
-    <Sidebar :is-sidebar-open="isSidebarOpen" title="Block Room" width="400px" @close-sidebar="toggleSidebar">
+    <Sidebar :is-sidebar-open="isSidebarOpen" title="Block Room" width="400px" @close-sidebar="toggleSidebar" style="height: auto;">
       <!-- Custom Content for Sidebar -->
-      <div>
-        <div class="col-md-12col-12 px-0">
-          <label for="flatpickr-date-01" class="form-label">Check-in</label>
-          <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD to YYYY-MM-DD" id="flatpickr-range-01" ref="rangePicker5" aria-label="input Text to Date" />
-        </div>
-
-        <div class=" gap-2 d-flex justify-content-end">
-          <button class="btn btn-secondary waves-effect waves-light">
-            Clear
-          </button>
-          <button type="submit" class="btn btn-primary waves-effect waves-light">
-            Save
-          </button>
-        </div>
-      </div>
+      <BlockRoomForm />
     </Sidebar>
   </section>
 </template>
@@ -93,13 +79,14 @@ import interactionPlugin from "@fullcalendar/interaction";
 import HeaderCalender from "./HeaderCalender.vue";
 import Sidebar from "../layout/Sidebar.vue";
 import BlindingData from "../Api/data.local.json";
-import flatpickrMixin from "../Mixin/flatpickrMixin";
+import BlockRoomForm from "./BlockRoomForm.vue";
 
 export default {
   components: {
     FullCalendar,
     HeaderCalender,
     Sidebar,
+    BlockRoomForm
   },
   data ()
   {
@@ -168,6 +155,62 @@ export default {
 
           return null; // For other levels, return null (if any)
         },
+        resourceLabelDidMount: function (info)
+        {
+          console.log('resourceLabelDidMount called:', info);
+          console.log('Resource object:', JSON.stringify(info.resource, null, 2));
+
+          const { resource, el } = info;
+
+          // Ensure resource classNames and extendedProps are defined
+          const isUnit = resource.classNames?.includes('unit');
+          console.log('Is this a unit resource?', isUnit);
+
+          if (isUnit) {
+            // Retrieve extended properties
+            const clean = resource.extendedProps?.is_clean === 1;
+            const smoking = resource.extendedProps?.is_smoking === 1;
+            console.log('Clean status:', clean, 'Smoking status:', smoking);
+
+            // Create container for icons
+            const iconContainer = document.createElement('span');
+            iconContainer.className = 'flex gap-1 ml-2';
+
+            // Create clean status icon
+            const cleanIcon = document.createElement('span');
+            cleanIcon.innerHTML = clean
+              ? '<svg class="text-green-500" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M8 12l2 2 4-4"></path></svg>'
+              : '<svg class="text-red-500" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M15 9l-6 6M9 9l6 6"></path></svg>';
+            iconContainer.appendChild(cleanIcon);
+
+            // Create smoking status icon
+            const smokingIcon = document.createElement('span');
+            smokingIcon.innerHTML = smoking
+              ? '<svg class="text-gray-500" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 12H2M18 8H4M22 16H2"></path></svg>'
+              : '<svg class="text-red-500" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 12H2M18 8H4M22 16H2M3 3l18 18"></path></svg>';
+            iconContainer.appendChild(smokingIcon);
+
+            // Add icons to the cell
+            const cell = el.querySelector('.fc-datagrid-cell-main');
+            if (cell) {
+              cell.appendChild(iconContainer);
+              console.log('Icons successfully added to cell.');
+            } else {
+              console.error('Could not find cell element in:', el);
+              console.log('Element structure:', el.innerHTML);
+            }
+          } else {
+            console.log('Not a unit resource, skipping icons.');
+          }
+        },
+
+        // resourceAreaWidth: '15%',
+        // resourceAreaColumns: [
+        //   {
+        //     field: 'title',
+        //     headerContent: 'Units'
+        //   }
+        // ],
 
         //   datesSet: function (info)
         //   {
@@ -233,9 +276,10 @@ export default {
         dateClick: this.handleDateClick,
         select: this.handleSelect,
         events: [
+
           {
             id: "1",
-            resourceId: "a",
+            resourceId: "21-10",
             title: "Room A Reservation 100",
             start: "2024-12-24",
             end: "2025-01-12",
@@ -243,7 +287,7 @@ export default {
           },
           {
             id: "2",
-            resourceId: "b-B1", // For specific subroom
+            resourceId: "21-1", // For specific subroom
             title: "Room B1 Reservation 100",
             start: "2024-12-25",
             end: "2025-01-02",
@@ -251,7 +295,7 @@ export default {
           },
           {
             id: "3",
-            resourceId: "c-C1", // For specific subroom
+            resourceId: "21-9", // For specific subroom
             title: "Room B1 Reservation 100",
             start: "2024-12-25",
             end: "2025-01-02",
@@ -267,6 +311,10 @@ export default {
     };
   },
   methods: {
+
+
+
+
 
     /**
      * Generates a list of resources from predefined room data.
@@ -286,39 +334,63 @@ export default {
      *                  with specific attributes for identification and styling.
      */
 
-    createResources ()
+    createResources: function ()
     {
+      console.log('Creating resources');
+      console.log('Input data:', this.data);
+
       const resources = [];
 
-      // Ensure roomData is defined and is an array
       if (Array.isArray(this.data)) {
-        this.data.forEach((building) =>
+        this.data.forEach((building, index) =>
         {
+          console.log(`Processing building ${index}:`, building);
+
           // Add main room as a resource
-
           resources.push({
-            id: building.name, // Unique identifier for main room
-            groupId: building.name, // Groups related rooms together
-            title: building.name, // Display name for the room
-            classNames: ["build"], // CSS class for styling
+            id: building.name,
+            groupId: building.name,
+            title: building.name,
+            classNames: ["build500"],
           });
-          // Add each subroom as a resource linked to main room
 
-          building.units.data.forEach((unit) =>
-          {
-            resources.push({
-              id: `${building.id}-${unit.id}`, // Combines parent and subroom IDs
-              resourceId: building.id, // Links to parent room
-              title: unit.code,
-              groupId: building.name,
-              classNames: ["unit"], // Groups with parent room
+          // Add each subroom as a resource
+          if (building.units?.data) {
+            console.log(`Processing units for building ${building.name}:`, building.units.data);
+
+            building.units.data.forEach((unit, unitIndex) =>
+            {
+              console.log(`Processing unit ${unitIndex}:`, unit);
+
+              resources.push({
+                id: `${building.id}-${unit.id}`,
+                resourceId: building.name,
+                title: unit.code,
+                groupId: building.name,
+                classNames: ["unit"],
+                extendedProps: {
+
+                  is_clean: unit.is_clean,
+                  is_smoking: unit.is_smoking,
+                },
+              });
             });
-          });
+          } else {
+            console.warn(`No units found for building ${building.name}`);
+          }
         });
+      } else {
+        console.error('Data is not an array:', this.data);
       }
 
+      console.log('Created resources:', resources);
       return resources;
     },
+
+
+
+
+
 
 
     /**
@@ -491,7 +563,7 @@ export default {
       // Add only the main room options (without subrooms)
       buildingData.forEach((resource) =>
       {
-        if (!resource.classNames.includes('subroom')) {  // Skip subrooms
+        if (!resource.classNames.includes('unit')) {  // Skip subrooms
           htmlContent += `
         <li>
           <div class="form-check" style="padding:10px 40px;">
@@ -719,7 +791,6 @@ export default {
       }
     });
   },
-  mixins: [flatpickrMixin],
 
 
 }
