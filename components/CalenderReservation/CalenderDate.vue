@@ -157,54 +157,63 @@ export default {
         },
         resourceLabelDidMount: function (info)
         {
-          console.log('resourceLabelDidMount called:', info);
-          console.log('Resource object:', JSON.stringify(info.resource, null, 2));
+          // Get the resource's extendedProps
+          const { is_clean, is_smoking } = info.resource.extendedProps;
 
-          const { resource, el } = info;
+          // Create container for icons
+          const iconContainer = document.createElement('span');
+          iconContainer.style.float = 'right';
+          iconContainer.style.paddingRight = '10px';
 
-          // Ensure resource classNames and extendedProps are defined
-          const isUnit = resource.classNames?.includes('unit');
-          console.log('Is this a unit resource?', isUnit);
+          // Add icon for cleanliness status
+          const cleanIcon = document.createElement('i');
+          cleanIcon.style.paddingRight = '10px';
 
-          if (isUnit) {
-            // Retrieve extended properties
-            const clean = resource.extendedProps?.is_clean === 1;
-            const smoking = resource.extendedProps?.is_smoking === 1;
-            console.log('Clean status:', clean, 'Smoking status:', smoking);
-
-            // Create container for icons
-            const iconContainer = document.createElement('span');
-            iconContainer.className = 'flex gap-1 ml-2';
-
-            // Create clean status icon
-            const cleanIcon = document.createElement('span');
-            cleanIcon.innerHTML = clean
-              ? '<svg class="text-green-500" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M8 12l2 2 4-4"></path></svg>'
-              : '<svg class="text-red-500" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M15 9l-6 6M9 9l6 6"></path></svg>';
-            iconContainer.appendChild(cleanIcon);
-
-            // Create smoking status icon
-            const smokingIcon = document.createElement('span');
-            smokingIcon.innerHTML = smoking
-              ? '<svg class="text-gray-500" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 12H2M18 8H4M22 16H2"></path></svg>'
-              : '<svg class="text-red-500" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 12H2M18 8H4M22 16H2M3 3l18 18"></path></svg>';
-            iconContainer.appendChild(smokingIcon);
-
-            // Add icons to the cell
-            const cell = el.querySelector('.fc-datagrid-cell-main');
-            if (cell) {
-              cell.appendChild(iconContainer);
-              console.log('Icons successfully added to cell.');
-            } else {
-              console.error('Could not find cell element in:', el);
-              console.log('Element structure:', el.innerHTML);
-            }
+          if (is_clean) {
+            cleanIcon.className = 'fa fa-broom'; // FontAwesome icon for clean
+            // cleanIcon.style.color = 'green';
+            cleanIcon.setAttribute('title', 'This unit is clean');
           } else {
-            console.log('Not a unit resource, skipping icons.');
+            cleanIcon.className = 'fa fa-trash'; // FontAwesome icon for not clean
+            // cleanIcon.style.color = 'orange';
+            cleanIcon.setAttribute('title', 'This unit is not clean');
           }
+          cleanIcon.setAttribute('data-bs-toggle', 'tooltip');
+          cleanIcon.setAttribute('data-bs-placement', 'top');
+          iconContainer.appendChild(cleanIcon);
+
+          // Add icon for smoking status
+          const smokingIcon = document.createElement('i');
+          if (is_smoking) {
+            smokingIcon.className = 'fa fa-smoking'; // FontAwesome icon for smoking
+            // smokingIcon.style.color = 'red';
+            smokingIcon.setAttribute('title', 'Smoking is allowed ');
+          } else {
+            smokingIcon.className = 'fa fa-smoking-ban'; // FontAwesome icon for no smoking
+            // smokingIcon.style.color = 'blue';
+            smokingIcon.setAttribute('title', 'Smoking is not allowed ');
+          }
+          smokingIcon.setAttribute('data-bs-toggle', 'tooltip');
+          smokingIcon.setAttribute('data-bs-placement', 'top');
+          iconContainer.appendChild(smokingIcon);
+
+          // Append the icon container to the resource label
+          info.el.querySelector('.fc-datagrid-cell-main').appendChild(iconContainer);
+
+          // Initialize Bootstrap tooltips
+          const tooltipTriggerList = [].slice.call(iconContainer.querySelectorAll('[data-bs-toggle="tooltip"]'));
+          tooltipTriggerList.forEach(function (tooltipTriggerEl)
+          {
+            new bootstrap.Tooltip(tooltipTriggerEl); // Activate tooltip
+          });
         },
 
-        // resourceAreaWidth: '15%',
+
+
+
+
+
+        resourceAreaWidth: '20%',
         // resourceAreaColumns: [
         //   {
         //     field: 'title',
@@ -342,10 +351,8 @@ export default {
       const resources = [];
 
       if (Array.isArray(this.data)) {
-        this.data.forEach((building, index) =>
+        this.data.forEach((building) =>
         {
-          console.log(`Processing building ${index}:`, building);
-
           // Add main room as a resource
           resources.push({
             id: building.name,
@@ -356,12 +363,8 @@ export default {
 
           // Add each subroom as a resource
           if (building.units?.data) {
-            console.log(`Processing units for building ${building.name}:`, building.units.data);
-
-            building.units.data.forEach((unit, unitIndex) =>
+            building.units.data.forEach((unit) =>
             {
-              console.log(`Processing unit ${unitIndex}:`, unit);
-
               resources.push({
                 id: `${building.id}-${unit.id}`,
                 resourceId: building.name,
@@ -369,23 +372,19 @@ export default {
                 groupId: building.name,
                 classNames: ["unit"],
                 extendedProps: {
-
                   is_clean: unit.is_clean,
                   is_smoking: unit.is_smoking,
                 },
               });
             });
-          } else {
-            console.warn(`No units found for building ${building.name}`);
           }
         });
-      } else {
-        console.error('Data is not an array:', this.data);
       }
 
       console.log('Created resources:', resources);
       return resources;
     },
+
 
 
 
