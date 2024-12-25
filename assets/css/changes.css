@@ -690,11 +690,26 @@ select.form-select option {
   margin-bottom: 5px;
 }
 
-/* .fc .fc-datagrid-cell-cushion,
+.fc .fc-datagrid-cell-cushion,
 .fc .fc-scroller-harness,
 .fc-scroller {
   overflow: visible !important;
-} */
+}
+.fc .fc-view-harness-active > .fc-view{
+  overflow: auto !important;
+}
+.fc .fc-view-harness-active > .fc-view::-webkit-scrollbar {
+  display: none !important;
+}
+
+.fc .fc-view-harness-active > .fc-view {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.fc .fc-scrollgrid-section-liquid > td {
+  height: 1870px;
+}
 
 .fc-scrollgrid-sync-inner {
   width: 100%;
@@ -706,19 +721,19 @@ select.form-select option {
 
 #calendar-footer {
   text-align: center;
-  margin-top: -23px;
+  margin-top: -25px;
   font-size: 14px;
   display: none;
 }
-
-#calendar-footer table {
-  width: 100%;
+.w-18{
+  width: 18%;
 }
 
+
+
 #calendar-footer td {
-  padding: 0 3px;
+  /* padding: 0 3px; */
   border: 1px solid #ddd;
-  width: 65px;
 }
 
 .fc-license-message {

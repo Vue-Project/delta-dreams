@@ -8,19 +8,29 @@
       </template>
     </FullCalendar>
     <div id="calendar-footer">
-      <table class="ant-table">
-        <tbody class="ant-table-tbody">
-          <tr style="background: #f1f1f1">
-            <!-- Title Column -->
-            <td title="Room Occupancy %" colspan="2" style="text-align: left; padding: 0 15px">
-              Room Occupancy %
-            </td>
+      <div class="table-responsive text-nowrap">
+        <table class="table">
 
-            <!-- Data Columns -->
-            <td v-for="(data, index) in occupancyData" :key="index">
-              {{ data }}
-            </td>
-          </tr>
+          <tbody>
+            <tr style="background: #f1f1f1">
+              <!-- Title Column -->
+              <td title="Room Occupancy %" colspan="0" style="text-align: left; border-right: 4px solid #ddd;" class="w-18">
+                Room Occupancy %
+              </td>
+
+
+              <!-- Data Columns -->
+              <td v-for="(data, index) in occupancyData" :key="index" class=" fc-timeline-slot fc-timeline-slot-lane fc-timeline-slot-major fc-slot fc-slot-wed fc-slot-today fc-slot-past">
+                {{ data }}
+              </td>
+            </tr>
+          </tbody>
+
+        </table>
+      </div>
+      <table class=" ant-table">
+        <tbody class="ant-table-tbody">
+
         </tbody>
       </table>
     </div>
@@ -163,7 +173,7 @@ export default {
           // Create container for icons
           const iconContainer = document.createElement('span');
           iconContainer.style.float = 'right';
-          iconContainer.style.paddingRight = '10px';
+          iconContainer.style.cursor = 'pointer';
 
           // Add icon for cleanliness status
           const cleanIcon = document.createElement('i');
@@ -213,7 +223,7 @@ export default {
 
 
 
-        resourceAreaWidth: '20%',
+        resourceAreaWidth: '18%',
         // resourceAreaColumns: [
         //   {
         //     field: 'title',
@@ -305,6 +315,14 @@ export default {
           {
             id: "3",
             resourceId: "21-9", // For specific subroom
+            title: "Room B1 Reservation 100",
+            start: "2024-12-25",
+            end: "2025-01-02",
+            color: "#2896F3",
+          },
+          {
+            id: "3",
+            resourceId: "25-9", // For specific subroom
             title: "Room B1 Reservation 100",
             start: "2024-12-25",
             end: "2025-01-02",
@@ -544,8 +562,9 @@ export default {
      */
     customResourceHeader ()
     {
-      const buildingData = this.createResources(); // This now includes both rooms and subrooms
+      const buildingData = this.createResources();
 
+      // Create the HTML content
       let htmlContent = `
     <div class="resource-header" style="position: relative;">
       <div class="btn-group" style="width: 100%;">
@@ -554,159 +573,162 @@ export default {
         </button>
         <ul class="dropdown-menu" style="width: 100%;">
           <li>
-            <!-- "Select All" functionality -->
-            <a class="dropdown-item" href="javascript:void(0);" onclick="this.toggleSelectAll(event)">Select All</a>
-          </li>
-  `;
+            <div class="form-check" style="padding:10px 40px;">
+              <input type="checkbox" class="form-check-input" id="select-all-checkbox">
+              <label class="form-check-label" for="select-all-checkbox">Select All</label>
+            </div>
+          </li>`;
 
-      // Add only the main room options (without subrooms)
+      // Add room options
       buildingData.forEach((resource) =>
       {
-        if (!resource.classNames.includes('unit')) {  // Skip subrooms
+        if (!resource.classNames.includes('unit')) {
           htmlContent += `
         <li>
           <div class="form-check" style="padding:10px 40px;">
-            <input type="checkbox" class="form-check-input" id="bs-validation-checkbox-${resource.id}" data-id="${resource.id}">
-            <label class="form-check-label" for="bs-validation-checkbox-${resource.id}">${resource.title}</label>
+            <input type="checkbox" class="form-check-input room-checkbox"
+              id="bs-validation-checkbox-${resource.id}"
+              data-id="${resource.id}">
+            <label class="form-check-label"
+              for="bs-validation-checkbox-${resource.id}">${resource.title}</label>
           </div>
-        </li>
-      `;
+        </li>`;
         }
       });
 
       htmlContent += `
         </ul>
       </div>
-    </div>
-  `;
+      <div id="filtered-data" class="mt-3"></div>
+    </div>`;
 
-      // Convert the HTML content to a DOM element and return it
       const div = document.createElement("div");
       div.innerHTML = htmlContent.trim();
 
-      // Attach the event listeners for the checkboxes
-      div.querySelectorAll('input[type="checkbox"]').forEach(checkbox =>
+      const selectAllCheckbox = div.querySelector('#select-all-checkbox');
+      const roomCheckboxes = div.querySelectorAll('.room-checkbox');
+
+      selectAllCheckbox.addEventListener('change', (event) =>
       {
-        checkbox.addEventListener('change', this.handleCheckboxChange.bind(this)); // Bind the handler
+        const isChecked = event.target.checked;
+        roomCheckboxes.forEach(checkbox =>
+        {
+          checkbox.checked = isChecked;
+          const changeEvent = new Event('change', { bubbles: true });
+          checkbox.dispatchEvent(changeEvent);
+        });
+        this.updateFilteredData();
+      });
+
+      roomCheckboxes.forEach(checkbox =>
+      {
+        checkbox.addEventListener('change', (event) =>
+        {
+          const allChecked = Array.from(roomCheckboxes).every(cb => cb.checked);
+          const someChecked = Array.from(roomCheckboxes).some(cb => cb.checked);
+
+          selectAllCheckbox.checked = allChecked;
+          selectAllCheckbox.indeterminate = someChecked && !allChecked;
+
+          this.handleCheckboxChange(event);
+          this.updateFilteredData();
+        });
       });
 
       return { domNodes: [div.firstElementChild] };
     },
 
-    // New function to handle "Select All" logic
-    // toggleSelectAll (event)
-    // {
-    //   // Get all checkboxes inside the dropdown
-    //   const checkboxes = document.querySelectorAll('.resource-header input[type="checkbox"]');
-
-    //   // Check if all checkboxes are already selected
-    //   const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
-
-    //   // Toggle checkboxes based on the current state (select or deselect all)
-    //   checkboxes.forEach(checkbox =>
-    //   {
-    //     checkbox.checked = !allChecked;
-    //   });
-
-    //   // Optionally update the button label (this depends on how you'd like to implement it)
-    //   if (allChecked) {
-    //     event.target.textContent = "Select All";
-    //   } else {
-    //     event.target.textContent = "Deselect All";
-    //   }
-
-    //   // Trigger change event to handle the visibility of data
-    //   this.updateVisibleRooms();
-    // },
-
-    // Handle individual checkbox change
     handleCheckboxChange (event)
     {
-      // Trigger the update for visibility when a checkbox is clicked
-      this.updateVisibleRooms();
-    },
+      const checkbox = event.target;
+      const resourceId = checkbox.dataset.id;
 
-    // Function to update the visibility of rooms based on selected checkboxes
-    updateVisibleRooms ()
-    {
-      // Get all checkboxes inside the dropdown
-      const checkboxes = document.querySelectorAll('.resource-header input[type="checkbox"]');
-      // alert(checkboxes);
+      if (!this.calendar || !resourceId) {
+        console.error("Calendar or resourceId is missing.");
+        return;
+      }
 
-      // Loop through each checkbox
-      checkboxes.forEach((checkbox) =>
-      {
-        const roomId = checkbox.dataset.id;
-        const roomElement = document.getElementById(`room-${roomId}`); // Ensure this element exists
-
-        // Check if the room element exists before modifying its style
-        if (roomElement) {
-          // Show or hide the room based on checkbox state
-          if (checkbox.checked) {
-            roomElement.style.display = "block";  // Show room
-          } else {
-            roomElement.style.display = "none";   // Hide room
-          }
+      const resource = this.calendar.getResourceById(resourceId);
+      if (resource) {
+        if (checkbox.checked) {
+          resource.show();
+        } else {
+          resource.hide();
         }
-      });
+      } else {
+        console.error("Resource not found with ID:", resourceId);
+      }
     }
-
-
-
-
 
     ,
 
-    // Method to filter data based on selected checkboxes
-    filterData ()
+    updateFilteredData ()
     {
-      // Get all checked checkboxes
-      const checkedRooms = Array.from(
-        document.querySelectorAll(".room-checkbox:checked")
-      ).map((checkbox) => checkbox.dataset.id);
-      const checkedSubrooms = Array.from(
-        document.querySelectorAll(".subroom-checkbox:checked")
-      ).map((checkbox) => checkbox.dataset.id);
+      const filteredDataDiv = document.getElementById('filtered-data');
+      const selectAllCheckbox = document.getElementById('select-all-checkbox');
+      const roomCheckboxes = document.querySelectorAll('.room-checkbox');
 
-      // Filter the rooms and subrooms based on selected checkboxes
-      const filteredData = this.createResources().filter((resource) =>
-      {
-        const roomSelected = checkedRooms.includes(resource.id.toString());
-        const subroomsSelected =
-          resource.subrooms &&
-          resource.subrooms.some((subroom) =>
-            checkedSubrooms.includes(subroom.id.toString())
-          );
-        return roomSelected || subroomsSelected;
-      });
+      // Clear previous content
+      filteredDataDiv.innerHTML = '';
 
-      // Update the table with filtered data
-      const tableBody = document.querySelector("#resourceTable tbody");
-      tableBody.innerHTML = ""; // Clear existing rows
-
-      filteredData.forEach((resource) =>
-      {
-        resource.subrooms.forEach((subroom) =>
+      // Check if "Select All" is checked
+      if (selectAllCheckbox.checked) {
+        // Show all resources and their events
+        const allResources = this.calendar.getResources();
+        allResources.forEach(resource =>
         {
-          const row = document.createElement("tr");
-          row.innerHTML = `
-        <td>${resource.title}</td>
-        <td>${subroom.title}</td>
-      `;
-          tableBody.appendChild(row);
+          this.renderResourceData(filteredDataDiv, resource);
         });
-      });
+      } else {
+        // Show only selected resources and their events
+        const checkedCheckboxes = Array.from(roomCheckboxes).filter(checkbox => checkbox.checked);
+        if (checkedCheckboxes.length > 0) {
+          checkedCheckboxes.forEach(checkbox =>
+          {
+            const resourceId = checkbox.dataset.id;
+            const resource = this.calendar.getResourceById(resourceId);
+            if (resource) {
+              this.renderResourceData(filteredDataDiv, resource);
+            }
+          });
+        } else {
+          filteredDataDiv.innerHTML = '<p>No resources selected</p>';
+        }
+      }
     },
 
-    // Optional: Select all checkboxes
-    selectAll ()
+    renderResourceData (container, resource)
     {
-      const allCheckboxes = document.querySelectorAll(
-        ".room-checkbox, .subroom-checkbox"
+      const resourceEvents = this.calendar.getEvents().filter(event =>
+        event.getResources().some(res => res.id === resource.id)
       );
-      allCheckboxes.forEach((checkbox) => (checkbox.checked = true));
-      this.filterData();
+
+      const resourceDiv = document.createElement('div');
+      resourceDiv.className = 'resource-data mb-3';
+      resourceDiv.innerHTML = `
+    <h5>${resource.title}</h5>
+    <div class="events-list">
+      ${resourceEvents.map(event => `
+        <div class="event-item">
+          <strong>${event.title}</strong>
+          <div>Start: ${event.start.toLocaleString()}</div>
+          <div>End: ${event.end.toLocaleString()}</div>
+        </div>
+      `).join('')}
+      ${resourceEvents.length === 0 ? '<p>No events for this resource</p>' : ''}
+    </div>
+  `;
+      container.appendChild(resourceDiv);
     },
+
+
+
+
+
+
+
+
+
 
     /**
      * Toggles the expand/collapse state of resources in a calendar view.
