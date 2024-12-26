@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const apiClient = axios.create({
   baseURL: 'https://deltadream.swevey.com/api',
-  timeout: 10000,
+  // timeout: 10000,
 });
 
 export const getRooms = async () =>
@@ -124,5 +124,6 @@ export default {
   getRooms,
   getBusinessSources,
   getBookingSources,
-  getReservationTypes
+  getReservationTypes,
+  getCalenderData
 };

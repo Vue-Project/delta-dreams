@@ -1,6 +1,10 @@
 <template>
+
   <section class="card">
+    <Loader />
+
     <HeaderCalender />
+    <!-- {{ unitsDates }} -->
     <!-- FullCalendar -->
     <FullCalendar :options="calendarOptions" @select="handleSelect">
       <template v-slot:eventContent="arg">
@@ -88,21 +92,25 @@ import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
 import interactionPlugin from "@fullcalendar/interaction";
 import HeaderCalender from "./HeaderCalender.vue";
 import Sidebar from "../layout/Sidebar.vue";
-import BlindingData from "../Api/data.local.json";
+// import BlindingData from "../Api/data.local.json";
 import BlockRoomForm from "./BlockRoomForm.vue";
+import { getCalenderData } from "../Api/api";
+import Loader from "../layout/Loader.vue";
 
 export default {
   components: {
     FullCalendar,
     HeaderCalender,
     Sidebar,
-    BlockRoomForm
+    BlockRoomForm, Loader
   },
   data ()
   {
     return {
-      data: BlindingData,
+      isPageLoading: true, // Track loading state
 
+      data: [],
+      unitsDates: [],
       isSidebarOpen: false,
       isPopoverBodyVisible: true, // Body visibility
       selectedDates: [], // Array to store selected dates
@@ -115,7 +123,6 @@ export default {
       occupancyData: [
         1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 50, 0, 0, 20, 80, 19, 100,
       ],
-
       calendarOptions: {
         plugins: [resourceTimelinePlugin, interactionPlugin],
         initialView: "resourceTimeline",
@@ -338,6 +345,15 @@ export default {
     };
   },
   methods: {
+    showLoader ()
+    {
+      this.isPageLoading = true;
+      setTimeout(() =>
+      {
+        this.isPageLoading = false; // Hide loader after data fetch
+      }, 1000); // Adjust based on your needs
+    },
+
 
 
 
@@ -454,7 +470,8 @@ export default {
       }
 
       this.showOverlay();
-    },
+    }
+    ,
 
     /**
      * Highlights the cell for a given date in the calendar.
@@ -800,10 +817,22 @@ export default {
       this.isOverlayVisible = false;
     },
   },
-  mounted ()
+  async mounted ()
   {
+    try {
+      const [
+        CalenderDataResponse
+      ] = await Promise.all([
+        getCalenderData(),
+      ]);
+
+      this.data = CalenderDataResponse.data.data;
+      this.unitsDates = CalenderDataResponse.data.data;
+
+    } catch (error) {
+      console.error("Error loading data:", error);
+    }
     this.calendarOptions.resources = this.createResources();
-    // Add a delay to ensure FullCalendar renders first
     this.$nextTick(() =>
     {
       const footerElement = document.querySelector("#calendar-footer");
@@ -812,6 +841,14 @@ export default {
       }
     });
   },
+  watch: {
+    // Watch for route changes
+    '$route' (to, from)
+    {
+      this.showLoader();
+    },
+  },
+
 
 
 }
