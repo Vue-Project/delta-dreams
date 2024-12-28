@@ -1,6 +1,6 @@
 <template>
   <section class="card">
-    <p>{{ unitsDates }}</p>
+    <!-- <p>{{ statisticsForHeader2.links }}</p> -->
     <!-- <div>
       <h1>Events and Reservations</h1>
       <div v-for="event in mappedEvents" :key="event.id" class="event-card">
@@ -27,7 +27,7 @@
     <div v-if="!isLoading">
       <!-- Your existing content goes here, like FullCalendar, tables, etc. -->
 
-      <HeaderCalender />
+      <HeaderCalender :statistics="statisticsHeaderCalender" />
       <FullCalendar :options="calendarOptions" @select="handleSelect">
         <template v-slot:eventContent="arg">
           <b>{{ arg.event.title }}</b>
@@ -132,9 +132,8 @@ export default {
       popoverArrowLeft: "0px", // Inline style for arrow positioning
       firstSelectedDate: "", // Store first selected date
       lastSelectedDate: "",
-      occupancyData: [
-
-      ],
+      occupancyData: [],
+      statisticsHeaderCalender: [],
       calendarOptions: {
         plugins: [resourceTimelinePlugin, interactionPlugin],
         initialView: "resourceTimeline",
@@ -376,44 +375,57 @@ export default {
      *                  with specific attributes for identification and styling.
      */
 
-    createResources: function ()
-    {
+    // createResources (selectedIds = [])
+    // {
+    //   const resources = [];
 
-      const resources = [];
+    //   if (Array.isArray(this.data)) {
+    //     this.data.forEach((building) =>
+    //     {
+    //       // Add main room as a resource
+    //       resources.push({
+    //         id: building.name,
+    //         groupId: building.name,
+    //         title: building.name,
+    //         classNames: ["build500"],
+    //       });
 
-      if (Array.isArray(this.data)) {
-        this.data.forEach((building) =>
-        {
-          // Add main room as a resource
-          resources.push({
-            id: building.name,
-            groupId: building.name,
-            title: building.name,
-            classNames: ["build500"],
-          });
+    //       // Add each subroom as a resource
+    //       if (building.units?.data) {
+    //         building.units.data.forEach((unit) =>
+    //         {
+    //           const resource = {
+    //             id: `${building.id}-${unit.id}`,
+    //             resourceId: building.name,
+    //             title: unit.code,
+    //             groupId: building.name,
+    //             classNames: ["unit"],
+    //             extendedProps: {
+    //               is_clean: unit.is_clean,
+    //               is_smoking: unit.is_smoking,
+    //             },
+    //           };
 
-          // Add each subroom as a resource
-          if (building.units?.data) {
-            building.units.data.forEach((unit) =>
-            {
-              resources.push({
-                id: `${building.id}-${unit.id}`,
-                resourceId: building.name,
-                title: unit.code,
-                groupId: building.name,
-                classNames: ["unit"],
-                extendedProps: {
-                  is_clean: unit.is_clean,
-                  is_smoking: unit.is_smoking,
-                },
-              });
-            });
-          }
-        });
-      }
+    //           // Only add unit if it's in selected list or if "Select All" is chosen
+    //           if (selectedIds.length === 0 || selectedIds.includes(resource.resourceId)) {
+    //             resources.push(resource);
+    //           }
+    //         });
+    //       }
+    //     });
+    //   }
 
-      return resources;
-    },
+    //   // Update the calendar resources when filtered
+    //   if (this.calendar) {
+    //     this.calendar.setOption('resources', resources);
+    //   }
+
+    //   return resources;
+    // }
+
+
+
+
 
     /**
      * Handles date selection event from FullCalendar.
@@ -566,166 +578,212 @@ export default {
      * The resource header also includes a toggle icon to collapse/expand all resources.
      * @returns {Object} - An object containing the custom resource header DOM nodes.
      */
+    // Custom resource header function
+    // Custom resource header function
     customResourceHeader ()
     {
-      const buildingData = this.createResources();
-
-      // Create the HTML content
       let htmlContent = `
-    <div class="resource-header" style="position: relative;">
-      <div class="btn-group" style="width: 100%;">
-        <button class="btn btn-primary dropdown-toggle waves-effect waves-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-          Room Type
-        </button>
-        <ul class="dropdown-menu" style="width: 100%;">
-          <li>
-            <div class="form-check" style="padding:10px 40px;">
-              <input type="checkbox" class="form-check-input" id="select-all-checkbox">
-              <label class="form-check-label" for="select-all-checkbox">Select All</label>
-            </div>
-          </li>`;
+  <div class="resource-header" style="position: relative;">
+    <div class="btn-group" style="width: 100%;">
+      <button class="btn btn-primary dropdown-toggle waves-effect waves-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Room Type
+      </button>
+      <ul class="dropdown-menu" style="width: 100%;">
+        <li>
+          <div class="form-check" style="padding:10px 40px;">
+            <input type="checkbox" class="form-check-input" id="select-all-checkbox">
+            <label class="form-check-label" for="select-all-checkbox">Select All</label>
+          </div>
+        </li>`;
+
+      const allResources = this.createResources(); // Get all resources initially
+      console.log('All resources:', allResources);
 
       // Add room options
-      buildingData.forEach((resource) =>
+      allResources.forEach((resource) =>
       {
         if (!resource.classNames.includes('unit')) {
           htmlContent += `
-        <li>
-          <div class="form-check" style="padding:10px 40px;">
-            <input type="checkbox" class="form-check-input room-checkbox"
-              id="bs-validation-checkbox-${resource.id}"
-              data-id="${resource.id}">
-            <label class="form-check-label"
-              for="bs-validation-checkbox-${resource.id}">${resource.title}</label>
-          </div>
-        </li>`;
+      <li>
+        <div class="form-check" style="padding:10px 40px;">
+          <input type="checkbox" class="form-check-input room-checkbox"
+            id="bs-validation-checkbox-${resource.id}"
+            data-id="${resource.id}">
+          <label class="form-check-label"
+            for="bs-validation-checkbox-${resource.id}">${resource.title}</label>
+        </div>
+      </li>`;
         }
       });
 
       htmlContent += `
-        </ul>
-      </div>
-      <div id="filtered-data" class="mt-3"></div>
-    </div>`;
+    </ul>
+  </div>
+  <div id="filtered-data" class="mt-3">
+    <div id="loading" style="display: none;">Loading...</div> <!-- Loading spinner -->
+  </div>
+</div>`;
 
       const div = document.createElement("div");
       div.innerHTML = htmlContent.trim();
 
       const selectAllCheckbox = div.querySelector('#select-all-checkbox');
       const roomCheckboxes = div.querySelectorAll('.room-checkbox');
+      const filteredContainer = div.querySelector('#filtered-data');
+      const loadingContainer = div.querySelector('#loading'); // Get the loading container
 
+      // Function to show the loading state
+      const showLoading = () =>
+      {
+        filteredContainer.innerHTML = ''; // Clear previous data
+        loadingContainer.style.display = 'block'; // Show loading spinner
+      };
+
+      // Function to hide the loading state and render data
+      const hideLoadingAndRender = (filteredResources) =>
+      {
+        loadingContainer.style.display = 'none'; // Hide loading spinner
+        if (filteredResources.length > 0) {
+          filteredContainer.innerHTML = filteredResources
+            .map((resource) =>
+              resource.classNames.includes('unit')
+                ? `<div>
+                <strong>${resource.title}</strong><br>
+                ${resource.extendedProps?.is_clean ? "Clean" : "Not Clean"} |
+                ${resource.extendedProps?.is_smoking ? "Smoking" : "Non-Smoking"}
+              </div>`
+                : `<div><strong>${resource.title}</strong></div>`
+            )
+            .join('');
+        } else {
+          filteredContainer.innerHTML = '<div>No data to display</div>';
+        }
+      };
+
+      // Event listener for Select All checkbox
       selectAllCheckbox.addEventListener('change', (event) =>
       {
         const isChecked = event.target.checked;
-        roomCheckboxes.forEach(checkbox =>
+        roomCheckboxes.forEach((checkbox) =>
         {
           checkbox.checked = isChecked;
           const changeEvent = new Event('change', { bubbles: true });
           checkbox.dispatchEvent(changeEvent);
         });
-        this.updateFilteredData();
+        // Call updateFilteredData to update the displayed data based on the selection
+        this.updateFilteredData(roomCheckboxes);
       });
 
-      roomCheckboxes.forEach(checkbox =>
+      // Event listener for individual room checkboxes
+      roomCheckboxes.forEach((checkbox) =>
       {
-        checkbox.addEventListener('change', (event) =>
+        checkbox.addEventListener('change', () =>
         {
-          const allChecked = Array.from(roomCheckboxes).every(cb => cb.checked);
-          const someChecked = Array.from(roomCheckboxes).some(cb => cb.checked);
+          const allChecked = Array.from(roomCheckboxes).every((cb) => cb.checked);
+          const someChecked = Array.from(roomCheckboxes).some((cb) => cb.checked);
 
           selectAllCheckbox.checked = allChecked;
           selectAllCheckbox.indeterminate = someChecked && !allChecked;
 
-          this.handleCheckboxChange(event);
-          this.updateFilteredData();
+          // Call updateFilteredData to update the displayed data based on the selection
+          this.updateFilteredData(roomCheckboxes);
         });
       });
+
+      // Function to update filtered data directly from createResources
+      this.updateFilteredData = (roomCheckboxes) =>
+      {
+        const selectedIds = Array.from(roomCheckboxes)
+          .filter((checkbox) => checkbox.checked)
+          .map((checkbox) => checkbox.dataset.id);
+
+        console.log('Selected IDs:', selectedIds);
+
+        showLoading(); // Show loading before rendering
+
+        setTimeout(() =>
+        { // Simulate async operation (you can replace this with real async data fetching logic)
+          const filteredResources = this.createResources(selectedIds); // Pass the selected room IDs to createResources
+          hideLoadingAndRender(filteredResources); // Hide loading and render data
+        }, 500); // Simulate a delay of 500ms (you can remove or adjust this as needed)
+      };
 
       return { domNodes: [div.firstElementChild] };
     },
 
-    handleCheckboxChange (event)
+    // Create resources function with filtering logic
+    createResources: function (selectedIds = [])
     {
-      const checkbox = event.target;
-      const resourceId = checkbox.dataset.id;
+      const resources = [];
 
-      if (!this.calendar || !resourceId) {
-        console.error("Calendar or resourceId is missing.");
-        return;
-      }
+      try {
+        console.log('createResources called with selectedIds:', selectedIds);
 
-      const resource = this.calendar.getResourceById(resourceId);
-      if (resource) {
-        if (checkbox.checked) {
-          resource.show();
-        } else {
-          resource.hide();
-        }
-      } else {
-        console.error("Resource not found with ID:", resourceId);
-      }
-    }
+        if (Array.isArray(this.data)) {
+          console.log('Data exists and is an array:', this.data);
 
-    ,
-
-    updateFilteredData ()
-    {
-      const filteredDataDiv = document.getElementById('filtered-data');
-      const selectAllCheckbox = document.getElementById('select-all-checkbox');
-      const roomCheckboxes = document.querySelectorAll('.room-checkbox');
-
-      // Clear previous content
-      filteredDataDiv.innerHTML = '';
-
-      // Check if "Select All" is checked
-      if (selectAllCheckbox.checked) {
-        // Show all resources and their events
-        const allResources = this.calendar.getResources();
-        allResources.forEach(resource =>
-        {
-          this.renderResourceData(filteredDataDiv, resource);
-        });
-      } else {
-        // Show only selected resources and their events
-        const checkedCheckboxes = Array.from(roomCheckboxes).filter(checkbox => checkbox.checked);
-        if (checkedCheckboxes.length > 0) {
-          checkedCheckboxes.forEach(checkbox =>
+          this.data.forEach((building) =>
           {
-            const resourceId = checkbox.dataset.id;
-            const resource = this.calendar.getResourceById(resourceId);
-            if (resource) {
-              this.renderResourceData(filteredDataDiv, resource);
+            console.log('Processing building:', building);
+
+            // Always include the building as a resource
+            resources.push({
+              id: building.name,
+              groupId: building.name,
+              title: building.name,
+              classNames: ["build500"],
+            });
+
+            // Add units, but only those that match the selected IDs
+            if (building.units?.data) {
+              building.units.data.forEach((unit) =>
+              {
+                const resource = {
+                  id: `${building.id}-${unit.id}`,
+                  resourceId: building.name,
+                  title: unit.code,
+                  groupId: building.name,
+                  classNames: ["unit"],
+                  extendedProps: {
+                    is_clean: unit.is_clean,
+                    is_smoking: unit.is_smoking,
+                  },
+                };
+
+                // Log the unit details
+                console.log('Processing unit:', unit);
+
+                // If no specific IDs are selected, or this unit's ID is in the selected list, add it
+                if (selectedIds.length === 0 || selectedIds.includes(resource.id)) {
+                  console.log('Adding resource:', resource);
+                  resources.push(resource);
+                } else {
+                  console.log('Skipping unit (not selected):', resource);
+                }
+              });
             }
           });
         } else {
-          filteredDataDiv.innerHTML = '<p>No resources selected</p>';
+          console.error('Data is not an array:', this.data);
         }
+
+      } catch (error) {
+        console.error('Error in createResources:', error);
       }
+
+      console.log('Filtered resources:', resources);
+      return resources;
     },
 
-    renderResourceData (container, resource)
-    {
-      const resourceEvents = this.calendar.getEvents().filter(event =>
-        event.getResources().some(res => res.id === resource.id)
-      );
 
-      const resourceDiv = document.createElement('div');
-      resourceDiv.className = 'resource-data mb-3';
-      resourceDiv.innerHTML = `
-    <h5>${resource.title}</h5>
-    <div class="events-list">
-      ${resourceEvents.map(event => `
-        <div class="event-item">
-          <strong>${event.title}</strong>
-          <div>Start: ${event.start.toLocaleString()}</div>
-          <div>End: ${event.end.toLocaleString()}</div>
-        </div>
-      `).join('')}
-      ${resourceEvents.length === 0 ? '<p>No events for this resource</p>' : ''}
-    </div>
-  `;
-      container.appendChild(resourceDiv);
-    },
+
+
+
+
+
+
+
+
 
 
 
@@ -818,6 +876,7 @@ export default {
       this.data = CalenderDataResponse.data.data;
       this.occupancyData = CalenderDataResponse.data.calendar.data;
       this.unitsDates = this.data.units;
+      this.statisticsHeaderCalender = CalenderDataResponse.data
 
     } catch (error) {
       console.error("Error loading data:", error);

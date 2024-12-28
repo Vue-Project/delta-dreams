@@ -1,6 +1,6 @@
 <template>
   <section class="card px-3">
-    <HeaderCalender :statistics="statistics" />
+    <HeaderCalender :statistics="statisticsHeaderRoomView" />
     <nuxt-link to="/add-reservation" class="text-decoration-none mt-4">
       <div class="room-grid">
         <div class="card mb-3 text-left" v-for="room in rooms" :key="room.id" :class="['room', room.status]">
@@ -70,7 +70,7 @@ export default {
       hoveredIcon: null, // To track the hovered icon
 
       rooms: [],
-      statistics: {},
+      statisticsHeaderRoomView: {},
     };
   },
   async mounted ()
@@ -79,7 +79,7 @@ export default {
       const response = await getRooms();
       console.log("API Response:", response);
       this.rooms = response.data.data;
-      this.statistics = response.data.statistics;
+      this.statisticsHeaderRoomView = response.data.statistics;
     } catch (error) {
       console.error("Error loading rooms:", error);
     }
