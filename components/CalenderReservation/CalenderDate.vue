@@ -1,90 +1,103 @@
 <template>
-
   <section class="card">
-    <Loader />
+    <p>{{ unitsDates }}</p>
+    <!-- <div>
+      <h1>Events and Reservations</h1>
+      <div v-for="event in mappedEvents" :key="event.id" class="event-card">
+        <h2>{{ event.title }}</h2>
+        <p>Start: {{ event.start }}</p>
+        <p>End: {{ event.end }}</p>
+        <p>Resource: {{ event.resourceId }}</p>
+        <h3>Reservations:</h3>
+        <ul>
+          <li v-for="reservation in event.reservations" :key="reservation.date">
+            <strong>Date:</strong> {{ reservation.date }}
+            <span v-if="reservation.is_reserved">
+              - Reserved by {{ reservation.reserved_by.name }}
+            </span>
+            <span v-else>- Not reserved</span>
+          </li>
+        </ul>
+      </div>
+    </div> -->
+    <!-- Loader (will be visible until data is fetched) -->
+    <Loader :visible="isLoading" />
 
-    <HeaderCalender />
-    <!-- {{ unitsDates }} -->
-    <!-- FullCalendar -->
-    <FullCalendar :options="calendarOptions" @select="handleSelect">
-      <template v-slot:eventContent="arg">
-        <b>{{ arg.event.title }}</b>
-      </template>
-    </FullCalendar>
-    <div id="calendar-footer">
-      <div class="table-responsive text-nowrap">
-        <table class="table">
+    <!-- Content (visible only after data is fetched) -->
+    <div v-if="!isLoading">
+      <!-- Your existing content goes here, like FullCalendar, tables, etc. -->
 
-          <tbody>
-            <tr style="background: #f1f1f1">
-              <!-- Title Column -->
-              <td title="Room Occupancy %" colspan="0" style="text-align: left; border-right: 4px solid #ddd;" class="w-18">
-                Room Occupancy %
-              </td>
+      <HeaderCalender />
+      <FullCalendar :options="calendarOptions" @select="handleSelect">
+        <template v-slot:eventContent="arg">
+          <b>{{ arg.event.title }}</b>
+        </template>
+      </FullCalendar>
 
+      <div id="calendar-footer">
+        <div class="table-responsive text-nowrap">
+          <table class="table">
+            <tbody>
+              <tr style="background: #f1f1f1">
+                <td title="Room Occupancy %" colspan="0" style="text-align: left; border-right: 4px solid #ddd;" class="w-18">
+                  Room Occupancy %
+                </td>
+                <td v-for="(data, index) in occupancyData" :key="index" class="fc-timeline-slot">
+                  {{ data.reserved_percentage }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-              <!-- Data Columns -->
-              <td v-for="(data, index) in occupancyData" :key="index" class=" fc-timeline-slot fc-timeline-slot-lane fc-timeline-slot-major fc-slot fc-slot-wed fc-slot-today fc-slot-past">
-                {{ data }}
-              </td>
-            </tr>
+        <table class="ant-table">
+          <tbody class="ant-table-tbody">
+            <!-- Additional table content can go here -->
           </tbody>
-
         </table>
       </div>
-      <table class=" ant-table">
-        <tbody class="ant-table-tbody">
 
-        </tbody>
-      </table>
-    </div>
+      <!-- Overlay -->
+      <div v-if="isOverlayVisible" class="overlay" @click="closePopover"></div>
 
-    <!-- FullCalendar -->
-
-    <!-- Overlay -->
-    <div v-if="isOverlayVisible" class="overlay" @click="closePopover"></div>
-
-    <!-- Popover content  -->
-    <div v-if="isPopoverVisible" class="popover fade show bs-popover-top rounded-0" role="tooltip" :style="popoverStyle" x-placement="top">
-      <div class="arrow" :style="{ left: popoverArrowLeft }"></div>
-      <div class="popover-body">
-        <div class="popoverContent text-center">
-          <div class="row" style="row-gap: 0px">
-            <!-- Display first selected day -->
-            <div class="col-6">
-              <div class="text-black fw-bold">Arrival</div>
-              <div class="">{{ firstSelectedDate }}</div>
+      <!-- Popover content -->
+      <div v-if="isPopoverVisible" class="popover fade show bs-popover-top rounded-0" role="tooltip" :style="popoverStyle">
+        <div class="arrow" :style="{ left: popoverArrowLeft }"></div>
+        <div class="popover-body">
+          <div class="popoverContent text-center">
+            <div class="row" style="row-gap: 0px">
+              <div class="col-6">
+                <div class="text-black fw-bold">Arrival</div>
+                <div>{{ firstSelectedDate }}</div>
+              </div>
+              <div class="col-6">
+                <div class="text-black fw-bold">Departure</div>
+                <div>{{ lastSelectedDate }}</div>
+              </div>
             </div>
-
-            <!-- Display last selected day -->
-            <div class="col-6">
-              <div class="text-black fw-bold">Departure</div>
-              <div>{{ lastSelectedDate }}</div>
+            <div class="row">
+              <hr class="my-2 w-75 mx-auto" />
+              <NuxtLink to="/add-reservation">Go to Add Reservation</NuxtLink>
+              <hr class="my-2 w-75 mx-auto" />
+              <button type="button" class="ant-btn ant-btn-link ant-btn-block" @click="toggleSidebar">
+                <span>Maintenance Block</span>
+              </button>
             </div>
+            <span role="img" aria-label="close" class="anticon anticon-close" @click="closePopover">
+              <i class="fa-solid fa-xmark"></i>
+            </span>
           </div>
-
-          <div class="row">
-            <hr class="my-2 w-75 mx-auto" />
-            <NuxtLink to="/add-reservation">Go to Add Reservation</NuxtLink>
-            <hr class="my-2 w-75 mx-auto" />
-            <button type="button" class="ant-btn ant-btn-link ant-btn-block" @click="toggleSidebar">
-              <span>Maintenance Block</span>
-            </button>
-          </div>
-
-          <span role="img" aria-label="close" tabindex="-1" class="anticon anticon-close sc-ibMOqO bkIyqW popoverClose" @click="closePopover">
-            <i class="fa-solid fa-xmark"></i>
-          </span>
         </div>
       </div>
+
+      <!-- Sidebar -->
+      <Sidebar :is-sidebar-open="isSidebarOpen" title="Block Room" width="400px" @close-sidebar="toggleSidebar" style="height: auto;">
+        <BlockRoomForm />
+      </Sidebar>
     </div>
-    <!-- Popover content  -->
-    <Sidebar :is-sidebar-open="isSidebarOpen" title="Block Room" width="400px" @close-sidebar="toggleSidebar" style="height: auto;">
-      <!-- Custom Content for Sidebar -->
-      <BlockRoomForm />
-    </Sidebar>
   </section>
 </template>
+
 
 <script>
 import FullCalendar from "@fullcalendar/vue";
@@ -107,8 +120,7 @@ export default {
   data ()
   {
     return {
-      isPageLoading: true, // Track loading state
-
+      isLoading: true,
       data: [],
       unitsDates: [],
       isSidebarOpen: false,
@@ -121,7 +133,7 @@ export default {
       firstSelectedDate: "", // Store first selected date
       lastSelectedDate: "",
       occupancyData: [
-        1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 50, 0, 0, 20, 80, 19, 100,
+
       ],
       calendarOptions: {
         plugins: [resourceTimelinePlugin, interactionPlugin],
@@ -345,19 +357,6 @@ export default {
     };
   },
   methods: {
-    showLoader ()
-    {
-      this.isPageLoading = true;
-      setTimeout(() =>
-      {
-        this.isPageLoading = false; // Hide loader after data fetch
-      }, 1000); // Adjust based on your needs
-    },
-
-
-
-
-
 
     /**
      * Generates a list of resources from predefined room data.
@@ -379,8 +378,6 @@ export default {
 
     createResources: function ()
     {
-      console.log('Creating resources');
-      console.log('Input data:', this.data);
 
       const resources = [];
 
@@ -415,16 +412,8 @@ export default {
         });
       }
 
-      console.log('Created resources:', resources);
       return resources;
     },
-
-
-
-
-
-
-
 
     /**
      * Handles date selection event from FullCalendar.
@@ -487,7 +476,7 @@ export default {
       const dateCell = calendarEl.querySelector(`[data-date='${dateStr}']`);
 
       if (dateCell) {
-        dateCell.classList.add("fc-highlight");
+        dateCell.classList.add("fc-highlightvev");
       }
     },
 
@@ -513,7 +502,7 @@ export default {
       console.log(endDate);
 
       const totalDays =
-        Math.ceil((endDate - startDate) / (1000 * 3600 * 24)) + 1; // Calculate total days selected
+        Math.ceil((endDate - startDate) / (1000 * 3600 * 24)); // Calculate total days selected
 
       const calendarEl = document.querySelector(".fc");
       const highlightCells = calendarEl.querySelectorAll(".fc-highlight");
@@ -827,10 +816,14 @@ export default {
       ]);
 
       this.data = CalenderDataResponse.data.data;
-      this.unitsDates = CalenderDataResponse.data.data;
+      this.occupancyData = CalenderDataResponse.data.calendar.data;
+      this.unitsDates = this.data.units;
 
     } catch (error) {
       console.error("Error loading data:", error);
+    } finally {
+      // Once the data is fetched, hide the loader
+      this.isLoading = false;
     }
     this.calendarOptions.resources = this.createResources();
     this.$nextTick(() =>
@@ -841,13 +834,7 @@ export default {
       }
     });
   },
-  watch: {
-    // Watch for route changes
-    '$route' (to, from)
-    {
-      this.showLoader();
-    },
-  },
+
 
 
 

@@ -35,9 +35,9 @@
         </div>
       </div>
       <div class=" gap-2 d-flex justify-content-end position-absolute  " style="right: 15px ;bottom: 10px;">
-        <button class="btn btn-secondary waves-effect waves-light">
-          Clear
-        </button>
+        <!-- <button class="btn btn-secondary waves-effect waves-light" @click="$emit('close-sidebar')">
+          close
+        </button> -->
         <button type="submit" class="btn btn-primary waves-effect waves-light">
           Save
         </button>

@@ -739,3 +739,6 @@ select.form-select option {
 .fc-license-message {
   display: none;
 }
+.fc-timeline-bg-harness{
+  left: 20px !important;
+}
