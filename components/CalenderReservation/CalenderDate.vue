@@ -1,6 +1,6 @@
 <template>
   <section class="card">
-    <!-- <p>{{ statisticsForHeader2.links }}</p> -->
+    <p>{{ unitsDates }}</p>
     <!-- <div>
       <h1>Events and Reservations</h1>
       <div v-for="event in mappedEvents" :key="event.id" class="event-card">
@@ -27,7 +27,7 @@
     <div v-if="!isLoading">
       <!-- Your existing content goes here, like FullCalendar, tables, etc. -->
 
-      <HeaderCalender :statistics="statisticsHeaderCalender" />
+      <!-- <HeaderCalender :statistics="statisticsHeaderCalender" /> -->
       <FullCalendar :options="calendarOptions" @select="handleSelect">
         <template v-slot:eventContent="arg">
           <b>{{ arg.event.title }}</b>
@@ -314,38 +314,7 @@ export default {
         select: this.handleSelect,
         events: [
 
-          {
-            id: "1",
-            resourceId: "21-10",
-            title: "Room A Reservation 100",
-            start: "2024-12-24",
-            end: "2025-01-12",
-            color: "#4CAF50",
-          },
-          {
-            id: "2",
-            resourceId: "21-1", // For specific subroom
-            title: "Room B1 Reservation 100",
-            start: "2024-12-25",
-            end: "2025-01-02",
-            color: "#2196F3",
-          },
-          {
-            id: "3",
-            resourceId: "21-9", // For specific subroom
-            title: "Room B1 Reservation 100",
-            start: "2024-12-25",
-            end: "2025-01-02",
-            color: "#2896F3",
-          },
-          {
-            id: "3",
-            resourceId: "25-9", // For specific subroom
-            title: "Room B1 Reservation 100",
-            start: "2024-12-25",
-            end: "2025-01-02",
-            color: "#2896F3",
-          },
+
         ], // Store events programmatically
         footerToolbar: {
           left: "",
@@ -355,7 +324,13 @@ export default {
       },
     };
   },
+  created ()
+  {
+    // Call the function to group data and generate events
+    this.generateEvents();
+  },
   methods: {
+
 
     /**
      * Generates a list of resources from predefined room data.
@@ -597,7 +572,7 @@ export default {
         </li>`;
 
       const allResources = this.createResources(); // Get all resources initially
-      console.log('All resources:', allResources);
+      // console.log('All resources:', allResources);
 
       // Add room options
       allResources.forEach((resource) =>
@@ -717,14 +692,14 @@ export default {
       const resources = [];
 
       try {
-        console.log('createResources called with selectedIds:', selectedIds);
+        // console.log('createResources called with selectedIds:', selectedIds);
 
         if (Array.isArray(this.data)) {
-          console.log('Data exists and is an array:', this.data);
+          // console.log('Data exists and is an array:', this.data);
 
           this.data.forEach((building) =>
           {
-            console.log('Processing building:', building);
+            // console.log('Processing building:', building);
 
             // Always include the building as a resource
             resources.push({
@@ -751,27 +726,27 @@ export default {
                 };
 
                 // Log the unit details
-                console.log('Processing unit:', unit);
+                // console.log('Processing unit:', unit);
 
                 // If no specific IDs are selected, or this unit's ID is in the selected list, add it
                 if (selectedIds.length === 0 || selectedIds.includes(resource.id)) {
-                  console.log('Adding resource:', resource);
+                  // console.log('Adding resource:', resource);
                   resources.push(resource);
                 } else {
-                  console.log('Skipping unit (not selected):', resource);
+                  // console.log('Skipping unit (not selected):', resource);
                 }
               });
             }
           });
         } else {
-          console.error('Data is not an array:', this.data);
+          // console.error('Data is not an array:', this.data);
         }
 
       } catch (error) {
-        console.error('Error in createResources:', error);
+        // console.error('Error in createResources:', error);
       }
 
-      console.log('Filtered resources:', resources);
+      // console.log('Filtered resources:', resources);
       return resources;
     },
 
@@ -863,7 +838,37 @@ export default {
       this.isPopoverVisible = false;
       this.isOverlayVisible = false;
     },
+    generateEvents ()
+    {
+      const groupedByUser = this.unitsDates.reduce((acc, item) =>
+      {
+        if (item.is_reserved) {
+          const name = item.reserved_by.name;
+          console.log('name is:', name);
+
+          if (!acc[name]) {
+            acc[name] = { start: item.date, end: item.date, reserved_by: item.reserved_by.name };
+          } else {
+            acc[name].end = item.date; // Update end date to the latest reserved date
+          }
+        }
+        return acc;
+      }, {});
+
+      // Generate events array from the grouped data
+      this.events = Object.keys(groupedByUser).map((name, index) => ({
+        id: `${index + 1}`,
+        resourceId: `21-10`, // You can customize this based on the resource
+        title: `${name} Reservation 100`,
+        start: groupedByUser[name].start, // First reserved date
+        end: groupedByUser[name].end,     // Last reserved date
+        color: "#4CAF50", // Static color (can be customized)
+      }));
+    },
   },
+
+
+
   async mounted ()
   {
     try {
@@ -875,8 +880,15 @@ export default {
 
       this.data = CalenderDataResponse.data.data;
       this.occupancyData = CalenderDataResponse.data.calendar.data;
-      this.unitsDates = this.data.units;
-      this.statisticsHeaderCalender = CalenderDataResponse.data
+      this.statisticsHeaderCalender = CalenderDataResponse.data;
+      this.data.forEach(building =>
+      {
+        building.units.data.forEach(unit =>
+        {
+          this.unitsDates = this.unitsDates.concat(unit.dates); // Merge unit.dates into unitsDates
+        });
+      });
+
 
     } catch (error) {
       console.error("Error loading data:", error);
