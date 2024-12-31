@@ -1,34 +1,20 @@
 <template>
   <section class="card">
-    <p>{{ unitsDates }}</p>
-    <!-- <div>
-      <h1>Events and Reservations</h1>
-      <div v-for="event in mappedEvents" :key="event.id" class="event-card">
-        <h2>{{ event.title }}</h2>
-        <p>Start: {{ event.start }}</p>
-        <p>End: {{ event.end }}</p>
-        <p>Resource: {{ event.resourceId }}</p>
-        <h3>Reservations:</h3>
-        <ul>
-          <li v-for="reservation in event.reservations" :key="reservation.date">
-            <strong>Date:</strong> {{ reservation.date }}
-            <span v-if="reservation.is_reserved">
-              - Reserved by {{ reservation.reserved_by.name }}
-            </span>
-            <span v-else>- Not reserved</span>
-          </li>
-        </ul>
-      </div>
-    </div> -->
     <!-- Loader (will be visible until data is fetched) -->
     <Loader :visible="isLoading" />
 
     <!-- Content (visible only after data is fetched) -->
     <div v-if="!isLoading">
-      <!-- Your existing content goes here, like FullCalendar, tables, etc. -->
+      <button class="btn btn-primary" @click="showAllResources">Show All</button>
+
+      <div class="filter-buttons">
+        <button v-for="building in buildingNames" :key="building" class="btn btn-secondary" @click="showBuildingResources(building)">
+          Show {{ building }}
+        </button>
+      </div>
 
       <!-- <HeaderCalender :statistics="statisticsHeaderCalender" /> -->
-      <FullCalendar :options="calendarOptions" @select="handleSelect">
+      <FullCalendar :options="calendarOptions" @select="handleSelect" ref="calendar">
         <template v-slot:eventContent="arg">
           <b>{{ arg.event.title }}</b>
         </template>
@@ -91,9 +77,9 @@
       </div>
 
       <!-- Sidebar -->
-      <Sidebar :is-sidebar-open="isSidebarOpen" title="Block Room" width="400px" @close-sidebar="toggleSidebar" style="height: auto;">
-        <BlockRoomForm />
-      </Sidebar>
+      <SidebarBlockRoom :is-sidebar-open="isSidebarOpen" title="Block Room" width="400px" @close-sidebar="toggleSidebar" style="height: auto;">
+        <BlockRoomForm :selectedDates="selectedDates" :selectedResourceId="selectedResourceId" />
+      </SidebarBlockRoom>
     </div>
   </section>
 </template>
@@ -104,7 +90,7 @@ import FullCalendar from "@fullcalendar/vue";
 import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
 import interactionPlugin from "@fullcalendar/interaction";
 import HeaderCalender from "./HeaderCalender.vue";
-import Sidebar from "../layout/Sidebar.vue";
+import SidebarBlockRoom from "../layout/Sidebar.vue";
 // import BlindingData from "../Api/data.local.json";
 import BlockRoomForm from "./BlockRoomForm.vue";
 import { getCalenderData } from "../Api/api";
@@ -114,12 +100,15 @@ export default {
   components: {
     FullCalendar,
     HeaderCalender,
-    Sidebar,
+    SidebarBlockRoom,
     BlockRoomForm, Loader
   },
   data ()
   {
     return {
+      buildingNames: [], // Store building names dynamically
+      selectedDates: [],
+      selectedResourceId: [],
       isLoading: true,
       data: [],
       unitsDates: [],
@@ -140,18 +129,15 @@ export default {
         duration: { days: 20 },
         weekends: true,
         resources: this.createResources(),
-
         selectable: true, // Enable date selection
         selectMirror: true, // Make the selection draggable
-
         eventOverlap: false, // Disallow overlapping events
         slotDuration: "24:00", // Slot duration of one day
 
         slotLabelContent: (arg) =>
         {
           const date = new Date(arg.date);
-          const units = 50; // Example static units (can be dynamically set)
-          const price = "$200"; // Example static price (can be dynamically set)
+
 
           // For level 0 (Months), show only the month
           if (arg.level === 0) {
@@ -235,19 +221,8 @@ export default {
             new bootstrap.Tooltip(tooltipTriggerEl); // Activate tooltip
           });
         },
-
-
-
-
-
-
         resourceAreaWidth: '18%',
-        // resourceAreaColumns: [
-        //   {
-        //     field: 'title',
-        //     headerContent: 'Units'
-        //   }
-        // ],
+
 
         //   datesSet: function (info)
         //   {
@@ -324,13 +299,8 @@ export default {
       },
     };
   },
-  created ()
-  {
-    // Call the function to group data and generate events
-    this.generateEvents();
-  },
-  methods: {
 
+  methods: {
 
     /**
      * Generates a list of resources from predefined room data.
@@ -349,59 +319,86 @@ export default {
      * @returns {Array} An array of resources, where each resource represents a room or subroom
      *                  with specific attributes for identification and styling.
      */
+    getBuildingNames ()
+    {
+      const names = [];
+      this.data.forEach((building) =>
+      {
+        if (building.name && !names.includes(building.name)) {
+          names.push(building.name);
+        }
+      });
+      return names;
+    },
 
-    // createResources (selectedIds = [])
-    // {
-    //   const resources = [];
+    // Create resources dynamically based on the fetched data and selected IDs
+    createResources (selectedIds = [])
+    {
+      const resources = [];
 
-    //   if (Array.isArray(this.data)) {
-    //     this.data.forEach((building) =>
-    //     {
-    //       // Add main room as a resource
-    //       resources.push({
-    //         id: building.name,
-    //         groupId: building.name,
-    //         title: building.name,
-    //         classNames: ["build500"],
-    //       });
+      if (Array.isArray(this.data)) {
+        this.data.forEach((building) =>
+        {
+          // Only include the building resource if it is in selectedIds or if "Show All" is selected
+          if (selectedIds.length === 0 || selectedIds.includes(building.name)) {
+            resources.push({
+              id: building.name,
+              groupId: building.name,
+              title: building.name,
+              classNames: ["building"],
+            });
 
-    //       // Add each subroom as a resource
-    //       if (building.units?.data) {
-    //         building.units.data.forEach((unit) =>
-    //         {
-    //           const resource = {
-    //             id: `${building.id}-${unit.id}`,
-    //             resourceId: building.name,
-    //             title: unit.code,
-    //             groupId: building.name,
-    //             classNames: ["unit"],
-    //             extendedProps: {
-    //               is_clean: unit.is_clean,
-    //               is_smoking: unit.is_smoking,
-    //             },
-    //           };
+            if (building.units?.data) {
+              building.units.data.forEach((unit) =>
+              {
+                const resource = {
+                  id: `${building.id}-${unit.id}`,
+                  resourceId: building.name,
+                  title: unit.code,
+                  groupId: building.name,
+                  classNames: ["unit"],
+                  extendedProps: {
+                    is_clean: unit.is_clean,
+                    is_smoking: unit.is_smoking,
+                  },
+                };
 
-    //           // Only add unit if it's in selected list or if "Select All" is chosen
-    //           if (selectedIds.length === 0 || selectedIds.includes(resource.resourceId)) {
-    //             resources.push(resource);
-    //           }
-    //         });
-    //       }
-    //     });
-    //   }
+                resources.push(resource);
+              });
+            }
+          }
+        });
+      }
 
-    //   // Update the calendar resources when filtered
-    //   if (this.calendar) {
-    //     this.calendar.setOption('resources', resources);
-    //   }
+      return resources;
+    },
 
-    //   return resources;
-    // }
+    // Update FullCalendar resources
+    updateCalendarResources (selectedIds = [])
+    {
+      const resources = this.createResources(selectedIds);
+      const calendar = this.$refs.calendar?.getApi();
+      if (calendar) {
+        calendar.setOption('resources', resources); // Set the resources in the calendar
+      } else {
+        console.error('FullCalendar API is not accessible.');
+      }
+    },
 
+    // Show resources for a specific building
+    showBuildingResources (buildingName)
+    {
+      // Update the calendar resources to show only the selected building's data
+      this.updateCalendarResources([buildingName]);
+    },
 
-
-
-
+    // Show all resources (no filter)
+    showAllResources ()
+    {
+      // Update the calendar to show all resources (no filter)
+      this.updateCalendarResources();
+    },
+    // Helper method to get daily prices for each unit
     /**
      * Handles date selection event from FullCalendar.
      *
@@ -417,38 +414,35 @@ export default {
     {
       const { start, end, resource } = info; // Destructure the resource object
 
-      let currentDate = new Date(start);
+      // Convert start and end to Date objects
+      const startDate = new Date(start);
       const endDate = new Date(end);
+
+      // Ensure to capture the exact first and last date as selected
       this.selectedDates = [];
 
-      while (currentDate <= endDate) {
-        const dateStr = currentDate.toISOString().split("T")[0];
+      // Store the first and last selected dates in ISO format (YYYY-MM-DD)
+      this.selectedDates.push(startDate.toISOString().split("T")[0]); // First date (YYYY-MM-DD)
+      this.selectedDates.push(endDate.toISOString().split("T")[0]); // Last date (YYYY-MM-DD)
 
-        if (!this.selectedDates.includes(dateStr)) {
-          this.selectedDates.push(dateStr);
-          this.highlightDate(dateStr);
-        }
-        currentDate.setDate(currentDate.getDate() + 1);
+      // Capture the resource ID
+      if (resource) {
+        this.selectedResourceId = resource.id;
+      } else {
+        this.selectedResourceId = null;
       }
 
       // After selection, update highlighted text and show the popover
       this.updateHighlightedText(start, end);
-      this.firstSelectedDate = this.selectedDates[0];
-      this.lastSelectedDate = this.selectedDates[this.selectedDates.length - 1];
 
-      // Capture the resource ID
-      if (resource) {
-        this.selectedResourceId = resource.id; // Save the resource ID for further use
-        console.log("Selected Resource ID:", this.selectedResourceId); // Log for debugging
-      } else {
-        this.selectedResourceId = null; // Handle cases where no resource is selected
-        console.log("No resource selected.");
-      }
+      // Log the data (optional for debugging)
+      console.log("Selected Dates:", this.selectedDates);
+      console.log("Selected Resource ID:", this.selectedResourceId);
 
+      // You can also call this.showOverlay() if necessary
       this.showOverlay();
     }
     ,
-
     /**
      * Highlights the cell for a given date in the calendar.
      *
@@ -553,221 +547,103 @@ export default {
      * The resource header also includes a toggle icon to collapse/expand all resources.
      * @returns {Object} - An object containing the custom resource header DOM nodes.
      */
-    // Custom resource header function
+
     // Custom resource header function
     customResourceHeader ()
     {
       let htmlContent = `
-  <div class="resource-header" style="position: relative;">
-    <div class="btn-group" style="width: 100%;">
-      <button class="btn btn-primary dropdown-toggle waves-effect waves-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-        Room Type
-      </button>
-      <ul class="dropdown-menu" style="width: 100%;">
-        <li>
-          <div class="form-check" style="padding:10px 40px;">
-            <input type="checkbox" class="form-check-input" id="select-all-checkbox">
-            <label class="form-check-label" for="select-all-checkbox">Select All</label>
-          </div>
-        </li>`;
+    <div class="resource-header" style="position: relative;">
+      <div class="btn-group" style="width: 100%;">
+        <button class="btn btn-primary dropdown-toggle waves-effect waves-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Room Type
+        </button>
+        <ul class="dropdown-menu" style="width: 100%;">
+          <li>
+            <div class="form-check" style="padding:10px 40px;">
+              <input type="checkbox" class="form-check-input" id="select-all-checkbox" @click="selectAllResources">
+              <label class="form-check-label" for="select-all-checkbox">Select All</label>
+            </div>
+          </li>`;
 
       const allResources = this.createResources(); // Get all resources initially
-      // console.log('All resources:', allResources);
 
-      // Add room options
+      // Add room options dynamically as checkboxes
       allResources.forEach((resource) =>
       {
-        if (!resource.classNames.includes('unit')) {
+        if (!resource.classNames.includes('unit')) { // Filter out units, as we only want rooms
           htmlContent += `
-      <li>
-        <div class="form-check" style="padding:10px 40px;">
-          <input type="checkbox" class="form-check-input room-checkbox"
-            id="bs-validation-checkbox-${resource.id}"
-            data-id="${resource.id}">
-          <label class="form-check-label"
-            for="bs-validation-checkbox-${resource.id}">${resource.title}</label>
-        </div>
-      </li>`;
+        <li>
+          <div class="form-check" style="padding:10px 40px;">
+            <input type="checkbox" class="form-check-input room-checkbox"
+              id="bs-validation-checkbox-${resource.id}"
+              data-id="${resource.id}" @click="toggleResourceSelection(resource)">
+            <label class="form-check-label"
+              for="bs-validation-checkbox-${resource.id}">${resource.title}</label>
+          </div>
+        </li>`;
         }
       });
 
       htmlContent += `
-    </ul>
-  </div>
-  <div id="filtered-data" class="mt-3">
-    <div id="loading" style="display: none;">Loading...</div> <!-- Loading spinner -->
-  </div>
-</div>`;
+        </ul>
+      </div>
+    </div>`;
 
       const div = document.createElement("div");
       div.innerHTML = htmlContent.trim();
 
-      const selectAllCheckbox = div.querySelector('#select-all-checkbox');
-      const roomCheckboxes = div.querySelectorAll('.room-checkbox');
-      const filteredContainer = div.querySelector('#filtered-data');
-      const loadingContainer = div.querySelector('#loading'); // Get the loading container
-
-      // Function to show the loading state
-      const showLoading = () =>
-      {
-        filteredContainer.innerHTML = ''; // Clear previous data
-        loadingContainer.style.display = 'block'; // Show loading spinner
-      };
-
-      // Function to hide the loading state and render data
-      const hideLoadingAndRender = (filteredResources) =>
-      {
-        loadingContainer.style.display = 'none'; // Hide loading spinner
-        if (filteredResources.length > 0) {
-          filteredContainer.innerHTML = filteredResources
-            .map((resource) =>
-              resource.classNames.includes('unit')
-                ? `<div>
-                <strong>${resource.title}</strong><br>
-                ${resource.extendedProps?.is_clean ? "Clean" : "Not Clean"} |
-                ${resource.extendedProps?.is_smoking ? "Smoking" : "Non-Smoking"}
-              </div>`
-                : `<div><strong>${resource.title}</strong></div>`
-            )
-            .join('');
-        } else {
-          filteredContainer.innerHTML = '<div>No data to display</div>';
-        }
-      };
-
-      // Event listener for Select All checkbox
-      selectAllCheckbox.addEventListener('change', (event) =>
-      {
-        const isChecked = event.target.checked;
-        roomCheckboxes.forEach((checkbox) =>
-        {
-          checkbox.checked = isChecked;
-          const changeEvent = new Event('change', { bubbles: true });
-          checkbox.dispatchEvent(changeEvent);
-        });
-        // Call updateFilteredData to update the displayed data based on the selection
-        this.updateFilteredData(roomCheckboxes);
-      });
-
-      // Event listener for individual room checkboxes
-      roomCheckboxes.forEach((checkbox) =>
-      {
-        checkbox.addEventListener('change', () =>
-        {
-          const allChecked = Array.from(roomCheckboxes).every((cb) => cb.checked);
-          const someChecked = Array.from(roomCheckboxes).some((cb) => cb.checked);
-
-          selectAllCheckbox.checked = allChecked;
-          selectAllCheckbox.indeterminate = someChecked && !allChecked;
-
-          // Call updateFilteredData to update the displayed data based on the selection
-          this.updateFilteredData(roomCheckboxes);
-        });
-      });
-
-      // Function to update filtered data directly from createResources
-      this.updateFilteredData = (roomCheckboxes) =>
-      {
-        const selectedIds = Array.from(roomCheckboxes)
-          .filter((checkbox) => checkbox.checked)
-          .map((checkbox) => checkbox.dataset.id);
-
-        console.log('Selected IDs:', selectedIds);
-
-        showLoading(); // Show loading before rendering
-
-        setTimeout(() =>
-        { // Simulate async operation (you can replace this with real async data fetching logic)
-          const filteredResources = this.createResources(selectedIds); // Pass the selected room IDs to createResources
-          hideLoadingAndRender(filteredResources); // Hide loading and render data
-        }, 500); // Simulate a delay of 500ms (you can remove or adjust this as needed)
-      };
-
+      // Return the div element to be inserted into the DOM
       return { domNodes: [div.firstElementChild] };
     },
 
-    // Create resources function with filtering logic
-    createResources: function (selectedIds = [])
+
+    // Method to select all resources
+    selectAllResources ()
     {
-      const resources = [];
+      const isChecked = document.getElementById('select-all-checkbox').checked;
+      const allRoomCheckboxes = document.querySelectorAll('.room-checkbox');
 
-      try {
-        // console.log('createResources called with selectedIds:', selectedIds);
-
-        if (Array.isArray(this.data)) {
-          // console.log('Data exists and is an array:', this.data);
-
-          this.data.forEach((building) =>
-          {
-            // console.log('Processing building:', building);
-
-            // Always include the building as a resource
-            resources.push({
-              id: building.name,
-              groupId: building.name,
-              title: building.name,
-              classNames: ["build500"],
-            });
-
-            // Add units, but only those that match the selected IDs
-            if (building.units?.data) {
-              building.units.data.forEach((unit) =>
-              {
-                const resource = {
-                  id: `${building.id}-${unit.id}`,
-                  resourceId: building.name,
-                  title: unit.code,
-                  groupId: building.name,
-                  classNames: ["unit"],
-                  extendedProps: {
-                    is_clean: unit.is_clean,
-                    is_smoking: unit.is_smoking,
-                  },
-                };
-
-                // Log the unit details
-                // console.log('Processing unit:', unit);
-
-                // If no specific IDs are selected, or this unit's ID is in the selected list, add it
-                if (selectedIds.length === 0 || selectedIds.includes(resource.id)) {
-                  // console.log('Adding resource:', resource);
-                  resources.push(resource);
-                } else {
-                  // console.log('Skipping unit (not selected):', resource);
-                }
-              });
-            }
-          });
+      allRoomCheckboxes.forEach((checkbox) =>
+      {
+        checkbox.checked = isChecked;
+        const resourceId = checkbox.getAttribute('data-id');
+        if (isChecked) {
+          this.addResourceToSelection(resourceId);
         } else {
-          // console.error('Data is not an array:', this.data);
+          this.removeResourceFromSelection(resourceId);
         }
+      });
+      this.updateCalendarResources(this.selectedResources); // Update calendar with the selected resources
+    }
+    ,
 
-      } catch (error) {
-        // console.error('Error in createResources:', error);
+    // Method to toggle resource selection and update calendar
+    toggleResourceSelection (resource)
+    {
+      const resourceId = resource.id;
+      const isChecked = document.getElementById(`bs-validation-checkbox-${resourceId}`).checked;
+
+      if (isChecked) {
+        this.addResourceToSelection(resourceId);
+      } else {
+        this.removeResourceFromSelection(resourceId);
       }
+      this.updateCalendarResources(this.selectedResources); // Update calendar with the selected resources
+    }
+    ,
 
-      // console.log('Filtered resources:', resources);
-      return resources;
+    // Method to update calendar with selected resources
+    updateCalendarResources (selectedIds = [])
+    {
+      const resources = this.createResources(selectedIds); // Get the resources based on the selected IDs
+      const calendar = this.$refs.calendar?.getApi();
+
+      if (calendar) {
+        calendar.setOption('resources', resources); // Set the resources in FullCalendar
+      } else {
+        console.error('FullCalendar API is not accessible.');
+      }
     },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     /**
      * Toggles the expand/collapse state of resources in a calendar view.
@@ -838,37 +714,8 @@ export default {
       this.isPopoverVisible = false;
       this.isOverlayVisible = false;
     },
-    generateEvents ()
-    {
-      const groupedByUser = this.unitsDates.reduce((acc, item) =>
-      {
-        if (item.is_reserved) {
-          const name = item.reserved_by.name;
-          console.log('name is:', name);
 
-          if (!acc[name]) {
-            acc[name] = { start: item.date, end: item.date, reserved_by: item.reserved_by.name };
-          } else {
-            acc[name].end = item.date; // Update end date to the latest reserved date
-          }
-        }
-        return acc;
-      }, {});
-
-      // Generate events array from the grouped data
-      this.events = Object.keys(groupedByUser).map((name, index) => ({
-        id: `${index + 1}`,
-        resourceId: `21-10`, // You can customize this based on the resource
-        title: `${name} Reservation 100`,
-        start: groupedByUser[name].start, // First reserved date
-        end: groupedByUser[name].end,     // Last reserved date
-        color: "#4CAF50", // Static color (can be customized)
-      }));
-    },
   },
-
-
-
   async mounted ()
   {
     try {
@@ -881,6 +728,8 @@ export default {
       this.data = CalenderDataResponse.data.data;
       this.occupancyData = CalenderDataResponse.data.calendar.data;
       this.statisticsHeaderCalender = CalenderDataResponse.data;
+      this.buildingNames = this.getBuildingNames();
+
       this.data.forEach(building =>
       {
         building.units.data.forEach(unit =>
@@ -904,12 +753,9 @@ export default {
         footerElement.style.display = "block"; // Ensure the footer is displayed
       }
     });
+    if (!this.$refs.calendar) {
+      console.error('FullCalendar ref is not available.');
+    }
   },
-
-
-
-
 }
 </script>
-
-<style></style>
