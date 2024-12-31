@@ -298,7 +298,7 @@
                   <i class="fa-solid fa-user-plus"></i>
                 </button>
               </div>
-              <Sidebar :is-sidebar-open="isSidebarOpen" @close-sidebar="toggleSidebar" />
+              <SidebarAddGuest :is-sidebar-open="isSidebarOpen" @close-sidebar="toggleSidebar" />
             </div>
             <div class="col-md-7">
               <div class="row">
@@ -409,12 +409,12 @@ import
   getUsers,
 } from "../Api/api";
 import flatpickrMixin from "../Mixin/flatpickrMixin";
-import Sidebar from "../layout/Sidebar.vue";
+import SidebarAddGuest from "../layout/Sidebar.vue";
 
 export default {
   name: "CheckIn",
   layout: "component",
-  components: { Sidebar },
+  components: { SidebarAddGuest },
 
   data ()
   {
