@@ -115,6 +115,17 @@ export const getCalenderData = async () =>
     throw error;
   }
 };
+export const getReasonsSources = async () =>
+{
+  try {
+    const response = await apiClient.get('/reasons');
+    return response.data;
+
+  } catch (error) {
+    console.error('Error fetching rooms:', error);
+    throw error;
+  }
+};
 
 
 
@@ -125,5 +136,6 @@ export default {
   getBusinessSources,
   getBookingSources,
   getReservationTypes,
-  getCalenderData
+  getCalenderData,
+  getReasonsSources
 };
