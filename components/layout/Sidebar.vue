@@ -9,9 +9,9 @@
             <div class="row p-3 mb-5">
               <div class="col-md-6">
                 <div class="row">
-                  <div div class="col-md-4">
+                  <!-- <div div class="col-md-4">
                     <DropzoneComponent id="dropzone1" :formData="form" @file-uploaded="setImage" />
-                  </div>
+                  </div> -->
                   <div class="col-md-8">
                     <div class="mb-3">
                       <label for="formGustInfoName" class="col-form-label">Name</label>
@@ -332,6 +332,8 @@ export default {
       formData.append("nameText", this.form.nameText);
       formData.append("email", this.form.email);
       formData.append("phone", this.form.phone);
+
+      // Add other fields as needed
       // formData.append("mobile", this.form.mobile);
       // formData.append("gender", this.form.gender);
       // formData.append("address", this.form.address);
@@ -344,24 +346,31 @@ export default {
         formData.append("image", this.form.image);
       }
 
-      // Send data to the server using Fetch API
+      // Retrieve CSRF token from the meta tag
+      // const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+      // Send data to the server using Fetch API with CSRF token in headers
       fetch("https://deltadream.swevey.com/api/users", {
         method: "POST",
-
+        headers: {
+          'content-type': 'multipart/form-data',
+          'X-CSRF-TOKEN': csrfToken, // Include the CSRF token in the headers
+        },
         body: formData,
       })
         .then((response) => response.json())
         .then((data) =>
         {
-          console.log("Success:", data);
+          alert("Success:", data);
           // Handle successful response (e.g., show a success message)
         })
         .catch((error) =>
         {
-          console.error("Error:", error);
+          alert("Error:", error);
           // Handle error (e.g., show an error message)
         });
-    },
+    }
+
   },
 };
 </script>
