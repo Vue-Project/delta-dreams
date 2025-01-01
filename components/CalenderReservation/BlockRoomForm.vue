@@ -1,7 +1,7 @@
 <template>
   <div>
     <form id="formBlockRoom" action="" class="p-2">
-
+      <p>{{ selectedDates }}</p>
       <div class="row">
         <div class="col-12">
           <label for="flatpickr-date-01" class="form-label">Date Range</label>
@@ -88,15 +88,20 @@ export default {
     const getFirstAndLastDates = (dates) =>
     {
       if (!dates || dates.length === 0) return [];
-      return [dates[0], dates[dates.length - 1]];
+
+      // Extracting the first and last date from the dateTime property
+      const firstDate = dates[0].dateTime.split(",")[0];  // Get the date part (e.g., "03/01/2025")
+      const lastDate = dates[dates.length - 1].dateTime.split(",")[0];  // Get the date part (e.g., "13/01/2025")
+
+      return [firstDate, lastDate];
     };
 
     const firstAndLastDates = getFirstAndLastDates(this.selectedDates);
 
     flatpickr(this.$refs.rangePicker5, {
       mode: "range",
-      dateFormat: "Y-m-d",
-      defaultDate: firstAndLastDates, // Dynamically show the first and last date
+      dateFormat: "d-m-Y",  // Use day-month-year format (or adjust to your preference)
+      defaultDate: firstAndLastDates,  // Dynamically show the first and last date
       onReady: (selectedDates, dateStr, instance) =>
       {
         // Ensure picker shows only the first and last day from selectedDates
@@ -105,12 +110,14 @@ export default {
       onChange: (selectedDates, dateStr, instance) =>
       {
         if (selectedDates.length > 0) {
+          // Format the selected dates to be in the correct format (d-m-Y)
           const updatedDates = getFirstAndLastDates(selectedDates.map(date => date.toISOString().split("T")[0]));
           instance.setDate(updatedDates, false);
           this.selectedDates = updatedDates;
         }
       },
     });
+
   },
 
 
