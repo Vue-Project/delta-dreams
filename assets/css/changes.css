@@ -272,8 +272,8 @@
 
 .fc .fc-button-primary:not(.fc-prev-button):not(.fc-next-button) {
   position: absolute;
-  left: 200px;
-  top: 60px;
+  right: 108px;
+  top: 41px;
 }
 .fc .fc-toolbar-title {
   font-size: 1.5rem;
@@ -444,12 +444,15 @@ right:23px ;  pointer-events: none;
 .popoverContent button {
   border: none;
   background: transparent;
-  color: #2491fc;
+  color: #7367f0;
 }
 .popover {
   position: absolute;
   transition: all 0.3s ease;
   max-width: 250px;
+}
+.popover a {
+ text-decoration: none;
 }
 
 /* end calender styling */
@@ -739,6 +742,6 @@ select.form-select option {
 .fc-license-message {
   display: none;
 }
-.fc-timeline-bg-harness{
-  left: 20px !important;
+.fc .fc-timeline-bg .fc-highlight {
+  left: 35px;
 }

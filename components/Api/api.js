@@ -77,21 +77,19 @@ export const postUsers = async (body) =>
     throw error;
   }
 };
-export const getReservationData = async () =>
+export const getReservationData = async (type) =>
 {
   try {
     const response = await apiClient.get('/reservations', {
-      params: {
-        type: 'in_house'
-      }
+      params: { type },
     });
-    // console.log(response.data);
     return response.data;
   } catch (error) {
-    console.error('Error fetching reservations:', error);
+    console.error(`Error fetching reservations for type "${type}":`, error);
     throw error;
   }
 };
+
 export const geDataId = async (id) =>
 {
   try {
