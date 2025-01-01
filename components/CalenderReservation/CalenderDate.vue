@@ -1,13 +1,15 @@
 <template>
   <section class="card">
+    <p>{{ selectedDates }}</p>
+    <p>{{ datesbuilding }}</p>
     <!-- Loader (will be visible until data is fetched) -->
     <Loader :visible="isLoading" />
 
     <!-- Content (visible only after data is fetched) -->
     <div v-if="!isLoading">
-      <button class="btn btn-primary" @click="showAllResources">Show All</button>
 
       <div class="filter-buttons">
+        <button class="btn btn-primary" @click="showAllResources">Show All</button>
         <button v-for="building in buildingNames" :key="building" class="btn btn-secondary" @click="showBuildingResources(building)">
           Show {{ building }}
         </button>
@@ -63,13 +65,15 @@
             </div>
             <div class="row">
               <hr class="my-2 w-75 mx-auto" />
-              <NuxtLink to="/add-reservation">Go to Add Reservation</NuxtLink>
+              <NuxtLink :to="linkToAddReservation" @click.native="storeSelectedDatesAndNavigate">
+                Go to Add Reservation
+              </NuxtLink>
               <hr class="my-2 w-75 mx-auto" />
               <button type="button" class="ant-btn ant-btn-link ant-btn-block" @click="toggleSidebar">
                 <span>Maintenance Block</span>
               </button>
             </div>
-            <span role="img" aria-label="close" class="anticon anticon-close" @click="closePopover">
+            <span role="img" aria-label="close" class="popoverClose" @click="closePopover">
               <i class="fa-solid fa-xmark"></i>
             </span>
           </div>
@@ -106,6 +110,8 @@ export default {
   data ()
   {
     return {
+      linkToAddReservation: '/add-reservation',
+      datesbuilding: [],
       buildingNames: [], // Store building names dynamically
       selectedDates: [],
       selectedResourceId: [],
@@ -412,18 +418,72 @@ export default {
      */
     handleSelect (info)
     {
-      const { start, end, resource } = info; // Destructure the resource object
+      const { start, end, resource } = info;
 
-      // Convert start and end to Date objects
+      // Get current time in Egypt
+      const getCurrentEgyptTime = () =>
+      {
+        const now = new Date();
+        return new Date(now.toLocaleString('en-US', { timeZone: 'Africa/Cairo' }));
+      };
+
+      // Convert start and end to Date objects while preserving current Egypt time
+      const currentEgyptTime = getCurrentEgyptTime();
       const startDate = new Date(start);
       const endDate = new Date(end);
 
-      // Ensure to capture the exact first and last date as selected
+      // Set the current Egypt time hours and minutes to the dates
+      startDate.setHours(currentEgyptTime.getHours(), currentEgyptTime.getMinutes(), 0, 0);
+      endDate.setHours(currentEgyptTime.getHours(), currentEgyptTime.getMinutes(), 0, 0);
+
       this.selectedDates = [];
 
-      // Store the first and last selected dates in ISO format (YYYY-MM-DD)
-      this.selectedDates.push(startDate.toISOString().split("T")[0]); // First date (YYYY-MM-DD)
-      this.selectedDates.push(endDate.toISOString().split("T")[0]); // Last date (YYYY-MM-DD)
+      // Helper function to format dates with current Egypt time
+      const formatDateTimeEgypt = (date) =>
+      {
+        const formatter = new Intl.DateTimeFormat('en-GB', {
+          timeZone: 'Africa/Cairo',
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false
+        });
+        return formatter.format(date);
+      };
+
+      // Helper function for date only format (no time)
+      const formatDateOnly = (date) =>
+      {
+        const formatter = new Intl.DateTimeFormat('en-GB', {
+          timeZone: 'Africa/Cairo',
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric'
+        });
+        return formatter.format(date);
+      };
+
+      // Generate all dates between startDate and endDate (inclusive)
+      let currentDate = new Date(startDate);
+      while (currentDate <= endDate) {
+        this.selectedDates.push({
+          dateTime: formatDateTimeEgypt(currentDate)
+        });
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
+
+      // Store the first and last selected dates without time
+      this.firstSelectedDate = formatDateOnly(startDate);
+      this.lastSelectedDate = formatDateOnly(endDate);
+
+      // Calculate total days/nights
+      const totalDays = (endDate - startDate) / (1000 * 3600 * 24); // Total days in milliseconds
+      const nights = totalDays > 0 ? totalDays : 1; // Ensure at least 1 night
+
+      // Store the nights count
+      this.selectedNights = nights;
 
       // Capture the resource ID
       if (resource) {
@@ -432,17 +492,20 @@ export default {
         this.selectedResourceId = null;
       }
 
-      // After selection, update highlighted text and show the popover
-      this.updateHighlightedText(start, end);
+      // Update highlighted text with dates only (no time)
+      this.updateHighlightedText(this.firstSelectedDate, this.lastSelectedDate, nights);
 
       // Log the data (optional for debugging)
-      console.log("Selected Dates:", this.selectedDates);
-      console.log("Selected Resource ID:", this.selectedResourceId);
+      // console.log("Selected Dates:", this.selectedDates);
+      // console.log("First Selected Date:", this.firstSelectedDate);  // Will show only date, no time
+      // console.log("Last Selected Date:", this.lastSelectedDate);    // Will show only date, no time
+      // console.log("Selected Resource ID:", this.selectedResourceId);
+      // console.log("Selected Nights:", this.selectedNights);
 
-      // You can also call this.showOverlay() if necessary
+      // Show overlay if necessary
       this.showOverlay();
-    }
-    ,
+    },
+
     /**
      * Highlights the cell for a given date in the calendar.
      *
@@ -457,7 +520,7 @@ export default {
       const dateCell = calendarEl.querySelector(`[data-date='${dateStr}']`);
 
       if (dateCell) {
-        dateCell.classList.add("fc-highlightvev");
+        dateCell.classList.add("fc-highlight");
       }
     },
 
@@ -474,17 +537,8 @@ export default {
      * @param {String} start - The start date of the selection in format "YYYY-MM-DD".
      * @param {String} end - The end date of the selection in format "YYYY-MM-DD".
      */
-    updateHighlightedText (start, end)
+    updateHighlightedText (start, end, nights)
     {
-      const startDate = new Date(start);
-      console.log(startDate);
-
-      const endDate = new Date(end);
-      console.log(endDate);
-
-      const totalDays =
-        Math.ceil((endDate - startDate) / (1000 * 3600 * 24)); // Calculate total days selected
-
       const calendarEl = document.querySelector(".fc");
       const highlightCells = calendarEl.querySelectorAll(".fc-highlight");
 
@@ -492,7 +546,7 @@ export default {
       {
         const tooltip = document.createElement("div");
         tooltip.classList.add("selected-days-tooltip");
-        tooltip.textContent = `${totalDays} Nights`;
+        tooltip.textContent = `${nights} Night${nights > 1 ? 's' : ''}`;
 
         highlight.appendChild(tooltip); // Add the total days count inside the highlighted area
       });
@@ -597,53 +651,12 @@ export default {
     },
 
 
-    // Method to select all resources
-    selectAllResources ()
-    {
-      const isChecked = document.getElementById('select-all-checkbox').checked;
-      const allRoomCheckboxes = document.querySelectorAll('.room-checkbox');
 
-      allRoomCheckboxes.forEach((checkbox) =>
-      {
-        checkbox.checked = isChecked;
-        const resourceId = checkbox.getAttribute('data-id');
-        if (isChecked) {
-          this.addResourceToSelection(resourceId);
-        } else {
-          this.removeResourceFromSelection(resourceId);
-        }
-      });
-      this.updateCalendarResources(this.selectedResources); // Update calendar with the selected resources
-    }
-    ,
 
-    // Method to toggle resource selection and update calendar
-    toggleResourceSelection (resource)
-    {
-      const resourceId = resource.id;
-      const isChecked = document.getElementById(`bs-validation-checkbox-${resourceId}`).checked;
 
-      if (isChecked) {
-        this.addResourceToSelection(resourceId);
-      } else {
-        this.removeResourceFromSelection(resourceId);
-      }
-      this.updateCalendarResources(this.selectedResources); // Update calendar with the selected resources
-    }
-    ,
 
-    // Method to update calendar with selected resources
-    updateCalendarResources (selectedIds = [])
-    {
-      const resources = this.createResources(selectedIds); // Get the resources based on the selected IDs
-      const calendar = this.$refs.calendar?.getApi();
 
-      if (calendar) {
-        calendar.setOption('resources', resources); // Set the resources in FullCalendar
-      } else {
-        console.error('FullCalendar API is not accessible.');
-      }
-    },
+
 
     /**
      * Toggles the expand/collapse state of resources in a calendar view.
@@ -714,6 +727,14 @@ export default {
       this.isPopoverVisible = false;
       this.isOverlayVisible = false;
     },
+    // storeSelectedDatesAndNavigate ()
+    // {
+    //   // Store the data before navigation
+    //   this.$store.commit('reservation/SET_SELECTED_DATES', this.selectedDates)
+
+    //   // Optional: Also store in localStorage as backup
+    //   localStorage.setItem('selectedDates', JSON.stringify(this.selectedDates))
+    // }
 
   },
   async mounted ()
@@ -728,6 +749,7 @@ export default {
       this.data = CalenderDataResponse.data.data;
       this.occupancyData = CalenderDataResponse.data.calendar.data;
       this.statisticsHeaderCalender = CalenderDataResponse.data;
+      this.datesbuilding = CalenderDataResponse.data.data.dates;
       this.buildingNames = this.getBuildingNames();
 
       this.data.forEach(building =>
