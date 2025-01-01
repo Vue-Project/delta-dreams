@@ -3,9 +3,9 @@
     <form id="formBlockRoom" action="" class="p-2">
 
       <div class="row">
-        <div class="col-12  ">
+        <div class="col-12">
           <label for="flatpickr-date-01" class="form-label">Date Range</label>
-          <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD to YYYY-MM-DD" id="flatpickr-range-01" ref="rangePicker5" aria-label="input Text to Date" :value="selectedDates" />
+          <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD to YYYY-MM-DD" id="flatpickr-range-01" ref="rangePicker5" aria-label="input Text to Date" />
         </div>
         <div class="col-12">
           <label for="formBlockRoomRoomType" class="form-label">Room Type</label>
@@ -53,7 +53,8 @@ export default {
       roomType: "", // To store the first part (e.g., 21)
       room: "", // To store the second part (e.g., 1)
       reasonsSources: [],
-      selectedDates: [], // Array to store the selected dates
+      selectedDates: "2025-01-01 to 2025-01-09",
+
 
       selectedOptionReasons: "",
     };
@@ -84,6 +85,32 @@ export default {
     this.splitResourceId(); // Split the ID when the component is mounted
 
 
+    const getFirstAndLastDates = (dates) =>
+    {
+      if (!dates || dates.length === 0) return [];
+      return [dates[0], dates[dates.length - 1]];
+    };
+
+    const firstAndLastDates = getFirstAndLastDates(this.selectedDates);
+
+    flatpickr(this.$refs.rangePicker5, {
+      mode: "range",
+      dateFormat: "Y-m-d",
+      defaultDate: firstAndLastDates, // Dynamically show the first and last date
+      onReady: (selectedDates, dateStr, instance) =>
+      {
+        // Ensure picker shows only the first and last day from selectedDates
+        instance.setDate(getFirstAndLastDates(this.selectedDates), false);
+      },
+      onChange: (selectedDates, dateStr, instance) =>
+      {
+        if (selectedDates.length > 0) {
+          const updatedDates = getFirstAndLastDates(selectedDates.map(date => date.toISOString().split("T")[0]));
+          instance.setDate(updatedDates, false);
+          this.selectedDates = updatedDates;
+        }
+      },
+    });
   },
 
 
