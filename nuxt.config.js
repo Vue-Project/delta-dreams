@@ -3,7 +3,7 @@ const path = require("path");
 
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
-
+  // store: true,
   head: {
     title: "deltaDreams",
 
