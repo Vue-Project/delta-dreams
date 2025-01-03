@@ -1,57 +1,62 @@
 <template>
   <div class="row mx-auto my-3">
     <div class="col-md-12">
+
       <div class="card mb-3 p-3">
-        <div v-if="card">
-          <div class="row">
-            <div class="col">
-              <div class="me-2 py-2 d-flex">
-                <NuxtLink to="/reservations-data"><i class="fa-solid fa-angle-left pr-2" style="color: #6f6b7d; float: left; font-size: 20px"></i>
-                </NuxtLink>
-                <i class="text-primary fa-solid fa-hotel fs-3 mr-2 mb-2"></i>
-                {{ card.guestName }}
-                <small class="text-muted">
-                  <i class="fa-solid fa-person pr-2"></i>{{ card.adults }}
-                  <i class="fa-solid fa-child pr-2"></i>{{ card.children }}</small>
-              </div>
+
+
+        <div class="row" v-for="reservationDataById in reservationsDataById" :key="reservationDataById.id">
+          <div class="col">
+            <div class="me-2 py-2 d-flex">
+              <NuxtLink to="/reservations-data"><i class="fa-solid fa-angle-left pr-2" style="color: #6f6b7d; float: left; font-size: 20px"></i>
+              </NuxtLink>
+              <i class="text-primary fa-solid fa-hotel fs-3 mr-2 mb-2"></i>
+              {{ reservationDataById.reserved_by.name }}
+              <small class="text-muted ml-3">
+                <i class="fa-solid fa-person pr-2"></i>{{ reservationDataById.adults }}
+                <i class="fa-solid fa-child pr-2"></i>{{ reservationDataById.children }}</small>
             </div>
-            <div class="col">
-              <div class="me-2">
-                <h6>Arrival Date</h6>
-                <small class="text-muted">{{ card.arrivalDate }} {{ card.arrivalTime }}</small>
-              </div>
+          </div>
+          <div class="col">
+            <div class="me-2">
+              <h6>Arrival Date</h6>
+              <small class="text-muted">{{ reservationDataById.checkin_date }} {{ reservationDataById.checkin_time }}</small>
             </div>
-            <div class="col">
-              <div class="me-2">
-                <h6>Booking Date</h6>
-                <small class="text-muted">{{ card.bookingDate }} {{ card.bookingTime }}</small>
-              </div>
+          </div>
+
+          <div class="col">
+            <div class="me-2">
+              <h6>Booking Date</h6>
+              <small class="text-muted">{{ reservationDataById.booking_source.created_at }} </small>
             </div>
-            <div class="col">
-              <div class="me-2">
-                <h6>Room Number/Room Type</h6>
-                <small class="text-muted">{{ card.roomNumber }}/{{ card.roomType }}</small>
-              </div>
+          </div>
+          <div class="col">
+            <div class="me-2">
+              <h6>Room Number/Room Type</h6>
+              <small class="text-muted">{{ reservationDataById.number_of_rooms }}/{{ reservationDataById.rate_type || "Suite الفندق غرفتين وصاله" }}</small>
             </div>
-            <div class="col">
-              <div class="me-2">
-                <h6>Nights</h6>
-                <small class="text-muted">{{ card.nights }}</small>
-              </div>
+          </div>
+          <div class="col">
+            <div class="me-2">
+              <h6>Nights</h6>
+              <small class="text-muted">
+
+                {{ (new Date(reservationDataById.checkout_date) - new Date(reservationDataById.checkin_date)) / (1000 * 3600 * 24) }}
+              </small>
             </div>
-            <div class="col">
-              <div class="me-2">
-                <h6>Reservation Number</h6>
-                <small class="text-muted">{{ card.reservationNo }}</small>
-              </div>
+          </div>
+          <div class="col">
+            <div class="me-2">
+              <h6>Reservation Number</h6>
+              <small class="text-muted">{{ reservationDataById.reservation_number || "14541" }}</small>
             </div>
-            <div class="col">
-              <div class="me-2">
-                <h6>Status</h6>
-                <small class="text-muted badge bg-label-danger">{{
-                  card.status
-                  }}</small>
-              </div>
+          </div>
+          <div class="col">
+            <div class="me-2">
+              <h6>Status</h6>
+              <small class="text-danger badge bg-label-danger">{{
+                reservationDataById.status || "Stayove"
+                }}</small>
             </div>
           </div>
         </div>
@@ -269,8 +274,9 @@
                     <tr>
                       <th>
                         <div class="form-check text-left">
-                          <input class="form-check-input" type="checkbox" id="userManagementRead" />
-                          <label class="form-check-label" for="userManagementRead">
+                          <!-- Master Checkbox -->
+                          <input class="form-check-input" type="checkbox" id="selectAll" v-model="selectAll" @change="toggleAll" />
+                          <label class="form-check-label" for="selectAll">
                             08/12/2024 Sun
                           </label>
                         </div>
@@ -286,23 +292,24 @@
                     </tr>
                   </thead>
                   <tbody class="table-border-bottom-0">
-                    <tr>
+                    <tr v-for="(row, index) in rows" :key="index">
                       <td>
                         <div class="form-check me-3 me-lg-5">
-                          <input class="form-check-input" type="checkbox" id="userManagementRead" />
-                          <label class="form-check-label" for="userManagementRead">
-                            08/12/2024 Sun
+                          <!-- Row Checkbox -->
+                          <input class="form-check-input" type="checkbox" :id="'rowCheckbox' + index" v-model="row.selected" @change="updateSelectAll" />
+                          <label class="form-check-label" :for="'rowCheckbox' + index">
+                            {{ row.date }}
                           </label>
                         </div>
                       </td>
-                      <td>252-Test</td>
-                      <td>السعر شامل الافطار</td>
-                      <td>1/0</td>
-                      <td>100.00</td>
-                      <td>0.0</td>
-                      <td>0.00</td>
-                      <td>0.00</td>
-                      <td>100.00</td>
+                      <td>{{ row.room }}</td>
+                      <td>{{ row.rateType }}</td>
+                      <td>{{ row.pax }}</td>
+                      <td>{{ row.charge }}</td>
+                      <td>{{ row.discount }}</td>
+                      <td>{{ row.tax }}</td>
+                      <td>{{ row.adjustment }}</td>
+                      <td>{{ row.netAmount }}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -618,33 +625,30 @@
   </div>
 </template>
 
-
-
-
-
 <script>
-import flatpickrMixin from "../components/Mixin/flatpickrMixin";
-import HeaderReservation from "../components/AllReservation/HeaderReservation.vue";
-import SidebarReservation from "../components/AllReservation/SidebarReservation.vue";
-import AddCard from "../components/SiderbarContentEdit/AddCard.vue";
-import AddTravel from "../components/SiderbarContentEdit/AddTravel.vue";
-import UpdateDetails from "../components/SiderbarContentEdit/UpdateDetails.vue";
-import ApplyDiscount from "../components/SiderbarContentEdit/ApplyDiscount.vue";
-import DefaultComponentGuest from "../components/SiderbarContentEdit/GuestDetailsComponents/DefaultComponentGuest.vue";
-import AddRoomSharer from "../components/SiderbarContentEdit/GuestDetailsComponents/AddRoomSharer.vue";
-import AddMasterProfile from "../components/SiderbarContentEdit/GuestDetailsComponents/AddMasterProfile.vue";
-import DefaultContentBooking from "../components/SiderbarContentEdit/BookingDetailsComponents/DefaultContentBooking.vue";
-import MessageContent from "../components/SiderbarContentEdit/BookingDetailsComponents/MessageContent.vue";
-import PreferenceContent from "../components/SiderbarContentEdit/BookingDetailsComponents/PreferenceContent.vue";
-import RemarksContent from "../components/SiderbarContentEdit/BookingDetailsComponents/RemarksContent.vue";
-import TaskContent from "../components/SiderbarContentEdit/BookingDetailsComponents/TaskContent.vue";
-import SendInvoice from "../components/SiderbarContentEdit/SendInvoice.vue";
-import PrintInvoice from "../components/SiderbarContentEdit/PrintInvoice.vue";
-import NewFolio from "../components/SiderbarContentEdit/NewFolio.vue";
-import AddPayment from "../components/SiderbarContentEdit/AddPayment.vue";
-import AddCharges from "../components/SiderbarContentEdit/AddCharges.vue";
-import AddDiscount from "../components/SiderbarContentEdit/AddDiscount.vue";
-import AddOperation from "../components/SiderbarContentEdit/AddOperation.vue";
+import flatpickrMixin from "../../components/Mixin/flatpickrMixin";
+import HeaderReservation from "../../components/AllReservation/HeaderReservation.vue";
+import SidebarReservation from "../../components/AllReservation/SidebarReservation.vue";
+import AddCard from "../../components/SiderbarContentEdit/AddCard.vue";
+import AddTravel from "../../components/SiderbarContentEdit/AddTravel.vue";
+import UpdateDetails from "../../components/SiderbarContentEdit/UpdateDetails.vue";
+import ApplyDiscount from "../../components/SiderbarContentEdit/ApplyDiscount.vue";
+import DefaultComponentGuest from "../../components/SiderbarContentEdit/GuestDetailsComponents/DefaultComponentGuest.vue";
+import AddRoomSharer from "../../components/SiderbarContentEdit/GuestDetailsComponents/AddRoomSharer.vue";
+import AddMasterProfile from "../../components/SiderbarContentEdit/GuestDetailsComponents/AddMasterProfile.vue";
+import DefaultContentBooking from "../../components/SiderbarContentEdit/BookingDetailsComponents/DefaultContentBooking.vue";
+import MessageContent from "../../components/SiderbarContentEdit/BookingDetailsComponents/MessageContent.vue";
+import PreferenceContent from "../../components/SiderbarContentEdit/BookingDetailsComponents/PreferenceContent.vue";
+import RemarksContent from "../../components/SiderbarContentEdit/BookingDetailsComponents/RemarksContent.vue";
+import TaskContent from "../../components/SiderbarContentEdit/BookingDetailsComponents/TaskContent.vue";
+import SendInvoice from "../../components/SiderbarContentEdit/SendInvoice.vue";
+import PrintInvoice from "../../components/SiderbarContentEdit/PrintInvoice.vue";
+import NewFolio from "../../components/SiderbarContentEdit/NewFolio.vue";
+import AddPayment from "../../components/SiderbarContentEdit/AddPayment.vue";
+import AddCharges from "../../components/SiderbarContentEdit/AddCharges.vue";
+import AddDiscount from "../../components/SiderbarContentEdit/AddDiscount.vue";
+import AddOperation from "../../components/SiderbarContentEdit/AddOperation.vue";
+import { getReservationDataById } from "../../components/Api/api";
 export default {
   name: "EditsPage",
   layout: "main",
@@ -676,7 +680,6 @@ export default {
   data ()
   {
     return {
-      card: null,
       currentContent: null,
       offcanvasTitle: "",
       sidebarWidth: "400px",
@@ -684,6 +687,23 @@ export default {
       activeComponent: "DefaultComponentGuest",
       bookingDetailsComponent: "DefaultContentBooking",
       activeTab: null, // No tab is active by default
+      reservationsDataById: [],
+      selectAll: false, // Tracks the state of the master checkbox
+      rows: [
+        {
+          date: "08/12/2024 Sun",
+          room: "252-Test",
+          rateType: "السعر شامل الافطار",
+          pax: "1/0",
+          charge: "100.00",
+          discount: "0.0",
+          tax: "0.00",
+          adjustment: "0.00",
+          netAmount: "100.00",
+          selected: false, // Tracks if this row is selected
+        },
+      ],
+
     };
   },
   methods: {
@@ -725,16 +745,44 @@ export default {
         console.warn(`Invalid target: ${target}`);
       }
     },
+    toggleAll ()
+    {
+      // Toggle all row checkboxes based on the master checkbox
+      this.rows.forEach((row) =>
+      {
+        row.selected = this.selectAll;
+      });
+    },
+    updateSelectAll ()
+    {
+      // Update master checkbox based on row checkboxes
+      this.selectAll = this.rows.every((row) => row.selected);
+    },
   },
-  mixins: [flatpickrMixin],
-  mounted ()
-  {
-    const cardData = this.$route.query.cardData
-      ? JSON.parse(this.$route.query.cardData)
-      : null;
-    this.card = cardData;
 
-    // Add the event listener for offcanvas close
+
+  mixins: [flatpickrMixin],
+
+  async mounted ()
+  {
+    const id = this.$route.params.id; // Get the dynamic ID from the route
+
+    try {
+      const [
+        ReservationDataByIdResponse,
+
+      ] = await Promise.all([
+        getReservationDataById(id),
+
+      ]);
+
+      this.reservationsDataById = [ReservationDataByIdResponse.data.data];
+
+    } catch (error) {
+      console.error("Error loading data:", error);
+    }
+    const offcanvas = document.getElementById("offcanvasEnd");
+    offcanvas.addEventListener("hidden.bs.offcanvas", this.resetSelections);
     this.$nextTick(() =>
     {
       const offcanvasElement = this.$refs.offcanvas;
@@ -764,4 +812,6 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+/* Add styles as needed */
+</style>

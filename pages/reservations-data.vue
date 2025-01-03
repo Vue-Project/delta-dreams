@@ -150,30 +150,31 @@
             </button>
             <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEnd" aria-labelledby="offcanvasEndLabel">
               <div class="offcanvas-header">
-                <h5 id="offcanvasEndLabel" class="offcanvas-title">
+                <h5 id="offcanvasEndLabel" class="offcanvas-title w-100">
                   <template v-if="selectedCard">
                     <h6>
                       <i class="text-primary fa-solid fa-hotel fs-3 mr-2 mb-2"></i>
-                      {{ selectedCard.guestName }}
+                      {{ selectedCard.reserved_by.name }}
                     </h6>
                     <div>
                       <span class="mr-1"><i class="text-primary fa-solid fa-location-dot"></i>
-                        {{ selectedCard.location }}</span>
+                        {{ selectedCard.location || "Egypt"
+                        }}</span>
                       <span><i class="text-primary fa-solid fa-phone"></i>
-                        {{ selectedCard.phone }}</span>
+                        {{ selectedCard.phone || "03252" }}</span>
                     </div>
                     <div class="row mt-4">
                       <div class="col-md-4">
-                        <NuxtLink :to="{
-                          path: `/edits-reservation/${selectedCard.id}`
-                        }" type="button" class="btn btn-primary waves-effect waves-light btn-block">
+                        <!-- <NuxtLink :to="{ path: `/edits-reservation/${selectedCard.id}` }" type="button" class="btn btn-primary waves-effect waves-light btn-block">
                           Edit
-                        </NuxtLink>
+                        </NuxtLink> -->
+                        <button type="button" class="btn btn-primary waves-effect waves-light btn-block" @click="navigateToEditReservation(selectedCard.id)"> Edit</button>
+
 
                       </div>
                       <div class="col-md-4">
                         <div class="demo-inline-spacing">
-                          <div class="btn-group" id="dropdown-icon-demo">
+                          <div class="btn-group btn-block" id="dropdown-icon-demo">
                             <button type="button" class="btn btn-primary dropdown-toggle waves-effect waves-light" data-bs-toggle="dropdown" aria-expanded="false">
                               OPtion
                             </button>
@@ -333,7 +334,7 @@
                                   <h6 class="mb-0">Reservation Number</h6>
                                   <small class="text-muted">{{
                                     selectedCard.reservationNo
-                                  }}</small>
+                                    }}</small>
                                 </div>
                               </div>
                             </div>
@@ -524,7 +525,7 @@
                                   <h6 class="mb-0">Reservation Number</h6>
                                   <small class="text-muted">{{
                                     selectedCard.reservationNo
-                                  }}</small>
+                                    }}</small>
                                 </div>
                               </div>
                             </div>
@@ -697,7 +698,7 @@
                                   <h6 class="mb-0">Reservation Number</h6>
                                   <small class="text-muted">{{
                                     selectedCard.reservationNo
-                                  }}</small>
+                                    }}</small>
                                 </div>
                               </div>
                             </div>
@@ -862,9 +863,7 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Reservation Number</h6>
-                                  <small class="text-muted">{{
-                                    selectedCard.reservationNo
-                                  }}</small>
+                                  <small class="text-muted">{{ selectedCard.Reservation || "14541" }}</small>
                                 </div>
                               </div>
                             </div>
@@ -874,8 +873,8 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Arrival Date</h6>
-                                  <small class="text-muted">{{ selectedCard.arrivalDate }}
-                                    {{ selectedCard.arrivalTime }}</small>
+                                  <small class="text-muted">{{ selectedCard.checkin_date }} </small>
+                                  <small class="text-muted">{{ selectedCard.checkin_time || "14.00.00" }} </small>
                                 </div>
                               </div>
                             </div>
@@ -885,8 +884,8 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Booking Date</h6>
-                                  <small class="text-muted">{{ selectedCard.bookingDate }}
-                                    {{ selectedCard.bookingTime }}</small>
+                                  <small class="text-muted">{{ selectedCard.bookingDate || "2024-11-28" }}
+                                    {{ selectedCard.bookingTime || "" }}</small>
                                 </div>
                               </div>
                             </div>
@@ -897,7 +896,7 @@
                                 <div class="me-2">
                                   <h6 class="mb-0">Room Number</h6>
                                   <small class="text-muted">
-                                    {{ selectedCard.roomNumber }}</small>
+                                    {{ selectedCard.roomNumber || "4" }}</small>
                                 </div>
                               </div>
                             </div>
@@ -925,8 +924,8 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Departure Date</h6>
-                                  <small class="text-muted">{{ selectedCard.departureDate }}
-                                    {{ selectedCard.departureTime }}</small>
+                                  <small class="text-muted">{{ selectedCard.checkout_date }}
+                                    {{ selectedCard.checkout_time || '14.00.00' }}</small>
                                 </div>
                               </div>
                             </div>
@@ -936,7 +935,7 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Status</h6>
-                                  <small class="text-muted badge bg-label-danger ms-1">{{ selectedCard.status }}
+                                  <small class="text-muted badge bg-label-danger ms-1">{{ selectedCard.status || "Stayover" }}
                                   </small>
                                 </div>
                               </div>
@@ -947,7 +946,7 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Room Type</h6>
-                                  <small class="text-muted">{{ selectedCard.roomType }}
+                                  <small class="text-muted">{{ selectedCard.roomType || "Suite الفندق غرفتين وصاله" }}
                                   </small>
                                 </div>
                               </div>
@@ -959,7 +958,7 @@
                                 <div class="me-2">
                                   <h6 class="mb-0">Rate Plan</h6>
                                   <small class="text-muted">
-                                    {{ selectedCard.ratePlan }}</small>
+                                    {{ selectedCard.ratePlan || "السعر غير شامل" }}</small>
                                 </div>
                               </div>
                             </div>
@@ -969,7 +968,7 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Avg. Daily Rate</h6>
-                                  <small class="text-muted">{{ selectedCard.dailyRate }}
+                                  <small class="text-muted">{{ selectedCard.dailyRate || "0.00$" }}
                                   </small>
                                 </div>
                               </div>
@@ -981,27 +980,21 @@
                   </div>
                 </div>
 
-                <div v-if="!selectedCard" class="gap-2 d-flex" style="position: absolute; bottom: 15px; right: 0">
-                  <button class="btn btn-secondary">Reset</button>
+                <div v-if="!selectedCard" class="gap-2 d-flex  position-absolute right-0">
+                  <button class=" btn btn-secondary">Reset</button>
                   <button class="btn btn-primary">Search</button>
                 </div>
-                <div v-if="selectedCard" class="new-div mt-3" style="
-                    position: absolute;
-                    bottom: 15px;
-                    right: 0;
-                    width: 100%;
-                    padding: 0 15px;
-                  ">
-                  <dl class="row mb-0">
+                <div v-if="selectedCard" class="new-div mt-3 position-absolute right-0 w-100 px-4 bottom-1">
+                  <dl class=" row mb-0">
                     <dt class="col-6 fw-normal text-heading">Total</dt>
-                    <dd class="col-6 text-end">{{ selectedCard.total }} $</dd>
+                    <dd class="col-6 text-end">{{ selectedCard.total || "0.0 $" }} $</dd>
 
                     <dt class="col-sm-6 fw-normal">Paid</dt>
-                    <dd class="col-sm-6 text-end">{{ selectedCard.paid }}$</dd>
+                    <dd class="col-sm-6 text-end">{{ selectedCard.paid || "0.0 $" }}$</dd>
 
                     <dt class="col-6 fw-normal text-danger">Balance</dt>
                     <dd class="col-6 text-end text-danger">
-                      {{ selectedCard.balance }}$
+                      {{ selectedCard.balance || "0.0 $" }}$
                     </dd>
                   </dl>
                 </div>
@@ -1020,7 +1013,7 @@
           <!-- In-house  -->
           <div class="tab-pane fade" id="form-tabs-In-house" role="tabpanel">
             <div class="row">
-              <div v-if="viewMode === 'list'" class="table-responsive text-nowrap" style="overflow: visible">
+              <div v-if="viewMode === 'list'" class="table-responsive text-nowrap" style="overflow: visible; cursor: pointer;">
                 <table class="table">
                   <thead class="table-light">
                     <tr>
@@ -1035,91 +1028,63 @@
                     </tr>
                   </thead>
                   <tbody class="table-border-bottom-0">
+                    <tr @click="openOffcanvas(card)" v-for="card in reservations" :key="card.id">
+                      <td>
+                        <h5 class=" m-0 me-2">{{ card.reserved_by.name }}</h5>
+                        <div>
+                          <i class="fa-solid fa-person"></i>{{ card.children || '0' }}
+                          <i class="fa-solid fa-child"></i>{{ card.adults || '0' }}
+                        </div>
+                      </td>
+                      <td>
+                        <p class="m-0 me-2">{{ card.Voucher || '14541' }}</p>
+                      </td>
+                      <td>
+                        <p class="m-0 me-2">{{ card.checkin_date }}</p>
+                        <p class="m-0 me-2">{{ card.checkin_time }}</p>
+                      </td>
+                      <td>
+                        <p class="m-0 me-2">{{ card.checkout_date }}</p>
+                        <p class="m-0 me-2">{{ card.checkout_time }}</p>
+                      </td>
+                      <td>
+                        <p class="m-0 me-2">{{ card.room_details || '104 - Suite الفندق غرفتين وصاله' }}</p>
+                      </td>
+                      <td>
+                        <p class="m-0 me-2">{{ card.total || '0.00' }}$</p>
+                      </td>
+                      <td>
+                        <p class="m-0 me-2">{{ card.paid || '0.00' }}$</p>
+                      </td>
+                      <td class="d-flex justify-content-between border-bottom-0">
+                        <p class="m-0 me-2 text-danger">{{ card.balance || '0.00' }}$</p>
+                        <div class="btn-group " id="hover-dropdown-demo" @mouseenter="toggleMenu(card.id, true)" @mouseleave="toggleMenu(card.id, false)">
+                          <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none">
+                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                          </button>
+                          <ul v-show="hoveredMenu[card.id]" class="dropdown-menu show right-0" data-popper-placement="bottom-end">
+                            <li>
+                              <a class="dropdown-item" href="#"><i class="fa-solid fa-file-circle-plus mr-2"></i>Print Invoice</a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#"><i class="fa-solid fa-calendar-plus mr-2"></i>Add New Booking</a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#"><i class="fa-solid fa-list-check mr-2"></i>Audit Trail</a>
+                            </li>
+                          </ul>
+                        </div>
+                      </td>
+                    </tr>
 
 
 
                   </tbody>
                 </table>
-                <div class="row ">
-                  <div class="col-12 col-md-12  mb-4 " @click="openOffcanvas(card)" v-for="card in reservations" :key="card.id">
-                    <div class="card h-100">
-                      <div class="card-header d-flex align-items-center justify-content-between">
-                        <div class="card-title mb-0 d-flex">
-                          <i class="text-primary fa-solid fa-hotel fs-3 mr-2 mb-2"></i>
-                          <h5 class="m-0 me-2">{{ card.reserved_by.name }}</h5>
-                          <p>{{ card.id }}</p>
-                        </div>
-
-                        <div class="btn-group" id="hover-dropdown-demo " @mouseenter="isHovered = true" @mouseleave="isHovered = false">
-                          <div class="btn-group" id="hover-dropdown-demo " @mouseenter="isHovered = true" @mouseleave="isHovered = false">
-                            <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none">
-                              <i class="fa-solid fa-ellipsis-vertical"></i>
-                            </button>
-                            <ul v-show="isHovered" class="dropdown-menu show" data-popper-placement=" bottom-end">
-                              <li>
-                                <a class="dropdown-item" href="#"><i class="fa-solid fa-file-circle-plus mr-2"></i>Print Invoice</a>
-                              </li>
-                              <li>
-                                <a class="dropdown-item" href="#"><i class="fa-solid fa-calendar-plus mr-2"></i>Add
-                                  New Booking</a>
-                              </li>
-                              <li>
-                                <a class="dropdown-item" href="#"><i class="fa-solid fa-list-check mr-2"></i>Audit
-                                  Trail</a>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="card-body">
-                        <div id="deliveryExceptionsChart">
-                          <div class="row d-flex align-items-center justify-content-center text-center mb-3">
-                            <div class="bg-light col-md-5">
-                              <div class="text-dark">02/12/2024</div>
-                              <div>08:43:01 pm</div>
-                            </div>
-                            <div class="bg-secondary col-md-2">
-                              <div class="text-dark">5</div>
-                              <div>Nights</div>
-                            </div>
-                            <div class="bg-light col-md-5">
-                              <div class="text-dark">02/12/2024</div>
-                              <div>08:43:01 pm</div>
-                            </div>
-                          </div>
-                          <div class="row mb-5">
-                            <div class="col-md-10">
-                              <div>Booking Date</div>
-                              <div>02/12/2024</div>
-                            </div>
-                            <div class="col-md-2">
-                              <div>
-                                <i class="fa-solid fa-person"></i>3
-                                <i class="fa-solid fa-child"></i>2
-                              </div>
-                            </div>
-                            <div class="col-md-12">
-                              <div>Room / Rate Type</div>
-                              <div>202 / السعر غير شامل</div>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-md-10">Total</div>
-                            <div class="col-md-2">$230</div>
-                            <div class="col-md-10">Paid</div>
-                            <div class="col-md-2">$250</div>
-                            <div class="col-md-10 text-danger">Balance</div>
-                            <div class="col-md-2 text-danger">$20</div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
 
               </div>
 
-              <div v-else class="col-12 col-md-6 col-lg-4 mb-4 order-1 order-xl-0" @click="openOffcanvas(card)" v-for="card in reservations" :key="card.id">
+              <div v-else class="col-12 col-md-6 col-lg-4 mb-4 order-1 order-xl-0 cursor-pointer" @click="openOffcanvas(card)" v-for="card in reservations" :key="card.id">
                 <div class="card h-100">
                   <div class="card-header d-flex align-items-center justify-content-between">
                     <div class="card-title mb-0 d-flex">
@@ -1127,53 +1092,51 @@
                       <h5 class="m-0 me-2">{{ card.reserved_by.name }}</h5>
                       <p>{{ card.id }}</p>
                     </div>
-
-                    <div class="btn-group" id="hover-dropdown-demo " @mouseenter="isHovered = true" @mouseleave="isHovered = false">
-                      <div class="btn-group" id="hover-dropdown-demo " @mouseenter="isHovered = true" @mouseleave="isHovered = false">
-                        <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none">
-                          <i class="fa-solid fa-ellipsis-vertical"></i>
-                        </button>
-                        <ul v-show="isHovered" class="dropdown-menu show" data-popper-placement=" bottom-end">
-                          <li>
-                            <a class="dropdown-item" href="#"><i class="fa-solid fa-file-circle-plus mr-2"></i>Print Invoice</a>
-                          </li>
-                          <li>
-                            <a class="dropdown-item" href="#"><i class="fa-solid fa-calendar-plus mr-2"></i>Add
-                              New Booking</a>
-                          </li>
-                          <li>
-                            <a class="dropdown-item" href="#"><i class="fa-solid fa-list-check mr-2"></i>Audit
-                              Trail</a>
-                          </li>
-                        </ul>
-                      </div>
+                    <div class="btn-group" id="hover-dropdown-demo" @mouseenter="toggleMenu(card.id, true)" @mouseleave="toggleMenu(card.id, false)">
+                      <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none">
+                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                      </button>
+                      <ul v-show="hoveredMenu[card.id]" class="dropdown-menu show" data-popper-placement="bottom-end">
+                        <li>
+                          <a class="dropdown-item" href="#"><i class="fa-solid fa-file-circle-plus mr-2"></i>Print Invoice</a>
+                        </li>
+                        <li>
+                          <a class="dropdown-item" href="#"><i class="fa-solid fa-calendar-plus mr-2"></i>Add New Booking</a>
+                        </li>
+                        <li>
+                          <a class="dropdown-item" href="#"><i class="fa-solid fa-list-check mr-2"></i>Audit Trail</a>
+                        </li>
+                      </ul>
                     </div>
+
+
                   </div>
                   <div class="card-body">
                     <div id="deliveryExceptionsChart">
                       <div class="row d-flex align-items-center justify-content-center text-center mb-3">
                         <div class="bg-light col-md-5">
-                          <div class="text-dark">02/12/2024</div>
-                          <div>08:43:01 pm</div>
+                          <div class="text-dark">{{ card.checkin_date }}</div>
+                          <div>{{ card.checkin_time || '00:00:00' }}</div>
                         </div>
                         <div class="bg-secondary col-md-2">
-                          <div class="text-dark">5</div>
+                          <div class="text-dark"> {{ (new Date(card.checkout_date) - new Date(card.checkin_date)) / (1000 * 3600 * 24) }}
+                          </div>
                           <div>Nights</div>
                         </div>
                         <div class="bg-light col-md-5">
-                          <div class="text-dark">02/12/2024</div>
-                          <div>08:43:01 pm</div>
+                          <div class="text-dark"> {{ card.checkout_date }}</div>
+                          <div> {{ card.checkout_time || '15:00:00' }}</div>
                         </div>
                       </div>
                       <div class="row mb-5">
                         <div class="col-md-10">
                           <div>Booking Date</div>
-                          <div>02/12/2024</div>
+                          <div>{{ 'card.booking_source[0] ' || "2024-12-02T07:43:11.000000Z" }}</div>
                         </div>
                         <div class="col-md-2">
                           <div>
-                            <i class="fa-solid fa-person"></i>3
-                            <i class="fa-solid fa-child"></i>2
+                            <i class="fa-solid fa-person"></i>{{ card.children || '0' }}
+                            <i class="fa-solid fa-child"></i>{{ card.adults || '0' }}
                           </div>
                         </div>
                         <div class="col-md-12">
@@ -1218,19 +1181,20 @@ export default {
   {
     return {
       viewMode: "card", // default view mode is card view
-      isHovered: false,
+      hoveredMenu: {}, // Object to track hover state of each menu
       selectedCard: null, // Store the data for the selected card
       activeTab: "reservations", // Default active tab
-      reservations: [
-
-      ],
-      reservationsCount: [
-
-      ]
+      reservations: [],
+      reservationsCount: []
 
     };
   },
   methods: {
+    toggleMenu (cardId, state)
+    {
+      this.$set(this.hoveredMenu, cardId, state); // Dynamically set hover state
+    }
+    ,
     viewCardDetails (id)
     {
       this.$router.push(`/reservations-data/${id}`);
@@ -1258,12 +1222,12 @@ export default {
       this.selectedCard = null; // Reset selected card
       this.selectedList = null; // Reset selected list
     },
+    navigateToEditReservation (id)
+    {
+      this.$router.push(`/edit-reservation/${id}`);
+    },
   },
-  mounted ()
-  {
-    // Add event listener to reset selections when the sidebar is closed
 
-  },
   async mounted ()
   {
     try {
