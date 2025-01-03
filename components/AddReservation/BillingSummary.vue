@@ -1,5 +1,7 @@
 <template>
   <section class="summary position-sticky top-0">
+    {{ selectedDates }}
+
     <div class="card">
       <h5 class="card-header">
         Billing Summary
@@ -52,9 +54,8 @@
           <div class="col-md-3">
             <div class="input-group justify-content-end">
               <div class="input-group-text border-0 px-2 ">
-                <label  class="pl-1 mb-0" for="inputCheckBox01">Tax Exempt</label>
-                <input id="inputCheckBox01" class="form-check-input mt-0" type="checkbox" value
-                  aria-label="Checkbox for following text input" />
+                <label class="pl-1 mb-0" for="inputCheckBox01">Tax Exempt</label>
+                <input id="inputCheckBox01" class="form-check-input mt-0" type="checkbox" value aria-label="Checkbox for following text input" />
               </div>
             </div>
           </div>
@@ -63,8 +64,7 @@
         <div class="input-group ">
           <div class="input-group-text border-0 px-2 ml-3">
             <label class="pl-1 mb-0" for="inputCheckBox02 ">Payment Mode</label>
-            <input v-model="isChecked" @change="handleCheckboxChange" id="inputCheckBox02" class="form-check-input mt-0"
-              type="checkbox" value aria-label="Checkbox for following text input" />
+            <input v-model="isChecked" @change="handleCheckboxChange" id="inputCheckBox02" class="form-check-input mt-0" type="checkbox" value aria-label="Checkbox for following text input" />
           </div>
         </div>
 
@@ -73,16 +73,14 @@
           <div class="col-md-6 d-flex align-items-center">
             <div class="input-group">
               <div class="input-group-text border-0 ml-3">
-                <label  class="pl-1 mb-0" for="inputRadio01">Cash/Bank</label>
-                <input id="inputRadio01" class="form-check-input mt-0" type="radio" value="option01"
-                  name="paymentMethod" aria-label="Radio button for following text input" checked="" />
+                <label class="pl-1 mb-0" for="inputRadio01">Cash/Bank</label>
+                <input id="inputRadio01" class="form-check-input mt-0" type="radio" value="option01" name="paymentMethod" aria-label="Radio button for following text input" checked="" />
               </div>
             </div>
             <div class="input-group float-right">
               <div class="input-group-text border-0 ml-3">
                 <label class="pl-1 mb-0" for="inputRadio02">City Ledger</label>
-                <input id="inputRadio02" class="form-check-input mt-0" type="radio" value="option02"
-                  name="paymentMethod" aria-label="Radio button for following text input" />
+                <input id="inputRadio02" class="form-check-input mt-0" type="radio" value="option02" name="paymentMethod" aria-label="Radio button for following text input" />
               </div>
             </div>
           </div>
@@ -132,9 +130,13 @@ export default {
   {
     this.isChecked = true;
   },
+  props: {
+    selectedDates: {
+      type: Array,
+      required: true,
+    },
+  }
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -65,18 +65,7 @@ export const getUsers = async () =>
     throw error;
   }
 };
-export const postUsers = async (body) =>
-{
-  try {
-    const response = await apiClient.post('/users', body);
-    // console.log(response.data);
-    return response.data;
 
-  } catch (error) {
-    console.error('Error fetching rooms:', error);
-    throw error;
-  }
-};
 export const getReservationData = async (type) =>
 {
   try {

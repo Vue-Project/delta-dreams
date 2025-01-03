@@ -1,5 +1,6 @@
 <template>
   <section class="checkIn">
+    {{ selectedDates }}
     <div class="card">
       <h5 class="card-header">
         <NuxtLink to="/"><i class="fa-solid fa-angle-left pr-2" style="color: #6f6b7d"></i>
@@ -565,6 +566,12 @@ export default {
     },
   },
   mixins: [flatpickrMixin],
+  props: {
+    selectedDates: {
+      type: Array,
+      required: true,
+    },
+  },
 };
 </script>
 

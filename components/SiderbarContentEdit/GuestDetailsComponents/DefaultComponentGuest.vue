@@ -11,14 +11,8 @@
               <label for="formGustDetailsName" class="col-form-label">
                 Name</label>
               <div class="input-group">
-                <select class="form-select" id="formGustDetailsName">
-                  <option value="" disabled selected>MR</option>
-                  <option value="option1">Option 1</option>
-                  <option value="option2">Option 2</option>
-                  <option value="option3">Option 3</option>
-                  <option value="option4">Option 4</option>
-                </select>
-                <input type="text" class="form-control w-50" aria-label="Text input with select list" id="formGustDetailsName" />
+
+                <input type="text" class="form-control w-50" aria-label="Text input with select list" id="formGustDetailsName" placeholder="Name of guest" />
               </div>
             </div>
             <div class="mb-3">
@@ -289,6 +283,7 @@
   </form>
 
 
+
 </template>
 
 <script>
@@ -297,11 +292,61 @@ import flatpickrMixin from "../../Mixin/flatpickrMixin";
 
 export default {
   name: "DefaultContent",
-
   components: {
     DropzoneComponent
   },
   mixins: [flatpickrMixin],
+  data ()
+  {
+    return {
+      formData: {
+        photo: null,
+        name: '',
+        email: '',
+        phone: '',
+        mobile: '',
+        gender: '',
+        guestType: '',
+        vipStatus: '',
+        address: '',
+        country: '',
+        state: '',
+        city: '',
+        zip: '',
+        nationality: '',
+        company: '',
+        fax: '',
+        registrationNo: '',
+        identity: {
+          photo: null,
+          idNumber: '',
+          issuingCountry: '',
+          idType: '',
+          issuingCity: '',
+          expiryDate: ''
+        },
+        otherInfo: {
+          birthDate: '',
+          birthCity: '',
+          birthCountry: '',
+          spouseBirthDate: '',
+          weddingAnniversary: ''
+        }
+      },
+      locationFields: [
+        { id: 'country', label: 'Country', placeholder: 'Country' },
+        { id: 'state', label: 'State', placeholder: 'State' },
+        { id: 'city', label: 'City', placeholder: 'City' },
+        { id: 'zip', label: 'Zip', placeholder: 'Zip' }
+      ],
+      additionalFields: [
+        { id: 'nationality', label: 'Nationality', placeholder: 'Nationality' },
+        { id: 'company', label: 'Company', placeholder: 'Company' },
+        { id: 'fax', label: 'Fax', placeholder: 'Fax' },
+        { id: 'registrationNo', label: 'Registration No', placeholder: 'Registration No' }
+      ]
+    };
+  },
 
 };
 </script>

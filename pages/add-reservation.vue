@@ -1,21 +1,15 @@
 <template>
   <div class="row p-3">
-    <div>
-      <div v-if="selectedDates && selectedDates.length">
-        <div v-for="(date, index) in selectedDates" :key="index">
-          <p>Selected Date: {{ formatDate(date) }}</p>
-        </div>
-
-      </div>
-      <div v-else>
-        <p>No dates selected</p>
-      </div>
-    </div>
+    <h1>Add Reservation</h1>
+    <p v-if="selectedDates.length > 0">Selected Dates:</p>
+    <ul>
+      <li v-for="(date, index) in selectedDates" :key="index">{{ date.dateTime }}</li>
+    </ul>
     <div class="col-md-8">
-      <CheckIn />
+      <CheckIn :selectedDates="selectedDates" />
     </div>
     <div class="col-md-4">
-      <BillingSummary />
+      <BillingSummary :selectedDates="selectedDates" />
     </div>
   </div>
 </template>
@@ -23,7 +17,7 @@
 <script>
 import CheckIn from "../components/AddReservation/CheckIn.vue";
 import BillingSummary from "../components/AddReservation/BillingSummary.vue";
-console.log(this.$store.state.reservation);
+// console.log(this.$store.state.reservation);
 
 export default {
   name: "AddReservation",
@@ -39,21 +33,12 @@ export default {
       // selectedDates: []
     }
   },
-  // computed: {
-  //   // Access selectedDates from Vuex store
-  //   selectedDates ()
-  //   {
-  //     return this.$store.state.reservation ? this.$store.state.reservation.selectedDates : [];
-  //   }
-  // },
-
-  // methods: {
-  //   // Format the date to be displayed
-  //   formatDate (date)
-  //   {
-  //     return new Date(date).toLocaleDateString();  // Format the date as YYYY-MM-DD
-  //   }
-  // }
+  computed: {
+    selectedDates ()
+    {
+      return this.$store.state.selectedDates;
+    },
+  },
 };
 </script>
 
