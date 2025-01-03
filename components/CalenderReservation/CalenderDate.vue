@@ -38,11 +38,7 @@
           </table>
         </div>
 
-        <table class="ant-table">
-          <tbody class="ant-table-tbody">
-            <!-- Additional table content can go here -->
-          </tbody>
-        </table>
+
       </div>
 
       <!-- Overlay -->
@@ -65,9 +61,8 @@
             </div>
             <div class="row">
               <hr class="my-2 w-75 mx-auto" />
-              <NuxtLink :to="linkToAddReservation" @click.native="storeSelectedDatesAndNavigate">
-                Go to Add Reservation
-              </NuxtLink>
+              <button @click="goToAddReservation">Go to Add Reservation</button>
+
               <hr class="my-2 w-75 mx-auto" />
               <button type="button" class="ant-btn ant-btn-link ant-btn-block" @click="toggleSidebar">
                 <span>Maintenance Block</span>
@@ -113,14 +108,14 @@ export default {
       linkToAddReservation: '/add-reservation',
       datesbuilding: [],
       buildingNames: [], // Store building names dynamically
-      selectedDates: [],
-      selectedResourceId: [],
+      // selectedDates: [],
+      // selectedResourceId: [],
       isLoading: true,
       data: [],
       unitsDates: [],
       isSidebarOpen: false,
       isPopoverBodyVisible: true, // Body visibility
-      selectedDates: [], // Array to store selected dates
+      // selectedDates: [], // Array to store selected dates
       isPopoverVisible: false, // State to control popover visibility
       isOverlayVisible: false, // State to control overlay visibility
       popoverStyle: {}, // Inline style for popover positioning
@@ -230,64 +225,102 @@ export default {
         resourceAreaWidth: '18%',
 
 
-        //   datesSet: function (info)
-        //   {
-        //     console.log("datesSet called", info); // Debugging
 
-        //     // Room data with sub-rooms, units, and prices
-        //     const roomData = [
-        //       {
-        //         id: "a",
-        //         title: "Room A",
-        //         units: 30,
-        //         price: "$100",
-        //         subrooms: ["A1", "A2", "A3"],
+
+        // datesSet (info)
+        // {
+        //   console.log("datesSet called", info);
+
+        //   // Room data
+        //   const roomData = [
+        //     {
+        //       id: "a",
+        //       title: "Building A",
+        //       availability: {
+        //         "2025-01-01": { units: 30, price: "$100" },
+        //         "2025-01-02": { units: 25, price: "$90" },
+        //         "2025-01-03": { units: 20, price: "$80" },
         //       },
-        //       // { id: "b", title: "Room B", units: 40, price: "$150", subrooms: ["B1", "B2", "B3"] },
-        //       // { id: "c", title: "Room C", units: 50, price: "$200", subrooms: ["C1", "C2", "C3"] },
-        //       // { id: "5", title: "Room D", units: 60, price: "$250", subrooms: ["D1", "D2", "D3"] },
-        //       // { id: "6", title: "Room E", units: 70, price: "$300", subrooms: ["E1", "E2", "E3"] }
-        //     ];
+        //     },
+        //     {
+        //       id: "b",
+        //       title: "Building B",
+        //       availability: {
+        //         "2025-01-01": { units: 15, price: "$120" },
+        //         "2025-01-02": { units: 10, price: "$110" },
+        //         "2025-01-03": { units: 5, price: "$100" },
+        //       },
+        //     },
+        //   ];
 
-        //     // Iterate over all the slot lanes in the FullCalendar
-        //     document
-        //       .querySelectorAll(".fc-timeline-slot-lane")
-        //       .forEach((slotLane) =>
-        //       {
-        //         // Clear previous custom content if it exists
-        //         const existingContent = slotLane.querySelector(
-        //           ".custom-slot-content"
-        //         );
-        //         if (existingContent) {
-        //           existingContent.remove();
-        //         }
+        //   // Get the current date range in the calendar
+        //   const startDate = new Date(info.start);
+        //   const endDate = new Date(info.end);
 
-        //         // Create a container for the room and sub-room rows
-        //         const subRoomContainer = document.createElement("div");
-        //         subRoomContainer.className = "custom-slot-content";
+        //   // Get the timeline grid rows for each resource
+        //   const timelineRows = document.querySelectorAll(
+        //     ".fc-timeline-lane.fc-resource-group.fc-cell-shaded"
+        //   );
 
-        //         // Loop through roomData to create content for each room
-        //         roomData.forEach((room) =>
-        //         {
-        //           // Create a row for each room
-        //           const subRoomRow = document.createElement("div");
-        //           subRoomRow.className = "sub-room-row";
+        //   if (timelineRows.length === 0) {
+        //     console.warn("No timeline rows found!");
+        //     return;
+        //   }
 
-        //           // Add room details dynamically (name, units, price)
-        //           subRoomRow.innerHTML = `
-        //   <div class="sub-room-name">${room.title}</div>
-        //   <div class="sub-room-units">Units: ${room.units}</div>
-        //   <div class="sub-room-price">Price: ${room.price}</div>
-        // `;
+        //   // Loop through the resources and inject data
+        //   timelineRows.forEach((row, rowIndex) =>
+        //   {
+        //     const room = roomData[rowIndex]; // Match the resource with room data
+        //     if (!room) {
+        //       console.warn(`No data for row ${rowIndex + 1}`);
+        //       return;
+        //     }
 
-        //           // Append the room row to the sub-room container
-        //           subRoomContainer.appendChild(subRoomRow);
-        //         });
+        //     // Clear existing content in the row
+        //     row.innerHTML = "";
 
-        //         // Append the sub-room container to the slot lane
-        //         slotLane.appendChild(subRoomContainer);
-        //       });
-        //   },
+        //     // Loop through the visible dates in the calendar
+        //     for (
+        //       let currentDate = new Date(startDate);
+        //       currentDate <= endDate;
+        //       currentDate.setDate(currentDate.getDate() + 1)
+        //     ) {
+        //       const dateString = currentDate.toISOString().split("T")[0];
+        //       const availability = room.availability[dateString];
+
+        //       // Create a cell for this date
+        //       const dateCell = document.createElement("div");
+        //       dateCell.className = "custom-date-cell";
+        //       dateCell.style.cssText = "padding: 10px; border: 1px solid #ddd;";
+
+        //       // Add availability data or a fallback message
+        //       if (availability) {
+        //         dateCell.innerHTML = `
+        //     <div><strong>${dateString}</strong></div>
+        //     <div>Units: ${availability.units}</div>
+        //     <div>Price: ${availability.price}</div>
+        //   `;
+        //       } else {
+        //         dateCell.innerHTML = `
+        //     <div><strong>${dateString}</strong></div>
+        //     <div>No availability</div>
+        //   `;
+        //       }
+
+        //       // Append the cell to the row
+        //       row.appendChild(dateCell);
+        //     }
+        //   });
+        // },
+
+
+
+
+
+
+
+
+
 
         resourceGroupField: "groupId",
         resourceAreaHeaderContent: this.customResourceHeader, // Customize header
@@ -307,6 +340,16 @@ export default {
   },
 
   methods: {
+    goToAddReservation ()
+    {
+      // Use Vuex mutation to store the dates
+      this.$store.commit('setSelectedDates', this.selectedDates);
+
+      // Navigate to the add-reservation page
+      this.$router.push({ name: 'add-reservation' });
+    },
+
+
 
     /**
      * Generates a list of resources from predefined room data.
@@ -338,7 +381,7 @@ export default {
     },
 
     // Create resources dynamically based on the fetched data and selected IDs
-    createResources (selectedIds = [])
+    createResources (selectedIds = [], selectedDate = null)
     {
       const resources = [];
 
@@ -357,19 +400,24 @@ export default {
             if (building.units?.data) {
               building.units.data.forEach((unit) =>
               {
-                const resource = {
-                  id: `${building.id}-${unit.id}`,
-                  resourceId: building.name,
-                  title: unit.code,
-                  groupId: building.name,
-                  classNames: ["unit"],
-                  extendedProps: {
-                    is_clean: unit.is_clean,
-                    is_smoking: unit.is_smoking,
-                  },
-                };
+                // Check if the unit's date matches the selected date (if provided)
+                if (!selectedDate || (unit.date && unit.date === selectedDate)) {
+                  const resource = {
+                    id: `${building.id}-${unit.id}`,
+                    resourceId: building.name,
+                    title: unit.code,
+                    groupId: building.name,
+                    classNames: ["unit"],
+                    extendedProps: {
+                      is_clean: unit.is_clean,
+                      is_smoking: unit.is_smoking,
+                      price: unit.price, // Add price data
+                      date: unit.date, // Add date for reference
+                    },
+                  };
 
-                resources.push(resource);
+                  resources.push(resource);
+                }
               });
             }
           }
@@ -377,7 +425,8 @@ export default {
       }
 
       return resources;
-    },
+    }
+    ,
 
     // Update FullCalendar resources
     updateCalendarResources (selectedIds = [])
