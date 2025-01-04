@@ -24,11 +24,11 @@ export default {
 
     ],
     script: [
-      {
-        type: "text/javascript",
-        src: "/js/jquery/jquery.min.js",
-        body: true,
-      },
+      // {
+      //   type: "text/javascript",
+      //   src: "/js/jquery/jquery.min.js",
+      //   body: true,
+      // },
       {
         type: "text/javascript",
         src: "/js/bootstrap/bootstrap.min.js",
@@ -66,14 +66,14 @@ export default {
   ],
 
   script: [
-    {
-      src: "https://code.jquery.com/jquery-1.11.0.min.js",
-      type: "text/javascript",
-    },
-    {
-      src: "https://code.jquery.com/jquery-migrate-1.2.1.min.js",
-      type: "text/javascript",
-    },
+    // {
+    //   src: "https://code.jquery.com/jquery-1.11.0.min.js",
+    //   type: "text/javascript",
+    // },
+    // {
+    //   src: "https://code.jquery.com/jquery-migrate-1.2.1.min.js",
+    //   type: "text/javascript",
+    // },
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
