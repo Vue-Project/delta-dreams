@@ -20,10 +20,10 @@ export default {
       required: true,
     },
 
-    formData: {
-      type: Object,
-      required: true,
-    },
+    // formData: {
+    //   type: Object,
+    //   required: true,
+    // },
   },
   computed: {
     dropzoneId ()
