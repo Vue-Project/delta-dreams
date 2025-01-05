@@ -15,7 +15,7 @@
               <span class="badge bg-label-info p-1 rounded"></span>
               <p class="mb-0">Check-in</p>
             </div>
-            <h5 class="mb-0 pt-1 text-nowrap fw-bold">15/11/2024</h5>
+            <h5 class="mb-0 pt-1 text-nowrap fw-bold">{{ formatCheckInDate }}</h5>
           </div>
           <div class="col-4">
             <div class="divider ">
@@ -26,7 +26,7 @@
             <div class="d-flex gap-2 justify-content-end align-items-center mb-2">
               <p class="mb-0">Check-out</p>
             </div>
-            <h5 class="mb-0 pt-1 text-nowrap ms-lg-n3 ms-xl-0 fw-bold">20/11/2024</h5>
+            <h5 class="mb-0 pt-1 text-nowrap ms-lg-n3 ms-xl-0 fw-bold">{{ formatCheckOutDate }}</h5>
           </div>
         </div>
         <dl class="row mb-2 billingMoney rounded p-2">
@@ -129,6 +129,25 @@ export default {
   mounted ()
   {
     this.isChecked = true;
+  },
+  computed: {
+    formatCheckInDate() {
+      if (this.selectedDates && this.selectedDates.length > 0) {
+        const firstDate = this.selectedDates[0].dateTime;
+        const [datePart] = firstDate.split(', ');
+        return datePart;
+      }
+      return '--/--/----';
+    },
+
+    formatCheckOutDate() {
+      if (this.selectedDates && this.selectedDates.length > 0) {
+        const lastDate = this.selectedDates[this.selectedDates.length - 1].dateTime;
+        const [datePart] = lastDate.split(', ');
+        return datePart;
+      }
+      return '--/--/----';
+    }
   },
   props: {
     selectedDates: {

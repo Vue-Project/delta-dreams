@@ -3,6 +3,14 @@
   font-size: 14px;
 
 }
+.input-error {
+  border-color: red;
+}
+
+.error-message {
+  color: red;
+  font-size: 12px;
+}
 
 .input-group:focus-within {
   box-shadow: none;
