@@ -1,73 +1,95 @@
 <template>
   <section class="checkIn-reservations">
-    {{ selectedDates }}
+    <!-- {{ selectedDates }} -->
     <div class="card">
       <h5 class="card-header">
         <NuxtLink to="/"><i class="fa-solid fa-angle-left pr-2" style="color: #6f6b7d"></i> </NuxtLink>Add Reservation
       </h5>
       <hr class="m-0" />
       <div class="card-body">
-        <form id="formValidationReservation" class=" g-3" @submit.prevent="submitFormReservation"  ref="emptyForm">
+        <form id="formReservation" class=" g-3" @submit.prevent="submitFormReservation" ref="emptyForm">
           <!--  ! Reservation  Details -->
           <!-- change in size and icons -->
-          <div class="row align-items-center">
-    <!-- Check-in Date Picker-->
-    <div class="col-md-3 col-12 px-0">
-      <label for="flatpickr-date-01" class="form-label">Check-in</label>
-      <input
-        type="text"
-        class="form-control flatpickr-input"
-        placeholder="DD/MM/YYYY"
-        id="flatpickr-date-01"
-        ref="datePicker1"
-        v-model="formAddReservation.checkInDate"
-      />
-      <i class="fa-solid fa-calendar-days icon-date"></i>
-    </div>
 
-    <!-- Check-in Time Picker-->
-    <div class="col-md-3 col-12 px-0">
-      <div class="input-group mt-4">
-        <input
-          type="text"
-          class="form-control flatpickr-input"
-          placeholder="HH:MM"
-          id="flatpickr-time-01"
-          ref="timePicker1"
-          v-model="formAddReservation.checkInTime"
-        />
-        <i class="fa-regular fa-clock icon-time"></i>
-        <span class="input-group-text total-nights" id="basic-addon13">{{ totalNights }} nights</span>
-      </div>
-    </div>
+          <div class="row">
+            <div class="col-md-8">
+              <div class="row align-items-center">
+                <!-- Check-in Date Picker-->
+                <div class="col-md-3 col-12 px-0">
+                  <label for="flatpickr-date-01" class="form-label">Check-in</label>
+                  <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" id="flatpickr-date-01" ref="datePicker1" v-model="formAddReservation.checkInDate" aria-label="input Text to Check-in Date" />
+                  <i class="fa-solid fa-calendar-days icon-date"></i>
+                </div>
 
-    <!-- Check-out Date Picker-->
-    <div class="col-md-3 col-12 px-0">
-      <label for="flatpickr-date-02" class="form-label ms-3">Check-out</label>
-      <input
-        type="text"
-        class="form-control flatpickr-input"
-        placeholder="DD/MM/YYYY"
-        id="flatpickr-date-02"
-        ref="datePicker2"
-        v-model="formAddReservation.checkOutDate"
-      />
-      <i class="fa-solid fa-calendar-days icon-date"></i>
-    </div>
+                <!-- Check-in Time Picker-->
+                <div class="col-md-3 col-12 px-0">
+                  <div class="input-group mt-4">
+                    <input type="text" class="form-control flatpickr-input" placeholder="HH:MM" id="flatpickr-time-01" ref="timePicker1" v-model="formAddReservation.checkInTime" aria-label="input Text to Check-in Time" />
+                    <i class="fa-regular fa-clock icon-time"></i>
+                    <span class="input-group-text total-nights" id="basic-addon13">{{ totalNights }} Nights</span>
+                  </div>
+                </div>
 
-    <!-- Check-out Time Picker-->
-    <div class="col-md-3 col-12 mt-4 px-0">
-      <input
-        type="text"
-        class="form-control flatpickr-input"
-        placeholder="HH:MM"
-        id="flatpickr-time-02"
-        ref="timePicker2"
-        v-model="formAddReservation.checkOutTime"
-      />
-      <i class="fa-regular fa-clock icon-time right"></i>
-    </div>
-  </div>
+                <!-- Check-out Date Picker-->
+                <div class="col-md-3 col-12 px-0">
+                  <label for="flatpickr-date-02" class="form-label ms-3">Check-out</label>
+                  <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" id="flatpickr-date-02" ref="datePicker2" v-model="formAddReservation.checkOutDate" />
+                  <i class="fa-solid fa-calendar-days icon-date"></i>
+                </div>
+
+                <!-- Check-out Time Picker-->
+                <div class="col-md-3 col-12 mt-4 px-0">
+                  <input type="text" class="form-control flatpickr-input" placeholder="HH:MM" id="flatpickr-time-02" ref="timePicker2" v-model="formAddReservation.checkOutTime" aria-label="input Text to Check-out Time" />
+                  <i class="fa-regular fa-clock icon-time right"></i>
+                </div>
+              </div>
+
+            </div>
+            <div class="col-md-4">
+              <div class="row">
+                <div class="col-md-3 col-12">
+                  <label for="roomCount" class="form-label">Room(s)</label>
+                  <input class="form-control" type="number" id="roomCount" v-model="roomCount" min="1" @input="updateRepeater" />
+                </div>
+                <div class="col-md-9 col-12 mb-4">
+                  <label for="reservationType" class="form-label">Reservation Type</label>
+                  <select class="form-select" id="reservationType" v-model="formAddReservation.reservationType">
+                    <option disabled value="">Select</option>
+                    <option v-for="source in reservationTypes" :key="source.id" :value="source.id">
+                      {{ source.name }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 col-12 mb-4 p-0">
+                <div class="row">
+                  <div class="col-md-6">
+                    <label for="bookingSource" class="form-label">Booking Source</label>
+                    <select class="form-select" id="bookingSource" v-model="formAddReservation.bookingSource">
+                      <option disabled value="">Select</option>
+                      <option v-for="source in bookingSources" :key="source.id" :value="source.id">
+                        {{ source.name }}
+                      </option>
+                    </select>
+
+                  </div>
+                  <div class="col-md-6">
+                    <label for="businessSource" class="form-label">Business Source</label>
+                    <select class="form-select" id="businessSource" v-model="formAddReservation.businessSource" ref="businessSource" :class="{ 'input-error': validationMessages.businessSource }">
+                      <option disabled value="">Select</option>
+                      <option v-for="source in businessSources" :key="source.id" :value="source.id">
+                        {{ source.name }}
+                      </option>
+                    </select>
+                    <span class="error-message" v-if="validationMessages.businessSource">{{ validationMessages.businessSource }}</span>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
           <hr class="my-4" />
           <!--   ! check inputs and repeater -->
@@ -75,7 +97,7 @@
             <div class="row">
               <div class="col-md-4">
                 <div class="row">
-                  <div class="col-md-4 rateOffer">Rate Offered:</div>
+                  <div class="col-md-4">Rate Offered:</div>
                   <div class="col-md-8">
                     <div class="form-check">
                       <input type="checkbox" class="form-check-input" id="rateOfferedContract" v-model="formAddReservation.rateOffered.contract" />
@@ -94,13 +116,13 @@
                   </div>
                   <div class="col-md-4">
                     <div class="form-check">
-                      <input type="checkbox" class="form-check-input" id="rateOfferedQuickGroup"  v-model="formAddReservation.rateOffered.quickGroup"/>
+                      <input type="checkbox" class="form-check-input" id="rateOfferedQuickGroup" v-model="formAddReservation.rateOffered.quickGroup" />
                       <label class="form-check-label" for="rateOfferedQuickGroup">Quick Group Booking</label>
                     </div>
                   </div>
                   <div class="col-md-4">
                     <div class="form-check">
-                      <input type="checkbox" class="form-check-input" id="rateOfferedComplimentary" v-model="formAddReservation.rateOffered.complimentaryRoom"/>
+                      <input type="checkbox" class="form-check-input" id="rateOfferedComplimentary" v-model="formAddReservation.rateOffered.complimentaryRoom" />
                       <label class="form-check-label" for="rateOfferedComplimentary">Complimentary Room</label>
                     </div>
                   </div>
@@ -186,14 +208,13 @@
                     </tbody>
                     <!--  ! table body -->
                     <!--  ! table footer -->
-                    <tfoot>
-                      <!--change style button  -->
-                      <button class="btn btn-primary waves-effect waves-light mt-3" type="button" @click="addItem">
-                        Add Room
-                      </button>
-                    </tfoot>
+                    <!-- <tfoot> -->
+                    <!--change style button  -->
                     <!--  ! table footer -->
                   </table>
+                  <button class="btn btn-primary waves-effect waves-light mt-3" type="button" @click="addItem">
+                    Add Room
+                  </button>
                 </div>
               </div>
               <!--   ! check inputs and repeater -->
@@ -208,11 +229,11 @@
                   <div class="row">
                     <div class="col-md-6 col-12 px-0">
                       <label for="flatpickr-date-03" class="form-label">Hold Release Date & Time</label>
-                      <input type="text" placeholder="YYYY-MM-DD" id="flatpickr-date-03" class="form-control flatpickr-input" ref="datePicker3"  v-model="formAddReservation.releaseDate"/>
+                      <input type="text" placeholder="YYYY-MM-DD" id="flatpickr-date-03" class="form-control flatpickr-input" ref="datePicker3" v-model="formAddReservation.releaseDate" />
                       <i class="fa-solid fa-calendar-days icon-date"></i>
                     </div>
                     <div class="col-md-6 col-12 px-0 mt">
-                      <input type="text" placeholder="HH:MM" id="flatpickr-time-03" class="form-control flatpickr-input" ref="timePicker3" aria-label="input Text to Time" v-model="formAddReservation.releaseTime"/>
+                      <input type="text" placeholder="HH:MM" id="flatpickr-time-03" class="form-control flatpickr-input" ref="timePicker3" aria-label="input Text to Time" v-model="formAddReservation.releaseTime" />
                       <i class="fa-regular fa-clock icon-time right"></i>
                     </div>
                   </div>
@@ -231,18 +252,18 @@
                 <div class="col-md-4 col-12">
                   <label for="releaseTerm" class="form-label">Remind Guest before</label>
                   <div class="input-group">
-                    <input type="number" class="form-control" placeholder="0" id="releaseTerm" v-modal= "formAddReservation.remindGuest"/>
+                    <input type="number" class="form-control" placeholder="0" id="releaseTerm" v-modal="formAddReservation.remindGuest" />
                     <span class="input-group-text groupStyle">Days</span>
                   </div>
                 </div>
                 <div class="col-md-8 col-12">
                   <div class="d-flex mt-4">
                     <div class="form-check mr-2">
-                      <input type="radio" id="hold-release" name="optionRadioDate" class="form-check-input" v-modal= "formAddReservation.holdRelease"/>
+                      <input type="radio" id="hold-release" name="optionRadioDate" class="form-check-input" v-modal="formAddReservation.holdRelease" />
                       <label class="form-check-label" for="hold-release">Hold Release Date</label>
                     </div>
                     <div class="form-check">
-                      <input type="radio" id="arrival-date" name="optionRadioDate" class="form-check-input" v-modal= "formAddReservation.arrivalDate"/>
+                      <input type="radio" id="arrival-date" name="optionRadioDate" class="form-check-input" v-modal="formAddReservation.arrivalDate" />
                       <label class="form-check-label" for="arrival-date">Arrival Date</label>
                     </div>
                   </div>
@@ -258,7 +279,7 @@
             <div class="col-md-5">
               <label for="nameGuest" class="col-form-label">Guest Name</label>
               <div class="input-group">
-                <select class="form-select"  id="nameGuest">
+                <select class="form-select" id="nameGuest">
                   <option value="" disabled>MR.</option>
                   <option v-for="title in titles" :key="title" :value="title">
                     {{ title }}
@@ -266,7 +287,7 @@
                 </select>
 
                 <div class="position-relative flex-grow-1">
-                  <input type="text" class="form-control w-100" v-model="formAddReservation.guestInformation.name" @input="handleInput" @focus="showDropdown = true" @blur="handleBlur" ref="name" :class="{ 'input-error': validationMessages.name }"   />
+                  <input type="text" class="form-control w-100" v-model="formAddReservation.guestInformation.name" @input="handleInput" @focus="showDropdown = true" @blur="handleBlur" ref="name" :class="{ 'input-error': validationMessages.name }" />
 
 
                   <!-- Suggestions Dropdown -->
@@ -298,7 +319,7 @@
                 <div class="col-md-6">
                   <div class="mb-3 row">
                     <label for="mobileGuest" class="col-form-label">Mobile</label>
-                    <input class="form-control" type="tel" id="mobileGuest" placeholder="Mobile" v-model="formAddReservation.guestInformation.mobile" ref="mobile" :class="{ 'input-error': validationMessages.mobile }"  />
+                    <input class="form-control" type="tel" id="mobileGuest" placeholder="Mobile" v-model="formAddReservation.guestInformation.mobile" ref="mobile" :class="{ 'input-error': validationMessages.mobile }" />
                     <span class="error-message" v-if="validationMessages.mobile">{{ validationMessages.mobile }}</span>
 
                   </div>
@@ -307,7 +328,7 @@
             </div>
             <div class="col-md-7">
               <label for="addressGuest" class="col-form-label">Address</label>
-              <input class="form-control" type="text" id="addressGuest" placeholder="Address"  v-model="formAddReservation.guestInformation.address"/>
+              <input class="form-control" type="text" id="addressGuest" placeholder="Address" v-model="formAddReservation.guestInformation.address" />
             </div>
             <div class="row">
               <div class="col-md-3">
@@ -328,6 +349,7 @@
               </div>
             </div>
           </div>
+
           <!--  ! Guest Information -->
           <!--  ! Other Information -->
           <hr class="my-4" />
@@ -371,7 +393,6 @@
               <label class="form-check-label" for="otherInformationCheck04">
                 Supress Rate on Registration Card
               </label>
-              vwv
             </div>
           </div>
           <!--  ! Other Information -->
@@ -396,6 +417,8 @@ import Swal from 'sweetalert2';  // Import SweetAlert2
 import { getBookingSources, getBusinessSources, getReservationTypes, getUsers } from "../Api/api";
 import flatpickrMixin from "../Mixin/flatpickrMixin";
 import SidebarAddGuest from "../layout/Sidebar.vue";
+import axios from 'axios';
+
 
 export default {
   name: "CheckIn",
@@ -405,13 +428,10 @@ export default {
   data ()
   {
     return {
-      roomCount: 1,
       showSelect: false,
       showInput: false,
       isSidebarOpen: false,
-      businessSources: [],
-      bookingSources: [],
-      reservationTypes: [],
+      roomCount: 1,
       users: [],
       selectedTitle: "MR.",
       inputValue: "",
@@ -425,7 +445,9 @@ export default {
       datePicker2Instance: null,
       timePicker1Instance: null,
       timePicker2Instance: null,
-
+      businessSources: [],
+      bookingSources: [],
+      reservationTypes: [],
       formAddReservation: {
         checkInDate: "",
         checkInTime: "",
@@ -433,29 +455,29 @@ export default {
         checkOutTime: "",
         numberRooms: "",
         reservationType: "",
-         businessSource: "",
+        businessSource: "",
         rateOffered: {
-          contract: false,
+          rateOfferedContract: false,
           bookAll: false,
           quickGroup: false,
           complimentaryRoom: false,
         },
-        units:{
+        units: [{
           roomType: "",
           rateType: "",
           adults: "",
           children: "",
           rate: "",
 
-        },
+        }],
         releaseDate: "",
         releaseTime: "",
         releaseTerm: "",
         remindGuest: "",
-        holdRelease:false,
-        arrivalDate: true,
-        guestInformation:{
-          name:"",
+        holdRelease: false,
+        arrivalDate: false,
+        guestInformation: {
+          name: "",
           email: "",
           mobile: "",
           address: "",
@@ -474,12 +496,12 @@ export default {
   },
   watch: {
 
-    roomCount ()
+    roomCount (newValue)
     {
-      this.updateRepeater();
-    },
-    selectedDates: {
-      handler(newValue) {
+      this.formAddReservation.numberRooms = newValue;
+    }, selectedDates: {
+      handler (newValue)
+      {
         if (newValue.length > 0) {
           // Update enabled dates when selectedDates changes
           this.datePicker1Instance?.set('enable', [this.firstDate]);
@@ -569,14 +591,30 @@ export default {
       this.inputValue = typeof name === "object" ? name.name : name;
       this.showDropdown = false;
     },
-    submitFormReservation() {
+     // Reset validation messages
+     resetValidationMessages() {
+      this.validationMessages = {};
+    },
+
+    // Reset the form
+    resetForm() {
+      this.formAddReservation = {
+        businessSource: '',
+        guestInformation: {
+          name: '',
+          mobile: '',
+        },
+        // Reset other fields as needed...
+      };
+    },
+
+    async submitFormReservation() {
       // Define required fields and their messages
       const requiredFields = [
         { field: "businessSource", message: "Business Source is required" },
         { field: "name", message: "Guest Name is required" },
         { field: "mobile", message: "Guest Mobile is required" },
       ];
-
 
       // Reset validation messages before checking
       this.resetValidationMessages();
@@ -601,23 +639,71 @@ export default {
       // Stop submission if there are errors
       if (hasError) return;
 
-      // If no errors, show success alert
-      Swal.fire({
-        icon: "success",
-        title: "Success!",
-        text: "ADD Guest successfully.",
-        confirmButtonText: "OK",
-      }).then(() => {
-        // Reset the form after user clicks OK
-        this.resetForm();
-      });
-      console.log(this.formAddReservation);
+      // Prepare the data to send to the server
+      const bookingData = {
+  checkin_date: this.formAddReservation.checkin_date || "2024-12-19",
+  checkin_time: this.formAddReservation.checkin_time || "14:00",
+  checkout_date: this.formAddReservation.checkout_date || "2024-12-24",
+  checkout_time: this.formAddReservation.checkout_time || "12:00",
+  number_of_rooms: this.formAddReservation.number_of_rooms || 2,
+  booking_source_id: this.formAddReservation.booking_source_id || 1,
+  business_source_id: this.formAddReservation.business_source_id || 1,
+  units: this.formAddReservation.units.map(unit => ({
+    unit_id: unit.unit_id || 1,
+    unit_type_id: unit.unit_type_id || 1,
+    rate_type: unit.rate_type || "standard",
+    adults: unit.adults || 2,
+    children: unit.children || 0,
+    rate_amount: unit.rate_amount || 150.0,
+  })),
+  is_quick_group_booking: this.formAddReservation.is_quick_group_booking || false,
+  is_complimentary: this.formAddReservation.is_complimentary || false,
+  book_all_available: this.formAddReservation.book_all_available || false,
+  hold_release_date: this.formAddReservation.hold_release_date || "2024-03-08",
+  release_term_value: this.formAddReservation.release_term_value || 24,
+  release_term_type: this.formAddReservation.release_term_type || "hours",
+  remind_before_days: this.formAddReservation.remind_before_days || 2,
+  user_id: this.formAddReservation.user_id || 1,
+  guest_mobile: this.formAddReservation.guestInformation.mobile || "1234567890",
+  guest_address: this.formAddReservation.guestInformation.address || "123 Main Street",  // Replace with dynamic form data
+  guest_country: this.formAddReservation.guestInformation.country || "Egypt",
+  guest_state: this.formAddReservation.guestInformation.state || "Cairo",
+  guest_city: this.formAddReservation.guestInformation.city || "Cairo",
+  guest_zip: this.formAddReservation.guestInformation.zip || "12345",
+  reservation_type_id: this.formAddReservation.reservation_type_id || 1,
+};
 
 
+      // If no errors, send the data to the server
+      try {
+        const response = await axios.post("https://deltadream.swevey.com/api/reservations", bookingData);
+        console.log("Booking submitted successfully:", response.data);
+
+        // Show success message
+        Swal.fire({
+          icon: "success",
+          title: "Success!",
+          text: "Guest added successfully.",
+          confirmButtonText: "OK",
+        }).then(() => {
+          // Reset the form after user clicks OK
+          this.resetForm();
+        });
+
+      } catch (error) {
+        console.error("Error submitting booking:", error.response?.data || error.message);
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "There was an issue submitting the booking.",
+          confirmButtonText: "OK",
+        });
+      }
     },
 
     // Reset form data and validation messages
-    resetForm() {
+    resetForm ()
+    {
       this.formAddReservation = {
         checkInDate: "",
         checkInTime: "",
@@ -635,7 +721,7 @@ export default {
           quickGroup: false,
           complimentaryRoom: false,
         },
-        units:{
+        units: {
           roomType: "",
           rateType: "",
           adults: "",
@@ -647,10 +733,10 @@ export default {
         releaseTime: "",
         releaseTerm: "",
         remindGuest: "",
-        holdRelease:false,
+        holdRelease: false,
         arrivalDate: true,
-        guestInformation:{
-          name:"",
+        guestInformation: {
+          name: "",
           email: "",
           mobile: "",
           address: "",
@@ -674,27 +760,29 @@ export default {
     },
 
     // Reset all validation messages
-    resetValidationMessages() {
+    resetValidationMessages ()
+    {
       this.validationMessages = {
         name: '',
         mobile: '',
         businessSource: '',
       };
     },
-    formatDateToDDMMYYYY(date) {
+    formatDateToDDMMYYYY (date)
+    {
       const day = String(date.getDate()).padStart(2, '0');
       const month = String(date.getMonth() + 1).padStart(2, '0');
       const year = date.getFullYear();
       return `${day}/${month}/${year}`;
     },
 
-    formatTime(date) {
+    formatTime (date)
+    {
       return date.toTimeString().slice(0, 5);
     }
 
   },
   async mounted ()
-
   {
     try {
       const [
@@ -716,7 +804,8 @@ export default {
     } catch (error) {
       console.error("Error loading data:", error);
     }
-    this.$nextTick(() => {
+    this.$nextTick(() =>
+    {
       if (this.firstDate && this.lastDate) {
         // Initialize date pickers with correct format
         this.datePicker1Instance = flatpickr(this.$refs.datePicker1, {
@@ -725,7 +814,8 @@ export default {
           defaultDate: this.firstDate,
           enable: [this.firstDate],
           disableMobile: true,
-          onChange: (selectedDates) => {
+          onChange: (selectedDates) =>
+          {
             if (selectedDates[0]) {
               this.formAddReservation.checkInDate = this.formatDateToDDMMYYYY(selectedDates[0]);
             }
@@ -738,7 +828,8 @@ export default {
           defaultDate: this.lastDate,
           enable: [this.lastDate],
           disableMobile: true,
-          onChange: (selectedDates) => {
+          onChange: (selectedDates) =>
+          {
             if (selectedDates[0]) {
               this.formAddReservation.checkOutDate = this.formatDateToDDMMYYYY(selectedDates[0]);
             }
@@ -755,7 +846,8 @@ export default {
           noCalendar: true,
           dateFormat: "H:i",
           defaultDate: this.firstDate,
-          onChange: (selectedDates) => {
+          onChange: (selectedDates) =>
+          {
             this.formAddReservation.checkInTime = selectedDates[0] ?
               this.formatTime(selectedDates[0]) : '';
           }
@@ -766,7 +858,8 @@ export default {
           noCalendar: true,
           dateFormat: "H:i",
           defaultDate: this.lastDate,
-          onChange: (selectedDates) => {
+          onChange: (selectedDates) =>
+          {
             this.formAddReservation.checkOutTime = selectedDates[0] ?
               this.formatTime(selectedDates[0]) : '';
           }
@@ -791,23 +884,28 @@ export default {
         return nameValue.toLowerCase().startsWith(searchTerm);
       });
     },
-    parsedDates() {
-      return this.selectedDates.map(item => {
+    parsedDates ()
+    {
+      return this.selectedDates.map(item =>
+      {
         const [datePart, timePart] = item.dateTime.split(', ');
         const [day, month, year] = datePart.split('/');
         return new Date(`${year}-${month}-${day}T${timePart}`);
       });
     },
 
-    firstDate() {
+    firstDate ()
+    {
       return this.parsedDates[0] || null;
     },
 
-    lastDate() {
+    lastDate ()
+    {
       return this.parsedDates[this.parsedDates.length - 1] || null;
     },
 
-    totalNights() {
+    totalNights ()
+    {
       if (!this.formAddReservation.checkInDate || !this.formAddReservation.checkOutDate) {
         return 0;
       }
@@ -823,17 +921,20 @@ export default {
 
     guestNameModel: {
       // Getter: Retrieve the current value
-      get() {
+      get ()
+      {
         return this.inputValue || this.formAddReservation.guestInformation.title;
       },
       // Setter: Update both values when changed
-      set(value) {
+      set (value)
+      {
         this.inputValue = value;
         this.formAddReservation.guestInformation.title = value;
       },
     },
   },
-  beforeDestroy() {
+  beforeDestroy ()
+  {
     this.datePicker1Instance?.destroy();
     this.datePicker2Instance?.destroy();
     this.timePicker1Instance?.destroy();
@@ -851,7 +952,4 @@ export default {
 };
 </script>
 
-<style scoped>
-
-
-</style>
+<style scoped></style>
