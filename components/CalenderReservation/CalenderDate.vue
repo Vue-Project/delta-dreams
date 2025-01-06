@@ -1,7 +1,7 @@
 <template>
   <section class="card">
-    <p>{{ selectedDates }}</p>
-    <p>{{ datesbuilding }}</p>
+    <!-- <p>{{ selectedDates }}</p>
+    <p>{{ datesbuilding }}</p> -->
     <!-- Loader (will be visible until data is fetched) -->
     <Loader :visible="isLoading" />
 
@@ -76,7 +76,7 @@
       </div>
 
       <!-- Sidebar -->
-      <SidebarBlockRoom :is-sidebar-open="isSidebarOpen" title="Block Room" width="400px" @close-sidebar="toggleSidebar" style="height: auto;">
+      <SidebarBlockRoom :is-sidebar-open="isSidebarOpen" title="Block Room" width="400px" @close-sidebar="toggleSidebar" style="height: auto !important;">
         <BlockRoomForm :selectedDates="selectedDates" :selectedResourceId="selectedResourceId" />
       </SidebarBlockRoom>
     </div>
@@ -108,8 +108,8 @@ export default {
       linkToAddReservation: '/add-reservation',
       datesbuilding: [],
       buildingNames: [], // Store building names dynamically
-      // selectedDates: [],
-      // selectedResourceId: [],
+      selectedDates: '',
+      selectedResourceId: '',
       isLoading: true,
       data: [],
       unitsDates: [],

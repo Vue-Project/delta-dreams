@@ -1,10 +1,5 @@
 <template>
   <div class="row p-3">
-    <h1>Add Reservation</h1>
-    <p v-if="selectedDates.length > 0">Selected Dates:</p>
-    <ul>
-      <li v-for="(date, index) in selectedDates" :key="index">{{ date.dateTime }}</li>
-    </ul>
     <div class="col-md-8">
       <CheckIn :selectedDates="selectedDates" />
     </div>
@@ -30,7 +25,6 @@ export default {
   {
     return {
 
-      // selectedDates: []
     }
   },
   computed: {

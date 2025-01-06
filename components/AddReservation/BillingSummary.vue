@@ -1,6 +1,6 @@
 <template>
   <section class="summary position-sticky top-0">
-    {{ selectedDates }}
+    <!-- {{ selectedDates }} -->
 
     <div class="card">
       <h5 class="card-header">
