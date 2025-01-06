@@ -5,29 +5,26 @@
         <h3>{{ title }}</h3>
         <hr class="my-2" />
         <slot>
-          <form ref="emptyForm" id="formGustInfo" @submit.prevent="submitForm">
+          <form ref="guestForm" id="formGustInfo" @submit.prevent="submitFormGuest">
             <div class="row p-3 mb-5">
               <div class="col-md-6">
                 <div class="row">
                   <div div class="col-md-4">
-                    <DropzoneComponent id="dropzone1" v-model="formGuest.image" />
+                    <DropzoneComponent id="dropzone1" @change="handleImageUpload" />
                   </div>
                   <div class="col-md-8">
-                      <div class="mb-3">
-                        <label for="formGustInfoName" class="col-form-label">Name
-                        </label>
-                        <input type="text" class="form-control" id="formGustInfoName" placeholder="Name Guest" aria-label="input text to Gust Name" v-model="formGuest.name" ref="name"
-                        :class="{ 'input-error': validationMessages.name }" />
-                        <span class="error-message" v-if="validationMessages.name">{{ validationMessages.name }}</span>
+                    <div class="mb-3">
+                      <label for="formGustInfoName" class="col-form-label">Name
+                      </label>
 
-                      </div>
+                      <input type="text" class="form-control" id="formGustInfoName" placeholder="Name Guest" aria-label="input text to Gust Name" v-model="formGuest.name" ref="name" :class="{ 'input-error': validationMessages.name }" />
+                      <span class="error-message" v-if="validationMessages.name">{{ validationMessages.name }}</span>
+                    </div>
 
                     <div class="mb-3">
                       <label for="formGustInfoEmail" class="col-form-label">Email
                       </label>
-                      <input type="email" class="form-control" id="formGustInfoEmail" placeholder="Use comma to add multiple Email Ids" aria-label="input email to Gust Email" v-model="formGuest.email" ref="email"
-                      :class="{ 'input-error': validationMessages.email }" />
-                      <span class="error-message" v-if="validationMessages.email">{{ validationMessages.email }}</span>
+                      <input type="email" class="form-control" id="formGustInfoEmail" placeholder="Use comma to add multiple Email Ids" aria-label="input email to Gust Email" v-model="formGuest.email" r />
                     </div>
                   </div>
                 </div>
@@ -38,31 +35,25 @@
                   <div class="col-md-6">
                     <div class="mb-3">
                       <label for="formGustInfoPhone" class="col-form-label">Phone</label>
-                      <input class="form-control" type="tel" value="Phone" id="formGustInfoPhone" aria-label="input tel to Gust Phone" v-model="formGuest.phone" ref="phone"
-                      :class="{ 'input-error': validationMessages.phone }" />
+                      <input class="form-control" type="text" value="Phone" id="formGustInfoPhone" aria-label="input tel to Gust Phone" v-model="formGuest.phone" ref="phone" :class="{ 'input-error': validationMessages.phone }" />
                       <span class="error-message" v-if="validationMessages.phone">{{ validationMessages.phone }}</span>
-
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="mb-3">
                       <label for="formGustInfoMobile" class="col-form-label">Mobile</label>
-                      <input class="form-control" type="tel" value="Mobile" id="formGustInfoMobile" aria-label="input tel to Gust Mobile" v-model="formGuest.mobile" ref="mobile"
-                      :class="{ 'input-error': validationMessages.mobile }" />
-                      <span class="error-message" v-if="validationMessages.mobile">{{ validationMessages.mobile }}</span>
+                      <input class="form-control" type="text" value="Mobile" id="formGustInfoMobile" aria-label="input tel to Gust Mobile" v-model="formGuest.mobile" />
                     </div>
                   </div>
                 </div>
-                <div class="mb-0">
-                  <label class="d-block form-label mb-3">Gender</label>
-                  <div class="row">
-                    <div class="col-md-4" v-for="(genderOption, index) in genderOptions" :key="index">
-                      <div class="form-check mb-2">
-                        <input type="radio" :id="'gender-' + genderOption" v-model="formGuest.gender" :value="genderOption" class="form-check-input" aria-label="input radio to Gust gender" />
-                        <label class="form-check-label" :for="'gender-' + genderOption">{{ genderOption }}</label>
-                      </div>
-                    </div>
-                  </div>
+                <div class="col-md-7">
+                  <label for="formGustIdentityGender" class="col-form-label">Gender</label>
+                  <select class="form-select" v-model="formGuest.gender" ref="gender" :class="{ 'input-error': validationMessages.gender }">
+                    <option value="">Select Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                  </select>
+                  <span class="error-message" v-if="validationMessages.gender">{{ validationMessages.gender }}</span>
                 </div>
               </div>
               <div class="col-md-7">
@@ -113,7 +104,8 @@
                             </div>
                             <div class="mb-3">
                               <label for="formGustIssuingCountry" class="col-form-label">Issuing Country</label>
-                              <select class="form-select" id="formGustIssuingCountry" aria-label="select Issuing Country" v-model="formGuest.OtherInformation.issuingCountry">
+                              <select class="form-select" id="formGustIssuingCountry" aria-label="select Issuing Country" v-model="formGuest.OtherInformation.issuingCountry
+                                ">
                                 <option value="" disabled selected>
                                   Select option
                                 </option>
@@ -149,7 +141,8 @@
                             <div class="col-md-6">
                               <div class="mb-2">
                                 <label for="formGustIssuingCity" class="col-form-label">Issuing City</label>
-                                <input class="form-control" type="text" id="formGustIssuingCity" placeholder="City" aria-label="Enter Issuing City" v-model="formGuest.OtherInformation.issuingCity" />
+                                <input class="form-control" type="text" id="formGustIssuingCity" placeholder="City" aria-label="Enter Issuing City" v-model="formGuest.OtherInformation.issuingCity
+                                  " />
                               </div>
                             </div>
                             <div class="col-md-6">
@@ -166,7 +159,9 @@
                     <div class="row mb-3">
                       <div class="col-md-3">
                         <label for="PaymentMethod" class="col-form-label">Payment Method</label>
-                        <select class="form-select" id="formGustPaymentMethod" aria-label="select Payment Method" v-model="formGuest.OtherInformation.paymentMethod.paymentMethod">
+                        <select class="form-select" id="formGustPaymentMethod" aria-label="select Payment Method" v-model="formGuest.OtherInformation.paymentMethod
+                            .paymentMethod
+                          ">
                           <option value="" disabled selected>
                             Select option
                           </option>
@@ -178,7 +173,9 @@
                       </div>
                       <div class="col-md-3">
                         <label for="DirectBilling" class="col-form-label">Direct Billing A/C</label>
-                        <select class="form-select" id="formGustDirectBilling" aria-label="select Direct Billing A/C Type" v-model="formGuest.OtherInformation.paymentMethod.directBilling">
+                        <select class="form-select" id="formGustDirectBilling" aria-label="select Direct Billing A/C Type" v-model="formGuest.OtherInformation.paymentMethod
+                            .directBilling
+                          ">
                           <option value="" disabled selected>
                             Select option
                           </option>
@@ -193,12 +190,15 @@
                     <div class="row mb-3">
                       <div class="col-md-3">
                         <label for="formGustPersonalInfoBirth " class="col-form-label">Birth Date</label>
-                        <input type="text" class="form-control flatpickr-input" placeholder="Select Date" id="flatpickr-date-05" ref="datePicker5" aria-label="input Text to Birth Date" v-model="formGuest.OtherInformation.paymentMethod.birthDate" />
+                        <input type="text" class="form-control flatpickr-input" placeholder="Select Date" id="flatpickr-date-05" ref="datePicker5" aria-label="input Text to Birth Date" v-model="formGuest.OtherInformation.paymentMethod.birthDate
+                          " />
                         <i class="fa-solid fa-calendar-days icon-date top"></i>
                       </div>
                       <div class="col-md-3">
                         <label for="BirthCountry" class="col-form-label">Birth Country</label>
-                        <select class="form-select" id="formGustBirthCountry" aria-label="select Birth Country" v-model="formGuest.OtherInformation.paymentMethod.birthCountry">
+                        <select class="form-select" id="formGustBirthCountry" aria-label="select Birth Country" v-model="formGuest.OtherInformation.paymentMethod
+                            .birthCountry
+                          ">
                           <option value="" disabled selected>
                             Select option
                           </option>
@@ -210,7 +210,8 @@
                       </div>
                       <div class="col-md-3">
                         <label for="NationalityGuest" class="col-form-label">Nationality</label>
-                        <select class="form-select" id="formGustNationality" aria-label="select Nationality" v-model="formGuest.OtherInformation.paymentMethod.nationality">
+                        <select class="form-select" id="formGustNationality" aria-label="select Nationality" v-model="formGuest.OtherInformation.paymentMethod.nationality
+                          ">
                           <option value="" disabled selected>
                             Select option
                           </option>
@@ -222,7 +223,8 @@
                       </div>
                       <div class="col-md-3">
                         <label for="VIPGuest" class="col-form-label">VIP Status</label>
-                        <select class="form-select" id="formGustVIP" aria-label="select VIP" v-model="formGuest.OtherInformation.paymentMethod.vipStatus">
+                        <select class="form-select" id="formGustVIP" aria-label="select VIP" v-model="formGuest.OtherInformation.paymentMethod.vipStatus
+                          ">
                           <option value="" disabled selected>
                             Select option
                           </option>
@@ -237,17 +239,23 @@
                     <div class="row">
                       <div class="col-md-3">
                         <label for="formGustSpouseBirth" class="col-form-label">Spouse Birth Date</label>
-                        <input type="text" class="form-control flatpickr-input" placeholder="Select Date" id="flatpickr-date-06" ref="datePicker6" aria-label="input Text to Spouse Birth Date"  v-model="formGuest.OtherInformation.paymentMethod.spouseBirthDate"/>
+                        <input type="text" class="form-control flatpickr-input" placeholder="Select Date" id="flatpickr-date-06" ref="datePicker6" aria-label="input Text to Spouse Birth Date" v-model="formGuest.OtherInformation.paymentMethod
+                            .spouseBirthDate
+                          " />
                         <i class="fa-solid fa-calendar-days icon-date top"></i>
                       </div>
                       <div class="col-md-3">
                         <label for="flatpickr-date-07" class="col-form-label">Wedding Anniversary</label>
-                        <input type="text" class="form-control flatpickr-input" placeholder="Select Date" id="flatpickr-date-07" ref="datePicker7" aria-label="input Text to Wedding Anniversary" v-model="formGuest.OtherInformation.paymentMethod.weddingAnniversary"/>
+                        <input type="text" class="form-control flatpickr-input" placeholder="Select Date" id="flatpickr-date-07" ref="datePicker7" aria-label="input Text to Wedding Anniversary" v-model="formGuest.OtherInformation.paymentMethod
+                            .weddingAnniversary
+                          " />
                         <i class="fa-solid fa-calendar-days icon-date top"></i>
                       </div>
                       <div class="col-md-3">
                         <label for="formGustRegistration" class="col-form-label">Registration No</label>
-                        <input class="form-control" type="text" id="formGustRegistration" placeholder="Registration No" aria-label="input Text to Gust Registration" v-model="formGuest.OtherInformation.paymentMethod.registrationNo"/>
+                        <input class="form-control" type="text" id="formGustRegistration" placeholder="Registration No" aria-label="input Text to Gust Registration" v-model="formGuest.OtherInformation.paymentMethod
+                            .registrationNo
+                          " />
                       </div>
                     </div>
                   </div>
@@ -274,9 +282,10 @@
 </template>
 
 <script>
-import Swal from 'sweetalert2';  // Import SweetAlert2
+import Swal from "sweetalert2"; // Import SweetAlert2
 import flatpickrMixin from "../Mixin/flatpickrMixin";
 import DropzoneComponent from "./DropzoneComponent.vue";
+import { addGuest } from "../Api/api";
 
 export default {
   name: "Sidebar",
@@ -317,15 +326,13 @@ export default {
         },
       },
       validationMessages: {
-      name: '',
-      email: '',
-      phone: '',
-      mobile: '',
-    },
+        name: "",
+        phone: "",
+        gender: "",
+      },
       genderOptions: ["Male", "Female", "Other"],
     };
   },
-
 
   components: {
     DropzoneComponent,
@@ -355,77 +362,33 @@ export default {
     },
   },
   methods: {
-
-    submitForm() {
-      // Define required fields and their messages
-      const requiredFields = [
-        { field: "name", message: "Guest Name is required" },
-        { field: "email", message: "Email is required" },
-        { field: "phone", message: "Phone is required" },
-        { field: "mobile", message: "Mobile is required" },
-      ];
-
-      // Reset validation messages before checking
-      this.resetValidationMessages();
-
-      let hasError = false;
-
-      // Validate each required field
-      for (const { field, message } of requiredFields) {
-        const inputElement = this.$refs[field]; // Get input element by ref
-
-        if (!this.formGuest[field]) {
-          hasError = true;
-          this.$set(this.validationMessages, field, message); // Set validation message
-
-          if (inputElement) {
-            inputElement.classList.add("input-error"); // Add error class
-          }
-        } else {
-          if (inputElement) {
-            inputElement.classList.remove("input-error"); // Remove error class
-          }
-        }
+    handleImageUpload (event)
+    {
+      const file = event.target.files[0];
+      if (file) {
+        this.formGuest.image = file;
       }
+    },
+    resetValidationMessages ()
+    {
+      this.validationMessages = {
+        name: "",
+        gender: "",
+        phone: "",
+      };
 
-      // Stop submission if there are errors
-      if (hasError) return;
-
-      // If no errors, show success alert
-      Swal.fire({
-        icon: "success",
-        title: "Success!",
-        text: "ADD Guest successfully.",
-        confirmButtonText: "OK",
-      }).then(() => {
-        // Reset the form after user clicks OK
-        this.resetForm();
+      // Remove error classes
+      ["name", "gender", "phone"].forEach((field) =>
+      {
+        const element = this.$refs[field];
+        if (element && element.classList) {
+          element.classList.remove("input-error");
+        }
       });
-      fetch("https://deltadream.swevey.com/api/users", {
-        method: "POST",
-        headers: {
-          'content-type': 'multipart/form-data',
-          'X-CSRF-TOKEN': csrfToken, // Include the CSRF token in the headers
-        },
-        body: formData,
-      })
-        .then((response) => response.json())
-        .then((data) =>
-        {
-          alert("Success:", data);
-          // Handle successful response (e.g., show a success message)
-        })
-        .catch((error) =>
-        {
-          alert("Error:", error);
-          // Handle error (e.g., show an error message)
-        });
-      console.log(this.formGuest);
-
     },
 
-    // Reset form data and validation messages
-    resetForm() {
+    resetForm ()
+    {
       this.formGuest = {
         image: null,
         name: "",
@@ -458,32 +421,99 @@ export default {
           },
         },
       };
-
       this.resetValidationMessages();
+    },
 
-      // Remove error classes from inputs
-      for (const refKey in this.$refs) {
-        const element = this.$refs[refKey];
-        if (element && element.classList) {
-          element.classList.remove("input-error");
+    async submitFormGuest ()
+    {
+      try {
+        this.resetValidationMessages();
+        this.isSubmitting = true;
+
+        // Validate required fields
+        const requiredFields = ["name", "gender", "phone"];
+        let hasError = false;
+
+        requiredFields.forEach((field) =>
+        {
+          if (!this.formGuest[field]) {
+            hasError = true;
+            this.validationMessages[field] = `${field.charAt(0).toUpperCase() + field.slice(1)
+              } is required`;
+
+            const element = this.$refs[field];
+            if (element && element.classList) {
+              element.classList.add("input-error");
+            }
+          }
+        });
+
+        if (hasError) {
+          throw new Error("Please fill in all required fields");
         }
+
+        // Create formGuestData for image upload
+        const formGuestData = new formGuestData();
+        if (this.formGuest.image) {
+          formGuestData.append("image", this.formGuest.image);
+        }
+
+        // Append all other form data
+        Object.entries(this.formGuest).forEach(([key, value]) =>
+        {
+          if (key !== "image") {
+            if (typeof value === "object") {
+              formGuestData.append(key, JSON.stringify(value));
+            } else {
+              formGuestData.append(key, value);
+            }
+          }
+        });
+
+        // Make API call
+        const response = await addGuest(formGuestData);
+
+        // Show success message
+        await Swal.fire({
+          icon: "success",
+          title: "Success!",
+          text: "Guest added successfully.",
+          confirmButtonText: "OK",
+        });
+
+        // Reset form after success
+        this.resetForm();
+
+        // Emit event for parent component
+        this.$emit("guest-added", response.data);
+      } catch (error) {
+        // Handle validation errors
+        if (error.response?.data?.errors) {
+          const errors = error.response.data.errors;
+          Object.keys(errors).forEach((field) =>
+          {
+            if (this.$refs[field]) {
+              this.$refs[field].classList.add("input-error");
+              this.validationMessages[field] = errors[field][0];
+            }
+          });
+        }
+
+        // Show error message
+        await Swal.fire({
+          icon: "error",
+          title: "Error",
+          text:
+            error.response?.data?.message ||
+            error.message ||
+            "Failed to add guest. Please try again.",
+        });
+      } finally {
+        this.isSubmitting = false;
       }
     },
-
-    // Reset all validation messages
-    resetValidationMessages() {
-      this.validationMessages = {
-        name: "",
-        email: "",
-        phone: "",
-        mobile: "",
-      };
-    },
-
-
   },
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

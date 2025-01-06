@@ -139,6 +139,22 @@ export const blockRoomService =  async (blockRoomData) =>
     }
 
   }
+export const addGuest =  async (formGuestData) =>
+  {
+    try{
+      const response = await apiClient.post(`/users`, formGuestData, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+      return response.data;
+
+    } catch (error) {
+      console.error(`Error fetching Guest:`, error);
+      throw error; // Rethrow the error for handling in the caller
+    }
+
+  }
 
 
 
