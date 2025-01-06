@@ -123,6 +123,23 @@ export const getReservationDataById = async (id) =>
     throw error; // Rethrow the error for handling in the caller
   }
 };
+export const blockRoomService =  async (blockRoomData) =>
+  {
+    try{
+      const response = await apiClient.post(`/block-room`, blockRoomData, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+      return response.data;
+
+    } catch (error) {
+      console.error(`Error fetching reservation with ID "${id}":`, error);
+      throw error; // Rethrow the error for handling in the caller
+    }
+
+  }
+
 
 
 
@@ -135,5 +152,6 @@ export default {
   getBookingSources,
   getReservationTypes,
   getCalenderData,
-  getReasonsSources
+  getReasonsSources,
+  blockRoomService
 };
