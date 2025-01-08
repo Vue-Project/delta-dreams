@@ -453,7 +453,7 @@ export default {
         }
 
         // Create formGuestData for image upload
-        const formGuestData = new formGuestData();
+        const formGuestData = new FormData();
         if (this.formGuest.image) {
           formGuestData.append("image", this.formGuest.image);
         }
