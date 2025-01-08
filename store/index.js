@@ -1,15 +1,27 @@
-// store/index.js
 export const state = () => ({
   selectedDates: [],
+  selectedResourceName: "", // Add selectedResourceId to the state
 });
 
 export const mutations = {
-  setSelectedDates (state, dates)
-  {
+  setSelectedDates(state, dates) {
     state.selectedDates = dates;
   },
-  clearSelectedDates (state)
-  {
+
+  setSelectedResourceName(state, resourceName) {
+    state.selectedResourceName = resourceName;
+  },
+
+  clearSelectedDates(state) {
     state.selectedDates = [];
+  },
+
+  clearSelectedResourceName(state) {
+    state.selectedResourceName = "";
+  },
+
+  clearAll(state) {
+    state.selectedDates = [];
+    state.selectedResourceName = "";
   },
 };
