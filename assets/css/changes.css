@@ -285,7 +285,7 @@
 .fc .fc-button-primary:not(.fc-prev-button):not(.fc-next-button) {
   position: absolute;
   right: 108px;
-  top: 41px;
+  top: 96px;
 }
 
 .fc .fc-toolbar-title {
@@ -809,4 +809,7 @@ select.form-select option {
 }
 .bottom-1{
   bottom: 15px;
+}
+.card-datatable tr td{
+  border-bottom: 0;
 }

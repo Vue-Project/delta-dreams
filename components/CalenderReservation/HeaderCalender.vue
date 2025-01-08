@@ -1,9 +1,9 @@
 <template>
   <div class="row d-flex justify-content-between p-2 position-relative">
-    <div class="col-md-1 col-12 calendarDate">
+    <!-- <div class="col-md-1 col-12 calendarDate">
       <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD" id="flatpickr-date-04" ref="datePicker4" aria-label="input for date" />
       <i class="fa-solid fa-calendar-days date-icon"></i>
-    </div>
+    </div> -->
     <div class="col-md-7 col-12">
       <div class="d-flex items-center gap-4">
         <div v-for="(count, label) in statistics" :key="label">
@@ -18,8 +18,8 @@
       <div class="d-flex items-center gap-4">
         <div class="w-100">
           <select class="form-select" id="exampleFormControlSelect1" aria-label="Default select example">
-            <option selected>The price is not included</option>
-            <option value="1">The price includes breakfast</option>
+            <option selected>السعر غير شامل</option>
+            <option value="1">السعر شامل الافطار</option>
           </select>
         </div>
         <label class="switch">

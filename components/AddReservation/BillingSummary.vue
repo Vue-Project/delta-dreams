@@ -45,9 +45,10 @@
               <label class="input-group-text" for="inputGroupSelect01">Bill To</label>
               <select class="form-select" id="inputGroupSelect01">
                 <option selected>Choose...</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+                <option value="0">Company</option>
+                <option value="1">GroupOwner</option>
+                <option value="2">Guest</option>
+                <option value="3">Room and Tax to Company, Extra to Guest</option>
               </select>
             </div>
           </div>
@@ -88,9 +89,18 @@
             <div class="input-group">
               <select class="form-select" id="PaymentMethods">
                 <option selected>Select...</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+                <option value="1">Mohamed</option>
+                <option value="2">testing</option>
+                <option value="3">بد الله سامى</option>
+                <option value="4">testing20</option>
+                <option value="5">SS ss</option>
+                <option value="6">retfd</option>
+                <option value="7">MOHAMED</option>
+                <option value="8">retfd</option>
+                <option value="9">shhhh</option>
+                <option value="10">Shad</option>
+                <option value="11">shady</option>
+
               </select>
             </div>
           </div>
