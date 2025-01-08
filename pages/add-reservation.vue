@@ -1,7 +1,7 @@
 <template>
   <div class="row p-3">
     <div class="col-md-8">
-      <CheckIn :selectedDates="selectedDates" />
+      <CheckIn :selectedDates="selectedDates" :selectedResourceName="selectedResourceName" />
     </div>
     <div class="col-md-4">
       <BillingSummary :selectedDates="selectedDates" />
@@ -28,10 +28,12 @@ export default {
     }
   },
   computed: {
-    selectedDates ()
-    {
+    selectedDates() {
       return this.$store.state.selectedDates;
     },
+    selectedResourceName() {
+      return this.$store.state.selectedResourceName;
+    }
   },
 };
 </script>

@@ -1,21 +1,19 @@
 <template>
   <section class="card">
-    <!-- <p>{{ selectedDates }}</p>
-    <p>{{ datesbuilding }}</p> -->
-    <!-- Loader (will be visible until data is fetched) -->
     <Loader :visible="isLoading" />
 
     <!-- Content (visible only after data is fetched) -->
     <div v-if="!isLoading">
+      <HeaderCalender :statistics="statisticsHeaderCalender" />
+
 
       <div class="filter-buttons">
         <button class="btn btn-primary" @click="showAllResources">Show All</button>
-        <button v-for="building in buildingNames" :key="building" class="btn btn-secondary" @click="showBuildingResources(building)">
+        <button v-for="building in buildingNames" :key="building" class="btn btn-secondary mr-2" @click="showBuildingResources(building)">
           Show {{ building }}
         </button>
       </div>
 
-      <!-- <HeaderCalender :statistics="statisticsHeaderCalender" /> -->
       <FullCalendar :options="calendarOptions" @select="handleSelect" ref="calendar">
         <template v-slot:eventContent="arg">
           <b>{{ arg.event.title }}</b>
@@ -77,7 +75,7 @@
 
       <!-- Sidebar -->
       <SidebarBlockRoom :is-sidebar-open="isSidebarOpen" title="Block Room" width="400px" @close-sidebar="toggleSidebar" style="height: auto !important;">
-        <BlockRoomForm :selectedDates="selectedDates" :selectedResourceId="selectedResourceId" />
+        <BlockRoomForm :selectedDates="selectedDates" :selectedResourceId="selectedResourceId" @close-sidebar="toggleSidebar" />
       </SidebarBlockRoom>
     </div>
   </section>
@@ -110,6 +108,7 @@ export default {
       buildingNames: [], // Store building names dynamically
       selectedDates: '',
       selectedResourceId: '',
+      selectedResourceName: '',
       isLoading: true,
       data: [],
       unitsDates: [],
@@ -340,14 +339,13 @@ export default {
   },
 
   methods: {
-    goToAddReservation ()
-    {
-      // Use Vuex mutation to store the dates
-      this.$store.commit('setSelectedDates', this.selectedDates);
+    goToAddReservation() {
+  this.$store.commit('setSelectedDates', this.selectedDates);
+  this.$store.commit('setSelectedResourceName', this.selectedResourceName);
 
-      // Navigate to the add-reservation page
-      this.$router.push({ name: 'add-reservation' });
-    },
+  // Navigate to the add-reservation page
+  this.$router.push({ name: 'add-reservation' });
+},
 
 
 
@@ -465,95 +463,93 @@ export default {
      *
      * @param {Object} info - Selection info object containing `start` and `end` dates
      */
-    handleSelect (info)
-    {
-      const { start, end, resource } = info;
+     handleSelect(info) {
+  const { start, end, resource } = info;
 
-      // Get current time in Egypt
-      const getCurrentEgyptTime = () =>
-      {
-        const now = new Date();
-        return new Date(now.toLocaleString('en-US', { timeZone: 'Africa/Cairo' }));
-      };
+  // Helper to get current Egypt time
+  const getCurrentEgyptTime = () => {
+    const now = new Date();
+    return new Date(now.toLocaleString('en-US', { timeZone: 'Africa/Cairo' }));
+  };
 
-      // Convert start and end to Date objects while preserving current Egypt time
-      const currentEgyptTime = getCurrentEgyptTime();
-      const startDate = new Date(start);
-      const endDate = new Date(end);
+  // Get current Egypt time and initialize start/end dates
+  const currentEgyptTime = getCurrentEgyptTime();
+  const startDate = new Date(start);
+  const endDate = new Date(end);
 
-      // Set the current Egypt time hours and minutes to the dates
-      startDate.setHours(currentEgyptTime.getHours(), currentEgyptTime.getMinutes(), 0, 0);
-      endDate.setHours(currentEgyptTime.getHours(), currentEgyptTime.getMinutes(), 0, 0);
+  // Align start and end dates to Egypt's current time
+  startDate.setHours(currentEgyptTime.getHours(), currentEgyptTime.getMinutes(), 0, 0);
+  endDate.setHours(currentEgyptTime.getHours(), currentEgyptTime.getMinutes(), 0, 0);
 
-      this.selectedDates = [];
+  this.selectedDates = [];
 
-      // Helper function to format dates with current Egypt time
-      const formatDateTimeEgypt = (date) =>
-      {
-        const formatter = new Intl.DateTimeFormat('en-GB', {
-          timeZone: 'Africa/Cairo',
-          day: '2-digit',
-          month: '2-digit',
-          year: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit',
-          hour12: false
-        });
-        return formatter.format(date);
-      };
+  // Helper to format date with time in Egypt timezone
+  const formatDateTimeEgypt = (date) => {
+    const formatter = new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'Africa/Cairo',
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    });
+    return formatter.format(date);
+  };
 
-      // Helper function for date only format (no time)
-      const formatDateOnly = (date) =>
-      {
-        const formatter = new Intl.DateTimeFormat('en-GB', {
-          timeZone: 'Africa/Cairo',
-          day: '2-digit',
-          month: '2-digit',
-          year: 'numeric'
-        });
-        return formatter.format(date);
-      };
+  // Helper to format date only (no time) in Egypt timezone
+  const formatDateOnly = (date) => {
+    const formatter = new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'Africa/Cairo',
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    });
+    return formatter.format(date);
+  };
 
-      // Generate all dates between startDate and endDate (inclusive)
-      let currentDate = new Date(startDate);
-      while (currentDate <= endDate) {
-        this.selectedDates.push({
-          dateTime: formatDateTimeEgypt(currentDate)
-        });
-        currentDate.setDate(currentDate.getDate() + 1);
-      }
+  // Generate all dates between startDate and endDate
+  let currentDate = new Date(startDate);
+  while (currentDate <= endDate) {
+    this.selectedDates.push({
+      dateTime: formatDateTimeEgypt(currentDate),
+    });
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
 
-      // Store the first and last selected dates without time
-      this.firstSelectedDate = formatDateOnly(startDate);
-      this.lastSelectedDate = formatDateOnly(endDate);
+  // Store first and last selected dates
+  this.firstSelectedDate = formatDateOnly(startDate);
+  this.lastSelectedDate = formatDateOnly(endDate);
 
-      // Calculate total days/nights
-      const totalDays = (endDate - startDate) / (1000 * 3600 * 24); // Total days in milliseconds
-      const nights = totalDays > 0 ? totalDays : 1; // Ensure at least 1 night
+  // Calculate total days/nights
+  const totalDays = Math.ceil((endDate - startDate) / (1000 * 3600 * 24));
+  const nights = totalDays > 0 ? totalDays : 1; // Minimum of 1 night
 
-      // Store the nights count
-      this.selectedNights = nights;
+  // Store nights count
+  this.selectedNights = nights;
 
-      // Capture the resource ID
-      if (resource) {
-        this.selectedResourceId = resource.id;
-      } else {
-        this.selectedResourceId = null;
-      }
+  // Capture resource ID and name
+  if (resource) {
+    const unitTitle = resource.title || 'Unknown Unit';
+    const buildingName = resource.extendedProps.groupId || 'Unknown Building';
+    const resourceId = resource.id || 'Unknown ID';  // Get the resource ID
+    this.selectedResourceName = `${unitTitle} - ${buildingName} - ID: ${resourceId}`;  // Include the ID in the name
+    this.selectedResourceId = resource.id;
+  } else {
+    this.selectedResourceId = null;
+    this.selectedResourceName = null;
+  }
 
-      // Update highlighted text with dates only (no time)
-      this.updateHighlightedText(this.firstSelectedDate, this.lastSelectedDate, nights);
 
-      // Log the data (optional for debugging)
-      // console.log("Selected Dates:", this.selectedDates);
-      // console.log("First Selected Date:", this.firstSelectedDate);  // Will show only date, no time
-      // console.log("Last Selected Date:", this.lastSelectedDate);    // Will show only date, no time
-      // console.log("Selected Resource ID:", this.selectedResourceId);
-      // console.log("Selected Nights:", this.selectedNights);
 
-      // Show overlay if necessary
-      this.showOverlay();
-    },
+  // Update highlighted text with formatted dates and nights
+  this.updateHighlightedText(this.firstSelectedDate, this.lastSelectedDate, nights);
+
+  // Show overlay if required
+  this.showOverlay();
+}
+
+,
 
     /**
      * Highlights the cell for a given date in the calendar.
@@ -797,7 +793,7 @@ export default {
 
       this.data = CalenderDataResponse.data.data;
       this.occupancyData = CalenderDataResponse.data.calendar.data;
-      this.statisticsHeaderCalender = CalenderDataResponse.data;
+      this.statisticsHeaderCalender = CalenderDataResponse.data.statistics ;
       this.datesbuilding = CalenderDataResponse.data.data.dates;
       this.buildingNames = this.getBuildingNames();
 
