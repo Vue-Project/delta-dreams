@@ -12,7 +12,7 @@ export const formUtils = {
   async showSuccess(message) {
     await Swal.fire({
       icon: 'success',
-      title: 'Success',
+      title: 'Success Block Room',
       text: message
     });
   },

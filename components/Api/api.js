@@ -126,7 +126,7 @@ export const getReservationDataById = async (id) =>
 export const blockRoomService =  async (blockRoomData) =>
   {
     try{
-      const response = await apiClient.post(`/block-room`, blockRoomData, {
+      const response = await apiClient.post(`/blocks`, blockRoomData, {
         headers: {
           'Content-Type': 'application/json',
         }

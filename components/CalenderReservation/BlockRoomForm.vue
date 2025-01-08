@@ -17,13 +17,11 @@
         </div>
         <div class="col-12">
           <label for="formBlockRoomRoomType" class="form-label">Room Type</label>
-          <input type="text" class="form-control" id="formBlockRoomRoomType" v-model="formBlock.roomType" placeholder="Room Type of building ID"             disabled
-          />
+          <input type="text" class="form-control" id="formBlockRoomRoomType" v-model="formBlock.roomType" placeholder="Room Type of building ID" disabled />
         </div>
         <div class="col-12">
           <label for="formBlockRoomRoom" class="form-label">Room</label>
-          <input type="text" class="form-control" id="formBlockRoomRoom" v-model="formBlock.room" placeholder="Second part of Room ID"             disabled
-          />
+          <input type="text" class="form-control" id="formBlockRoomRoom" v-model="formBlock.room" placeholder="Second part of Room ID" disabled />
         </div>
         <div class="col-12">
           <label for="formBlockRoomReason" class="form-label">Reason</label>
@@ -39,6 +37,9 @@
         <button type="submit" class="btn btn-primary waves-effect waves-light">
           Apply
         </button>
+        <button @click="$emit('close-sidebar')" class="btn btn-secondary waves-effect waves-light">
+          Close
+        </button>
       </div>
     </form>
   </div>
@@ -50,7 +51,6 @@ import flatpickrMixin from '../Mixin/flatpickrMixin';
 import { blockRoomService } from '../Api/api';
 import { dateUtils } from '../Api/utils/data';
 import { formUtils } from '../Api/utils/form';
-
 
 export default {
   name: "BlockRoomForm",
@@ -70,6 +70,8 @@ export default {
     return {
       reasonsSources: [],
       flatpickrInstance: null,
+      isSubmitting: false,
+      isSidebarOpen: false, // This controls the sidebar visibility
       formBlock: {
         dateStartAndEnd: "",
         roomType: "",
@@ -139,9 +141,8 @@ export default {
 
     async submitFormBlockRoom() {
       try {
+        // Validate the form before proceeding
         formUtils.validateBlockRoomForm(this.formBlock);
-
-        this.isSubmitting = true;
 
         const [startDate, endDate] = this.formBlock.dateStartAndEnd.split(' to ');
 
@@ -152,42 +153,32 @@ export default {
           end_date: dateUtils.formatForApi(endDate),
         };
 
-        // Make API call
         const responseBlockRoom = await blockRoomService(blockRoomData);
 
-        if (responseBlockRoom.success) {
-          await formUtils.showSuccess('Room blocked successfully!');
-          this.$emit('block-saved', responseBlockRoom);
-          this.resetForm();
+        // Check if the response indicates success using the 'status' field
+        if (responseBlockRoom?.status === 'success') {
+          await formUtils.showSuccess(responseBlockRoom.message || 'Room blocked successfully!');
+
+          // Emit the 'close-sidebar' event to the parent component
+          this.$emit('close-sidebar');
         } else {
-          throw new Error(responseBlockRoom.message || 'Failed to block room');
+          // Handle API-reported failure
+          const errorMessage = responseBlockRoom?.message || 'Failed to block room';
+          await formUtils.showError(errorMessage);
         }
-
       } catch (error) {
-        console.error('Error submitting form:', error);
-        const errorMessage = error.response?.data?.message ||
-                           Object.values(error.response?.data?.errors || {}).flat().join(', ') ||
-                           error.message ||
-                           'Failed to block room. Please try again.';
-
+        const errorMessage =
+          error.response?.data?.message ||
+          Object.values(error.response?.data?.errors || {}).flat().join(', ') ||
+          error.message ||
+          'Failed to block room. Please try again.';
         await formUtils.showError(errorMessage);
       }
     },
 
-    resetForm() {
-      this.formBlock = {
-        dateStartAndEnd: "",
-        roomType: "",
-        room: "",
-        reason: "",
-      };
-      if (this.flatpickrInstance) {
-        this.flatpickrInstance.clear();
-      }
+    closeSidebar() {
+      this.$emit('close-sidebar');
     },
-
-
-
   },
 
   async mounted() {
@@ -211,3 +202,4 @@ export default {
   mixins: [flatpickrMixin],
 };
 </script>
+
