@@ -116,6 +116,10 @@ export default {
   },
   ignoredPaths: [""],
 
+    // acces page in URl
+  // router: {
+  //   middleware: 'auth'
+  // },
 
 
 
