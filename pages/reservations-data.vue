@@ -1,10 +1,13 @@
 <template>
   <div class="row mx-auto my-3">
+    <!-- <p> {{ reservations }}
+    </p> -->
     <div class="col-md-12">
       <HeaderReservation>
+
         <template #button>
           <li class="nav-item" role="presentation">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-Reservations" role="tab" aria-selected="false" tabindex="-1" :class="{ active: activeTab === 'reservations' }" @click="setActiveTab('reservations')">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-Reservations" role="tab" aria-selected="false" tabindex="-1" :class="{ active: activeTab === 'reservations' }" @click.prevent="selectTab('reservations')">
               Reservations
               <span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-label-danger ms-1">{{ reservationsCount.reservations }}</span>
             </button>
@@ -334,7 +337,7 @@
                                   <h6 class="mb-0">Reservation Number</h6>
                                   <small class="text-muted">{{
                                     selectedCard.reservationNo
-                                    }}</small>
+                                  }}</small>
                                 </div>
                               </div>
                             </div>
@@ -525,7 +528,7 @@
                                   <h6 class="mb-0">Reservation Number</h6>
                                   <small class="text-muted">{{
                                     selectedCard.reservationNo
-                                    }}</small>
+                                  }}</small>
                                 </div>
                               </div>
                             </div>
@@ -698,7 +701,7 @@
                                   <h6 class="mb-0">Reservation Number</h6>
                                   <small class="text-muted">{{
                                     selectedCard.reservationNo
-                                    }}</small>
+                                  }}</small>
                                 </div>
                               </div>
                             </div>
@@ -1003,13 +1006,64 @@
           </div>
         </template>
         <template #content>
-          <div class="tab-pane fade active show" id="form-tabs-Reservations" role="tabpanel" v-if="activeTab === 'reservations'">
-
+          <div class="tab-pane fade active show" id="form-tabs-Reservations" role="tabpanel" >
+            <div v-if="tabData[activeTab].loading">Loading...</div>
+            <div v-else-if="tabData[activeTab].error">Error fetching data: {{ tabData[activeTab].error.message }}</div>
+            <div v-else>
+              <!-- Display data based on viewMode -->
+              <!-- For list view -->
+              <table v-if="viewMode === 'list'">
+                <!-- Table rows using tabData[activeTab].data -->
+                 begb4uiob4iugbu
+              </table>
+              <!-- For card view -->
+              <div v-else class="card-container">
+                <div v-for="item in tabData[activeTab].data" :key="item.id" class="card">
+                  <!-- Card content -->
+                   gvwikeogn4egnwoiugn
+                </div>
+              </div>
+              <div v-if="tabData[activeTab].data.length === 0 && !tabData[activeTab].loading && !tabData[activeTab].error">
+  No data available for this tab.
+</div>
+            </div>
           </div>
           <!-- Arrivals  -->
-          <div class="tab-pane fade" id="form-tabs-Arrivals" role="tabpanel"></div>
+          <div class="tab-pane fade" id="form-tabs-Arrivals" role="tabpanel">
+            <div v-if="tabData[activeTab].loading">Loading...</div>
+            <div v-else-if="tabData[activeTab].error">Error fetching data: {{ tabData[activeTab].error.message }}</div>
+            <div v-else>
+              <!-- Display data based on viewMode -->
+              <!-- For list view -->
+              <table v-if="viewMode === 'list'">
+                <!-- Table rows using tabData[activeTab].data -->
+              </table>
+              <!-- For card view -->
+              <div v-else class="card-container">
+                <div v-for="item in tabData[activeTab].data" :key="item.id" class="card">
+                  <!-- Card content -->
+                </div>
+              </div>
+            </div>
+          </div>
           <!-- Departures  -->
-          <div class="tab-pane fade" id="form-tabs-Departures" role="tabpanel"></div>
+          <div class="tab-pane fade" id="form-tabs-Departures" role="tabpanel">
+            <div v-if="tabData[activeTab].loading">Loading...</div>
+            <div v-else-if="tabData[activeTab].error">Error fetching data: {{ tabData[activeTab].error.message }}</div>
+            <div v-else>
+              <!-- Display data based on viewMode -->
+              <!-- For list view -->
+              <table v-if="viewMode === 'list'">
+                <!-- Table rows using tabData[activeTab].data -->
+              </table>
+              <!-- For card view -->
+              <div v-else class="card-container">
+                <div v-for="item in tabData[activeTab].data" :key="item.id" class="card">
+                  <!-- Card content -->
+                </div>
+              </div>
+            </div>
+          </div>
           <!-- In-house  -->
           <div class="tab-pane fade" id="form-tabs-In-house" role="tabpanel">
             <div class="row">
@@ -1028,7 +1082,22 @@
                     </tr>
                   </thead>
                   <tbody class="table-border-bottom-0">
-                    <tr @click="openOffcanvas(card)" v-for="card in reservations" :key="card.id">
+                    <div v-if="tabData[activeTab].loading">Loading...</div>
+            <div v-else-if="tabData[activeTab].error">Error fetching data: {{ tabData[activeTab].error.message }}</div>
+            <div v-else>
+              <!-- Display data based on viewMode -->
+              <!-- For list view -->
+              <table v-if="viewMode === 'list'">
+                <!-- Table rows using tabData[activeTab].data -->
+              </table>
+              <!-- For card view -->
+              <div v-else class="card-container">
+                <div v-for="item in tabData[activeTab].data" :key="item.id" class="card">
+                  <!-- Card content -->
+                </div>
+              </div>
+            </div>
+                    <!-- <tr @click="openOffcanvas(card)" v-for="card in reservations" :key="card.id">
                       <td>
                         <h5 class=" m-0 me-2">{{ card.reserved_by.name }}</h5>
                         <div>
@@ -1075,7 +1144,7 @@
                           </ul>
                         </div>
                       </td>
-                    </tr>
+                    </tr> -->
 
 
 
@@ -1084,7 +1153,7 @@
 
               </div>
 
-              <div v-else class="col-12 col-md-6 col-lg-4 mb-4 order-1 order-xl-0 cursor-pointer" @click="openOffcanvas(card)" v-for="card in reservations" :key="card.id">
+              <!-- <div v-else class="col-12 col-md-6 col-lg-4 mb-4 order-1 order-xl-0 cursor-pointer" @click="openOffcanvas(card)" v-for="card in reservations" :key="card.id">
                 <div class="card h-100">
                   <div class="card-header d-flex align-items-center justify-content-between">
                     <div class="card-title mb-0 d-flex">
@@ -1155,7 +1224,7 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
 
@@ -1185,7 +1254,19 @@ export default {
       selectedCard: null, // Store the data for the selected card
       activeTab: "reservations", // Default active tab
       reservations: [],
-      reservationsCount: []
+      reservationsCount: [],
+      tabData: {
+        reservations: { data: [], loading: false, error: null },
+        arrivals: { data: [], loading: false, error: null },
+        departures: { data: [], loading: false, error: null },
+        inhouse: { data: [], loading: false, error: null }
+      },
+      tabsMap :{
+  reservations: 'reservations',
+  arrivals: 'arrivals',
+  departures: 'departures',
+  inhouse: 'in_house'
+}
 
     };
   },
@@ -1226,33 +1307,63 @@ export default {
     {
       this.$router.push(`/edit-reservation/${id}`);
     },
+    async fetchData (tab)
+    {
+      console.log('Fetching data for tab:', tab);
+
+      this.tabData[tab].loading = true;
+      this.tabData[tab].error = null;
+      const type = this.tabsMap[tab];
+      try {
+        const data = await getReservationData(type);
+        this.tabData[tab].data = data;
+      } catch (error) {
+        this.tabData[tab].error = error;
+      } finally {
+        this.tabData[tab].loading = false;
+      }
+    },
+    selectTab (tab)
+    {
+      console.log('selectTab', tab);
+
+      this.activeTab = tab;
+    }
   },
 
   async mounted ()
   {
-    try {
-      const [
-        ReservationDataResponse,
+    // try {
+    //   const [
+    //     ReservationDataResponse,
 
-      ] = await Promise.all([
-        getReservationData(),
+    //   ] = await Promise.all([
+    //     getReservationData(),
 
-      ]);
+    //   ]);
 
-      this.reservations = ReservationDataResponse.data.data;
-      this.reservationsCount = ReservationDataResponse.data.reservations_count;
+    //   this.reservations = ReservationDataResponse.data.data;
+    //   this.reservationsCount = ReservationDataResponse.data.reservations_count;
 
-    } catch (error) {
-      console.error("Error loading data:", error);
-    }
+    // } catch (error) {
+    //   console.error("Error loading data:", error);
+    // }
     const offcanvas = document.getElementById("offcanvasEnd");
     offcanvas.addEventListener("hidden.bs.offcanvas", this.resetSelections);
+    this.fetchData(this.activeTab);
+
   },
   beforeDestroy ()
   {
     // Clean up event listener
     const offcanvas = document.getElementById("offcanvasEnd");
     offcanvas.removeEventListener("hidden.bs.offcanvas", this.resetSelections);
+  },
+  watch: {
+    activeTab: function (newTab)
+    {
+      this.fetchData(newTab);
+    }
   },
   mixins: [flatpickrMixin],
 };
