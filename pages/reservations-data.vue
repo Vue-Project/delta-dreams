@@ -1020,7 +1020,7 @@
               <div v-else class="card-container">
                 <div v-for="item in tabData[activeTab].data" :key="item.id" class="card">
                   <!-- Card content -->
-                   gvwikeogn4egnwoiugn
+                  <p>{{tabData[activeTab].data}}</p>
                 </div>
               </div>
               <div v-if="tabData[activeTab].data.length === 0 && !tabData[activeTab].loading && !tabData[activeTab].error">
@@ -1041,6 +1041,7 @@
               <!-- For card view -->
               <div v-else class="card-container">
                 <div v-for="item in tabData[activeTab].data" :key="item.id" class="card">
+                  <p>{{tabData[activeTab].data}}</p>
                   <!-- Card content -->
                 </div>
               </div>
@@ -1094,6 +1095,8 @@
               <div v-else class="card-container">
                 <div v-for="item in tabData[activeTab].data" :key="item.id" class="card">
                   <!-- Card content -->
+                  <p>{{tabData[activeTab].data}}</p>
+
                 </div>
               </div>
             </div>
