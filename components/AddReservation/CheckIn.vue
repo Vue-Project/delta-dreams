@@ -1,5 +1,6 @@
 <template>
   <section class="checkIn-reservations">
+    <h1>{{filteredNames}}</h1>
 
     <div class="card">
       <h5 class="card-header">

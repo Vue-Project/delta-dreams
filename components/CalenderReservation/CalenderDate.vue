@@ -2,6 +2,8 @@
   <section class="card">
     <Loader :visible="isLoading" />
 
+
+
     <!-- Content (visible only after data is fetched) -->
     <div v-if="!isLoading">
       <HeaderCalender :statistics="statisticsHeaderCalender" />
@@ -339,13 +341,35 @@ export default {
   },
 
   methods: {
+    generateEvents() {
+    this.eventData = [];
+    this.data.forEach((building) => {
+      building.units.data.forEach((unit) => {
+        unit.dates.forEach((dateStr) => {
+          const event = {
+            start: dateStr,
+            resourceId: `${building.name}-${unit.code}`,
+            price: unit.price, // Ensure price is correctly referenced
+            title: unit.code,
+          };
+          this.eventData.push(event);
+        });
+      });
+    });
+  },
     goToAddReservation() {
   this.$store.commit('setSelectedDates', this.selectedDates);
   this.$store.commit('setSelectedResourceName', this.selectedResourceName);
+  this.$store.dispatch('allowAccess')
+  this.$router.push('/add-reservation')
+  // this.$router.push('/secret')
 
   // Navigate to the add-reservation page
-  this.$router.push({ name: 'add-reservation' });
+  // this.$router.push({ name: '' });
+  // this.$router.push('/secret')
+
 },
+
 
 
 
