@@ -27,7 +27,7 @@
           <div class="col">
             <div class="me-2">
               <h6>Booking Date</h6>
-              <small class="text-muted">{{ reservationDataById.booking_source.created_at || 'foebngui4enbgui' }} </small>
+              <small class="text-muted">{{ reservationDataById.booking_source || "02/12/2024"}} </small>
             </div>
           </div>
           <div class="col">

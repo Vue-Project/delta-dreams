@@ -1,10 +1,8 @@
 <template>
   <div class="row mx-auto my-3">
-    <!-- <p> {{ reservations }}
-    </p> -->
+
     <div class="col-md-12">
       <HeaderReservation>
-
         <template #button>
           <li class="nav-item" role="presentation">
             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-Reservations" role="tab" aria-selected="false" tabindex="-1" :class="{ active: activeTab === 'reservations' }" @click.prevent="selectTab('reservations')">
@@ -168,9 +166,7 @@
                     </div>
                     <div class="row mt-4">
                       <div class="col-md-4">
-                        <!-- <NuxtLink :to="{ path: `/edits-reservation/${selectedCard.id}` }" type="button" class="btn btn-primary waves-effect waves-light btn-block">
-                          Edit
-                        </NuxtLink> -->
+
                         <button type="button" class="btn btn-primary waves-effect waves-light btn-block" @click="navigateToEditReservation(selectedCard.id)"> Edit</button>
 
 
@@ -336,8 +332,8 @@
                                 <div class="me-2">
                                   <h6 class="mb-0">Reservation Number</h6>
                                   <small class="text-muted">{{
-                                    selectedCard.reservationNo
-                                  }}</small>
+                                    selectedCard.reservationNo || "1025191591"
+                                    }}</small>
                                 </div>
                               </div>
                             </div>
@@ -347,8 +343,8 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Arrival Date</h6>
-                                  <small class="text-muted">{{ selectedCard.arrivalDate }}
-                                    {{ selectedCard.arrivalTime }}</small>
+                                  <small class="text-muted">{{ selectedCard.checkin_date || "2024-10-21" }}
+                                    {{ selectedCard.checkin_time || "12:00 PM" }}</small>
                                 </div>
                               </div>
                             </div>
@@ -358,8 +354,8 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Booking Date</h6>
-                                  <small class="text-muted">{{ selectedCard.bookingDate }}
-                                    {{ selectedCard.bookingTime }}</small>
+                                  <small class="text-muted">{{ selectedCard.checkout_date || "2024-10-21" }}
+                                    {{ selectedCard.checkout_time || "12:00 PM" }}</small>
                                 </div>
                               </div>
                             </div>
@@ -370,7 +366,7 @@
                                 <div class="me-2">
                                   <h6 class="mb-0">Room Number</h6>
                                   <small class="text-muted">
-                                    {{ selectedCard.roomNumber }}</small>
+                                    {{ selectedCard.number_of_rooms || 5 }}</small>
                                 </div>
                               </div>
                             </div>
@@ -398,8 +394,8 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Departure Date</h6>
-                                  <small class="text-muted">{{ selectedCard.departureDate }}
-                                    {{ selectedCard.departureTime }}</small>
+                                  <small class="text-muted">{{ selectedCard.departureDate || "2024-10-21" }}
+                                    {{ selectedCard.departureTime ||  "12:00 PM" }}</small>
                                 </div>
                               </div>
                             </div>
@@ -409,7 +405,7 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Status</h6>
-                                  <small class="text-muted badge bg-label-danger ms-1">{{ selectedCard.status }}
+                                  <small class="text-muted badge bg-label-danger ms-1">{{ selectedCard.status || "Pending" }}
                                   </small>
                                 </div>
                               </div>
@@ -420,7 +416,7 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Room Type</h6>
-                                  <small class="text-muted">{{ selectedCard.roomType }}
+                                  <small class="text-muted">{{ selectedCard.roomType  ||'Suite شاليهات بخدمات فندقية غرفتين وصاله' }}
                                   </small>
                                 </div>
                               </div>
@@ -432,7 +428,7 @@
                                 <div class="me-2">
                                   <h6 class="mb-0">Rate Plan</h6>
                                   <small class="text-muted">
-                                    {{ selectedCard.ratePlan }}</small>
+                                    {{ selectedCard.ratePlan || "السعر غير شامل" }}</small>
                                 </div>
                               </div>
                             </div>
@@ -442,7 +438,7 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Avg. Daily Rate</h6>
-                                  <small class="text-muted">{{ selectedCard.dailyRate }}
+                                  <small class="text-muted">{{ selectedCard.dailyRate  || '£ 1,350.00'}}
                                   </small>
                                 </div>
                               </div>
@@ -527,8 +523,8 @@
                                 <div class="me-2">
                                   <h6 class="mb-0">Reservation Number</h6>
                                   <small class="text-muted">{{
-                                    selectedCard.reservationNo
-                                  }}</small>
+                                    selectedCard.reservationNo || "1025191591"
+                                    }}</small>
                                 </div>
                               </div>
                             </div>
@@ -538,8 +534,8 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Arrival Date</h6>
-                                  <small class="text-muted">{{ selectedCard.arrivalDate }}
-                                    {{ selectedCard.arrivalTime }}</small>
+                                  <small class="text-muted">{{ selectedCard.checkin_date || "2024-10-21" }}
+                                    {{ selectedCard.checkin_time || "12:00 PM" }}</small>
                                 </div>
                               </div>
                             </div>
@@ -549,8 +545,8 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Booking Date</h6>
-                                  <small class="text-muted">{{ selectedCard.bookingDate }}
-                                    {{ selectedCard.bookingTime }}</small>
+                                  <small class="text-muted">{{ selectedCard.checkout_date || "2024-10-21" }}
+                                    {{ selectedCard.checkout_time || "12:00 PM" }}</small>
                                 </div>
                               </div>
                             </div>
@@ -561,7 +557,7 @@
                                 <div class="me-2">
                                   <h6 class="mb-0">Room Number</h6>
                                   <small class="text-muted">
-                                    {{ selectedCard.roomNumber }}</small>
+                                    {{ selectedCard.number_of_rooms || 5 }}</small>
                                 </div>
                               </div>
                             </div>
@@ -589,8 +585,8 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Departure Date</h6>
-                                  <small class="text-muted">{{ selectedCard.departureDate }}
-                                    {{ selectedCard.departureTime }}</small>
+                                  <small class="text-muted">{{ selectedCard.departureDate || "2024-10-21" }}
+                                    {{ selectedCard.departureTime ||  "12:00 PM" }}</small>
                                 </div>
                               </div>
                             </div>
@@ -600,7 +596,7 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Status</h6>
-                                  <small class="text-muted badge bg-label-danger ms-1">{{ selectedCard.status }}
+                                  <small class="text-muted badge bg-label-danger ms-1">{{ selectedCard.status || "Pending" }}
                                   </small>
                                 </div>
                               </div>
@@ -611,7 +607,7 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Room Type</h6>
-                                  <small class="text-muted">{{ selectedCard.roomType }}
+                                  <small class="text-muted">{{ selectedCard.roomType  ||'Suite شاليهات بخدمات فندقية غرفتين وصاله' }}
                                   </small>
                                 </div>
                               </div>
@@ -623,7 +619,7 @@
                                 <div class="me-2">
                                   <h6 class="mb-0">Rate Plan</h6>
                                   <small class="text-muted">
-                                    {{ selectedCard.ratePlan }}</small>
+                                    {{ selectedCard.ratePlan || "السعر غير شامل" }}</small>
                                 </div>
                               </div>
                             </div>
@@ -633,7 +629,7 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Avg. Daily Rate</h6>
-                                  <small class="text-muted">{{ selectedCard.dailyRate }}
+                                  <small class="text-muted">{{ selectedCard.dailyRate  || '£ 1,350.00'}}
                                   </small>
                                 </div>
                               </div>
@@ -700,8 +696,8 @@
                                 <div class="me-2">
                                   <h6 class="mb-0">Reservation Number</h6>
                                   <small class="text-muted">{{
-                                    selectedCard.reservationNo
-                                  }}</small>
+                                    selectedCard.reservationNo || "1025191591"
+                                    }}</small>
                                 </div>
                               </div>
                             </div>
@@ -711,8 +707,8 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Arrival Date</h6>
-                                  <small class="text-muted">{{ selectedCard.arrivalDate }}
-                                    {{ selectedCard.arrivalTime }}</small>
+                                  <small class="text-muted">{{ selectedCard.checkin_date || "2024-10-21" }}
+                                    {{ selectedCard.checkin_time || "12:00 PM" }}</small>
                                 </div>
                               </div>
                             </div>
@@ -722,8 +718,8 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Booking Date</h6>
-                                  <small class="text-muted">{{ selectedCard.bookingDate }}
-                                    {{ selectedCard.bookingTime }}</small>
+                                  <small class="text-muted">{{ selectedCard.checkout_date || "2024-10-21" }}
+                                    {{ selectedCard.checkout_time || "12:00 PM" }}</small>
                                 </div>
                               </div>
                             </div>
@@ -734,7 +730,7 @@
                                 <div class="me-2">
                                   <h6 class="mb-0">Room Number</h6>
                                   <small class="text-muted">
-                                    {{ selectedCard.roomNumber }}</small>
+                                    {{ selectedCard.number_of_rooms || 5 }}</small>
                                 </div>
                               </div>
                             </div>
@@ -762,8 +758,8 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Departure Date</h6>
-                                  <small class="text-muted">{{ selectedCard.departureDate }}
-                                    {{ selectedCard.departureTime }}</small>
+                                  <small class="text-muted">{{ selectedCard.departureDate || "2024-10-21" }}
+                                    {{ selectedCard.departureTime ||  "12:00 PM" }}</small>
                                 </div>
                               </div>
                             </div>
@@ -773,7 +769,7 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Status</h6>
-                                  <small class="text-muted badge bg-label-danger ms-1">{{ selectedCard.status }}
+                                  <small class="text-muted badge bg-label-danger ms-1">{{ selectedCard.status || "Pending" }}
                                   </small>
                                 </div>
                               </div>
@@ -784,7 +780,7 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Room Type</h6>
-                                  <small class="text-muted">{{ selectedCard.roomType }}
+                                  <small class="text-muted">{{ selectedCard.roomType  ||'Suite شاليهات بخدمات فندقية غرفتين وصاله' }}
                                   </small>
                                 </div>
                               </div>
@@ -796,7 +792,7 @@
                                 <div class="me-2">
                                   <h6 class="mb-0">Rate Plan</h6>
                                   <small class="text-muted">
-                                    {{ selectedCard.ratePlan }}</small>
+                                    {{ selectedCard.ratePlan || "السعر غير شامل" }}</small>
                                 </div>
                               </div>
                             </div>
@@ -806,7 +802,7 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Avg. Daily Rate</h6>
-                                  <small class="text-muted">{{ selectedCard.dailyRate }}
+                                  <small class="text-muted">{{ selectedCard.dailyRate  || '£ 1,350.00'}}
                                   </small>
                                 </div>
                               </div>
@@ -866,7 +862,9 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Reservation Number</h6>
-                                  <small class="text-muted">{{ selectedCard.Reservation || "14541" }}</small>
+                                  <small class="text-muted">{{
+                                    selectedCard.reservationNo || "1025191591"
+                                    }}</small>
                                 </div>
                               </div>
                             </div>
@@ -876,8 +874,8 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Arrival Date</h6>
-                                  <small class="text-muted">{{ selectedCard.checkin_date }} </small>
-                                  <small class="text-muted">{{ selectedCard.checkin_time || "14.00.00" }} </small>
+                                  <small class="text-muted">{{ selectedCard.checkin_date || "2024-10-21" }}
+                                    {{ selectedCard.checkin_time || "12:00 PM" }}</small>
                                 </div>
                               </div>
                             </div>
@@ -887,8 +885,8 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Booking Date</h6>
-                                  <small class="text-muted">{{ selectedCard.bookingDate || "2024-11-28" }}
-                                    {{ selectedCard.bookingTime || "" }}</small>
+                                  <small class="text-muted">{{ selectedCard.checkout_date || "2024-10-21" }}
+                                    {{ selectedCard.checkout_time || "12:00 PM" }}</small>
                                 </div>
                               </div>
                             </div>
@@ -899,7 +897,7 @@
                                 <div class="me-2">
                                   <h6 class="mb-0">Room Number</h6>
                                   <small class="text-muted">
-                                    {{ selectedCard.roomNumber || "4" }}</small>
+                                    {{ selectedCard.number_of_rooms || 5 }}</small>
                                 </div>
                               </div>
                             </div>
@@ -927,8 +925,8 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Departure Date</h6>
-                                  <small class="text-muted">{{ selectedCard.checkout_date }}
-                                    {{ selectedCard.checkout_time || '14.00.00' }}</small>
+                                  <small class="text-muted">{{ selectedCard.departureDate || "2024-10-21" }}
+                                    {{ selectedCard.departureTime ||  "12:00 PM" }}</small>
                                 </div>
                               </div>
                             </div>
@@ -938,7 +936,7 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Status</h6>
-                                  <small class="text-muted badge bg-label-danger ms-1">{{ selectedCard.status || "Stayover" }}
+                                  <small class="text-muted badge bg-label-danger ms-1">{{ selectedCard.status || "Pending" }}
                                   </small>
                                 </div>
                               </div>
@@ -949,7 +947,7 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Room Type</h6>
-                                  <small class="text-muted">{{ selectedCard.roomType || "Suite الفندق غرفتين وصاله" }}
+                                  <small class="text-muted">{{ selectedCard.roomType  ||'Suite شاليهات بخدمات فندقية غرفتين وصاله' }}
                                   </small>
                                 </div>
                               </div>
@@ -971,7 +969,7 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Avg. Daily Rate</h6>
-                                  <small class="text-muted">{{ selectedCard.dailyRate || "0.00$" }}
+                                  <small class="text-muted">{{ selectedCard.dailyRate  || '£ 1,350.00'}}
                                   </small>
                                 </div>
                               </div>
@@ -1006,67 +1004,9 @@
           </div>
         </template>
         <template #content>
-          <div class="tab-pane fade active show" id="form-tabs-Reservations" role="tabpanel" >
-            <div v-if="tabData[activeTab].loading">Loading...</div>
-            <div v-else-if="tabData[activeTab].error">Error fetching data: {{ tabData[activeTab].error.message }}</div>
-            <div v-else>
-              <!-- Display data based on viewMode -->
-              <!-- For list view -->
-              <table v-if="viewMode === 'list'">
-                <!-- Table rows using tabData[activeTab].data -->
-                 begb4uiob4iugbu
-              </table>
-              <!-- For card view -->
-              <div v-else class="card-container">
-                <div v-for="item in tabData[activeTab].data" :key="item.id" class="card">
-                  <!-- Card content -->
-                  <p>{{tabData[activeTab].data}}</p>
-                </div>
-              </div>
-              <div v-if="tabData[activeTab].data.length === 0 && !tabData[activeTab].loading && !tabData[activeTab].error">
-  No data available for this tab.
-</div>
-            </div>
-          </div>
-          <!-- Arrivals  -->
-          <div class="tab-pane fade" id="form-tabs-Arrivals" role="tabpanel">
-            <div v-if="tabData[activeTab].loading">Loading...</div>
-            <div v-else-if="tabData[activeTab].error">Error fetching data: {{ tabData[activeTab].error.message }}</div>
-            <div v-else>
-              <!-- Display data based on viewMode -->
-              <!-- For list view -->
-              <table v-if="viewMode === 'list'">
-                <!-- Table rows using tabData[activeTab].data -->
-              </table>
-              <!-- For card view -->
-              <div v-else class="card-container">
-                <div v-for="item in tabData[activeTab].data" :key="item.id" class="card">
-                  <p>{{tabData[activeTab].data}}</p>
-                  <!-- Card content -->
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- Departures  -->
-          <div class="tab-pane fade" id="form-tabs-Departures" role="tabpanel">
-            <div v-if="tabData[activeTab].loading">Loading...</div>
-            <div v-else-if="tabData[activeTab].error">Error fetching data: {{ tabData[activeTab].error.message }}</div>
-            <div v-else>
-              <!-- Display data based on viewMode -->
-              <!-- For list view -->
-              <table v-if="viewMode === 'list'">
-                <!-- Table rows using tabData[activeTab].data -->
-              </table>
-              <!-- For card view -->
-              <div v-else class="card-container">
-                <div v-for="item in tabData[activeTab].data" :key="item.id" class="card">
-                  <!-- Card content -->
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- In-house  -->
-          <div class="tab-pane fade" id="form-tabs-In-house" role="tabpanel">
+          <!-- reservations  -->
+
+          <div class="tab-pane fade active show" id="form-tabs-Reservations" role="tabpanel">
             <div class="row">
               <div v-if="viewMode === 'list'" class="table-responsive text-nowrap" style="overflow: visible; cursor: pointer;">
                 <table class="table">
@@ -1083,24 +1023,8 @@
                     </tr>
                   </thead>
                   <tbody class="table-border-bottom-0">
-                    <div v-if="tabData[activeTab].loading">Loading...</div>
-            <div v-else-if="tabData[activeTab].error">Error fetching data: {{ tabData[activeTab].error.message }}</div>
-            <div v-else>
-              <!-- Display data based on viewMode -->
-              <!-- For list view -->
-              <table v-if="viewMode === 'list'">
-                <!-- Table rows using tabData[activeTab].data -->
-              </table>
-              <!-- For card view -->
-              <div v-else class="card-container">
-                <div v-for="item in tabData[activeTab].data" :key="item.id" class="card">
-                  <!-- Card content -->
-                  <p>{{tabData[activeTab].data}}</p>
 
-                </div>
-              </div>
-            </div>
-                    <!-- <tr @click="openOffcanvas(card)" v-for="card in reservations" :key="card.id">
+                    <tr @click="openOffcanvas(card)" v-for="card in reservations" :key="card.id">
                       <td>
                         <h5 class=" m-0 me-2">{{ card.reserved_by.name }}</h5>
                         <div>
@@ -1147,7 +1071,7 @@
                           </ul>
                         </div>
                       </td>
-                    </tr> -->
+                    </tr>
 
 
 
@@ -1155,8 +1079,7 @@
                 </table>
 
               </div>
-
-              <!-- <div v-else class="col-12 col-md-6 col-lg-4 mb-4 order-1 order-xl-0 cursor-pointer" @click="openOffcanvas(card)" v-for="card in reservations" :key="card.id">
+              <div v-else class="col-12 col-md-6 col-lg-4 mb-4 order-1 order-xl-0 cursor-pointer" @click="openOffcanvas(card)" v-for="card in reservations" :key="card.id">
                 <div class="card h-100">
                   <div class="card-header d-flex align-items-center justify-content-between">
                     <div class="card-title mb-0 d-flex">
@@ -1227,7 +1150,454 @@
                     </div>
                   </div>
                 </div>
-              </div> -->
+              </div>
+            </div>
+          </div>
+          <!-- Arrivals  -->
+          <div class="tab-pane fade" id="form-tabs-Arrivals" role="tabpanel">
+            <div class="tab-pane fade active show" id="form-tabs-Reservations" role="tabpanel">
+              <div class="row">
+                <div v-if="viewMode === 'list'" class="table-responsive text-nowrap" style="overflow: visible; cursor: pointer;">
+                  <table class="table">
+                    <thead class="table-light">
+                      <tr>
+                        <th>Guest Name</th>
+                        <th>Res. No. Voucher No</th>
+                        <th>Arrival</th>
+                        <th>Departure</th>
+                        <th>Room Details</th>
+                        <th>Total ($)</th>
+                        <th>Paid ($)</th>
+                        <th>Balance ($)</th>
+                      </tr>
+                    </thead>
+                    <tbody class="table-border-bottom-0">
+
+                      <tr @click="openOffcanvas(card)" v-for="card in reservations" :key="card.id">
+                        <td>
+                          <h5 class=" m-0 me-2">{{ card.reserved_by.name }}</h5>
+                          <div>
+                            <i class="fa-solid fa-person"></i>{{ card.children || '0' }}
+                            <i class="fa-solid fa-child"></i>{{ card.adults || '0' }}
+                          </div>
+                        </td>
+                        <td>
+                          <p class="m-0 me-2">{{ card.Voucher || '14541' }}</p>
+                        </td>
+                        <td>
+                          <p class="m-0 me-2">{{ card.checkin_date }}</p>
+                          <p class="m-0 me-2">{{ card.checkin_time }}</p>
+                        </td>
+                        <td>
+                          <p class="m-0 me-2">{{ card.checkout_date }}</p>
+                          <p class="m-0 me-2">{{ card.checkout_time }}</p>
+                        </td>
+                        <td>
+                          <p class="m-0 me-2">{{ card.room_details || '104 - Suite الفندق غرفتين وصاله' }}</p>
+                        </td>
+                        <td>
+                          <p class="m-0 me-2">{{ card.total || '0.00' }}$</p>
+                        </td>
+                        <td>
+                          <p class="m-0 me-2">{{ card.paid || '0.00' }}$</p>
+                        </td>
+                        <td class="d-flex justify-content-between border-bottom-0">
+                          <p class="m-0 me-2 text-danger">{{ card.balance || '0.00' }}$</p>
+                          <div class="btn-group " id="hover-dropdown-demo" @mouseenter="toggleMenu(card.id, true)" @mouseleave="toggleMenu(card.id, false)">
+                            <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none">
+                              <i class="fa-solid fa-ellipsis-vertical"></i>
+                            </button>
+                            <ul v-show="hoveredMenu[card.id]" class="dropdown-menu show right-0" data-popper-placement="bottom-end">
+                              <li>
+                                <a class="dropdown-item" href="#"><i class="fa-solid fa-file-circle-plus mr-2"></i>Print Invoice</a>
+                              </li>
+                              <li>
+                                <a class="dropdown-item" href="#"><i class="fa-solid fa-calendar-plus mr-2"></i>Add New Booking</a>
+                              </li>
+                              <li>
+                                <a class="dropdown-item" href="#"><i class="fa-solid fa-list-check mr-2"></i>Audit Trail</a>
+                              </li>
+                            </ul>
+                          </div>
+                        </td>
+                      </tr>
+
+
+
+                    </tbody>
+                  </table>
+
+                </div>
+                <div v-else class="col-12 col-md-6 col-lg-4 mb-4 order-1 order-xl-0 cursor-pointer" @click="openOffcanvas(card)" v-for="card in reservations" :key="card.id">
+                  <div class="card h-100">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                      <div class="card-title mb-0 d-flex">
+                        <i class="text-primary fa-solid fa-hotel fs-3 mr-2 mb-2"></i>
+                        <h5 class="m-0 me-2">{{ card.reserved_by.name }}</h5>
+                        <p>{{ card.id }}</p>
+                      </div>
+                      <div class="btn-group" id="hover-dropdown-demo" @mouseenter="toggleMenu(card.id, true)" @mouseleave="toggleMenu(card.id, false)">
+                        <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none">
+                          <i class="fa-solid fa-ellipsis-vertical"></i>
+                        </button>
+                        <ul v-show="hoveredMenu[card.id]" class="dropdown-menu show" data-popper-placement="bottom-end">
+                          <li>
+                            <a class="dropdown-item" href="#"><i class="fa-solid fa-file-circle-plus mr-2"></i>Print Invoice</a>
+                          </li>
+                          <li>
+                            <a class="dropdown-item" href="#"><i class="fa-solid fa-calendar-plus mr-2"></i>Add New Booking</a>
+                          </li>
+                          <li>
+                            <a class="dropdown-item" href="#"><i class="fa-solid fa-list-check mr-2"></i>Audit Trail</a>
+                          </li>
+                        </ul>
+                      </div>
+
+
+                    </div>
+                    <div class="card-body">
+                      <div id="deliveryExceptionsChart">
+                        <div class="row d-flex align-items-center justify-content-center text-center mb-3">
+                          <div class="bg-light col-md-5">
+                            <div class="text-dark">{{ card.checkin_date }}</div>
+                            <div>{{ card.checkin_time || '00:00:00' }}</div>
+                          </div>
+                          <div class="bg-secondary col-md-2">
+                            <div class="text-dark"> {{ (new Date(card.checkout_date) - new Date(card.checkin_date)) / (1000 * 3600 * 24) }}
+                            </div>
+                            <div>Nights</div>
+                          </div>
+                          <div class="bg-light col-md-5">
+                            <div class="text-dark"> {{ card.checkout_date }}</div>
+                            <div> {{ card.checkout_time || '15:00:00' }}</div>
+                          </div>
+                        </div>
+                        <div class="row mb-5">
+                          <div class="col-md-10">
+                            <div>Booking Date</div>
+                            <div>{{ 'card.booking_source[0] ' || "2024-12-02T07:43:11.000000Z" }}</div>
+                          </div>
+                          <div class="col-md-2">
+                            <div>
+                              <i class="fa-solid fa-person"></i>{{ card.children || '0' }}
+                              <i class="fa-solid fa-child"></i>{{ card.adults || '0' }}
+                            </div>
+                          </div>
+                          <div class="col-md-12">
+                            <div>Room / Rate Type</div>
+                            <div>202 / السعر غير شامل</div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-10">Total</div>
+                          <div class="col-md-2">$230</div>
+                          <div class="col-md-10">Paid</div>
+                          <div class="col-md-2">$250</div>
+                          <div class="col-md-10 text-danger">Balance</div>
+                          <div class="col-md-2 text-danger">$20</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Departures  -->
+          <div class="tab-pane fade" id="form-tabs-Departures" role="tabpanel">
+            <div class="tab-pane fade active show" id="form-tabs-Reservations" role="tabpanel">
+              <div class="row">
+                <div v-if="viewMode === 'list'" class="table-responsive text-nowrap" style="overflow: visible; cursor: pointer;">
+                  <table class="table">
+                    <thead class="table-light">
+                      <tr>
+                        <th>Guest Name</th>
+                        <th>Res. No. Voucher No</th>
+                        <th>Arrival</th>
+                        <th>Departure</th>
+                        <th>Room Details</th>
+                        <th>Total ($)</th>
+                        <th>Paid ($)</th>
+                        <th>Balance ($)</th>
+                      </tr>
+                    </thead>
+                    <tbody class="table-border-bottom-0">
+
+                      <tr @click="openOffcanvas(card)" v-for="card in reservations" :key="card.id">
+                        <td>
+                          <h5 class=" m-0 me-2">{{ card.reserved_by.name }}</h5>
+                          <div>
+                            <i class="fa-solid fa-person"></i>{{ card.children || '0' }}
+                            <i class="fa-solid fa-child"></i>{{ card.adults || '0' }}
+                          </div>
+                        </td>
+                        <td>
+                          <p class="m-0 me-2">{{ card.Voucher || '14541' }}</p>
+                        </td>
+                        <td>
+                          <p class="m-0 me-2">{{ card.checkin_date }}</p>
+                          <p class="m-0 me-2">{{ card.checkin_time }}</p>
+                        </td>
+                        <td>
+                          <p class="m-0 me-2">{{ card.checkout_date }}</p>
+                          <p class="m-0 me-2">{{ card.checkout_time }}</p>
+                        </td>
+                        <td>
+                          <p class="m-0 me-2">{{ card.room_details || '104 - Suite الفندق غرفتين وصاله' }}</p>
+                        </td>
+                        <td>
+                          <p class="m-0 me-2">{{ card.total || '0.00' }}$</p>
+                        </td>
+                        <td>
+                          <p class="m-0 me-2">{{ card.paid || '0.00' }}$</p>
+                        </td>
+                        <td class="d-flex justify-content-between border-bottom-0">
+                          <p class="m-0 me-2 text-danger">{{ card.balance || '0.00' }}$</p>
+                          <div class="btn-group " id="hover-dropdown-demo" @mouseenter="toggleMenu(card.id, true)" @mouseleave="toggleMenu(card.id, false)">
+                            <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none">
+                              <i class="fa-solid fa-ellipsis-vertical"></i>
+                            </button>
+                            <ul v-show="hoveredMenu[card.id]" class="dropdown-menu show right-0" data-popper-placement="bottom-end">
+                              <li>
+                                <a class="dropdown-item" href="#"><i class="fa-solid fa-file-circle-plus mr-2"></i>Print Invoice</a>
+                              </li>
+                              <li>
+                                <a class="dropdown-item" href="#"><i class="fa-solid fa-calendar-plus mr-2"></i>Add New Booking</a>
+                              </li>
+                              <li>
+                                <a class="dropdown-item" href="#"><i class="fa-solid fa-list-check mr-2"></i>Audit Trail</a>
+                              </li>
+                            </ul>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                </div>
+                <div v-else class="col-12 col-md-6 col-lg-4 mb-4 order-1 order-xl-0 cursor-pointer" @click="openOffcanvas(card)" v-for="card in reservations" :key="card.id">
+                  <div class="card h-100">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                      <div class="card-title mb-0 d-flex">
+                        <i class="text-primary fa-solid fa-hotel fs-3 mr-2 mb-2"></i>
+                        <h5 class="m-0 me-2">{{ card.reserved_by.name }}</h5>
+                        <p>{{ card.id }}</p>
+                      </div>
+                      <div class="btn-group" id="hover-dropdown-demo" @mouseenter="toggleMenu(card.id, true)" @mouseleave="toggleMenu(card.id, false)">
+                        <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none">
+                          <i class="fa-solid fa-ellipsis-vertical"></i>
+                        </button>
+                        <ul v-show="hoveredMenu[card.id]" class="dropdown-menu show" data-popper-placement="bottom-end">
+                          <li>
+                            <a class="dropdown-item" href="#"><i class="fa-solid fa-file-circle-plus mr-2"></i>Print Invoice</a>
+                          </li>
+                          <li>
+                            <a class="dropdown-item" href="#"><i class="fa-solid fa-calendar-plus mr-2"></i>Add New Booking</a>
+                          </li>
+                          <li>
+                            <a class="dropdown-item" href="#"><i class="fa-solid fa-list-check mr-2"></i>Audit Trail</a>
+                          </li>
+                        </ul>
+                      </div>
+
+
+                    </div>
+                    <div class="card-body">
+                      <div id="deliveryExceptionsChart">
+                        <div class="row d-flex align-items-center justify-content-center text-center mb-3">
+                          <div class="bg-light col-md-5">
+                            <div class="text-dark">{{ card.checkin_date }}</div>
+                            <div>{{ card.checkin_time || '00:00:00' }}</div>
+                          </div>
+                          <div class="bg-secondary col-md-2">
+                            <div class="text-dark"> {{ (new Date(card.checkout_date) - new Date(card.checkin_date)) / (1000 * 3600 * 24) }}
+                            </div>
+                            <div>Nights</div>
+                          </div>
+                          <div class="bg-light col-md-5">
+                            <div class="text-dark"> {{ card.checkout_date }}</div>
+                            <div> {{ card.checkout_time || '15:00:00' }}</div>
+                          </div>
+                        </div>
+                        <div class="row mb-5">
+                          <div class="col-md-10">
+                            <div>Booking Date</div>
+                            <div>{{ 'card.booking_source[0] ' || "2024-12-02T07:43:11.000000Z" }}</div>
+                          </div>
+                          <div class="col-md-2">
+                            <div>
+                              <i class="fa-solid fa-person"></i>{{ card.children || '0' }}
+                              <i class="fa-solid fa-child"></i>{{ card.adults || '0' }}
+                            </div>
+                          </div>
+                          <div class="col-md-12">
+                            <div>Room / Rate Type</div>
+                            <div>202 / السعر غير شامل</div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-10">Total</div>
+                          <div class="col-md-2">$230</div>
+                          <div class="col-md-10">Paid</div>
+                          <div class="col-md-2">$250</div>
+                          <div class="col-md-10 text-danger">Balance</div>
+                          <div class="col-md-2 text-danger">$20</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- In-house  -->
+          <div class="tab-pane fade" id="form-tabs-In-house" role="tabpanel">
+            <div class="tab-pane fade active show" id="form-tabs-Reservations" role="tabpanel">
+              <div class="row">
+                <div v-if="viewMode === 'list'" class="table-responsive text-nowrap" style="overflow: visible; cursor: pointer;">
+                  <table class="table">
+                    <thead class="table-light">
+                      <tr>
+                        <th>Guest Name</th>
+                        <th>Res. No. Voucher No</th>
+                        <th>Arrival</th>
+                        <th>Departure</th>
+                        <th>Room Details</th>
+                        <th>Total ($)</th>
+                        <th>Paid ($)</th>
+                        <th>Balance ($)</th>
+                      </tr>
+                    </thead>
+                    <tbody class="table-border-bottom-0">
+
+                      <tr @click="openOffcanvas(card)" v-for="card in reservations" :key="card.id">
+                        <td>
+                          <h5 class=" m-0 me-2">{{ card.reserved_by.name }}</h5>
+                          <div>
+                            <i class="fa-solid fa-person"></i>{{ card.children || '0' }}
+                            <i class="fa-solid fa-child"></i>{{ card.adults || '0' }}
+                          </div>
+                        </td>
+                        <td>
+                          <p class="m-0 me-2">{{ card.Voucher || '14541' }}</p>
+                        </td>
+                        <td>
+                          <p class="m-0 me-2">{{ card.checkin_date }}</p>
+                          <p class="m-0 me-2">{{ card.checkin_time }}</p>
+                        </td>
+                        <td>
+                          <p class="m-0 me-2">{{ card.checkout_date }}</p>
+                          <p class="m-0 me-2">{{ card.checkout_time }}</p>
+                        </td>
+                        <td>
+                          <p class="m-0 me-2">{{ card.room_details || '104 - Suite الفندق غرفتين وصاله' }}</p>
+                        </td>
+                        <td>
+                          <p class="m-0 me-2">{{ card.total || '0.00' }}$</p>
+                        </td>
+                        <td>
+                          <p class="m-0 me-2">{{ card.paid || '0.00' }}$</p>
+                        </td>
+                        <td class="d-flex justify-content-between border-bottom-0">
+                          <p class="m-0 me-2 text-danger">{{ card.balance || '0.00' }}$</p>
+                          <div class="btn-group " id="hover-dropdown-demo" @mouseenter="toggleMenu(card.id, true)" @mouseleave="toggleMenu(card.id, false)">
+                            <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none">
+                              <i class="fa-solid fa-ellipsis-vertical"></i>
+                            </button>
+                            <ul v-show="hoveredMenu[card.id]" class="dropdown-menu show right-0" data-popper-placement="bottom-end">
+                              <li>
+                                <a class="dropdown-item" href="#"><i class="fa-solid fa-file-circle-plus mr-2"></i>Print Invoice</a>
+                              </li>
+                              <li>
+                                <a class="dropdown-item" href="#"><i class="fa-solid fa-calendar-plus mr-2"></i>Add New Booking</a>
+                              </li>
+                              <li>
+                                <a class="dropdown-item" href="#"><i class="fa-solid fa-list-check mr-2"></i>Audit Trail</a>
+                              </li>
+                            </ul>
+                          </div>
+                        </td>
+                      </tr>
+
+
+
+                    </tbody>
+                  </table>
+
+                </div>
+                <div v-else class="col-12 col-md-6 col-lg-4 mb-4 order-1 order-xl-0 cursor-pointer" @click="openOffcanvas(card)" v-for="card in reservations" :key="card.id">
+                  <div class="card h-100">
+                    <div class="card-header d-flex align-items-center justify-content-between">
+                      <div class="card-title mb-0 d-flex">
+                        <i class="text-primary fa-solid fa-hotel fs-3 mr-2 mb-2"></i>
+                        <h5 class="m-0 me-2">{{ card.reserved_by.name }}</h5>
+                        <p>{{ card.id }}</p>
+                      </div>
+                      <div class="btn-group" id="hover-dropdown-demo" @mouseenter="toggleMenu(card.id, true)" @mouseleave="toggleMenu(card.id, false)">
+                        <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none">
+                          <i class="fa-solid fa-ellipsis-vertical"></i>
+                        </button>
+                        <ul v-show="hoveredMenu[card.id]" class="dropdown-menu show" data-popper-placement="bottom-end">
+                          <li>
+                            <a class="dropdown-item" href="#"><i class="fa-solid fa-file-circle-plus mr-2"></i>Print Invoice</a>
+                          </li>
+                          <li>
+                            <a class="dropdown-item" href="#"><i class="fa-solid fa-calendar-plus mr-2"></i>Add New Booking</a>
+                          </li>
+                          <li>
+                            <a class="dropdown-item" href="#"><i class="fa-solid fa-list-check mr-2"></i>Audit Trail</a>
+                          </li>
+                        </ul>
+                      </div>
+
+
+                    </div>
+                    <div class="card-body">
+                      <div id="deliveryExceptionsChart">
+                        <div class="row d-flex align-items-center justify-content-center text-center mb-3">
+                          <div class="bg-light col-md-5">
+                            <div class="text-dark">{{ card.checkin_date }}</div>
+                            <div>{{ card.checkin_time || '00:00:00' }}</div>
+                          </div>
+                          <div class="bg-secondary col-md-2">
+                            <div class="text-dark"> {{ (new Date(card.checkout_date) - new Date(card.checkin_date)) / (1000 * 3600 * 24) }}
+                            </div>
+                            <div>Nights</div>
+                          </div>
+                          <div class="bg-light col-md-5">
+                            <div class="text-dark"> {{ card.checkout_date }}</div>
+                            <div> {{ card.checkout_time || '15:00:00' }}</div>
+                          </div>
+                        </div>
+                        <div class="row mb-5">
+                          <div class="col-md-10">
+                            <div>Booking Date</div>
+                            <div>{{ 'card.booking_source[0] ' || "2024-12-02T07:43:11.000000Z" }}</div>
+                          </div>
+                          <div class="col-md-2">
+                            <div>
+                              <i class="fa-solid fa-person"></i>{{ card.children || '0' }}
+                              <i class="fa-solid fa-child"></i>{{ card.adults || '0' }}
+                            </div>
+                          </div>
+                          <div class="col-md-12">
+                            <div>Room / Rate Type</div>
+                            <div>202 / السعر غير شامل</div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-10">Total</div>
+                          <div class="col-md-2">$230</div>
+                          <div class="col-md-10">Paid</div>
+                          <div class="col-md-2">$250</div>
+                          <div class="col-md-10 text-danger">Balance</div>
+                          <div class="col-md-2 text-danger">$20</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -1259,17 +1629,17 @@ export default {
       reservations: [],
       reservationsCount: [],
       tabData: {
-        reservations: { data: [], loading: false, error: null },
-        arrivals: { data: [], loading: false, error: null },
-        departures: { data: [], loading: false, error: null },
-        inhouse: { data: [], loading: false, error: null }
+        reservations: { data: [],  error: null },
+        arrivals: { data: [],  error: null },
+        departures: { data: [], error: null },
+        inhouse: { data: [],  error: null }
       },
-      tabsMap :{
-  reservations: 'reservations',
-  arrivals: 'arrivals',
-  departures: 'departures',
-  inhouse: 'in_house'
-}
+      tabsMap: {
+        reservations: 'reservations',
+        arrivals: 'arrivals',
+        departures: 'departures',
+        inhouse: 'in_house'
+      }
 
     };
   },
@@ -1310,16 +1680,16 @@ export default {
     {
       this.$router.push(`/edit-reservation/${id}`);
     },
-    async fetchData (tab)
+    async GetTabData (tab)
     {
       console.log('Fetching data for tab:', tab);
 
-      this.tabData[tab].loading = true;
-      this.tabData[tab].error = null;
       const type = this.tabsMap[tab];
       try {
-        const data = await getReservationData(type);
-        this.tabData[tab].data = data;
+        const responseData = await getReservationData(type);
+        this.tabData[tab].data = responseData;
+        this.reservations = responseData.data.data;
+        this.reservationsCount = responseData.data.reservations_count;
       } catch (error) {
         this.tabData[tab].error = error;
       } finally {
@@ -1328,7 +1698,7 @@ export default {
     },
     selectTab (tab)
     {
-      console.log('selectTab', tab);
+      // console.log('selectTab', tab);
 
       this.activeTab = tab;
     }
@@ -1336,24 +1706,10 @@ export default {
 
   async mounted ()
   {
-    // try {
-    //   const [
-    //     ReservationDataResponse,
 
-    //   ] = await Promise.all([
-    //     getReservationData(),
-
-    //   ]);
-
-    //   this.reservations = ReservationDataResponse.data.data;
-    //   this.reservationsCount = ReservationDataResponse.data.reservations_count;
-
-    // } catch (error) {
-    //   console.error("Error loading data:", error);
-    // }
     const offcanvas = document.getElementById("offcanvasEnd");
     offcanvas.addEventListener("hidden.bs.offcanvas", this.resetSelections);
-    this.fetchData(this.activeTab);
+    this.GetTabData(this.activeTab);
 
   },
   beforeDestroy ()
@@ -1365,7 +1721,7 @@ export default {
   watch: {
     activeTab: function (newTab)
     {
-      this.fetchData(newTab);
+      this.GetTabData(newTab);
     }
   },
   mixins: [flatpickrMixin],
