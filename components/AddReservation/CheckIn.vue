@@ -1,6 +1,5 @@
 <template>
   <section class="checkIn-reservations">
-    <h1>{{filteredNames}}</h1>
 
     <div class="card">
       <h5 class="card-header">
@@ -398,8 +397,7 @@
 import Swal from 'sweetalert2';  // Import SweetAlert2
 import { getBookingSources, getBusinessSources, getReservationTypes, getUsers } from "../Api/api";
 import flatpickrMixin from "../Mixin/flatpickrMixin";
-import SidebarAddGuest from "../layout/Sidebar.vue";
-import axios from 'axios';
+import SidebarAddGuest from "../layout/AddGuestSidebar.vue";
 
 
 export default {
@@ -558,7 +556,7 @@ export default {
     // Reset the form
     resetForm ()
     {
-      this. formAddReservation ={
+      this.formAddReservation = {
         checkInDate: "",
         checkInTime: "",
         checkOutDate: "",
@@ -677,7 +675,7 @@ export default {
         guest_city: this.formAddReservation.guestInformation.city,
         guest_zip: this.formAddReservation.guestInformation.zip,
       };
-      console.log(bookingData);
+      // console.log(bookingData);
 
 
 
@@ -688,14 +686,15 @@ export default {
 
         // Show success message
         Swal.fire({
-  icon: "success",
-  title: "Success!",
-  text: "Reservation submitted successfully.",
-  confirmButtonText: "OK",
-}).then(() => {
-  // Navigate to index.vue (or a route associated with it)
-  this.$router.push({ name: 'index' }); // Replace 'index' with the actual route name
-});
+          icon: "success",
+          title: "Success!",
+          text: "Reservation submitted successfully.",
+          confirmButtonText: "OK",
+        }).then(() =>
+        {
+          // Navigate to index.vue (or a route associated with it)
+          this.$router.push({ name: 'index' }); // Replace 'index' with the actual route name
+        });
 
       } catch (error) {
         console.error("Error submitting booking:", error.response?.data || error.message);

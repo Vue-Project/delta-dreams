@@ -89,7 +89,7 @@ import FullCalendar from "@fullcalendar/vue";
 import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
 import interactionPlugin from "@fullcalendar/interaction";
 import HeaderCalender from "./HeaderCalender.vue";
-import SidebarBlockRoom from "../layout/Sidebar.vue";
+import SidebarBlockRoom from "../layout/AddGuestSidebar.vue";
 // import BlindingData from "../Api/data.local.json";
 import BlockRoomForm from "./BlockRoomForm.vue";
 import { getCalenderData } from "../Api/api";

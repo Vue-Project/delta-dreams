@@ -139,10 +139,10 @@ export const blockRoomService =  async (blockRoomData) =>
     }
 
   }
-export const addGuest =  async (formGuestData) =>
+export const addGuest =  async (addGuestData) =>
   {
     try{
-      const response = await apiClient.post(`/users`, formGuestData, {
+      const response = await apiClient.post(`/users`, addGuestData, {
         headers: {
           'Content-Type': 'application/json',
         }
