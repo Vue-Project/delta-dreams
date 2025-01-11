@@ -3,8 +3,6 @@
     <div class="col-md-12">
 
       <div class="card mb-3 p-3">
-
-
         <div class="row" v-for="reservationDataById in reservationsDataById" :key="reservationDataById.id">
           <div class="col">
             <div class="me-2 py-2 d-flex">
@@ -12,6 +10,7 @@
               </NuxtLink>
               <i class="text-primary fa-solid fa-hotel fs-3 mr-2 mb-2"></i>
               {{ reservationDataById.reserved_by.name }}
+              {{ reservationDataById.id }}
               <small class="text-muted ml-3">
                 <i class="fa-solid fa-person pr-2"></i>{{ reservationDataById.adults }}
                 <i class="fa-solid fa-child pr-2"></i>{{ reservationDataById.children }}</small>
@@ -27,7 +26,7 @@
           <div class="col">
             <div class="me-2">
               <h6>Booking Date</h6>
-              <small class="text-muted">{{ reservationDataById.booking_source || "02/12/2024"}} </small>
+              <small class="text-muted">{{ reservationDataById.booking_source.created_at || "02/12/2024"}} </small>
             </div>
           </div>
           <div class="col">
@@ -449,7 +448,10 @@
 
             <!-- Main Content -->
             <div class="col-9">
-              <component :is="activeComponent" @goBack="goBack" />
+              <div v-if="selectedReservationId">
+
+              <component :is="activeComponent" @goBack="goBack" :reservationId="selectedReservationId"  />
+              </div>
             </div>
           </div>
         </div>
@@ -688,6 +690,7 @@ export default {
       bookingDetailsComponent: "DefaultContentBooking",
       activeTab: null, // No tab is active by default
       reservationsDataById: [],
+      selectedReservationId: null, // Initialize as null
       selectAll: false, // Tracks the state of the master checkbox
       rows: [
         {
@@ -777,6 +780,9 @@ export default {
       ]);
 
       this.reservationsDataById = [ReservationDataByIdResponse.data.data];
+      if (this.reservationsDataById.length > 0) {
+        this.selectedReservationId = this.reservationsDataById[0].id; // Set to the first reservation's ID
+      }
 
     } catch (error) {
       console.error("Error loading data:", error);
@@ -809,6 +815,7 @@ export default {
       console.warn("Offcanvas ref not found during beforeDestroy.");
     }
   },
+
 };
 </script>
 

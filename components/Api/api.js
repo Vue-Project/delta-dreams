@@ -66,7 +66,6 @@ export const getUsers = async () =>
   }
 };
 
-
 export const getReservationData = async (type, page = 1, per_page = 10) => {
   try {
     const response = await apiClient.get('/reservations', {
@@ -127,6 +126,8 @@ export const getReservationDataById = async (id) =>
     throw error; // Rethrow the error for handling in the caller
   }
 };
+
+
 export const blockRoomService =  async (blockRoomData) =>
   {
     try{
@@ -159,6 +160,24 @@ export const addGuest =  async (addGuestData) =>
     }
 
   }
+
+export const updateGuest =  async (updateGuestData) =>
+  {
+    try{
+      const response = await apiClient.post(`/users`, updateGuestData, {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+      return response.data;
+
+    } catch (error) {
+      console.error(`Error fetching Guest:`, error);
+      throw error; // Rethrow the error for handling in the caller
+    }
+
+  }
+
 
 
 

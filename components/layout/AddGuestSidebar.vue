@@ -441,9 +441,7 @@
                         <select class="form-select" id="formGustBirthCountry" aria-label="select Birth Country" v-model="formGuest.OtherInformation.paymentMethod
                           .birthCountry
                           ">
-                          <option value="" disabled selected>
-                            Select option
-                          </option>
+
                           <option value="" disabled selected>
                             Select
                           </option>
@@ -698,9 +696,7 @@
                         <label for="NationalityGuest" class="col-form-label">Nationality</label>
                         <select class="form-select" id="formGustNationality" aria-label="select Nationality" v-model="formGuest.OtherInformation.paymentMethod.nationality
                           ">
-                          <option value="" disabled selected>
-                            Select option
-                          </option>
+
                           <option value="" disabled selected>
                             Select
                           </option>

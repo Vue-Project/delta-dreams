@@ -9,36 +9,33 @@
             <div class="col-6">
               <label for="BillTo" class="col-form-label">Bill To</label>
               <select class="form-select mb-2" id="BillTo">
-                <option value="" disabled selected>MR.</option>
-                <option value="option1">DR.</option>
-                <option value="option2">JN.</option>
-                <option value="option3">MAM.</option>
-                <option value="option4">MRs.</option>
-                <option value="option4">Ms.</option>
-                <option value="option4">Sir.</option>
-                <option value="option4">Sr.</option>
+                <option value="" disabled selected>select</option>
+                <option value="option1">Company</option>
+                <option value="option2">Guest</option>
+                <option value="option3">Group Owner</option>
+                <option value="option3">Room and Tax to Company, Extra to Guest</option>
+
               </select>
 
               <label>Payment Mode</label>
               <select class="form-select mb-2" id="PaymentMode">
-                <option value="" disabled selected>MR.</option>
-                <option value="option1">DR.</option>
-                <option value="option2">JN.</option>
-                <option value="option3">MAM.</option>
-                <option value="option4">MRs.</option>
-                <option value="option4">Ms.</option>
-                <option value="option4">Sir.</option>
-                <option value="option4">Sr.</option>
+                <option value="" disabled selected>
+                  Select
+                </option>
+                <option value="0">Cash نقدي</option>
+                <option value="1">Credit Card فيزا</option>
+                <option value="2">تحويل بنكي</option>
               </select>
 
               <label for="ReservationType" class="col-form-label">Reservation Type</label>
               <select id="ReservationType" class="select2 form-select select2-hidden-accessible mb-2" disabled="" data-select2-id="select2Disabled" tabindex="-1" aria-hidden="true">
-                <option value="1">Option1</option>
+                <option value="" disabled selected>
+                  حجز موكد </option>
                 <option value="2" selected="" data-select2-id="10">
-                  Option2
+                  حجز غير موكد
                 </option>
-                <option value="3">Option3</option>
-                <option value="4">Option4</option>
+                <option value="3">حجز ملغي </option>
+                <option value="4">غير مسموح بالحجز</option>
               </select>
             </div>
             <div class="col-6">
@@ -78,17 +75,26 @@
               <label for="MarketCode" class="col-form-label">Market Code</label>
               <select class="form-select mb-2" id="MarketCode">
                 <option value="" disabled selected>-select-</option>
-                <option value="option1">item</option>
-                <option value="option2">item</option>
+
               </select>
 
               <label for="TravelAgent" class="col-form-label">Travel Agent</label>
               <div class="input-group mb-2">
                 <select class="form-select" id="TravelAgent">
-                  <option selected="">-select-</option>
-                  <option value="1">name 1</option>
-                  <option value="2">name 2</option>
-                  <option value="3">name 3</option>
+                  <option value="" disabled selected>
+                    Select
+                  </option>
+
+
+                  <option value="0"> عبد الله سامى
+                  </option>
+                  <option value="1">samh ali</option>
+                  <option value="2"> MOHAMED</option>
+                  <option value="4">MOHAMED ABDOUMAHMOUD</option>
+                  <option value="7">جابر عبد اللطيف الحل</option>
+                  <option value="5">MOHAMED owner 85959</option>
+                  <option value="6">MOHAMED ABDOUMAHMOUD</option>
+
                 </select>
                 <button class="btn btn-outline-primary waves-effect" type="button" @click="setOffcanvasContent('addtravel', 'Add Travel Agent', '2000')">
                   <i class="fa-solid fa-user"></i>
@@ -306,10 +312,19 @@
               <label for="Company" class="col-form-label">Company</label>
               <div class="input-group">
                 <select class="form-select" id="Company" aria-label="Example select with button addon">
-                  <option selected="">-select-</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
+                  <option value="" disabled selected>
+                    Select
+                  </option>
+
+
+                  <option value="0"> عبد الله سامى
+                  </option>
+                  <option value="1">samh ali</option>
+                  <option value="2"> MOHAMED</option>
+                  <option value="4">MOHAMED ABDOUMAHMOUD</option>
+                  <option value="7">جابر عبد اللطيف الحل</option>
+                  <option value="5">MOHAMED owner 85959</option>
+                  <option value="6">MOHAMED ABDOUMAHMOUD</option>
                 </select>
                 <button class="btn btn-outline-primary waves-effect" type="button" @click="toggleSidebar('sidebar1')">
                   <i class="fa-solid fa-building"></i>
@@ -762,12 +777,16 @@
             <div class="col-6">
               <label for="BusinessSource" class="col-form-label">Business Source</label>
               <select id="BusinessSource" class="select2 form-select select2-hidden-accessible mb-3" disabled="" data-select2-id="select2Disabled" tabindex="-1" aria-hidden="true">
-                <option value="1">Option1</option>
-                <option value="2" selected="" data-select2-id="10">
-                  Option2
+
+
+                <option value="0"> عبد الله سامى
                 </option>
-                <option value="3">Option3</option>
-                <option value="4">Option4</option>
+                <option value="1">samh ali</option>
+                <option value="2"> MOHAMED</option>
+                <option value="4">MOHAMED ABDOUMAHMOUD</option>
+                <option value="7">جابر عبد اللطيف الحل</option>
+                <option value="5">MOHAMED owner 85959</option>
+                <option value="6">MOHAMED ABDOUMAHMOUD</option>
               </select>
               <div>
                 <label for="VoucherNO" class="form-label">Voucher No.</label>
@@ -783,9 +802,17 @@
 
               <label for="SalesPerson" class="col-form-label">Sales Person</label>
               <select class="form-select" id="SalesPerson">
-                <option value="" disabled selected>-select-</option>
-                <option value="option1">item</option>
-                <option value="option2">item</option>
+                </option>
+
+
+                <option value="0"> عبد الله سامى
+                </option>
+                <option value="1">samh ali</option>
+                <option value="2"> MOHAMED</option>
+                <option value="4">MOHAMED ABDOUMAHMOUD</option>
+                <option value="7">جابر عبد اللطيف الحل</option>
+                <option value="5">MOHAMED owner 85959</option>
+                <option value="6">MOHAMED ABDOUMAHMOUD</option>
               </select>
             </div>
           </div>
@@ -807,12 +834,20 @@
             Checked
           </label>
         </div>
-        <select id="MarketCode" class="form-select w-25">
+        <select id="MarketCode" class="form-select w-25" disabled>
           <option value="" disabled="disabled" selected="selected">
             -select-
           </option>
-          <option value="option1">item</option>
-          <option value="option2">item</option>
+
+
+          <option value="0"> عبد الله سامى
+          </option>
+          <option value="1">samh ali</option>
+          <option value="2"> MOHAMED</option>
+          <option value="4">MOHAMED ABDOUMAHMOUD</option>
+          <option value="7">جابر عبد اللطيف الحل</option>
+          <option value="5">MOHAMED owner 85959</option>
+          <option value="6">MOHAMED ABDOUMAHMOUD</option>
         </select>
         <div class="d-flex mt-2">
           <div class="form-check me-3">
