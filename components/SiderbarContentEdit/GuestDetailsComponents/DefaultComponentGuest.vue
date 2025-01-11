@@ -1000,7 +1000,7 @@
 import Swal from "sweetalert2"; // Import SweetAlert2
 import DropzoneComponent from "../../layout/DropzoneComponent.vue";
 import flatpickrMixin from "../../Mixin/flatpickrMixin";
-import { updateGuest } from "../../Api/api";
+import { updateGuest } from "../../../Api/userApi";
 
 export default {
   name: "DefaultContent",

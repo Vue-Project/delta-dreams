@@ -650,7 +650,7 @@ import AddPayment from "../../components/SiderbarContentEdit/AddPayment.vue";
 import AddCharges from "../../components/SiderbarContentEdit/AddCharges.vue";
 import AddDiscount from "../../components/SiderbarContentEdit/AddDiscount.vue";
 import AddOperation from "../../components/SiderbarContentEdit/AddOperation.vue";
-import { getReservationDataById } from "../../components/Api/api";
+import { getReservationDataById } from "../../Api/editResvertion";
 export default {
   name: "EditsPage",
   layout: "main",

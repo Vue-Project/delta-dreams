@@ -395,7 +395,7 @@
 </template>
 <script>
 import Swal from 'sweetalert2';  // Import SweetAlert2
-import { getBookingSources, getBusinessSources, getReservationTypes, getUsers } from "../Api/api";
+import { getBookingSources, getBusinessSources, getReservationTypes, getGuestsInfo,postAddReservationData } from "../../Api/addResvertionApi";
 import flatpickrMixin from "../Mixin/flatpickrMixin";
 import SidebarAddGuest from "../layout/AddGuestSidebar.vue";
 
@@ -681,8 +681,7 @@ export default {
 
       // If no errors, send the data to the server
       try {
-        const response = await axios.post("https://deltadream.swevey.com/api/reservations", bookingData);
-        console.log("Booking submitted successfully:", response.data);
+        const response = await postAddReservationData(bookingData);
 
         // Show success message
         Swal.fire({
@@ -799,7 +798,7 @@ export default {
         getBusinessSources(),
         getBookingSources(),
         getReservationTypes(),
-        getUsers(),
+        getGuestsInfo(),
       ]);
 
       this.businessSources = businessSourcesResponse.data.data;

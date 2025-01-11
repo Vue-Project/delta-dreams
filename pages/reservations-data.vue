@@ -1611,7 +1611,7 @@
 
 <script>
 import HeaderReservation from "../components/AllReservation/HeaderReservation.vue";
-import { getReservationData } from "../components/Api/api";
+import { getReservationData } from "../Api/resvertionData";
 import ThePagination from "../components/layout/ThePagination.vue";
 import flatpickrMixin from "../components/Mixin/flatpickrMixin";
 

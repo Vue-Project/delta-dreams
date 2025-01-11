@@ -1,10 +1,6 @@
 <template>
   <section class="card">
     <Loader :visible="isLoading" />
-
-
-
-    <!-- Content (visible only after data is fetched) -->
     <div v-if="!isLoading">
       <HeaderCalender :statistics="statisticsHeaderCalender" />
 
@@ -90,9 +86,8 @@ import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
 import interactionPlugin from "@fullcalendar/interaction";
 import HeaderCalender from "./HeaderCalender.vue";
 import SidebarBlockRoom from "../layout/AddGuestSidebar.vue";
-// import BlindingData from "../Api/data.local.json";
 import BlockRoomForm from "./BlockRoomForm.vue";
-import { getCalenderData } from "../Api/api";
+import { getCalenderAllUnits } from "../../Api/CalenderApi";
 import Loader from "../layout/Loader.vue";
 
 export default {
@@ -812,7 +807,7 @@ export default {
       const [
         CalenderDataResponse
       ] = await Promise.all([
-        getCalenderData(),
+        getCalenderAllUnits(),
       ]);
 
       this.data = CalenderDataResponse.data.data;

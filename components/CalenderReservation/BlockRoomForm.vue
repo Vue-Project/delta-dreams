@@ -34,11 +34,11 @@
         </div>
       </div>
       <div class="gap-2 d-flex justify-content-end position-absolute" style="right: 15px; bottom: 10px;">
-        <button type="submit" class="btn btn-primary waves-effect waves-light">
-          Apply
-        </button>
         <button @click="$emit('close-sidebar')" class="btn btn-secondary waves-effect waves-light">
           Close
+        </button>
+        <button type="submit" class="btn btn-primary waves-effect waves-light">
+          Apply
         </button>
       </div>
     </form>
@@ -46,11 +46,11 @@
 </template>
 
 <script>
-import { getReasonsSources } from '../Api/api';
+
 import flatpickrMixin from '../Mixin/flatpickrMixin';
-import { blockRoomService } from '../Api/api';
-import { dateUtils } from '../Api/utils/data';
-import { formUtils } from '../Api/utils/form';
+import { blockRoomService ,getReasonsSources} from '../../Api/CalenderApi';
+import { dateUtils } from '../../Api/utils/data';
+import { formUtils } from '../../Api/utils/form';
 
 export default {
   name: "BlockRoomForm",

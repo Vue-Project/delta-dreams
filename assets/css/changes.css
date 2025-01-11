@@ -755,9 +755,9 @@ select.form-select option {
   overflow: auto !important;
 }
 
-.fc .fc-view-harness-active>.fc-view::-webkit-scrollbar {
+/* .fc .fc-view-harness-active>.fc-view::-webkit-scrollbar {
   display: none !important;
-}
+} */
 
 .fc .fc-view-harness-active>.fc-view {
   -ms-overflow-style: none;

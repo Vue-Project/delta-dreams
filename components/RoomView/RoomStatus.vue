@@ -58,7 +58,7 @@
 
 <script>
 import HeaderCalender from "../CalenderReservation/HeaderCalender.vue";
-import { getRooms } from "../Api/api";
+import { getRooms } from "../../Api/roomViewApi";
 
 export default {
   components: {

@@ -1008,7 +1008,7 @@
 import Swal from "sweetalert2"; // Import SweetAlert2
 import flatpickrMixin from "../Mixin/flatpickrMixin";
 import DropzoneComponent from "./DropzoneComponent.vue";
-import { addGuest } from "../Api/api";
+import { addGuest } from "../../Api/userApi";
 
 export default {
   name: "AddGuestSidebar",
