@@ -66,13 +66,17 @@ export const getUsers = async () =>
   }
 };
 
-export const getReservationData = async (type) =>
-{
+
+export const getReservationData = async (type, page = 1, per_page = 10) => {
   try {
     const response = await apiClient.get('/reservations', {
-      params: { type },
+      params: {
+        type,
+        page,
+        per_page
+      },
     });
-    return response.data;
+    return response.data; // Ensure the server returns `data` and `meta` in the response
   } catch (error) {
     console.error(`Error fetching reservations for type "${type}":`, error);
     throw error;

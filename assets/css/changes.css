@@ -541,9 +541,9 @@ select {
   overflow-x: hidden;
 }
 
-.sidebar-open::-webkit-scrollbar {
+/* .sidebar-open::-webkit-scrollbar {
   display: none;
-}
+} */
 
 /* momen change the buttons positions and width */
 .scbuttons {

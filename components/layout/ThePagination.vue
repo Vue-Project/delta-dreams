@@ -1,86 +1,81 @@
 <template>
-<nav aria-label="Page navigation">
-  <ul class="pagination pagination-sm">
-    <!-- Previous Button -->
-    <li class="page-item prev" :class="{ disabled: currentPage === 1 }">
-      <a
-        class="page-link waves-effect"
-        href="javascript:void(0);"
-        @click="fetchPage(currentPage - 1)"
-      >
-        <i class="tf-icon fs-6 ti ti-chevrons-left"></i>
-      </a>
+  <!-- <ul class="pagination">
+    <li class="page-item" :class="{ disabled: currentPage === 1 }">
+      <a class="page-link" href="#" @click.prevent="changePage(currentPage - 1)">Previous</a>
     </li>
-
-    <!-- Page Numbers -->
-    <li
-      class="page-item"
-      v-for="page in totalPages"
-      :key="page"
-      :class="{ active: currentPage === page }"
-    >
-      <a
-        class="page-link waves-effect"
-        href="javascript:void(0);"
-        @click="fetchPage(page)"
-      >
-        {{ page }}
-      </a>
+    <li v-for="page in pages" :key="page" class="page-item" :class="{ active: currentPage === page }">
+      <a class="page-link" href="#" @click.prevent="changePage(page)">{{ page }}</a>
     </li>
-
-    <!-- Next Button -->
-    <li class="page-item next" :class="{ disabled: currentPage === totalPages }">
-      <a
-        class="page-link waves-effect"
-        href="javascript:void(0);"
-        @click="fetchPage(currentPage + 1)"
-      >
-        <i class="tf-icon fs-6 ti ti-chevrons-right"></i>
-      </a>
+    <li class="page-item" :class="{ disabled: currentPage === totalPages }">
+      <a class="page-link" href="#" @click.prevent="changePage(currentPage + 1)">Next</a>
     </li>
-  </ul>
-</nav>
+  </ul> -->
+  <nav aria-label="Page navigation">
+                          <ul class="pagination justify-content-center">
+                            <li class="page-item prev" :class="{ disabled: currentPage === 1 }">
+                              <a class="page-link waves-effect" href="#" @click.prevent="changePage(currentPage - 1)"><i class="fa-solid fa-angles-left"></i></a>
+                            </li>
+                            <li  v-for="page in pages" :key="page" class="page-item" :class="{ active: currentPage === page }">
+                              <a class="page-link waves-effect" href="#" @click.prevent="changePage(currentPage - 1)">{{ page }}</a>
+                            </li>
 
+                            <li class="page-item next" :class="{ disabled: currentPage === totalPages }">
+                              <a class="page-link waves-effect" href="#" @click.prevent="changePage(currentPage + 1)"><i class="fa-solid fa-angles-right"></i></a>
+                            </li>
+                          </ul>
+                        </nav>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      currentPage: 1, // Current active page
-      totalPages: 1,  // Total number of pages
-      perPage: 10,    // Number of items per page
-    };
+  props: {
+    currentPage: {
+      type: Number,
+      required: true
+    },
+    totalPages: {
+      type: Number,
+      required: true
+    }
+  },
+  computed: {
+    pages() {
+      const pages = [];
+      for (let i = 1; i <= this.totalPages; i++) {
+        pages.push(i);
+      }
+      return pages;
+    }
   },
   methods: {
-    async fetchPage(page) {
-      if (page < 1 || page > this.totalPages) return; // Prevent invalid page requests
-
-      this.currentPage = page;
-
-      try {
-        const response = await getReservationData({
-          type: this.tabsMap[this.activeTab],
-          page
-        });
-
-        // Update data and meta
-        this.tabData[this.activeTab].data = response.data;
-        const meta = response.meta;
-        this.totalPages = meta.total_pages;
-      } catch (error) {
-        console.error('Error fetching page data:', error);
-      }
-    },
-  },
-  mounted() {
-    // Fetch initial data
-    this.fetchPage(this.currentPage);
-  },
+    changePage(page) {
+      if (page < 1 || page > this.totalPages) return;
+      this.$emit('page-changed', page);
+    }
+  }
 };
-
 </script>
 
 <style scoped>
-
+/* .pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+.page-item {
+  margin: 0 5px;
+}
+.page-link {
+  cursor: pointer;
+}
+.disabled .page-link {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+.active .page-link {
+  font-weight: bold;
+  color: #fff;
+  background-color: #007bff;
+  border-color: #007bff;
+} */
 </style>

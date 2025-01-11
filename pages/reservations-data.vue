@@ -333,7 +333,7 @@
                                   <h6 class="mb-0">Reservation Number</h6>
                                   <small class="text-muted">{{
                                     selectedCard.reservationNo || "1025191591"
-                                    }}</small>
+                                  }}</small>
                                 </div>
                               </div>
                             </div>
@@ -395,7 +395,7 @@
                                 <div class="me-2">
                                   <h6 class="mb-0">Departure Date</h6>
                                   <small class="text-muted">{{ selectedCard.departureDate || "2024-10-21" }}
-                                    {{ selectedCard.departureTime ||  "12:00 PM" }}</small>
+                                    {{ selectedCard.departureTime || "12:00 PM" }}</small>
                                 </div>
                               </div>
                             </div>
@@ -416,7 +416,7 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Room Type</h6>
-                                  <small class="text-muted">{{ selectedCard.roomType  ||'Suite شاليهات بخدمات فندقية غرفتين وصاله' }}
+                                  <small class="text-muted">{{ selectedCard.roomType || 'Suite شاليهات بخدمات فندقية غرفتين وصاله' }}
                                   </small>
                                 </div>
                               </div>
@@ -438,7 +438,7 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Avg. Daily Rate</h6>
-                                  <small class="text-muted">{{ selectedCard.dailyRate  || '£ 1,350.00'}}
+                                  <small class="text-muted">{{ selectedCard.dailyRate || '£ 1,350.00' }}
                                   </small>
                                 </div>
                               </div>
@@ -524,7 +524,7 @@
                                   <h6 class="mb-0">Reservation Number</h6>
                                   <small class="text-muted">{{
                                     selectedCard.reservationNo || "1025191591"
-                                    }}</small>
+                                  }}</small>
                                 </div>
                               </div>
                             </div>
@@ -586,7 +586,7 @@
                                 <div class="me-2">
                                   <h6 class="mb-0">Departure Date</h6>
                                   <small class="text-muted">{{ selectedCard.departureDate || "2024-10-21" }}
-                                    {{ selectedCard.departureTime ||  "12:00 PM" }}</small>
+                                    {{ selectedCard.departureTime || "12:00 PM" }}</small>
                                 </div>
                               </div>
                             </div>
@@ -607,7 +607,7 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Room Type</h6>
-                                  <small class="text-muted">{{ selectedCard.roomType  ||'Suite شاليهات بخدمات فندقية غرفتين وصاله' }}
+                                  <small class="text-muted">{{ selectedCard.roomType || 'Suite شاليهات بخدمات فندقية غرفتين وصاله' }}
                                   </small>
                                 </div>
                               </div>
@@ -629,7 +629,7 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Avg. Daily Rate</h6>
-                                  <small class="text-muted">{{ selectedCard.dailyRate  || '£ 1,350.00'}}
+                                  <small class="text-muted">{{ selectedCard.dailyRate || '£ 1,350.00' }}
                                   </small>
                                 </div>
                               </div>
@@ -697,7 +697,7 @@
                                   <h6 class="mb-0">Reservation Number</h6>
                                   <small class="text-muted">{{
                                     selectedCard.reservationNo || "1025191591"
-                                    }}</small>
+                                  }}</small>
                                 </div>
                               </div>
                             </div>
@@ -759,7 +759,7 @@
                                 <div class="me-2">
                                   <h6 class="mb-0">Departure Date</h6>
                                   <small class="text-muted">{{ selectedCard.departureDate || "2024-10-21" }}
-                                    {{ selectedCard.departureTime ||  "12:00 PM" }}</small>
+                                    {{ selectedCard.departureTime || "12:00 PM" }}</small>
                                 </div>
                               </div>
                             </div>
@@ -780,7 +780,7 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Room Type</h6>
-                                  <small class="text-muted">{{ selectedCard.roomType  ||'Suite شاليهات بخدمات فندقية غرفتين وصاله' }}
+                                  <small class="text-muted">{{ selectedCard.roomType || 'Suite شاليهات بخدمات فندقية غرفتين وصاله' }}
                                   </small>
                                 </div>
                               </div>
@@ -802,7 +802,7 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Avg. Daily Rate</h6>
-                                  <small class="text-muted">{{ selectedCard.dailyRate  || '£ 1,350.00'}}
+                                  <small class="text-muted">{{ selectedCard.dailyRate || '£ 1,350.00' }}
                                   </small>
                                 </div>
                               </div>
@@ -864,7 +864,7 @@
                                   <h6 class="mb-0">Reservation Number</h6>
                                   <small class="text-muted">{{
                                     selectedCard.reservationNo || "1025191591"
-                                    }}</small>
+                                  }}</small>
                                 </div>
                               </div>
                             </div>
@@ -926,7 +926,7 @@
                                 <div class="me-2">
                                   <h6 class="mb-0">Departure Date</h6>
                                   <small class="text-muted">{{ selectedCard.departureDate || "2024-10-21" }}
-                                    {{ selectedCard.departureTime ||  "12:00 PM" }}</small>
+                                    {{ selectedCard.departureTime || "12:00 PM" }}</small>
                                 </div>
                               </div>
                             </div>
@@ -947,7 +947,7 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Room Type</h6>
-                                  <small class="text-muted">{{ selectedCard.roomType  ||'Suite شاليهات بخدمات فندقية غرفتين وصاله' }}
+                                  <small class="text-muted">{{ selectedCard.roomType || 'Suite شاليهات بخدمات فندقية غرفتين وصاله' }}
                                   </small>
                                 </div>
                               </div>
@@ -969,7 +969,7 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Avg. Daily Rate</h6>
-                                  <small class="text-muted">{{ selectedCard.dailyRate  || '£ 1,350.00'}}
+                                  <small class="text-muted">{{ selectedCard.dailyRate || '£ 1,350.00' }}
                                   </small>
                                 </div>
                               </div>
@@ -1007,6 +1007,7 @@
           <!-- reservations  -->
 
           <div class="tab-pane fade active show" id="form-tabs-Reservations" role="tabpanel">
+
             <div class="row">
               <div v-if="viewMode === 'list'" class="table-responsive text-nowrap" style="overflow: visible; cursor: pointer;">
                 <table class="table">
@@ -1152,453 +1153,453 @@
                 </div>
               </div>
             </div>
+            <div v-if="tabData[activeTab].meta.total > tabData[activeTab].meta.per_page">
+              <ThePagination v-if="tabData[activeTab].meta.total > tabData[activeTab].meta.per_page" :current-page="tabData[activeTab].meta.current_page" :total-pages="tabData[activeTab].meta.last_page" @page-changed="changePage(activeTab, $event)" />
+            </div>
           </div>
           <!-- Arrivals  -->
           <div class="tab-pane fade" id="form-tabs-Arrivals" role="tabpanel">
-            <div class="tab-pane fade active show" id="form-tabs-Reservations" role="tabpanel">
-              <div class="row">
-                <div v-if="viewMode === 'list'" class="table-responsive text-nowrap" style="overflow: visible; cursor: pointer;">
-                  <table class="table">
-                    <thead class="table-light">
-                      <tr>
-                        <th>Guest Name</th>
-                        <th>Res. No. Voucher No</th>
-                        <th>Arrival</th>
-                        <th>Departure</th>
-                        <th>Room Details</th>
-                        <th>Total ($)</th>
-                        <th>Paid ($)</th>
-                        <th>Balance ($)</th>
-                      </tr>
-                    </thead>
-                    <tbody class="table-border-bottom-0">
+            <div class="row">
+              <div v-if="viewMode === 'list'" class="table-responsive text-nowrap" style="overflow: visible; cursor: pointer;">
+                <table class="table">
+                  <thead class="table-light">
+                    <tr>
+                      <th>Guest Name</th>
+                      <th>Res. No. Voucher No</th>
+                      <th>Arrival</th>
+                      <th>Departure</th>
+                      <th>Room Details</th>
+                      <th>Total ($)</th>
+                      <th>Paid ($)</th>
+                      <th>Balance ($)</th>
+                    </tr>
+                  </thead>
+                  <tbody class="table-border-bottom-0">
 
-                      <tr @click="openOffcanvas(card)" v-for="card in reservations" :key="card.id">
-                        <td>
-                          <h5 class=" m-0 me-2">{{ card.reserved_by.name }}</h5>
+                    <tr @click="openOffcanvas(card)" v-for="card in reservations" :key="card.id">
+                      <td>
+                        <h5 class=" m-0 me-2">{{ card.reserved_by.name }}</h5>
+                        <div>
+                          <i class="fa-solid fa-person"></i>{{ card.children || '0' }}
+                          <i class="fa-solid fa-child"></i>{{ card.adults || '0' }}
+                        </div>
+                      </td>
+                      <td>
+                        <p class="m-0 me-2">{{ card.Voucher || '14541' }}</p>
+                      </td>
+                      <td>
+                        <p class="m-0 me-2">{{ card.checkin_date }}</p>
+                        <p class="m-0 me-2">{{ card.checkin_time }}</p>
+                      </td>
+                      <td>
+                        <p class="m-0 me-2">{{ card.checkout_date }}</p>
+                        <p class="m-0 me-2">{{ card.checkout_time }}</p>
+                      </td>
+                      <td>
+                        <p class="m-0 me-2">{{ card.room_details || '104 - Suite الفندق غرفتين وصاله' }}</p>
+                      </td>
+                      <td>
+                        <p class="m-0 me-2">{{ card.total || '0.00' }}$</p>
+                      </td>
+                      <td>
+                        <p class="m-0 me-2">{{ card.paid || '0.00' }}$</p>
+                      </td>
+                      <td class="d-flex justify-content-between border-bottom-0">
+                        <p class="m-0 me-2 text-danger">{{ card.balance || '0.00' }}$</p>
+                        <div class="btn-group " id="hover-dropdown-demo" @mouseenter="toggleMenu(card.id, true)" @mouseleave="toggleMenu(card.id, false)">
+                          <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none">
+                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                          </button>
+                          <ul v-show="hoveredMenu[card.id]" class="dropdown-menu show right-0" data-popper-placement="bottom-end">
+                            <li>
+                              <a class="dropdown-item" href="#"><i class="fa-solid fa-file-circle-plus mr-2"></i>Print Invoice</a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#"><i class="fa-solid fa-calendar-plus mr-2"></i>Add New Booking</a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#"><i class="fa-solid fa-list-check mr-2"></i>Audit Trail</a>
+                            </li>
+                          </ul>
+                        </div>
+                      </td>
+                    </tr>
+
+
+
+                  </tbody>
+                </table>
+
+              </div>
+              <div v-else class="col-12 col-md-6 col-lg-4 mb-4 order-1 order-xl-0 cursor-pointer" @click="openOffcanvas(card)" v-for="card in reservations" :key="card.id">
+                <div class="card h-100">
+                  <div class="card-header d-flex align-items-center justify-content-between">
+                    <div class="card-title mb-0 d-flex">
+                      <i class="text-primary fa-solid fa-hotel fs-3 mr-2 mb-2"></i>
+                      <h5 class="m-0 me-2">{{ card.reserved_by.name }}</h5>
+                      <p>{{ card.id }}</p>
+                    </div>
+                    <div class="btn-group" id="hover-dropdown-demo" @mouseenter="toggleMenu(card.id, true)" @mouseleave="toggleMenu(card.id, false)">
+                      <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none">
+                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                      </button>
+                      <ul v-show="hoveredMenu[card.id]" class="dropdown-menu show" data-popper-placement="bottom-end">
+                        <li>
+                          <a class="dropdown-item" href="#"><i class="fa-solid fa-file-circle-plus mr-2"></i>Print Invoice</a>
+                        </li>
+                        <li>
+                          <a class="dropdown-item" href="#"><i class="fa-solid fa-calendar-plus mr-2"></i>Add New Booking</a>
+                        </li>
+                        <li>
+                          <a class="dropdown-item" href="#"><i class="fa-solid fa-list-check mr-2"></i>Audit Trail</a>
+                        </li>
+                      </ul>
+                    </div>
+
+
+                  </div>
+                  <div class="card-body">
+                    <div id="deliveryExceptionsChart">
+                      <div class="row d-flex align-items-center justify-content-center text-center mb-3">
+                        <div class="bg-light col-md-5">
+                          <div class="text-dark">{{ card.checkin_date }}</div>
+                          <div>{{ card.checkin_time || '00:00:00' }}</div>
+                        </div>
+                        <div class="bg-secondary col-md-2">
+                          <div class="text-dark"> {{ (new Date(card.checkout_date) - new Date(card.checkin_date)) / (1000 * 3600 * 24) }}
+                          </div>
+                          <div>Nights</div>
+                        </div>
+                        <div class="bg-light col-md-5">
+                          <div class="text-dark"> {{ card.checkout_date }}</div>
+                          <div> {{ card.checkout_time || '15:00:00' }}</div>
+                        </div>
+                      </div>
+                      <div class="row mb-5">
+                        <div class="col-md-10">
+                          <div>Booking Date</div>
+                          <div>{{ 'card.booking_source[0] ' || "2024-12-02T07:43:11.000000Z" }}</div>
+                        </div>
+                        <div class="col-md-2">
                           <div>
                             <i class="fa-solid fa-person"></i>{{ card.children || '0' }}
                             <i class="fa-solid fa-child"></i>{{ card.adults || '0' }}
                           </div>
-                        </td>
-                        <td>
-                          <p class="m-0 me-2">{{ card.Voucher || '14541' }}</p>
-                        </td>
-                        <td>
-                          <p class="m-0 me-2">{{ card.checkin_date }}</p>
-                          <p class="m-0 me-2">{{ card.checkin_time }}</p>
-                        </td>
-                        <td>
-                          <p class="m-0 me-2">{{ card.checkout_date }}</p>
-                          <p class="m-0 me-2">{{ card.checkout_time }}</p>
-                        </td>
-                        <td>
-                          <p class="m-0 me-2">{{ card.room_details || '104 - Suite الفندق غرفتين وصاله' }}</p>
-                        </td>
-                        <td>
-                          <p class="m-0 me-2">{{ card.total || '0.00' }}$</p>
-                        </td>
-                        <td>
-                          <p class="m-0 me-2">{{ card.paid || '0.00' }}$</p>
-                        </td>
-                        <td class="d-flex justify-content-between border-bottom-0">
-                          <p class="m-0 me-2 text-danger">{{ card.balance || '0.00' }}$</p>
-                          <div class="btn-group " id="hover-dropdown-demo" @mouseenter="toggleMenu(card.id, true)" @mouseleave="toggleMenu(card.id, false)">
-                            <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none">
-                              <i class="fa-solid fa-ellipsis-vertical"></i>
-                            </button>
-                            <ul v-show="hoveredMenu[card.id]" class="dropdown-menu show right-0" data-popper-placement="bottom-end">
-                              <li>
-                                <a class="dropdown-item" href="#"><i class="fa-solid fa-file-circle-plus mr-2"></i>Print Invoice</a>
-                              </li>
-                              <li>
-                                <a class="dropdown-item" href="#"><i class="fa-solid fa-calendar-plus mr-2"></i>Add New Booking</a>
-                              </li>
-                              <li>
-                                <a class="dropdown-item" href="#"><i class="fa-solid fa-list-check mr-2"></i>Audit Trail</a>
-                              </li>
-                            </ul>
-                          </div>
-                        </td>
-                      </tr>
-
-
-
-                    </tbody>
-                  </table>
-
-                </div>
-                <div v-else class="col-12 col-md-6 col-lg-4 mb-4 order-1 order-xl-0 cursor-pointer" @click="openOffcanvas(card)" v-for="card in reservations" :key="card.id">
-                  <div class="card h-100">
-                    <div class="card-header d-flex align-items-center justify-content-between">
-                      <div class="card-title mb-0 d-flex">
-                        <i class="text-primary fa-solid fa-hotel fs-3 mr-2 mb-2"></i>
-                        <h5 class="m-0 me-2">{{ card.reserved_by.name }}</h5>
-                        <p>{{ card.id }}</p>
+                        </div>
+                        <div class="col-md-12">
+                          <div>Room / Rate Type</div>
+                          <div>202 / السعر غير شامل</div>
+                        </div>
                       </div>
-                      <div class="btn-group" id="hover-dropdown-demo" @mouseenter="toggleMenu(card.id, true)" @mouseleave="toggleMenu(card.id, false)">
-                        <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none">
-                          <i class="fa-solid fa-ellipsis-vertical"></i>
-                        </button>
-                        <ul v-show="hoveredMenu[card.id]" class="dropdown-menu show" data-popper-placement="bottom-end">
-                          <li>
-                            <a class="dropdown-item" href="#"><i class="fa-solid fa-file-circle-plus mr-2"></i>Print Invoice</a>
-                          </li>
-                          <li>
-                            <a class="dropdown-item" href="#"><i class="fa-solid fa-calendar-plus mr-2"></i>Add New Booking</a>
-                          </li>
-                          <li>
-                            <a class="dropdown-item" href="#"><i class="fa-solid fa-list-check mr-2"></i>Audit Trail</a>
-                          </li>
-                        </ul>
-                      </div>
-
-
-                    </div>
-                    <div class="card-body">
-                      <div id="deliveryExceptionsChart">
-                        <div class="row d-flex align-items-center justify-content-center text-center mb-3">
-                          <div class="bg-light col-md-5">
-                            <div class="text-dark">{{ card.checkin_date }}</div>
-                            <div>{{ card.checkin_time || '00:00:00' }}</div>
-                          </div>
-                          <div class="bg-secondary col-md-2">
-                            <div class="text-dark"> {{ (new Date(card.checkout_date) - new Date(card.checkin_date)) / (1000 * 3600 * 24) }}
-                            </div>
-                            <div>Nights</div>
-                          </div>
-                          <div class="bg-light col-md-5">
-                            <div class="text-dark"> {{ card.checkout_date }}</div>
-                            <div> {{ card.checkout_time || '15:00:00' }}</div>
-                          </div>
-                        </div>
-                        <div class="row mb-5">
-                          <div class="col-md-10">
-                            <div>Booking Date</div>
-                            <div>{{ 'card.booking_source[0] ' || "2024-12-02T07:43:11.000000Z" }}</div>
-                          </div>
-                          <div class="col-md-2">
-                            <div>
-                              <i class="fa-solid fa-person"></i>{{ card.children || '0' }}
-                              <i class="fa-solid fa-child"></i>{{ card.adults || '0' }}
-                            </div>
-                          </div>
-                          <div class="col-md-12">
-                            <div>Room / Rate Type</div>
-                            <div>202 / السعر غير شامل</div>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-md-10">Total</div>
-                          <div class="col-md-2">$230</div>
-                          <div class="col-md-10">Paid</div>
-                          <div class="col-md-2">$250</div>
-                          <div class="col-md-10 text-danger">Balance</div>
-                          <div class="col-md-2 text-danger">$20</div>
-                        </div>
+                      <div class="row">
+                        <div class="col-md-10">Total</div>
+                        <div class="col-md-2">$230</div>
+                        <div class="col-md-10">Paid</div>
+                        <div class="col-md-2">$250</div>
+                        <div class="col-md-10 text-danger">Balance</div>
+                        <div class="col-md-2 text-danger">$20</div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+            <ThePagination v-if="tabData[activeTab].meta.total > tabData[activeTab].meta.per_page" :current-page="tabData[activeTab].meta.current_page" :total-pages="tabData[activeTab].meta.last_page" @page-changed="changePage(activeTab, $event)" />
           </div>
           <!-- Departures  -->
           <div class="tab-pane fade" id="form-tabs-Departures" role="tabpanel">
-            <div class="tab-pane fade active show" id="form-tabs-Reservations" role="tabpanel">
-              <div class="row">
-                <div v-if="viewMode === 'list'" class="table-responsive text-nowrap" style="overflow: visible; cursor: pointer;">
-                  <table class="table">
-                    <thead class="table-light">
-                      <tr>
-                        <th>Guest Name</th>
-                        <th>Res. No. Voucher No</th>
-                        <th>Arrival</th>
-                        <th>Departure</th>
-                        <th>Room Details</th>
-                        <th>Total ($)</th>
-                        <th>Paid ($)</th>
-                        <th>Balance ($)</th>
-                      </tr>
-                    </thead>
-                    <tbody class="table-border-bottom-0">
+            <div class="row">
+              <div v-if="viewMode === 'list'" class="table-responsive text-nowrap" style="overflow: visible; cursor: pointer;">
+                <table class="table">
+                  <thead class="table-light">
+                    <tr>
+                      <th>Guest Name</th>
+                      <th>Res. No. Voucher No</th>
+                      <th>Arrival</th>
+                      <th>Departure</th>
+                      <th>Room Details</th>
+                      <th>Total ($)</th>
+                      <th>Paid ($)</th>
+                      <th>Balance ($)</th>
+                    </tr>
+                  </thead>
+                  <tbody class="table-border-bottom-0">
 
-                      <tr @click="openOffcanvas(card)" v-for="card in reservations" :key="card.id">
-                        <td>
-                          <h5 class=" m-0 me-2">{{ card.reserved_by.name }}</h5>
+                    <tr @click="openOffcanvas(card)" v-for="card in reservations" :key="card.id">
+                      <td>
+                        <h5 class=" m-0 me-2">{{ card.reserved_by.name }}</h5>
+                        <div>
+                          <i class="fa-solid fa-person"></i>{{ card.children || '0' }}
+                          <i class="fa-solid fa-child"></i>{{ card.adults || '0' }}
+                        </div>
+                      </td>
+                      <td>
+                        <p class="m-0 me-2">{{ card.Voucher || '14541' }}</p>
+                      </td>
+                      <td>
+                        <p class="m-0 me-2">{{ card.checkin_date }}</p>
+                        <p class="m-0 me-2">{{ card.checkin_time }}</p>
+                      </td>
+                      <td>
+                        <p class="m-0 me-2">{{ card.checkout_date }}</p>
+                        <p class="m-0 me-2">{{ card.checkout_time }}</p>
+                      </td>
+                      <td>
+                        <p class="m-0 me-2">{{ card.room_details || '104 - Suite الفندق غرفتين وصاله' }}</p>
+                      </td>
+                      <td>
+                        <p class="m-0 me-2">{{ card.total || '0.00' }}$</p>
+                      </td>
+                      <td>
+                        <p class="m-0 me-2">{{ card.paid || '0.00' }}$</p>
+                      </td>
+                      <td class="d-flex justify-content-between border-bottom-0">
+                        <p class="m-0 me-2 text-danger">{{ card.balance || '0.00' }}$</p>
+                        <div class="btn-group " id="hover-dropdown-demo" @mouseenter="toggleMenu(card.id, true)" @mouseleave="toggleMenu(card.id, false)">
+                          <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none">
+                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                          </button>
+                          <ul v-show="hoveredMenu[card.id]" class="dropdown-menu show right-0" data-popper-placement="bottom-end">
+                            <li>
+                              <a class="dropdown-item" href="#"><i class="fa-solid fa-file-circle-plus mr-2"></i>Print Invoice</a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#"><i class="fa-solid fa-calendar-plus mr-2"></i>Add New Booking</a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#"><i class="fa-solid fa-list-check mr-2"></i>Audit Trail</a>
+                            </li>
+                          </ul>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+              </div>
+              <div v-else class="col-12 col-md-6 col-lg-4 mb-4 order-1 order-xl-0 cursor-pointer" @click="openOffcanvas(card)" v-for="card in reservations" :key="card.id">
+                <div class="card h-100">
+                  <div class="card-header d-flex align-items-center justify-content-between">
+                    <div class="card-title mb-0 d-flex">
+                      <i class="text-primary fa-solid fa-hotel fs-3 mr-2 mb-2"></i>
+                      <h5 class="m-0 me-2">{{ card.reserved_by.name }}</h5>
+                      <p>{{ card.id }}</p>
+                    </div>
+                    <div class="btn-group" id="hover-dropdown-demo" @mouseenter="toggleMenu(card.id, true)" @mouseleave="toggleMenu(card.id, false)">
+                      <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none">
+                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                      </button>
+                      <ul v-show="hoveredMenu[card.id]" class="dropdown-menu show" data-popper-placement="bottom-end">
+                        <li>
+                          <a class="dropdown-item" href="#"><i class="fa-solid fa-file-circle-plus mr-2"></i>Print Invoice</a>
+                        </li>
+                        <li>
+                          <a class="dropdown-item" href="#"><i class="fa-solid fa-calendar-plus mr-2"></i>Add New Booking</a>
+                        </li>
+                        <li>
+                          <a class="dropdown-item" href="#"><i class="fa-solid fa-list-check mr-2"></i>Audit Trail</a>
+                        </li>
+                      </ul>
+                    </div>
+
+
+                  </div>
+                  <div class="card-body">
+                    <div id="deliveryExceptionsChart">
+                      <div class="row d-flex align-items-center justify-content-center text-center mb-3">
+                        <div class="bg-light col-md-5">
+                          <div class="text-dark">{{ card.checkin_date }}</div>
+                          <div>{{ card.checkin_time || '00:00:00' }}</div>
+                        </div>
+                        <div class="bg-secondary col-md-2">
+                          <div class="text-dark"> {{ (new Date(card.checkout_date) - new Date(card.checkin_date)) / (1000 * 3600 * 24) }}
+                          </div>
+                          <div>Nights</div>
+                        </div>
+                        <div class="bg-light col-md-5">
+                          <div class="text-dark"> {{ card.checkout_date }}</div>
+                          <div> {{ card.checkout_time || '15:00:00' }}</div>
+                        </div>
+                      </div>
+                      <div class="row mb-5">
+                        <div class="col-md-10">
+                          <div>Booking Date</div>
+                          <div>{{ 'card.booking_source[0] ' || "2024-12-02T07:43:11.000000Z" }}</div>
+                        </div>
+                        <div class="col-md-2">
                           <div>
                             <i class="fa-solid fa-person"></i>{{ card.children || '0' }}
                             <i class="fa-solid fa-child"></i>{{ card.adults || '0' }}
                           </div>
-                        </td>
-                        <td>
-                          <p class="m-0 me-2">{{ card.Voucher || '14541' }}</p>
-                        </td>
-                        <td>
-                          <p class="m-0 me-2">{{ card.checkin_date }}</p>
-                          <p class="m-0 me-2">{{ card.checkin_time }}</p>
-                        </td>
-                        <td>
-                          <p class="m-0 me-2">{{ card.checkout_date }}</p>
-                          <p class="m-0 me-2">{{ card.checkout_time }}</p>
-                        </td>
-                        <td>
-                          <p class="m-0 me-2">{{ card.room_details || '104 - Suite الفندق غرفتين وصاله' }}</p>
-                        </td>
-                        <td>
-                          <p class="m-0 me-2">{{ card.total || '0.00' }}$</p>
-                        </td>
-                        <td>
-                          <p class="m-0 me-2">{{ card.paid || '0.00' }}$</p>
-                        </td>
-                        <td class="d-flex justify-content-between border-bottom-0">
-                          <p class="m-0 me-2 text-danger">{{ card.balance || '0.00' }}$</p>
-                          <div class="btn-group " id="hover-dropdown-demo" @mouseenter="toggleMenu(card.id, true)" @mouseleave="toggleMenu(card.id, false)">
-                            <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none">
-                              <i class="fa-solid fa-ellipsis-vertical"></i>
-                            </button>
-                            <ul v-show="hoveredMenu[card.id]" class="dropdown-menu show right-0" data-popper-placement="bottom-end">
-                              <li>
-                                <a class="dropdown-item" href="#"><i class="fa-solid fa-file-circle-plus mr-2"></i>Print Invoice</a>
-                              </li>
-                              <li>
-                                <a class="dropdown-item" href="#"><i class="fa-solid fa-calendar-plus mr-2"></i>Add New Booking</a>
-                              </li>
-                              <li>
-                                <a class="dropdown-item" href="#"><i class="fa-solid fa-list-check mr-2"></i>Audit Trail</a>
-                              </li>
-                            </ul>
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-
-                </div>
-                <div v-else class="col-12 col-md-6 col-lg-4 mb-4 order-1 order-xl-0 cursor-pointer" @click="openOffcanvas(card)" v-for="card in reservations" :key="card.id">
-                  <div class="card h-100">
-                    <div class="card-header d-flex align-items-center justify-content-between">
-                      <div class="card-title mb-0 d-flex">
-                        <i class="text-primary fa-solid fa-hotel fs-3 mr-2 mb-2"></i>
-                        <h5 class="m-0 me-2">{{ card.reserved_by.name }}</h5>
-                        <p>{{ card.id }}</p>
+                        </div>
+                        <div class="col-md-12">
+                          <div>Room / Rate Type</div>
+                          <div>202 / السعر غير شامل</div>
+                        </div>
                       </div>
-                      <div class="btn-group" id="hover-dropdown-demo" @mouseenter="toggleMenu(card.id, true)" @mouseleave="toggleMenu(card.id, false)">
-                        <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none">
-                          <i class="fa-solid fa-ellipsis-vertical"></i>
-                        </button>
-                        <ul v-show="hoveredMenu[card.id]" class="dropdown-menu show" data-popper-placement="bottom-end">
-                          <li>
-                            <a class="dropdown-item" href="#"><i class="fa-solid fa-file-circle-plus mr-2"></i>Print Invoice</a>
-                          </li>
-                          <li>
-                            <a class="dropdown-item" href="#"><i class="fa-solid fa-calendar-plus mr-2"></i>Add New Booking</a>
-                          </li>
-                          <li>
-                            <a class="dropdown-item" href="#"><i class="fa-solid fa-list-check mr-2"></i>Audit Trail</a>
-                          </li>
-                        </ul>
-                      </div>
-
-
-                    </div>
-                    <div class="card-body">
-                      <div id="deliveryExceptionsChart">
-                        <div class="row d-flex align-items-center justify-content-center text-center mb-3">
-                          <div class="bg-light col-md-5">
-                            <div class="text-dark">{{ card.checkin_date }}</div>
-                            <div>{{ card.checkin_time || '00:00:00' }}</div>
-                          </div>
-                          <div class="bg-secondary col-md-2">
-                            <div class="text-dark"> {{ (new Date(card.checkout_date) - new Date(card.checkin_date)) / (1000 * 3600 * 24) }}
-                            </div>
-                            <div>Nights</div>
-                          </div>
-                          <div class="bg-light col-md-5">
-                            <div class="text-dark"> {{ card.checkout_date }}</div>
-                            <div> {{ card.checkout_time || '15:00:00' }}</div>
-                          </div>
-                        </div>
-                        <div class="row mb-5">
-                          <div class="col-md-10">
-                            <div>Booking Date</div>
-                            <div>{{ 'card.booking_source[0] ' || "2024-12-02T07:43:11.000000Z" }}</div>
-                          </div>
-                          <div class="col-md-2">
-                            <div>
-                              <i class="fa-solid fa-person"></i>{{ card.children || '0' }}
-                              <i class="fa-solid fa-child"></i>{{ card.adults || '0' }}
-                            </div>
-                          </div>
-                          <div class="col-md-12">
-                            <div>Room / Rate Type</div>
-                            <div>202 / السعر غير شامل</div>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-md-10">Total</div>
-                          <div class="col-md-2">$230</div>
-                          <div class="col-md-10">Paid</div>
-                          <div class="col-md-2">$250</div>
-                          <div class="col-md-10 text-danger">Balance</div>
-                          <div class="col-md-2 text-danger">$20</div>
-                        </div>
+                      <div class="row">
+                        <div class="col-md-10">Total</div>
+                        <div class="col-md-2">$230</div>
+                        <div class="col-md-10">Paid</div>
+                        <div class="col-md-2">$250</div>
+                        <div class="col-md-10 text-danger">Balance</div>
+                        <div class="col-md-2 text-danger">$20</div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+            <ThePagination v-if="tabData[activeTab].meta.total > tabData[activeTab].meta.per_page" :current-page="tabData[activeTab].meta.current_page" :total-pages="tabData[activeTab].meta.last_page" @page-changed="changePage(activeTab, $event)" />
           </div>
           <!-- In-house  -->
           <div class="tab-pane fade" id="form-tabs-In-house" role="tabpanel">
-            <div class="tab-pane fade active show" id="form-tabs-Reservations" role="tabpanel">
-              <div class="row">
-                <div v-if="viewMode === 'list'" class="table-responsive text-nowrap" style="overflow: visible; cursor: pointer;">
-                  <table class="table">
-                    <thead class="table-light">
-                      <tr>
-                        <th>Guest Name</th>
-                        <th>Res. No. Voucher No</th>
-                        <th>Arrival</th>
-                        <th>Departure</th>
-                        <th>Room Details</th>
-                        <th>Total ($)</th>
-                        <th>Paid ($)</th>
-                        <th>Balance ($)</th>
-                      </tr>
-                    </thead>
-                    <tbody class="table-border-bottom-0">
+            <div class="row">
+              <div v-if="viewMode === 'list'" class="table-responsive text-nowrap" style="overflow: visible; cursor: pointer;">
+                <table class="table">
+                  <thead class="table-light">
+                    <tr>
+                      <th>Guest Name</th>
+                      <th>Res. No. Voucher No</th>
+                      <th>Arrival</th>
+                      <th>Departure</th>
+                      <th>Room Details</th>
+                      <th>Total ($)</th>
+                      <th>Paid ($)</th>
+                      <th>Balance ($)</th>
+                    </tr>
+                  </thead>
+                  <tbody class="table-border-bottom-0">
 
-                      <tr @click="openOffcanvas(card)" v-for="card in reservations" :key="card.id">
-                        <td>
-                          <h5 class=" m-0 me-2">{{ card.reserved_by.name }}</h5>
+                    <tr @click="openOffcanvas(card)" v-for="card in reservations" :key="card.id">
+                      <td>
+                        <h5 class=" m-0 me-2">{{ card.reserved_by.name }}</h5>
+                        <div>
+                          <i class="fa-solid fa-person"></i>{{ card.children || '0' }}
+                          <i class="fa-solid fa-child"></i>{{ card.adults || '0' }}
+                        </div>
+                      </td>
+                      <td>
+                        <p class="m-0 me-2">{{ card.Voucher || '14541' }}</p>
+                      </td>
+                      <td>
+                        <p class="m-0 me-2">{{ card.checkin_date }}</p>
+                        <p class="m-0 me-2">{{ card.checkin_time }}</p>
+                      </td>
+                      <td>
+                        <p class="m-0 me-2">{{ card.checkout_date }}</p>
+                        <p class="m-0 me-2">{{ card.checkout_time }}</p>
+                      </td>
+                      <td>
+                        <p class="m-0 me-2">{{ card.room_details || '104 - Suite الفندق غرفتين وصاله' }}</p>
+                      </td>
+                      <td>
+                        <p class="m-0 me-2">{{ card.total || '0.00' }}$</p>
+                      </td>
+                      <td>
+                        <p class="m-0 me-2">{{ card.paid || '0.00' }}$</p>
+                      </td>
+                      <td class="d-flex justify-content-between border-bottom-0">
+                        <p class="m-0 me-2 text-danger">{{ card.balance || '0.00' }}$</p>
+                        <div class="btn-group " id="hover-dropdown-demo" @mouseenter="toggleMenu(card.id, true)" @mouseleave="toggleMenu(card.id, false)">
+                          <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none">
+                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                          </button>
+                          <ul v-show="hoveredMenu[card.id]" class="dropdown-menu show right-0" data-popper-placement="bottom-end">
+                            <li>
+                              <a class="dropdown-item" href="#"><i class="fa-solid fa-file-circle-plus mr-2"></i>Print Invoice</a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#"><i class="fa-solid fa-calendar-plus mr-2"></i>Add New Booking</a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" href="#"><i class="fa-solid fa-list-check mr-2"></i>Audit Trail</a>
+                            </li>
+                          </ul>
+                        </div>
+                      </td>
+                    </tr>
+
+
+
+                  </tbody>
+                </table>
+
+              </div>
+              <div v-else class="col-12 col-md-6 col-lg-4 mb-4 order-1 order-xl-0 cursor-pointer" @click="openOffcanvas(card)" v-for="card in reservations" :key="card.id">
+                <div class="card h-100">
+                  <div class="card-header d-flex align-items-center justify-content-between">
+                    <div class="card-title mb-0 d-flex">
+                      <i class="text-primary fa-solid fa-hotel fs-3 mr-2 mb-2"></i>
+                      <h5 class="m-0 me-2">{{ card.reserved_by.name }}</h5>
+                      <p>{{ card.id }}</p>
+                    </div>
+                    <div class="btn-group" id="hover-dropdown-demo" @mouseenter="toggleMenu(card.id, true)" @mouseleave="toggleMenu(card.id, false)">
+                      <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none">
+                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                      </button>
+                      <ul v-show="hoveredMenu[card.id]" class="dropdown-menu show" data-popper-placement="bottom-end">
+                        <li>
+                          <a class="dropdown-item" href="#"><i class="fa-solid fa-file-circle-plus mr-2"></i>Print Invoice</a>
+                        </li>
+                        <li>
+                          <a class="dropdown-item" href="#"><i class="fa-solid fa-calendar-plus mr-2"></i>Add New Booking</a>
+                        </li>
+                        <li>
+                          <a class="dropdown-item" href="#"><i class="fa-solid fa-list-check mr-2"></i>Audit Trail</a>
+                        </li>
+                      </ul>
+                    </div>
+
+
+                  </div>
+                  <div class="card-body">
+                    <div id="deliveryExceptionsChart">
+                      <div class="row d-flex align-items-center justify-content-center text-center mb-3">
+                        <div class="bg-light col-md-5">
+                          <div class="text-dark">{{ card.checkin_date }}</div>
+                          <div>{{ card.checkin_time || '00:00:00' }}</div>
+                        </div>
+                        <div class="bg-secondary col-md-2">
+                          <div class="text-dark"> {{ (new Date(card.checkout_date) - new Date(card.checkin_date)) / (1000 * 3600 * 24) }}
+                          </div>
+                          <div>Nights</div>
+                        </div>
+                        <div class="bg-light col-md-5">
+                          <div class="text-dark"> {{ card.checkout_date }}</div>
+                          <div> {{ card.checkout_time || '15:00:00' }}</div>
+                        </div>
+                      </div>
+                      <div class="row mb-5">
+                        <div class="col-md-10">
+                          <div>Booking Date</div>
+                          <div>{{ 'card.booking_source[0] ' || "2024-12-02T07:43:11.000000Z" }}</div>
+                        </div>
+                        <div class="col-md-2">
                           <div>
                             <i class="fa-solid fa-person"></i>{{ card.children || '0' }}
                             <i class="fa-solid fa-child"></i>{{ card.adults || '0' }}
                           </div>
-                        </td>
-                        <td>
-                          <p class="m-0 me-2">{{ card.Voucher || '14541' }}</p>
-                        </td>
-                        <td>
-                          <p class="m-0 me-2">{{ card.checkin_date }}</p>
-                          <p class="m-0 me-2">{{ card.checkin_time }}</p>
-                        </td>
-                        <td>
-                          <p class="m-0 me-2">{{ card.checkout_date }}</p>
-                          <p class="m-0 me-2">{{ card.checkout_time }}</p>
-                        </td>
-                        <td>
-                          <p class="m-0 me-2">{{ card.room_details || '104 - Suite الفندق غرفتين وصاله' }}</p>
-                        </td>
-                        <td>
-                          <p class="m-0 me-2">{{ card.total || '0.00' }}$</p>
-                        </td>
-                        <td>
-                          <p class="m-0 me-2">{{ card.paid || '0.00' }}$</p>
-                        </td>
-                        <td class="d-flex justify-content-between border-bottom-0">
-                          <p class="m-0 me-2 text-danger">{{ card.balance || '0.00' }}$</p>
-                          <div class="btn-group " id="hover-dropdown-demo" @mouseenter="toggleMenu(card.id, true)" @mouseleave="toggleMenu(card.id, false)">
-                            <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none">
-                              <i class="fa-solid fa-ellipsis-vertical"></i>
-                            </button>
-                            <ul v-show="hoveredMenu[card.id]" class="dropdown-menu show right-0" data-popper-placement="bottom-end">
-                              <li>
-                                <a class="dropdown-item" href="#"><i class="fa-solid fa-file-circle-plus mr-2"></i>Print Invoice</a>
-                              </li>
-                              <li>
-                                <a class="dropdown-item" href="#"><i class="fa-solid fa-calendar-plus mr-2"></i>Add New Booking</a>
-                              </li>
-                              <li>
-                                <a class="dropdown-item" href="#"><i class="fa-solid fa-list-check mr-2"></i>Audit Trail</a>
-                              </li>
-                            </ul>
-                          </div>
-                        </td>
-                      </tr>
-
-
-
-                    </tbody>
-                  </table>
-
-                </div>
-                <div v-else class="col-12 col-md-6 col-lg-4 mb-4 order-1 order-xl-0 cursor-pointer" @click="openOffcanvas(card)" v-for="card in reservations" :key="card.id">
-                  <div class="card h-100">
-                    <div class="card-header d-flex align-items-center justify-content-between">
-                      <div class="card-title mb-0 d-flex">
-                        <i class="text-primary fa-solid fa-hotel fs-3 mr-2 mb-2"></i>
-                        <h5 class="m-0 me-2">{{ card.reserved_by.name }}</h5>
-                        <p>{{ card.id }}</p>
+                        </div>
+                        <div class="col-md-12">
+                          <div>Room / Rate Type</div>
+                          <div>202 / السعر غير شامل</div>
+                        </div>
                       </div>
-                      <div class="btn-group" id="hover-dropdown-demo" @mouseenter="toggleMenu(card.id, true)" @mouseleave="toggleMenu(card.id, false)">
-                        <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none">
-                          <i class="fa-solid fa-ellipsis-vertical"></i>
-                        </button>
-                        <ul v-show="hoveredMenu[card.id]" class="dropdown-menu show" data-popper-placement="bottom-end">
-                          <li>
-                            <a class="dropdown-item" href="#"><i class="fa-solid fa-file-circle-plus mr-2"></i>Print Invoice</a>
-                          </li>
-                          <li>
-                            <a class="dropdown-item" href="#"><i class="fa-solid fa-calendar-plus mr-2"></i>Add New Booking</a>
-                          </li>
-                          <li>
-                            <a class="dropdown-item" href="#"><i class="fa-solid fa-list-check mr-2"></i>Audit Trail</a>
-                          </li>
-                        </ul>
-                      </div>
-
-
-                    </div>
-                    <div class="card-body">
-                      <div id="deliveryExceptionsChart">
-                        <div class="row d-flex align-items-center justify-content-center text-center mb-3">
-                          <div class="bg-light col-md-5">
-                            <div class="text-dark">{{ card.checkin_date }}</div>
-                            <div>{{ card.checkin_time || '00:00:00' }}</div>
-                          </div>
-                          <div class="bg-secondary col-md-2">
-                            <div class="text-dark"> {{ (new Date(card.checkout_date) - new Date(card.checkin_date)) / (1000 * 3600 * 24) }}
-                            </div>
-                            <div>Nights</div>
-                          </div>
-                          <div class="bg-light col-md-5">
-                            <div class="text-dark"> {{ card.checkout_date }}</div>
-                            <div> {{ card.checkout_time || '15:00:00' }}</div>
-                          </div>
-                        </div>
-                        <div class="row mb-5">
-                          <div class="col-md-10">
-                            <div>Booking Date</div>
-                            <div>{{ 'card.booking_source[0] ' || "2024-12-02T07:43:11.000000Z" }}</div>
-                          </div>
-                          <div class="col-md-2">
-                            <div>
-                              <i class="fa-solid fa-person"></i>{{ card.children || '0' }}
-                              <i class="fa-solid fa-child"></i>{{ card.adults || '0' }}
-                            </div>
-                          </div>
-                          <div class="col-md-12">
-                            <div>Room / Rate Type</div>
-                            <div>202 / السعر غير شامل</div>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-md-10">Total</div>
-                          <div class="col-md-2">$230</div>
-                          <div class="col-md-10">Paid</div>
-                          <div class="col-md-2">$250</div>
-                          <div class="col-md-10 text-danger">Balance</div>
-                          <div class="col-md-2 text-danger">$20</div>
-                        </div>
+                      <div class="row">
+                        <div class="col-md-10">Total</div>
+                        <div class="col-md-2">$230</div>
+                        <div class="col-md-10">Paid</div>
+                        <div class="col-md-2">$250</div>
+                        <div class="col-md-10 text-danger">Balance</div>
+                        <div class="col-md-2 text-danger">$20</div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+            <ThePagination v-if="tabData[activeTab].meta.total > tabData[activeTab].meta.per_page" :current-page="tabData[activeTab].meta.current_page" :total-pages="tabData[activeTab].meta.last_page" @page-changed="changePage(activeTab, $event)" />
           </div>
 
         </template>
@@ -1611,6 +1612,7 @@
 <script>
 import HeaderReservation from "../components/AllReservation/HeaderReservation.vue";
 import { getReservationData } from "../components/Api/api";
+import ThePagination from "../components/layout/ThePagination.vue";
 import flatpickrMixin from "../components/Mixin/flatpickrMixin";
 
 export default {
@@ -1618,6 +1620,7 @@ export default {
   layout: "main",
   components: {
     HeaderReservation,
+    ThePagination
   },
   data ()
   {
@@ -1629,17 +1632,69 @@ export default {
       reservations: [],
       reservationsCount: [],
       tabData: {
-        reservations: { data: [],  error: null },
-        arrivals: { data: [],  error: null },
-        departures: { data: [], error: null },
-        inhouse: { data: [],  error: null }
+        reservations: {
+          data: [], error: null, meta: {
+            total: 0,
+            count: 0,
+            per_page: 10,
+            current_page: 1,
+            total_pages: 0,
+            from: 0,
+            last_page: 0,
+            path: '',
+            to: 0
+          }
+        },
+        arrivals: {
+          data: [], error: null, meta: {
+            total: 0,
+            count: 0,
+            per_page: 10,
+            current_page: 1,
+            total_pages: 0,
+            from: 0,
+            last_page: 0,
+            path: '',
+            to: 0
+          }
+        },
+        departures: {
+          data: [], error: null, meta: {
+            total: 0,
+            count: 0,
+            per_page: 10,
+            current_page: 1,
+            total_pages: 0,
+            from: 0,
+            last_page: 0,
+            path: '',
+            to: 0
+          }
+        },
+        inhouse: {
+          data: [],
+          error: null,
+          meta: {
+            total: 0,
+            count: 0,
+            per_page: 10,
+            current_page: 1,
+            total_pages: 0,
+            from: 0,
+            last_page: 0,
+            path: '',
+            to: 0
+          }
+        }
+
       },
       tabsMap: {
         reservations: 'reservations',
         arrivals: 'arrivals',
         departures: 'departures',
         inhouse: 'in_house'
-      }
+      },
+
 
     };
   },
@@ -1685,10 +1740,24 @@ export default {
       console.log('Fetching data for tab:', tab);
 
       const type = this.tabsMap[tab];
+      const { current_page, per_page } = this.tabData[tab].meta;
       try {
-        const responseData = await getReservationData(type);
+        const responseData = await getReservationData(tab, current_page, per_page);
+        console.log('Server Response:', responseData); // Debugging
+
         this.tabData[tab].data = responseData;
         this.reservations = responseData.data.data;
+        this.tabData[tab].meta = responseData.data.meta || {
+        total: 0,
+        count: 0,
+        per_page: 10,
+        current_page: 1,
+        total_pages: 0,
+        from: 0,
+        last_page: 0,
+        path: '',
+        to: 0
+      };
         this.reservationsCount = responseData.data.reservations_count;
       } catch (error) {
         this.tabData[tab].error = error;
@@ -1701,6 +1770,12 @@ export default {
       // console.log('selectTab', tab);
 
       this.activeTab = tab;
+    },
+    changePage (tab, page)
+    {
+      if (page < 1 || page > this.tabData[tab].meta.last_page) return; // Prevent invalid page numbers
+      this.tabData[tab].meta.current_page = page; // Update current page
+      this.GetTabData(tab); // Fetch data for the new page
     }
   },
 
@@ -1722,6 +1797,24 @@ export default {
     activeTab: function (newTab)
     {
       this.GetTabData(newTab);
+    }
+  },
+  computed: {
+    totalPages ()
+    {
+      return (tab) => this.tabData[tab].meta.last_page;
+    },
+    pages ()
+    {
+      return (tab) =>
+      {
+        const pages = [];
+        const total = this.totalPages(tab);
+        for (let i = 1; i <= total; i++) {
+          pages.push(i);
+        }
+        return pages;
+      };
     }
   },
   mixins: [flatpickrMixin],
