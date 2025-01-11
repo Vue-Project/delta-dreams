@@ -120,6 +120,9 @@ export default {
   // router: {
   //   middleware: 'auth'
   // },
+  router: {
+    middleware: 'permissionQuery', // Apply the middleware to all routes
+  },
 
 
 
