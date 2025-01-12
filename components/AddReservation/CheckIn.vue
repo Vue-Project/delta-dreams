@@ -228,7 +228,7 @@
                 <div class="col-md-4 col-12">
                   <label for="releaseTerm" class="form-label">Release Term</label>
                   <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Value" id="releaseTerm" v-modal="formAddReservation.releaseTerm" />
+                    <input type="text" class="form-control" placeholder="Value" id="releaseTerm" v-model="formAddReservation.releaseTerm" />
                     <span class="input-group-text groupStyle">%</span>
                   </div>
                 </div>
@@ -239,18 +239,18 @@
                 <div class="col-md-4 col-12">
                   <label for="releaseTerm" class="form-label">Remind Guest before</label>
                   <div class="input-group">
-                    <input type="number" class="form-control" placeholder="0" id="releaseTerm" v-modal="formAddReservation.remindGuest" />
+                    <input type="number" class="form-control" placeholder="0" id="releaseTerm" v-model="formAddReservation.remindGuest" />
                     <span class="input-group-text groupStyle">Days</span>
                   </div>
                 </div>
                 <div class="col-md-8 col-12">
                   <div class="d-flex mt-4">
                     <div class="form-check mr-2">
-                      <input type="radio" id="hold-release" name="optionRadioDate" class="form-check-input" v-modal="formAddReservation.holdRelease" />
+                      <input type="radio" id="hold-release" name="optionRadioDate" class="form-check-input" v-model="formAddReservation.holdRelease" />
                       <label class="form-check-label" for="hold-release">Hold Release Date</label>
                     </div>
                     <div class="form-check">
-                      <input type="radio" id="arrival-date" name="optionRadioDate" class="form-check-input" v-modal="formAddReservation.arrivalDate" />
+                      <input type="radio" id="arrival-date" name="optionRadioDate" class="form-check-input" v-model="formAddReservation.arrivalDate" />
                       <label class="form-check-label" for="arrival-date">Arrival Date</label>
                     </div>
                   </div>

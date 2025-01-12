@@ -10,7 +10,7 @@
               </NuxtLink>
               <i class="text-primary fa-solid fa-hotel fs-3 mr-2 mb-2"></i>
               {{ reservationDataById.reserved_by.name }}
-              {{ reservationDataById.id }}
+              <!-- {{ reservationDataById.id }} -->
               <small class="text-muted ml-3">
                 <i class="fa-solid fa-person pr-2"></i>{{ reservationDataById.adults }}
                 <i class="fa-solid fa-child pr-2"></i>{{ reservationDataById.children }}</small>
@@ -26,7 +26,7 @@
           <div class="col">
             <div class="me-2">
               <h6>Booking Date</h6>
-              <small class="text-muted">{{ reservationDataById.booking_source.created_at || "02/12/2024"}} </small>
+              <small class="text-muted">{{ reservationDataById.booking_source.created_at }} </small>
             </div>
           </div>
           <div class="col">

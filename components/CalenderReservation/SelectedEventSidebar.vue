@@ -40,10 +40,7 @@ export default {
       type: Object,
       default: null,
     },
-    selectedCard: {
-      type: Object,
-      default: null,
-    },
+
   },
   methods: {
     navigateToEditReservation(id) {

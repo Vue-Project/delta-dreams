@@ -14,7 +14,7 @@
       <SidebarBlockRoom :is-sidebar-open="isSidebarOpen" title="Block Room" width="400px" @close-sidebar="toggleSidebar" style="height: auto !important;">
         <BlockRoomForm :selectedDates="selectedDates" :selectedResourceId="selectedResourceId" @close-sidebar="toggleSidebar" />
       </SidebarBlockRoom>
-      <SelectedEventSidebar :selectedEvent="selectedEvent" :selectedCard="selectedCard" @navigate-to-edit-reservation="navigateToEditReservation" />
+      <SelectedEventSidebar :selectedEvent="selectedEvent" @navigate-to-edit-reservation="navigateToEditReservation" />
     </div>
   </section>
 </template>
@@ -65,7 +65,7 @@ export default {
       firstSelectedDate: "", // Store first selected date
       lastSelectedDate: "",
       occupancyData: [],
-      statisticsHeaderCalender: [],
+      statisticsHeaderCalender: {},
       calendarOptions: {
         plugins: [resourceTimelinePlugin, interactionPlugin],
         initialView: "resourceTimeline",

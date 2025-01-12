@@ -34,9 +34,9 @@ export default {
       return this.$store.state.selectedResourceName;
     }
   },
-  beforeMount() {
-    this.$store.dispatch('resetAccess')
-  }
+  // beforeMount() {
+  //   this.$store.dispatch('resetAccess')
+  // }
 
 };
 </script>

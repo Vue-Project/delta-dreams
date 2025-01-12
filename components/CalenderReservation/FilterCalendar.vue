@@ -1,7 +1,7 @@
 <template>
   <div>
     <HeaderCalender :statistics="statisticsHeaderCalender" />
-    <div class="filter-buttons">
+    <div class="filter-buttons px-1">
       <button class="btn btn-primary" @click="showAllResources">Show All</button>
       <button
         v-for="building in buildingNames"
@@ -25,7 +25,7 @@ export default {
   },
   props: {
     statisticsHeaderCalender: {
-      type: Array,
+      type: Object,
       required: true,
     },
     buildingNames: {
