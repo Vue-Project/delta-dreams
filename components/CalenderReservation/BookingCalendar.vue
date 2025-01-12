@@ -1,5 +1,6 @@
 <template>
   <section class="card">
+<!-- <h1>{{datesBuilding}}</h1> -->
     <Loader :visible="isLoading" />
     <div v-if="!isLoading">
       <FilterCalendar :statisticsHeaderCalender="statisticsHeaderCalender" :buildingNames="buildingNames" @show-all-resources="showAllResources" @show-building-resources="showBuildingResources" />
@@ -48,14 +49,13 @@ export default {
   {
     return {
       linkToAddReservation: '/add-reservation',
-      datesbuilding: [],
+       datesBuilding: [],
       buildingNames: [], // Store building names dynamically
       selectedDates: '',
       selectedResourceId: '',
       selectedResourceName: '',
       isLoading: true,
       data: [],
-      unitsDates: [],
       isSidebarOpen: false,
       isPopoverBodyVisible: true, // Body visibility
       isPopoverVisible: false, // State to control popover visibility
@@ -72,7 +72,7 @@ export default {
         eventClick: this.handleEventClick,
         duration: { days: 20 },
         weekends: true,
-        // editable: true, // Enable dragging and resizing
+        editable: true, // Enable dragging and resizing
         resources: this.createResources(),
         selectable: true, // Enable date selection
         selectMirror: true, // Make the selection draggable
@@ -162,113 +162,94 @@ export default {
             new bootstrap.Tooltip(tooltipTriggerEl); // Activate tooltip
           });
         },
-        resourceAreaWidth: '18%',
-        // datesSet (info)
+        // resourceGroupLaneContent: function (arg)
         // {
-        //   console.log("datesSet called", info);
 
-        //   // Room data
-        //   const roomData = [
-        //     {
-        //       id: "a",
-        //       title: "Building A",
-        //       availability: {
-        //         "2025-01-01": { units: 30, price: "$100" },
-        //         "2025-01-02": { units: 25, price: "$90" },
-        //         "2025-01-03": { units: 20, price: "$80" },
-        //       },
-        //     },
-        //     {
-        //       id: "b",
-        //       title: "Building B",
-        //       availability: {
-        //         "2025-01-01": { units: 15, price: "$120" },
-        //         "2025-01-02": { units: 10, price: "$110" },
-        //         "2025-01-03": { units: 5, price: "$100" },
-        //       },
-        //     },
-        //   ];
+        //   // const startDate = arg.view.calendar.getOption('initialDate'); // Get the calendar's initial date
+        //   // const endDate = new Date(startDate);
+        //   // console.log(startDate, endDate);
 
-        //   // Get the current date range in the calendar
-        //   const startDate = new Date(info.start);
-        //   const endDate = new Date(info.end);
+        //   // endDate.setDate(endDate.getDate() + 7); // Adjust based on your calendar's range (7 days for a week)
 
-        //   // Get the timeline grid rows for each resource
-        //   const timelineRows = document.querySelectorAll(
-        //     ".fc-timeline-lane.fc-resource-group.fc-cell-shaded"
-        //   );
+        //   const laneContent = document.createElement('div');
+        //   laneContent.style.display = 'flex';
+        //   laneContent.style.justifyContent = 'space-between';
+        //   laneContent.style.width = '100%';
+        //   laneContent.style.height = '37px';
+        //   laneContent.style.padding = '0 px';
 
-        //   if (timelineRows.length === 0) {
-        //     console.warn("No timeline rows found!");
-        //     return;
+        //   // Loop Days
+        //   // Loop buildings
+        //   //let date = new Date(startDate); date < endDate; date.setDate(date.getDate() + 1)
+        //   for (let xxxx = 0; xxxx < 20; xxxx++) {
+        //     const dayTotal = document.createElement('div');
+        //     dayTotal.textContent = 'Total: 100'; // Replace with your total calculation
+        //     dayTotal.style.width = '60px';
+        //     dayTotal.style.textAlign = 'center';
+        //     // dayTotal.style.borderRight = '1px solid #ccc'; // Optional styling
+        //     laneContent.appendChild(dayTotal);
         //   }
 
-        //   // Loop through the resources and inject data
-        //   timelineRows.forEach((row, rowIndex) =>
-        //   {
-        //     const room = roomData[rowIndex]; // Match the resource with room data
-        //     if (!room) {
-        //       console.warn(`No data for row ${rowIndex + 1}`);
-        //       return;
-        //     }
+        //   return { domNodes: [laneContent] };
 
-        //     // Clear existing content in the row
-        //     row.innerHTML = "";
 
-        //     // Loop through the visible dates in the calendar
-        //     for (
-        //       let currentDate = new Date(startDate);
-        //       currentDate <= endDate;
-        //       currentDate.setDate(currentDate.getDate() + 1)
-        //     ) {
-        //       const dateString = currentDate.toISOString().split("T")[0];
-        //       const availability = room.availability[dateString];
-
-        //       // Create a cell for this date
-        //       const dateCell = document.createElement("div");
-        //       dateCell.className = "custom-date-cell";
-        //       dateCell.style.cssText = "padding: 10px; border: 1px solid #ddd;";
-
-        //       // Add availability data or a fallback message
-        //       if (availability) {
-        //         dateCell.innerHTML = `
-        //     <div><strong>${dateString}</strong></div>
-        //     <div>Units: ${availability.units}</div>
-        //     <div>Price: ${availability.price}</div>
-        //   `;
-        //       } else {
-        //         dateCell.innerHTML = `
-        //     <div><strong>${dateString}</strong></div>
-        //     <div>No availability</div>
-        //   `;
-        //       }
-
-        //       // Append the cell to the row
-        //       row.appendChild(dateCell);
-        //     }
-        //   });
         // },
+        resourceAreaWidth: '18%',
         resourceGroupField: "groupId",
         resourceAreaHeaderContent: this.customResourceHeader, // Customize header
         dateClick: this.handleDateClick,
         select: this.handleSelect,
         events: [
-          {
-            resourceId: '23-21',
-            title: 'Event 1', // Event title
-            start: '2025-01-11', // Start date
-            end: '2025-02-30', // End date (optional)
-            color: '#FF0000' // Event color (optional)
-          },
-          {
-            resourceId: '21-1',
-            title: 'Event 2',
-            start: '2025-01-15 ', // Start date and time
-            end: '2025-01-18 ', // End date and time
-            color: '#FF0000' // Event color (optional)
-          },
-
-        ],
+  {
+    resourceId: '23-21',
+    title: 'Event 1',
+    start: '2025-01-11',
+    end: '2025-02-28',
+    color: '#FFd000'
+  },
+  {
+    resourceId: '21-6',
+    title: 'Event 4',
+    start: '2025-01-15',
+    end: '2025-01-18',
+    color: '#FFd000'
+  },
+  {
+    resourceId: '21-5',
+    title: 'Event 4',
+    start: '2025-01-15',
+    end: '2025-01-18',
+    color: '#FFd000'
+  },
+  {
+    resourceId: '21-2',
+    title: 'Event 4',
+    start: '2025-01-15',
+    end: '2025-01-18',
+    color: '#FFd000'
+  },
+  {
+    resourceId: '21-10',
+    title: 'Event 4',
+    start: '2025-01-20',
+    end: '2025-01-29',
+    color: '#FFd000'
+  },
+  {
+    resourceId: '24-9',
+    title: 'Event 4',
+    start: '2025-01-15',
+    end: '2025-01-30',
+    color: '#FFd000'
+  },
+  {
+    resourceId: '24-1',
+    title: 'Event 4',
+    start: '2025-01-15',
+    end: '2025-01-30',
+    color: '#FFd000'
+  }
+],
         footerToolbar: {
           left: "",
           center: "",
@@ -280,26 +261,28 @@ export default {
   },
 
   methods: {
-    generateEvents ()
-    {
-      this.eventData = [];
-      this.data.forEach((building) =>
-      {
-        building.units.data.forEach((unit) =>
-        {
-          unit.dates.forEach((dateStr) =>
-          {
-            const event = {
-              start: dateStr,
-              resourceId: `${building.name}-${unit.code}`,
-              price: unit.price, // Ensure price is correctly referenced
-              title: unit.code,
-            };
-            this.eventData.push(event);
-          });
-        });
-      });
-    },
+
+
+    // generateEvents ()
+    // {
+    //   this.eventData = [];
+    //   this.data.forEach((building) =>
+    //   {
+    //     building.units.data.forEach((unit) =>
+    //     {
+    //       unit.dates.forEach((dateStr) =>
+    //       {
+    //         const event = {
+    //           start: dateStr,
+    //           resourceId: `${building.name}-${unit.code}`,
+    //           price: unit.price, // Ensure price is correctly referenced
+    //           title: unit.code,
+    //         };
+    //         this.eventData.push(event);
+    //       });
+    //     });
+    //   });
+    // },
     goToAddReservation ()
     {
       this.$store.commit('setSelectedDates', this.selectedDates);
@@ -349,7 +332,7 @@ export default {
       if (Array.isArray(this.data)) {
         this.data.forEach((building) =>
         {
-          // Only include the building resource if it is in selectedIds or if "Show All" is selected
+          // Include building resource if "Show All" or selectedIds includes building.name
           if (selectedIds.length === 0 || selectedIds.includes(building.name)) {
             resources.push({
               id: building.name,
@@ -361,23 +344,21 @@ export default {
             if (building.units?.data) {
               building.units.data.forEach((unit) =>
               {
-                // Check if the unit's date matches the selected date (if provided)
+                // Include unit if no date is selected or unit.date matches selectedDate
                 if (!selectedDate || (unit.date && unit.date === selectedDate)) {
-                  const resource = {
+                  resources.push({
                     id: `${building.id}-${unit.id}`,
-                    resourceId: building.name,
-                    title: unit.code,
+                    resourceId: building.id,
+                    title: unit.code, // Ensure this is the unit code, not building.name
                     groupId: building.name,
                     classNames: ["unit"],
                     extendedProps: {
                       is_clean: unit.is_clean,
                       is_smoking: unit.is_smoking,
-                      price: unit.price, // Add price data
-                      date: unit.date, // Add date for reference
+                      price: unit.price,
+                      date: unit.date,
                     },
-                  };
-
-                  resources.push(resource);
+                  });
                 }
               });
             }
@@ -783,16 +764,29 @@ export default {
       this.data = CalenderDataResponse.data.data;
       this.occupancyData = CalenderDataResponse.data.calendar.data;
       this.statisticsHeaderCalender = CalenderDataResponse.data.statistics;
-      this.datesbuilding = CalenderDataResponse.data.data.dates;
+      this.datesBuilding = CalenderDataResponse.data.data;
       this.buildingNames = this.getBuildingNames();
 
-      this.data.forEach(building =>
-      {
-        building.units.data.forEach(unit =>
-        {
-          this.unitsDates = this.unitsDates.concat(unit.dates); // Merge unit.dates into unitsDates
+      this.data.forEach(building => {
+  console.log('Building ID:', building.id);
+  if (building && building.dates && Array.isArray(building.dates)) {
+    building.dates.forEach(unit => {
+      if (unit && unit.id && unit.dates && Array.isArray(unit.dates)) {
+        console.log(`  Unit ID: ${unit.id}`);
+        unit.dates.forEach(date => {
+
+          console.log(` for each day   - ${date}`);
         });
-      });
+      } else {
+        console.log('Invalid unit structure:', unit);
+      }
+    });
+  } else {
+    console.log('Invalid building.dates:', building.dates);
+  }
+  this.datesBuilding= building.dates
+
+});
 
 
     } catch (error) {
