@@ -12,7 +12,6 @@
 <script>
 import CheckIn from "../components/AddReservation/CheckIn.vue";
 import BillingSummary from "../components/AddReservation/BillingSummary.vue";
-// console.log(this.$store.state.reservation);
 
 export default {
   name: "AddReservation",

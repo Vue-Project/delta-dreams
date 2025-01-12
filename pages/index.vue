@@ -3,23 +3,18 @@
 
     <div class="col-md-12">
 
-      <CalenderDate />
-      <!-- <DataTable /> -->
+      <BookingCalendar />
     </div>
   </div>
 </template>
-<style scoped></style>
-
 <script>
-import CalenderDate from '../components/CalenderReservation/CalenderDate.vue';
-import DataTable from '../components/CalenderReservation/DataTable.vue';
+import BookingCalendar from '../components/CalenderReservation/BookingCalendar.vue';
 
 export default {
   name: "IndexPage",
   layout: "main",
   components: {
-    CalenderDate,
-    DataTable
+    BookingCalendar,
 
   }
 };
