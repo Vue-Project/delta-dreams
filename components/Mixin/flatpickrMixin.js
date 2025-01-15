@@ -17,7 +17,6 @@ export default {
           this.$refs.datePicker1,
           this.$refs.datePicker2,
           this.$refs.datePicker3,
-          this.$refs.datePicker4,
           this.$refs.datePicker5,
           this.$refs.datePicker6,
           this.$refs.datePicker7,

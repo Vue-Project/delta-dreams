@@ -1,10 +1,10 @@
 <template>
   <div class="row d-flex justify-content-between p-2 position-relative">
-    <!-- <div class="col-md-1 col-12 calendarDate">
+    <div class="col-md-2 col-12 calendarDate">
       <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD" id="flatpickr-date-04" ref="datePicker4" aria-label="input for date" />
       <i class="fa-solid fa-calendar-days date-icon"></i>
-    </div> -->
-    <div class="col-md-7 col-12">
+    </div>
+    <div class="col-md-6 col-12">
       <div class="d-flex items-center gap-4">
         <div v-for="(count, label) in statistics" :key="label">
           <span>{{ label }}</span>
@@ -141,6 +141,7 @@ export default {
   },
 
   methods: {
+
     openSidebar ()
     {
       this.isSidebarOpen = true;
@@ -149,7 +150,26 @@ export default {
     {
       this.isSidebarOpen = false;
     },
+    filterCalenderByDate ()
+    {
+      const flatpickrInstance = flatpickr(this.$refs.datePicker4, {
+        dateFormat: "Y-m-d", // Format the date as YYYY-MM-DD
+        onChange: (selectedDates) =>
+        {
+          if (selectedDates.length > 0) {
+            const selectedDate = selectedDates[0];
+            this.$emit("date-selected", selectedDate);
+          }
+        },
+      });
+    },
   },
+  mounted ()
+  {
+    this.filterCalenderByDate();
+  },
+
+
   mixins: [flatpickrMixin],
   props: {
     statistics: {

@@ -1,9 +1,11 @@
 <template>
   <section class="card">
+
 <!-- <h1>{{datesBuilding}}</h1> -->
     <Loader :visible="isLoading" />
+
     <div v-if="!isLoading">
-      <FilterCalendar :statisticsHeaderCalender="statisticsHeaderCalender" :buildingNames="buildingNames" @show-all-resources="showAllResources" @show-building-resources="showBuildingResources" />
+      <FilterCalendar  @date-selected="goToSelectedDate" :statisticsHeaderCalender="statisticsHeaderCalender" :buildingNames="buildingNames" @show-all-resources="showAllResources" @show-building-resources="showBuildingResources" />
       <FullCalendar :options="calendarOptions" @select="handleSelect" ref="calendar">
         <template v-slot:eventContent="arg">
           <b>{{ arg.event.title }}</b>
@@ -22,6 +24,7 @@
 
 
 <script>
+
 import FullCalendar from "@fullcalendar/vue";
 import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
 import interactionPlugin from "@fullcalendar/interaction";
@@ -72,7 +75,7 @@ export default {
         eventClick: this.handleEventClick,
         duration: { days: 20 },
         weekends: true,
-        editable: true, // Enable dragging and resizing
+        // editable: true, // Enable dragging and resizing
         resources: this.createResources(),
         selectable: true, // Enable date selection
         selectMirror: true, // Make the selection draggable
@@ -262,41 +265,7 @@ export default {
 
   methods: {
 
-
-    // generateEvents ()
-    // {
-    //   this.eventData = [];
-    //   this.data.forEach((building) =>
-    //   {
-    //     building.units.data.forEach((unit) =>
-    //     {
-    //       unit.dates.forEach((dateStr) =>
-    //       {
-    //         const event = {
-    //           start: dateStr,
-    //           resourceId: `${building.name}-${unit.code}`,
-    //           price: unit.price, // Ensure price is correctly referenced
-    //           title: unit.code,
-    //         };
-    //         this.eventData.push(event);
-    //       });
-    //     });
-    //   });
-    // },
-    goToAddReservation ()
-    {
-      this.$store.commit('setSelectedDates', this.selectedDates);
-      this.$store.commit('setSelectedResourceName', this.selectedResourceName);
-      this.$store.dispatch('allowAccess')
-      this.$router.push('/add-reservation')
-      // this.$router.push('/secret')
-
-      // Navigate to the add-reservation page
-      // this.$router.push({ name: '' });
-      // this.$router.push('/secret')
-
-    },
-    /**
+/**
      * Generates a list of resources from predefined room data.
      *
      * This function iterates over a set of room data, each containing a list of subrooms,
@@ -313,17 +282,6 @@ export default {
      * @returns {Array} An array of resources, where each resource represents a room or subroom
      *                  with specific attributes for identification and styling.
      */
-    getBuildingNames ()
-    {
-      const names = [];
-      this.data.forEach((building) =>
-      {
-        if (building.name && !names.includes(building.name)) {
-          names.push(building.name);
-        }
-      });
-      return names;
-    },
     // Create resources dynamically based on the fetched data and selected IDs
     createResources (selectedIds = [], selectedDate = null)
     {
@@ -494,10 +452,7 @@ export default {
 
       // Show overlay if required
       this.showOverlay();
-    }
-
-    ,
-
+    },
     /**
      * Highlights the cell for a given date in the calendar.
      *
@@ -515,7 +470,6 @@ export default {
         dateCell.classList.add("fc-highlight");
       }
     },
-
     /**
      * Updates the highlighted text after a date range is selected.
      *
@@ -546,7 +500,6 @@ export default {
       // Show the popover after the overlay is visible
       this.showPopover();
     },
-
     showPopover ()
     {
       this.isPopoverVisible = true;
@@ -573,7 +526,6 @@ export default {
         }
       });
     },
-
     showOverlay ()
     {
       this.isOverlayVisible = true; // Show the overlay
@@ -641,14 +593,6 @@ export default {
       // Return the div element to be inserted into the DOM
       return { domNodes: [div.firstElementChild] };
     },
-
-
-
-
-
-
-
-
 
     /**
      * Toggles the expand/collapse state of resources in a calendar view.
@@ -719,14 +663,7 @@ export default {
       this.isPopoverVisible = false;
       this.isOverlayVisible = false;
     },
-    // storeSelectedDatesAndNavigate ()
-    // {
-    //   // Store the data before navigation
-    //   this.$store.commit('reservation/SET_SELECTED_DATES', this.selectedDates)
 
-    //   // Optional: Also store in localStorage as backup
-    //   localStorage.setItem('selectedDates', JSON.stringify(this.selectedDates))
-    // }
     navigateToEditReservation (id)
     {
       this.$router.push(`/edit-reservation/${id}`);
@@ -749,6 +686,40 @@ export default {
           console.error('Offcanvas element not found.');
         }
       });
+    },
+    goToAddReservation ()
+    {
+      this.$store.commit('setSelectedDates', this.selectedDates);
+      this.$store.commit('setSelectedResourceName', this.selectedResourceName);
+      this.$store.dispatch('allowAccess')
+      this.$router.push('/add-reservation')
+      // this.$router.push('/secret')
+
+      // Navigate to the add-reservation page
+      // this.$router.push({ name: '' });
+      // this.$router.push('/secret')
+
+    },
+
+    getBuildingNames ()
+    {
+      const names = [];
+      this.data.forEach((building) =>
+      {
+        if (building.name && !names.includes(building.name)) {
+          names.push(building.name);
+        }
+      });
+      return names;
+    },
+    goToSelectedDate(selectedDate) {
+      const calendarApi = this.$refs.calendar.getApi();
+
+      // Navigate to the selected date in FullCalendar
+      calendarApi.gotoDate(selectedDate);
+
+      // Optionally, highlight the selected date
+      this.highlightDate(selectedDate);
     },
 
   },
@@ -806,6 +777,7 @@ export default {
     if (!this.$refs.calendar) {
       console.error('FullCalendar ref is not available.');
     }
+    // this.initializeFlatpickr()
   },
 }
 </script>

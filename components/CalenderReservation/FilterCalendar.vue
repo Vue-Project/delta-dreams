@@ -1,6 +1,7 @@
 <template>
   <div>
-    <HeaderCalender :statistics="statisticsHeaderCalender" />
+
+    <HeaderCalender @date-selected="handleDateSelected" :statistics="statisticsHeaderCalender" />
     <div class="filter-buttons px-1">
       <button class="btn btn-primary" @click="showAllResources">Show All</button>
       <button
@@ -34,6 +35,12 @@ export default {
     },
   },
   methods: {
+    handleDateSelected(selectedDate) {
+      // Forward the selected date to the parent component
+      this.$emit("date-selected", selectedDate);
+    },
+
+
   // Show all resources (no filter)
     showAllResources() {
       this.$emit("show-all-resources");
@@ -42,6 +49,8 @@ export default {
     showBuildingResources(building) {
       this.$emit("show-building-resources", building);
     },
+
+
   },
 };
 </script>
