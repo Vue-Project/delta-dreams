@@ -343,7 +343,7 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Arrival Date</h6>
-                                  <small class="text-muted">{{ selectedCard.checkin_date || "2024-10-21" }}
+                                  <small class="text-muted">{{ formatDate(selectedCard.checkin_date || "2024-10-21") }}
                                     {{ selectedCard.checkin_time || "12:00 PM" }}</small>
                                 </div>
                               </div>
@@ -354,7 +354,7 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Booking Date</h6>
-                                  <small class="text-muted">{{ selectedCard.checkout_date || "2024-10-21" }}
+                                  <small class="text-muted">{{ formatDate(selectedCard.checkout_date || "2024-10-21" )}}
                                     {{ selectedCard.checkout_time || "12:00 PM" }}</small>
                                 </div>
                               </div>
@@ -534,7 +534,7 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Arrival Date</h6>
-                                  <small class="text-muted">{{ selectedCard.checkin_date || "2024-10-21" }}
+                                  <small class="text-muted">{{ formatDate(selectedCard.checkin_date || "2024-10-21" ) }}
                                     {{ selectedCard.checkin_time || "12:00 PM" }}</small>
                                 </div>
                               </div>
@@ -545,7 +545,7 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Booking Date</h6>
-                                  <small class="text-muted">{{ selectedCard.checkout_date || "2024-10-21" }}
+                                  <small class="text-muted">{{ formatDate(selectedCard.checkout_date || "2024-10-21" )}}
                                     {{ selectedCard.checkout_time || "12:00 PM" }}</small>
                                 </div>
                               </div>
@@ -707,8 +707,11 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Arrival Date</h6>
-                                  <small class="text-muted">{{ selectedCard.checkin_date || "2024-10-21" }}
-                                    {{ selectedCard.checkin_time || "12:00 PM" }}</small>
+                                  <small class="text-muted">{{
+                                    formatDate(
+                                      selectedCard.checkin_date ||
+                                        "2024-10-21"
+                                    )}} {{ selectedCard.checkin_time || "12:00 PM" }}</small>
                                 </div>
                               </div>
                             </div>
@@ -718,8 +721,11 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Booking Date</h6>
-                                  <small class="text-muted">{{ selectedCard.checkout_date || "2024-10-21" }}
-                                    {{ selectedCard.checkout_time || "12:00 PM" }}</small>
+                                  <small class="text-muted">{{
+                                    formatDate(
+                                      selectedCard.checkout_date ||
+                                        "2024-10-21"
+                                    )}} {{ selectedCard.checkout_time || "12:00 PM" }}</small>
                                 </div>
                               </div>
                             </div>
@@ -758,8 +764,11 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Departure Date</h6>
-                                  <small class="text-muted">{{ selectedCard.departureDate || "2024-10-21" }}
-                                    {{ selectedCard.departureTime || "12:00 PM" }}</small>
+                                  <small class="text-muted">{{
+                                    formatDate(
+                                      selectedCard.departureDate ||
+                                        "2024-10-21"
+                                    )}} {{ selectedCard.departureTime || "12:00 PM" }}</small>
                                 </div>
                               </div>
                             </div>
@@ -874,8 +883,11 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Arrival Date</h6>
-                                  <small class="text-muted">{{ selectedCard.checkin_date || "2024-10-21" }}
-                                    {{ selectedCard.checkin_time || "12:00 PM" }}</small>
+                                  <small class="text-muted">{{
+                                    formatDate(
+                                      selectedCard.checkin_date ||
+                                        "2024-10-21"
+                                    )}} {{ selectedCard.checkin_time || "12:00 PM" }}</small>
                                 </div>
                               </div>
                             </div>
@@ -885,8 +897,11 @@
                               <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                 <div class="me-2">
                                   <h6 class="mb-0">Booking Date</h6>
-                                  <small class="text-muted">{{ selectedCard.checkout_date || "2024-10-21" }}
-                                    {{ selectedCard.checkout_time || "12:00 PM" }}</small>
+                                  <small class="text-muted">{{
+                                    formatDate(
+                                      selectedCard.checkout_date ||
+                                        "2024-10-21"
+                                    )}} {{ selectedCard.checkout_time || "12:00 PM" }}</small>
                                 </div>
                               </div>
                             </div>
@@ -1483,12 +1498,12 @@
                         <p class="m-0 me-2">{{ card.Voucher || '14541' }}</p>
                       </td>
                       <td>
-                        <p class="m-0 me-2">{{ card.checkin_date }}</p>
-                        <p class="m-0 me-2">{{ card.checkin_time }}</p>
+                        <p class="m-0 me-2">{{ formatDate(card.checkin_date )}}</p>
+                        <p class="m-0 me-2">{{  card.checkin_time }}</p>
                       </td>
                       <td>
-                        <p class="m-0 me-2">{{ card.checkout_date }}</p>
-                        <p class="m-0 me-2">{{ card.checkout_time }}</p>
+                        <p class="m-0 me-2">{{ formatDate(card.checkout_date )}}</p>
+                        <p class="m-0 me-2">{{  card.checkout_time }}</p>
                       </td>
                       <td>
                         <p class="m-0 me-2">{{ card.room_details || '104 - Suite الفندق غرفتين وصاله' }}</p>
@@ -1557,7 +1572,7 @@
                     <div id="deliveryExceptionsChart">
                       <div class="row d-flex align-items-center justify-content-center text-center mb-3">
                         <div class="bg-light col-md-5">
-                          <div class="text-dark">{{ card.checkin_date }}</div>
+                          <p class="m-0 me-2">{{ formatDate(card.checkin_date) }}</p>
                           <div>{{ card.checkin_time || '00:00:00' }}</div>
                         </div>
                         <div class="bg-secondary col-md-2">
@@ -1566,7 +1581,7 @@
                           <div>Nights</div>
                         </div>
                         <div class="bg-light col-md-5">
-                          <div class="text-dark"> {{ card.checkout_date }}</div>
+                          <div class="text-dark"> {{ formatDate(card.checkout_date) }}</div>
                           <div> {{ card.checkout_time || '15:00:00' }}</div>
                         </div>
                       </div>
@@ -1614,6 +1629,7 @@ import HeaderReservation from "../components/AllReservation/HeaderReservation.vu
 import { getReservationData } from "../Api/resvertionData";
 import ThePagination from "../components/layout/ThePagination.vue";
 import flatpickrMixin from "../components/Mixin/flatpickrMixin";
+import { dateMixin } from "../components/Mixin/DateMixin";
 
 export default {
   name: "reservations",
@@ -1671,7 +1687,7 @@ export default {
             to: 0
           }
         },
-        inhouse: {
+        inHouse: {
           data: [],
           error: null,
           meta: {
@@ -1692,7 +1708,7 @@ export default {
         reservations: 'reservations',
         arrivals: 'arrivals',
         departures: 'departures',
-        inhouse: 'in_house'
+        inHouse: 'in_house'
       },
 
 
@@ -1776,7 +1792,8 @@ export default {
       if (page < 1 || page > this.tabData[tab].meta.last_page) return; // Prevent invalid page numbers
       this.tabData[tab].meta.current_page = page; // Update current page
       this.GetTabData(tab); // Fetch data for the new page
-    }
+    },
+
   },
 
   async mounted ()
@@ -1817,7 +1834,7 @@ export default {
       };
     }
   },
-  mixins: [flatpickrMixin],
+  mixins: [flatpickrMixin,dateMixin],
 };
 </script>
 

@@ -19,14 +19,14 @@
           <div class="col">
             <div class="me-2">
               <h6>Arrival Date</h6>
-              <small class="text-muted">{{ reservationDataById.checkin_date }} {{ reservationDataById.checkin_time }}</small>
+              <small class="text-muted">{{ formatDate(reservationDataById.checkin_date) }} {{ reservationDataById.checkin_time }}</small>
             </div>
           </div>
 
           <div class="col">
             <div class="me-2">
               <h6>Booking Date</h6>
-              <small class="text-muted">{{ reservationDataById.booking_source.created_at }} </small>
+              <small class="text-muted">{{ formatDate(reservationDataById.checkout_date) }} </small>
             </div>
           </div>
           <div class="col">
@@ -40,7 +40,7 @@
               <h6>Nights</h6>
               <small class="text-muted">
 
-                {{ (new Date(reservationDataById.checkout_date) - new Date(reservationDataById.checkin_date)) / (1000 * 3600 * 24) }}
+                {{ (new Date(reservationDataById.checkout_datecheckout_date) - new Date(reservationDataById.checkin_date)) / (1000 * 3600 * 24) }}
               </small>
             </div>
           </div>
@@ -651,6 +651,9 @@ import AddCharges from "../../components/SiderbarContentEdit/AddCharges.vue";
 import AddDiscount from "../../components/SiderbarContentEdit/AddDiscount.vue";
 import AddOperation from "../../components/SiderbarContentEdit/AddOperation.vue";
 import { getReservationDataById } from "../../Api/editResvertion";
+import moment from "moment";
+import { dateMixin } from "../../components/Mixin/DateMixin";
+
 export default {
   name: "EditsPage",
   layout: "main",
@@ -764,7 +767,7 @@ export default {
   },
 
 
-  mixins: [flatpickrMixin],
+  mixins: [flatpickrMixin,dateMixin],
 
   async mounted ()
   {
