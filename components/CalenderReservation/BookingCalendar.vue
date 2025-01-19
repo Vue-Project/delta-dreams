@@ -1,11 +1,8 @@
 <template>
   <section class="card">
-
-<!-- <h1>{{datesBuilding}}</h1> -->
     <Loader :visible="isLoading" />
-
     <div v-if="!isLoading">
-      <FilterCalendar  @date-selected="goToSelectedDate" :statisticsHeaderCalender="statisticsHeaderCalender" :buildingNames="buildingNames" @show-all-resources="showAllResources" @show-building-resources="showBuildingResources" />
+      <FilterCalendar @date-selected="SelectedDateFilterCalendar" :statistics="statistics" :buildingNames="buildingNames" @show-all-resources="showAllResources" @show-building-resources="showBuildingResources" />
       <FullCalendar :options="calendarOptions" @select="handleSelect" ref="calendar">
         <template v-slot:eventContent="arg">
           <b>{{ arg.event.title }}</b>
@@ -14,7 +11,7 @@
       <CalendarFooter :occupancyData="occupancyData" />
       <div v-if="isOverlayVisible" class="overlay" @click="closePopover"></div>
       <PopoverComponent v-if="isPopoverVisible" :isPopoverVisible="isPopoverVisible" :popoverStyle="popoverStyle" :popoverArrowLeft="popoverArrowLeft" :firstSelectedDate="firstSelectedDate" :lastSelectedDate="lastSelectedDate" @go-to-add-reservation="goToAddReservation" @toggle-sidebar="toggleSidebar" @close-popover="closePopover" />
-      <SidebarBlockRoom :is-sidebar-open="isSidebarOpen" title="Block Room" width="400px" @close-sidebar="toggleSidebar" style="height: auto !important;">
+      <SidebarBlockRoom :is-sidebar-open="isSidebarOpen" title="Block Room" width="400px" @close-sidebar="toggleSidebar"  >
         <BlockRoomForm :selectedDates="selectedDates" :selectedResourceId="selectedResourceId" @close-sidebar="toggleSidebar" />
       </SidebarBlockRoom>
       <SelectedEventSidebar :selectedEvent="selectedEvent" @navigate-to-edit-reservation="navigateToEditReservation" />
@@ -52,7 +49,7 @@ export default {
   {
     return {
       linkToAddReservation: '/add-reservation',
-       datesBuilding: [],
+      datesBuilding: [],
       buildingNames: [], // Store building names dynamically
       selectedDates: '',
       selectedResourceId: '',
@@ -68,7 +65,7 @@ export default {
       firstSelectedDate: "", // Store first selected date
       lastSelectedDate: "",
       occupancyData: [],
-      statisticsHeaderCalender: {},
+      statistics: {},
       calendarOptions: {
         plugins: [resourceTimelinePlugin, interactionPlugin],
         initialView: "resourceTimeline",
@@ -165,94 +162,64 @@ export default {
             new bootstrap.Tooltip(tooltipTriggerEl); // Activate tooltip
           });
         },
-        // resourceGroupLaneContent: function (arg)
-        // {
 
-        //   // const startDate = arg.view.calendar.getOption('initialDate'); // Get the calendar's initial date
-        //   // const endDate = new Date(startDate);
-        //   // console.log(startDate, endDate);
-
-        //   // endDate.setDate(endDate.getDate() + 7); // Adjust based on your calendar's range (7 days for a week)
-
-        //   const laneContent = document.createElement('div');
-        //   laneContent.style.display = 'flex';
-        //   laneContent.style.justifyContent = 'space-between';
-        //   laneContent.style.width = '100%';
-        //   laneContent.style.height = '37px';
-        //   laneContent.style.padding = '0 px';
-
-        //   // Loop Days
-        //   // Loop buildings
-        //   //let date = new Date(startDate); date < endDate; date.setDate(date.getDate() + 1)
-        //   for (let xxxx = 0; xxxx < 20; xxxx++) {
-        //     const dayTotal = document.createElement('div');
-        //     dayTotal.textContent = 'Total: 100'; // Replace with your total calculation
-        //     dayTotal.style.width = '60px';
-        //     dayTotal.style.textAlign = 'center';
-        //     // dayTotal.style.borderRight = '1px solid #ccc'; // Optional styling
-        //     laneContent.appendChild(dayTotal);
-        //   }
-
-        //   return { domNodes: [laneContent] };
-
-
-        // },
-        resourceAreaWidth: '18%',
+        resourceGroupLaneContent: this.resourceGroupLaneContent,
+        resourceAreaWidth: '15%',
         resourceGroupField: "groupId",
-        resourceAreaHeaderContent: this.customResourceHeader, // Customize header
+        // resourceAreaHeaderContent: this.customResourceHeader, // Customize header
         dateClick: this.handleDateClick,
         select: this.handleSelect,
         events: [
-  {
-    resourceId: '23-21',
-    title: 'Event 1',
-    start: '2025-01-11',
-    end: '2025-02-28',
-    color: '#FFd000'
-  },
-  {
-    resourceId: '21-6',
-    title: 'Event 4',
-    start: '2025-01-15',
-    end: '2025-01-18',
-    color: '#FFd000'
-  },
-  {
-    resourceId: '21-5',
-    title: 'Event 4',
-    start: '2025-01-15',
-    end: '2025-01-18',
-    color: '#FFd000'
-  },
-  {
-    resourceId: '21-2',
-    title: 'Event 4',
-    start: '2025-01-15',
-    end: '2025-01-18',
-    color: '#FFd000'
-  },
-  {
-    resourceId: '21-10',
-    title: 'Event 4',
-    start: '2025-01-20',
-    end: '2025-01-29',
-    color: '#FFd000'
-  },
-  {
-    resourceId: '24-9',
-    title: 'Event 4',
-    start: '2025-01-15',
-    end: '2025-01-30',
-    color: '#FFd000'
-  },
-  {
-    resourceId: '24-1',
-    title: 'Event 4',
-    start: '2025-01-15',
-    end: '2025-01-30',
-    color: '#FFd000'
-  }
-],
+          {
+            resourceId: '23-21',
+            title: 'Event 1',
+            start: '2025-01-11',
+            end: '2025-02-28',
+            color: '#FFd000'
+          },
+          {
+            resourceId: '21-6',
+            title: 'Event 4',
+            start: '2025-01-15',
+            end: '2025-01-18',
+            color: '#FFd000'
+          },
+          {
+            resourceId: '21-5',
+            title: 'Event 4',
+            start: '2025-01-15',
+            end: '2025-01-18',
+            color: '#FFd000'
+          },
+          {
+            resourceId: '21-2',
+            title: 'Event 4',
+            start: '2025-01-15',
+            end: '2025-01-18',
+            color: '#FFd000'
+          },
+          {
+            resourceId: '21-10',
+            title: 'Event 4',
+            start: '2025-01-20',
+            end: '2025-01-29',
+            color: '#FFd000'
+          },
+          {
+            resourceId: '24-9',
+            title: 'Event 4',
+            start: '2025-01-15',
+            end: '2025-01-30',
+            color: '#FFd000'
+          },
+          {
+            resourceId: '24-1',
+            title: 'Event 4',
+            start: '2025-01-15',
+            end: '2025-01-30',
+            color: '#FFd000'
+          }
+        ],
         footerToolbar: {
           left: "",
           center: "",
@@ -265,10 +232,87 @@ export default {
 
   methods: {
 
-/**
+    // groupBuildingsByDate (datesBuilding)
+    // {
+    //   const grouped = {};
+    //   datesBuilding.forEach(buildingDate =>
+    //   {
+    //     const dateKey = buildingDate.date; // Assuming date is a string like '2025-01-18'
+    //     if (!grouped[dateKey]) {
+    //       grouped[dateKey] = [];
+    //     }
+    //     grouped[dateKey].push(buildingDate);
+    //   });
+    //   return grouped;
+    // },
+    // resourceGroupLaneContent (arg)
+    // {
+    //   // console.log(this.datesBuilding);
+
+    //   const laneContent = document.createElement('div');
+    //   laneContent.style.display = 'flex';
+    //   laneContent.style.width = '100%';
+    //   laneContent.style.height = '37px';
+    //   laneContent.style.padding = '0px';
+
+    //   const slotMinWidth = arg.view.calendar.getOption('slotMinWidth');
+    //   console.log(slotMinWidth);
+    //   const visibleStartDate = arg.view.intervalStart;
+    //   console.log(visibleStartDate);
+
+    //   const visibleEndDate = arg.view.intervalEnd;
+    //   console.log(visibleEndDate);
+
+
+    //   // Generate array of dates in visible range
+    //   const visibleDates = [];
+    //   let currentDate = new Date(visibleStartDate);
+    //   while (currentDate < visibleEndDate) {
+    //     visibleDates.push(new Date(currentDate));
+    //     currentDate.setDate(currentDate.getDate() + 1);
+    //   }
+
+    //   // Group buildings by date
+    //   const groupedBuildings = this.groupBuildingsByDate(this.datesBuilding);
+    //   console.log(groupedBuildings);
+
+    //   visibleDates.forEach(date =>
+    //   {
+    //     const dateKey = date.toISOString().split('T')[0]; // '2025-01-18'
+    //     const buildingsForDate = groupedBuildings[dateKey] || [];
+
+    //     const dateContainer = document.createElement('div');
+    //     dateContainer.style.display = 'flex';
+    //     dateContainer.style.flexDirection = 'column';
+    //     dateContainer.style.alignItems = 'center';
+    //     dateContainer.style.width = slotMinWidth + 'px';
+    //     dateContainer.style.borderRight = '1px solid #ccc';
+    //     dateContainer.style.boxSizing = 'border-box';
+
+    //     if (buildingsForDate.length > 0) {
+    //       buildingsForDate.forEach(building =>
+    //       {
+    //         const buildingInfo = document.createElement('div');
+    //         buildingInfo.textContent = `Units: ${building.available_units}, Price: ${building.price}`;
+    //         dateContainer.appendChild(buildingInfo);
+    //       });
+    //     } else {
+    //       const noDataMessage = document.createElement('div');
+    //       noDataMessage.textContent = 'No data';
+    //       dateContainer.appendChild(noDataMessage);
+    //     }
+
+    //     laneContent.appendChild(dateContainer);
+    //   });
+
+    //   return { domNodes: [laneContent] };
+    // },
+
+
+    /**
      * Generates a list of resources from predefined room data.
      *
-     * This function iterates over a set of room data, each containing a list of subrooms,
+     * This function takes a set of room data, each containing a list of subrooms,
      * and constructs a resources array. Each room and subroom is transformed into a resource
      * object with specific properties like `id`, `title`, `groupId`, and `classNames`.
      *
@@ -279,10 +323,10 @@ export default {
      *   `title`, `resourceId` (corresponding to the parent room's `id`), and `groupId`.
      *   They are given a "subroom" class for easy selection.
      *
+     * @param {Array} rooms - An array of room data, each containing a list of subrooms
      * @returns {Array} An array of resources, where each resource represents a room or subroom
      *                  with specific attributes for identification and styling.
      */
-    // Create resources dynamically based on the fetched data and selected IDs
     createResources (selectedIds = [], selectedDate = null)
     {
       const resources = [];
@@ -292,24 +336,26 @@ export default {
         {
           // Include building resource if "Show All" or selectedIds includes building.name
           if (selectedIds.length === 0 || selectedIds.includes(building.name)) {
+            // Add the building resource
             resources.push({
-              id: building.name,
-              groupId: building.name,
-              title: building.name,
-              classNames: ["building"],
+              id: building.name, // Unique ID for the building
+              groupId: building.name, // Group ID for the building
+              title: building.name, // Display name for the building
+              classNames: ["building"], // CSS class for styling
             });
 
+            // Add units under the building if they exist
             if (building.units?.data) {
               building.units.data.forEach((unit) =>
               {
                 // Include unit if no date is selected or unit.date matches selectedDate
                 if (!selectedDate || (unit.date && unit.date === selectedDate)) {
                   resources.push({
-                    id: `${building.id}-${unit.id}`,
-                    resourceId: building.id,
-                    title: unit.code, // Ensure this is the unit code, not building.name
-                    groupId: building.name,
-                    classNames: ["unit"],
+                    id: `${building.id}-${unit.id}`, // Unique ID for the unit
+                    resourceId: building.id, // Link unit to the building
+                    title: unit.code, // Display unit code (not building name)
+                    groupId: building.name, // Group ID for the building
+                    classNames: ["unit"], // CSS class for styling
                     extendedProps: {
                       is_clean: unit.is_clean,
                       is_smoking: unit.is_smoking,
@@ -324,35 +370,34 @@ export default {
         });
       }
 
-      return resources;
-    }
-    ,
-    // Update FullCalendar resources
+      return resources; // Return the filtered resources
+    },
+    /**
+     * Update the FullCalendar resources based on the given selectedIds.
+     * This will re-render the calendar with resources filtered by the given selectedIds.
+     * If no selectedIds are given, all resources are shown.
+     * @param {Array<string>} selectedIds - An array of IDs to filter the resources by. If empty, all resources are shown.
+     */
     updateCalendarResources (selectedIds = [])
     {
-      const resources = this.createResources(selectedIds);
+      const resources = this.createResources(selectedIds); // Create resources based on selectedIds
       const calendar = this.$refs.calendar?.getApi();
       if (calendar) {
-        calendar.setOption('resources', resources); // Set the resources in the calendar
+        calendar.setOption('resources', resources); // Update the calendar resources
       } else {
         console.error('FullCalendar API is not accessible.');
       }
     },
-
-    // Show resources for a specific building
-    showBuildingResources (buildingName)
+    // Show resources for specific buildings
+    showBuildingResources (buildingNames)
     {
-      // Update the calendar resources to show only the selected building's data
-      this.updateCalendarResources([buildingName]);
+      this.updateCalendarResources(buildingNames); // Pass the selected building names
     },
-
     // Show all resources (no filter)
     showAllResources ()
     {
-      // Update the calendar to show all resources (no filter)
-      this.updateCalendarResources();
+      this.updateCalendarResources(); // No selectedIds means show all resources
     },
-    // Helper method to get daily prices for each unit
     /**
      * Handles date selection event from FullCalendar.
      *
@@ -547,52 +592,52 @@ export default {
      */
 
     // Custom resource header function
-    customResourceHeader ()
-    {
-      let htmlContent = `
-    <div class="resource-header" style="position: relative;">
-      <div class="btn-group" style="width: 100%;">
-        <button class="btn btn-primary dropdown-toggle waves-effect waves-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-          Room Type
-        </button>
-        <ul class="dropdown-menu" style="width: 100%;">
-          <li>
-            <div class="form-check" style="padding:10px 40px;">
-              <input type="checkbox" class="form-check-input" id="select-all-checkbox" @click="selectAllResources">
-              <label class="form-check-label" for="select-all-checkbox">Select All</label>
-            </div>
-          </li>`;
+    // customResourceHeader ()
+    // {
+    //   let htmlContent = `
+    // <div class="resource-header" style="position: relative;">
+    //   <div class="btn-group" style="width: 100%;">
+    //     <button class="btn btn-primary dropdown-toggle waves-effect waves-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    //       Room Type
+    //     </button>
+    //     <ul class="dropdown-menu" style="width: 100%;">
+    //       <li>
+    //         <div class="form-check" style="padding:10px 40px;">
+    //           <input type="checkbox" class="form-check-input" id="select-all-checkbox" @click="selectAllResources">
+    //           <label class="form-check-label" for="select-all-checkbox">Select All</label>
+    //         </div>
+    //       </li>`;
 
-      const allResources = this.createResources(); // Get all resources initially
+    //   const allResources = this.createResources(); // Get all resources initially
 
-      // Add room options dynamically as checkboxes
-      allResources.forEach((resource) =>
-      {
-        if (!resource.classNames.includes('unit')) { // Filter out units, as we only want rooms
-          htmlContent += `
-        <li>
-          <div class="form-check" style="padding:10px 40px;">
-            <input type="checkbox" class="form-check-input room-checkbox"
-              id="bs-validation-checkbox-${resource.id}"
-              data-id="${resource.id}" @click="toggleResourceSelection(resource)">
-            <label class="form-check-label"
-              for="bs-validation-checkbox-${resource.id}">${resource.title}</label>
-          </div>
-        </li>`;
-        }
-      });
+    //   // Add room options dynamically as checkboxes
+    //   allResources.forEach((resource) =>
+    //   {
+    //     if (!resource.classNames.includes('unit')) { // Filter out units, as we only want rooms
+    //       htmlContent += `
+    //     <li>
+    //       <div class="form-check" style="padding:10px 40px;">
+    //         <input type="checkbox" class="form-check-input room-checkbox"
+    //           id="bs-validation-checkbox-${resource.id}"
+    //           data-id="${resource.id}" @click="toggleResourceSelection(resource)">
+    //         <label class="form-check-label"
+    //           for="bs-validation-checkbox-${resource.id}">${resource.title}</label>
+    //       </div>
+    //     </li>`;
+    //     }
+    //   });
 
-      htmlContent += `
-        </ul>
-      </div>
-    </div>`;
+    //   htmlContent += `
+    //     </ul>
+    //   </div>
+    // </div>`;
 
-      const div = document.createElement("div");
-      div.innerHTML = htmlContent.trim();
+    //   const div = document.createElement("div");
+    //   div.innerHTML = htmlContent.trim();
 
-      // Return the div element to be inserted into the DOM
-      return { domNodes: [div.firstElementChild] };
-    },
+    //   // Return the div element to be inserted into the DOM
+    //   return { domNodes: [div.firstElementChild] };
+    // },
 
     /**
      * Toggles the expand/collapse state of resources in a calendar view.
@@ -712,7 +757,8 @@ export default {
       });
       return names;
     },
-    goToSelectedDate(selectedDate) {
+    SelectedDateFilterCalendar (selectedDate)
+    {
       const calendarApi = this.$refs.calendar.getApi();
 
       // Navigate to the selected date in FullCalendar
@@ -721,6 +767,7 @@ export default {
       // Optionally, highlight the selected date
       this.highlightDate(selectedDate);
     },
+
 
   },
   async mounted ()
@@ -734,30 +781,25 @@ export default {
 
       this.data = CalenderDataResponse.data.data;
       this.occupancyData = CalenderDataResponse.data.calendar.data;
-      this.statisticsHeaderCalender = CalenderDataResponse.data.statistics;
+      this.statistics = CalenderDataResponse.data.statistics;
       this.datesBuilding = CalenderDataResponse.data.data;
       this.buildingNames = this.getBuildingNames();
 
-      this.data.forEach(building => {
-  console.log('Building ID:', building.id);
-  if (building && building.dates && Array.isArray(building.dates)) {
-    building.dates.forEach(unit => {
-      if (unit && unit.id && unit.dates && Array.isArray(unit.dates)) {
-        console.log(`  Unit ID: ${unit.id}`);
-        unit.dates.forEach(date => {
+      this.datesBuilding = []; // Initialize an empty array to store all dates
+      this.data.forEach(building =>
+      {
+        // Check if the building has a valid 'dates' array
+        if (building && building.dates && Array.isArray(building.dates)) {
+          // console.log('Building ID:', building.id);
 
-          console.log(` for each day   - ${date}`);
-        });
-      } else {
-        console.log('Invalid unit structure:', unit);
-      }
-    });
-  } else {
-    console.log('Invalid building.dates:', building.dates);
-  }
-  this.datesBuilding= building.dates
+          // Add all dates from the current building to the datesBuilding array
+          this.datesBuilding = this.datesBuilding.concat(building.dates);
+        } else {
+          // console.log('Invalid building.dates:', building.dates);
+        }
+      });
 
-});
+
 
 
     } catch (error) {
@@ -777,7 +819,6 @@ export default {
     if (!this.$refs.calendar) {
       console.error('FullCalendar ref is not available.');
     }
-    // this.initializeFlatpickr()
   },
 }
 </script>

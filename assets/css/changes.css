@@ -206,7 +206,7 @@
 .fc .fc-timeline-slot-cushion {
 
   position: relative;
-  top: -4px;
+  top: -2px;
 }
 
 .btn .btn-primary .waves-effect .waves-light .show {
@@ -282,15 +282,16 @@
   font-size: 15px;
 }
 
-.fc .fc-button-primary:not(.fc-prev-button):not(.fc-next-button) {
+/* .fc .fc-button-primary:not(.fc-prev-button):not(.fc-next-button) {
   position: absolute;
   right: 108px;
   top: 96px;
+} */
+.fc-toolbar-chunk{
+  margin-right: 10px;
 }
-
-.fc .fc-toolbar-title {
-  font-size: 1.5rem;
-  margin-left: 9px;
+.fc .fc-toolbar.fc-header-toolbar{
+  margin-bottom: 0.5rem;
 }
 
 .calendarDate input {
@@ -560,7 +561,7 @@ select {
 }
 
 .sidebar-content {
-  height: 1300px;
+  height: auto;
 }
 
 /* end sidebar  */
@@ -745,28 +746,28 @@ select.form-select option {
   margin-bottom: 5px;
 }
 
-.fc .fc-datagrid-cell-cushion,
+/* .fc .fc-datagrid-cell-cushion,
 .fc .fc-scroller-harness,
 .fc-scroller {
   overflow: visible !important;
-}
+} */
 
 .fc .fc-view-harness-active>.fc-view {
   overflow: auto !important;
 }
 
-/* .fc .fc-view-harness-active>.fc-view::-webkit-scrollbar {
+.fc .fc-view-harness-active>.fc-view::-webkit-scrollbar {
   display: none !important;
-} */
+}
 
 .fc .fc-view-harness-active>.fc-view {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
 
-.fc .fc-scrollgrid-section-liquid>td {
-  height: 2357px;
-}
+/* .fc .fc-scrollgrid-section-liquid>td {
+  height: 4690px;
+} */
 
 .fc-scrollgrid-sync-inner {
   width: 100%;
@@ -812,4 +813,7 @@ select.form-select option {
 }
 .card-datatable tr td{
   border-bottom: 0;
+}
+.fc .fc-toolbar{
+  justify-content: end;
 }
