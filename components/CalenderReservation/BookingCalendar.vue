@@ -11,7 +11,7 @@
       <CalendarFooter :occupancyData="occupancyData" />
       <div v-if="isOverlayVisible" class="overlay" @click="closePopover"></div>
       <PopoverComponent v-if="isPopoverVisible" :isPopoverVisible="isPopoverVisible" :popoverStyle="popoverStyle" :popoverArrowLeft="popoverArrowLeft" :firstSelectedDate="firstSelectedDate" :lastSelectedDate="lastSelectedDate" @go-to-add-reservation="goToAddReservation" @toggle-sidebar="toggleSidebar" @close-popover="closePopover" />
-      <SidebarBlockRoom :is-sidebar-open="isSidebarOpen" title="Block Room" width="400px" @close-sidebar="toggleSidebar"  >
+      <SidebarBlockRoom :is-sidebar-open="isSidebarOpen" title="Block Room" width="400px" @close-sidebar="toggleSidebar">
         <BlockRoomForm :selectedDates="selectedDates" :selectedResourceId="selectedResourceId" @close-sidebar="toggleSidebar" />
       </SidebarBlockRoom>
       <SelectedEventSidebar :selectedEvent="selectedEvent" @navigate-to-edit-reservation="navigateToEditReservation" />
@@ -78,6 +78,7 @@ export default {
         selectMirror: true, // Make the selection draggable
         eventOverlap: false, // Disallow overlapping events
         slotDuration: "24:00", // Slot duration of one day
+        // eventColor: 'red', // This will override individual event colors
         slotLabelContent: (arg) =>
         {
           const date = new Date(arg.date);
@@ -169,57 +170,7 @@ export default {
         // resourceAreaHeaderContent: this.customResourceHeader, // Customize header
         dateClick: this.handleDateClick,
         select: this.handleSelect,
-        events: [
-          {
-            resourceId: '23-21',
-            title: 'Event 1',
-            start: '2025-01-11',
-            end: '2025-02-28',
-            color: '#FFd000'
-          },
-          {
-            resourceId: '21-6',
-            title: 'Event 4',
-            start: '2025-01-15',
-            end: '2025-01-18',
-            color: '#FFd000'
-          },
-          {
-            resourceId: '21-5',
-            title: 'Event 4',
-            start: '2025-01-15',
-            end: '2025-01-18',
-            color: '#FFd000'
-          },
-          {
-            resourceId: '21-2',
-            title: 'Event 4',
-            start: '2025-01-15',
-            end: '2025-01-18',
-            color: '#FFd000'
-          },
-          {
-            resourceId: '21-10',
-            title: 'Event 4',
-            start: '2025-01-20',
-            end: '2025-01-29',
-            color: '#FFd000'
-          },
-          {
-            resourceId: '24-9',
-            title: 'Event 4',
-            start: '2025-01-15',
-            end: '2025-01-30',
-            color: '#FFd000'
-          },
-          {
-            resourceId: '24-1',
-            title: 'Event 4',
-            start: '2025-01-15',
-            end: '2025-01-30',
-            color: '#FFd000'
-          }
-        ],
+
         footerToolbar: {
           left: "",
           center: "",
@@ -231,6 +182,7 @@ export default {
   },
 
   methods: {
+
 
     // groupBuildingsByDate (datesBuilding)
     // {
@@ -767,6 +719,122 @@ export default {
       // Optionally, highlight the selected date
       this.highlightDate(selectedDate);
     },
+    transformUnitToEvents (unitData)
+    {
+      const events = [];
+      let currentEvent = null;
+
+      // Define color mapping based on status
+      const statusColorMap = {
+        unavailable: '#FF4444', // Red for unavailable
+        available: '#4CAF50',   // Green for available
+        reserved: '#FFA000',    // Orange for reserved
+        blocked: '#9E9E9E',     // Grey for blocked
+      };
+
+      // Get the unit-level status
+      const unitStatus = unitData.status?.toLowerCase().trim() || 'unknown';
+      const unitColor = statusColorMap[unitStatus] || '#CCCCCC'; // Default color for the unit
+
+      // Sort dates to ensure they're in chronological order
+      const sortedDates = [...unitData.dates].sort((a, b) =>
+        new Date(a.date) - new Date(b.date)
+      );
+
+      console.log('Unit Status:', unitStatus, 'Unit Color:', unitColor);
+
+      sortedDates.forEach((dateInfo, index) =>
+      {
+        console.log('DateInfo:', dateInfo); // Log the entire dateInfo object
+
+        // Determine the color for this date
+        let color = unitColor; // Default to unit color
+        if (dateInfo.is_reserved) {
+          color = statusColorMap.reserved; // Override with reserved color
+        } else if (dateInfo.is_blocked) {
+          color = statusColorMap.blocked; // Override with blocked color
+        }
+
+        console.log(`Date: ${dateInfo.date}, Color: ${color}`);
+
+        if (dateInfo.is_reserved || dateInfo.is_blocked || unitStatus !== 'available') {
+          if (!currentEvent) {
+            // Start new event
+            currentEvent = {
+              resourceId: unitData.code,
+              title: dateInfo.is_blocked ?
+                `Blocked: ${dateInfo.block_reason}` :
+                dateInfo.is_reserved ?
+                  `Reserved by ${dateInfo.reserved_by?.name || 'Unknown'}` :
+                  `Status: ${unitStatus}`,
+              start: dateInfo.date,
+              end: dateInfo.date,
+              color: color // Use the resolved color
+            };
+          }
+
+          // If this is the last date or next date is not reserved/blocked,
+          // close out the current event
+          const nextDate = sortedDates[index + 1];
+          if (!nextDate || (!nextDate.is_reserved && !nextDate.is_blocked)) {
+            // Set end date to next day (since FullCalendar uses exclusive end dates)
+            const endDate = new Date(dateInfo.date);
+            endDate.setDate(endDate.getDate() + 1);
+            currentEvent.end = endDate.toISOString().split('T')[0];
+            events.push(currentEvent);
+            currentEvent = null;
+          }
+        } else {
+          // If date is not reserved/blocked and we have a current event,
+          // close it out
+          if (currentEvent) {
+            const endDate = new Date(dateInfo.date);
+            currentEvent.end = endDate.toISOString().split('T')[0];
+            events.push(currentEvent);
+            currentEvent = null;
+          }
+        }
+      });
+
+      console.log(JSON.stringify(events, null, 2)); // Debugging: Log events with colors
+      return events;
+    },
+
+    // Add this method to transform all units data
+    transformAllUnitsToEvents ()
+    {
+      let allEvents = [];
+
+      if (Array.isArray(this.data)) {
+        this.data.forEach(building =>
+        {
+          if (building.units?.data) {
+            building.units.data.forEach(unit =>
+            {
+              const unitEvents = this.transformUnitToEvents({
+                ...unit,
+                code: `${building.id}-${unit.id}` // Match the resourceId format
+              });
+              allEvents = [...allEvents, ...unitEvents];
+            });
+          }
+        });
+      }
+
+      return allEvents;
+    },
+
+    // Update calendar events
+    updateCalendarEvents ()
+    {
+      const events = this.transformAllUnitsToEvents();
+      const calendar = this.$refs.calendar?.getApi();
+      if (calendar) {
+        calendar.removeAllEvents();
+        calendar.addEventSource(events);
+      }
+
+    }
 
 
   },
@@ -784,6 +852,14 @@ export default {
       this.statistics = CalenderDataResponse.data.statistics;
       this.datesBuilding = CalenderDataResponse.data.data;
       this.buildingNames = this.getBuildingNames();
+      const events = this.transformAllUnitsToEvents();
+
+      // Update calendarOptions with the new events
+      this.calendarOptions = {
+        ...this.calendarOptions,
+        events: events // Replace the static events with dynamic ones
+      };
+
 
       this.datesBuilding = []; // Initialize an empty array to store all dates
       this.data.forEach(building =>
