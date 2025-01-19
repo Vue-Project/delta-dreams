@@ -1,10 +1,10 @@
 <template>
   <div class="row p-3">
     <div class="col-md-8">
-      <CheckIn :selectedDates="selectedDates" :selectedResourceName="selectedResourceName" />
+      <CheckIn :paymentData="paymentData"  :selectedDates="selectedDates" :selectedResourceName="selectedResourceName" />
     </div>
     <div class="col-md-4">
-      <BillingSummary :selectedDates="selectedDates" />
+      <BillingSummary v-model="paymentData" :selectedDates="selectedDates" />
     </div>
   </div>
 </template>
@@ -23,7 +23,16 @@ export default {
   data ()
   {
     return {
-
+      paymentData: {
+        roomCharges: 0.0,
+        taxes: 0.0,
+        dueAmount: 0.0,
+        billTo: "",
+        taxExempt: false,
+        paymentMode: false,
+        paymentMethod: "",
+        selectedPaymentMethod: "",
+      },
     }
   },
   computed: {

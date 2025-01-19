@@ -1,6 +1,5 @@
 <template>
   <section class="checkIn-reservations">
-
     <div class="card">
       <h5 class="card-header">
         <NuxtLink to="/"><i class="fa-solid fa-angle-left pr-2" style="color: #6f6b7d"></i> </NuxtLink>Add Reservation
@@ -57,12 +56,14 @@
                 </div>
                 <div class="col-md-9 col-12 mb-4">
                   <label for="reservationType" class="form-label">Reservation Type</label>
-                  <select class="form-select" id="reservationType" v-model="formAddReservation.reservationType">
+                  <select class="form-select" id="reservationType" v-model="formAddReservation.reservationType" ref="reservationType" :class="{ 'input-error': validationMessages.reservationType }">
                     <option disabled value="">Select</option>
                     <option v-for="source in reservationTypes" :key="source.id" :value="source.id">
                       {{ source.name }}
                     </option>
                   </select>
+                  <span v-if="validationMessages.reservationType" class="error-message">{{ validationMessages.reservationType }}</span>
+
                 </div>
               </div>
             </div>
@@ -337,41 +338,41 @@
           <h6 class="mb-3">Other Information</h6>
           <div class="row">
             <div class="form-check mb-3">
-              <input class="form-check-input" type="checkbox" id="otherInformationCheck01" v-model="showSelect" />
-              <label class="form-check-label" for="otherInformationCheck01">
+              <input class="form-check-input" type="checkbox" id="otherInformationEmailBooking" v-model="showSelect" />
+              <label class="form-check-label" for="otherInformationEmailBooking">
                 Email Booking Vouchers
               </label>
             </div>
             <div v-if="showSelect" class="mb-3">
-              <select id="bookingOptions" class="form-select">
+              <select id="otherInformationEmailBookingOption" class="form-select" v-model="formAddReservation.otherInformation.emailBookingOption">
                 <option value="" disabled selected>select</option>
-                <option value="option1">Thank You email to Guest/Booker upon checking out from Hotel</option>
-                <option value="option2">Guest Portal Access email to Guest on Direct checkin in Hotel</option>
+                <option value="0">Thank You email to Guest/Booker upon checking out from Hotel</option>
+                <option value="1">Guest Portal Access email to Guest on Direct checkin in Hotel</option>
               </select>
             </div>
             <div class="form-check mb-3">
-              <input class="form-check-input" type="checkbox" id="otherInformationCheck02" v-model="showInput" />
-              <label class="form-check-label" for="otherInformationCheck02">
+              <input class="form-check-input" type="checkbox" id="otherInformationSendEmail" v-model="showInput" />
+              <label class="form-check-label" for="otherInformationSendEmail">
                 Send email at Check-out
               </label>
             </div>
             <div v-if="showInput" class="mb-3">
               <div class="input-group">
-                <input type="email" id="emailInput" class="form-control" placeholder="Use comma to add multiple email address" aria-label="send email to check" />
+                <input type="email" id="emailInput" class="form-control" placeholder="Use comma to add multiple email address" aria-label="send email to check" v-model="formAddReservation.otherInformation.emailAddressCheckout" />
                 <button class="btn btn-primary" type="button">
                   Preview Voucher
                 </button>
               </div>
             </div>
             <div class="form-check mb-3">
-              <input class="form-check-input" type="checkbox" id="otherInformationCheck03" />
-              <label class="form-check-label" for="otherInformationCheck03">
+              <input class="form-check-input" type="checkbox" id="otherInformationGuestPortal" v-model="formAddReservation.otherInformation.accessToGuestPortal" />
+              <label class="form-check-label" for="otherInformationGuestPortal">
                 Access To Guest Portal
               </label>
             </div>
             <div class="form-check mb-3">
-              <input class="form-check-input" type="checkbox" id="otherInformationCheck04" />
-              <label class="form-check-label" for="otherInformationCheck04">
+              <input class="form-check-input" type="checkbox" id="otherInformationRegistrationCard" v-model="formAddReservation.otherInformation.suppressRateOnRegistrationCard" />
+              <label class="form-check-label" for="otherInformationRegistrationCard">
                 Supress Rate on Registration Card
               </label>
             </div>
@@ -395,7 +396,7 @@
 </template>
 <script>
 import Swal from 'sweetalert2';  // Import SweetAlert2
-import { getBookingSources, getBusinessSources, getReservationTypes, getGuestsInfo,postAddReservationData } from "../../Api/addResvertionApi";
+import { getBookingSources, getBusinessSources, getReservationTypes, getGuestsInfo, postAddReservationData } from "../../Api/addResvertionApi";
 import flatpickrMixin from "../Mixin/flatpickrMixin";
 import SidebarAddGuest from "../layout/AddGuestSidebar.vue";
 
@@ -465,10 +466,17 @@ export default {
           state: "",
           city: "",
           zip: "",
-        }
+        },
+        otherInformation: {
+          emailBookingOption: '', // Selected booking option
+          emailAddressCheckout: '', // Email addresses input
+          accessToGuestPortal: false, // Toggle for Access To Guest Portal
+          suppressRateOnRegistrationCard: false, // Toggle for Suppress Rate on Registration Card
+        },
       },
       validationMessages: {
         businessSource: '',
+        reservationType: '',
         name: '',
         mobile: '',
         adults: '',
@@ -606,6 +614,7 @@ export default {
       const requiredFields = [
         { field: "businessSource", message: "Business Source is required" },
         { field: "bookingSource", message: "Booking Source is required" },
+        { field: "reservationType", message: "Reservation Type is required" },
         { field: "name", message: "Guest Name is required" },
         { field: "mobile", message: "Guest Mobile is required" },
         { field: "adults", message: "Adults count is required" },
@@ -646,11 +655,12 @@ export default {
       const bookingData = {
         checkin_date: this.formAddReservation.checkInDate,
         checkin_time: this.formAddReservation.checkInTime,
-        checkout_date: this.formAddReservation.checkOutDatee || "20-01-2025",
+        checkout_date: this.formAddReservation.checkOutDate,
         checkout_time: this.formAddReservation.checkOutTime,
         number_of_rooms: this.formAddReservation.numberRooms,
         booking_source_id: this.formAddReservation.bookingSource,
         business_source_id: this.formAddReservation.businessSource,
+        reservation_type_id: this.formAddReservation.reservationType,
         units: this.formAddReservation.units.map(unit => ({
           unit_id: unit.unitId,
           unit_type_id: unit.unitTypeId,
@@ -674,8 +684,23 @@ export default {
         guest_state: this.formAddReservation.guestInformation.state,
         guest_city: this.formAddReservation.guestInformation.city,
         guest_zip: this.formAddReservation.guestInformation.zip,
+        email_booking: this.showSelect,
+        email_booking_option: this.formAddReservation.otherInformation.emailBookingOption,
+        send_email_checkout: this.showInput,
+        email_address_checkout: this.formAddReservation.otherInformation.emailAddressCheckout,
+        access_guest_portal: this.formAddReservation.otherInformation.accessToGuestPortal,
+        suppress_rate_registration_card: this.formAddReservation.otherInformation.suppressRateOnRegistrationCard,
+        room_charges: this.paymentData.roomCharges,
+        taxes: this.paymentData.taxes,
+        total_amount: this.paymentData.totalAmount,
+        due_amount: this.paymentData.dueAmount,
+        bill_to: this.paymentData.billTo,
+        tax_exempt: this.paymentData.taxExempt,
+        payment_mode: this.paymentData.paymentMode,
+        payment_method: this.paymentData.paymentMethod,
+        selected_payment_method: this.paymentData.selectedPaymentMethod
       };
-      // console.log(bookingData);
+      console.log(bookingData);
 
 
 
@@ -718,6 +743,7 @@ export default {
         mobile: '',
         businessSource: '',
         bookingSource: '',
+        reservationType: '',
         adults: '',
         children: '',
         rateAmount: '',
@@ -738,7 +764,7 @@ export default {
     },
     goBack ()
     {
-      this.$router.go(-1); // Goes back to the previous page in the history stack
+      this.$router.go(-1);
     },
     spliceSelectedResourceName ()
     {
@@ -846,6 +872,7 @@ export default {
         this.formAddReservation.checkInDate = this.formatDate(this.firstDate);
         this.formAddReservation.checkOutDate = this.formatDate(this.lastDate);
 
+
         // Initialize time pickers
         this.timePicker1Instance = flatpickr(this.$refs.timePicker1, {
           enableTime: true,
@@ -937,7 +964,7 @@ export default {
     this.timePicker1Instance?.destroy();
     this.timePicker2Instance?.destroy();
 
-    console.log('Component is being destroyed:', this.formAddReservation.units);
+    // console.log('Component is being destroyed:', this.formAddReservation.units);
 
 
   },
@@ -976,6 +1003,10 @@ export default {
       required: true,
 
 
+    },
+    paymentData: {
+      type: Object,
+      required: true,
     },
   },
   middleware: 'restrict-access', // Apply the middleware
