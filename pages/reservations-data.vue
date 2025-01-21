@@ -1052,24 +1052,24 @@
                         <p class="m-0 me-2">{{ card.Voucher || '14541' }}</p>
                       </td>
                       <td>
-                        <p class="m-0 me-2">{{ card.checkin_date }}</p>
+                        <p class="m-0 me-2">{{  formatDate(card.checkin_date) }}</p>
                         <p class="m-0 me-2">{{ card.checkin_time }}</p>
                       </td>
                       <td>
-                        <p class="m-0 me-2">{{ card.checkout_date }}</p>
+                        <p class="m-0 me-2">{{  formatDate(card.checkout_date) }}</p>
                         <p class="m-0 me-2">{{ card.checkout_time }}</p>
                       </td>
                       <td>
-                        <p class="m-0 me-2">{{ card.room_details || '104 - Suite الفندق غرفتين وصاله' }}</p>
+                        <p class="m-0 me-2">{{ card.unit.code }}/{{card.rate_type || '104 - Suite الفندق غرفتين وصاله' }}</p>
                       </td>
                       <td>
-                        <p class="m-0 me-2">{{ card.total || '0.00' }}$</p>
+                        <p class="m-0 me-2">{{ card.unit.price|| '0.00' }}$</p>
                       </td>
                       <td>
-                        <p class="m-0 me-2">{{ card.paid || '0.00' }}$</p>
+                        <p class="m-0 me-2">{{ card.unit.paid || '250' }}$</p>
                       </td>
                       <td class="d-flex justify-content-between border-bottom-0">
-                        <p class="m-0 me-2 text-danger">{{ card.balance || '0.00' }}$</p>
+                        <p class="m-0 me-2 text-danger">{{  card.unit.balance || '320' }}$</p>
                         <div class="btn-group " id="hover-dropdown-demo" @mouseenter="toggleMenu(card.id, true)" @mouseleave="toggleMenu(card.id, false)">
                           <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none">
                             <i class="fa-solid fa-ellipsis-vertical"></i>
@@ -1126,8 +1126,8 @@
                     <div id="deliveryExceptionsChart">
                       <div class="row d-flex align-items-center justify-content-center text-center mb-3">
                         <div class="bg-light col-md-5">
-                          <div class="text-dark">{{ card.checkin_date }}</div>
-                          <div>{{ card.checkin_time || '00:00:00' }}</div>
+                          <div class="text-dark">{{  formatDate(card.checkin_date) }}</div>
+                          <div>{{  card.checkin_time || '00:00:00' }}</div>
                         </div>
                         <div class="bg-secondary col-md-2">
                           <div class="text-dark"> {{ (new Date(card.checkout_date) - new Date(card.checkin_date)) / (1000 * 3600 * 24) }}
@@ -1135,14 +1135,14 @@
                           <div>Nights</div>
                         </div>
                         <div class="bg-light col-md-5">
-                          <div class="text-dark"> {{ card.checkout_date }}</div>
-                          <div> {{ card.checkout_time || '15:00:00' }}</div>
+                          <div class="text-dark"> {{  formatDate(card.checkout_date) }}</div>
+                          <div> {{  card.checkout_time || '15:00:00' }}</div>
                         </div>
                       </div>
                       <div class="row mb-5">
                         <div class="col-md-10">
                           <div>Booking Date</div>
-                          <div>{{ 'card.booking_source[0] ' || "2024-12-02T07:43:11.000000Z" }}</div>
+                          <div>{{  formatDate(card.booking_source.created_at) }}</div>
                         </div>
                         <div class="col-md-2">
                           <div>
@@ -1152,16 +1152,16 @@
                         </div>
                         <div class="col-md-12">
                           <div>Room / Rate Type</div>
-                          <div>202 / السعر غير شامل</div>
+                          <div> {{ card.unit.code ||' لسعر غير شام' }} / {{ card.rate_type ||' لسعر غير شام' }}</div>
                         </div>
                       </div>
                       <div class="row">
                         <div class="col-md-10">Total</div>
-                        <div class="col-md-2">$230</div>
+                        <div class="col-md-2">${{ card.unit.price ||' لسعر غير شام' }}</div>
                         <div class="col-md-10">Paid</div>
-                        <div class="col-md-2">$250</div>
+                        <div class="col-md-2">${{ card.unit.paid ||250 }}</div>
                         <div class="col-md-10 text-danger">Balance</div>
-                        <div class="col-md-2 text-danger">$20</div>
+                        <div class="col-md-2 text-danger">${{ card.unit.price - card.unit.paid ||750 }}</div>
                       </div>
                     </div>
                   </div>
@@ -1203,24 +1203,24 @@
                         <p class="m-0 me-2">{{ card.Voucher || '14541' }}</p>
                       </td>
                       <td>
-                        <p class="m-0 me-2">{{ card.checkin_date }}</p>
+                        <p class="m-0 me-2">{{  formatDate(card.checkin_date) }}</p>
                         <p class="m-0 me-2">{{ card.checkin_time }}</p>
                       </td>
                       <td>
-                        <p class="m-0 me-2">{{ card.checkout_date }}</p>
+                        <p class="m-0 me-2">{{  formatDate(card.checkout_date) }}</p>
                         <p class="m-0 me-2">{{ card.checkout_time }}</p>
                       </td>
                       <td>
-                        <p class="m-0 me-2">{{ card.room_details || '104 - Suite الفندق غرفتين وصاله' }}</p>
+                        <p class="m-0 me-2">{{ card.unit.code }}/{{card.rate_type || '104 - Suite الفندق غرفتين وصاله' }}</p>
                       </td>
                       <td>
-                        <p class="m-0 me-2">{{ card.total || '0.00' }}$</p>
+                        <p class="m-0 me-2">{{ card.unit.price|| '0.00' }}$</p>
                       </td>
                       <td>
-                        <p class="m-0 me-2">{{ card.paid || '0.00' }}$</p>
+                        <p class="m-0 me-2">{{ card.unit.paid || '250' }}$</p>
                       </td>
                       <td class="d-flex justify-content-between border-bottom-0">
-                        <p class="m-0 me-2 text-danger">{{ card.balance || '0.00' }}$</p>
+                        <p class="m-0 me-2 text-danger">{{  card.unit.balance || '320' }}$</p>
                         <div class="btn-group " id="hover-dropdown-demo" @mouseenter="toggleMenu(card.id, true)" @mouseleave="toggleMenu(card.id, false)">
                           <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none">
                             <i class="fa-solid fa-ellipsis-vertical"></i>
@@ -1277,8 +1277,8 @@
                     <div id="deliveryExceptionsChart">
                       <div class="row d-flex align-items-center justify-content-center text-center mb-3">
                         <div class="bg-light col-md-5">
-                          <div class="text-dark">{{ card.checkin_date }}</div>
-                          <div>{{ card.checkin_time || '00:00:00' }}</div>
+                          <div class="text-dark">{{  formatDate(card.checkin_date) }}</div>
+                          <div>{{  card.checkin_time || '00:00:00' }}</div>
                         </div>
                         <div class="bg-secondary col-md-2">
                           <div class="text-dark"> {{ (new Date(card.checkout_date) - new Date(card.checkin_date)) / (1000 * 3600 * 24) }}
@@ -1286,14 +1286,14 @@
                           <div>Nights</div>
                         </div>
                         <div class="bg-light col-md-5">
-                          <div class="text-dark"> {{ card.checkout_date }}</div>
-                          <div> {{ card.checkout_time || '15:00:00' }}</div>
+                          <div class="text-dark"> {{  formatDate(card.checkout_date) }}</div>
+                          <div> {{  card.checkout_time || '15:00:00' }}</div>
                         </div>
                       </div>
                       <div class="row mb-5">
                         <div class="col-md-10">
                           <div>Booking Date</div>
-                          <div>{{ 'card.booking_source[0] ' || "2024-12-02T07:43:11.000000Z" }}</div>
+                          <div>{{  formatDate(card.booking_source.created_at) }}</div>
                         </div>
                         <div class="col-md-2">
                           <div>
@@ -1303,16 +1303,16 @@
                         </div>
                         <div class="col-md-12">
                           <div>Room / Rate Type</div>
-                          <div>202 / السعر غير شامل</div>
+                          <div> {{ card.unit.code ||' لسعر غير شام' }} / {{ card.rate_type ||' لسعر غير شام' }}</div>
                         </div>
                       </div>
                       <div class="row">
                         <div class="col-md-10">Total</div>
-                        <div class="col-md-2">$230</div>
+                        <div class="col-md-2">${{ card.unit.price ||' لسعر غير شام' }}</div>
                         <div class="col-md-10">Paid</div>
-                        <div class="col-md-2">$250</div>
+                        <div class="col-md-2">${{ card.unit.paid ||250 }}</div>
                         <div class="col-md-10 text-danger">Balance</div>
-                        <div class="col-md-2 text-danger">$20</div>
+                        <div class="col-md-2 text-danger">${{ card.unit.price - card.unit.paid ||750 }}</div>
                       </div>
                     </div>
                   </div>
@@ -1352,24 +1352,24 @@
                         <p class="m-0 me-2">{{ card.Voucher || '14541' }}</p>
                       </td>
                       <td>
-                        <p class="m-0 me-2">{{ card.checkin_date }}</p>
+                        <p class="m-0 me-2">{{  formatDate(card.checkin_date) }}</p>
                         <p class="m-0 me-2">{{ card.checkin_time }}</p>
                       </td>
                       <td>
-                        <p class="m-0 me-2">{{ card.checkout_date }}</p>
+                        <p class="m-0 me-2">{{  formatDate(card.checkout_date) }}</p>
                         <p class="m-0 me-2">{{ card.checkout_time }}</p>
                       </td>
                       <td>
-                        <p class="m-0 me-2">{{ card.room_details || '104 - Suite الفندق غرفتين وصاله' }}</p>
+                        <p class="m-0 me-2">{{ card.unit.code }}/{{card.rate_type || '104 - Suite الفندق غرفتين وصاله' }}</p>
                       </td>
                       <td>
-                        <p class="m-0 me-2">{{ card.total || '0.00' }}$</p>
+                        <p class="m-0 me-2">{{ card.unit.price|| '0.00' }}$</p>
                       </td>
                       <td>
-                        <p class="m-0 me-2">{{ card.paid || '0.00' }}$</p>
+                        <p class="m-0 me-2">{{ card.unit.paid || '250' }}$</p>
                       </td>
                       <td class="d-flex justify-content-between border-bottom-0">
-                        <p class="m-0 me-2 text-danger">{{ card.balance || '0.00' }}$</p>
+                        <p class="m-0 me-2 text-danger">{{  card.unit.balance || '320' }}$</p>
                         <div class="btn-group " id="hover-dropdown-demo" @mouseenter="toggleMenu(card.id, true)" @mouseleave="toggleMenu(card.id, false)">
                           <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none">
                             <i class="fa-solid fa-ellipsis-vertical"></i>
@@ -1388,6 +1388,9 @@
                         </div>
                       </td>
                     </tr>
+
+
+
                   </tbody>
                 </table>
 
@@ -1423,8 +1426,8 @@
                     <div id="deliveryExceptionsChart">
                       <div class="row d-flex align-items-center justify-content-center text-center mb-3">
                         <div class="bg-light col-md-5">
-                          <div class="text-dark">{{ card.checkin_date }}</div>
-                          <div>{{ card.checkin_time || '00:00:00' }}</div>
+                          <div class="text-dark">{{  formatDate(card.checkin_date) }}</div>
+                          <div>{{  card.checkin_time || '00:00:00' }}</div>
                         </div>
                         <div class="bg-secondary col-md-2">
                           <div class="text-dark"> {{ (new Date(card.checkout_date) - new Date(card.checkin_date)) / (1000 * 3600 * 24) }}
@@ -1432,14 +1435,14 @@
                           <div>Nights</div>
                         </div>
                         <div class="bg-light col-md-5">
-                          <div class="text-dark"> {{ card.checkout_date }}</div>
-                          <div> {{ card.checkout_time || '15:00:00' }}</div>
+                          <div class="text-dark"> {{  formatDate(card.checkout_date) }}</div>
+                          <div> {{  card.checkout_time || '15:00:00' }}</div>
                         </div>
                       </div>
                       <div class="row mb-5">
                         <div class="col-md-10">
                           <div>Booking Date</div>
-                          <div>{{ 'card.booking_source[0] ' || "2024-12-02T07:43:11.000000Z" }}</div>
+                          <div>{{  formatDate(card.booking_source.created_at) }}</div>
                         </div>
                         <div class="col-md-2">
                           <div>
@@ -1449,16 +1452,16 @@
                         </div>
                         <div class="col-md-12">
                           <div>Room / Rate Type</div>
-                          <div>202 / السعر غير شامل</div>
+                          <div> {{ card.unit.code ||' لسعر غير شام' }} / {{ card.rate_type ||' لسعر غير شام' }}</div>
                         </div>
                       </div>
                       <div class="row">
                         <div class="col-md-10">Total</div>
-                        <div class="col-md-2">$230</div>
+                        <div class="col-md-2">${{ card.unit.price ||' لسعر غير شام' }}</div>
                         <div class="col-md-10">Paid</div>
-                        <div class="col-md-2">$250</div>
+                        <div class="col-md-2">${{ card.unit.paid ||250 }}</div>
                         <div class="col-md-10 text-danger">Balance</div>
-                        <div class="col-md-2 text-danger">$20</div>
+                        <div class="col-md-2 text-danger">${{ card.unit.price - card.unit.paid ||750 }}</div>
                       </div>
                     </div>
                   </div>
@@ -1498,24 +1501,24 @@
                         <p class="m-0 me-2">{{ card.Voucher || '14541' }}</p>
                       </td>
                       <td>
-                        <p class="m-0 me-2">{{ formatDate(card.checkin_date )}}</p>
-                        <p class="m-0 me-2">{{  card.checkin_time }}</p>
+                        <p class="m-0 me-2">{{  formatDate(card.checkin_date) }}</p>
+                        <p class="m-0 me-2">{{ card.checkin_time }}</p>
                       </td>
                       <td>
-                        <p class="m-0 me-2">{{ formatDate(card.checkout_date )}}</p>
-                        <p class="m-0 me-2">{{  card.checkout_time }}</p>
+                        <p class="m-0 me-2">{{  formatDate(card.checkout_date) }}</p>
+                        <p class="m-0 me-2">{{ card.checkout_time }}</p>
                       </td>
                       <td>
-                        <p class="m-0 me-2">{{ card.room_details || '104 - Suite الفندق غرفتين وصاله' }}</p>
+                        <p class="m-0 me-2">{{ card.unit.code }}/{{card.rate_type || '104 - Suite الفندق غرفتين وصاله' }}</p>
                       </td>
                       <td>
-                        <p class="m-0 me-2">{{ card.total || '0.00' }}$</p>
+                        <p class="m-0 me-2">{{ card.unit.price|| '0.00' }}$</p>
                       </td>
                       <td>
-                        <p class="m-0 me-2">{{ card.paid || '0.00' }}$</p>
+                        <p class="m-0 me-2">{{ card.unit.paid || '250' }}$</p>
                       </td>
                       <td class="d-flex justify-content-between border-bottom-0">
-                        <p class="m-0 me-2 text-danger">{{ card.balance || '0.00' }}$</p>
+                        <p class="m-0 me-2 text-danger">{{  card.unit.balance || '320' }}$</p>
                         <div class="btn-group " id="hover-dropdown-demo" @mouseenter="toggleMenu(card.id, true)" @mouseleave="toggleMenu(card.id, false)">
                           <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none">
                             <i class="fa-solid fa-ellipsis-vertical"></i>
@@ -1572,8 +1575,8 @@
                     <div id="deliveryExceptionsChart">
                       <div class="row d-flex align-items-center justify-content-center text-center mb-3">
                         <div class="bg-light col-md-5">
-                          <p class="m-0 me-2">{{ formatDate(card.checkin_date) }}</p>
-                          <div>{{ card.checkin_time || '00:00:00' }}</div>
+                          <div class="text-dark">{{  formatDate(card.checkin_date) }}</div>
+                          <div>{{  card.checkin_time || '00:00:00' }}</div>
                         </div>
                         <div class="bg-secondary col-md-2">
                           <div class="text-dark"> {{ (new Date(card.checkout_date) - new Date(card.checkin_date)) / (1000 * 3600 * 24) }}
@@ -1581,14 +1584,14 @@
                           <div>Nights</div>
                         </div>
                         <div class="bg-light col-md-5">
-                          <div class="text-dark"> {{ formatDate(card.checkout_date) }}</div>
-                          <div> {{ card.checkout_time || '15:00:00' }}</div>
+                          <div class="text-dark"> {{  formatDate(card.checkout_date) }}</div>
+                          <div> {{  card.checkout_time || '15:00:00' }}</div>
                         </div>
                       </div>
                       <div class="row mb-5">
                         <div class="col-md-10">
                           <div>Booking Date</div>
-                          <div>{{ 'card.booking_source[0] ' || "2024-12-02T07:43:11.000000Z" }}</div>
+                          <!-- <div>{{  formatDate(card.booking_source.created_at) }}</div> -->
                         </div>
                         <div class="col-md-2">
                           <div>
@@ -1598,16 +1601,16 @@
                         </div>
                         <div class="col-md-12">
                           <div>Room / Rate Type</div>
-                          <div>202 / السعر غير شامل</div>
+                          <div> {{ card.unit.code ||' لسعر غير شام' }} / {{ card.rate_type ||' لسعر غير شام' }}</div>
                         </div>
                       </div>
                       <div class="row">
                         <div class="col-md-10">Total</div>
-                        <div class="col-md-2">$230</div>
+                        <div class="col-md-2">${{ card.unit.price ||' لسعر غير شام' }}</div>
                         <div class="col-md-10">Paid</div>
-                        <div class="col-md-2">$250</div>
+                        <div class="col-md-2">${{ card.unit.paid ||250 }}</div>
                         <div class="col-md-10 text-danger">Balance</div>
-                        <div class="col-md-2 text-danger">$20</div>
+                        <div class="col-md-2 text-danger">${{ card.unit.price - card.unit.paid ||750 }}</div>
                       </div>
                     </div>
                   </div>
@@ -1753,13 +1756,13 @@ export default {
     },
     async GetTabData (tab)
     {
-      console.log('Fetching data for tab:', tab);
+      // console.log('Fetching data for tab:', tab);
 
       const type = this.tabsMap[tab];
       const { current_page, per_page } = this.tabData[tab].meta;
       try {
         const responseData = await getReservationData(tab, current_page, per_page);
-        console.log('Server Response:', responseData); // Debugging
+        // console.log('Server Response:', responseData); // Debugging
 
         this.tabData[tab].data = responseData;
         this.reservations = responseData.data.data;
