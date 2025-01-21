@@ -1,6 +1,7 @@
 <template>
   <div>
-    <HeaderCalender @date-selected="handleDateSelected" :statistics="statistics" />
+    <HeaderCalender ref="headerCalender" @date-selected="handleDateSelected" :statistics="statistics" />
+
     <div class="dropdown">
       <button class="btn btn-primary dropdown-toggle btn-block" type="button" id="dropdownFilterButton" data-bs-toggle="dropdown" aria-expanded="false">
         Filter Resources
@@ -44,22 +45,19 @@ export default {
       required: true,
     },
   },
-  data ()
-  {
+  data() {
     return {
       selectedBuildings: [], // Holds the selected buildings
       selectAll: false, // Controls the "Show All" checkbox
     };
   },
   methods: {
-    handleDateSelected (selectedDate)
-    {
+    handleDateSelected(selectedDate) {
+      // Forward the selected date to the MainComponent
       this.$emit("date-selected", selectedDate);
     },
-
     // Toggle "Show All" checkbox
-    toggleSelectAll ()
-    {
+    toggleSelectAll() {
       this.selectAll = !this.selectAll;
       if (this.selectAll) {
         // If "Show All" is checked, clear selected buildings and emit "show-all-resources"
@@ -70,10 +68,8 @@ export default {
         this.$emit("show-building-resources", this.selectedBuildings);
       }
     },
-
     // Toggle individual building selection
-    toggleBuilding (building)
-    {
+    toggleBuilding(building) {
       if (this.selectedBuildings.includes(building)) {
         // If the building is already selected, remove it
         this.selectedBuildings = this.selectedBuildings.filter((b) => b !== building);
@@ -91,8 +87,7 @@ export default {
   },
   watch: {
     // Watch for changes in selectedBuildings to update "Show All" checkbox
-    selectedBuildings (newVal)
-    {
+    selectedBuildings(newVal) {
       if (newVal.length === 0) {
         this.selectAll = true; // If no buildings are selected, check "Show All"
       } else {
@@ -104,16 +99,17 @@ export default {
 </script>
 
 <style scoped>
-.dropdown{
+.dropdown {
   position: absolute;
   left: 0px;
   width: 280px;
   max-width: 280px;
+  margin: 0 9px ;
 }
+
 .dropdown-menu {
   padding: 10px;
   width: 280px;
-
 }
 
 .dropdown-item {

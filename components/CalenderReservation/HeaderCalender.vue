@@ -1,7 +1,14 @@
 <template>
   <div class="row d-flex justify-content-between p-2 position-relative">
     <div class="col-md-2 col-12 calendarDate">
-      <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD" id="flatpickr-date-04" ref="datePicker4" aria-label="input for date" />
+      <input
+        type="text"
+        class="form-control flatpickr-input"
+        placeholder="YYYY-MM-DD"
+        id="flatpickr-date-04"
+        ref="datePicker4"
+        aria-label="input for date"
+      />
       <i class="fa-solid fa-calendar-days date-icon"></i>
     </div>
     <div class="col-md-6 col-12">
@@ -130,8 +137,7 @@ export default {
   name: "HeaderCalender",
   layout: "Component",
 
-  data ()
-  {
+  data() {
     return {
       isHovered: false,
       sidebarVisible: false,
@@ -141,34 +147,34 @@ export default {
   },
 
   methods: {
-
-    openSidebar ()
-    {
-      this.isSidebarOpen = true;
-    },
-    closeSidebar ()
-    {
-      this.isSidebarOpen = false;
-    },
-    filterCalenderByDate ()
-    {
+    filterCalenderByDate() {
       const flatpickrInstance = flatpickr(this.$refs.datePicker4, {
         dateFormat: "Y-m-d", // Format the date as YYYY-MM-DD
-        onChange: (selectedDates) =>
-        {
+        onChange: (selectedDates) => {
           if (selectedDates.length > 0) {
             const selectedDate = selectedDates[0];
-            this.$emit("date-selected", selectedDate);
+            this.$emit("date-selected", selectedDate); // Emit the selected date
           }
         },
       });
     },
-  },
-  mounted ()
-  {
-    this.filterCalenderByDate();
+    updateFlatpickr(date) {
+      if (this.$refs.datePicker4 && this.$refs.datePicker4._flatpickr) {
+        this.$refs.datePicker4._flatpickr.setDate(date); // Update Flatpickr with the new date
+      }
+    },
   },
 
+  mounted() {
+    this.filterCalenderByDate();
+
+    // Set the default date in Flatpickr (e.g., 2 days before today)
+    const today = new Date();
+    const defaultDate = new Date(today);
+    defaultDate.setDate(today.getDate() - 2); // Subtract 2 days from today
+    this.updateFlatpickr(defaultDate); // Update Flatpickr with the default date
+    this.$emit("date-selected", defaultDate); // Emit the default date
+  },
 
   mixins: [flatpickrMixin],
   props: {

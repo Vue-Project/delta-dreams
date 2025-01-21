@@ -1,9 +1,11 @@
 <template>
   <section class="card">
     <Loader :visible="isLoading" />
+    <!-- <HeaderCalender ref="headerCalender"  /> -->
+
     <div v-if="!isLoading">
-      <FilterCalendar @date-selected="SelectedDateFilterCalendar" :statistics="statistics" :buildingNames="buildingNames" @show-all-resources="showAllResources" @show-building-resources="showBuildingResources" />
-      <FullCalendar :options="calendarOptions" @select="handleSelect" ref="calendar">
+      <FilterCalendar ref="filterComponent" :statistics="statistics" :buildingNames="buildingNames" @show-all-resources="showAllResources" @date-selected="SelectedDateFilterCalendar" @show-building-resources="showBuildingResources" />
+      <FullCalendar :options="calendarOptions" @select="handleSelect" ref="calendar" :selectedDate="selectedDate">
         <template v-slot:eventContent="arg">
           <b>{{ arg.event.title }}</b>
         </template>
@@ -33,7 +35,7 @@ import PopoverComponent from "./PopoverComponent.vue";
 import SidebarBlockRoom from "../layout/AddGuestSidebar.vue";
 import { getCalenderAllUnits } from "../../Api/CalenderApi";
 import SelectedEventSidebar from "./SelectedEventSidebar.vue";
-
+import HeaderCalender from "./HeaderCalender.vue";
 export default {
   components: {
     FullCalendar,
@@ -44,6 +46,7 @@ export default {
     BlockRoomForm,
     Loader,
     FilterCalendar,
+    HeaderCalender
   },
   data ()
   {
@@ -67,6 +70,18 @@ export default {
       occupancyData: [],
       statistics: {},
       calendarOptions: {
+        customButtons: {
+          today: {
+            text: 'Today',
+            click: () =>
+            {
+              if (this.calendarApi) {
+                const twoDaysAgo = this.getTwoDaysAgoDate()
+                this.calendarApi.gotoDate(twoDaysAgo)
+              }
+            }
+          }
+        },
         plugins: [resourceTimelinePlugin, interactionPlugin],
         initialView: "resourceTimeline",
         eventClick: this.handleEventClick,
@@ -78,6 +93,10 @@ export default {
         selectMirror: true, // Make the selection draggable
         eventOverlap: false, // Disallow overlapping events
         slotDuration: "24:00", // Slot duration of one day
+        datesSet: this.handleDatesSet, // Listen to date changes
+        initialDate: this.getTwoDaysAgoDate(),
+
+
         // eventColor: 'red', // This will override individual event colors
         slotLabelContent: (arg) =>
         {
@@ -182,84 +201,6 @@ export default {
   },
 
   methods: {
-
-
-    // groupBuildingsByDate (datesBuilding)
-    // {
-    //   const grouped = {};
-    //   datesBuilding.forEach(buildingDate =>
-    //   {
-    //     const dateKey = buildingDate.date; // Assuming date is a string like '2025-01-18'
-    //     if (!grouped[dateKey]) {
-    //       grouped[dateKey] = [];
-    //     }
-    //     grouped[dateKey].push(buildingDate);
-    //   });
-    //   return grouped;
-    // },
-    // resourceGroupLaneContent (arg)
-    // {
-    //   // console.log(this.datesBuilding);
-
-    //   const laneContent = document.createElement('div');
-    //   laneContent.style.display = 'flex';
-    //   laneContent.style.width = '100%';
-    //   laneContent.style.height = '37px';
-    //   laneContent.style.padding = '0px';
-
-    //   const slotMinWidth = arg.view.calendar.getOption('slotMinWidth');
-    //   console.log(slotMinWidth);
-    //   const visibleStartDate = arg.view.intervalStart;
-    //   console.log(visibleStartDate);
-
-    //   const visibleEndDate = arg.view.intervalEnd;
-    //   console.log(visibleEndDate);
-
-
-    //   // Generate array of dates in visible range
-    //   const visibleDates = [];
-    //   let currentDate = new Date(visibleStartDate);
-    //   while (currentDate < visibleEndDate) {
-    //     visibleDates.push(new Date(currentDate));
-    //     currentDate.setDate(currentDate.getDate() + 1);
-    //   }
-
-    //   // Group buildings by date
-    //   const groupedBuildings = this.groupBuildingsByDate(this.datesBuilding);
-    //   console.log(groupedBuildings);
-
-    //   visibleDates.forEach(date =>
-    //   {
-    //     const dateKey = date.toISOString().split('T')[0]; // '2025-01-18'
-    //     const buildingsForDate = groupedBuildings[dateKey] || [];
-
-    //     const dateContainer = document.createElement('div');
-    //     dateContainer.style.display = 'flex';
-    //     dateContainer.style.flexDirection = 'column';
-    //     dateContainer.style.alignItems = 'center';
-    //     dateContainer.style.width = slotMinWidth + 'px';
-    //     dateContainer.style.borderRight = '1px solid #ccc';
-    //     dateContainer.style.boxSizing = 'border-box';
-
-    //     if (buildingsForDate.length > 0) {
-    //       buildingsForDate.forEach(building =>
-    //       {
-    //         const buildingInfo = document.createElement('div');
-    //         buildingInfo.textContent = `Units: ${building.available_units}, Price: ${building.price}`;
-    //         dateContainer.appendChild(buildingInfo);
-    //       });
-    //     } else {
-    //       const noDataMessage = document.createElement('div');
-    //       noDataMessage.textContent = 'No data';
-    //       dateContainer.appendChild(noDataMessage);
-    //     }
-
-    //     laneContent.appendChild(dateContainer);
-    //   });
-
-    //   return { domNodes: [laneContent] };
-    // },
-
 
     /**
      * Generates a list of resources from predefined room data.
@@ -709,96 +650,237 @@ export default {
       });
       return names;
     },
+
+    /**
+     * Sets the selected date and navigates the FullCalendar view to it.
+     *
+     * This function updates the component's `selectedDate` property with the
+     * provided date. It then uses the FullCalendar API to navigate the calendar
+     * view to the newly selected date.
+     *
+     * @param {Date|string} selectedDate - The date to set and navigate to. Can be
+     * a Date object or a string in a format recognized by the FullCalendar API.
+     */
+
     SelectedDateFilterCalendar (selectedDate)
     {
+      // Update the selected date
+      this.selectedDate = selectedDate;
+
+      // Access the FullCalendar API and navigate to the selected date
       const calendarApi = this.$refs.calendar.getApi();
-
-      // Navigate to the selected date in FullCalendar
-      calendarApi.gotoDate(selectedDate);
-
-      // Optionally, highlight the selected date
-      this.highlightDate(selectedDate);
+      if (calendarApi) {
+        calendarApi.gotoDate(selectedDate);
+      } else {
+        console.error('FullCalendar API is not available.');
+      }
     },
-    transformUnitToEvents (unitData)
+    handleDatesSet (dateInfo)
     {
-      const events = [];
-      let currentEvent = null;
+      const startDate = dateInfo.start; // The first visible date in the calendar
+      this.updateFlatpickrDate(startDate); // Update Flatpickr with the start date
+    },
+    updateFlatpickrDate (date)
+    {
+      // Emit the date to the FilterCalendar component
+      if (this.$refs.filterComponent) {
+        this.$refs.filterComponent.$refs.headerCalender.updateFlatpickr(date);
+      } else {
+        console.error("FilterCalendar ref is not available.");
+      }
+    },
+    /**
+     * Initializes the calendar API when the calendar is ready.
+     *
+     * This function sets the `calendarApi` property with the FullCalendar API instance
+     * from the provided `info` object. This allows other functions within the component
+     * to access and manipulate the calendar view.
+     *
+     * @param {Object} info - Object containing information about the calendar view.
+     *                         It includes the `view` property which holds the FullCalendar
+     *                         API instance.
+     */
 
-      // Define color mapping based on status
-      const statusColorMap = {
-        unavailable: '#FF4444', // Red for unavailable
-        available: '#4CAF50',   // Green for available
-        reserved: '#FFA000',    // Orange for reserved
-        blocked: '#9E9E9E',     // Grey for blocked
-      };
-
-      // Get the unit-level status
-      const unitStatus = unitData.status?.toLowerCase().trim() || 'unknown';
-      const unitColor = statusColorMap[unitStatus] || '#CCCCCC'; // Default color for the unit
-
-      // Sort dates to ensure they're in chronological order
-      const sortedDates = [...unitData.dates].sort((a, b) =>
-        new Date(a.date) - new Date(b.date)
-      );
-
-      console.log('Unit Status:', unitStatus, 'Unit Color:', unitColor);
-
-      sortedDates.forEach((dateInfo, index) =>
+    handleCalendarReady (info)
+    {
+      this.calendarApi = info.view.calendar
+    },
+    getTwoDaysAgoDate ()
+    {
+      const today = new Date()
+      const twoDaysAgo = new Date(today)
+      twoDaysAgo.setDate(today.getDate() - 2)
+      return twoDaysAgo
+    },
+    /**
+     * Groups the provided list of building objects by their date property.
+     *
+     * The function takes a list of objects with a `date` property, and returns
+     * an object where the keys are the unique dates, and the values are arrays
+     * of the building objects that have that date.
+     *
+     * @param {Array} datesBuilding - List of objects with a `date` property.
+     * @return {Object} - Object where the keys are the unique dates, and the
+     *                    values are arrays of the building objects that have
+     *                    that date.
+     */
+      groupBuildingsByDate (datesBuilding)
+    {
+      const grouped = {};
+      datesBuilding.forEach(buildingDate =>
       {
-        console.log('DateInfo:', dateInfo); // Log the entire dateInfo object
-
-        // Determine the color for this date
-        let color = unitColor; // Default to unit color
-        if (dateInfo.is_reserved) {
-          color = statusColorMap.reserved; // Override with reserved color
-        } else if (dateInfo.is_blocked) {
-          color = statusColorMap.blocked; // Override with blocked color
+        const dateKey = buildingDate.date; // Assuming date is a string like '2025-01-18'
+        if (!grouped[dateKey]) {
+          grouped[dateKey] = [];
         }
+        grouped[dateKey].push(buildingDate);
+      });
+      return grouped;
+    },
+    resourceGroupLaneContent (arg)
+    {
+      // console.log(this.datesBuilding);
 
-        console.log(`Date: ${dateInfo.date}, Color: ${color}`);
+      const laneContent = document.createElement('div');
+      laneContent.style.display = 'flex';
+      laneContent.style.width = '100%';
+      laneContent.style.height = '37px';
+      laneContent.style.padding = '0px';
 
-        if (dateInfo.is_reserved || dateInfo.is_blocked || unitStatus !== 'available') {
-          if (!currentEvent) {
-            // Start new event
-            currentEvent = {
-              resourceId: unitData.code,
-              title: dateInfo.is_blocked ?
-                `Blocked: ${dateInfo.block_reason}` :
-                dateInfo.is_reserved ?
-                  `Reserved by ${dateInfo.reserved_by?.name || 'Unknown'}` :
-                  `Status: ${unitStatus}`,
-              start: dateInfo.date,
-              end: dateInfo.date,
-              color: color // Use the resolved color
-            };
-          }
+      const slotMinWidth = arg.view.calendar.getOption('slotMinWidth');
+      console.log(slotMinWidth);
+      const visibleStartDate = arg.view.intervalStart;
+      console.log(visibleStartDate);
 
-          // If this is the last date or next date is not reserved/blocked,
-          // close out the current event
-          const nextDate = sortedDates[index + 1];
-          if (!nextDate || (!nextDate.is_reserved && !nextDate.is_blocked)) {
-            // Set end date to next day (since FullCalendar uses exclusive end dates)
-            const endDate = new Date(dateInfo.date);
-            endDate.setDate(endDate.getDate() + 1);
-            currentEvent.end = endDate.toISOString().split('T')[0];
-            events.push(currentEvent);
-            currentEvent = null;
-          }
+      const visibleEndDate = arg.view.intervalEnd;
+      console.log(visibleEndDate);
+
+
+      // Generate array of dates in visible range
+      const visibleDates = [];
+      let currentDate = new Date(visibleStartDate);
+      while (currentDate < visibleEndDate) {
+        visibleDates.push(new Date(currentDate));
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
+
+      // Group buildings by date
+      const groupedBuildings = this.groupBuildingsByDate(this.datesBuilding);
+      console.log(groupedBuildings);
+
+      visibleDates.forEach(date =>
+      {
+        const dateKey = date.toISOString().split('T')[0]; // '2025-01-18'
+        const buildingsForDate = groupedBuildings[dateKey] || [];
+
+        const dateContainer = document.createElement('div');
+        dateContainer.style.display = 'flex';
+        dateContainer.style.flexDirection = 'column';
+        dateContainer.style.alignItems = 'center';
+        dateContainer.style.width = slotMinWidth + 'px';
+        dateContainer.style.borderRight = '1px solid #ccc';
+        dateContainer.style.boxSizing = 'border-box';
+
+        if (buildingsForDate.length > 0) {
+          buildingsForDate.forEach(building =>
+          {
+            const buildingInfo = document.createElement('div');
+            buildingInfo.textContent = `Units: ${building.available_units}, Price: ${building.price}`;
+            dateContainer.appendChild(buildingInfo);
+          });
         } else {
-          // If date is not reserved/blocked and we have a current event,
-          // close it out
-          if (currentEvent) {
-            const endDate = new Date(dateInfo.date);
-            currentEvent.end = endDate.toISOString().split('T')[0];
-            events.push(currentEvent);
-            currentEvent = null;
-          }
+          const noDataMessage = document.createElement('div');
+          noDataMessage.textContent = 'No data';
+          dateContainer.appendChild(noDataMessage);
         }
+
+        laneContent.appendChild(dateContainer);
       });
 
-      console.log(JSON.stringify(events, null, 2)); // Debugging: Log events with colors
-      return events;
+      return { domNodes: [laneContent] };
     },
+
+
+    // transformUnitToEvents (unitData)
+    // {
+    //   const events = [];
+    //   let currentEvent = null;
+
+    //   // Define color mapping based on status
+    //   const statusColorMap = {
+    //     unavailable: '#FF4444', // Red for unavailable
+    //     available: '#4CAF50',   // Green for available
+    //     reserved: '#FFA000',    // Orange for reserved
+    //     blocked: '#9E9E9E',     // Grey for blocked
+    //   };
+
+    //   // Get the unit-level status
+    //   const unitStatus = unitData.status?.toLowerCase().trim() || 'unknown';
+    //   const unitColor = statusColorMap[unitStatus] || '#CCCCCC'; // Default color for the unit
+
+    //   // Sort dates to ensure they're in chronological order
+    //   const sortedDates = [...unitData.dates].sort((a, b) =>
+    //     new Date(a.date) - new Date(b.date)
+    //   );
+
+    //   console.log('Unit Status:', unitStatus, 'Unit Color:', unitColor);
+
+    //   sortedDates.forEach((dateInfo, index) =>
+    //   {
+    //     console.log('DateInfo:', dateInfo); // Log the entire dateInfo object
+
+    //     // Determine the color for this date
+    //     let color = unitColor; // Default to unit color
+    //     if (dateInfo.is_reserved) {
+    //       color = statusColorMap.reserved; // Override with reserved color
+    //     } else if (dateInfo.is_blocked) {
+    //       color = statusColorMap.blocked; // Override with blocked color
+    //     }
+
+    //     console.log(`Date: ${dateInfo.date}, Color: ${color}`);
+
+    //     if (dateInfo.is_reserved || dateInfo.is_blocked || unitStatus !== 'available') {
+    //       if (!currentEvent) {
+    //         // Start new event
+    //         currentEvent = {
+    //           resourceId: unitData.code,
+    //           title: dateInfo.is_blocked ?
+    //             `Blocked: ${dateInfo.block_reason}` :
+    //             dateInfo.is_reserved ?
+    //               `Reserved by ${dateInfo.reserved_by?.name || 'Unknown'}` :
+    //               `Status: ${unitStatus}`,
+    //           start: dateInfo.date,
+    //           end: dateInfo.date,
+    //           color: color // Use the resolved color
+    //         };
+    //       }
+
+    //       // If this is the last date or next date is not reserved/blocked,
+    //       // close out the current event
+    //       const nextDate = sortedDates[index + 1];
+    //       if (!nextDate || (!nextDate.is_reserved && !nextDate.is_blocked)) {
+    //         // Set end date to next day (since FullCalendar uses exclusive end dates)
+    //         const endDate = new Date(dateInfo.date);
+    //         endDate.setDate(endDate.getDate() + 1);
+    //         currentEvent.end = endDate.toISOString().split('T')[0];
+    //         events.push(currentEvent);
+    //         currentEvent = null;
+    //       }
+    //     } else {
+    //       // If date is not reserved/blocked and we have a current event,
+    //       // close it out
+    //       if (currentEvent) {
+    //         const endDate = new Date(dateInfo.date);
+    //         currentEvent.end = endDate.toISOString().split('T')[0];
+    //         events.push(currentEvent);
+    //         currentEvent = null;
+    //       }
+    //     }
+    //   });
+
+    //   console.log(JSON.stringify(events, null, 2)); // Debugging: Log events with colors
+    //   return events;
+    // },
 
     // Add this method to transform all units data
     transformAllUnitsToEvents ()
@@ -895,6 +977,7 @@ export default {
     if (!this.$refs.calendar) {
       console.error('FullCalendar ref is not available.');
     }
+
   },
 }
 </script>
