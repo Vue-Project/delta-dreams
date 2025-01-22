@@ -6,10 +6,10 @@
         <div class="row" v-for="reservationDataById in reservationsDataById" :key="reservationDataById.id">
           <div class="col">
             <div class="me-2 py-2 d-flex">
-              <NuxtLink to="/reservations-data"><i class="fa-solid fa-angle-left pr-2" style="color: #6f6b7d; float: left; font-size: 20px"></i>
-              </NuxtLink>
+              <a href="#" @click="goBack"><i class="fa-solid fa-angle-left pr-2" style="color: #6f6b7d; float: left; font-size: 20px"></i>
+              </a>
               <i class="text-primary fa-solid fa-hotel fs-3 mr-2 mb-2"></i>
-              {{ reservationDataById.reserved_by.name }}
+              {{ reservationDataById.user.name }}
               <!-- {{ reservationDataById.id }} -->
               <small class="text-muted ml-3">
                 <i class="fa-solid fa-person pr-2"></i>{{ reservationDataById.adults }}
@@ -26,7 +26,7 @@
           <div class="col">
             <div class="me-2">
               <h6>Booking Date</h6>
-              <small class="text-muted">{{ formatDate(reservationDataById.checkout_date) }} </small>
+              <small class="text-muted">{{ formatDate(reservationDataById.checkout_date) }} {{ reservationDataById.checkout_time }} </small>
             </div>
           </div>
           <div class="col">
@@ -40,22 +40,22 @@
               <h6>Nights</h6>
               <small class="text-muted">
 
-                {{ (new Date(reservationDataById.checkout_datecheckout_date) - new Date(reservationDataById.checkin_date)) / (1000 * 3600 * 24) }}
+                {{ (new Date(reservationDataById.checkout_date) - new Date(reservationDataById.checkin_date)) / (1000 * 3600 * 24) }}
               </small>
             </div>
           </div>
           <div class="col">
             <div class="me-2">
               <h6>Reservation Number</h6>
-              <small class="text-muted">{{ reservationDataById.reservation_number || "14541" }}</small>
+              <small class="text-muted">{{ reservationDataById.id || "14541" }}</small>
             </div>
           </div>
           <div class="col">
             <div class="me-2">
               <h6>Status</h6>
-              <small class="text-danger badge bg-label-danger">{{
-                reservationDataById.status || "Stayove"
-                }}</small>
+              <small class="badge" :class="statusBadgeClass(reservationDataById.status)">
+                      {{ reservationDataById.status_name }}
+                    </small>
             </div>
           </div>
         </div>
@@ -764,6 +764,18 @@ export default {
       // Update master checkbox based on row checkboxes
       this.selectAll = this.rows.every((row) => row.selected);
     },
+    goBack ()
+    {
+      this.$router.go(-1);
+    },
+    statusBadgeClass (status)
+    {
+      return {
+        'bg-label-primary': status === 'pending',
+        'bg-label-success': status === 'approved',
+        'bg-label-danger': status === 'cancelled',
+      };
+    },
   },
 
 
@@ -823,5 +835,22 @@ export default {
 </script>
 
 <style>
-/* Add styles as needed */
-</style>
+.badge {
+  padding: 0.5em 0.75em;
+  font-size: 0.875em;
+}
+
+.bg-label-primary {
+  background-color: rgba(13, 110, 253, 0.1);
+  color: #0d6efd;
+}
+
+.bg-label-success {
+  background-color: rgba(25, 135, 84, 0.1);
+  color: #198754;
+}
+
+.bg-label-danger {
+  background-color: rgba(220, 53, 69, 0.1);
+  color: #dc3545;
+}</style>
