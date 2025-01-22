@@ -1101,7 +1101,7 @@
                     <div class="card-title mb-0 d-flex">
                       <i class="text-primary fa-solid fa-hotel fs-3 mr-2 mb-2"></i>
                       <h5 class="m-0 me-2">{{ card.reserved_by.name }}</h5>
-                      <p>{{ card.id }}</p>
+                      <!-- <p>{{ card.id }}</p> -->
                     </div>
                     <div class="btn-group" id="hover-dropdown-demo" @mouseenter="toggleMenu(card.id, true)" @mouseleave="toggleMenu(card.id, false)">
                       <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none">
@@ -1252,7 +1252,7 @@
                     <div class="card-title mb-0 d-flex">
                       <i class="text-primary fa-solid fa-hotel fs-3 mr-2 mb-2"></i>
                       <h5 class="m-0 me-2">{{ card.reserved_by.name }}</h5>
-                      <p>{{ card.id }}</p>
+                      <!-- <p>{{ card.id }}</p> -->
                     </div>
                     <div class="btn-group" id="hover-dropdown-demo" @mouseenter="toggleMenu(card.id, true)" @mouseleave="toggleMenu(card.id, false)">
                       <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none">
@@ -1401,7 +1401,7 @@
                     <div class="card-title mb-0 d-flex">
                       <i class="text-primary fa-solid fa-hotel fs-3 mr-2 mb-2"></i>
                       <h5 class="m-0 me-2">{{ card.reserved_by.name }}</h5>
-                      <p>{{ card.id }}</p>
+                      <!-- <p>{{ card.id }}</p> -->
                     </div>
                     <div class="btn-group" id="hover-dropdown-demo" @mouseenter="toggleMenu(card.id, true)" @mouseleave="toggleMenu(card.id, false)">
                       <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none">
@@ -1550,7 +1550,7 @@
                     <div class="card-title mb-0 d-flex">
                       <i class="text-primary fa-solid fa-hotel fs-3 mr-2 mb-2"></i>
                       <h5 class="m-0 me-2">{{ card.reserved_by.name }}</h5>
-                      <p>{{ card.id }}</p>
+                      <!-- <p>{{ card.id }}</p> -->
                     </div>
                     <div class="btn-group" id="hover-dropdown-demo" @mouseenter="toggleMenu(card.id, true)" @mouseleave="toggleMenu(card.id, false)">
                       <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none">
