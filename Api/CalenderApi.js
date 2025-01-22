@@ -40,10 +40,10 @@ export const blockRoomService =  async (blockRoomData) =>
     };
     export const getCalenderAllUnits = async (dateRange) => {
       try {
-        const response = await apiClient.get(`/units`, {
+        const response = await apiClient.get(`/calender`, {
           params: {
-            start: dateRange?.start,
-            end: dateRange?.end
+            start_date: dateRange?.start,
+            end_date: dateRange?.end
           }
         });
         return response.data;

@@ -1,9 +1,10 @@
 <template>
   <section class="card">
+    <!-- <p>{{buildingNames}}</p> -->
     <Loader :visible="isLoading" />
 
     <div v-if="!isLoading">
-      <FilterCalendar ref="filterComponent" :statistics="statistics" :buildingNames="buildingNames" @show-all-resources="showAllResources"  @show-building-resources="showBuildingResources" @date-selected="SelectedDateFilterCalendar"  />
+      <FilterCalendar ref="filterComponent" :statistics="statistics" :buildingNames="buildingNames" @show-all-resources="showAllResources" @show-building-resources="showBuildingResources" @date-selected="SelectedDateFilterCalendar" />
       <FullCalendar :options="calendarOptions" @select="handleSelect" ref="calendar" :selectedDate="selectedDate">
         <template v-slot:eventContent="arg">
           <b>{{ arg.event.title }}</b>
@@ -243,8 +244,8 @@ export default {
             });
 
             // Add units under the building if they exist
-            if (building.units?.data) {
-              building.units.data.forEach((unit) =>
+            if (building.units) {
+              building.units.forEach((unit) =>
               {
                 // Include unit if no date is selected or unit.date matches selectedDate
                 if (!selectedDate || (unit.date && unit.date === selectedDate)) {
@@ -611,14 +612,13 @@ export default {
     {
       this.$router.push(`/edit-reservation/${id}`);
     },
-    handleEventClick (info)
+handleEventClick(info) {
+  // console.log('Event Data:', info.event); // Debugging
+  this.selectedEvent = this.transformEventToReservationData(info.event);
+  this.openOffcanvas();
+},
+    openOffcanvas ()
     {
-      // alert(`Event: ${info.event.title}\nStart: ${info.event.start}\nEnd: ${info.event.end}`);
-      this.openOffcanvas(info.event);
-    },
-    openOffcanvas (event)
-    {
-      this.selectedEvent = event;
       this.$nextTick(() =>
       {
         const offcanvasElement = document.getElementById('offcanvasEnd');
@@ -629,6 +629,28 @@ export default {
           console.error('Offcanvas element not found.');
         }
       });
+    },
+    transformEventToReservationData (event)
+    {
+      return {
+        id: event.extendedProps?.reservation?.id || event.id,
+        checkin_date: event.start,
+        checkout_date: event.end,
+        checkin_time: event.extendedProps?.reservation?.checkin_time,
+        checkout_time: event.extendedProps?.reservation?.checkout_time,
+        number_of_rooms: event.extendedProps?.reservation?.number_of_rooms,
+        rate_type: event.extendedProps?.reservation?.rate_type,
+        adults: event.extendedProps?.reservation?.adults,
+        children: event.extendedProps?.reservation?.children,
+        status: event.extendedProps?.reservation?.status,
+        status_name: event.extendedProps?.reservation?.status_name,
+        total: event.extendedProps?.reservation?.total,
+        created_at: event.extendedProps?.reservation?.created_at,
+        user: event.extendedProps?.reservation?.user,
+        guest_address: event.extendedProps?.reservation?.guest_address,
+        guest_city: event.extendedProps?.reservation?.guest_city,
+        guest_country: event.extendedProps?.reservation?.guest_country,
+      };
     },
     goToAddReservation ()
     {
@@ -667,22 +689,24 @@ export default {
      * a Date object or a string in a format recognized by the FullCalendar API.
      */
 
-     SelectedDateFilterCalendar(selectedDate) {
-  // Update the selected date
-  this.selectedDate = selectedDate;
+    SelectedDateFilterCalendar (selectedDate)
+    {
+      // Update the selected date
+      this.selectedDate = selectedDate;
 
-  // Access the FullCalendar API and navigate to the selected date
-  const calendarApi = this.$refs.calendar.getApi();
-  if (calendarApi) {
-    calendarApi.gotoDate(selectedDate);
-    // Trigger data update after navigation
-    this.$nextTick(() => {
-      this.handleNavigation('date-select');
-    });
-  } else {
-    console.error('FullCalendar API is not available.');
-  }
-},
+      // Access the FullCalendar API and navigate to the selected date
+      const calendarApi = this.$refs.calendar.getApi();
+      if (calendarApi) {
+        calendarApi.gotoDate(selectedDate);
+        // Trigger data update after navigation
+        this.$nextTick(() =>
+        {
+          this.handleNavigation('date-select');
+        });
+      } else {
+        console.error('FullCalendar API is not available.');
+      }
+    },
     handleDatesSet (dateInfo)
     {
       const startDate = dateInfo.start; // The first visible date in the calendar
@@ -720,7 +744,190 @@ export default {
       twoDaysAgo.setDate(today.getDate() - 2)
       return twoDaysAgo
     },
+
+
+    transformUnitToEvents(unitData) {
+  const events = [];
+  const handledReservations = new Set();
+
+  // Process reservations first
+  unitData.dates.forEach(dateInfo => {
+    if (dateInfo.is_reserved && dateInfo.reservation && !handledReservations.has(dateInfo.reservation.id)) {
+      const reservation = dateInfo.reservation;
+      const start = reservation.checkin_date.split('T')[0];
+      const end = reservation.checkout_date.split('T')[0];
+
+      events.push({
+        resourceId: unitData.code,
+        title: `Reserved by ${reservation.user?.name || 'Unknown'}`,
+        start: start,
+        end: end,
+        color: '#FFA000',
+        reservationId: reservation.id,
+        extendedProps: {
+          reservation: reservation, // Include the full reservation object
+        },
+      });
+
+      handledReservations.add(reservation.id);
+    }
+  });
+
+  // Process blocked dates
+  let currentBlock = null;
+  const sortedDates = [...unitData.dates]
+    .sort((a, b) => new Date(a.date) - new Date(b.date))
+    .forEach((dateInfo, index) => {
+      if (dateInfo.is_blocked) {
+        if (!currentBlock) {
+          currentBlock = {
+            resourceId: unitData.code,
+            title: `Blocked: ${dateInfo.block_reason || 'No reason provided'}`,
+            start: dateInfo.date,
+            end: dateInfo.date,
+            color: '#9E9E9E',
+            extendedProps: {
+              is_blocked: true, // Indicate this is a blocked date
+              block_reason: dateInfo.block_reason || 'No reason provided',
+            },
+          };
+        }
+
+        // Update end date to next day
+        const endDate = new Date(dateInfo.date);
+        endDate.setDate(endDate.getDate() + 1);
+        currentBlock.end = endDate.toISOString().split('T')[0];
+      } else if (currentBlock) {
+        events.push(currentBlock);
+        currentBlock = null;
+      }
+    });
+
+  if (currentBlock) {
+    events.push(currentBlock);
+  }
+
+  return events;
+},
+
+    // Add this method to transform all units data
+    transformAllUnitsToEvents ()
+    {
+      let allEvents = [];
+
+      if (Array.isArray(this.data)) {
+        this.data.forEach(building =>
+        {
+          if (building.units) {
+            building.units.forEach(unit =>
+            {
+              const unitEvents = this.transformUnitToEvents({
+                ...unit,
+                code: `${building.id}-${unit.id}` // Match the resourceId format
+              });
+              allEvents = [...allEvents, ...unitEvents];
+            });
+          }
+        });
+      }
+
+      return allEvents;
+    },
+
+    // Update calendar events
+    updateCalendarEvents ()
+    {
+      const events = this.transformAllUnitsToEvents();
+      const calendar = this.$refs.calendar?.getApi();
+      if (calendar) {
+        calendar.removeAllEvents();
+        calendar.addEventSource(events);
+      }
+
+    },
     /**
+    * Handles the click event for navigating to the previous calendar view.
+    *
+    * This function triggers the FullCalendar API to navigate to the previous time period.
+    * It also calls the handleNavigation function to update the calendar data and visuals
+    * for the newly navigated time period.
+    */
+    handlePrevClick ()
+    {
+      this.$refs.calendar.getApi().prev(); // Navigate to the previous time period
+      this.handleNavigation('prev'); // Update calendar data and visuals
+    },
+
+    /**
+     * Handles the click event for navigating to the next calendar view.
+     *
+     * This function triggers the FullCalendar API to navigate to the next time period.
+     * It also calls the handleNavigation function to update the calendar data and visuals
+     * for the newly navigated time period.
+     */
+    handleNextClick ()
+    {
+      this.$refs.calendar.getApi().next();
+      this.handleNavigation('next');
+    },
+
+    /**
+     * Handles calendar navigation events and updates the calendar data and visuals.
+     *
+     * This asynchronous function is triggered when navigating to a different time period
+     * in the calendar. It sets the loading state, retrieves the active start and end dates
+     * from the calendar view, and fetches updated data for these dates. The function then
+     * updates the component's data properties, including occupancy data and statistics, and
+     * refreshes the calendar resources and events. Errors during the process are caught and
+     * logged, and the loading state is reset in the end.
+     *
+     * @param {string} direction - The direction of navigation, either 'prev' or 'next'.
+     */
+
+     async handleNavigation(direction) {
+  try {
+    this.isLoading = true;
+    const calendarApi = this.$refs.calendar.getApi();
+    const view = calendarApi.view;
+
+    // Get current view dates
+    const start = view.activeStart;
+    const end = view.activeEnd;
+
+    // Format dates for server
+    const startDate = start.toISOString().split('T')[0];
+    const endDate = end.toISOString().split('T')[0];
+
+    console.log(`Navigation type: ${direction} | Dates: ${startDate} to ${endDate}`);
+
+    // Fetch data for new date range
+    // const response = await getCalenderAllUnits({ // Fixed typo: awat -> await
+    //   start: startDate,
+    //   end: endDate
+    // });
+
+    // Update data sources
+    this.data = response.data;
+    // this.occupancyData = response.data.calendar.data;
+    // this.statistics = response.data.statistics;
+
+    // Force calendar refresh
+    calendarApi.refetchEvents(); // Important: Tell FullCalendar to reload events
+
+    // If using resources:
+    // this.calendarOptions.resources = this.createResources();
+    // calendarApi.refetchResources();
+
+    // Alternative: Reset calendar view
+    // calendarApi.changeView(view.type, view.title);
+
+  } catch (error) {
+    console.error('Navigation error:', error);
+  } finally {
+    this.isLoading = false;
+  }
+},
+     /**
      * Groups the provided list of building objects by their date property.
      *
      * The function takes a list of objects with a `date` property, and returns
@@ -805,201 +1012,6 @@ export default {
     //     laneContent.appendChild(dateContainer);
     //   });
 
-    /**
-     * Handles the click event for navigating to the previous calendar view.
-     *
-     * This function triggers the FullCalendar API to navigate to the previous time period.
-     * It also calls the handleNavigation function to update the calendar data and visuals
-     * for the newly navigated time period.
-     */
-    handlePrevClick ()
-    {
-      this.$refs.calendar.getApi().prev(); // Navigate to the previous time period
-      this.handleNavigation('prev'); // Update calendar data and visuals
-    },
-
-    /**
-     * Handles the click event for navigating to the next calendar view.
-     *
-     * This function triggers the FullCalendar API to navigate to the next time period.
-     * It also calls the handleNavigation function to update the calendar data and visuals
-     * for the newly navigated time period.
-     */
-    handleNextClick ()
-    {
-      this.$refs.calendar.getApi().next();
-      this.handleNavigation('next');
-    },
-
-    /**
-     * Handles calendar navigation events and updates the calendar data and visuals.
-     *
-     * This asynchronous function is triggered when navigating to a different time period
-     * in the calendar. It sets the loading state, retrieves the active start and end dates
-     * from the calendar view, and fetches updated data for these dates. The function then
-     * updates the component's data properties, including occupancy data and statistics, and
-     * refreshes the calendar resources and events. Errors during the process are caught and
-     * logged, and the loading state is reset in the end.
-     *
-     * @param {string} direction - The direction of navigation, either 'prev' or 'next'.
-     */
-
-     async handleNavigation(direction) {
-  try {
-    this.isLoading = true;
-    const calendarApi = this.$refs.calendar.getApi();
-    const view = calendarApi.view;
-
-    // Get current view dates
-    const start = view.activeStart;
-    const end = view.activeEnd;
-
-    // Format dates for server
-    const startDate = start.toISOString().split('T')[0];
-    const endDate = end.toISOString().split('T')[0];
-
-    console.log(`Navigation type: ${direction} | Dates: ${startDate} to ${endDate}`);
-
-    // Fetch data for new date range
-    const response = await getCalenderAllUnits({
-      start: startDate,
-      end: endDate
-    });
-
-    // Update all components
-    this.data = response.data.data;
-    this.occupancyData = response.data.calendar.data;
-    this.statistics = response.data.statistics;
-
-    // Refresh calendar
-    this.calendarOptions.resources = this.createResources();
-    this.updateCalendarEvents();
-
-  } catch (error) {
-    console.error('Navigation error:', error);
-  } finally {
-    this.isLoading = false;
-  }
-},
-
-
-    transformUnitToEvents (unitData)
-    {
-      const events = [];
-      let currentEvent = null;
-
-      // Define color mapping based on status
-      // const statusColorMap = {
-      //   unavailable: '#FF4444', // Red for unavailable
-      //   available: '#4CAF50',   // Green for available
-      //   reserved: '#FFA000',    // Orange for reserved
-      //   blocked: '#9E9E9E',     // Grey for blocked
-      // };
-
-      // Get the unit-level status
-      const unitStatus = unitData.status?.toLowerCase().trim() || 'unknown';
-      const unitColor = statusColorMap[unitStatus] || '#CCCCCC'; // Default color for the unit
-
-      // Sort dates to ensure they're in chronological order
-      const sortedDates = [...unitData.dates].sort((a, b) =>
-        new Date(a.date) - new Date(b.date)
-      );
-
-      // console.log('Unit Status:', unitStatus, 'Unit Color:', unitColor);
-
-      sortedDates.forEach((dateInfo, index) =>
-      {
-        console.log('DateInfo:', dateInfo); // Log the entire dateInfo object
-
-        // Determine the color for this date
-        let color = unitColor; // Default to unit color
-        if (dateInfo.is_reserved) {
-          color = statusColorMap.reserved; // Override with reserved color
-        } else if (dateInfo.is_blocked) {
-          color = statusColorMap.blocked; // Override with blocked color
-        }
-
-        console.log(`Date: ${dateInfo.date}, Color: ${color}`);
-
-        if (dateInfo.is_reserved || dateInfo.is_blocked || unitStatus !== 'available') {
-          if (!currentEvent) {
-            // Start new event
-            currentEvent = {
-              resourceId: unitData.code,
-              title: dateInfo.is_blocked ?
-                `Blocked: ${dateInfo.block_reason}` :
-                dateInfo.is_reserved ?
-                  `Reserved by ${dateInfo.reserved_by?.name || 'Unknown'}` :
-                  `Status: ${unitStatus}`,
-              start: dateInfo.date,
-              end: dateInfo.date,
-              color: color // Use the resolved color
-            };
-          }
-
-          // If this is the last date or next date is not reserved/blocked,
-          // close out the current event
-          const nextDate = sortedDates[index + 1];
-          if (!nextDate || (!nextDate.is_reserved && !nextDate.is_blocked)) {
-            // Set end date to next day (since FullCalendar uses exclusive end dates)
-            const endDate = new Date(dateInfo.date);
-            endDate.setDate(endDate.getDate() + 1);
-            currentEvent.end = endDate.toISOString().split('T')[0];
-            events.push(currentEvent);
-            currentEvent = null;
-          }
-        } else {
-          // If date is not reserved/blocked and we have a current event,
-          // close it out
-          if (currentEvent) {
-            const endDate = new Date(dateInfo.date);
-            currentEvent.end = endDate.toISOString().split('T')[0];
-            events.push(currentEvent);
-            currentEvent = null;
-          }
-        }
-      });
-
-      console.log(JSON.stringify(events, null, 2)); // Debugging: Log events with colors
-      return events;
-    },
-
-    // Add this method to transform all units data
-    transformAllUnitsToEvents ()
-    {
-      let allEvents = [];
-
-      if (Array.isArray(this.data)) {
-        this.data.forEach(building =>
-        {
-          if (building.units?.data) {
-            building.units.data.forEach(unit =>
-            {
-              const unitEvents = this.transformUnitToEvents({
-                ...unit,
-                code: `${building.id}-${unit.id}` // Match the resourceId format
-              });
-              allEvents = [...allEvents, ...unitEvents];
-            });
-          }
-        });
-      }
-
-      return allEvents;
-    },
-
-    // Update calendar events
-    updateCalendarEvents ()
-    {
-      const events = this.transformAllUnitsToEvents();
-      const calendar = this.$refs.calendar?.getApi();
-      if (calendar) {
-        calendar.removeAllEvents();
-        calendar.addEventSource(events);
-      }
-
-    }
-
 
   },
   async mounted ()
@@ -1011,10 +1023,10 @@ export default {
         getCalenderAllUnits(),
       ]);
 
-      this.data = CalenderDataResponse.data.data;
-      this.occupancyData = CalenderDataResponse.data.calendar.data;
-      this.statistics = CalenderDataResponse.data.statistics;
-      this.datesBuilding = CalenderDataResponse.data.data;
+      this.data = CalenderDataResponse.data;
+      // this.occupancyData = CalenderDataResponse.data.calendar.data;
+      // this.statistics = CalenderDataResponse.data.statistics;
+      // this.datesBuilding = CalenderDataResponse.data.data;
       this.buildingNames = this.getBuildingNames();
       const events = this.transformAllUnitsToEvents();
 
