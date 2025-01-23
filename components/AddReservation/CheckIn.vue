@@ -159,8 +159,8 @@
                         <td style="width: 185px">
                           <select class="form-select" v-model="formAddReservation.units[0].rateType" ref="rateType" :class="{ 'input-error': validationMessages.rateType }">
                             <option value="">Rate Type</option>
-                            <option value="Breakfast">Breakfast</option>
-                            <option value="noBreakfast">noBreakfast</option>
+                            <option value="breakfast">Breakfast</option>
+                            <option value="nobreakfast">NoBreakfast</option>
 
                           </select>
                           <span class="error-message" v-if="validationMessages.rateType">{{ validationMessages.rateType }}</span>
