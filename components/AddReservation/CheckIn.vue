@@ -159,8 +159,8 @@
                         <td style="width: 185px">
                           <select class="form-select" v-model="formAddReservation.units[0].rateType" ref="rateType" :class="{ 'input-error': validationMessages.rateType }">
                             <option value="">Rate Type</option>
-                            <option value="0">Breakfast</option>
-                            <option value="1">noBreakfast</option>
+                            <option value="Breakfast">Breakfast</option>
+                            <option value="noBreakfast">noBreakfast</option>
 
                           </select>
                           <span class="error-message" v-if="validationMessages.rateType">{{ validationMessages.rateType }}</span>
@@ -334,8 +334,8 @@
 
           <!--  ! Guest Information -->
           <!--  ! Other Information -->
-          <hr class="my-4" />
-          <h6 class="mb-3">Other Information</h6>
+          <!-- <hr class="my-4" /> -->
+          <!-- <h6 class="mb-3">Other Information</h6>
           <div class="row">
             <div class="form-check mb-3">
               <input class="form-check-input" type="checkbox" id="otherInformationEmailBooking" v-model="showSelect" />
@@ -376,7 +376,7 @@
                 Supress Rate on Registration Card
               </label>
             </div>
-          </div>
+          </div> -->
           <!--  ! Other Information -->
           <hr class="my-4" />
           <div class="row">
@@ -700,7 +700,7 @@ export default {
         payment_method: this.paymentData.paymentMethod,
         selected_payment_method: this.paymentData.selectedPaymentMethod
       };
-      console.log(bookingData);
+      // console.log(bookingData);
 
 
 
