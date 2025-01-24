@@ -1,8 +1,6 @@
 <template>
   <section class="card">
-    <!-- <p>{{buildingNames}}</p> -->
     <Loader :visible="isLoading" />
-
     <div v-if="!isLoading">
       <FilterCalendar ref="filterComponent" :statistics="statistics" :buildingNames="buildingNames" @show-all-resources="showAllResources" @show-building-resources="showBuildingResources" @date-selected="SelectedDateFilterCalendar" />
       <FullCalendar :options="calendarOptions" @select="handleSelect" ref="calendar" :selectedDate="selectedDate">
@@ -23,19 +21,41 @@
 
 
 <script>
-
+// Main calendar component from FullCalendar library
 import FullCalendar from "@fullcalendar/vue";
+
+// Timeline view plugin for resource scheduling
 import resourceTimelinePlugin from "@fullcalendar/resource-timeline";
+
+// Plugin for calendar interactions (drag & drop, resizing)
 import interactionPlugin from "@fullcalendar/interaction";
+
+// Custom loading spinner component
 import Loader from "../layout/Loader.vue";
+
+// Date/Resource filtering controls component
 import FilterCalendar from "./FilterCalendar";
+
+// Calendar bottom section with statistics/controls
 import CalendarFooter from "./CalendarFooter.vue";
+
+// Form for blocking rooms/units in calendar
 import BlockRoomForm from "./BlockRoomForm.vue";
+
+// Popup component for date selection feedback
 import PopoverComponent from "./PopoverComponent.vue";
+
+// Reusable sidebar component (from guest management)
 import SidebarBlockRoom from "../layout/AddGuestSidebar.vue";
-import { getCalenderAllUnits } from "../../Api/CalenderApi";
+
+// Sidebar for displaying event details
 import SelectedEventSidebar from "./SelectedEventSidebar.vue";
+
+// Calendar header with navigation controls
 import HeaderCalender from "./HeaderCalender.vue";
+
+// API service for fetching calendar data
+import { getCalenderAllUnits } from "../../Api/CalenderApi";
 export default {
   components: {
     FullCalendar,
@@ -207,24 +227,13 @@ export default {
   },
 
   methods: {
-
+    // ==============================================
+    // RESOURCE MANAGEMENT
+    // ==============================================
     /**
-     * Generates a list of resources from predefined room data.
-     *
-     * This function takes a set of room data, each containing a list of subrooms,
-     * and constructs a resources array. Each room and subroom is transformed into a resource
-     * object with specific properties like `id`, `title`, `groupId`, and `classNames`.
-     *
-     * - Rooms are identified by their `id` and `title`, and are assigned a `groupId` corresponding
-     *   to their `id`. They are also given a "resource" class for easy selection.
-     *
-     * - Subrooms are identified by a composite `id` (combining room and subroom identifiers),
-     *   `title`, `resourceId` (corresponding to the parent room's `id`), and `groupId`.
-     *   They are given a "subroom" class for easy selection.
-     *
-     * @param {Array} rooms - An array of room data, each containing a list of subrooms
-     * @returns {Array} An array of resources, where each resource represents a room or subroom
-     *                  with specific attributes for identification and styling.
+     * Generates calendar resources from building/unit data
+     * @param {Array} selectedIds - Building IDs to filter
+     * @param {Date} selectedDate - Date to filter units
      */
     createResources (selectedIds = [], selectedDate = null)
     {
@@ -271,12 +280,14 @@ export default {
 
       return resources; // Return the filtered resources
     },
+    // ==============================================
+    // Updating Calendar based on selected building IDs
+    // ==============================================
+
     /**
-     * Update the FullCalendar resources based on the given selectedIds.
-     * This will re-render the calendar with resources filtered by the given selectedIds.
-     * If no selectedIds are given, all resources are shown.
-     * @param {Array<string>} selectedIds - An array of IDs to filter the resources by. If empty, all resources are shown.
-     */
+    * Updates calendar resources based on selected building IDs
+    * @param {Array} selectedIds - Building IDs to show
+    */
     updateCalendarResources (selectedIds = [])
     {
       const resources = this.createResources(selectedIds); // Create resources based on selectedIds
@@ -287,27 +298,24 @@ export default {
         console.error('FullCalendar API is not accessible.');
       }
     },
-    // Show resources for specific buildings
     showBuildingResources (buildingNames)
     {
       this.updateCalendarResources(buildingNames); // Pass the selected building names
     },
-    // Show all resources (no filter)
     showAllResources ()
     {
       this.updateCalendarResources(); // No selectedIds means show all resources
     },
+
+
+    // ==============================================
+    // DATE & TIME MANAGEMENT
+    // ==============================================
+
     /**
-     * Handles date selection event from FullCalendar.
-     *
-     * Given the date range selection, it loops through the selected dates and
-     * highlights the corresponding cells in the calendar, and stores the
-     * dates in the `selectedDates` array.
-     *
-     * After selection, it updates the highlighted text and shows the popover.
-     *
-     * @param {Object} info - Selection info object containing `start` and `end` dates
-     */
+    * Handles date range selection
+    * @param {Object} info - Contains start/end dates and resource
+    */
     handleSelect (info)
     {
       const { start, end, resource } = info;
@@ -397,36 +405,18 @@ export default {
       // Show overlay if required
       this.showOverlay();
     },
-    /**
-     * Highlights the cell for a given date in the calendar.
-     *
-     * It does this by adding the `fc-highlight` class to the cell with the
-     * `data-date` attribute equal to the given date string.
-     *
-     * @param  {String} dateStr - The date string to highlight, in format "YYYY-MM-DD".
-     */
-    highlightDate (dateStr)
+    getTwoDaysAgoDate ()
     {
-      const calendarEl = document.querySelector(".fc");
-      const dateCell = calendarEl.querySelector(`[data-date='${dateStr}']`);
-
-      if (dateCell) {
-        dateCell.classList.add("fc-highlight");
-      }
+      const today = new Date()
+      const twoDaysAgo = new Date(today)
+      twoDaysAgo.setDate(today.getDate() - 2)
+      return twoDaysAgo
     },
-    /**
-     * Updates the highlighted text after a date range is selected.
-     *
-     * This function works by first calculating the total number of days selected
-     * by subtracting the start date from the end date. It then finds all the
-     * highlighted cells (`fc-highlight` class) and appends a child element
-     * containing the total number of days selected.
-     *
-     * Finally, it shows the popover after the overlay is visible.
-     *
-     * @param {String} start - The start date of the selection in format "YYYY-MM-DD".
-     * @param {String} end - The end date of the selection in format "YYYY-MM-DD".
-     */
+
+    // ==============================================
+    // UI ACTIONS
+    // ==============================================
+
     updateHighlightedText (start, end, nights)
     {
       const calendarEl = document.querySelector(".fc");
@@ -444,6 +434,16 @@ export default {
       // Show the popover after the overlay is visible
       this.showPopover();
     },
+    // highlightDate (dateStr)
+    // {
+    //   const calendarEl = document.querySelector(".fc");
+    //   const dateCell = calendarEl.querySelector(`[data-date='${dateStr}']`);
+
+    //   if (dateCell) {
+    //     dateCell.classList.add("fc-highlight");
+    //   }
+    // },
+
     showPopover ()
     {
       this.isPopoverVisible = true;
@@ -480,15 +480,290 @@ export default {
       this.isPopoverVisible = false;
       this.isOverlayVisible = false;
     },
+    toggleSidebar ()
+    {
+      this.isSidebarOpen = !this.isSidebarOpen;
+      this.isPopoverVisible = false;
+      this.isOverlayVisible = false;
+    },
 
-    /**
-     * Generates a custom resource header to display a dropdown to select a room (and its subrooms).
-     * The dropdown shows a "Select All" option when nothing is selected.
-     * When a room is selected, the subrooms under that room are also selected.
-     * The dropdown text is updated based on the selected options.
-     * The resource header also includes a toggle icon to collapse/expand all resources.
-     * @returns {Object} - An object containing the custom resource header DOM nodes.
-     */
+    // ==============================================
+    // EVENT HANDLING
+    // ==============================================
+    handleEventClick (info)
+    {
+      // console.log('Event Data:', info.event); // Debugging
+      this.selectedEvent = this.transformEventToReservationData(info.event);
+      this.openOffcanvas();
+    },
+    transformUnitToEvents (unitData)
+    {
+      const events = [];
+      const handledReservations = new Set();
+
+      // Process reservations first
+      unitData.dates.forEach(dateInfo =>
+      {
+        if (dateInfo.is_reserved && dateInfo.reservation && !handledReservations.has(dateInfo.reservation.id)) {
+          const reservation = dateInfo.reservation;
+          const start = reservation.checkin_date.split('T')[0];
+          const end = reservation.checkout_date.split('T')[0];
+
+          events.push({
+            resourceId: unitData.code,
+            title: `Reserved by ${reservation.user?.name || 'Unknown'}`,
+            start: start,
+            end: end,
+            color: '#FFA000',
+            reservationId: reservation.id,
+            extendedProps: {
+              reservation: reservation, // Include the full reservation object
+            },
+          });
+
+          handledReservations.add(reservation.id);
+        }
+      });
+
+      // Process blocked dates
+      let currentBlock = null;
+      const sortedDates = [...unitData.dates]
+        .sort((a, b) => new Date(a.date) - new Date(b.date))
+        .forEach((dateInfo, index) =>
+        {
+          if (dateInfo.is_blocked) {
+            if (!currentBlock) {
+              currentBlock = {
+                resourceId: unitData.code,
+                title: `Blocked: ${dateInfo.block_reason || 'No reason provided'}`,
+                start: dateInfo.date,
+                end: dateInfo.date,
+                color: '#9E9E9E',
+                extendedProps: {
+                  is_blocked: true, // Indicate this is a blocked date
+                  block_reason: dateInfo.block_reason || 'No reason provided',
+                },
+              };
+            }
+
+            // Update end date to next day
+            const endDate = new Date(dateInfo.date);
+            endDate.setDate(endDate.getDate() + 1);
+            currentBlock.end = endDate.toISOString().split('T')[0];
+          } else if (currentBlock) {
+            events.push(currentBlock);
+            currentBlock = null;
+          }
+        });
+
+      if (currentBlock) {
+        events.push(currentBlock);
+      }
+
+      return events;
+    },
+    transformEventToReservationData (event)
+    {
+      return {
+        id: event.extendedProps?.reservation?.id || event.id,
+        checkin_date: event.start,
+        checkout_date: event.end,
+        checkin_time: event.extendedProps?.reservation?.checkin_time,
+        checkout_time: event.extendedProps?.reservation?.checkout_time,
+        number_of_rooms: event.extendedProps?.reservation?.number_of_rooms,
+        rate_type: event.extendedProps?.reservation?.rate_type,
+        adults: event.extendedProps?.reservation?.adults,
+        children: event.extendedProps?.reservation?.children,
+        status: event.extendedProps?.reservation?.status,
+        status_name: event.extendedProps?.reservation?.status_name,
+        total: event.extendedProps?.reservation?.total,
+        created_at: event.extendedProps?.reservation?.created_at,
+        user: event.extendedProps?.reservation?.user,
+        guest_address: event.extendedProps?.reservation?.guest_address,
+        guest_city: event.extendedProps?.reservation?.guest_city,
+        guest_country: event.extendedProps?.reservation?.guest_country,
+      };
+    },
+    transformAllUnitsToEvents ()
+    {
+      let allEvents = [];
+
+      if (Array.isArray(this.data)) {
+        this.data.forEach(building =>
+        {
+          if (building.units) {
+            building.units.forEach(unit =>
+            {
+              const unitEvents = this.transformUnitToEvents({
+                ...unit,
+                code: `${building.id}-${unit.id}` // Match the resourceId format
+              });
+              allEvents = [...allEvents, ...unitEvents];
+            });
+          }
+        });
+      }
+
+      return allEvents;
+    },
+    // ==============================================
+    // CALENDAR NAVIGATION
+    // ==============================================
+
+    handlePrevClick ()
+    {
+      this.$refs.calendar.getApi().prev(); // Navigate to the previous time period
+      this.handleNavigation('prev'); // Update calendar data and visuals
+    },
+
+    handleNextClick ()
+    {
+      this.$refs.calendar.getApi().next();
+      this.handleNavigation('next');
+    },
+
+    async handleNavigation (direction)
+    {
+      try {
+        this.isLoading = true;
+        const calendarApi = this.$refs.calendar.getApi();
+        const view = calendarApi.view;
+
+        // Get current view dates
+        const start = view.activeStart;
+        const end = view.activeEnd;
+
+        // Format dates for server
+        const startDate = start.toISOString().split('T')[0];
+        const endDate = end.toISOString().split('T')[0];
+
+        console.log(`Navigation type: ${direction} | Dates: ${startDate} to ${endDate}`);
+
+        // Fetch data for new date range
+        // const response = await getCalenderAllUnits({ // Fixed typo: awat -> await
+        //   start: startDate,
+        //   end: endDate
+        // });
+
+        // Update data sources
+        this.data = response.data;
+        // this.occupancyData = response.data.calendar.data;
+        // this.statistics = response.data.statistics;
+
+        // Force calendar refresh
+        calendarApi.refetchEvents(); // Important: Tell FullCalendar to reload events
+
+        // If using resources:
+        // this.calendarOptions.resources = this.createResources();
+        // calendarApi.refetchResources();
+
+        // Alternative: Reset calendar view
+        // calendarApi.changeView(view.type, view.title);
+
+      } catch (error) {
+        console.error('Navigation error:', error);
+      } finally {
+        this.isLoading = false;
+      }
+    },
+
+    // ==============================================
+    // CALENDAR SETUP & CONFIG
+    // ==============================================
+
+    handleDatesSet (dateInfo)
+    {
+      const startDate = dateInfo.start; // The first visible date in the calendar
+      this.updateFlatpickrDate(startDate); // Update Flatpickr with the start date
+    },
+    updateFlatpickrDate (date)
+    {
+      // Emit the date to the FilterCalendar component
+      if (this.$refs.filterComponent) {
+        this.$refs.filterComponent.$refs.headerCalender.updateFlatpickr(date);
+      } else {
+        console.error("FilterCalendar ref is not available.");
+      }
+    },
+
+
+    handleCalendarReady (info)
+    {
+      this.calendarApi = info.view.calendar
+    },
+    SelectedDateFilterCalendar (selectedDate)
+    {
+      // Update the selected date
+      this.selectedDate = selectedDate;
+
+      // Access the FullCalendar API and navigate to the selected date
+      const calendarApi = this.$refs.calendar.getApi();
+      if (calendarApi) {
+        calendarApi.gotoDate(selectedDate);
+        // Trigger data update after navigation
+        this.$nextTick(() =>
+        {
+          this.handleNavigation('date-select');
+        });
+      } else {
+        console.error('FullCalendar API is not available.');
+      }
+    },
+
+    // ==============================================
+    // DATA TRANSFORMATION
+    // ==============================================
+    getBuildingNames ()
+    {
+      const names = [];
+      this.data.forEach((building) =>
+      {
+        if (building.name && !names.includes(building.name)) {
+          names.push(building.name);
+        }
+      });
+      return names;
+    },
+
+    // ==============================================
+    // ROUTING & STATE MANAGEMENT
+    // ==============================================
+    navigateToEditReservation (id)
+    {
+      this.$router.push(`/edit-reservation/${id}`);
+    },
+    goToAddReservation ()
+    {
+      this.$store.commit('setSelectedDates', this.selectedDates);
+      this.$store.commit('setSelectedResourceName', this.selectedResourceName);
+      this.$store.dispatch('allowAccess')
+      this.$router.push('/add-reservation')
+      // this.$router.push('/secret')
+
+      // Navigate to the add-reservation page
+      // this.$router.push({ name: '' });
+      // this.$router.push('/secret')
+
+    },
+    // ==============================================
+    // SelectedEvent Sidebar Component Methods
+    // ==============================================
+    openOffcanvas ()
+    {
+      this.$nextTick(() =>
+      {
+        const offcanvasElement = document.getElementById('offcanvasEnd');
+        if (offcanvasElement) {
+          const offcanvas = new bootstrap.Offcanvas(offcanvasElement);
+          offcanvas.show();
+        } else {
+          console.error('Offcanvas element not found.');
+        }
+      });
+    },
+    // ==============================================
+    // DEPRECATED/UNUSED METHODS
+    // ==============================================
 
     // Custom resource header function
     // customResourceHeader ()
@@ -538,407 +813,20 @@ export default {
     //   return { domNodes: [div.firstElementChild] };
     // },
 
-    /**
-     * Toggles the expand/collapse state of resources in a calendar view.
-     *
-     * If a specific room ID is provided, it will toggle the visibility of
-     * subrooms associated with that room. If no room ID is provided, it will
-     * toggle the visibility of all resources.
-     *
-     * @param {string|null} selectedRoomId - The ID of the room to toggle. If null,
-     * toggles all rooms.
-     */
-
-    toggleResourceExpand (selectedRoomId = null)
-    {
-      this.isExpanded = !this.isExpanded; // Toggle expand/collapse state
-
-      const resourceCells = document.querySelectorAll(
-        ".fc-datagrid-cell.fc-resource"
-      );
-      const subroomCells = document.querySelectorAll(
-        ".fc-datagrid-cell.fc-subroom"
-      );
-
-      // If a room is selected, collapse or expand that specific resource
-      if (selectedRoomId) {
-        const resourceCell = document.querySelector(
-          `[data-resource-id='${selectedRoomId}']`
-        );
-        if (resourceCell) {
-          const subCells = document.querySelectorAll(
-            `[data-resource-id='${selectedRoomId}']`
-          );
-          subCells.forEach((subCell) =>
-          {
-            if (this.isExpanded) {
-              subCell.classList.remove("collapsed");
-            } else {
-              subCell.classList.add("collapsed");
-            }
-          });
-        }
-      } else {
-        // If no specific room is selected, toggle all rooms
-        resourceCells.forEach((cell) =>
-        {
-          const roomId = cell.dataset.resourceId;
-          if (this.isExpanded) {
-            document
-              .querySelectorAll(`[data-resource-id='${roomId}']`)
-              .forEach((subCell) =>
-              {
-                subCell.classList.remove("collapsed");
-              });
-          } else {
-            document
-              .querySelectorAll(`[data-resource-id='${roomId}']`)
-              .forEach((subCell) =>
-              {
-                subCell.classList.add("collapsed");
-              });
-          }
-        });
-      }
-    },
-    toggleSidebar ()
-    {
-      this.isSidebarOpen = !this.isSidebarOpen;
-      this.isPopoverVisible = false;
-      this.isOverlayVisible = false;
-    },
-
-    navigateToEditReservation (id)
-    {
-      this.$router.push(`/edit-reservation/${id}`);
-    },
-handleEventClick(info) {
-  // console.log('Event Data:', info.event); // Debugging
-  this.selectedEvent = this.transformEventToReservationData(info.event);
-  this.openOffcanvas();
-},
-    openOffcanvas ()
-    {
-      this.$nextTick(() =>
-      {
-        const offcanvasElement = document.getElementById('offcanvasEnd');
-        if (offcanvasElement) {
-          const offcanvas = new bootstrap.Offcanvas(offcanvasElement);
-          offcanvas.show();
-        } else {
-          console.error('Offcanvas element not found.');
-        }
-      });
-    },
-    transformEventToReservationData (event)
-    {
-      return {
-        id: event.extendedProps?.reservation?.id || event.id,
-        checkin_date: event.start,
-        checkout_date: event.end,
-        checkin_time: event.extendedProps?.reservation?.checkin_time,
-        checkout_time: event.extendedProps?.reservation?.checkout_time,
-        number_of_rooms: event.extendedProps?.reservation?.number_of_rooms,
-        rate_type: event.extendedProps?.reservation?.rate_type,
-        adults: event.extendedProps?.reservation?.adults,
-        children: event.extendedProps?.reservation?.children,
-        status: event.extendedProps?.reservation?.status,
-        status_name: event.extendedProps?.reservation?.status_name,
-        total: event.extendedProps?.reservation?.total,
-        created_at: event.extendedProps?.reservation?.created_at,
-        user: event.extendedProps?.reservation?.user,
-        guest_address: event.extendedProps?.reservation?.guest_address,
-        guest_city: event.extendedProps?.reservation?.guest_city,
-        guest_country: event.extendedProps?.reservation?.guest_country,
-      };
-    },
-    goToAddReservation ()
-    {
-      this.$store.commit('setSelectedDates', this.selectedDates);
-      this.$store.commit('setSelectedResourceName', this.selectedResourceName);
-      this.$store.dispatch('allowAccess')
-      this.$router.push('/add-reservation')
-      // this.$router.push('/secret')
-
-      // Navigate to the add-reservation page
-      // this.$router.push({ name: '' });
-      // this.$router.push('/secret')
-
-    },
-
-    getBuildingNames ()
-    {
-      const names = [];
-      this.data.forEach((building) =>
-      {
-        if (building.name && !names.includes(building.name)) {
-          names.push(building.name);
-        }
-      });
-      return names;
-    },
-
-    /**
-     * Sets the selected date and navigates the FullCalendar view to it.
-     *
-     * This function updates the component's `selectedDate` property with the
-     * provided date. It then uses the FullCalendar API to navigate the calendar
-     * view to the newly selected date.
-     *
-     * @param {Date|string} selectedDate - The date to set and navigate to. Can be
-     * a Date object or a string in a format recognized by the FullCalendar API.
-     */
-
-    SelectedDateFilterCalendar (selectedDate)
-    {
-      // Update the selected date
-      this.selectedDate = selectedDate;
-
-      // Access the FullCalendar API and navigate to the selected date
-      const calendarApi = this.$refs.calendar.getApi();
-      if (calendarApi) {
-        calendarApi.gotoDate(selectedDate);
-        // Trigger data update after navigation
-        this.$nextTick(() =>
-        {
-          this.handleNavigation('date-select');
-        });
-      } else {
-        console.error('FullCalendar API is not available.');
-      }
-    },
-    handleDatesSet (dateInfo)
-    {
-      const startDate = dateInfo.start; // The first visible date in the calendar
-      this.updateFlatpickrDate(startDate); // Update Flatpickr with the start date
-    },
-    updateFlatpickrDate (date)
-    {
-      // Emit the date to the FilterCalendar component
-      if (this.$refs.filterComponent) {
-        this.$refs.filterComponent.$refs.headerCalender.updateFlatpickr(date);
-      } else {
-        console.error("FilterCalendar ref is not available.");
-      }
-    },
-    /**
-     * Initializes the calendar API when the calendar is ready.
-     *
-     * This function sets the `calendarApi` property with the FullCalendar API instance
-     * from the provided `info` object. This allows other functions within the component
-     * to access and manipulate the calendar view.
-     *
-     * @param {Object} info - Object containing information about the calendar view.
-     *                         It includes the `view` property which holds the FullCalendar
-     *                         API instance.
-     */
-
-    handleCalendarReady (info)
-    {
-      this.calendarApi = info.view.calendar
-    },
-    getTwoDaysAgoDate ()
-    {
-      const today = new Date()
-      const twoDaysAgo = new Date(today)
-      twoDaysAgo.setDate(today.getDate() - 2)
-      return twoDaysAgo
-    },
-
-
-    transformUnitToEvents(unitData) {
-  const events = [];
-  const handledReservations = new Set();
-
-  // Process reservations first
-  unitData.dates.forEach(dateInfo => {
-    if (dateInfo.is_reserved && dateInfo.reservation && !handledReservations.has(dateInfo.reservation.id)) {
-      const reservation = dateInfo.reservation;
-      const start = reservation.checkin_date.split('T')[0];
-      const end = reservation.checkout_date.split('T')[0];
-
-      events.push({
-        resourceId: unitData.code,
-        title: `Reserved by ${reservation.user?.name || 'Unknown'}`,
-        start: start,
-        end: end,
-        color: '#FFA000',
-        reservationId: reservation.id,
-        extendedProps: {
-          reservation: reservation, // Include the full reservation object
-        },
-      });
-
-      handledReservations.add(reservation.id);
-    }
-  });
-
-  // Process blocked dates
-  let currentBlock = null;
-  const sortedDates = [...unitData.dates]
-    .sort((a, b) => new Date(a.date) - new Date(b.date))
-    .forEach((dateInfo, index) => {
-      if (dateInfo.is_blocked) {
-        if (!currentBlock) {
-          currentBlock = {
-            resourceId: unitData.code,
-            title: `Blocked: ${dateInfo.block_reason || 'No reason provided'}`,
-            start: dateInfo.date,
-            end: dateInfo.date,
-            color: '#9E9E9E',
-            extendedProps: {
-              is_blocked: true, // Indicate this is a blocked date
-              block_reason: dateInfo.block_reason || 'No reason provided',
-            },
-          };
-        }
-
-        // Update end date to next day
-        const endDate = new Date(dateInfo.date);
-        endDate.setDate(endDate.getDate() + 1);
-        currentBlock.end = endDate.toISOString().split('T')[0];
-      } else if (currentBlock) {
-        events.push(currentBlock);
-        currentBlock = null;
-      }
-    });
-
-  if (currentBlock) {
-    events.push(currentBlock);
-  }
-
-  return events;
-},
 
     // Add this method to transform all units data
-    transformAllUnitsToEvents ()
-    {
-      let allEvents = [];
-
-      if (Array.isArray(this.data)) {
-        this.data.forEach(building =>
-        {
-          if (building.units) {
-            building.units.forEach(unit =>
-            {
-              const unitEvents = this.transformUnitToEvents({
-                ...unit,
-                code: `${building.id}-${unit.id}` // Match the resourceId format
-              });
-              allEvents = [...allEvents, ...unitEvents];
-            });
-          }
-        });
-      }
-
-      return allEvents;
-    },
-
     // Update calendar events
-    updateCalendarEvents ()
-    {
-      const events = this.transformAllUnitsToEvents();
-      const calendar = this.$refs.calendar?.getApi();
-      if (calendar) {
-        calendar.removeAllEvents();
-        calendar.addEventSource(events);
-      }
+    // updateCalendarEvents ()
+    // {
+    //   const events = this.transformAllUnitsToEvents();
+    //   const calendar = this.$refs.calendar?.getApi();
+    //   if (calendar) {
+    //     calendar.removeAllEvents();
+    //     calendar.addEventSource(events);
+    //   }
 
-    },
-    /**
-    * Handles the click event for navigating to the previous calendar view.
-    *
-    * This function triggers the FullCalendar API to navigate to the previous time period.
-    * It also calls the handleNavigation function to update the calendar data and visuals
-    * for the newly navigated time period.
-    */
-    handlePrevClick ()
-    {
-      this.$refs.calendar.getApi().prev(); // Navigate to the previous time period
-      this.handleNavigation('prev'); // Update calendar data and visuals
-    },
+    // },
 
-    /**
-     * Handles the click event for navigating to the next calendar view.
-     *
-     * This function triggers the FullCalendar API to navigate to the next time period.
-     * It also calls the handleNavigation function to update the calendar data and visuals
-     * for the newly navigated time period.
-     */
-    handleNextClick ()
-    {
-      this.$refs.calendar.getApi().next();
-      this.handleNavigation('next');
-    },
-
-    /**
-     * Handles calendar navigation events and updates the calendar data and visuals.
-     *
-     * This asynchronous function is triggered when navigating to a different time period
-     * in the calendar. It sets the loading state, retrieves the active start and end dates
-     * from the calendar view, and fetches updated data for these dates. The function then
-     * updates the component's data properties, including occupancy data and statistics, and
-     * refreshes the calendar resources and events. Errors during the process are caught and
-     * logged, and the loading state is reset in the end.
-     *
-     * @param {string} direction - The direction of navigation, either 'prev' or 'next'.
-     */
-
-     async handleNavigation(direction) {
-  try {
-    this.isLoading = true;
-    const calendarApi = this.$refs.calendar.getApi();
-    const view = calendarApi.view;
-
-    // Get current view dates
-    const start = view.activeStart;
-    const end = view.activeEnd;
-
-    // Format dates for server
-    const startDate = start.toISOString().split('T')[0];
-    const endDate = end.toISOString().split('T')[0];
-
-    console.log(`Navigation type: ${direction} | Dates: ${startDate} to ${endDate}`);
-
-    // Fetch data for new date range
-    // const response = await getCalenderAllUnits({ // Fixed typo: awat -> await
-    //   start: startDate,
-    //   end: endDate
-    // });
-
-    // Update data sources
-    this.data = response.data;
-    // this.occupancyData = response.data.calendar.data;
-    // this.statistics = response.data.statistics;
-
-    // Force calendar refresh
-    calendarApi.refetchEvents(); // Important: Tell FullCalendar to reload events
-
-    // If using resources:
-    // this.calendarOptions.resources = this.createResources();
-    // calendarApi.refetchResources();
-
-    // Alternative: Reset calendar view
-    // calendarApi.changeView(view.type, view.title);
-
-  } catch (error) {
-    console.error('Navigation error:', error);
-  } finally {
-    this.isLoading = false;
-  }
-},
-     /**
-     * Groups the provided list of building objects by their date property.
-     *
-     * The function takes a list of objects with a `date` property, and returns
-     * an object where the keys are the unique dates, and the values are arrays
-     * of the building objects that have that date.
-     *
-     * @param {Array} datesBuilding - List of objects with a `date` property.
-     * @return {Object} - Object where the keys are the unique dates, and the
-     *                    values are arrays of the building objects that have
-     *                    that date.
-     */
     //   groupBuildingsByDate (datesBuilding)
     // {
     //   const grouped = {};
@@ -1011,67 +899,87 @@ handleEventClick(info) {
 
     //     laneContent.appendChild(dateContainer);
     //   });
+    // toggleResourceExpand (selectedRoomId = null)
+    // {
+    //   this.isExpanded = !this.isExpanded; // Toggle expand/collapse state
+
+    //   const resourceCells = document.querySelectorAll(
+    //     ".fc-datagrid-cell.fc-resource"
+    //   );
+    //   const subroomCells = document.querySelectorAll(
+    //     ".fc-datagrid-cell.fc-subroom"
+    //   );
+
+    //   // If a room is selected, collapse or expand that specific resource
+    //   if (selectedRoomId) {
+    //     const resourceCell = document.querySelector(
+    //       `[data-resource-id='${selectedRoomId}']`
+    //     );
+    //     if (resourceCell) {
+    //       const subCells = document.querySelectorAll(
+    //         `[data-resource-id='${selectedRoomId}']`
+    //       );
+    //       subCells.forEach((subCell) =>
+    //       {
+    //         if (this.isExpanded) {
+    //           subCell.classList.remove("collapsed");
+    //         } else {
+    //           subCell.classList.add("collapsed");
+    //         }
+    //       });
+    //     }
+    //   } else {
+    //     // If no specific room is selected, toggle all rooms
+    //     resourceCells.forEach((cell) =>
+    //     {
+    //       const roomId = cell.dataset.resourceId;
+    //       if (this.isExpanded) {
+    //         document
+    //           .querySelectorAll(`[data-resource-id='${roomId}']`)
+    //           .forEach((subCell) =>
+    //           {
+    //             subCell.classList.remove("collapsed");
+    //           });
+    //       } else {
+    //         document
+    //           .querySelectorAll(`[data-resource-id='${roomId}']`)
+    //           .forEach((subCell) =>
+    //           {
+    //             subCell.classList.add("collapsed");
+    //           });
+    //       }
+    //     });
+    //   }
+    // },
+
 
 
   },
   async mounted ()
   {
     try {
-      const [
-        CalenderDataResponse
-      ] = await Promise.all([
-        getCalenderAllUnits(),
-      ]);
-
+      const [CalenderDataResponse] = await Promise.all([getCalenderAllUnits()]);
       this.data = CalenderDataResponse.data;
-      // this.occupancyData = CalenderDataResponse.data.calendar.data;
-      // this.statistics = CalenderDataResponse.data.statistics;
-      // this.datesBuilding = CalenderDataResponse.data.data;
       this.buildingNames = this.getBuildingNames();
+
       const events = this.transformAllUnitsToEvents();
+      this.calendarOptions = { ...this.calendarOptions, events };
 
-      // Update calendarOptions with the new events
-      this.calendarOptions = {
-        ...this.calendarOptions,
-        events: events // Replace the static events with dynamic ones
-      };
+      // Initialize calendar resources
+      this.calendarOptions.resources = this.createResources();
 
-
-      this.datesBuilding = []; // Initialize an empty array to store all dates
-      this.data.forEach(building =>
+      // Set up DOM elements after render
+      this.$nextTick(() =>
       {
-        // Check if the building has a valid 'dates' array
-        if (building && building.dates && Array.isArray(building.dates)) {
-          // console.log('Building ID:', building.id);
-
-          // Add all dates from the current building to the datesBuilding array
-          this.datesBuilding = this.datesBuilding.concat(building.dates);
-        } else {
-          // console.log('Invalid building.dates:', building.dates);
-        }
+        const footerElement = document.querySelector("#calendar-footer");
+        if (footerElement) footerElement.style.display = "block";
       });
-
-
-
 
     } catch (error) {
       console.error("Error loading data:", error);
     } finally {
-      // Once the data is fetched, hide the loader
       this.isLoading = false;
     }
-    this.calendarOptions.resources = this.createResources();
-    this.$nextTick(() =>
-    {
-      const footerElement = document.querySelector("#calendar-footer");
-      if (footerElement) {
-        footerElement.style.display = "block"; // Ensure the footer is displayed
-      }
-    });
-    if (!this.$refs.calendar) {
-      console.error('FullCalendar ref is not available.');
-    }
-
   },
 }
 </script>
