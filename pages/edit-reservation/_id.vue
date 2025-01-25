@@ -1,7 +1,6 @@
 <template>
   <div class="row mx-auto my-3">
     <div class="col-md-12">
-
       <div class="card mb-3 p-3">
         <div class="row" v-for="reservationDataById in reservationsDataById" :key="reservationDataById.id">
           <div class="col">
@@ -54,8 +53,8 @@
             <div class="me-2">
               <h6>Status</h6>
               <small class="badge" :class="statusBadgeClass(reservationDataById.status)">
-                      {{ reservationDataById.status_name }}
-                    </small>
+                {{ reservationDataById.status_name }}
+              </small>
             </div>
           </div>
         </div>
@@ -65,13 +64,13 @@
       <template #button>
         <!--  Start Nav Tabs -->
 
-        <li class="nav-item" role="presentation">
+        <!-- <li class="nav-item" role="presentation">
           <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#form-tabs-FolioOperation" role="tab" aria-selected="false" tabindex="-1">
             Folio Operations
           </button>
-        </li>
+        </li> -->
         <li class="nav-item" role="presentation">
-          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-BookingDetails" role="tab" aria-selected="false" tabindex="-1">
+          <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#form-tabs-BookingDetails" role="tab" aria-selected="false" tabindex="-1">
             Booking Details
           </button>
         </li>
@@ -81,15 +80,15 @@
           </button>
         </li>
         <li class="nav-item" role="presentation">
-          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-RoomCharges" role="tab" aria-selected="true">
+          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-RoomCharges" role="tab" aria-selected="true" @click="fetchRoomCharges(selectedReservationId)">
             Room Charges
           </button>
         </li>
-        <li class="nav-item" role="presentation">
+        <!-- <li class="nav-item" role="presentation">
           <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-CreditCard" role="tab" aria-selected="true">
             Credit Card
           </button>
-        </li>
+        </li> -->
         <li class="nav-item" role="presentation">
           <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-AuditTrail" role="tab" aria-selected="true">
             Audit Trail
@@ -99,7 +98,7 @@
 
         <!--  Start print/Send Menu -->
         <div class="btn-group ms-auto">
-          <button type="button" class="btn btn-outline-primary dropdown-toggle waves-effect waves-light" data-bs-toggle="dropdown" aria-expanded="false">
+          <!-- <button type="button" class="btn btn-outline-primary dropdown-toggle waves-effect waves-light" data-bs-toggle="dropdown" aria-expanded="false">
             print/Send
           </button>
           <ul class="dropdown-menu">
@@ -121,7 +120,7 @@
                 )
                 ">Send invoice</a>
             </li>
-          </ul>
+          </ul> -->
 
           <!--  End print/Send Menu -->
 
@@ -163,7 +162,7 @@
 
               <!--  start sidebar content for tap Room Charges -->
               <div v-if="currentContent === 'updatedetails'">
-                <UpdateDetails />
+                <UpdateDetails :reservationId="selectedReservationId"v />
               </div>
               <div v-if="currentContent === 'applydiscount'">
                 <ApplyDiscount />
@@ -187,12 +186,12 @@
                 <ApplyDiscount />
               </div> -->
 
-              <div class="gap-2 d-flex" style="position: absolute; bottom: 15px; right: 0">
+              <!-- <div class="gap-2 d-flex" style="position: absolute; bottom: 15px; right: 0">
                 <button class="btn btn-secondary" data-bs-dismiss="offcanvas">
                   Close
                 </button>
-                <button class="btn btn-primary">{{ dynamicButtonText }}</button>
-              </div>
+                <button type="submit" class="btn btn-primary ">{{ dynamicButtonText }}</button>
+              </div> -->
             </div>
           </div>
           <!--  End  offcanvas Menu -->
@@ -200,7 +199,7 @@
       </template>
       <template #content>
         <!-- Start Folio Operation Tab  -->
-        <div class="tab-pane fade active show" id="form-tabs-FolioOperation" role="tabpanel">
+        <!-- <div class="tab-pane fade active show" id="form-tabs-FolioOperation" role="tabpanel">
           <div class="row">
             <div class="col-3 p-0" style="border-right: 1px solid #e1e0e3">
               <div class="d-flex justify-content-between">
@@ -218,7 +217,6 @@
                   </h2>
 
                   <div id="accordionfour" class="accordion-collapse collapse show" data-bs-parent="#accordionExample" style="">
-                    <!-- Identity Information -->
                     <div class="row accordion-body">
                       <div class="accordion mt-3" id="accordionExample">
                         <div class="card accordion-item active">
@@ -229,7 +227,6 @@
                           </h2>
 
                           <div id="accordionfour" class="accordion-collapse collapse show" data-bs-parent="#accordionExample" style="">
-                            <!-- Identity Information -->
                             <div class="row accordion-body">
                               <div>
                                 <div>
@@ -273,7 +270,6 @@
                     <tr>
                       <th>
                         <div class="form-check text-left">
-                          <!-- Master Checkbox -->
                           <input class="form-check-input" type="checkbox" id="selectAll" v-model="selectAll" @change="toggleAll" />
                           <label class="form-check-label" for="selectAll">
                             08/12/2024 Sun
@@ -294,7 +290,6 @@
                     <tr v-for="(row, index) in rows" :key="index">
                       <td>
                         <div class="form-check me-3 me-lg-5">
-                          <!-- Row Checkbox -->
                           <input class="form-check-input" type="checkbox" :id="'rowCheckbox' + index" v-model="row.selected" @change="updateSelectAll" />
                           <label class="form-check-label" :for="'rowCheckbox' + index">
                             {{ row.date }}
@@ -315,15 +310,15 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
         <!-- End Folio Operation Tab   -->
 
         <!-- Start Booking Details Tab -->
-        <div class="tab-pane fade" id="form-tabs-BookingDetails" role="tabpanel">
+        <div class="tab-pane fade active show" id="form-tabs-BookingDetails" role="tabpanel">
           <div class="row">
             <!-- inside tabs  -->
             <!-- header  -->
-            <div class="card-header pt-2">
+            <!-- <div class="card-header pt-2">
               <div v-if="bookingDetailsComponent === 'DefaultContentBooking'" class="pe-2">
                 <ul class="nav nav-tabs card-header-tabs justify-content-end" role="tablist">
                   <li class="nav-item" role="presentation">
@@ -367,23 +362,20 @@
                   </li>
                 </ul>
               </div>
-            </div>
+            </div> -->
             <!-- <div class="col-9">
                 <component :is="activeComponent" @goBack="goBack" />
               </div> -->
             <div class="col-12">
-              <component :is="bookingDetailsComponent" @goBack="goBack" />
+              <UpdateReservation />
             </div>
             <!-- content  -->
-            <div class="tab-content">
+            <!-- <div class="tab-content">
               <div class="tab-pane fade" id="form-tabs-Remark" role="tabpanel" :class="{ 'show active': activeTab === 'Remark' }"></div>
-              <!-- task  -->
               <div class="tab-pane fade" id="form-tabs-Task" role="tabpanel" :class="{ 'show active': activeTab === 'Task' }"></div>
-              <!-- message  -->
               <div class="tab-pane fade" id="form-tabs-Message" role="tabpanel" :class="{ 'show active': activeTab === 'Message' }"></div>
-              <!-- pereference  -->
               <div class="tab-pane fade" id="form-tabs-Preference" role="tabpanel" :class="{ 'show active': activeTab === 'Preference' }"></div>
-            </div>
+            </div> -->
           </div>
         </div>
         <!-- End Booking Details Tab -->
@@ -391,6 +383,7 @@
         <!-- Start Guest Details Tab -->
         <div class="tab-pane fade" id="form-tabs-GuestDetails" role="tabpanel">
           <div class="row">
+
             <!-- Sidebar -->
             <div class="col-3 px-0" style="border-right: 1px solid #e1e0e3">
               <div class="d-flex justify-content-between">
@@ -450,7 +443,7 @@
             <div class="col-9">
               <div v-if="selectedReservationId">
 
-              <component :is="activeComponent" @goBack="goBack" :reservationId="selectedReservationId"  />
+                <component :is="activeComponent" @goBack="goBack" :reservationId="selectedReservationId" />
               </div>
             </div>
           </div>
@@ -460,10 +453,12 @@
         <!-- Start Room Charges Tab  -->
         <div class="tab-pane fade" id="form-tabs-RoomCharges" role="tabpanel">
           <div class="d-flex mb-2">
+            <!-- <h1>{{roomChargesData}}</h1> -->
+
             <button class="btn btn-outline-secondary waves-effect me-1" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('updatedetails', 'Updatedetails')">
               Update Details
             </button>
-            <button class="btn btn-outline-secondary waves-effect me-1" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="
+            <!-- <button class="btn btn-outline-secondary waves-effect me-1" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="
               setOffcanvasContent(
                 'applydiscount',
                 'ApplyDiscount',
@@ -472,7 +467,7 @@
               )
               ">
               Apply Discount
-            </button>
+            </button> -->
           </div>
 
           <div class="table-responsive text-nowrap">
@@ -480,12 +475,7 @@
               <thead class="table-light">
                 <tr>
                   <th>
-                    <div class="form-check text-left">
-                      <input class="form-check-input" type="checkbox" id="userManagementRead" />
-                      <label class="form-check-label" for="userManagementRead">
-                        08/12/2024 Sun
-                      </label>
-                    </div>
+                    bookingDate
                   </th>
                   <th>Room</th>
                   <th>Rate Type</th>
@@ -498,23 +488,54 @@
                 </tr>
               </thead>
               <tbody class="table-border-bottom-0">
-                <tr>
+                <tr v-for="roomChargeData in roomChargesData" :key="roomChargeData.id">
                   <td>
-                    <div class="form-check me-3 me-lg-5">
-                      <input class="form-check-input" type="checkbox" id="userManagementRead" />
-                      <label class="form-check-label" for="userManagementRead">
-                        08/12/2024 Sun
-                      </label>
-                    </div>
+
+                    {{ formatDate(roomChargeData.booking_date) }}
+
                   </td>
-                  <td>252-Test</td>
-                  <td>السعر شامل الافطار</td>
-                  <td>1/0</td>
-                  <td>100.00</td>
-                  <td>0.0</td>
-                  <td>0.00</td>
-                  <td>0.00</td>
-                  <td>100.00</td>
+                  <td>
+
+                    {{ roomChargeData.unit.name }}
+
+                  </td>
+                  <td>
+
+                    {{ roomChargeData.rate_type }}
+
+                  </td>
+                  <td>
+
+                    {{ roomChargeData.adults }}/{{ roomChargeData.children }}
+
+                  </td>
+                  <td>
+
+                    {{ roomChargeData.rate_amount }}
+
+                  </td>
+                  <td>
+
+                    {{ roomChargeData.rate_amount }}
+
+                  </td>
+                  <td>
+
+                    {{ roomChargeData.rate_amount }}
+
+                  </td>
+                  <td>
+
+                    {{ roomChargeData.rate_amount }}
+
+                  </td>
+                  <td>
+
+                    {{ roomChargeData.rate_amount }}
+
+                  </td>
+
+
                 </tr>
               </tbody>
             </table>
@@ -638,7 +659,7 @@ import ApplyDiscount from "../../components/SiderbarContentEdit/ApplyDiscount.vu
 import DefaultComponentGuest from "../../components/SiderbarContentEdit/GuestDetailsComponents/DefaultComponentGuest.vue";
 import AddRoomSharer from "../../components/SiderbarContentEdit/GuestDetailsComponents/AddRoomSharer.vue";
 import AddMasterProfile from "../../components/SiderbarContentEdit/GuestDetailsComponents/AddMasterProfile.vue";
-import DefaultContentBooking from "../../components/SiderbarContentEdit/BookingDetailsComponents/DefaultContentBooking.vue";
+import DefaultContentBooking from "../../components/SiderbarContentEdit/BookingDetailsComponents/UpdateReservation.vue";
 import MessageContent from "../../components/SiderbarContentEdit/BookingDetailsComponents/MessageContent.vue";
 import PreferenceContent from "../../components/SiderbarContentEdit/BookingDetailsComponents/PreferenceContent.vue";
 import RemarksContent from "../../components/SiderbarContentEdit/BookingDetailsComponents/RemarksContent.vue";
@@ -653,6 +674,8 @@ import AddOperation from "../../components/SiderbarContentEdit/AddOperation.vue"
 import { getReservationDataById } from "../../Api/editResvertion";
 import moment from "moment";
 import { dateMixin } from "../../components/Mixin/DateMixin";
+import UpdateReservation from "../../components/SiderbarContentEdit/BookingDetailsComponents/UpdateReservation.vue";
+import { GetReservationItems } from "../../Api/addResvertionApi";
 
 export default {
   name: "EditsPage",
@@ -681,11 +704,13 @@ export default {
     AddCharges,
     AddOperation,
     AddDiscount,
+    UpdateReservation
   },
   data ()
   {
     return {
       currentContent: null,
+      roomChargesData: null,
       offcanvasTitle: "",
       sidebarWidth: "400px",
       dynamicButtonText: "Save",
@@ -776,10 +801,21 @@ export default {
         'bg-label-danger': status === 'cancelled',
       };
     },
+    async fetchRoomCharges (reservationId)
+    {
+      try {
+        const response = await GetReservationItems(reservationId);
+        this.roomChargesData = response.data.data.items;
+      } catch (err) {
+        console.error("Failed to fetch room charges:", err);
+        this.error = err.message || "An error occurred while fetching room charges.";
+      }
+    },
+
   },
 
 
-  mixins: [flatpickrMixin,dateMixin],
+  mixins: [flatpickrMixin, dateMixin],
 
   async mounted ()
   {
@@ -853,4 +889,5 @@ export default {
 .bg-label-danger {
   background-color: rgba(220, 53, 69, 0.1);
   color: #dc3545;
-}</style>
+}
+</style>
