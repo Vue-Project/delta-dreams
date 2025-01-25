@@ -61,4 +61,14 @@ export const getGuestsInfo = async () =>
     throw error;
   }
 };
+export const GetReservationItems = async (reservationId) =>
+  {
+    try {
+      const response = await apiClient.get(`/reservations/${reservationId}`);
+      return response.data;
 
+    } catch (error) {
+      console.error('Error fetching rooms:', error);
+      throw error;
+    }
+  }
