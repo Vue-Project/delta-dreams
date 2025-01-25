@@ -19,12 +19,12 @@
             </span>
           </div>
           <div class="row mt-4">
-            <div class="col-md-4">
+            <div class="col-md-6">
               <button type="button" class="btn btn-primary waves-effect waves-light btn-block" @click="navigateToEditReservation(selectedEvent.id)">
                 Edit
               </button>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
               <div class="demo-inline-spacing">
                 <div class="btn-group btn-block" id="dropdown-icon-demo">
                   <button type="button" class="btn btn-primary dropdown-toggle waves-effect waves-light" data-bs-toggle="dropdown" aria-expanded="false">
@@ -36,46 +36,14 @@
                         <i class="fa-regular fa-credit-card mr-2"></i>Add Payment
                       </a>
                     </li>
-                    <li>
-                      <a href="#" class="dropdown-item d-flex align-items-center">
-                        <i class="fa-solid fa-calendar-plus mr-2"></i>Amend Stay
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#" class="dropdown-item d-flex align-items-center">
-                        <i class="fa-regular fa-calendar mr-2"></i>Exchange Room
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#" class="dropdown-item d-flex align-items-center">
-                        <i class="fa-solid fa-bed mr-2"></i>Room Move
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#" class="dropdown-item d-flex align-items-center">
-                        <i class="fa-solid fa-arrow-right-arrow-left mr-2"></i>Exchange Room
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#" class="dropdown-item d-flex align-items-center">
-                        <i class="fa-solid fa-hand mr-2"></i>Stop Room Move
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#" class="dropdown-item d-flex align-items-center">
-                        <i class="fa-solid fa-utensils mr-2"></i>Inclusion List
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#" class="dropdown-item d-flex align-items-center">
-                        <i class="fa-regular fa-circle-xmark mr-2"></i>Void Reservation
-                      </a>
-                    </li>
+
+
+
                   </ul>
                 </div>
               </div>
             </div>
-            <div class="col-md-4">
+            <!-- <div class="col-md-4">
               <div class="btn-group ms-auto">
                 <button type="button" class="btn btn-outline-primary dropdown-toggle waves-effect waves-light" data-bs-toggle="dropdown" aria-expanded="false">
                   Print/Send
@@ -89,7 +57,7 @@
                   </li>
                 </ul>
               </div>
-            </div>
+            </div> -->
           </div>
         </template>
       </h5>
