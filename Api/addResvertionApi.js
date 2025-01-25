@@ -72,3 +72,14 @@ export const GetReservationItems = async (reservationId) =>
       throw error;
     }
   }
+export const PostReservationItems = async (reservationId ,updateReservationItems) =>
+  {
+    try {
+      const response = await apiClient.post(`/reservation-items/${reservationId}` , updateReservationItems);
+      return response.data;
+
+    } catch (error) {
+      console.error('Error fetching rooms:', error);
+      throw error;
+    }
+  }

@@ -1,127 +1,133 @@
 <template>
-  <div>
+  <form @submit.prevent="updatingReservationItems" ref="emptyForm">
     <div class="row g-3">
       <div class="col-12">
         <label class="form-label w-100" for="UpdateDetailsDate">Date</label>
         <div class="input-group input-group-merge">
-          <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD" id="flatpickr-date-01" ref="datePicker8" aria-label="input Text to Date" />
-
+          <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD" id="flatpickr-date-01" ref="datePicker8" aria-label="input Text to Date" v-model="formUpdateReservationItems.startDate" />
         </div>
       </div>
       <div class="col-md-12">
-        <label for="updateDetailsRate" class="col-form-label">Rate Type</label>
+        <label for="updateDetailsRateType" class="col-form-label">Rate Type</label>
         <div class="input-group">
-          <select class="form-select" id="updateDetailsRate">
-            <option value="option1" disabled selected>السعر شامل الافطا</option>
-            <option value="option2">لسعر غير شام </option>
+          <select class="form-select" id="updateDetailsRateType" v-model="formUpdateReservationItems.rateType">
+            <option disabled selected> select</option>
+            <option value="breakfast"> breakfast </option>
+            <option value="nobreakfast"> nobreakfast </option>
           </select>
-
         </div>
-
       </div>
       <div class="col-12 col-md-6">
-        <label for="updateDetailsPax" class="col-form-label">Pax (A/C) </label>
-        <div class="input-group">
-          <select class="form-select" id="updateDetailsPax">
-            <option value="option1" disabled selected> 1</option>
-            <option value="option2"> 2 </option>
-            <option value="option3"> 3 </option>
-            <option value="option4">4</option>
-            <option value="option5">5</option>
-            <option value="option6">6</option>
-            <option value="option7">7</option>
-            <option value="option8">8</option>
-            <option value="option9">9</option>
-            <option value="option10">10</option>
-          </select>
-
-        </div>
-
+        <label for="updateDetailsChildren" class="col-form-label">children </label>
+        <input id="updateDetailsChildren" type="number" class="form-control" placeholder="Number of children" aria-label="Number of adults" min="0" v-model="formUpdateReservationItems.children" />
       </div>
       <div class="col-12 col-md-6">
-        <label for="updateDetailsPax" class="col-form-label"> </label>
-        <div class="input-group mt-3">
-          <select class="form-select" id="updateDetailsPax">
-            <option value="option1" disabled selected> 1</option>
-            <option value="option2"> 2 </option>
-            <option value="option3"> 3 </option>
-            <option value="option4">4</option>
-            <option value="option5">5</option>
+        <label for="updateDetailsAdults" class="col-form-label">adults </label>
+        <input id="updateDetailsAdults" type="number" class="form-control" placeholder="Number of adults" aria-label="Number of adults" min="0" v-model="formUpdateReservationItems.adults" />
 
-          </select>
-
-        </div>
 
       </div>
-
-
-      <div class="col-12">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="updateDetailsComplimentary">
-          <label class="form-check-label" for="updateDetailsComplimentary">Complimentary Room</label>
-        </div>
+      <div class="col-md-12">
+        <label for="updateDetailsRateAmount" class="col-form-label">Rate Amount</label>
+        <input id="updateDetailsRateAmount" type="TEXT" class="form-control" placeholder="00.00" aria-label="rate amount" min="00.00" v-model="formUpdateReservationItems.rateAmount" />
       </div>
-      <div class="col-md-4">
-        <label for="updateDetailsRate" class="col-form-label">Rate</label>
-        <div class="input-group">
-          <select class="form-select" id="updateDetailsRate" disabled>
-            <option value="option1" disabled selected>Physical Card</option>
-            <option value="option2">Virtual Card</option>
-          </select>
-
-        </div>
-      </div>
-      <div class="col-md-8">
-        <div class="input-group input-group-merge mt-40">
-          <input id="updateDetailsRate" name="updateDetailsRate" class="form-control credit-card-mask" type="text" placeholder="10.00000" aria-describedby="updateDetailsRate">
-          <span class="input-group-text cursor-pointer p-1" id="paymentCard2"><span class="card-type"></span></span>
-
-        </div>
-
-      </div>
-      <div class="col-12">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="updateDetailsRates Inclusive">
-          <label class="form-check-label" for="updateDetailsRates Inclusive">Rates Inclusive Tax</label>
-        </div>
-      </div>
-      <div class="col-12">
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="updateDetailsUpdate Meal">
-          <label class="form-check-label" for="updateDetailsUpdate Meal">Update Meal Plan</label>
-        </div>
-      </div>
-
-      <div class="col-6">
-        <div class="form-check custom mb-2">
-          <input type="radio" id="updateDetailsSelectedDates" name="updateDetailsRadio" class="form-check-input" checked="">
-          <label class="form-check-label" for="updateDetailsSelectedDates">Apply on Selected Dates</label>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="form-check custom mb-2">
-          <input type="radio" id="updateDetailsWholestay" name="updateDetailsRadio" class="form-check-input">
-          <label class="form-check-label" for="updateDetailswholestay">Apply on whole stay</label>
-        </div>
-      </div>
-
     </div>
-
-
-  </div>
-  </div>
+    <div class="gap-2 d-flex" style="position: absolute; bottom: 15px; right: 0">
+      <button type="submit" class="btn btn-primary ">Update</button>
+    </div>
+  </form>
 </template>
 
 <script>
+import Swal from "sweetalert2";
 import flatpickrMixin from "../Mixin/flatpickrMixin";
+import { PostReservationItems } from "../../Api/addResvertionApi";
 
 export default {
   name: "UpdateDetails",
   layout: "component",
-
-
   mixins: [flatpickrMixin],
+  props: {
+    reservationId: {
+      type: [String, Number],
+      required: true,
+    },
+  },
+  // ======================
+  // Component Data
+  // ======================
+  data ()
+  {
+    return {
+      // Form Data
+      formUpdateReservationItems: {
+        startDate: "",
+        adults: "",
+        children: "",
+        rateAmount: "",
+        rateType: "",
+      },
+
+    }
+  },
+  // ======================
+  // Methods - Form Handling
+  // ======================
+  methods: {
+    async updatingReservationItems ()
+    {
+      try {
+
+        const updateReservationItems = {
+          start_date: this.formUpdateReservationItems.startDate,
+          adults: this.formUpdateReservationItems.adults,
+          children: this.formUpdateReservationItems.children,
+          rate_type: this.formUpdateReservationItems.rateType,
+          rate_amount: this.formUpdateReservationItems.rateAmount,
+
+        }
+
+        console.log(updateReservationItems);
+
+
+        // Make API call
+        const response = await PostReservationItems(updateReservationItems);
+
+        // Show success message
+        await Swal.fire({
+          icon: "success",
+          title: "Success!",
+          text: "Reservation updated successfully.",
+          confirmButtonText: "OK",
+        });
+
+
+
+      }
+      catch (error) {
+        // Handle validation errors
+        if (error.response?.data?.errors) {
+          const errors = error.response.data.errors;
+          Object.keys(errors).forEach((field) =>
+          {
+            if (this.$refs[field]) {
+              this.$refs[field].classList.add("input-error");
+              this.validationMessages[field] = errors[field][0];
+            }
+          });
+        }
+
+        // Show error message
+        await Swal.fire({
+          icon: "error",
+          title: "Error",
+          text:
+            error.response?.data?.message ||
+            error.message ||
+            "Failed to Update Reservation. Please try again.",
+        });
+      }
+    }
+  }
 };
 </script>
-
-<style scoped></style>

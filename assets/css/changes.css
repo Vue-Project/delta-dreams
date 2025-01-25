@@ -563,7 +563,9 @@ select {
 .sidebar-content {
   height: auto;
 }
-
+.offcanvas-backdrop{
+  z-index: 2;
+}
 /* end sidebar  */
 /* end reservation style */
 
