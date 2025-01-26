@@ -83,7 +83,7 @@
           </button>
         </li>
         <li class="nav-item" role="presentation">
-          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-RoomCharges" role="tab" aria-selected="true" @click="fetchRoomCharges(selectedReservationId)">
+          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-RoomCharges" role="tab" aria-selected="true">
             Room Charges
           </button>
         </li>
@@ -499,7 +499,7 @@
                   </td>
                   <td>
 
-                    {{ roomChargeData.unit.name }}
+                    {{ roomChargeData.unit.code }}
 
                   </td>
                   <td>
@@ -713,7 +713,7 @@ export default {
   {
     return {
       currentContent: null,
-      roomChargesData: null,
+      roomChargesData: [],
       offcanvasTitle: "",
       sidebarWidth: "400px",
       dynamicButtonText: "Save",
@@ -804,16 +804,7 @@ export default {
         'bg-label-danger': status === 'cancelled',
       };
     },
-    async fetchRoomCharges (reservationId)
-    {
-      try {
-        const response = await GetReservationItems(reservationId);
-        this.roomChargesData = response.data.data.items;
-      } catch (err) {
-        console.error("Failed to fetch room charges:", err);
-        this.error = err.message || "An error occurred while fetching room charges.";
-      }
-    },
+
     hideOffcanvas() {
       // Use Bootstrap's Offcanvas API to hide the offcanvas
       const offcanvasElement = this.$refs.offcanvas;
@@ -849,6 +840,7 @@ export default {
       ]);
 
       this.reservationsDataById = [ReservationDataByIdResponse.data.data];
+      this.roomChargesData = ReservationDataByIdResponse.data.data.items;
       if (this.reservationsDataById.length > 0) {
         this.selectedReservationId = this.reservationsDataById[0].id; // Set to the first reservation's ID
       }
