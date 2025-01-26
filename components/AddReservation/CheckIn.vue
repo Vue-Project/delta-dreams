@@ -734,7 +734,7 @@ export default {
         payment_method: this.paymentData.paymentMethod,
         selected_payment_method: this.paymentData.selectedPaymentMethod
       };
-      // console.log(bookingData);
+      console.log(bookingData);
 
 
 
@@ -888,6 +888,8 @@ export default {
     selectName(name) {
       this.formAddReservation.guestInformation.name = name.name
       this.showDropdown = false
+      this.selectedNameId = name.id;
+
       // Optionally fetch other guest details if needed
     },
 
