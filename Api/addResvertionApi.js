@@ -61,6 +61,8 @@ export const getGuestsInfo = async () =>
     throw error;
   }
 };
+
+
 export const GetReservationItems = async (reservationId) =>
   {
     try {
@@ -72,6 +74,7 @@ export const GetReservationItems = async (reservationId) =>
       throw error;
     }
   }
+
 export const PostReservationItems = async (reservationId ,updateReservationItems) =>
   {
     try {
@@ -83,3 +86,16 @@ export const PostReservationItems = async (reservationId ,updateReservationItems
       throw error;
     }
   }
+
+  export const PutReservation = async (bookingData) => {
+    try {
+      // Use PUT method for updating a reservation
+      const response = await apiClient.put(`/reservations/${7}`, bookingData);
+      console.log('Update response:', response);
+
+      return response.data;
+    } catch (error) {
+      console.error('Error updating reservation:', error);
+      throw error;
+    }
+  };

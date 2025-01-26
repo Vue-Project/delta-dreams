@@ -1,5 +1,6 @@
 <template>
   <form @submit.prevent="updatingReservationItems" ref="emptyForm">
+    <!-- <p>{{ reservationData.items }}</p> -->
     <div class="row g-3">
       <div class="col-12">
         <label class="form-label w-100" for="UpdateDetailsDate">Date</label>
@@ -52,6 +53,14 @@ export default {
       type: [String, Number],
       required: true,
     },
+    reservationData: {
+      type: Object,
+      default: () => ({})
+    },
+    hideOffcanvas: {
+      type: Function,
+      required: true, // Ensure the method is passed
+    },
   },
   // ======================
   // Component Data
@@ -74,48 +83,33 @@ export default {
   // Methods - Form Handling
   // ======================
   methods: {
-    async updatingReservationItems ()
-    {
+    async updatingReservationItems() {
       try {
-
         const updateReservationItems = {
           start_date: this.formUpdateReservationItems.startDate,
+          unit_id: this.reservationData.items[0].unit_id,
+          reservation_id: this.reservationData.items[0].reservation_id,
           adults: this.formUpdateReservationItems.adults,
           children: this.formUpdateReservationItems.children,
           rate_type: this.formUpdateReservationItems.rateType,
           rate_amount: this.formUpdateReservationItems.rateAmount,
-
-        }
+        };
 
         console.log(updateReservationItems);
 
+        const response = await PostReservationItems(this.reservationId, updateReservationItems);
 
-        // Make API call
-        const response = await PostReservationItems(updateReservationItems);
-
-        // Show success message
+        // Show success message and wait for the user to click "OK"
         await Swal.fire({
           icon: "success",
           title: "Success!",
-          text: "Reservation updated successfully.",
+          text: "Reservation Items updated successfully.",
           confirmButtonText: "OK",
         });
 
+        this.hideOffcanvas();
+      } catch (error) {
 
-
-      }
-      catch (error) {
-        // Handle validation errors
-        if (error.response?.data?.errors) {
-          const errors = error.response.data.errors;
-          Object.keys(errors).forEach((field) =>
-          {
-            if (this.$refs[field]) {
-              this.$refs[field].classList.add("input-error");
-              this.validationMessages[field] = errors[field][0];
-            }
-          });
-        }
 
         // Show error message
         await Swal.fire({
@@ -127,7 +121,9 @@ export default {
             "Failed to Update Reservation. Please try again.",
         });
       }
-    }
-  }
+    },
+  },
+
+
 };
 </script>
