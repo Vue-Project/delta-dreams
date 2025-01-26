@@ -4,15 +4,18 @@
 
     <div class="card">
       <!-- CARD HEADER -->
-
       <h5 class="card-header">
+        <!-- <h1>{{ reservationId }}</h1> -->
+        <!-- <h1>{{reservationData.unit.code}}</h1> -->
+        <!-- <p>Unit Code: {{ reservationData.unit.code }}</p> -->
+        <!-- <p>Unit Type Name: {{ reservationData.s }}</p> -->
         Update Reservation
       </h5>
       <hr class="m-0" />
       <!-- FORM CONTAINER -->
       <div class="card-body">
 
-        <form id="formReservation" class=" g-3" @submit.prevent="submitFormReservation" ref="emptyForm">
+        <form id="formReservation" class=" g-3" @submit.prevent="FormUpdateReservation" ref="emptyForm">
           <!-- *************************** -->
           <!-- RESERVATION DETAILS SECTION -->
           <!-- *************************** -->
@@ -178,7 +181,7 @@
 
                       <tr v-for="(item, index) in formData" :key="index" class="mb-2 selectStyle">
                         <td>
-                          <input type="text" class="form-control" v-model="formAddReservation.units[0].roomType" disabled aria-label="Room Type of building ID" />
+                          <input type="text" class="form-control"  :value="reservationData?.unit?.unit_type?.name" disabled aria-label="Room Type of building ID" />
 
                         </td>
                         <td style="width: 185px">
@@ -192,7 +195,7 @@
 
                         </td>
                         <td>
-                          <input type="text" class="form-control" v-model="formAddReservation.units[0].room" disabled aria-label="Room  of building ID" />
+                          <input type="text" class="form-control" :value="reservationData?.unit?.code" disabled aria-label="Room of building ID" />
 
                         </td>
                         <td>
@@ -301,12 +304,21 @@
                   </option>
                 </select>
                 <div class="position-relative flex-grow-1">
-                  <input type="text" class="form-control w-100" v-model="formAddReservation.guestInformation.name" @input="handleInput" @focus="showDropdown = true" @blur="handleBlur" ref="name" :class="{ 'input-error': validationMessages.name }" />
+                  <input type="text" class="form-control w-100" v-model="formAddReservation.guestInformation.name" @input="handleSearch" @focus="showDropdown = true" @blur="handleBlur" ref="name" :class="{ 'input-error': validationMessages.name }" />
 
                   <!-- Suggestions Dropdown -->
-                  <div v-if="showDropdown && filteredNames.length > 0" class="position-absolute w-100 mt-1 bg-white border rounded shadow z-5 cursor-pointer">
-                    <div v-for="name in filteredNames" :key="name.id" class="p-2 cursor-pointer hover:bg-light" @mousedown.prevent="selectName(name)">
-                      {{ name.name }}
+                  <div v-if="showDropdown" class="position-absolute w-100 mt-1 bg-white border rounded shadow z-5 cursor-pointer" style="max-height: 200px; overflow-y: auto" @scroll.passive="handleScroll">
+                    <div v-if="isLoading" class="p-2 text-muted">Loading...</div>
+                    <div v-else>
+                      <div v-for="name in filteredNames" :key="name.id" class="p-2 cursor-pointer hover:bg-light" @mousedown.prevent="selectName(name)">
+                        {{ name.name }}
+                      </div>
+                      <div v-if="!hasMore && filteredNames.length === 0" class="p-2 text-muted">
+                        No results found
+                      </div>
+                      <div v-if="hasMore && filteredNames.length > 0" class="p-2 text-muted">
+                        Loading more...
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -467,13 +479,15 @@
 </template>
 <script>
 import Swal from 'sweetalert2';
-import {
-  getBookingSources,
-  getBusinessSources,
-  getReservationTypes,
-  getGuestsInfo,
-  postAddReservationData
-} from "../../../Api/addResvertionApi";
+import
+  {
+    getBookingSources,
+    getBusinessSources,
+    getReservationTypes,
+    getGuestsInfo,
+    postAddReservationData,
+    PutReservation
+  } from "../../../Api/addResvertionApi";
 import flatpickrMixin from "../../Mixin/flatpickrMixin";
 
 export default {
@@ -481,12 +495,25 @@ export default {
   layout: "component",
   middleware: 'restrict-access', // Apply the middleware
   mixins: [flatpickrMixin],
+  props: {
+    reservationId: {
+      type: [String, Number],
+      required: true, // Ensure the prop is provided
+    },
+    reservationData: {
+      type: Object,
+      default: () => ({})
+    }
+  },
 
   // ======================
   // Component Data
   // ======================
-  data() {
+  data ()
+  {
     return {
+      testing: [],
+
       // UI State
       showSelect: false,
       showInput: false,
@@ -526,7 +553,7 @@ export default {
           adults: "",
           children: "",
           rateAmount: "",
-          unitTypeId: "",
+          unitTypeId:this.reservationData?.unit?.unit_type?.name || '',
           unitId: "",
         }],
         releaseDate: "",
@@ -576,6 +603,13 @@ export default {
 
       // Guest Information
       selectedNameId: null, // ID to send to the server
+      showDropdown: false,
+      filteredNames: [], // List of objects with { id, name }
+      currentPage: 1,
+      totalPages: 1,
+      hasMore: false,
+      isLoading: false,
+      searchQuery: '',
     };
   },
 
@@ -585,18 +619,21 @@ export default {
   computed: {
     // Format rate amount with two decimal places
     formattedRateAmount: {
-      get() {
+      get ()
+      {
         const rateAmount = this.formAddReservation.units[0].rateAmount || 0;
         return Number(rateAmount).toFixed(2);
       },
-      set(value) {
+      set (value)
+      {
         const sanitizedValue = value.replace(/[^0-9.]/g, '');
         this.formAddReservation.units[0].rateAmount = parseFloat(sanitizedValue) || 0;
       }
     },
 
     // Calculate total nights between check-in and check-out
-    totalNights() {
+    totalNights ()
+    {
       if (!this.formAddReservation.checkInDate || !this.formAddReservation.checkOutDate) {
         return 0;
       }
@@ -614,7 +651,8 @@ export default {
   // ======================
   // Lifecycle Hooks
   // ======================
-  async mounted() {
+  async mounted ()
+  {
     try {
       const [
         businessSourcesResponse,
@@ -642,7 +680,8 @@ export default {
   // ======================
   methods: {
     // Submit form and validate fields
-    async submitFormReservation() {
+    async FormUpdateReservation ()
+    {
       const requiredFields = [
         { field: "businessSource", message: "Business Source is required" },
         { field: "bookingSource", message: "Booking Source is required" },
@@ -685,13 +724,13 @@ export default {
         checkin_time: this.formAddReservation.checkInTime,
         checkout_date: this.formAddReservation.checkOutDate,
         checkout_time: this.formAddReservation.checkOutTime,
-        number_of_rooms: this.formAddReservation.numberRooms,
+       rooms: this.formAddReservation.numberRooms,
         booking_source_id: this.formAddReservation.bookingSource,
         business_source_id: this.formAddReservation.businessSource,
         reservation_type_id: this.formAddReservation.reservationType,
         units: this.formAddReservation.units.map(unit => ({
-          unit_id: unit.unitId,
-          unit_type_id: unit.unitTypeId,
+          unit_id: this.reservationData?.unit?.code,
+          unit_type_id:this.reservationData?.unit?.unit_type?.name,
           rate_type: unit.rateType,
           adults: unit.adults,
           children: unit.children,
@@ -706,12 +745,12 @@ export default {
         release_term_type: this.formAddReservation.releaseTerm || "24 hours",
         remind_before_days: this.formAddReservation.remindGuest,
         user_id: this.selectedNameId,
-        guest_mobile: this.formAddReservation.guestInformation.mobile,
-        guest_address: this.formAddReservation.guestInformation.address,
-        guest_country: this.formAddReservation.guestInformation.country,
-        guest_state: this.formAddReservation.guestInformation.state,
-        guest_city: this.formAddReservation.guestInformation.city,
-        guest_zip: this.formAddReservation.guestInformation.zip,
+        mobile: this.formAddReservation.guestInformation.mobile,
+        address: this.formAddReservation.guestInformation.address,
+        country: this.formAddReservation.guestInformation.country,
+        state: this.formAddReservation.guestInformation.state,
+        city: this.formAddReservation.guestInformation.city,
+        zip: this.formAddReservation.guestInformation.zip,
         email_booking: this.showSelect,
         email_booking_option: this.formAddReservation.otherInformation.emailBookingOption,
         send_email_checkout: this.showInput,
@@ -726,9 +765,11 @@ export default {
         payment_method_city: this.formAddReservation.BillingSummary.CityLedger,
         selected_payment_method: this.formAddReservation.BillingSummary.payMentUser,
       };
+      console.log(bookingData);
+
 
       try {
-        // const response = await postAddReservationData(bookingData);
+        const response = await PutReservation(this.reservationId, bookingData);
         this.showSuccessAlert();
       } catch (error) {
         this.handleSubmissionError(error);
@@ -736,7 +777,8 @@ export default {
     },
 
     // Reset form to initial state
-    resetForm() {
+    resetForm ()
+    {
       this.formAddReservation = {
         checkInDate: '',
         checkInTime: '',
@@ -798,7 +840,8 @@ export default {
     },
 
     // Reset validation messages
-    resetValidationMessages() {
+    resetValidationMessages ()
+    {
       this.validationMessages = {
         name: '',
         mobile: '',
@@ -815,18 +858,24 @@ export default {
     // ======================
     // Methods - UI Helpers
     // ======================
-    showSuccessAlert() {
+    showSuccessAlert ()
+    {
       Swal.fire({
         icon: "success",
         title: "Success!",
         text: "Reservation submitted successfully.",
         confirmButtonText: "OK",
-      }).then(() => {
-        this.resetForm();
+      }).then(() =>
+      {
+        // this.resetForm();
+        this.$router.push({ name: 'index' }); // Replace 'index' with the actual route name
+
+
       });
     },
 
-    handleSubmissionError(error) {
+    handleSubmissionError (error)
+    {
       console.error("Error submitting booking:", error.response?.data || error.message);
       Swal.fire({
         icon: "error",
@@ -839,32 +888,95 @@ export default {
     // ======================
     // Methods - Guest Information
     // ======================
-    handleInput() {
-      this.fetchNames(this.formAddReservation.guestInformation.name);
+    // handleInput() {
+    //   this.fetchNames(this.formAddReservation.guestInformation.name);
+    // },
+
+    // handleBlur() {
+    //   setTimeout(() => {
+    //     this.showDropdown = false;
+    //   }, 200);
+    // },
+
+    // selectName(name) {
+    //   this.formAddReservation.guestInformation.name = name.name;
+    //   this.selectedNameId = name.id;
+    //   this.showDropdown = false;
+    // },
+
+    // fetchNames(query) {
+    //   this.filteredNames = this.filteredNames.filter(item =>
+    //     item.name.toLowerCase().includes(query.toLowerCase())
+    //   );
+    // },
+    async handleSearch ()
+    {
+      this.currentPage = 1
+      this.searchQuery = this.formAddReservation.guestInformation.name
+      await this.fetchNames()
     },
 
-    handleBlur() {
-      setTimeout(() => {
-        this.showDropdown = false;
-      }, 200);
+    async fetchNames ()
+    {
+      if (this.isLoading) return
+
+      this.isLoading = true
+      try {
+        const response = await getGuestsInfo({
+          params: {
+            query: this.searchQuery,
+            page: this.currentPage,
+            perPage: 10
+          }
+        })
+
+        if (this.currentPage === 1) {
+          this.filteredNames = response.data.data
+        } else {
+          this.filteredNames = [...this.filteredNames, ...response.data.data]
+        }
+
+        this.totalPages = response.data.last_page
+        this.hasMore = this.currentPage < this.totalPages
+      } catch (error) {
+        console.error('Error fetching names:', error)
+      } finally {
+        this.isLoading = false
+      }
     },
 
-    selectName(name) {
-      this.formAddReservation.guestInformation.name = name.name;
+    handleScroll (event)
+    {
+      const element = event.target
+      const bottom = element.scrollHeight - element.scrollTop === element.clientHeight
+      if (bottom && this.hasMore && !this.isLoading) {
+        this.currentPage++
+        this.fetchNames()
+      }
+    },
+
+    selectName (name)
+    {
+      this.formAddReservation.guestInformation.name = name.name
+      this.showDropdown = false
       this.selectedNameId = name.id;
-      this.showDropdown = false;
+
+      // Optionally fetch other guest details if needed
     },
 
-    fetchNames(query) {
-      this.filteredNames = this.filteredNames.filter(item =>
-        item.name.toLowerCase().includes(query.toLowerCase())
-      );
+    handleBlur ()
+    {
+      setTimeout(() =>
+      {
+        this.showDropdown = false
+      }, 200)
     },
 
     // ======================
     // Methods - Rate Handling
     // ======================
-    formatRateAmount() {
+    formatRateAmount ()
+    {
       const value = this.formAddReservation.units[0].rateAmount;
       if (isNaN(value) || value < 0) {
         this.validationMessages.rateAmount = "Rate amount must be a positive number.";
@@ -880,9 +992,11 @@ export default {
   // Watchers
   // ======================
   watch: {
-    roomCount(newValue) {
+    roomCount (newValue)
+    {
       this.formAddReservation.numberRooms = newValue;
     },
   },
+
 };
 </script>

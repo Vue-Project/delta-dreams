@@ -2,12 +2,15 @@
   <div class="row mx-auto my-3">
     <div class="col-md-12">
       <div class="card mb-3 p-3">
+
         <div class="row" v-for="reservationDataById in reservationsDataById" :key="reservationDataById.id">
           <div class="col">
             <div class="me-2 py-2 d-flex">
               <a href="#" @click="goBack"><i class="fa-solid fa-angle-left pr-2" style="color: #6f6b7d; float: left; font-size: 20px"></i>
               </a>
               <i class="text-primary fa-solid fa-hotel fs-3 mr-2 mb-2"></i>
+
+
               {{ reservationDataById.user.name }}
               <!-- {{ reservationDataById.id }} -->
               <small class="text-muted ml-3">
@@ -31,7 +34,7 @@
           <div class="col">
             <div class="me-2">
               <h6>Room Number/Room Type</h6>
-              <small class="text-muted">{{ reservationDataById.number_of_rooms }}/{{ reservationDataById.rate_type || "Suite الفندق غرفتين وصاله" }}</small>
+              <small class="text-muted">{{ reservationDataById.unit.rooms }}/{{ reservationDataById.rate_type || "Suite الفندق غرفتين وصاله" }}</small>
             </div>
           </div>
           <div class="col">
@@ -162,7 +165,7 @@
 
               <!--  start sidebar content for tap Room Charges -->
               <div v-if="currentContent === 'updatedetails'">
-                <UpdateDetails :reservationId="selectedReservationId"v />
+                <UpdateDetails :reservationId="selectedReservationId " :reservationData="reservationsDataById[0]" :hideOffcanvas="hideOffcanvas"  />
               </div>
               <div v-if="currentContent === 'applydiscount'">
                 <ApplyDiscount />
@@ -367,7 +370,7 @@
                 <component :is="activeComponent" @goBack="goBack" />
               </div> -->
             <div class="col-12">
-              <UpdateReservation />
+              <UpdateReservation :reservationData="reservationsDataById[0]" :reservationId="selectedReservationId"/>
             </div>
             <!-- content  -->
             <!-- <div class="tab-content">
@@ -811,6 +814,21 @@ export default {
         this.error = err.message || "An error occurred while fetching room charges.";
       }
     },
+    hideOffcanvas() {
+      // Use Bootstrap's Offcanvas API to hide the offcanvas
+      const offcanvasElement = this.$refs.offcanvas;
+      if (offcanvasElement) {
+        const offcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement);
+        if (offcanvas) {
+          offcanvas.hide();
+        } else {
+          console.error("Offcanvas instance not found.");
+        }
+      } else {
+        console.error("Offcanvas element not found.");
+      }
+    },
+
 
   },
 

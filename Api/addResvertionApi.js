@@ -78,7 +78,11 @@ export const GetReservationItems = async (reservationId) =>
 export const PostReservationItems = async (reservationId ,updateReservationItems) =>
   {
     try {
-      const response = await apiClient.post(`/reservation-items/${reservationId}` , updateReservationItems);
+      const response = await apiClient.post(`/reservation-items/${reservationId}` , updateReservationItems, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
       return response.data;
 
     } catch (error) {
@@ -87,10 +91,10 @@ export const PostReservationItems = async (reservationId ,updateReservationItems
     }
   }
 
-  export const PutReservation = async (bookingData) => {
+  export const PutReservation = async (reservationId, bookingData) => {
     try {
       // Use PUT method for updating a reservation
-      const response = await apiClient.put(`/reservations/${7}`, bookingData);
+      const response = await apiClient.put(`/reservations/${reservationId}`, bookingData);
       console.log('Update response:', response);
 
       return response.data;
