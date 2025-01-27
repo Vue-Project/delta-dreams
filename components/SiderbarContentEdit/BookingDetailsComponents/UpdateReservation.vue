@@ -6,7 +6,6 @@
       <!-- CARD HEADER -->
       <h5 class="card-header">
         <!-- <h1>{{ reservationId }}</h1> -->
-        <!-- <h1>{{reservationData.unit.code}}</h1> -->
         <!-- <p>Unit Code: {{ reservationData.unit.code }}</p> -->
         <!-- <p>Unit Type Name: {{ reservationData.s }}</p> -->
         Update Reservation
@@ -551,7 +550,7 @@ export default {
           rateType: "",
           room: "",
           adults: "",
-          children: "",
+          children: this.reservationData?.unit?.unit_type?.name || '',
           rateAmount: "",
           unitTypeId:this.reservationData?.unit?.unit_type?.name || '',
           unitId: "",
@@ -996,6 +995,21 @@ export default {
     {
       this.formAddReservation.numberRooms = newValue;
     },
+
+    // Watch for changes in reservationData.items and update the form data
+    "reservationData": {
+      immediate: true,
+      handler(newItems) {
+        if (newItems && newItems.length > 0) {
+          const item = newItems[0]; // Assuming the first item is the one to edit
+          this.formAddReservation = {
+            checkInDate: item.checkin_date || "",
+
+          };
+        }
+      },
+
+  },
   },
 
 };

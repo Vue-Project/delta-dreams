@@ -458,9 +458,9 @@
           <div class="d-flex mb-2">
             <!-- <h1>{{roomChargesData}}</h1> -->
 
-            <button class="btn btn-outline-secondary waves-effect me-1" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('updatedetails', 'Updatedetails')">
+            <!-- <button class="btn btn-outline-secondary waves-effect me-1" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('updatedetails', 'Updatedetails')">
               Update Details
-            </button>
+            </button> -->
             <!-- <button class="btn btn-outline-secondary waves-effect me-1" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="
               setOffcanvasContent(
                 'applydiscount',
@@ -491,56 +491,36 @@
                 </tr>
               </thead>
               <tbody class="table-border-bottom-0">
-                <tr v-for="roomChargeData in roomChargesData" :key="roomChargeData.id">
-                  <td>
-
-                    {{ formatDate(roomChargeData.booking_date) }}
-
-                  </td>
-                  <td>
-
-                    {{ roomChargeData.unit.code }}
-
-                  </td>
-                  <td>
-
-                    {{ roomChargeData.rate_type }}
-
-                  </td>
-                  <td>
-
-                    {{ roomChargeData.adults }}/{{ roomChargeData.children }}
-
-                  </td>
-                  <td>
-
-                    {{ roomChargeData.rate_amount }}
-
-                  </td>
-                  <td>
-
-                    {{ roomChargeData.rate_amount }}
-
-                  </td>
-                  <td>
-
-                    {{ roomChargeData.rate_amount }}
-
-                  </td>
-                  <td>
-
-                    {{ roomChargeData.rate_amount }}
-
-                  </td>
-                  <td>
-
-                    {{ roomChargeData.rate_amount }}
-
-                  </td>
-
-
-                </tr>
-              </tbody>
+        <tr v-for="roomChargeData in roomChargesData" :key="roomChargeData.id">
+          <td  data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('updatedetails', 'Updatedetails')">
+            {{ formatDate(roomChargeData.booking_date) }}
+          </td>
+          <td  data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('updatedetails', 'Updatedetails')">
+            {{ roomChargeData.unit.code }}
+          </td>
+          <td   data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('updatedetails', 'Updatedetails')">
+            {{ roomChargeData.rate_type }}
+          </td>
+          <td  data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('updatedetails', 'Updatedetails')">
+            {{ roomChargeData.adults }}/{{ roomChargeData.children }}
+          </td>
+          <td  data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('updatedetails', 'Updatedetails')">
+            {{ roomChargeData.rate_amount }}
+          </td>
+          <td  data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('updatedetails', 'Updatedetails')">
+            {{ roomChargeData.rate_amount }}
+          </td>
+          <td  data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('updatedetails', 'Updatedetails')">
+            {{ roomChargeData.rate_amount }}
+          </td>
+          <td  data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('updatedetails', 'Updatedetails')">
+            {{ roomChargeData.rate_amount }}
+          </td>
+          <td  data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('updatedetails', 'Updatedetails')">
+            {{ roomChargeData.rate_amount }}
+          </td>
+        </tr>
+      </tbody>
             </table>
           </div>
         </div>
@@ -723,6 +703,8 @@ export default {
       reservationsDataById: [],
       selectedReservationId: null, // Initialize as null
       selectAll: false, // Tracks the state of the master checkbox
+      selectedRowData: null, // Store the clicked row's data
+
       rows: [
         {
           date: "08/12/2024 Sun",
@@ -741,6 +723,10 @@ export default {
     };
   },
   methods: {
+    handleCellClick(rowData) {
+      console.log("Clicked row data:", rowData); // Debugging: Log the row data
+      this.$emit('show-update-details', rowData); // Emit the event
+    },
     setActiveTab (tab)
     {
       this.activeTab = tab;
@@ -804,7 +790,29 @@ export default {
         'bg-label-danger': status === 'cancelled',
       };
     },
+    handleShowUpdateDetails(rowData) {
+      console.log("Received row data in parent:", rowData); // Debugging: Log the row data
 
+      // Set the current content to 'updatedetails'
+      this.currentContent = 'updatedetails';
+
+      // Set the selected reservation ID and data
+      this.selectedReservationId = rowData.reservation_id;
+      this.reservationsDataById = [rowData]; // Wrap the row data in an array
+
+      // Update the offcanvas title
+      this.offcanvasTitle = 'Update Reservation Details';
+
+      // Show the offcanvas
+      const offcanvasElement = this.$refs.offcanvas;
+      if (offcanvasElement) {
+        const offcanvas = new bootstrap.Offcanvas(offcanvasElement);
+        offcanvas.show(); // Show the offcanvas
+        console.log("Offcanvas shown"); // Debugging: Confirm offcanvas is shown
+      } else {
+        console.error("Offcanvas element not found"); // Debugging: Log an error if the element is missing
+      }
+    },
     hideOffcanvas() {
       // Use Bootstrap's Offcanvas API to hide the offcanvas
       const offcanvasElement = this.$refs.offcanvas;
