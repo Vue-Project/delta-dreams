@@ -5,9 +5,8 @@
     <div class="card">
       <!-- CARD HEADER -->
       <h5 class="card-header">
-        <!-- <h1>{{ reservationId }}</h1> -->
-        <!-- <p>Unit Code: {{ reservationData.unit.code }}</p> -->
-        <!-- <p>Unit Type Name: {{ reservationData.s }}</p> -->
+
+        <!-- <p> {{ reservationData }}</p> -->
         Update Reservation
       </h5>
       <hr class="m-0" />
@@ -488,12 +487,14 @@ import
     PutReservation
   } from "../../../Api/addResvertionApi";
 import flatpickrMixin from "../../Mixin/flatpickrMixin";
+import { dateMixin } from '../../Mixin/DateMixin';
+// import DateMixin from "../../Mixin/DateMixin";
 
 export default {
   name: "updateReservation",
   layout: "component",
   middleware: 'restrict-access', // Apply the middleware
-  mixins: [flatpickrMixin],
+  mixins: [flatpickrMixin,dateMixin],
   props: {
     reservationId: {
       type: [String, Number],
@@ -652,6 +653,7 @@ export default {
   // ======================
   async mounted ()
   {
+
     try {
       const [
         businessSourcesResponse,
@@ -672,6 +674,9 @@ export default {
     } catch (error) {
       console.error("Error loading data:", error);
     }
+    if (this.reservationData) {
+    this.fillFormWithReservationData(this.reservationData);
+  }
   },
 
   // ======================
@@ -764,7 +769,7 @@ export default {
         payment_method_city: this.formAddReservation.BillingSummary.CityLedger,
         selected_payment_method: this.formAddReservation.BillingSummary.payMentUser,
       };
-      console.log(bookingData);
+      // console.log(bookingData);
 
 
       try {
@@ -985,6 +990,72 @@ export default {
         this.formAddReservation.units[0].rateAmount = parseFloat(value).toFixed(2);
       }
     },
+    fillFormWithReservationData(reservationData) {
+      if (!reservationData || typeof reservationData !== 'object') {
+        console.warn('Invalid reservation data received');
+        return;
+      }
+
+      // Use spread operator to safely merge data
+      this.formAddReservation = {
+        ...this.formAddReservation,
+        checkInDate: this.formatDateNumber(reservationData.checkin_date || ""),
+        checkInTime: reservationData.checkin_time || "",
+        checkOutDate: this.formatDateNumber(reservationData.checkout_date || ""),
+        checkOutTime: reservationData.checkout_time || "",
+        numberRooms: reservationData.rooms || 1,
+        reservationType: reservationData.reservation_type?.id || "",
+        bookingSource: reservationData.booking_source?.id || "",
+        businessSource: reservationData.business_source?.id || "",
+        units: [{
+          // rateType: "",
+          // room: reservationData.unit?.name || "",
+          adults: reservationData.unit?.adults || "",
+          children: reservationData.unit?.children || "",
+          rateAmount: reservationData.unit?.price || "",
+          // unitTypeId: reservationData.unit?.unit_type?.id || "",
+          // unitId: reservationData.unit?.id || "",
+
+        }],
+
+        rateOffered: {
+          contract: Boolean(reservationData.is_contract),
+          bookAll: Boolean(reservationData.book_all_available),
+          quickGroup: Boolean(reservationData.is_quick_group_booking),
+          complimentaryRoom: Boolean(reservationData.is_complimentary),
+        },
+        releaseDate:  this.formatDateNumber(reservationData.hold_release_date) || "",
+        releaseTime: reservationData.hold_release_time || "",
+        releaseTerm: reservationData.release_term_type || "",
+        releaseTermValue: reservationData.release_term_value || "",
+        remindGuest: reservationData.remind_before_days || "",
+        holdRelease: Boolean(reservationData.hold_release),
+        arrivalDate: Boolean(reservationData.arrival_date),
+        guestInformation: {
+          name: reservationData.user?.name || "",
+          email: reservationData.user?.email || "",
+          mobile: reservationData.user?.phone|| "",
+          address: reservationData.guest_address || "",
+          country: reservationData.guest_country || "",
+          state: reservationData.guest_state || "",
+          city: reservationData.guest_city || "",
+          zip: reservationData.guest_zip || "",
+        },
+        BillingSummary: {
+          billTo: reservationData.bill_to || "",
+          roomCharges: reservationData.room_charges || "",
+          taxes: reservationData.taxes || "",
+          dueAmount: reservationData.due_amount || "",
+          CashAndBank: Boolean(reservationData.payment_method_cash),
+          CityLedger: Boolean(reservationData.payment_method_city),
+          payMentUser: reservationData.selected_payment_method || "",
+        }
+      };
+
+      this.selectedNameId = reservationData.user_id || null;
+    }
+
+
   },
 
   // ======================
@@ -997,19 +1068,23 @@ export default {
     },
 
     // Watch for changes in reservationData.items and update the form data
-    "reservationData": {
+
+  reservationData: {
+    immediate: true, // This ensures the watcher is triggered immediately when the component is created
+    handler(newData) {
+      if (newData) {
+        this.fillFormWithReservationData(newData);
+      }
+    },
+  },reservationData: {
       immediate: true,
-      handler(newItems) {
-        if (newItems && newItems.length > 0) {
-          const item = newItems[0]; // Assuming the first item is the one to edit
-          this.formAddReservation = {
-            checkInDate: item.checkin_date || "",
-
-          };
+      handler(newData) {
+        if (newData && typeof newData === 'object') {
+          this.fillFormWithReservationData(newData);
         }
-      },
+      }
+    }
 
-  },
   },
 
 };
