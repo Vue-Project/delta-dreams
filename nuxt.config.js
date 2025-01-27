@@ -3,23 +3,32 @@ const path = require("path");
 
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
-
+  // store: true,
   head: {
-    title: "delta Dreams",
+    title: "deltaDreams",
 
     meta: [
       { charset: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { hid: "description", name: "description", content: "" },
       { name: "format-detection", content: "telephone=no" },
-    ],
-    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
-    script: [
       {
-        type: "text/javascript",
-        src: "/js/jquery/jquery.min.js",
-        body: true,
-      },
+        hid: 'csrf-token',
+        name: 'csrf-token',
+        content: process.env.CSRF_TOKEN || '' // Dynamically set CSRF token
+      }
+    ],
+    link: [
+      { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
+
+
+    ],
+    script: [
+      // {
+      //   type: "text/javascript",
+      //   src: "/js/jquery/jquery.min.js",
+      //   body: true,
+      // },
       {
         type: "text/javascript",
         src: "/js/bootstrap/bootstrap.min.js",
@@ -47,7 +56,6 @@ export default {
     //! End Css Files
 
     //! Start  libs Css Files
-    "~/assets/vendor/libs/flatpickr/flatpickr.css",
     "~/assets/vendor/fonts/fontawesome.css",
     //! end  libs Css Files
 
@@ -58,14 +66,14 @@ export default {
   ],
 
   script: [
-    {
-      src: "https://code.jquery.com/jquery-1.11.0.min.js",
-      type: "text/javascript",
-    },
-    {
-      src: "https://code.jquery.com/jquery-migrate-1.2.1.min.js",
-      type: "text/javascript",
-    },
+    // {
+    //   src: "https://code.jquery.com/jquery-1.11.0.min.js",
+    //   type: "text/javascript",
+    // },
+    // {
+    //   src: "https://code.jquery.com/jquery-migrate-1.2.1.min.js",
+    //   type: "text/javascript",
+    // },
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
@@ -75,7 +83,8 @@ export default {
   components: true,
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
-  buildModules: [],
+  buildModules: [
+  ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [],
@@ -102,4 +111,28 @@ export default {
       }
     },
   },
+  static: {
+    prefix: false, // Ensures static files are served as-is
+  },
+  ignoredPaths: [""],
+
+    // acces page in URl
+  // router: {
+  //   middleware: 'auth'
+  // },
+  router: {
+    middleware: 'permissionQuery', // Apply the middleware to all routes
+  },
+
+
+
+  generate: {
+    fallback: true, // Ensures SPA fallback
+    subFolders: false,
+    exclude: [/admin/]
+
+
+  },
+
+
 };

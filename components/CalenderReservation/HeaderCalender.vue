@@ -1,15 +1,22 @@
 <template>
-  <div class="row align-items-baseline p-2 position-relative">
-    <div class="col-md-1 col-12 calendarDate">
-      <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD" id="flatpickr-date-04" ref="datePicker4" aria-label="input for date " />
+  <div class="row d-flex justify-content-between p-2 position-relative">
+    <div class="col-md-2 col-12 calendarDate">
+      <input
+        type="text"
+        class="form-control flatpickr-input"
+        placeholder="YYYY-MM-DD"
+        id="flatpickr-date-04"
+        ref="datePicker4"
+        aria-label="input for date"
+      />
       <i class="fa-solid fa-calendar-days date-icon"></i>
     </div>
-    <div class="col-md-7 col-12">
+    <div class="col-md-6 col-12">
       <div class="d-flex items-center gap-4">
-        <div v-for="(item, index) in categories" :key="index">
-          <span>{{ item.label }}</span>
-          <span class="circle-shape">
-            {{ item.count }}
+        <div v-for="(count, label) in statistics" :key="label">
+          <span>{{ label }}</span>
+          <span class="statistics-count">
+            {{ count }}
           </span>
         </div>
       </div>
@@ -18,8 +25,8 @@
       <div class="d-flex items-center gap-4">
         <div class="w-100">
           <select class="form-select" id="exampleFormControlSelect1" aria-label="Default select example">
-            <option selected>The price is not included</option>
-            <option value="1">The price includes breakfast</option>
+            <option selected>السعر غير شامل</option>
+            <option value="1">السعر شامل الافطار</option>
           </select>
         </div>
         <label class="switch">
@@ -117,17 +124,6 @@
               </div>
             </div>
             <!-- end ul -->
-            <!-- out side box -->
-            <div class="ant-popover ant-popover-placement-bottomRight ant-popover-hidden" style="left: 586px; top: -999px; transform-origin: 319px -4px">
-              <div class="ant-popover-content">
-                <div class="ant-popover-arrow">
-                  <span class="ant-popover-arrow-content"></span>
-                </div>
-                <div class="ant-popover-inner" role="tooltip">
-                  <div class="ant-popover-inner-content"></div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -136,49 +132,56 @@
 </template>
 
 <script>
-import flatpickr from "flatpickr";
-import "flatpickr/dist/flatpickr.min.css";
-import Sidebar from "../layout/Sidebar.vue";
+import flatpickrMixin from "../Mixin/flatpickrMixin";
 export default {
-  name: "HeadlerCalender",
+  name: "HeaderCalender",
   layout: "Component",
-  components: { Sidebar },
 
-  data ()
-  {
+  data() {
     return {
       isHovered: false,
       sidebarVisible: false,
-      categories: [
-        { label: "All", count: 3 },
-        { label: "Vacant", count: 3 },
-        { label: "Occupied", count: 0 },
-        { label: "Reserved", count: 0 },
-        { label: "Blocked", count: 0 },
-        { label: "Due Out", count: 0 },
-        { label: "Dirty", count: 3 },
-      ],
       isOn: false,
       isSidebarOpen: false,
     };
   },
+
   methods: {
-    openSidebar ()
-    {
-      this.isSidebarOpen = true;
+    filterCalenderByDate() {
+      const flatpickrInstance = flatpickr(this.$refs.datePicker4, {
+        dateFormat: "Y-m-d", // Format the date as YYYY-MM-DD
+        onChange: (selectedDates) => {
+          if (selectedDates.length > 0) {
+            const selectedDate = selectedDates[0];
+            this.$emit("date-selected", selectedDate); // Emit the selected date
+          }
+        },
+      });
     },
-    closeSidebar ()
-    {
-      this.isSidebarOpen = false;
+    updateFlatpickr(date) {
+      if (this.$refs.datePicker4 && this.$refs.datePicker4._flatpickr) {
+        this.$refs.datePicker4._flatpickr.setDate(date); // Update Flatpickr with the new date
+      }
     },
   },
-  mounted ()
-  {
-    flatpickr(this.$refs.datePicker4, {
-      dateFormat: "Y-m-d",
-    });
+
+  mounted() {
+    this.filterCalenderByDate();
+
+    // Set the default date in Flatpickr (e.g., 2 days before today)
+    const today = new Date();
+    const defaultDate = new Date(today);
+    defaultDate.setDate(today.getDate() - 2); // Subtract 2 days from today
+    this.updateFlatpickr(defaultDate); // Update Flatpickr with the default date
+    this.$emit("date-selected", defaultDate); // Emit the default date
+  },
+
+  mixins: [flatpickrMixin],
+  props: {
+    statistics: {
+      type: Object,
+      required: true,
+    },
   },
 };
 </script>
-
-<style scoped></style>

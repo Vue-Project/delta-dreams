@@ -3,12 +3,12 @@
     <nav class="layout-navbar navbar navbar-expand-xl align-items-center bg-navbar-theme" id="layout-navbar">
       <div class="container-fluid">
         <div class="navbar-brand app-brand demo d-none d-xl-flex py-0 me-4">
-          <a href="index.html" class="app-brand-link gap-2">
+          <a href="/" class="app-brand-link gap-2">
             <span class="app-brand-logo demo"> </span>
             <span class="app-brand-text demo menu-text fw-bold">Delta Dream</span>
           </a>
 
-          <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-xl-none">
+          <a href="#" class="layout-menu-toggle menu-link text-large ms-auto d-xl-none">
             <i class="ti ti-x ti-sm align-middle"></i>
           </a>
         </div>
@@ -19,9 +19,8 @@
           </a>
         </div>
 
-        <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+        <!-- <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
           <ul class="navbar-nav flex-row align-items-center ms-auto">
-            <!-- User -->
             <li class="nav-item navbar-dropdown dropdown-user dropdown">
               <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
                 <div class="avatar avatar-online">
@@ -77,9 +76,8 @@
                 </li>
               </ul>
             </li>
-            <!--/ User -->
           </ul>
-        </div>
+        </div> -->
 
         <!-- Search Small Screens -->
         <div class="navbar-search-wrapper search-input-wrapper container-xxl d-none">

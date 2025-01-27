@@ -686,6 +686,7 @@
                     </div>
                   </div>
                 </div>
+                <h1>departures</h1>
               </div>
 
               <div v-if="activeTab === 'inHouse'">
@@ -845,8 +846,8 @@
                         <div class="card-title mb-0">
                           <h5 class="m-0 me-2">مصطفي مدبولي</h5>
                           <div>
-                            <i class="fa-solid fa-person m-2"></i>3
-                            <i class="fa-solid fa-child m-2"></i>2
+                            <i class="fa-solid fa-person"></i>3
+                            <i class="fa-solid fa-child"></i>2
                           </div>
                         </div>
                       </div>
@@ -990,18 +991,14 @@
                           <i class="fa-solid fa-child"></i>2
                         </div>
                       </div>
-                      <div class="col-md-12">
-                        <div>Room / Rate Type</div>
-                        <div>202 / السعر غير شامل</div>
+                      <div class="row">
+                        <div class="col-md-10">Total</div>
+                        <div class="col-md-2">$230</div>
+                        <div class="col-md-10">Paid</div>
+                        <div class="col-md-2">$250</div>
+                        <div class="col-md-10 text-danger">Balance</div>
+                        <div class="col-md-2 text-danger">$20</div>
                       </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-10">Total</div>
-                      <div class="col-md-2">$230</div>
-                      <div class="col-md-10">Paid</div>
-                      <div class="col-md-2">$250</div>
-                      <div class="col-md-10 text-danger">Balance</div>
-                      <div class="col-md-2 text-danger">$20</div>
                     </div>
                   </div>
                 </div>
@@ -1033,6 +1030,7 @@
   </div>
 </template>
 
+
 <script>
 import HeaderReservation from "../components/AllReservation/HeaderReservation.vue";
 
@@ -1046,6 +1044,9 @@ export default {
     return {
       viewMode: "card", // default view mode is card view
       isHovered: false,
+      selectedCard: null, // Store the data for the selected card
+      selectedList: null, // Store the data for the selected card
+
       activeTab: "reservations", // Default active tab
 
       reservations: [
@@ -1064,6 +1065,7 @@ export default {
           adults: 3,
           children: 2,
           nights: 5,
+          createdAt: "01/12/2024 09:00 AM", // Added creation date
         },
       ],
     };
@@ -1075,7 +1077,37 @@ export default {
     setActiveTab(tab) {
       this.activeTab = tab;
     },
+    openOffcanvas (card, list = null)
+    {
+
+      this.selectedCard = card; // Set selected card
+      this.selectedList = list; // Set selected list (optional)
+
+      const offcanvas = new bootstrap.Offcanvas(
+        document.getElementById("offcanvasEnd")
+      );
+      offcanvas.show(); // Show the sidebar
+    },
+    resetSelections ()
+    {
+      this.selectedCard = null; // Reset selected card
+      this.selectedList = null; // Reset selected list
+    },
+
   },
+  mounted ()
+  {
+    // Add event listener to reset selections when the sidebar is closed
+    const offcanvas = document.getElementById("offcanvasEnd");
+    offcanvas.addEventListener("hidden.bs.offcanvas", this.resetSelections);
+  },
+  beforeDestroy ()
+  {
+    // Clean up event listener
+    const offcanvas = document.getElementById("offcanvasEnd");
+    offcanvas.removeEventListener("hidden.bs.offcanvas", this.resetSelections);
+  },
+
 };
 </script>
 

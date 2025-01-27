@@ -3,6 +3,14 @@
   font-size: 14px;
 
 }
+.input-error {
+  border-color: red;
+}
+
+.error-message {
+  color: red;
+  font-size: 12px;
+}
 
 .input-group:focus-within {
   box-shadow: none;
@@ -17,13 +25,14 @@
   padding: 5px;
 }
 
-.table> :not(caption)>*>* {
+/* .table> :not(caption)>*>* {
   border: 0;
-}
+} */
 
 .btn:not(:disabled):not(.disabled) {
   padding: 10px;
 }
+
 .total-nights {
   background: #596d86;
   border-radius: 5px;
@@ -31,6 +40,7 @@
   text-align: center;
   padding: 5px;
 }
+
 .sidebar {
   position: fixed;
   top: 0;
@@ -67,6 +77,7 @@
 .dropzone .dz-message {
   margin: 4em 0 !important;
 }
+
 .dropzone .dz-preview {
   margin: 10px !important;
 }
@@ -74,7 +85,8 @@
 
 .popover {
   position: absolute;
-  z-index: 1050; /* Ensure it's on top of other elements */
+  z-index: 1050;
+  /* Ensure it's on top of other elements */
   width: auto;
   min-width: 100px;
 }
@@ -85,11 +97,13 @@
 }
 
 .arrow {
-  z-index: 1040; /* Ensure the arrow is also on top */
+  z-index: 1040;
+  /* Ensure the arrow is also on top */
 }
 
 .fc-highlight {
-  background-color: rgba(0, 123, 255, 0.2); /* Highlight selected dates */
+  background-color: rgba(0, 123, 255, 0.2);
+  /* Highlight selected dates */
 }
 
 .selected-days-tooltip {
@@ -103,15 +117,20 @@
   font-size: 12px;
 }
 
-.circle-shape {
+.statistics-count {
   display: inline-block;
   text-align: center;
   background-color: rgb(236, 243, 248);
-  height: 24px;
-  border-radius: 12px;
-  min-width: 24px;
-  line-height: 24px;
+  height: 33px;
+  border-radius: 50%;
+  min-width: 33px;
+  line-height: 33px;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
 }
+
 .fc-timeline-slot-frame {
   display: flex;
   flex-direction: column;
@@ -130,6 +149,7 @@
   font-size: 12px;
   color: gray;
 }
+
 .fc-timeline-header-row th {
   border: 0;
   border-right: 1px solid #D1D4D9;
@@ -141,9 +161,9 @@
 
 }
 
-.collapsed {
+/* .collapsed {
   display: none;
-}
+} */
 .fc .fc-timeline-header-row-chrono .fc-timeline-slot-frame {
   justify-content: flex-end;
 }
@@ -186,28 +206,17 @@
 .fc .fc-timeline-slot-cushion {
 
   position: relative;
-  top: -4px;
+  top: -2px;
 }
-.btn .btn-primary .waves-effect .waves-light .show{
+
+.btn .btn-primary .waves-effect .waves-light .show {
   border: 0;
   box-shadow: none;
 }
-.btn btn-primary .waves-effect .waves-light .show :hover{
- background-color: red;
-}
-/* .fc .fc-datagrid-cell-cushion{
-  width: 100% !important;
-}
-.resource-header{
-  display: flex;
-  align-items: center;
-}
-.dropdown-toggle{
-  width: 100vh;
-  background: transparent;
-  text-align: center;
-} */
 
+.btn btn-primary .waves-effect .waves-light .show :hover {
+  background-color: red;
+}
 
 
 
@@ -215,31 +224,44 @@
 
 /* this is changees css from moaman and sama */
 /* Helpers */
-.right{
+.right {
   right: 10px !important;
 }
-.top{
+
+.right-0 {
+  right: 0px !important;
+  left: auto;
+}
+
+.top {
   top: 47px !important;
   right: 20px !important;
 }
-.mt{
+
+.mt {
   margin-top: 25px !important;
 }
+
+.mt-40 {
+  margin-top: 40px !important;
+}
+
 .dropzone {
   border-style: dashed !important;
-  padding:  0 !important;
+  padding: 0 !important;
 }
 
 
 
 /* start header styling */
-.switch .switch-input:checked ~ .switch-toggle-slider::after {
+.switch .switch-input:checked~.switch-toggle-slider::after {
   left: 4.15rem !important;
 }
 
 .switch .switch-toggle-slider::after {
   top: 4px;
 }
+
 .switch {
   width: 100px;
 }
@@ -255,18 +277,21 @@
 .switch .switch-off {
   font-size: 15px;
 }
-.switch-input:checked ~ .switch-toggle-slider .switch-on {
+
+.switch-input:checked~.switch-toggle-slider .switch-on {
   font-size: 15px;
 }
 
-.fc .fc-button-primary:not(.fc-prev-button):not(.fc-next-button) {
+/* .fc .fc-button-primary:not(.fc-prev-button):not(.fc-next-button) {
   position: absolute;
-  left: 200px;
-  top: 60px;
+  right: 108px;
+  top: 96px;
+} */
+.fc-toolbar-chunk{
+  margin-right: 10px;
 }
-.fc .fc-toolbar-title {
-  font-size: 1.5rem;
-  margin-left: 9px;
+.fc .fc-toolbar.fc-header-toolbar{
+  margin-bottom: 0.5rem;
 }
 
 .calendarDate input {
@@ -277,7 +302,8 @@
 .calendarDate i {
   position: absolute;
   top: 8px;
-right:23px ;  pointer-events: none;
+  right: 23px;
+  pointer-events: none;
 }
 
 .fullbox {
@@ -288,18 +314,22 @@ right:23px ;  pointer-events: none;
   z-index: 10;
   border-radius: 10px;
 }
+
 .fullbox ul li i {
   margin-right: 10px;
   border-radius: 5px;
 }
+
 .fullbox ul li {
   list-style: none;
   font-size: 12px;
 }
+
 .fullbox h5 {
   margin-left: 20px;
   margin-top: 7px;
 }
+
 .fullbox hr {
   background: black;
   width: 70%;
@@ -310,12 +340,15 @@ right:23px ;  pointer-events: none;
 .fullbox .Booking-Status-First li:nth-child(1) i {
   color: #ff6666;
 }
+
 .fullbox .Booking-Status-First li:nth-child(2) i {
   color: #666666;
 }
+
 .fullbox .Booking-Status-First li:nth-child(3) i {
   color: #000066;
 }
+
 .fullbox .Booking-Status-First li:nth-child(4) i {
   color: #33cc00;
 }
@@ -324,12 +357,15 @@ right:23px ;  pointer-events: none;
 .fullbox .Booking-Status-Secound li:nth-child(1) i {
   color: #3366ff;
 }
+
 .fullbox .Booking-Status-Secound li:nth-child(2) i {
   color: #33cc00;
 }
+
 .fullbox .Booking-Status-Secound li:nth-child(3) i {
   color: #ff6666;
 }
+
 .fullbox .Booking-Status-Secound li:nth-child(4) i {
   color: #663300;
 }
@@ -359,14 +395,17 @@ right:23px ;  pointer-events: none;
   background-color: #ffe17d;
   outline: 2px solid #d6bd6a;
 }
+
 .fullbox .Booking-Indicators-First li:nth-child(2) i {
   background-color: #fe6b6b;
   outline: 2px solid #d96969;
 }
+
 .fullbox .Booking-Indicators-First li:nth-child(3) i {
   background-color: #da8aff;
   outline: 2px solid #bc77dc;
 }
+
 .fullbox .Booking-Indicators-First li:nth-child(4) i {
   background-color: #81f6ef;
   outline: 2px solid #7fd5d0;
@@ -377,10 +416,12 @@ right:23px ;  pointer-events: none;
   background-color: #d68484;
   outline: 2px solid #d88888;
 }
+
 .fullbox .Booking-Indicators-Secound li:nth-child(2) i {
   background-color: #f2994a;
   outline: 2px solid #cb803e;
 }
+
 .fullbox .Booking-Indicators-Secound li:nth-child(3) i {
   background-color: #ffffff;
   outline: 2px solid #d6d6d6;
@@ -404,9 +445,11 @@ right:23px ;  pointer-events: none;
 .fullbox .Unclassified-First li:nth-child(1) i {
   color: #bdd8ff;
 }
+
 .fullbox .Unclassified-First li:nth-child(2) i {
   color: #ff5353;
 }
+
 .fullbox .Unclassified-Secound li:nth-child(1) i {
   color: #ffcfcf;
 }
@@ -425,20 +468,27 @@ right:23px ;  pointer-events: none;
   color: #fd0017;
   cursor: pointer;
 }
+
 .popoverClose:hover {
   background-color: #fd0017;
   color: white;
   transform: scale(1);
 }
+
 .popoverContent button {
   border: none;
   background: transparent;
-  color: #2491fc;
+  color: #7367f0;
 }
+
 .popover {
   position: absolute;
   transition: all 0.3s ease;
   max-width: 250px;
+}
+
+.popover a {
+  text-decoration: none;
 }
 
 /* end calender styling */
@@ -450,24 +500,27 @@ right:23px ;  pointer-events: none;
 select {
   border-radius: 0px;
 }
-  .icon-date{
 
-      position: absolute;
-      top: 35px;
-      right: 10px;
+.icon-date {
+
+  position: absolute;
+  top: 35px;
+  right: 10px;
 
 
 }
+
 .icon-time {
   position: absolute;
   top: 12px;
-  right: 67px;
+  right: 81px;
 }
 
 
 .card-datatable thead tr {
   background-color: #fafafa;
 }
+
 .rateOffer {
   color: black;
 }
@@ -482,14 +535,17 @@ select {
 .billingMoney {
   background-color: rgb(242, 246, 249);
 }
+
 /* start sidebar  */
 .sidebar-open {
   overflow-y: auto;
   overflow-x: hidden;
 }
-.sidebar-open::-webkit-scrollbar {
+
+/* .sidebar-open::-webkit-scrollbar {
   display: none;
-}
+} */
+
 /* momen change the buttons positions and width */
 .scbuttons {
   position: fixed;
@@ -503,10 +559,13 @@ select {
   text-align: right;
   background-color: #fff;
 }
-.sidebar-content {
-  height: 1300px;
-}
 
+.sidebar-content {
+  height: auto;
+}
+.offcanvas-backdrop{
+  z-index: 2;
+}
 /* end sidebar  */
 /* end reservation style */
 
@@ -514,9 +573,11 @@ select {
 .fc-scrollgrid-sync-table .fc-timeline-header-row th:nth-child(7n + 5) {
   background-color: rgb(255, 248, 225);
 }
+
 .fc-scrollgrid-sync-table .fc-timeline-header-row th:nth-child(7n + 6) {
   background-color: rgb(255, 248, 225);
 }
+
 .selected-days-tooltip {
   background-color: rgb(27, 21, 46);
   color: white;
@@ -526,10 +587,11 @@ select {
   align-items: center;
   justify-content: center;
 }
-.table > :not(caption) > * > * {
+
+/* .table > :not(caption) > * > * {
   padding: 5px;
 
-}
+} */
 
 /* full calendar  */
 
@@ -538,10 +600,12 @@ select {
 .fc-highlight {
   border-radius: 2px;
 }
+
 .fc-highlight {
   background-color: black !important;
   color: white !important;
 }
+
 .selected-days-tooltip {
   background-color: rgba(158, 75, 157, 0.199);
   color: white;
@@ -555,10 +619,203 @@ select {
 .flatpickr-current-month {
   top: 5px;
 }
+
 select.form-select option {
   background-color: transparent;
 }
+
 .accordion-item {
   border-color: transparent;
 }
 
+.icon-position {
+  position: absolute;
+  top: -14px;
+  right: 7px;
+}
+
+.room-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 10px;
+}
+
+.room {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  text-align: center;
+}
+
+
+.room-number {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.room-type {
+  font-size: 0.9em;
+  color: #555;
+}
+
+.room-occupant {
+  margin-top: 5px;
+  font-style: italic;
+  color: #333;
+}
+
+.room-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 10px;
+}
+
+
+.room.available {
+  background-color: #DBF1DB;
+  color: #4CD120 !important;
+}
+
+.room.unavailable {
+  background-color: white;
+  color: #262626 !important;
+}
+
+.room.blocked {
+  background-color: #DBF1DB;
+  color: #000065 !important;
+}
+
+.room.reserved {
+  background-color: #DBF1DB;
+  color: #FF6666 !important;
+}
+
+.room-number {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.room-type {
+  font-size: 0.9em;
+  color: #555;
+}
+
+.room-occupant {
+  margin-top: 5px;
+  font-style: italic;
+  color: #333;
+}
+
+/* حقل الإدخال مع أيقونات */
+/* الحقل مع الأيقونات */
+.input-with-icon .icon-input {
+  padding-left: 35px;
+  padding-right: 35px;
+  /* مساحة للأيقونة اليمنى */
+  height: 40px;
+  font-size: 1rem;
+}
+
+/* تصميم الحاوية */
+.input-with-icon .input-wrapper {
+  position: relative;
+}
+
+/* الأيقونة في البداية */
+.input-with-icon .input-icon {
+  position: absolute;
+  left: 10px;
+  /* ضعها في الجانب الأيسر */
+  top: 50%;
+  transform: translateY(-50%);
+  color: #aaa;
+}
+
+/* الأيقونة في النهاية */
+.input-with-icon .input-icon-right {
+  position: absolute;
+  right: 10px;
+  /* ضعها في الجانب الأيمن */
+  top: 50%;
+  transform: translateY(-50%);
+  color: #aaa;
+  pointer-events: none;
+  /* يمنع تفاعل المستخدم مع الأيقونة */
+}
+
+.me-2 h6 {
+  margin-bottom: 5px;
+}
+
+/* .fc .fc-datagrid-cell-cushion,
+.fc .fc-scroller-harness,
+.fc-scroller {
+  overflow: visible !important;
+} */
+
+/* .fc .fc-view-harness-active>.fc-view {
+  overflow: auto !important;
+} */
+
+/* .fc .fc-view-harness-active>.fc-view::-webkit-scrollbar {
+  display: none !important;
+} */
+
+.fc .fc-view-harness-active>.fc-view {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* .fc .fc-scrollgrid-section-liquid>td {
+  height: 4690px;
+} */
+
+.fc-scrollgrid-sync-inner {
+  width: 100%;
+}
+
+.fc-datagrid-expander-placeholder {
+  display: none !important;
+}
+
+#calendar-footer {
+  text-align: center;
+  margin-top: -25px;
+  font-size: 14px;
+  display: none;
+}
+
+.w-18 {
+  width: 18%;
+}
+
+
+
+#calendar-footer td {
+  /* padding: 0 3px; */
+  border: 1px solid #ddd;
+}
+
+.fc-license-message {
+  display: none;
+}
+
+.fc .fc-timeline-bg .fc-highlight {
+  left: 35px;
+}
+
+.btn-close {
+  position: absolute;
+  top: 35px;
+  right: 12px;
+}
+.bottom-1{
+  bottom: 15px;
+}
+.card-datatable tr td{
+  border-bottom: 0;
+}
+.fc .fc-toolbar{
+  justify-content: end;
+}
