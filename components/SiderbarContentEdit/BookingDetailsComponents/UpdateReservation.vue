@@ -1052,7 +1052,7 @@ export default {
         }
       };
 
-      this.selectedNameId = reservationData.user_id || null;
+      this.selectedNameId = reservationData.user?.id || null;
     }
 
 
