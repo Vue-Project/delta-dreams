@@ -729,8 +729,8 @@ export default {
         business_source_id: this.formAddReservation.businessSource,
         reservation_type_id: this.formAddReservation.reservationType,
         units: this.formAddReservation.units.map(unit => ({
-          unit_id: this.reservationData?.unit?.code,
-          unit_type_id:this.reservationData?.unit?.unit_type?.name,
+          unit_id: this.reservationData?.unit?.id,
+          unit_type_id:this.reservationData?.unit?.unit_type?.id,
           rate_type: unit.rateType,
           adults: unit.adults,
           children: unit.children,
