@@ -822,3 +822,7 @@ select.form-select option {
 body{
   overflow: auto !important;
 }
+.fc-direction-ltr .fc-timeline-event.fc-event-end, .fc-direction-ltr .fc-timeline-more-link {
+  margin-left: 15px;
+}
+
