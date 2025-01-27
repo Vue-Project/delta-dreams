@@ -25,7 +25,7 @@
                   <div class="input-group mt-4">
                     <input type="text" class="form-control flatpickr-input" placeholder="HH:MM" id="flatpickr-time-01" ref="timePicker1" v-model="formAddReservation.checkInTime" aria-label="input Text to Check-in Time" />
                     <i class="fa-regular fa-clock icon-time"></i>
-                    <span class="input-group-text total-nights" id="basic-addon13">{{ totalNights }} Nights</span>
+                    <span class="input-group-text total-nights bg-primary waves-effect waves-light" id="basic-addon13">{{ totalNights }} Nights</span>
                   </div>
                 </div>
 
@@ -215,12 +215,12 @@
               <div class="row">
                 <div class="col-md-8">
                   <div class="row">
-                    <div class="col-md-6 col-12 px-0">
+                    <div class="col-md-7 col-12 px-0">
                       <label for="flatpickr-date-03" class="form-label">Hold Release Date & Time</label>
                       <input type="text" placeholder="YYYY-MM-DD" id="flatpickr-date-03" class="form-control flatpickr-input" ref="datePicker3" v-model="formAddReservation.releaseDate" />
                       <i class="fa-solid fa-calendar-days icon-date"></i>
                     </div>
-                    <div class="col-md-6 col-12 px-0 mt">
+                    <div class="col-md-5 col-12 px-0 mt">
                       <input type="text" placeholder="HH:MM" id="flatpickr-time-03" class="form-control flatpickr-input" ref="timePicker3" aria-label="input Text to Time" v-model="formAddReservation.releaseTime" />
                       <i class="fa-regular fa-clock icon-time right"></i>
                     </div>

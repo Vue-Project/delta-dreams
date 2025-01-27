@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isPopoverVisible" class="popover fade show bs-popover-top rounded-0" role="tooltip" :style="popoverStyle">
+  <div v-if="isPopoverVisible" class="popover fade show bs-popover-top" role="tooltip" :style="popoverStyle">
     <div class="arrow" :style="{ left: popoverArrowLeft }"></div>
     <div class="popover-body">
       <div class="popoverContent text-center">
@@ -66,3 +66,36 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.popover{
+  border-radius:5px ;
+}
+.popoverContent button {
+  font-size: 14px;
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.3s ease;
+  padding: 4px 10px;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  max-width: 250px;
+  margin:auto;
+}
+
+.popoverContent button:hover {
+  /* color: #0c7bdc; */
+  transform: scale(1.08);
+  background-color: rgba(43, 146, 250, 0.1);
+  color: #1a73e8;
+
+}
+.popover {
+  transition: all 0.3s ease-in-out;
+  max-width: 300px;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+</style>
