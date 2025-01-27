@@ -60,6 +60,12 @@
               </small>
             </div>
           </div>
+          <!-- <div class="col">
+            <div class="me-2">
+              <h6>Cancel Reservation</h6>
+              <button type="button" class="btn btn-label-danger waves-effect">Cancel</button>
+            </div>
+          </div> -->
         </div>
       </div>
     </div>
