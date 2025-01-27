@@ -104,7 +104,12 @@ export default {
           title: "Success!",
           text: "Reservation Items updated successfully.",
           confirmButtonText: "OK",
-        });
+        }).then(() =>
+      {
+        this.$router.push({ name: 'index' }); // Replace 'index' with the actual route name
+
+
+      });
 
         this.hideOffcanvas();
       } catch (error) {
