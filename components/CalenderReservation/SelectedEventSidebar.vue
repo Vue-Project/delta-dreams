@@ -5,16 +5,17 @@
       <h5 id="offcanvasEndLabel" class="offcanvas-title w-100">
         <template v-if="selectedEvent">
           <h6>
-            <i class="text-primary fa-solid fa-hotel fs-3 mr-2 mb-2"></i>
+            <i class="fa-solid fa-user pr-2 text-primary fs-3 mb-2"></i>
+            <!-- <i class="fa-solid fa-person pr-2 text-primary fs-3 mb-2"></i> -->
             {{ selectedEvent.user?.name }}
           </h6>
           <div>
-            <span class="mr-1">
-              <i class="text-primary fa-solid fa-location-dot"></i>
+            <span class="mr-3">
+              <i class="text-secondary fa-solid fa-location-dot"></i>
               {{ selectedEvent.guest_country || "Egypt" }}
             </span>
             <span>
-              <i class="text-primary fa-solid fa-phone"></i>
+              <i class="text-success fa-solid fa-phone"></i>
               {{ selectedEvent.user?.phone || "0123456789" }}
             </span>
           </div>
