@@ -1,8 +1,8 @@
 <template>
   <section class="card">
     <Loader :visible="isLoading" />
-    <div v-if="!isLoading">
-      <FilterCalendar ref="filterComponent" :statistics="statistics" :buildingNames="buildingNames" @show-all-resources="showAllResources" @show-building-resources="showBuildingResources" @date-selected="SelectedDateFilterCalendar" />
+    <p>{{data}}</p>
+    <FilterCalendar ref="filterComponent" :statistics="statistics" :buildingNames="buildingNames" @show-all-resources="showAllResources" @show-building-resources="showBuildingResources" @date-selected="SelectedDateFilterCalendar" />
       <FullCalendar :options="calendarOptions" @select="handleSelect" ref="calendar" :selectedDate="selectedDate">
         <template v-slot:eventContent="arg">
           <b>{{ arg.event.title }}</b>
@@ -15,7 +15,9 @@
         <BlockRoomForm :selectedDates="selectedDates" :selectedResourceId="selectedResourceId" @close-sidebar="toggleSidebar" />
       </SidebarBlockRoom>
       <SelectedEventSidebar :selectedEvent="selectedEvent" @navigate-to-edit-reservation="navigateToEditReservation" />
-    </div>
+    <!-- <div v-if="!isLoading">
+
+    </div> -->
   </section>
 </template>
 
@@ -538,7 +540,7 @@ export default {
                 title: `Blocked: ${dateInfo.block_reason || 'No reason provided'}`,
                 start: dateInfo.date,
                 end: dateInfo.date,
-                color: '#9E9E9E',
+                color: '#000000',
                 extendedProps: {
                   is_blocked: true, // Indicate this is a blocked date
                   block_reason: dateInfo.block_reason || 'No reason provided',
@@ -622,50 +624,58 @@ export default {
       this.handleNavigation('next');
     },
 
-    async handleNavigation (direction)
-    {
-      try {
-        this.isLoading = true;
-        const calendarApi = this.$refs.calendar.getApi();
-        const view = calendarApi.view;
+    async handleNavigation(direction) {
+  try {
+    this.isLoading = true;
+    const calendarApi = this.$refs.calendar.getApi();
+    const view = calendarApi.view;
 
-        // Get current view dates
-        const start = view.activeStart;
-        const end = view.activeEnd;
+    // Get current view dates
+    const start = view.activeStart;
+    const end = view.activeEnd;
 
-        // Format dates for server
-        const startDate = start.toISOString().split('T')[0];
-        const endDate = end.toISOString().split('T')[0];
+    // Format dates for server
+    let startDate = start.toISOString().split('T')[0];
+    const endDate = end.toISOString().split('T')[0];
 
-        console.log(`Navigation type: ${direction} | Dates: ${startDate} to ${endDate}`);
+    // Modify startDate by adding 1 day
+    const startDateObj = new Date(startDate); // Convert to Date object
+    startDateObj.setDate(startDateObj.getDate() + 1); // Add 1 day
+    startDate = startDateObj.toISOString().split('T')[0]; // Convert back to ISO string format (YYYY-MM-DD)
 
-        // Fetch data for new date range
-        // const response = await getCalenderAllUnits({ // Fixed typo: awat -> await
-        //   start: startDate,
-        //   end: endDate
-        // });
+    // Log the updated start date
+    console.log(`Updated Start Date: ${startDate}, End Date: ${endDate}`);
 
-        // Update data sources
-        this.data = response.data;
-        // this.occupancyData = response.data.calendar.data;
-        // this.statistics = response.data.statistics;
+    // Fetch data for the new date range
+    const response = await getCalenderAllUnits({
+      start: startDate,
+      end: endDate
+    });
 
-        // Force calendar refresh
-        calendarApi.refetchEvents(); // Important: Tell FullCalendar to reload events
+    // Update data sources
+    this.data = response.data;
+    // this.occupancyData = response.data.calendar.data;
+    // this.statistics = response.data.statistics;
 
-        // If using resources:
-        // this.calendarOptions.resources = this.createResources();
-        // calendarApi.refetchResources();
+    // Force calendar refresh
+    calendarApi.refetchEvents(); // Important: Tell FullCalendar to reload events
+    console.log(efnmfponm4pnm);
 
-        // Alternative: Reset calendar view
-        // calendarApi.changeView(view.type, view.title);
 
-      } catch (error) {
-        console.error('Navigation error:', error);
-      } finally {
-        this.isLoading = false;
-      }
-    },
+    // If using resources:
+    // this.calendarOptions.resources = this.createResources();
+    // calendarApi.refetchResources();
+
+    // Alternative: Reset calendar view
+    // calendarApi.changeView(view.type, view.title);
+
+  } catch (error) {
+    console.error('Navigation error:', error);
+  } finally {
+    this.isLoading = false;
+  }
+}
+,
 
     // ==============================================
     // CALENDAR SETUP & CONFIG
