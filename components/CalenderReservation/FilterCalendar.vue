@@ -10,7 +10,7 @@
         <li>
           <a class="dropdown-item" href="#" @click.prevent="toggleSelectAll">
             <input type="checkbox" v-model="selectAll" class="form-check-input me-2" />
-            Show All
+            <span>Show All</span>
           </a>
         </li>
         <li>
@@ -19,7 +19,7 @@
         <li v-for="building in buildingNames" :key="building">
           <a class="dropdown-item" href="#" @click.prevent="toggleBuilding(building)">
             <input type="checkbox" v-model="selectedBuildings" :value="building" class="form-check-input me-2" />
-            {{ building }}
+            <span>{{ building }}</span>
           </a>
         </li>
       </ul>
