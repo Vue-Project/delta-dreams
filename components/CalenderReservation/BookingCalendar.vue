@@ -171,12 +171,12 @@ export default {
           cleanIcon.style.paddingRight = '10px';
 
           if (is_clean) {
-            cleanIcon.className = 'fa fa-broom'; // FontAwesome icon for clean
-            // cleanIcon.style.color = 'green';
+            cleanIcon.className = 'fa fa-broom '; // FontAwesome icon for clean
+            cleanIcon.style.color = '#28c76f';
             cleanIcon.setAttribute('title', 'This unit is clean');
           } else {
             cleanIcon.className = 'fa fa-trash'; // FontAwesome icon for not clean
-            // cleanIcon.style.color = 'orange';
+            cleanIcon.style.color = '#ea5455';
             cleanIcon.setAttribute('title', 'This unit is not clean');
           }
           cleanIcon.setAttribute('data-bs-toggle', 'tooltip');
@@ -187,11 +187,11 @@ export default {
           const smokingIcon = document.createElement('i');
           if (is_smoking) {
             smokingIcon.className = 'fa fa-smoking'; // FontAwesome icon for smoking
-            // smokingIcon.style.color = 'red';
+            smokingIcon.style.color = '#ea5455';
             smokingIcon.setAttribute('title', 'Smoking is allowed ');
           } else {
             smokingIcon.className = 'fa fa-smoking-ban'; // FontAwesome icon for no smoking
-            // smokingIcon.style.color = 'blue';
+            smokingIcon.style.color = '#ff9f43';
             smokingIcon.setAttribute('title', 'Smoking is not allowed ');
           }
           smokingIcon.setAttribute('data-bs-toggle', 'tooltip');
@@ -514,7 +514,7 @@ export default {
             title: `Reserved by ${reservation.user?.name || 'Unknown'}`,
             start: start,
             end: end,
-            color: '#FFA000',
+            color :'#7367f0',
             reservationId: reservation.id,
             extendedProps: {
               reservation: reservation, // Include the full reservation object
