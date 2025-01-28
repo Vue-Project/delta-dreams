@@ -283,6 +283,7 @@
 </template>
 
 <script>
+import flatpickr from "../Mixin/flatpickrMixin";
 export default {
   data() {
     return {
@@ -301,6 +302,7 @@ export default {
       default: null,
     },
   },
+  mixins: [flatpickr],
   methods: {
     navigateToEditReservation (id)
     {
