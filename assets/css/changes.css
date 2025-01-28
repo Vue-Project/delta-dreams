@@ -465,19 +465,17 @@
   padding-left: 4px;
   padding-right: 4px;
   border-radius: 3px;
-  color: #fd0017;
+  color: #ea5455;
   cursor: pointer;
 }
 
 .popoverClose:hover {
-  background-color: #fd0017;
+  background-color: #ea5455;
   color: white;
   transform: scale(1);
 }
 
 .popoverContent button {
-  border: none;
-  background: transparent;
   color: #7367f0;
 }
 
@@ -602,7 +600,7 @@ select {
 }
 
 .fc-highlight {
-  background-color: black !important;
+  background-color: #ff9f43 !important;
   color: white !important;
 }
 
