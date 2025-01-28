@@ -3,12 +3,13 @@
     <div class="col-md-12">
       <div class="card mb-3 p-3">
 
-        <div class="row" v-for="reservationDataById in reservationsDataById" :key="reservationDataById.id">
-          <div class="col">
+        <div class="row align-items-center" v-for="reservationDataById in reservationsDataById" :key="reservationDataById.id">
+          <div class="col-2">
             <div class="me-2 py-2 d-flex">
-              <a href="#" @click="goBack"><i class="fa-solid fa-angle-left pr-2" style="color: #6f6b7d; float: left; font-size: 20px"></i>
+              <a href="#" @click="goBack"><i class=" fa-solid fa-angle-left pr-2" style="color: #6f6b7d; float: left; font-size: 20px"></i>
               </a>
-              <i class="fa-solid fa-person pr-2 text-primary fs-2"></i>
+              <!-- <i class=" fa-solid fa-person "></i> -->
+              <i class="ps-3 pr-2 text-primary fs-3 fa-solid fa-user"></i>
 
 
               {{ reservationDataById.user.name }}
@@ -18,20 +19,20 @@
                 <i class="fa-solid fa-child pr-2 text-primary"></i>{{ reservationDataById.children }}</small>
             </div>
           </div>
-          <div class="col">
+          <div class="col-2">
             <div class="me-2">
               <h6>Arrival Date</h6>
               <small class="text-muted">{{ formatDate(reservationDataById.checkin_date) }} {{ reservationDataById.checkin_time }}</small>
             </div>
           </div>
 
-          <div class="col">
+          <div class="col-2">
             <div class="me-2">
               <h6>Booking Date</h6>
               <small class="text-muted">{{ formatDate(reservationDataById.checkout_date) }} {{ reservationDataById.checkout_time }} </small>
             </div>
           </div>
-          <div class="col">
+          <div class="col-2">
             <div class="me-2">
               <h6>Room Number/Room Type</h6>
               <small class="text-muted">{{ reservationDataById.unit.rooms }}/{{ reservationDataById.rate_type || "Suite الفندق غرفتين وصاله" }}</small>
