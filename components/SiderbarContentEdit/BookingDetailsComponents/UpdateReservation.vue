@@ -35,7 +35,7 @@
                   <div class="input-group mt-4">
                     <input type="text" class="form-control flatpickr-input" placeholder="HH:MM" id="flatpickr-time-01" ref="timePicker1" v-model="formAddReservation.checkInTime" aria-label="input Text to Check-in Time" />
                     <i class="fa-regular fa-clock icon-time"></i>
-                    <span class="input-group-text total-nights" id="basic-addon13">{{ totalNights }} Nights</span>
+                    <span class="input-group-text total-nights bg-primary" id="basic-addon13">{{ totalNights }} Nights</span>
                   </div>
                 </div>
 
