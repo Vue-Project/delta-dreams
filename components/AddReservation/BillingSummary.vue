@@ -35,7 +35,7 @@
           <dd class="col-sm-6 text-end">{{ value.taxes }}</dd>
 
           <dt class="col-6 fw-normal text-heading">Due Amount</dt>
-          <dd class="col-6 text-end">£ {{ value.dueAmount }}</dd>
+          <dd class="col-6 text-end">EGP {{ value.dueAmount }}</dd>
         </dl>
         <div class="row align-items-center">
           <div class="col-md-9">
