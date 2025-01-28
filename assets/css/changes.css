@@ -829,3 +829,8 @@ body{
 .fa-clock{
   color:#7367f0 !important;
 }
+.custom-event {
+  border-radius: 4px;
+  padding-left :6px;
+}
+
