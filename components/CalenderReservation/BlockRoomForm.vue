@@ -15,10 +15,10 @@
             disabled
           />
         </div>
-        <div class="col-12">
+        <!-- <div class="col-12">
           <label for="formBlockRoomRoomType" class="form-label">Room Type</label>
           <input type="text" class="form-control" id="formBlockRoomRoomType" v-model="formBlock.roomType" placeholder="Room Type of building ID" disabled />
-        </div>
+        </div> -->
         <div class="col-12">
           <label for="formBlockRoomRoom" class="form-label">Room</label>
           <input type="text" class="form-control" id="formBlockRoomRoom" v-model="formBlock.room" placeholder="Second part of Room ID" disabled />
@@ -110,9 +110,9 @@ export default {
 
     splitResourceId() {
       if (this.selectedResourceId) {
-        const [roomType, room] = this.selectedResourceId.split("-");
-        this.formBlock.roomType = roomType;
-        this.formBlock.room = room;
+        // const [roomType, room] = this.selectedResourceId;
+        // this.formBlock.roomType = roomType;
+        this.formBlock.room = this.selectedResourceId;
       }
     },
 
@@ -147,11 +147,13 @@ export default {
         const [startDate, endDate] = this.formBlock.dateStartAndEnd.split(' to ');
 
         const blockRoomData = {
-          unit_id: `${this.formBlock.roomType}-${this.formBlock.room}`,
+          unit_id: `${this.formBlock.room}`,
           reason_id: this.formBlock.reason,
           start_date: dateUtils.formatForApi(startDate),
           end_date: dateUtils.formatForApi(endDate),
         };
+        // console.log(blockRoomData);
+
 
         const responseBlockRoom = await blockRoomService(blockRoomData);
 
