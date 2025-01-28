@@ -823,6 +823,16 @@ body{
 .fc-direction-ltr .fc-timeline-event.fc-event-end, .fc-direction-ltr .fc-timeline-more-link {
   margin-left: 15px;
 }
+.fa-calendar-days{
+  color:#7367f0 !important;
+}
+.fa-clock{
+  color:#7367f0 !important;
+}
+.custom-event {
+  border-radius: 4px;
+  padding-left :6px;
+}
 
 .dropdown-item:active {
   background-color: transparent !important; /* Remove background */

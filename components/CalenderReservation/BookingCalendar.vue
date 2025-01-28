@@ -519,6 +519,7 @@ export default {
             extendedProps: {
               reservation: reservation, // Include the full reservation object
             },
+            classNames: ['custom-event'],
           });
 
           handledReservations.add(reservation.id);
@@ -538,11 +539,12 @@ export default {
                 title: `Blocked: ${dateInfo.block_reason || 'No reason provided'}`,
                 start: dateInfo.date,
                 end: dateInfo.date,
-                color: '#9E9E9E',
+                color: '#4b4b4b',
                 extendedProps: {
                   is_blocked: true, // Indicate this is a blocked date
                   block_reason: dateInfo.block_reason || 'No reason provided',
                 },
+                classNames: ['custom-event'],
               };
             }
 

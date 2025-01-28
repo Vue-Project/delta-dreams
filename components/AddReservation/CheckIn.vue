@@ -145,7 +145,7 @@
                         <th class="border-0">Room</th>
                         <th class="border-0">Adult</th>
                         <th class="border-0">Child</th>
-                        <th class="border-0 w-20">Rate(£)(Tax Inc.)</th>
+                        <th class="border-0 w-20">Rate(EGP)(Tax Inc.)</th>
                       </tr>
                     </thead>
                     <!--  ! table Header -->
@@ -184,7 +184,7 @@
                             <div class="col-md-10">
                               <div class="input-group">
                                 <input type="text" class="form-control" placeholder="0.00" id="rateAmount" v-model="formattedRateAmount" @blur="formatRateAmount" aria-label="number of rateAmount" ref="rateAmount" :class="{ 'input-error': validationMessages.rateAmount }" />
-                                <span class="input-group-text groupStyle">%</span>
+                                <span class="input-group-text groupStyle">EGP</span>
                               </div>
                               <span class="error-message" v-if="validationMessages.rateAmount">{{ validationMessages.rateAmount }}</span>
                             </div>

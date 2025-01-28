@@ -15,7 +15,7 @@
         </div>
         <div class="row">
           <hr class="my-2 w-75 mx-auto" />
-          <button class="btn btn-outline-primary waves-effect" @click="goToAddReservation">Go to Add Reservation</button>
+          <button class="btn btn-outline-primary waves-effect" @click="goToAddReservation">Add Reservation</button>
           <button type="button" class="btn btn-outline-primary waves-effect mt-2" @click="toggleSidebar">
             <span>Maintenance Block</span>
           </button>

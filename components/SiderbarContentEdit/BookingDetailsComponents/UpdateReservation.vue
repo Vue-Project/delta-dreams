@@ -170,7 +170,7 @@
                         <th class="border-0">Room</th>
                         <th class="border-0">Adult</th>
                         <th class="border-0">Child</th>
-                        <th class="border-0 w-20">Rate(£)(Tax Inc.)</th>
+                        <th class="border-0 w-20">Rate(EGP)(Tax Inc.)</th>
                       </tr>
                     </thead>
 
@@ -210,7 +210,7 @@
                             <div class="col-md-10">
                               <div class="input-group">
                                 <input type="text" class="form-control" placeholder="0.00" id="rateAmount" v-model="formattedRateAmount" @blur="formatRateAmount" aria-label="number of rateAmount" ref="rateAmount" :class="{ 'input-error': validationMessages.rateAmount }" />
-                                <span class="input-group-text groupStyle">%</span>
+                                <span class="input-group-text groupStyle">EGP</span>
                               </div>
                               <span class="error-message" v-if="validationMessages.rateAmount">{{ validationMessages.rateAmount }}</span>
                             </div>
@@ -390,21 +390,21 @@
                   <label for="BillingSummaryRoomCharges" class="form-label">RoomCharges</label>
                   <div class="input-group">
                     <input type="number" class="form-control" placeholder="0" id="BillingSummaryRoomCharges" v-model="formAddReservation.BillingSummary.roomCharges" />
-                    <span class="input-group-text groupStyle">$</span>
+                    <span class="input-group-text groupStyle">EGP</span>
                   </div>
                 </div>
                 <div class="col-md-4 col-12">
                   <label for="BillingSummaryTaxes" class="form-label">Taxes</label>
                   <div class="input-group">
                     <input type="number" class="form-control" placeholder="0" id="BillingSummaryTaxes" v-model="formAddReservation.BillingSummary.taxes" />
-                    <span class="input-group-text groupStyle">$</span>
+                    <span class="input-group-text groupStyle">EGP</span>
                   </div>
                 </div>
                 <div class="col-md-4 col-12">
                   <label for="BillingSummaryDueAmount" class="form-label">Due Amount</label>
                   <div class="input-group">
                     <input type="number" class="form-control" placeholder="0" id="BillingSummaryDueAmount" v-model="formAddReservation.BillingSummary.dueAmount" />
-                    <span class="input-group-text groupStyle">$</span>
+                    <span class="input-group-text groupStyle">EGP</span>
                   </div>
                 </div>
 
