@@ -8,8 +8,8 @@
             <div class="me-2 py-2 d-flex">
               <a href="#" @click="goBack"><i class="fa-solid fa-angle-left pr-2" style="color: #6f6b7d; float: left; font-size: 20px"></i>
               </a>
-              <i class="fa-solid fa-person pr-2 text-primary fs-2"></i>
-
+              
+              <i class="fa-solid fa-user pr-2 text-primary fs-3"></i>
 
               {{ reservationDataById.user.name }}
               <!-- {{ reservationDataById.id }} -->
