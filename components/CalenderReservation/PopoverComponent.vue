@@ -15,9 +15,8 @@
         </div>
         <div class="row">
           <hr class="my-2 w-75 mx-auto" />
-          <button @click="goToAddReservation">Go to Add Reservation</button>
-          <hr class="my-2 w-75 mx-auto" />
-          <button type="button" class="ant-btn ant-btn-link ant-btn-block" @click="toggleSidebar">
+          <button class="btn btn-outline-primary waves-effect" @click="goToAddReservation">Go to Add Reservation</button>
+          <button type="button" class="btn btn-outline-primary waves-effect mt-2" @click="toggleSidebar">
             <span>Maintenance Block</span>
           </button>
         </div>
@@ -79,15 +78,13 @@ export default {
   border-radius: 5px;
   transition: all 0.3s ease;
   font-weight: 500;
-  max-width: 250px;
+  max-width: 230px;
   margin:auto;
 }
 
 .popoverContent button:hover {
-  /* color: #0c7bdc; */
-  transform: scale(1.08);
-  background-color: rgba(43, 146, 250, 0.1);
-  color: #1a73e8;
+  transform: scale(1.05);
+
 
 }
 .popover {
