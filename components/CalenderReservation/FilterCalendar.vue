@@ -3,8 +3,8 @@
     <HeaderCalender ref="headerCalender" @date-selected="handleDateSelected" :statistics="statistics" />
 
     <div class="dropdown">
-      <button class="btn btn-primary dropdown-toggle btn-block" type="button" id="dropdownFilterButton" data-bs-toggle="dropdown" aria-expanded="false">
-        Filter Resources
+        <button class="btn btn-primary dropdown-toggle btn-block" type="button" id="dropdownFilterButton" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="fa-solid fa-filter pe-2"></i>Filter Resources
       </button>
       <ul class="dropdown-menu" aria-labelledby="dropdownFilterButton">
         <li>
