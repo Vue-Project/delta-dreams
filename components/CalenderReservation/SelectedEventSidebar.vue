@@ -203,14 +203,14 @@
         <div class="new-div mt-3 position-absolute right-0 w-100 px-4 bottom-1">
           <dl class=" row mb-0">
             <dt class="col-6 fw-normal text-heading">Total</dt>
-            <dd class="col-6 text-end">{{ selectedEvent.total || "0.0 $" }} $</dd>
+            <dd class="col-6 text-end">{{ selectedEvent.total || "0.0 " }} EGP</dd>
 
             <dt class="col-sm-6 fw-normal">Paid</dt>
-            <dd class="col-sm-6 text-end">{{ selectedEvent.paid || "0.0 $" }}$</dd>
+            <dd class="col-sm-6 text-end">{{ selectedEvent.paid || "0.0 " }}EGP</dd>
 
             <dt class="col-6 fw-normal text-danger">Balance</dt>
             <dd class="col-6 text-end text-danger">
-              {{ selectedEvent.balance || "0.0 $" }}$
+              {{ selectedEvent.balance || "0.0 " }}EGP
             </dd>
           </dl>
         </div>
