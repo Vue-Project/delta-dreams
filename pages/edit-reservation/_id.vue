@@ -8,14 +8,14 @@
             <div class="me-2 py-2 d-flex">
               <a href="#" @click="goBack"><i class="fa-solid fa-angle-left pr-2" style="color: #6f6b7d; float: left; font-size: 20px"></i>
               </a>
-              <i class="text-primary fa-solid fa-hotel fs-3 mr-2 mb-2"></i>
+              <i class="fa-solid fa-person pr-2 text-primary fs-2"></i>
 
 
               {{ reservationDataById.user.name }}
               <!-- {{ reservationDataById.id }} -->
-              <small class="text-muted ml-3">
-                <i class="fa-solid fa-person pr-2"></i>{{ reservationDataById.adults }}
-                <i class="fa-solid fa-child pr-2"></i>{{ reservationDataById.children }}</small>
+              <small class="text-muted ml-3 text-primary">
+                <i class="fa-solid fa-person pr-2 text-primary"></i>{{ reservationDataById.adults }}
+                <i class="fa-solid fa-child pr-2 text-primary"></i>{{ reservationDataById.children }}</small>
             </div>
           </div>
           <div class="col">
@@ -60,12 +60,12 @@
               </small>
             </div>
           </div>
-          <!-- <div class="col">
+          <div class="col">
             <div class="me-2">
-              <h6>Cancel Reservation</h6>
-              <button type="button" class="btn btn-label-danger waves-effect">Cancel</button>
+              <!-- <h6>Cancel Reservation</h6> -->
+              <button type="button" class="btn btn-label-danger waves-effect mt-3" title="Cancel Reservation"><i class="fa-solid fa-xmark"></i></button>
             </div>
-          </div> -->
+          </div>
         </div>
       </div>
     </div>
@@ -394,7 +394,7 @@
           <div class="row">
 
             <!-- Sidebar -->
-            <div class="col-3 px-0" style="border-right: 1px solid #e1e0e3">
+            <!-- <div class="col-3 px-0" style="border-right: 1px solid #e1e0e3">
               <div class="d-flex justify-content-between">
                 <h6>Guest</h6>
                 <div v-if="activeComponent === 'DefaultComponentGuest'" class="pe-2">
@@ -416,9 +416,9 @@
                     </button>
                   </h2>
 
-                  <div id="accordionfour" class="accordion-collapse collapse show" data-bs-parent="#accordionExample" style="">
+                  <div id="accordionfour" class="accordion-collapse collapse show" data-bs-parent="#accordionExample" style=""> -->
                     <!-- Identity Information -->
-                    <div class="row accordion-body">
+                    <!-- <div class="row accordion-body">
                       <div class="accordion mt-3" id="accordionExample">
                         <div class="card accordion-item active">
                           <h2 class="accordion-header" id="headingOne">
@@ -427,9 +427,9 @@
                             </button>
                           </h2>
 
-                          <div id="accordionfour" class="accordion-collapse collapse show" data-bs-parent="#accordionExample" style="">
+                          <div id="accordionfour" class="accordion-collapse collapse show" data-bs-parent="#accordionExample" style=""> -->
                             <!-- Identity Information -->
-                            <div class="row accordion-body">
+                            <!-- <div class="row accordion-body">
                               <div>
                                 <div>
                                   <i class="fa-solid fa-hexagon -nodes"></i>Mr.
@@ -446,7 +446,7 @@
               </div>
 
               <hr class="m-0" />
-            </div>
+            </div> -->
 
             <!-- Main Content -->
             <div class="col-9">
