@@ -559,6 +559,9 @@ select {
   text-align: right;
   background-color: #fff;
 }
+.div:where(.swal2-container) div:where(.swal2-html-container){
+  margin: auto;
+}
 
 .sidebar-content {
   /* height: 1300px; */

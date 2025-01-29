@@ -57,6 +57,8 @@ import HeaderCalender from "./HeaderCalender.vue";
 
 // API service for fetching calendar data
 import { getCalenderAllUnits } from "../../Api/CalenderApi";
+import Swal from 'sweetalert2'
+
 export default {
   components: {
     FullCalendar,
@@ -75,7 +77,7 @@ export default {
       linkToAddReservation: '/add-reservation',
       datesBuilding: [],
       buildingNames: [], // Store building names dynamically
-      selectedDates: '',
+      // selectedDates: '',
       selectedResourceId: '',
       selectedResourceName: '',
       isLoading: true,
@@ -394,12 +396,12 @@ export default {
     getTwoDaysAgoDate ()
     {
       const today = new Date()
-      console.log(today);
+      //   console.log(today);
 
       const twoDaysAgo = new Date(today)
-      console.log(twoDaysAgo)
+      //   console.log(twoDaysAgo)
       twoDaysAgo.setDate(today.getDate() - 2)
-      console.log(twoDaysAgo)
+      //   console.log(twoDaysAgo)
 
       return twoDaysAgo
     },
@@ -483,10 +485,142 @@ export default {
     // ==============================================
     handleEventClick (info)
     {
-      // console.log('Event Data:', info.event); // Debugging
-      this.selectedEvent = this.transformEventToReservationData(info.event);
-      this.openOffcanvas();
+      if (info.event.extendedProps.is_blocked) {
+        // Format dates for display
+        const startDate = info.event.start.toLocaleString('en-US', {
+          dateStyle: 'medium',
+          timeStyle: 'short'
+        });
+        const endDate = info.event.end.toLocaleString('en-US', {
+          dateStyle: 'medium',
+          timeStyle: 'short'
+        });
+
+        // Store blocked event details
+        this.selectedBlockedEvent = {
+          id: info.event.id,
+          start: info.event.start,
+          end: info.event.end,
+          title: info.event.title,
+          room: info.event.extendedProps.room || 'Not specified'
+        };
+
+        // Show detailed confirmation dialog
+        Swal.fire({
+          title: 'Blocked Room Details',
+          html: `
+        <div class="text-left">
+          <p><strong>Room:</strong> ${this.selectedBlockedEvent.title}</p>
+          <p><strong>Start:</strong> ${startDate}</p>
+          <p><strong>End:</strong> ${endDate}</p>
+        </div>
+      `,
+          icon: 'info',
+          showCancelButton: true,
+          confirmButtonColor: '#7367f0',
+          cancelButtonColor: '#e2e1e5',
+          confirmButtonText: 'Delete',
+          cancelButtonText: 'Close',
+        }).then((result) =>
+        {
+          if (result.isConfirmed) {
+            // Show delete confirmation
+            Swal.fire({
+              title: 'Are you sure?',
+              text: 'This blocked period will be permanently deleted.',
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#7367f0',
+              cancelButtonColor: '#e2e1e5',
+              confirmButtonText: 'Yes, delete it!'
+            }).then((deleteResult) =>
+            {
+              if (deleteResult.isConfirmed) {
+                this.deleteBlockedPeriod();
+              }
+            });
+          } else if (result.isDenied) {
+            // Handle edit functionality
+            this.editBlockedPeriod();
+          }
+        });
+      } else {
+        // For reservations (existing logic)
+        this.selectedEvent = this.transformEventToReservationData(info.event);
+        this.openOffcanvas();
+      }
     },
+
+    async deleteBlockedPeriod ()
+    {
+      try {
+        // Make API call to delete the blocked period
+        // await axios.delete(`/api/blocked-periods/${this.selectedBlockedEvent.id}`);
+
+        // Remove the event from the calendar
+        const calendar = this.$refs.fullCalendar.getApi();
+        const event = calendar.getEventById(this.selectedBlockedEvent.id);
+        if (event) {
+          event.remove();
+        }
+
+        // Show success message
+        Swal.fire({
+          title: 'Deleted!',
+          text: 'The blocked period has been successfully removed.',
+          icon: 'success',
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false
+        });
+      } catch (error) {
+        // Handle error
+        Swal.fire({
+          title: 'Error!',
+          text: 'Failed to delete the blocked period. Please try again.',
+          icon: 'error',
+          confirmButtonColor: '##7367f0'
+        });
+        console.error('Error deleting blocked period:', error);
+      }
+    },
+    // editBlockedPeriod() {
+    //   // You can implement your edit logic here
+    //   Swal.fire({
+    //     title: 'Edit Blocked Period',
+    //     html: `
+    //       <form id="edit-form">
+    //         <div class="mb-3">
+    //           <label class="form-label">Start Date</label>
+    //           <input type="datetime-local" id="edit-start"
+    //                  class="swal2-input"
+    //                  value="${this.selectedBlockedEvent.start.toISOString().slice(0, 16)}">
+    //         </div>
+    //         <div class="mb-3">
+    //           <label class="form-label">End Date</label>
+    //           <input type="datetime-local" id="edit-end"
+    //                  class="swal2-input"
+    //                  value="${this.selectedBlockedEvent.end.toISOString().slice(0, 16)}">
+    //         </div>
+    //       </form>
+    //     `,
+    //     showCancelButton: true,
+    //     confirmButtonText: 'Save Changes',
+    //     confirmButtonColor: '#3085d6',
+    //     cancelButtonColor: '#d33',
+    //     preConfirm: () => {
+    //       return {
+    //         start: document.getElementById('edit-start').value,
+    //         end: document.getElementById('edit-end').value
+    //       };
+    //     }
+    //   }).then((result) => {
+    //     if (result.isConfirmed) {
+    //       // Handle the update API call here
+    //       // this.updateBlockedPeriod(result.value);
+    //     }
+    //   });
+    // },
     transformUnitToEvents (unitData)
     {
       const events = [];
@@ -526,7 +660,7 @@ export default {
             if (!currentBlock) {
               currentBlock = {
                 resourceId: unitData.code,
-                title: `Blocked: ${dateInfo.block_reason || 'No reason provided'}`,
+                title: `Blocked Reason: ${dateInfo.block.reason.name || 'No reason provided'}`,
                 start: dateInfo.date,
                 end: dateInfo.date,
                 color: '#000000',
