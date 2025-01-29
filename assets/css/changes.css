@@ -559,7 +559,13 @@ select {
   text-align: right;
   background-color: #fff;
 }
+<<<<<<< HEAD
 div:where(.swal2-container) div:where(.swal2-html-container) {
+=======
+.div:where(.swal2-container) div:where(.swal2-html-container){
+  margin: auto;
+}
+>>>>>>> 5f14d18978cb85a9388c13157fcad796c963113d
 
   margin: auto !important;
 
