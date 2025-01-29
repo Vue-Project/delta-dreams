@@ -1,20 +1,19 @@
 <template>
   <section class="card">
     <Loader :visible="isLoading" />
-    <p>{{data}}</p>
     <FilterCalendar ref="filterComponent" :statistics="statistics" :buildingNames="buildingNames" @show-all-resources="showAllResources" @show-building-resources="showBuildingResources" @date-selected="SelectedDateFilterCalendar" />
-      <FullCalendar :options="calendarOptions" @select="handleSelect" ref="calendar" :selectedDate="selectedDate">
-        <template v-slot:eventContent="arg">
-          <b>{{ arg.event.title }}</b>
-        </template>
-      </FullCalendar>
-      <CalendarFooter :occupancyData="occupancyData" />
-      <div v-if="isOverlayVisible" class="overlay" @click="closePopover"></div>
-      <PopoverComponent v-if="isPopoverVisible" :isPopoverVisible="isPopoverVisible" :popoverStyle="popoverStyle" :popoverArrowLeft="popoverArrowLeft" :firstSelectedDate="firstSelectedDate" :lastSelectedDate="lastSelectedDate" @go-to-add-reservation="goToAddReservation" @toggle-sidebar="toggleSidebar" @close-popover="closePopover" />
-      <SidebarBlockRoom :is-sidebar-open="isSidebarOpen" title="Block Room" width="400px" @close-sidebar="toggleSidebar">
-        <BlockRoomForm :selectedDates="selectedDates" :selectedResourceId="selectedResourceId" @close-sidebar="toggleSidebar" />
-      </SidebarBlockRoom>
-      <SelectedEventSidebar :selectedEvent="selectedEvent" @navigate-to-edit-reservation="navigateToEditReservation" />
+    <FullCalendar :options="calendarOptions" @select="handleSelect" ref="calendar" :selectedDate="selectedDate">
+      <template v-slot:eventContent="arg">
+        <b>{{ arg.event.title }}</b>
+      </template>
+    </FullCalendar>
+    <CalendarFooter :occupancyData="occupancyData" />
+    <div v-if="isOverlayVisible" class="overlay" @click="closePopover"></div>
+    <PopoverComponent v-if="isPopoverVisible" :isPopoverVisible="isPopoverVisible" :popoverStyle="popoverStyle" :popoverArrowLeft="popoverArrowLeft" :firstSelectedDate="firstSelectedDate" :lastSelectedDate="lastSelectedDate" @go-to-add-reservation="goToAddReservation" @toggle-sidebar="toggleSidebar" @close-popover="closePopover" />
+    <SidebarBlockRoom :is-sidebar-open="isSidebarOpen" title="Block Room" width="400px" @close-sidebar="toggleSidebar" height="auto">
+      <BlockRoomForm :selectedDates="selectedDates" :selectedResourceId="selectedResourceId" @close-sidebar="toggleSidebar" />
+    </SidebarBlockRoom>
+    <SelectedEventSidebar :selectedEvent="selectedEvent" @navigate-to-edit-reservation="navigateToEditReservation" />
     <!-- <div v-if="!isLoading">
 
     </div> -->
@@ -244,28 +243,19 @@ export default {
       if (Array.isArray(this.data)) {
         this.data.forEach((building) =>
         {
-          // Include building resource if "Show All" or selectedIds includes building.name
+          // Only process if building is selected
           if (selectedIds.length === 0 || selectedIds.includes(building.name)) {
-            // Add the building resource
-            resources.push({
-              id: building.name, // Unique ID for the building
-              groupId: building.name, // Group ID for the building
-              title: building.name, // Display name for the building
-              classNames: ["building"], // CSS class for styling
-            });
-
             // Add units under the building if they exist
             if (building.units) {
               building.units.forEach((unit) =>
               {
-                // Include unit if no date is selected or unit.date matches selectedDate
                 if (!selectedDate || (unit.date && unit.date === selectedDate)) {
                   resources.push({
-                    id: `${building.id}-${unit.id}`, // Unique ID for the unit
-                    resourceId: building.id, // Link unit to the building
-                    title: unit.code, // Display unit code (not building name)
-                    groupId: building.name, // Group ID for the building
-                    classNames: ["unit"], // CSS class for styling
+                    id: `${building.id}-${unit.id}`,
+                    resourceId: building.id,
+                    title: unit.code,  // This should display "UNIT-XXXX"
+                    groupId: building.name,  // Group by building name (e.g., "Studio")
+                    classNames: ["unit"],
                     extendedProps: {
                       is_clean: unit.is_clean,
                       is_smoking: unit.is_smoking,
@@ -280,7 +270,7 @@ export default {
         });
       }
 
-      return resources; // Return the filtered resources
+      return resources;
     },
     // ==============================================
     // Updating Calendar based on selected building IDs
@@ -393,7 +383,7 @@ export default {
         const buildingName = resource.extendedProps.groupId || 'Unknown Building';
         const resourceId = resource.id || 'Unknown ID';  // Get the resource ID
         this.selectedResourceName = `${unitTitle} - ${buildingName} - ID: ${resourceId}`;  // Include the ID in the name
-        this.selectedResourceId = resource.id;
+        this.selectedResourceId = `${resource.title}  - ID: ${resourceId}`;
       } else {
         this.selectedResourceId = null;
         this.selectedResourceName = null;
@@ -639,12 +629,9 @@ export default {
     const endDate = end.toISOString().split('T')[0];
 
     // Modify startDate by adding 1 day
-    const startDateObj = new Date(startDate); // Convert to Date object
-    startDateObj.setDate(startDateObj.getDate() + 1); // Add 1 day
-    startDate = startDateObj.toISOString().split('T')[0]; // Convert back to ISO string format (YYYY-MM-DD)
-
-    // Log the updated start date
-    console.log(`Updated Start Date: ${startDate}, End Date: ${endDate}`);
+    const startDateObj = new Date(startDate);
+    startDateObj.setDate(startDateObj.getDate() + 1);
+    startDate = startDateObj.toISOString().split('T')[0];
 
     // Fetch data for the new date range
     const response = await getCalenderAllUnits({
@@ -654,20 +641,18 @@ export default {
 
     // Update data sources
     this.data = response.data;
-    // this.occupancyData = response.data.calendar.data;
-    // this.statistics = response.data.statistics;
 
-    // Force calendar refresh
-    calendarApi.refetchEvents(); // Important: Tell FullCalendar to reload events
-    console.log(efnmfponm4pnm);
+    // Transform the new data into events
+    const newEvents = this.transformAllUnitsToEvents();
 
+    // Update the calendar with new events
+    calendarApi.removeAllEvents(); // Clear existing events
+    calendarApi.addEventSource(newEvents); // Add new events
 
-    // If using resources:
-    // this.calendarOptions.resources = this.createResources();
+    // If you're using resources, uncomment these lines:
+    // const resources = this.createResources();
+    // calendarApi.setOption('resources', resources);
     // calendarApi.refetchResources();
-
-    // Alternative: Reset calendar view
-    // calendarApi.changeView(view.type, view.title);
 
   } catch (error) {
     console.error('Navigation error:', error);
@@ -675,7 +660,7 @@ export default {
     this.isLoading = false;
   }
 }
-,
+    ,
 
     // ==============================================
     // CALENDAR SETUP & CONFIG
