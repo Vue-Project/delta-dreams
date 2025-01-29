@@ -25,6 +25,30 @@ export const getBookingSources = async () =>
     throw error;
   }
 };
+export const getUnitTypes = async () =>
+{
+  try {
+    const response = await apiClient.get('/unit_types');
+    // console.log(response.data);
+    return response.data;
+
+  } catch (error) {
+    console.error('Error fetching rooms:', error);
+    throw error;
+  }
+};
+// export const getReservationTypes = async () =>
+// {
+//   try {
+//     const response = await apiClient.get('/reservation-types');
+//     // console.log(response.data);
+//     return response.data;
+
+//   } catch (error) {
+//     console.error('Error fetching rooms:', error);
+//     throw error;
+//   }
+// };
 export const getReservationTypes = async () =>
 {
   try {
