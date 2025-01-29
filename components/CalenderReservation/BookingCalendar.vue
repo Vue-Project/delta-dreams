@@ -100,13 +100,7 @@ export default {
           },
           today: {
             text: 'Today',
-            click: () =>
-            {
-              if (this.calendarApi) {
-                const twoDaysAgo = this.getTwoDaysAgoDate()
-                this.calendarApi.gotoDate(twoDaysAgo)
-              }
-            }
+            click: () => this.handleTodayClick()
           }
         },
         plugins: [resourceTimelinePlugin, interactionPlugin],
@@ -400,8 +394,13 @@ export default {
     getTwoDaysAgoDate ()
     {
       const today = new Date()
+      console.log(today);
+
       const twoDaysAgo = new Date(today)
+      console.log(twoDaysAgo)
       twoDaysAgo.setDate(today.getDate() - 2)
+      console.log(twoDaysAgo)
+
       return twoDaysAgo
     },
 
@@ -614,52 +613,91 @@ export default {
       this.handleNavigation('next');
     },
 
-    async handleNavigation(direction) {
-  try {
-    this.isLoading = true;
-    const calendarApi = this.$refs.calendar.getApi();
-    const view = calendarApi.view;
+    async handleNavigation (direction)
+    {
+      try {
+        this.isLoading = true;
+        const calendarApi = this.$refs.calendar.getApi();
+        const view = calendarApi.view;
 
-    // Get current view dates
-    const start = view.activeStart;
-    const end = view.activeEnd;
+        // Get current view dates
+        const start = view.activeStart;
+        const end = view.activeEnd;
 
-    // Format dates for server
-    let startDate = start.toISOString().split('T')[0];
-    const endDate = end.toISOString().split('T')[0];
+        // Format dates for server
+        let startDate = start.toISOString().split('T')[0];
+        const endDate = end.toISOString().split('T')[0];
 
-    // Modify startDate by adding 1 day
-    const startDateObj = new Date(startDate);
-    startDateObj.setDate(startDateObj.getDate() + 1);
-    startDate = startDateObj.toISOString().split('T')[0];
+        // Modify startDate by adding 1 day
+        const startDateObj = new Date(startDate);
+        startDateObj.setDate(startDateObj.getDate() + 1);
+        startDate = startDateObj.toISOString().split('T')[0];
 
-    // Fetch data for the new date range
-    const response = await getCalenderAllUnits({
-      start: startDate,
-      end: endDate
-    });
+        // Fetch data for the new date range
+        const response = await getCalenderAllUnits({
+          start: startDate,
+          end: endDate
+        });
 
-    // Update data sources
-    this.data = response.data;
+        // Update data sources
+        this.data = response.data;
 
-    // Transform the new data into events
-    const newEvents = this.transformAllUnitsToEvents();
+        // Transform the new data into events
+        const newEvents = this.transformAllUnitsToEvents();
 
-    // Update the calendar with new events
-    calendarApi.removeAllEvents(); // Clear existing events
-    calendarApi.addEventSource(newEvents); // Add new events
+        // Update the calendar with new events
+        calendarApi.removeAllEvents(); // Clear existing events
+        calendarApi.addEventSource(newEvents); // Add new events
 
-    // If you're using resources, uncomment these lines:
-    // const resources = this.createResources();
-    // calendarApi.setOption('resources', resources);
-    // calendarApi.refetchResources();
+        // If you're using resources, uncomment these lines:
+        // const resources = this.createResources();
+        // calendarApi.setOption('resources', resources);
+        // calendarApi.refetchResources();
 
-  } catch (error) {
-    console.error('Navigation error:', error);
-  } finally {
-    this.isLoading = false;
-  }
-}
+      } catch (error) {
+        console.error('Navigation error:', error);
+      } finally {
+        this.isLoading = false;
+      }
+    },
+    async handleTodayClick ()
+    {
+      try {
+        this.isLoading = true;
+        const calendarApi = this.$refs.calendar.getApi();
+
+        // Navigate to two days ago
+        const twoDaysAgo = this.getTwoDaysAgoDate();
+        calendarApi.gotoDate(twoDaysAgo);
+
+        // Get the new date range
+        const view = calendarApi.view;
+        let startDate = view.activeStart.toISOString().split('T')[0];
+        const endDate = view.activeEnd.toISOString().split('T')[0];
+
+        // Adjust start date
+        const startDateObj = new Date(startDate);
+        startDateObj.setDate(startDateObj.getDate() + 1);
+        startDate = startDateObj.toISOString().split('T')[0];
+
+        // Fetch new data
+        const response = await getCalenderAllUnits({
+          start: startDate,
+          end: endDate
+        });
+
+        // Update data and events
+        this.data = response.data;
+        const newEvents = this.transformAllUnitsToEvents();
+        calendarApi.removeAllEvents();
+        calendarApi.addEventSource(newEvents);
+
+      } catch (error) {
+        console.error('Today navigation error:', error);
+      } finally {
+        this.isLoading = false;
+      }
+    }
     ,
 
     // ==============================================
