@@ -5,7 +5,7 @@ export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   // store: true,
   head: {
-    title: "deltaDreams",
+    title: "deltadreams",
 
     meta: [
       { charset: "utf-8" },
