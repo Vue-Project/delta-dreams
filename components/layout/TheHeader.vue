@@ -3,12 +3,12 @@
     <nav class="layout-navbar navbar navbar-expand-xl align-items-center bg-navbar-theme" id="layout-navbar">
       <div class="container-fluid">
         <div class="navbar-brand app-brand demo d-none d-xl-flex py-0 me-4">
-          <a href="index.html" class="app-brand-link gap-2">
+          <a href="/" class="app-brand-link gap-2">
             <span class="app-brand-logo demo"> </span>
             <span class="app-brand-text demo menu-text fw-bold">Delta Dream</span>
           </a>
 
-          <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-xl-none">
+          <a href="#" class="layout-menu-toggle menu-link text-large ms-auto d-xl-none">
             <i class="ti ti-x ti-sm align-middle"></i>
           </a>
         </div>
@@ -19,14 +19,12 @@
           </a>
         </div>
 
-        <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+        <!-- <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
           <ul class="navbar-nav flex-row align-items-center ms-auto">
-            <!-- User -->
             <li class="nav-item navbar-dropdown dropdown-user dropdown">
               <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
                 <div class="avatar avatar-online">
-                  <img src="https://swevey.com/public/assets/img/avatars/1.png" class="h-auto rounded-circle"
-                    alt="User Image" />
+                  <img src="https://swevey.com/public/assets/img/avatars/1.png" class="h-auto rounded-circle" alt="User Image" />
                 </div>
               </a>
               <ul class="dropdown-menu dropdown-menu-end">
@@ -35,8 +33,7 @@
                     <div class="d-flex">
                       <div class="flex-shrink-0 me-3">
                         <div class="avatar avatar-online">
-                          <img src="https://swevey.com/public/assets/img/avatars/1.png" class="img-circle"
-                            alt="User Image" />
+                          <img src="https://swevey.com/public/assets/img/avatars/1.png" class="img-circle" alt="User Image" />
                         </div>
                       </div>
                       <div class="flex-grow-1">
@@ -69,13 +66,9 @@
                 </li>
 
                 <li>
-                  <a class="dropdown-item"
-                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                    style="cursor: pointer">
-                    <form id="logout-form" action="https://swevey.com/public/admin/logout" method="POST"
-                      style="display: none">
-                      <input type="hidden" name="_token" value="CZA3pJw9S72QZr45RwxZtgQYETQy7mkQpnpQzv6w"
-                        autocomplete="off" />
+                  <a class="dropdown-item" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" style="cursor: pointer">
+                    <form id="logout-form" action="https://swevey.com/public/admin/logout" method="POST" style="display: none">
+                      <input type="hidden" name="_token" value="CZA3pJw9S72QZr45RwxZtgQYETQy7mkQpnpQzv6w" autocomplete="off" />
                     </form>
                     <i class="ti ti-logout me-2 ti-sm"></i>
                     <span class="align-middle">Log Out</span>
@@ -83,14 +76,12 @@
                 </li>
               </ul>
             </li>
-            <!--/ User -->
           </ul>
-        </div>
+        </div> -->
 
         <!-- Search Small Screens -->
         <div class="navbar-search-wrapper search-input-wrapper container-xxl d-none">
-          <input type="text" class="form-control search-input border-0" placeholder="Search..."
-            aria-label="Search..." />
+          <input type="text" class="form-control search-input border-0" placeholder="Search..." aria-label="Search..." />
           <i class="ti ti-x ti-sm search-toggler cursor-pointer"></i>
         </div>
       </div>
@@ -99,15 +90,15 @@
 </template>
 
 <script>
-
 export default {
   name: "Header",
   layout: "component",
-  data() {
+  data ()
+  {
     return {
-      mode: 'light', // or some default value, 'light' or 'dark'
+      mode: "light", // or some default value, 'light' or 'dark'
     };
-  }
+  },
 };
 </script>
 

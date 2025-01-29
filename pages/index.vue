@@ -2,20 +2,19 @@
   <div class="row p-3">
 
     <div class="col-md-12">
-      <CalenderDate/>
+
+      <BookingCalendar />
     </div>
   </div>
 </template>
-<style scoped></style>
-
 <script>
-import CalenderDate from '../components/CalenderReservation/CalenderDate.vue';
+import BookingCalendar from '../components/CalenderReservation/BookingCalendar.vue';
 
 export default {
   name: "IndexPage",
   layout: "main",
   components: {
-    CalenderDate
+    BookingCalendar,
 
   }
 };
