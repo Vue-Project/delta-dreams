@@ -559,11 +559,15 @@ select {
   text-align: right;
   background-color: #fff;
 }
+div:where(.swal2-container) div:where(.swal2-html-container) {
 
-.sidebar-content {
+  margin: auto !important;
+
+}
+/* .sidebar-content {
   /* height: 1300px; */
   /* height: auto; */
-}
+/* } */ */
 .offcanvas-backdrop{
   z-index: 2;
 }
