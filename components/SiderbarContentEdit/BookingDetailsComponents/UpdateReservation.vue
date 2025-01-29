@@ -179,12 +179,12 @@
 
                       <tr v-for="(item, index) in formData" :key="index" class="mb-2 selectStyle">
                         <td>
-                          <input type="text" class="form-control"  :value="reservationData?.unit?.unit_type?.name" disabled aria-label="Room Type of building ID" />
+                          <input type="text" class="form-control" :value="reservationData?.unit?.unit_type?.name" disabled aria-label="Room Type of building ID" />
 
                         </td>
                         <td style="width: 185px">
                           <select class="form-select" v-model="formAddReservation.units[0].rateType" ref="rateType" :class="{ 'input-error': validationMessages.rateType }">
-                            <option value="">Rate Type</option>
+                            <option value="" disabled>select</option>
                             <option value="breakfast">Breakfast</option>
                             <option value="nobreakfast">NoBreakfast</option>
 
@@ -209,7 +209,7 @@
                           <div class="row">
                             <div class="col-md-10">
                               <div class="input-group">
-                                <input type="text" class="form-control" placeholder="0.00" id="rateAmount" v-model="formattedRateAmount" @blur="formatRateAmount" aria-label="number of rateAmount" ref="rateAmount" :class="{ 'input-error': validationMessages.rateAmount }" />
+                                <input type="text" class="form-control" placeholder="0.00" id="rateAmount" v-model="formAddReservation.units[0].rateAmount" aria-label="number of rateAmount" ref="rateAmount" :class="{ 'input-error': validationMessages.rateAmount }" />
                                 <span class="input-group-text groupStyle">%</span>
                               </div>
                               <span class="error-message" v-if="validationMessages.rateAmount">{{ validationMessages.rateAmount }}</span>
@@ -476,25 +476,24 @@
   </section>
 </template>
 <script>
-import Swal from 'sweetalert2';
 import
-  {
-    getBookingSources,
-    getBusinessSources,
-    getReservationTypes,
-    getGuestsInfo,
-    postAddReservationData,
-    PutReservation
-  } from "../../../Api/addResvertionApi";
+{
+  getBookingSources,
+  getBusinessSources,
+  getReservationTypes,
+  getGuestsInfo,
+  postAddReservationData,
+  PutReservation
+} from "../../../Api/addResvertionApi";
 import flatpickrMixin from "../../Mixin/flatpickrMixin";
 import { dateMixin } from '../../Mixin/DateMixin';
-// import DateMixin from "../../Mixin/DateMixin";
+import { showSuccessAlert, handleSubmissionError } from '../../../Api/MassageValidation/alertUtilities';
 
 export default {
   name: "updateReservation",
   layout: "component",
   middleware: 'restrict-access', // Apply the middleware
-  mixins: [flatpickrMixin,dateMixin],
+  mixins: [flatpickrMixin, dateMixin],
   props: {
     reservationId: {
       type: [String, Number],
@@ -553,7 +552,7 @@ export default {
           adults: "",
           children: this.reservationData?.unit?.unit_type?.name || '',
           rateAmount: "",
-          unitTypeId:this.reservationData?.unit?.unit_type?.name || '',
+          unitTypeId: this.reservationData?.unit?.unit_type?.name || '',
           unitId: "",
         }],
         releaseDate: "",
@@ -675,8 +674,8 @@ export default {
       console.error("Error loading data:", error);
     }
     if (this.reservationData) {
-    this.fillFormWithReservationData(this.reservationData);
-  }
+      this.fillFormWithReservationData(this.reservationData);
+    }
   },
 
   // ======================
@@ -728,13 +727,13 @@ export default {
         checkin_time: this.formAddReservation.checkInTime,
         checkout_date: this.formAddReservation.checkOutDate,
         checkout_time: this.formAddReservation.checkOutTime,
-       rooms: this.formAddReservation.numberRooms,
+        rooms: this.formAddReservation.numberRooms,
         booking_source_id: this.formAddReservation.bookingSource,
         business_source_id: this.formAddReservation.businessSource,
         reservation_type_id: this.formAddReservation.reservationType,
         units: this.formAddReservation.units.map(unit => ({
           unit_id: this.reservationData?.unit?.id,
-          unit_type_id:this.reservationData?.unit?.unit_type?.id,
+          unit_type_id: this.reservationData?.unit?.unit_type?.id,
           rate_type: unit.rateType,
           adults: unit.adults,
           children: unit.children,
@@ -774,12 +773,24 @@ export default {
 
       try {
         const response = await PutReservation(this.reservationId, bookingData);
-        this.showSuccessAlert();
+        await showSuccessAlert(
+          "Reservation submitted successfully!", // Custom message
+          this.$router,
+          'index' // Route name
+        );
       } catch (error) {
-        this.handleSubmissionError(error);
+        handleSubmissionError(
+          error,
+          "There was an issue with your reservation." // Custom default error
+        );
       }
     },
 
+
+
+    // ======================
+    // Methods - UI Helpers
+    // ======================
     // Reset form to initial state
     resetForm ()
     {
@@ -860,59 +871,8 @@ export default {
     },
 
     // ======================
-    // Methods - UI Helpers
-    // ======================
-    showSuccessAlert ()
-    {
-      Swal.fire({
-        icon: "success",
-        title: "Success!",
-        text: "Reservation submitted successfully.",
-        confirmButtonText: "OK",
-      }).then(() =>
-      {
-        // this.resetForm();
-        this.$router.push({ name: 'index' }); // Replace 'index' with the actual route name
-
-
-      });
-    },
-
-    handleSubmissionError (error)
-    {
-      console.error("Error submitting booking:", error.response?.data || error.message);
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "There was an issue submitting the booking.",
-        confirmButtonText: "OK",
-      });
-    },
-
-    // ======================
     // Methods - Guest Information
     // ======================
-    // handleInput() {
-    //   this.fetchNames(this.formAddReservation.guestInformation.name);
-    // },
-
-    // handleBlur() {
-    //   setTimeout(() => {
-    //     this.showDropdown = false;
-    //   }, 200);
-    // },
-
-    // selectName(name) {
-    //   this.formAddReservation.guestInformation.name = name.name;
-    //   this.selectedNameId = name.id;
-    //   this.showDropdown = false;
-    // },
-
-    // fetchNames(query) {
-    //   this.filteredNames = this.filteredNames.filter(item =>
-    //     item.name.toLowerCase().includes(query.toLowerCase())
-    //   );
-    // },
     async handleSearch ()
     {
       this.currentPage = 1
@@ -990,7 +950,8 @@ export default {
         this.formAddReservation.units[0].rateAmount = parseFloat(value).toFixed(2);
       }
     },
-    fillFormWithReservationData(reservationData) {
+    fillFormWithReservationData (reservationData)
+    {
       if (!reservationData || typeof reservationData !== 'object') {
         console.warn('Invalid reservation data received');
         return;
@@ -1008,11 +969,18 @@ export default {
         bookingSource: reservationData.booking_source?.id || "",
         businessSource: reservationData.business_source?.id || "",
         units: [{
-          // rateType: "",
-          // room: reservationData.unit?.name || "",
-          adults: reservationData.unit?.adults || "",
-          children: reservationData.unit?.children || "",
-          rateAmount: reservationData.unit?.price || "",
+          rateType: Array.isArray(reservationData?.items) && reservationData.items.length > 0
+            ? reservationData.items[0].rate_type
+            : "",
+          adults: Array.isArray(reservationData?.items) && reservationData.items.length > 0
+            ? reservationData.items[0].adults
+            : "",
+          children: Array.isArray(reservationData?.items) && reservationData.items.length > 0
+            ? reservationData.items[0].children
+            : "",
+          rateAmount: Array.isArray(reservationData?.items) && reservationData.items.length > 0
+            ? reservationData.items[0].price
+            : "",
           // unitTypeId: reservationData.unit?.unit_type?.id || "",
           // unitId: reservationData.unit?.id || "",
 
@@ -1024,7 +992,7 @@ export default {
           quickGroup: Boolean(reservationData.is_quick_group_booking),
           complimentaryRoom: Boolean(reservationData.is_complimentary),
         },
-        releaseDate:  this.formatDateNumber(reservationData.hold_release_date) || "",
+        releaseDate: this.formatDateNumber(reservationData.hold_release_date) || "",
         releaseTime: reservationData.hold_release_time || "",
         releaseTerm: reservationData.release_term_type || "",
         releaseTermValue: reservationData.release_term_value || "",
@@ -1034,7 +1002,7 @@ export default {
         guestInformation: {
           name: reservationData.user?.name || "",
           email: reservationData.user?.email || "",
-          mobile: reservationData.user?.phone|| "",
+          mobile: reservationData.user?.phone || "",
           address: reservationData.guest_address || "",
           country: reservationData.guest_country || "",
           state: reservationData.guest_state || "",
@@ -1069,16 +1037,18 @@ export default {
 
     // Watch for changes in reservationData.items and update the form data
 
-  reservationData: {
-    immediate: true, // This ensures the watcher is triggered immediately when the component is created
-    handler(newData) {
-      if (newData) {
-        this.fillFormWithReservationData(newData);
-      }
-    },
-  },reservationData: {
+    reservationData: {
+      immediate: true, // This ensures the watcher is triggered immediately when the component is created
+      handler (newData)
+      {
+        if (newData) {
+          this.fillFormWithReservationData(newData);
+        }
+      },
+    }, reservationData: {
       immediate: true,
-      handler(newData) {
+      handler (newData)
+      {
         if (newData && typeof newData === 'object') {
           this.fillFormWithReservationData(newData);
         }

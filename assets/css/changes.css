@@ -561,7 +561,8 @@ select {
 }
 
 .sidebar-content {
-  height: auto;
+  /* height: 1300px; */
+  /* height: auto; */
 }
 .offcanvas-backdrop{
   z-index: 2;
@@ -820,9 +821,11 @@ select.form-select option {
   justify-content: end;
 }
 body{
-  overflow: auto !important;
+  overflow-y: auto !important;
 }
 .fc-direction-ltr .fc-timeline-event.fc-event-end, .fc-direction-ltr .fc-timeline-more-link {
   margin-left: 15px;
 }
+
+
 

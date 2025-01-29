@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="isSidebarOpen" :class="['sidebar', { 'sidebar-open': isSidebarOpen }]" :style="{ width: width }">
-      <div class="sidebar-content">
+      <div class="sidebar-content" :style="{ height: height }">
         <h3>{{ title }}</h3>
         <hr class="my-2" />
         <slot>
@@ -1005,10 +1005,11 @@
 </template>
 
 <script>
-import Swal from "sweetalert2"; // Import SweetAlert2
 import flatpickrMixin from "../Mixin/flatpickrMixin";
 import DropzoneComponent from "./DropzoneComponent.vue";
 import { addGuest } from "../../Api/userApi";
+import { showSuccessAlert, handleSubmissionError } from '../../Api/MassageValidation/alertUtilities';
+
 
 export default {
   name: "AddGuestSidebar",
@@ -1192,13 +1193,11 @@ export default {
         // Make API call
         const response = await addGuest(addGuestData);
 
-        // Show success message
-        await Swal.fire({
-          icon: "success",
-          title: "Success!",
-          text: "Guest added successfully.",
-          confirmButtonText: "OK",
-        });
+
+        await showSuccessAlert(
+          "Guest added successfully.!", // Custom message
+
+        );
 
         // Reset form after success
         this.resetForm();
@@ -1206,27 +1205,13 @@ export default {
         // Emit event for parent component
         this.$emit("guest-added", response.data);
       } catch (error) {
-        // Handle validation errors
-        if (error.response?.data?.errors) {
-          const errors = error.response.data.errors;
-          Object.keys(errors).forEach((field) =>
-          {
-            if (this.$refs[field]) {
-              this.$refs[field].classList.add("input-error");
-              this.validationMessages[field] = errors[field][0];
-            }
-          });
-        }
 
         // Show error message
-        await Swal.fire({
-          icon: "error",
-          title: "Error",
-          text:
-            error.response?.data?.message ||
-            error.message ||
-            "Failed to add guest. Please try again.",
-        });
+        handleSubmissionError(
+          error,
+          "Please fill in all required fields" // Custom default error
+        );
+
       } finally {
         this.isSubmitting = false;
       }
@@ -1245,6 +1230,11 @@ export default {
       type: String,
       default: "1000px",
     },
+    height: {
+      type: String,
+      default: "1300px",
+    },
+
   },
   mixins: [flatpickrMixin],
   watch: {
