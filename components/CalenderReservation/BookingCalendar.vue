@@ -505,7 +505,6 @@ export default {
           title: info.event.title,
           room: info.event.extendedProps.room || 'Not specified'
         };
-        console.log(this.selectedBlockedEvent);
 
 
         // Show detailed confirmation dialog
@@ -513,10 +512,9 @@ export default {
           title: 'Blocked Room Details',
           html: `
         <div class="text-left">
-          <p><strong>Room:</strong> ${this.selectedBlockedEvent.title}</p>
-          <p><strong>Room:</strong> ${this.selectedBlockedEvent.id}</p>
           <p><strong>Start:</strong> ${startDate}</p>
           <p><strong>End:</strong> ${endDate}</p>
+          <p><strong>Room:</strong> ${this.selectedBlockedEvent.title}</p>
         </div>
       `,
           icon: 'info',
@@ -573,7 +571,7 @@ export default {
           title: 'Deleted!',
           text: 'The blocked period has been successfully removed.',
           icon: 'success',
-          timer: 2000,
+          timer: 1000,
           timerProgressBar: true,
           showConfirmButton: false
         });
