@@ -1,9 +1,9 @@
 <template>
   <div class="row p-3">
-    <div class="col-md-8">
+    <div class="col-xl-8 col-md-12">
       <CheckIn :paymentData="paymentData"  :selectedDates="selectedDates" :selectedResourceName="selectedResourceName" />
     </div>
-    <div class="col-md-4">
+    <div class="col-xl-4 col-md-12">
       <BillingSummary v-model="paymentData" :selectedDates="selectedDates" />
     </div>
   </div>
