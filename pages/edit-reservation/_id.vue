@@ -62,8 +62,8 @@
           </div>
           <div class="col">
             <div class="me-2">
-              <!-- <h6>Cancel Reservation</h6> -->
-              <button type="button" class="btn btn-label-danger waves-effect mt-3" title="Cancel Reservation">Cancel Reservation</button>
+              <button type="button" class="btn btn-label-danger waves-effect mt-3" title="Cancel Reservation"     @click="cancelReservation"
+              >Cancel Reservation</button>
             </div>
           </div>
         </div>
@@ -660,11 +660,13 @@ import AddPayment from "../../components/SiderbarContentEdit/AddPayment.vue";
 import AddCharges from "../../components/SiderbarContentEdit/AddCharges.vue";
 import AddDiscount from "../../components/SiderbarContentEdit/AddDiscount.vue";
 import AddOperation from "../../components/SiderbarContentEdit/AddOperation.vue";
-import { getReservationDataById } from "../../Api/editResvertion";
+import { cancelReservation, getReservationDataById } from "../../Api/editResvertion";
 import moment from "moment";
 import { dateMixin } from "../../components/Mixin/DateMixin";
 import UpdateReservation from "../../components/SiderbarContentEdit/BookingDetailsComponents/UpdateReservation.vue";
 import { GetReservationItems } from "../../Api/addResvertionApi";
+import { showSuccessAlert, handleSubmissionError } from '../../Api/MassageValidation/alertUtilities';
+
 
 export default {
   name: "EditsPage",
@@ -832,6 +834,26 @@ export default {
       } else {
         console.error("Offcanvas element not found.");
       }
+    },
+    async cancelReservation() {
+      // if (!confirm('Are you sure you want to cancel this reservation?')) {
+      //   return;
+      // }
+
+      this.isCancelling = true;
+
+      try {
+        const response = await cancelReservation(5);
+        await showSuccessAlert(
+          "Reservation cancelled successfully!", // Custom message
+
+        );
+
+      } catch (error) {
+        handleSubmissionError(
+          error,
+          "failed to cancel reservation" // Custom default error
+        );      }
     },
 
 
