@@ -1,5 +1,6 @@
 <template>
   <section class="card">
+    <p>{{ selectedBlockedEvent }}</p>
     <Loader :visible="isLoading" />
     <FilterCalendar ref="filterComponent" :statistics="statistics" :buildingNames="buildingNames" @show-all-resources="showAllResources" @show-building-resources="showBuildingResources" @date-selected="SelectedDateFilterCalendar" />
     <FullCalendar :options="calendarOptions" @select="handleSelect" ref="calendar" :selectedDate="selectedDate">
@@ -56,7 +57,7 @@ import SelectedEventSidebar from "./SelectedEventSidebar.vue";
 import HeaderCalender from "./HeaderCalender.vue";
 
 // API service for fetching calendar data
-import { getCalenderAllUnits } from "../../Api/CalenderApi";
+import { deleteBlock, getCalenderAllUnits } from "../../Api/CalenderApi";
 import Swal from 'sweetalert2'
 
 export default {
@@ -504,6 +505,8 @@ export default {
           title: info.event.title,
           room: info.event.extendedProps.room || 'Not specified'
         };
+        console.log(this.selectedBlockedEvent);
+
 
         // Show detailed confirmation dialog
         Swal.fire({
@@ -511,6 +514,7 @@ export default {
           html: `
         <div class="text-left">
           <p><strong>Room:</strong> ${this.selectedBlockedEvent.title}</p>
+          <p><strong>Room:</strong> ${this.selectedBlockedEvent.id}</p>
           <p><strong>Start:</strong> ${startDate}</p>
           <p><strong>End:</strong> ${endDate}</p>
         </div>
@@ -555,10 +559,10 @@ export default {
     {
       try {
         // Make API call to delete the blocked period
-        // await axios.delete(`/api/blocked-periods/${this.selectedBlockedEvent.id}`);
+        await deleteBlock(this.selectedBlockedEvent.id);
 
         // Remove the event from the calendar
-        const calendar = this.$refs.fullCalendar.getApi();
+        const calendar = this.$refs.calendar.getApi();
         const event = calendar.getEventById(this.selectedBlockedEvent.id);
         if (event) {
           event.remove();
@@ -579,7 +583,7 @@ export default {
           title: 'Error!',
           text: 'Failed to delete the blocked period. Please try again.',
           icon: 'error',
-          confirmButtonColor: '##7367f0'
+          confirmButtonColor: '#7367f0'
         });
         console.error('Error deleting blocked period:', error);
       }
@@ -639,7 +643,7 @@ export default {
             title: `Reserved by ${reservation.user?.name || 'Unknown'}`,
             start: start,
             end: end,
-            color :'#7367f0',
+            color: '#7367f0',
             reservationId: reservation.id,
             extendedProps: {
               reservation: reservation, // Include the full reservation object
@@ -660,6 +664,7 @@ export default {
           if (dateInfo.is_blocked) {
             if (!currentBlock) {
               currentBlock = {
+                id: dateInfo.block.id, // Add this line to include the block ID
                 resourceId: unitData.code,
                 title: `Blocked Reason: ${dateInfo.block.reason.name || 'No reason provided'}`,
                 start: dateInfo.date,
