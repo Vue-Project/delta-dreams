@@ -6,7 +6,8 @@
       <!-- CARD HEADER -->
       <h5 class="card-header">
 
-        <!-- <p> {{ reservationData }}</p> -->
+        <!-- <p> {{ unitsTypes }}</p> -->
+        <p> {{ reservationData.items }}</p>
         Update Reservation
       </h5>
       <hr class="m-0" />
@@ -179,7 +180,13 @@
 
                       <tr v-for="(item, index) in formData" :key="index" class="mb-2 selectStyle">
                         <td>
-                          <input type="text" class="form-control" :value="reservationData?.unit?.unit_type?.name" disabled aria-label="Room Type of building ID" />
+                          <select class="form-select" id="unitsTypes" :value="reservationData?.unit?.unit_type?.name" v-model="formAddReservation.units[0].roomType" @change="handleUnitTypeChange">
+                            <option disabled value="">Select</option>
+                            <option v-for="unitType in unitsTypes" :key="unitType.id" :value="unitType.id">
+                              {{ unitType.name }}
+                            </option>
+                          </select>
+                          <!-- <input type="text" class="form-control" :value="reservationData?.unit?.unit_type?.name" disabled aria-label="Room Type of building ID" /> -->
 
                         </td>
                         <td style="width: 185px">
@@ -193,7 +200,13 @@
 
                         </td>
                         <td>
-                          <input type="text" class="form-control" :value="reservationData?.unit?.code" disabled aria-label="Room of building ID" />
+                          <!-- <input type="text" class="form-control" :value="reservationData?.unit?.code" disabled aria-label="Room of building ID" /> -->
+                          <select class="form-select" v-model="formAddReservation.units[0].unitId">
+                            <option disabled value="">Select Unit</option>
+                            <option v-for="unit in availableUnits" :key="unit.id" :value="unit.id">
+                              {{ unit.code }}
+                            </option>
+                          </select>
 
                         </td>
                         <td>
@@ -482,8 +495,11 @@ import
   getBusinessSources,
   getReservationTypes,
   getGuestsInfo,
+
   postAddReservationData,
-  PutReservation
+  PutReservation,
+  getUnits,
+  getUnitTypes
 } from "../../../Api/addResvertionApi";
 import flatpickrMixin from "../../Mixin/flatpickrMixin";
 import { dateMixin } from '../../Mixin/DateMixin';
@@ -530,6 +546,9 @@ export default {
       bookingSources: [],
       reservationTypes: [],
       filteredNames: [],
+      unitsTypes: [],
+      availableUnits: [],
+      selectedUnit: '',
 
       // Form Data
       formAddReservation: {
@@ -550,9 +569,9 @@ export default {
           rateType: "",
           room: "",
           adults: "",
-          children: this.reservationData?.unit?.unit_type?.name || '',
+          children: "",
           rateAmount: "",
-          unitTypeId: this.reservationData?.unit?.unit_type?.name || '',
+          roomType: "",
           unitId: "",
         }],
         releaseDate: "",
@@ -659,17 +678,22 @@ export default {
         bookingSourcesResponse,
         reservationTypesResponse,
         usersResponse,
+        unitTypesResponse,
+
       ] = await Promise.all([
         getBusinessSources(),
         getBookingSources(),
         getReservationTypes(),
         getGuestsInfo(),
+        getUnitTypes(),
+        getUnits(),
       ]);
 
       this.businessSources = businessSourcesResponse.data.data;
       this.bookingSources = bookingSourcesResponse.data.data;
       this.reservationTypes = reservationTypesResponse.data.data;
       this.filteredNames = usersResponse.data.data;
+      this.unitsTypes = unitTypesResponse.data.data;
     } catch (error) {
       console.error("Error loading data:", error);
     }
@@ -732,8 +756,8 @@ export default {
         business_source_id: this.formAddReservation.businessSource,
         reservation_type_id: this.formAddReservation.reservationType,
         units: this.formAddReservation.units.map(unit => ({
-          unit_id: this.reservationData?.unit?.id,
-          unit_type_id: this.reservationData?.unit?.unit_type?.id,
+          unit_id: unit.unitId,
+          unit_type_id: unit.roomType,
           rate_type: unit.rateType,
           adults: unit.adults,
           children: unit.children,
@@ -768,11 +792,11 @@ export default {
         payment_method_city: this.formAddReservation.BillingSummary.CityLedger,
         selected_payment_method: this.formAddReservation.BillingSummary.payMentUser,
       };
-      // console.log(bookingData);
+      console.log(bookingData);
 
 
       try {
-        const response = await PutReservation(this.reservationId, bookingData);
+        // const response = await PutReservation(this.reservationId, bookingData);
         await showSuccessAlert(
           "Reservation submitted successfully!", // Custom message
           this.$router,
@@ -981,8 +1005,13 @@ export default {
           rateAmount: Array.isArray(reservationData?.items) && reservationData.items.length > 0
             ? reservationData.items[0].price
             : "",
-          // unitTypeId: reservationData.unit?.unit_type?.id || "",
-          // unitId: reservationData.unit?.id || "",
+          unitId: Array.isArray(reservationData?.items) && reservationData.items.length > 0
+            ? reservationData.items[0].unit.code
+            : "",
+          roomType: Array.isArray(reservationData?.items) && reservationData.items.length > 0
+            ? reservationData?.unit?.unit_type?.name
+            : "",
+
 
         }],
 
@@ -1021,6 +1050,25 @@ export default {
       };
 
       this.selectedNameId = reservationData.user?.id || null;
+    },
+    async handleUnitTypeChange ()
+    {
+      try {
+        const unitTypeId = this.formAddReservation.units[0].roomType
+        if (unitTypeId) {
+          // Reset selected unit when changing type
+          this.selectedUnit = ''
+
+          // Fetch units for selected type
+          const response = await getUnits(unitTypeId)
+          this.availableUnits = response.data.data
+        } else {
+          this.availableUnits = []
+        }
+      } catch (error) {
+        console.error('Error fetching units:', error)
+        this.availableUnits = []
+      }
     }
 
 
