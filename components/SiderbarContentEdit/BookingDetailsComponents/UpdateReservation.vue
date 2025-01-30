@@ -6,8 +6,6 @@
       <!-- CARD HEADER -->
       <h5 class="card-header">
 
-        <!-- <p> {{ unitsTypes }}</p> -->
-        <p> {{ reservationData.items }}</p>
         Update Reservation
       </h5>
       <hr class="m-0" />
