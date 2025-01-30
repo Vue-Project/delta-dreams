@@ -1,5 +1,6 @@
 <template>
   <section class="card">
+    <momenalert></momenalert>
     <Loader :visible="isLoading" />
     <div v-if="!isLoading">
       <FilterCalendar ref="filterComponent" :statistics="statistics" :buildingNames="buildingNames" @show-all-resources="showAllResources" @show-building-resources="showBuildingResources" @date-selected="SelectedDateFilterCalendar" />
@@ -21,6 +22,7 @@
 
 
 <script>
+import momenalert from "../../layouts/momenalert.vue";
 // Main calendar component from FullCalendar library
 import FullCalendar from "@fullcalendar/vue";
 
@@ -58,6 +60,7 @@ import HeaderCalender from "./HeaderCalender.vue";
 import { getCalenderAllUnits } from "../../Api/CalenderApi";
 export default {
   components: {
+    momenalert,
     FullCalendar,
     CalendarFooter,
     PopoverComponent,
