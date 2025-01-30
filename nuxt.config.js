@@ -61,6 +61,7 @@ export default {
 
     // !  changes styles
     "~/assets/css/changes.css",
+    "~/assets/css/Responsive.css",
     // "~/assets/css/Edits.css",
     // !  changes styles
   ],

@@ -4,7 +4,7 @@
       <div class="card mb-3 p-3">
 
         <div class="row align-items-center" v-for="reservationDataById in reservationsDataById" :key="reservationDataById.id">
-          <div class="col-2">
+          <div class="col-12 col-md-4 col-xl-2 mb-3 mb-md-0 ">
             <div class="me-2 py-2 d-flex">
               <a href="#" @click="goBack"><i class=" fa-solid fa-angle-left pr-2" style="color: #6f6b7d; float: left; font-size: 20px"></i>
               </a>
@@ -18,26 +18,26 @@
                 <i class="fa-solid fa-child pr-2 text-primary"></i>{{ reservationDataById.children }}</small>
             </div>
           </div>
-          <div class="col-2">
+          <div class="col-6 col-md-4 col-xl-2 mb-3 mb-md-0">
             <div class="me-2">
               <h6>Arrival Date</h6>
               <small class="text-muted">{{ formatDate(reservationDataById.checkin_date) }} {{ reservationDataById.checkin_time }}</small>
             </div>
           </div>
 
-          <div class="col-2">
+          <div class="col-6 col-md-4 col-xl-2 mb-3 mb-md-0">
             <div class="me-2">
               <h6>Booking Date</h6>
               <small class="text-muted">{{ formatDate(reservationDataById.checkout_date) }} {{ reservationDataById.checkout_time }} </small>
             </div>
           </div>
-          <div class="col-2">
+          <div class="col-6 col-md-4 col-xl-2 mb-3 mb-md-0">
             <div class="me-2">
               <h6>Room Number/Room Type</h6>
               <small class="text-muted">{{ reservationDataById.unit.rooms }}/{{ reservationDataById.rate_type || "Suite الفندق غرفتين وصاله" }}</small>
             </div>
           </div>
-          <div class="col">
+          <div class="col-6 col-md-4 col-xl-1 mb-3 mb-md-0">
             <div class="me-2">
               <h6>Nights</h6>
               <small class="text-muted">
@@ -46,13 +46,13 @@
               </small>
             </div>
           </div>
-          <div class="col">
+          <div class="col-6 col-md-4 col-xl-1 mb-3 mb-md-0">
             <div class="me-2">
               <h6>Reservation Number</h6>
               <small class="text-muted">{{ reservationDataById.id || "14541" }}</small>
             </div>
           </div>
-          <div class="col">
+          <div class="col-6 col-md-6 col-xl-1 mb-3 mb-md-0">
             <div class="me-2">
               <h6>Status</h6>
               <small class="badge" :class="statusBadgeClass(reservationDataById.status)">
@@ -60,7 +60,7 @@
               </small>
             </div>
           </div>
-          <div class="col">
+          <div class="col-12 col-md-6 col-xl-1 text-center ">
             <div class="me-2">
               <button type="button" class="btn btn-label-danger waves-effect mt-3" title="Cancel Reservation"     @click="cancelReservation"
               >Cancel Reservation</button>
@@ -78,17 +78,17 @@
             Folio Operations
           </button>
         </li> -->
-        <li class="nav-item" role="presentation">
+        <li class="nav-item col-6 col-md" role="presentation">
           <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#form-tabs-BookingDetails" role="tab" aria-selected="false" tabindex="-1">
             Booking Details
           </button>
         </li>
-        <li class="nav-item" role="presentation">
+        <li class="nav-item col-6 col-md" role="presentation">
           <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-GuestDetails" role="tab" aria-selected="true">
             Guest Details
           </button>
         </li>
-        <li class="nav-item" role="presentation">
+        <li class="nav-item col-6 col-md" role="presentation">
           <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-RoomCharges" role="tab" aria-selected="true">
             Room Charges
           </button>
@@ -98,7 +98,7 @@
             Credit Card
           </button>
         </li> -->
-        <li class="nav-item" role="presentation">
+        <li class="nav-item col-6 col-md" role="presentation">
           <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-AuditTrail" role="tab" aria-selected="true">
             Audit Trail
           </button>

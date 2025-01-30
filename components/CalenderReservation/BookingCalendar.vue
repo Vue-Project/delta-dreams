@@ -1,5 +1,6 @@
 <template>
   <section class="card">
+    <momenalert></momenalert>
     <p>{{ selectedBlockedEvent }}</p>
     <Loader :visible="isLoading" />
     <FilterCalendar ref="filterComponent" :statistics="statistics" :buildingNames="buildingNames" @show-all-resources="showAllResources" @show-building-resources="showBuildingResources" @date-selected="SelectedDateFilterCalendar" />
@@ -23,6 +24,7 @@
 
 
 <script>
+import momenalert from "../../layouts/momenalert.vue";
 // Main calendar component from FullCalendar library
 import FullCalendar from "@fullcalendar/vue";
 
@@ -62,6 +64,7 @@ import Swal from 'sweetalert2'
 
 export default {
   components: {
+    momenalert,
     FullCalendar,
     CalendarFooter,
     PopoverComponent,

@@ -251,14 +251,14 @@
               <!-- HOLD RELEASE DATE/TIME -->
 
               <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-8 ">
                   <div class="row">
-                    <div class="col-md-6 col-12 px-0">
+                    <div class="col-md-12 col-xl-6 col-12 px-0">
                       <label for="flatpickr-date-03" class="form-label">Hold Release Date & Time</label>
                       <input type="text" placeholder="YYYY-MM-DD" id="flatpickr-date-03" class="form-control flatpickr-input" ref="datePicker3" v-model="formAddReservation.releaseDate" />
                       <i class="fa-solid fa-calendar-days icon-date"></i>
                     </div>
-                    <div class="col-md-6 col-12 px-0 mt">
+                    <div class="col-md-12 col-xl-6 col-12 px-0 mt">
                       <input type="text" placeholder="HH:MM" id="flatpickr-time-03" class="form-control flatpickr-input" ref="timePicker3" aria-label="input Text to Time" v-model="formAddReservation.releaseTime" />
                       <i class="fa-regular fa-clock icon-time right"></i>
                     </div>
@@ -423,12 +423,12 @@
             </div>
 
             <div class="row mt-4">
-              <div class="col-md-4">
+              <div class="col-md-4 ">
                 <div class="row">
                   <div class="col-md-4 py-2">Payment Mode</div>
                   <div class="col-md-8">
                     <div class="row">
-                      <div class="col-md-6 d-flex align-items-center">
+                      <div class="col-md-8 col-xl-6 d-flex align-items-center">
                         <div class="input-group">
                           <div class="input-group-text border-0 ml-3">
                             <label class="pl-1 mb-0" for="PaymentModeCash">Cash/Bank</label>
@@ -448,7 +448,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-4 pl-md-5">
                 <div class="row">
                   <div class="input-group">
                     <select class="form-select" id="PaymentMethods " v-model="formAddReservation.BillingSummary.payMentUser">

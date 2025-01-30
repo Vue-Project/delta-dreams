@@ -11,17 +11,18 @@
           <!-- change in size and icons -->
 
           <div class="row">
-            <div class="col-md-8">
+            <div class="col-lg-8">
               <div class="row align-items-center">
                 <!-- Check-in Date Picker-->
-                <div class="col-md-3 col-12 px-0">
+                <div class="col-lg-3 col-12 col-md-6 px-0">
                   <label for="flatpickr-date-01" class="form-label">Check-in</label>
                   <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" id="flatpickr-date-01" ref="datePicker1" v-model="formAddReservation.checkInDate" aria-label="input Text to Check-in Date" />
                   <i class="fa-solid fa-calendar-days icon-date"></i>
                 </div>
 
+
                 <!-- Check-in Time Picker-->
-                <div class="col-md-3 col-12 px-0">
+                <div class="col-lg-3 col-12 col-md-6 px-0">
                   <div class="input-group mt-4">
                     <input type="text" class="form-control flatpickr-input" placeholder="HH:MM" id="flatpickr-time-01" ref="timePicker1" v-model="formAddReservation.checkInTime" aria-label="input Text to Check-in Time" />
                     <i class="fa-regular fa-clock icon-time"></i>
@@ -30,31 +31,31 @@
                 </div>
 
                 <!-- Check-out Date Picker-->
-                <div class="col-md-3 col-12 px-0">
-                  <label for="flatpickr-date-02" class="form-label ms-3">Check-out</label>
+                <div class="col-lg-3 col-12 col-md-6 px-0">
+                  <label for="flatpickr-date-02" class="form-label ms-lg-3">Check-out</label>
                   <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" id="flatpickr-date-02" ref="datePicker2" v-model="formAddReservation.checkOutDate" aria-label="input Text to Check-out Date" />
                   <i class="fa-solid fa-calendar-days icon-date"></i>
                 </div>
 
                 <!-- Check-out Time Picker-->
-                <div class="col-md-3 col-12 mt-4 px-0">
+                <div class="col-lg-3 col-12 col-md-6 mt-4 px-0">
                   <input type="text" class="form-control flatpickr-input" placeholder="HH:MM" id="flatpickr-time-02" ref="timePicker2" v-model="formAddReservation.checkOutTime" aria-label="input Text to Check-out Time" />
                   <i class="fa-regular fa-clock icon-time right"></i>
                 </div>
               </div>
 
             </div>
-            <div class="col-md-4">
+            <div class="col-lg-4">
               <div class="row">
                 <!-- <div class="col-md-3 col-12">
                   <label for="roomCount" class="form-label">Room(s)</label>
                   <input class="form-control" type="number" id="roomCount" v-model="roomCount" min="1" @input="updateRepeater" />
                 </div> -->
-                <div class="col-md-3 col-12">
+                <div class="col-lg-3 col-12 col-md-6 p-0 pe-sm-3">
                   <label for="roomCount" class="form-label">Room(s)</label>
                   <input class="form-control" type="number" id="roomCount" v-model="formAddReservation.numberRooms" min="1" max="1" />
                 </div>
-                <div class="col-md-9 col-12 mb-4">
+                <div class="col-lg-9 col-12 mb-4 col-md-6 ps-sm-2 p-0 pe-md-0">
                   <label for="reservationType" class="form-label">Reservation Type</label>
                   <select class="form-select" id="reservationType" v-model="formAddReservation.reservationType" ref="reservationType" :class="{ 'input-error': validationMessages.reservationType }">
                     <option disabled value="">Select</option>
@@ -67,10 +68,10 @@
                 </div>
               </div>
             </div>
-            <div class="row">
-              <div class="col-md-6 col-12 mb-4 p-0">
+            <div class="p-0">
+              <div class="col-lg-6 col-12 mb-4 p-0">
                 <div class="row">
-                  <div class="col-md-6">
+                  <div class="col-lg-6 col-md-6">
                     <label for="bookingSource" class="form-label">Booking Source</label>
                     <select class="form-select" id="bookingSource" v-model="formAddReservation.bookingSource" ref="bookingSource" :class="{ 'input-error': validationMessages.bookingSource }">
                       <option disabled value="">Select</option>
@@ -80,7 +81,7 @@
                     </select>
                     <span v-if="validationMessages.bookingSource" class="error-message">{{ validationMessages.bookingSource }}</span>
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-lg-6 col-md-6">
                     <label for="businessSource" class="form-label">Business Source</label>
                     <select class="form-select" id="businessSource" v-model="formAddReservation.businessSource" ref="businessSource" :class="{ 'input-error': validationMessages.businessSource }">
                       <option disabled value="">Select</option>
@@ -100,10 +101,10 @@
           <!--   ! check inputs and repeater -->
           <div class="row mb-3">
             <div class="row">
-              <div class="col-md-4">
+              <div class="col-lg-4">
                 <div class="row">
-                  <div class="col-md-4">Rate Offered:</div>
-                  <div class="col-md-8">
+                  <div class="col-lg-4">Rate Offered:</div>
+                  <div class="col-lg-8">
                     <div class="form-check">
                       <input type="checkbox" class="form-check-input" id="rateOfferedContract" v-model="formAddReservation.rateOffered.contract" />
                       <label class="form-check-label" for="rateOfferedContract">Contract</label>
@@ -111,21 +112,21 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-8">
+              <div class="col-lg-8">
                 <div class="row">
-                  <div class="col-md-4">
+                  <div class="col-lg-4">
                     <div class="form-check">
                       <input type="checkbox" class="form-check-input" id="rateOfferedBookAll" v-model="formAddReservation.rateOffered.bookAll" />
                       <label class="form-check-label" for="rateOfferedBookAll">Book All Available Rooms</label>
                     </div>
                   </div>
-                  <div class="col-md-4">
+                  <div class="col-lg-4">
                     <div class="form-check">
                       <input type="checkbox" class="form-check-input" id="rateOfferedQuickGroup" v-model="formAddReservation.rateOffered.quickGroup" />
                       <label class="form-check-label" for="rateOfferedQuickGroup">Quick Group Booking</label>
                     </div>
                   </div>
-                  <div class="col-md-4">
+                  <div class="col-lg-4">
                     <div class="form-check">
                       <input type="checkbox" class="form-check-input" id="rateOfferedComplimentary" v-model="formAddReservation.rateOffered.complimentaryRoom" />
                       <label class="form-check-label" for="rateOfferedComplimentary">Complimentary Room</label>
@@ -194,7 +195,7 @@
                         </td>
                         <td>
                           <div class="row">
-                            <div class="col-md-10">
+                            <div class="col-lg-10">
                               <div class="input-group">
                                 <input type="text" class="form-control" placeholder="0.00" id="rateAmount" v-model="formAddReservation.units[0].rateAmount" aria-label="number of rateAmount" ref="rateAmount" :class="{ 'input-error': validationMessages.rateAmount }" />
                                 <span class="input-group-text groupStyle">EGP</span>
@@ -224,22 +225,22 @@
           <hr class="my-4" />
           <!--  ! Hold Release Date & Time -->
           <div class="row">
-            <div class="col-md-5">
+            <div class="col-lg-5">
               <div class="row">
-                <div class="col-md-8">
+                <div class="col-lg-8">
                   <div class="row">
-                    <div class="col-md-7 col-12 px-0">
+                    <div class="col-lg-7 col-12 col-md-6 px-0">
                       <label for="flatpickr-date-03" class="form-label">Hold Release Date & Time</label>
                       <input type="text" placeholder="YYYY-MM-DD" id="flatpickr-date-03" class="form-control flatpickr-input" ref="datePicker3" v-model="formAddReservation.releaseDate" />
                       <i class="fa-solid fa-calendar-days icon-date"></i>
                     </div>
-                    <div class="col-md-5 col-12 px-0 mt">
+                    <div class="col-lg-5 col-12 col-md-6 px-0 mt">
                       <input type="text" placeholder="HH:MM" id="flatpickr-time-03" class="form-control flatpickr-input" ref="timePicker3" aria-label="input Text to Time" v-model="formAddReservation.releaseTime" />
                       <i class="fa-regular fa-clock icon-time right"></i>
                     </div>
                   </div>
                 </div>
-                <div class="col-md-4 col-12">
+                <div class="col-lg-4 px-0  px-md-0 px-lg-3 col-12">
                   <label for="releaseTerm" class="form-label">Release Term</label>
                   <div class="input-group">
                     <input type="text" class="form-control" placeholder="Value" id="releaseTerm" v-model="formAddReservation.releaseTerm" />
@@ -248,16 +249,16 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-7">
+            <div class="col-lg-7">
               <div class="row">
-                <div class="col-md-4 col-12">
+                <div class="col-lg-4 px-0 p-md-0 col-12">
                   <label for="releaseTerm" class="form-label">Remind Guest before</label>
                   <div class="input-group">
                     <input type="number" class="form-control" placeholder="0" id="releaseTerm" v-model="formAddReservation.remindGuest" />
                     <span class="input-group-text groupStyle">Days</span>
                   </div>
                 </div>
-                <div class="col-md-8 col-12">
+                <div class="col-lg-8 col-12">
                   <div class="d-flex mt-4">
                     <div class="form-check mr-2">
                       <input type="radio" id="hold-release" name="optionRadioDate" class="form-check-input" v-model="formAddReservation.holdRelease" />
@@ -277,7 +278,7 @@
           <!--  ! Guest Information -->
           <h6 class="mb-2">Guest Information</h6>
           <div class="row">
-            <div class="col-md-5">
+            <div class="col-lg-5 px-md-0">
               <label for="nameGuest" class="col-form-label">Guest Name</label>
               <div class="input-group">
                 <select class="form-select" id="nameGuest">
@@ -314,40 +315,39 @@
 
               <SidebarAddGuest :is-sidebar-open="isSidebarOpen" @close-sidebar="toggleSidebar" />
             </div>
-            <div class="col-md-7">
+            <div class="col-lg-7">
               <div class="row">
-                <div class="col-md-6">
+                <div class="col-lg-6 col-md-6 ps-md-0 ps-lg-3">
                   <label for="emailGuest" class="col-form-label">Email</label>
                   <input class="form-control" type="email" id="emailGuest" placeholder="Email" v-model="formAddReservation.guestInformation.email" />
                 </div>
-                <div class="col-md-6">
-                  <div class="mb-3 row">
+                <div class="col-lg-6 col-md-6 px-4 mx-0">
+                  <div class="mb-lg-3 row">
                     <label for="mobileGuest" class="col-form-label">Mobile</label>
                     <input class="form-control" type="tel" id="mobileGuest" placeholder="Mobile" v-model="formAddReservation.guestInformation.mobile" ref="mobile" :class="{ 'input-error': validationMessages.mobile }" />
                     <span class="error-message" v-if="validationMessages.mobile">{{ validationMessages.mobile }}</span>
-
                   </div>
                 </div>
               </div>
             </div>
-            <div class="col-md-7">
+            <div class="col-lg-7 mb-lg-3 px-md-0">
               <label for="addressGuest" class="col-form-label">Address</label>
               <input class="form-control" type="text" id="addressGuest" placeholder="Address" v-model="formAddReservation.guestInformation.address" />
             </div>
-            <div class="row">
-              <div class="col-md-3">
+            <div class="row px-0 mx-0 p-md-0">
+              <div class="col-lg-3 col-md-6">
                 <label for="countryGuest" class="col-form-label">Country</label>
                 <input class="form-control" type="text" id="countryGuest" placeholder="country" v-model="formAddReservation.guestInformation.country" />
               </div>
-              <div class="col-md-3">
+              <div class="col-lg-3 col-md-6 px-md-0">
                 <label for="stateGuest" class="col-form-label">State</label>
                 <input class="form-control" type="text" id="stateGuest" placeholder="state" v-model="formAddReservation.guestInformation.state" />
               </div>
-              <div class="col-md-3">
+              <div class="col-lg-3 col-md-6">
                 <label for="cityGuest" class="col-form-label">City</label>
                 <input class="form-control" type="text" id="cityGuest" placeholder="city" v-model="formAddReservation.guestInformation.city" />
               </div>
-              <div class="col-md-3">
+              <div class="col-lg-3 col-md-6 px-md-0">
                 <label for="ZipGuest" class="col-form-label">Zip</label>
                 <input class="form-control" type="text" id="ZipGuest" placeholder="Zip" v-model="formAddReservation.guestInformation.zip" />
               </div>
