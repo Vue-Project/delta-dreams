@@ -63,7 +63,7 @@
           <div class="col">
             <div class="me-2">
               <!-- <h6>Cancel Reservation</h6> -->
-              <button type="button" class="btn btn-label-danger waves-effect mt-3" title="Cancel Reservation"><i class="fa-solid fa-xmark"></i></button>
+              <button type="button" class="btn btn-label-danger waves-effect mt-3" title="Cancel Reservation">Cancel Reservation</button>
             </div>
           </div>
         </div>
