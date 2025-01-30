@@ -20,7 +20,7 @@
                   <i class="fa-solid fa-calendar-days icon-date"></i>
                 </div>
 
-                
+
                 <!-- Check-in Time Picker-->
                 <div class="col-lg-3 col-12 col-md-6 px-0">
                   <div class="input-group mt-4">
@@ -51,11 +51,11 @@
                   <label for="roomCount" class="form-label">Room(s)</label>
                   <input class="form-control" type="number" id="roomCount" v-model="roomCount" min="1" @input="updateRepeater" />
                 </div> -->
-                <div class="col-lg-3 ps-md-0 col-12 col-md-6">
+                <div class="col-lg-3 col-12 col-md-6 p-0 pe-sm-3">
                   <label for="roomCount" class="form-label">Room(s)</label>
                   <input class="form-control" type="number" id="roomCount" v-model="formAddReservation.numberRooms" min="1" max="1" />
                 </div>
-                <div class="col-lg-9 col-12 mb-4 col-md-6 pe-md-0">
+                <div class="col-lg-9 col-12 mb-4 col-md-6 ps-sm-2 p-0 pe-md-0">
                   <label for="reservationType" class="form-label">Reservation Type</label>
                   <select class="form-select" id="reservationType" v-model="formAddReservation.reservationType" ref="reservationType" :class="{ 'input-error': validationMessages.reservationType }">
                     <option disabled value="">Select</option>
@@ -227,7 +227,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-lg-4 px-md-0 px-lg-3 col-12">
+                <div class="col-lg-4 px-0  px-md-0 px-lg-3 col-12">
                   <label for="releaseTerm" class="form-label">Release Term</label>
                   <div class="input-group">
                     <input type="text" class="form-control" placeholder="Value" id="releaseTerm" v-model="formAddReservation.releaseTerm" />
@@ -238,7 +238,7 @@
             </div>
             <div class="col-lg-7">
               <div class="row">
-                <div class="col-lg-4 p-md-0 col-12">
+                <div class="col-lg-4 px-0 p-md-0 col-12">
                   <label for="releaseTerm" class="form-label">Remind Guest before</label>
                   <div class="input-group">
                     <input type="number" class="form-control" placeholder="0" id="releaseTerm" v-model="formAddReservation.remindGuest" />
@@ -327,12 +327,11 @@
                   <label for="emailGuest" class="col-form-label">Email</label>
                   <input class="form-control" type="email" id="emailGuest" placeholder="Email" v-model="formAddReservation.guestInformation.email" />
                 </div>
-                <div class="col-lg-6 col-md-6 ">
+                <div class="col-lg-6 col-md-6 px-4 mx-0">
                   <div class="mb-lg-3 row">
                     <label for="mobileGuest" class="col-form-label">Mobile</label>
                     <input class="form-control" type="tel" id="mobileGuest" placeholder="Mobile" v-model="formAddReservation.guestInformation.mobile" ref="mobile" :class="{ 'input-error': validationMessages.mobile }" />
                     <span class="error-message" v-if="validationMessages.mobile">{{ validationMessages.mobile }}</span>
-
                   </div>
                 </div>
               </div>
@@ -341,7 +340,7 @@
               <label for="addressGuest" class="col-form-label">Address</label>
               <input class="form-control" type="text" id="addressGuest" placeholder="Address" v-model="formAddReservation.guestInformation.address" />
             </div>
-            <div class="row p-md-0">
+            <div class="row px-0 mx-0 p-md-0">
               <div class="col-lg-3 col-md-6">
                 <label for="countryGuest" class="col-form-label">Country</label>
                 <input class="form-control" type="text" id="countryGuest" placeholder="country" v-model="formAddReservation.guestInformation.country" />
