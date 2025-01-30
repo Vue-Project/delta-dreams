@@ -109,21 +109,28 @@ export default {
     // Fetch data for a specific tab
     async fetchTabData (tab)
     {
-
-
       try {
-        console.log(`Fetching data for tab: ${tab} with date: ${this.selectedDate}`); // Log the tab and date
-        const responseData = await getRooms(tab, this.selectedDate); // Pass tab and date to API
-        console.log(`API response for tab ${tab}:`, responseData); // Log the API response
+        // console.log(`Fetching data for tab: ${tab} with date: ${this.selectedDate}`);
+        const responseData = await getRooms(tab, this.selectedDate);
+        // console.log(`API response for tab ${tab}:`, responseData);
 
-        const filteredData = this.filterDataByTab(responseData.data.data, tab);
-        this.tabData[tab].data = filteredData;
+        if (responseData?.data) {
+          const filteredData = this.filterDataByTab(responseData.data, tab);
+          this.tabData[tab].data = filteredData;
 
-        // Update statistics (if needed)
-        this.statisticsHeaderRoomView = responseData.data.statistics;
+          if (responseData.statistics) {
+            this.statisticsHeaderRoomView = responseData.statistics;
+          }
+        } else {
+          // console.error('Invalid response structure:', responseData);
+          this.tabData[tab].error = 'Invalid response data';
+        }
       } catch (error) {
         this.tabData[tab].error = error;
-        console.error(`Error fetching data for ${tab}:`, error); // Log the error
+        // console.error(`Error fetching data for ${tab}:`, error);
+        // Initialize empty data on error to prevent undefined errors
+        this.tabData[tab].data = [];
+        this.statisticsHeaderRoomView[tab] = 0;
       } finally {
         this.tabData[tab].loading = false;
       }
