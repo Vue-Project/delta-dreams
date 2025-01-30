@@ -19,14 +19,14 @@
             </span>
           </div>
           <div class="row mt-4">
-            <div class="col-md-6">
+            <div class="col-md-12">
               <button type="button" class="btn btn-primary waves-effect waves-light btn-block" @click="navigateToEditReservation(selectedEvent.id)">
                 Edit
               </button>
             </div>
             <div class="col-md-6">
-              <button type="button" class="btn btn-primary waves-effect waves-light btn-block" data-bs-toggle="modal" data-bs-target="#paymentModal">
-                Add Payment </button>
+              <!-- <button type="button" class="btn btn-primary waves-effect waves-light btn-block" data-bs-toggle="modal" data-bs-target="#paymentModal">
+                Add Payment </button> -->
               <!-- <div class="demo-inline-spacing">
                 <div class="btn-group btn-block" id="dropdown-icon-demo">
                   <button type="button" class="btn btn-primary dropdown-toggle waves-effect waves-light" data-bs-toggle="dropdown" aria-expanded="false">
@@ -217,7 +217,7 @@
 
       </template>
       <!-- Modal Payment -->
-      <div class="modal fade" id="paymentModal" data-bs-backdrop="static" tabindex="-1" style="display: none;" aria-hidden="true">
+      <!-- <div class="modal fade" id="paymentModal" data-bs-backdrop="static" tabindex="-1" style="display: none;" aria-hidden="true">
         <div class="modal-dialog">
           <form class="modal-content" @submit.prevent="submitPayment">
             <div class="modal-header">
@@ -277,7 +277,7 @@
             </div>
           </form>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
