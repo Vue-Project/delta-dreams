@@ -1,4 +1,3 @@
-
 import apiClient from './apiClient';
 
 export const getBusinessSources = async () =>
@@ -29,6 +28,18 @@ export const getUnitTypes = async () =>
 {
   try {
     const response = await apiClient.get('/unit_types');
+    // console.log(response.data);
+    return response.data;
+
+  } catch (error) {
+    console.error('Error fetching rooms:', error);
+    throw error;
+  }
+};
+export const getUnits = async (unitTypeId) =>
+{
+  try {
+    const response = await apiClient.get(`/units?unit_type_id=${unitTypeId}`);
     // console.log(response.data);
     return response.data;
 

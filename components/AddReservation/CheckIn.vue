@@ -1,6 +1,5 @@
 <template>
   <section class="checkIn-reservations">
-    <p>{{unitsTypes}}</p>
     <div class="card">
       <h5 class="card-header">
         <NuxtLink to="/"><i class="fa-solid fa-angle-left pr-2" style="color: #6f6b7d"></i> </NuxtLink>Add Reservation
@@ -154,10 +153,16 @@
                     <tbody>
                       <tr v-for="(item, index) in formData" :key="index" class="mb-2 selectStyle">
                         <td>
-                          <input type="text" class="form-control" v-model="formAddReservation.units[0].roomType" disabled aria-label="Room Type of building ID" />
+                          <select class="form-select" id="unitsTypes" v-model="formAddReservation.units[0].roomType" @change="handleUnitTypeChange">
+                            <option disabled value="">Select</option>
+                            <option v-for="unitType in unitsTypes" :key="unitType.id" :value="unitType.id">
+                              {{ unitType.name }}
+                            </option>
+                          </select>
+                          <!-- <input type="text" class="form-control" v-model="formAddReservation.units[0].roomType" disabled aria-label="Room Type of building ID" /> -->
 
                         </td>
-                        <td style="width: 185px">
+                        <td>
                           <select class="form-select" v-model="formAddReservation.units[0].rateType" ref="rateType" :class="{ 'input-error': validationMessages.rateType }">
                             <option value="">Rate Type</option>
                             <option value="breakfast">Breakfast</option>
@@ -168,7 +173,14 @@
 
                         </td>
                         <td>
-                          <input type="text" class="form-control" v-model="formAddReservation.units[0].room" disabled aria-label="Room  of building ID" />
+                          <select class="form-select " v-model="formAddReservation.units[0].unitId" :disabled="!availableUnits.length">
+                            <option disabled value="">Select Unit</option>
+                            <option v-for="unit in availableUnits" :key="unit.id" :value="unit.id">
+                              {{ unit.code }}
+                            </option>
+                          </select>
+
+                          <!-- <input type="text" class="form-control" v-model="formAddReservation.units[0].room" disabled aria-label="Room  of building ID" /> -->
 
                         </td>
                         <td>
@@ -405,8 +417,8 @@
   </section>
 </template>
 <script>
-import Swal from 'sweetalert2';  // Import SweetAlert2
-import { getBookingSources, getBusinessSources, getReservationTypes, getGuestsInfo, postAddReservationData, getUnitTypes } from "../../Api/addResvertionApi";
+import { showSuccessAlert, handleSubmissionError } from '../../Api/MassageValidation/alertUtilities';
+import { getBookingSources, getBusinessSources, getReservationTypes, getGuestsInfo, postAddReservationData, getUnitTypes, getUnits } from "../../Api/addResvertionApi";
 import flatpickrMixin from "../Mixin/flatpickrMixin";
 import SidebarAddGuest from "../layout/AddGuestSidebar.vue";
 
@@ -436,7 +448,9 @@ export default {
       businessSources: [],
       bookingSources: [],
       reservationTypes: [],
-      unitsTypes:[],
+      unitsTypes: [],
+      availableUnits: [],
+      selectedUnit: '',
       formAddReservation: {
         checkInDate: "",
         checkInTime: "",
@@ -452,7 +466,7 @@ export default {
           complimentaryRoom: false,
         },
         units: [{
-          // roomType: "",
+          roomType: "",
           rateType: "",
           room: "",
           adults: "",
@@ -460,6 +474,7 @@ export default {
           rateAmount: "",
           unitTypeId: "",
           unitId: "",
+
         }],
         releaseDate: "",
         releaseTime: "",
@@ -507,6 +522,7 @@ export default {
   },
 
   methods: {
+
     updateRepeater ()
     {
       const currentCount = this.formData.length;
@@ -717,7 +733,6 @@ export default {
         payment_method: this.paymentData.paymentMethod,
         selected_payment_method: this.paymentData.selectedPaymentMethod
       };
-      console.log(bookingData);
 
 
 
@@ -725,40 +740,19 @@ export default {
       try {
         const response = await postAddReservationData(bookingData);
 
-        Swal.fire({
-          icon: "success",
-          title: "Success!",
-          text: "Reservation submitted successfully.",
-          confirmButtonText: "OK",
-        }).then(() =>
-        {
-          // Navigate to index.vue (or a route associated with it)
-          this.$router.push({ name: 'index' }); // Replace 'index' with the actual route name
-        });
+        await showSuccessAlert(
+          "Reservation submitted successfully!", // Custom message
+          this.$router,
+          'index' // Route name
+        );
 
       } catch (error) {
         // Handle the error response from the server
         // Check if there are validation errors from the server in the response
-        if (error.response && error.response.data && error.response.data.errors) {
-          // Join the validation errors into a single string
-          const validationErrors = error.response.data.errors.join(', ');
-
-          // Show the validation errors in the SweetAlert
-          Swal.fire({
-            icon: "error",
-            title: "Validation Error",
-            text: validationErrors,
-            confirmButtonText: "OK",
-          });
-        } else {
-          // Show a generic error message if there are no specific validation errors
-          Swal.fire({
-            icon: "error",
-            title: "Error",
-            text: "There was an issue submitting the booking. Please try again.",
-            confirmButtonText: "OK",
-          });
-        }
+        handleSubmissionError(
+          error,
+          "There was an issue with your reservation." // Custom default error
+        );
       }
 
     },
@@ -797,34 +791,28 @@ export default {
     {
       this.$router.go(-1);
     },
-    spliceSelectedResourceName ()
+    async spliceSelectedResourceName ()
     {
       if (this.selectedResourceName) {
-        // Split the selectedResourceName by ' - ' to get unit and roomType
-        const [unitWithPrefix, room] = this.selectedResourceName.split(' - ');
+        const parts = this.selectedResourceName.split(' - ')
+        const displayUnit = parts[0]
+        const displayType = parts[1]
+        const idPart = parts[2]
+        const [unitTypeId, unitId] = idPart
+          .replace('ID: ', '')
+          .split('-')
 
-        // The unit with the prefix remains as it is, and room is assigned as roomType
-        const roomType = room || '';  // Default to empty if room is missing
-        const unit = unitWithPrefix.trim();  // Keep 'UNIT-' part intact
+        // Update to set both roomType and unitTypeId
+        this.formAddReservation.units[0].roomType = unitTypeId
+        this.formAddReservation.units[0].unitTypeId = unitTypeId
+        this.formAddReservation.units[0].unitId = unitId
 
-        // Extract the ID part after 'ID: '
-        const idPart = this.selectedResourceName.split('ID: ')[1] || '';
-
-        // Split the ID part into two values (21 and 1 in this case)
-        const [unitTypeId, unitId] = idPart.split('-');
-
-        // Assign values to formAddReservation
-        this.formAddReservation.units[0].roomType = roomType;
-        this.formAddReservation.units[0].room = unit;
-
-        // Assign the separate ID parts to the form (unitTypeId = 21, unitId = 1)
-        this.formAddReservation.units[0].unitTypeId = unitTypeId || ''; // 21
-        this.formAddReservation.units[0].unitId = unitId || ''; // 1
-
-        // For display, you can combine unit and roomType
-        this.selectedResourceNameForDisplay = `${unit} - ${roomType}`;
+        this.handleUnitTypeChange()
       }
     },
+
+
+
     formatRateAmount ()
     {
       const value = this.formAddReservation.units[0].rateAmount;
@@ -835,6 +823,25 @@ export default {
         this.validationMessages.rateAmount = "";
         // Format the value to two decimal places
         this.formAddReservation.units[0].rateAmount = parseFloat(value).toFixed(2);
+      }
+    },
+    async handleUnitTypeChange ()
+    {
+      try {
+        const unitTypeId = this.formAddReservation.units[0].roomType
+        if (unitTypeId) {
+          // Reset selected unit when changing type
+          this.selectedUnit = ''
+
+          // Fetch units for selected type
+          const response = await getUnits(unitTypeId)
+          this.availableUnits = response.data.data
+        } else {
+          this.availableUnits = []
+        }
+      } catch (error) {
+        console.error('Error fetching units:', error)
+        this.availableUnits = []
       }
     },
 
@@ -920,13 +927,14 @@ export default {
         getReservationTypes(),
         getGuestsInfo(),
         getUnitTypes(),
+        getUnits(),
       ]);
 
       this.businessSources = businessSourcesResponse.data.data;
       this.bookingSources = bookingSourcesResponse.data.data;
       this.reservationTypes = reservationTypesResponse.data.data;
       this.filteredNames = usersResponse.data.data;
-      this.unitsTypes =unitTypesResponse.data;
+      this.unitsTypes = unitTypesResponse.data.data;
     } catch (error) {
       console.error("Error loading data:", error);
     }
