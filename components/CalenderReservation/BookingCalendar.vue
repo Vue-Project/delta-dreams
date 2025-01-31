@@ -1,7 +1,6 @@
 <template>
   <section class="card">
     <momenalert></momenalert>
-    <p>{{ selectedBlockedEvent }}</p>
     <Loader :visible="isLoading" />
     <FilterCalendar ref="filterComponent" :statistics="statistics" :buildingNames="buildingNames" @show-all-resources="showAllResources" @show-building-resources="showBuildingResources" @date-selected="SelectedDateFilterCalendar" />
     <FullCalendar :options="calendarOptions" @select="handleSelect" ref="calendar" :selectedDate="selectedDate">
