@@ -19,17 +19,27 @@ export const handleSubmissionError = (error, defaultMessage = "There was an issu
 
   if (error.response?.data?.errors) {
     const validationErrors = error.response.data.errors;
-
     if (typeof validationErrors === 'object') {
       errorMessage = Object.values(validationErrors)
         .flat()
         .join('\n');
     }
   }
+  // If no errors found, check for message in response
+  else if (error.response?.data?.message) {
+    errorMessage = error.response.data.message;
+  }
+  else if (error.response?.data?.error) {
+    errorMessage = error.response.data.error;
+  }
+  // If no response data at all, use the error message
+  else if (error.message) {
+    errorMessage = error.message;
+  }
 
   return Swal.fire({
     icon: "error",
-    title: "Validation Error",
+    title: "Error",
     text: errorMessage,
     confirmButtonText: "OK",
   });

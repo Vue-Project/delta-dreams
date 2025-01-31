@@ -794,7 +794,7 @@ export default {
 
 
       try {
-        // const response = await PutReservation(this.reservationId, bookingData);
+        const response = await PutReservation(this.reservationId, bookingData);
         await showSuccessAlert(
           "Reservation submitted successfully!", // Custom message
           this.$router,

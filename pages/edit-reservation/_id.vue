@@ -843,7 +843,7 @@ export default {
       this.isCancelling = true;
 
       try {
-        const response = await cancelReservation(5);
+        const response = await cancelReservation(this.selectedReservationId);
         await showSuccessAlert(
           "Reservation cancelled successfully!", // Custom message
 
