@@ -1,9 +1,9 @@
 <template>
   <div class="row d-flex justify-content-between p-2 position-relative">
-    <div class="col-md-2 col-12 calendarDate">
+    <div class="col-lg-2 col-12 calendarDate">
       <input
         type="text"
-        class="form-control flatpickr-input"
+        class="form-control flatpickr-input mb-sm-2"
         placeholder="YYYY-MM-DD"
         id="flatpickr-date-04"
         ref="datePicker4"
@@ -11,7 +11,7 @@
       />
       <i class="fa-solid fa-calendar-days date-icon"></i>
     </div>
-    <div class="col-md-6 col-12">
+    <div class="col-lg-6 col-12">
       <div class="d-flex items-center gap-4">
         <div v-for="(count, label) in statistics" :key="label">
           <span>{{ label }}</span>
@@ -21,7 +21,7 @@
         </div>
       </div>
     </div>
-    <div class="col-md-4 col-12">
+    <div class="col-lg-4 col-12">
       <div class="d-flex items-center gap-4">
         <div class="w-100">
           <select class="form-select" id="exampleFormControlSelect1" aria-label="Default select example">
