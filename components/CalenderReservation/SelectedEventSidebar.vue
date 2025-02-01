@@ -19,12 +19,12 @@
             </span>
           </div>
           <div class="row mt-4">
-            <div class="col-md-6">
+            <div class="col-6 ">
               <button type="button" class="btn btn-primary waves-effect waves-light btn-block" @click="navigateToEditReservation(selectedEvent.id)">
                 Edit
               </button>
             </div>
-            <div class="col-md-6">
+            <div class="col-6">
               <button type="button" class="btn btn-primary waves-effect waves-light btn-block" data-bs-toggle="modal" data-bs-target="#paymentModal">
                 Add Payment </button>
               <!-- <div class="demo-inline-spacing">
