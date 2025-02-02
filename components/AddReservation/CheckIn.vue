@@ -731,14 +731,36 @@ export default {
         tax_exempt: this.paymentData.taxExempt,
         payment_mode: this.paymentData.paymentMode,
         payment_method: this.paymentData.paymentMethod,
-        selected_payment_method: this.paymentData.selectedPaymentMethod
+        selected_payment_method: this.paymentData.selectedPaymentMethod,
+        payment_details: {
+          room_charges: this.paymentData.roomCharges,
+          taxes: this.paymentData.taxes,
+          due_amount: this.paymentData.dueAmount,
+          payment_mode: this.paymentData.paymentMode,
+          payment_method: this.paymentData.paymentMethod,
+          payment_type: this.paymentData.selectedPaymentType,
+          transaction_details: {
+            amount: this.paymentData.amount,
+            bank_name: this.paymentData.bankName,
+            account_number: this.paymentData.accountNumber,
+            transfer_date: this.paymentData.transferDate,
+            phone_number: this.paymentData.phoneNumber,
+            transaction_id: this.paymentData.transactionId,
+            card_number: this.paymentData.cardNumber,
+            expiry_date: this.paymentData.expiryDate,
+            cvv: this.paymentData.cvv,
+            comment: this.paymentData.comment
+          }
+        }
       };
+      console.log(bookingData);
+
 
 
 
       // If no errors, send the data to the server
       try {
-        const response = await postAddReservationData(bookingData);
+        // const response = await postAddReservationData(bookingData);
 
         await showSuccessAlert(
           "Reservation submitted successfully!", // Custom message
