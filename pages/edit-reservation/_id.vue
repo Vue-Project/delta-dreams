@@ -103,6 +103,11 @@
             Audit Trail
           </button>
         </li>
+        <li class="nav-item col-6 col-md" role="presentation">
+          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-Wallet" role="tab" aria-selected="true">
+            Wallet
+          </button>
+        </li>
         <!--  End Nav Tabs -->
 
         <!--  Start print/Send Menu -->
@@ -632,6 +637,9 @@
           </div>
         </div>
         <!--  End Audit Trail tab  -->
+        <div class="tab-pane fade" id="form-tabs-Wallet" role="tabpanel">
+
+        </div>
       </template>
     </HeaderReservation>
   </div>
