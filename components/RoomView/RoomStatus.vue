@@ -23,7 +23,13 @@
     <div class="tab-content">
       <div v-for="tab in tabs" :key="tab" class="tab-pane fade" :class="{ 'active show': activeTab === tab }">
         <div class="room-grid">
-          <div class="card mb-3 text-left" v-for="room in tabData[tab].data" :key="room.id" :class="['room', room.status]">
+          <div
+            class="card mb-3 text-left cursor-pointer"
+            v-for="room in tabData[tab].data"
+            :key="room.id"
+            :class="['room', room.status]"
+            @click="showRoomDetails(room)"
+          >
             <div class="card-header cursor-move p-1">
               <div class="icon-wrapper float-end" @mouseenter="hoveredIcon = { type: 'smoking', id: room.id }" @mouseleave="hoveredIcon = null">
                 <i class="fa-solid" :class="room.is_smooking === 1 ? 'fa-smoking' : 'fa-ban-smoking'
@@ -71,14 +77,29 @@
         </div>
       </div>
     </div>
+
+    <!-- Room Details Sidebar -->
+    <RoomDetailsSidebar
+      :is-open="selectedRoom !== null"
+      :room="selectedRoom || {}"
+      @close="selectedRoom = null"
+      @book-room="handleBookRoom"
+      @view-history="handleViewHistory"
+    />
+  </div>
   </div>
 </template>
 
 <script>
 import { getRooms } from '../../Api/roomViewApi';
+import RoomDetailsSidebar from './RoomDetailsSidebar.vue';
+
 export default {
   name: "reservations",
   layout: "component",
+  components: {
+    RoomDetailsSidebar
+  },
 
   data ()
   {
@@ -97,6 +118,7 @@ export default {
         dueout: { data: [], loading: false, error: null },
         dirty: { data: [], loading: false, error: null },
       },
+      selectedRoom: null
     };
   },
   methods: {
@@ -144,6 +166,10 @@ export default {
       }
       return data.filter((room) => room.status === tab); // Filter by status
     },
+
+    showRoomDetails(room) {
+      this.selectedRoom = room;
+    }
   },
   watch: {
     // Watch for changes in the selected date
@@ -170,4 +196,14 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.room:hover {
+  transform: translateY(-2px);
+  transition: transform 0.2s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+</style>
