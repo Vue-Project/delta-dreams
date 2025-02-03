@@ -854,6 +854,9 @@ export default {
         const response = await cancelReservation(this.selectedReservationId);
         await showSuccessAlert(
           "Reservation cancelled successfully!", // Custom message
+          this.$router,
+          'index' // Route name
+
 
         );
 
