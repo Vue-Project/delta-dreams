@@ -5,9 +5,9 @@
     <div class="card-header">
       <ul class="nav nav-tabs " role="tablist">
         <div class="col-md-2 col-12 calendarDate mt-2">
-      <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD" id="flatpickr-date-04" ref="datePicker4" aria-label="input for date" v-model="selectedDate" />
-      <i class="fa-solid fa-calendar-days date-icon"></i>
-    </div>
+          <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD" id="flatpickr-date-04" ref="datePicker4" aria-label="input for date" v-model="selectedDate" />
+          <i class="fa-solid fa-calendar-days date-icon"></i>
+        </div>
         <li class="nav-item" role="presentation" v-for="tab in tabs" :key="tab">
           <button class="nav-link" :class="{ active: activeTab === tab }" @click="setActiveTab(tab)">
             {{ tab }}
@@ -23,13 +23,7 @@
     <div class="tab-content">
       <div v-for="tab in tabs" :key="tab" class="tab-pane fade" :class="{ 'active show': activeTab === tab }">
         <div class="room-grid">
-          <div
-            class="card mb-3 text-left cursor-pointer"
-            v-for="room in tabData[tab].data"
-            :key="room.id"
-            :class="['room', room.status]"
-            @click="showRoomDetails(room)"
-          >
+          <div class="card mb-3 text-left cursor-pointer" v-for="room in tabData[tab].data" :key="room.id" :class="['room', room.status]" @click="handleRoomClick(room)">
             <div class="card-header cursor-move p-1">
               <div class="icon-wrapper float-end" @mouseenter="hoveredIcon = { type: 'smoking', id: room.id }" @mouseleave="hoveredIcon = null">
                 <i class="fa-solid" :class="room.is_smooking === 1 ? 'fa-smoking' : 'fa-ban-smoking'
@@ -49,7 +43,7 @@
                   </span>
                 </div>
               </div>
-              {{ room.name }}
+              {{ room.code }}
             </div>
             <div class="card-body p-1 position-relative">
               <p class="fs-5">
@@ -79,27 +73,25 @@
     </div>
 
     <!-- Room Details Sidebar -->
-    <RoomDetailsSidebar
+    <!-- <RoomDetailsSidebar
       :is-open="selectedRoom !== null"
       :room="selectedRoom || {}"
       @close="selectedRoom = null"
       @book-room="handleBookRoom"
       @view-history="handleViewHistory"
-    />
+    /> -->
   </div>
   </div>
 </template>
 
 <script>
 import { getRooms } from '../../Api/roomViewApi';
-import RoomDetailsSidebar from './RoomDetailsSidebar.vue';
+import Swal from 'sweetalert2'
+
 
 export default {
   name: "reservations",
   layout: "component",
-  components: {
-    RoomDetailsSidebar
-  },
 
   data ()
   {
@@ -167,8 +159,46 @@ export default {
       return data.filter((room) => room.status === tab); // Filter by status
     },
 
-    showRoomDetails(room) {
-      this.selectedRoom = room;
+    handleRoomClick (room)
+    {
+      if (room.status === 'blocked') {
+        // Show block details with SweetAlert
+        Swal.fire({
+          title: 'Room is Blocked',
+          html: `
+            <div class="text-left">
+              <p><strong>From:</strong> ${room.block?.start_date || 'N/A'}</p>
+              <p><strong>To:</strong> ${room.block?.end_date || 'N/A'}</p>
+              <p><strong>Reason:</strong> ${room.block?.reason.name || 'No reason specified'}</p>
+            </div>
+          `,
+          icon: 'info',
+          confirmButtonText: 'Close',
+          showClass: {
+            popup: 'animate__animated animate__bounceIn'
+          },
+          hideClass: {
+            popup: 'animate__animated animate__bounceOut'
+          }
+        });
+      } else if (room.reservation?.id) {
+        // Navigate to edit reservation if reservation exists
+        this.$router.push(`/edit-reservation/${room.reservation.id}`);
+      } else {
+        // Show no reservation alert with SweetAlert
+        Swal.fire({
+          title: 'No Reservation',
+          text: 'No reservation data available for this room',
+          icon: 'info',
+          confirmButtonText: 'OK',
+          showClass: {
+            popup: 'animate__animated animate__bounceIn'
+          },
+          hideClass: {
+            popup: 'animate__animated animate__bounceOut'
+          }
+        });
+      }
     }
   },
   watch: {
