@@ -214,7 +214,7 @@ export default {
         phoneNumber: '',
         transactionId: '',
         cardNumber: '',
-        date: '',
+        date: new Date().toISOString().split('T')[0],
         cvv: '',
         comment: '',
       }
