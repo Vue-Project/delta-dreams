@@ -1,7 +1,7 @@
 <template>
   <section class="summary position-sticky top-0">
     <div class="card">
-      <p>{{ paymentDetails }}</p>
+      <!-- <p>{{ paymentDetails }}</p> -->
       <h5 class="card-header">
         Billing Summary
 
@@ -36,7 +36,7 @@
           <dt class="col-sm-6 fw-normal">Taxes</dt>
           <dd class="col-sm-6 text-end">{{ paymentDetails.taxes }}</dd>
 
-          <dt class="col-6 fw-normal text-heading">Due Amount</dt>
+          <dt class="col-6 fw-normal text-heading">Charge Extra</dt>
           <dd class="col-6 text-end">EGP {{ paymentDetails.dueAmount }}</dd>
         </dl>
 
@@ -85,27 +85,29 @@
             <dt class="col-6">Payment Type:</dt>
             <dd class="col-6">{{ selectedPaymentType || 'Not selected' }}</dd>
 
-            <!-- Show relevant payment details based on payment type -->
-            <template v-if="selectedPaymentType === 'cash'">
-              <dt class="col-6">Amount Received:</dt>
-              <dd class="col-6">{{ paymentDetails.amount || 'Not specified' }}</dd>
+            <!-- Common fields for all payment types -->
+            <dt class="col-6">Amount:</dt>
+            <dd class="col-6">{{ paymentDetails.amount || 'Not specified' }}</dd>
+
+            <dt class="col-6">Date:</dt>
+            <dd class="col-6">{{ paymentDetails.date || 'Not specified' }}</dd>
+
+            <template v-if="paymentDetails.comment">
+              <dt class="col-6">Comment:</dt>
+              <dd class="col-6">{{ paymentDetails.comment }}</dd>
             </template>
 
-            <template v-if="selectedPaymentType === 'bank_transfer'">
+            <!-- Payment specific fields -->
+            <!-- <template v-if="selectedPaymentType === 'bank_transfer'">
               <dt class="col-6">Bank Name:</dt>
               <dd class="col-6">{{ paymentDetails.bankName || 'Not specified' }}</dd>
-
               <dt class="col-6">Account Number:</dt>
               <dd class="col-6">{{ paymentDetails.accountNumber || 'Not specified' }}</dd>
-
-              <dt class="col-6">Transfer Date:</dt>
-              <dd class="col-6">{{ paymentDetails.transferDate || 'Not specified' }}</dd>
             </template>
 
             <template v-if="['vodafone', 'we', 'orange', 'etisalat'].includes(selectedPaymentType)">
               <dt class="col-6">Phone Number:</dt>
               <dd class="col-6">{{ paymentDetails.phoneNumber || 'Not specified' }}</dd>
-
               <dt class="col-6">Transaction ID:</dt>
               <dd class="col-6">{{ paymentDetails.transactionId || 'Not specified' }}</dd>
             </template>
@@ -113,43 +115,33 @@
             <template v-if="selectedPaymentType === 'visa'">
               <dt class="col-6">Card Number:</dt>
               <dd class="col-6">{{ maskCardNumber(paymentDetails.cardNumber) }}</dd>
-
-              <dt class="col-6">Expiry Date:</dt>
-              <dd class="col-6">{{ paymentDetails.expiryDate || 'Not specified' }}</dd>
             </template>
 
             <template v-if="['apple_pay', 'google_pay', 'instapay', 'fawry'].includes(selectedPaymentType)">
               <dt class="col-6">Transaction ID:</dt>
               <dd class="col-6">{{ paymentDetails.transactionId || 'Not specified' }}</dd>
-
-              <dt class="col-6">Amount:</dt>
-              <dd class="col-6">{{ paymentDetails.amount || 'Not specified' }}</dd>
-            </template>
-
-            <!-- Add comment display to all payment type templates -->
-            <template v-if="paymentDetails.comment">
-              <dt class="col-6">Comment:</dt>
-              <dd class="col-6">{{ paymentDetails.comment }}</dd>
-            </template>
+            </template> -->
           </dl>
         </div>
 
         <!-- Dynamic form fields based on payment type -->
         <div class="mt-3" v-if="selectedPaymentType">
-          <!-- Cash Payment -->
-          <div v-if="selectedPaymentType === 'cash'" class="payment-form">
-            <div class="mb-3">
-              <label class="form-label">Amount Received</label>
-              <input type="number" class="form-control" v-model="paymentDetails.amount">
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Comment</label>
-              <textarea class="form-control" v-model="paymentDetails.comment" rows="3"></textarea>
-            </div>
+          <!-- Common fields for all payment types -->
+          <div class="mb-3">
+            <label class="form-label">Amount</label>
+            <input type="number" class="form-control" v-model="paymentDetails.amount">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Date</label>
+            <input type="date" class="form-control" v-model="paymentDetails.date">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Comment</label>
+            <textarea class="form-control" v-model="paymentDetails.comment" rows="3"></textarea>
           </div>
 
-          <!-- Bank Transfer -->
-          <div v-if="selectedPaymentType === 'bank_transfer'" class="payment-form">
+          <!-- Payment specific fields -->
+          <!-- <template v-if="selectedPaymentType === 'bank_transfer'">
             <div class="mb-3">
               <label class="form-label">Bank Name</label>
               <input type="text" class="form-control" v-model="paymentDetails.bankName">
@@ -158,18 +150,9 @@
               <label class="form-label">Account Number</label>
               <input type="text" class="form-control" v-model="paymentDetails.accountNumber">
             </div>
-            <div class="mb-3">
-              <label class="form-label">Transfer Date</label>
-              <input type="date" class="form-control" v-model="paymentDetails.transferDate">
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Comment</label>
-              <textarea class="form-control" v-model="paymentDetails.comment" rows="3"></textarea>
-            </div>
-          </div>
+          </template> -->
 
-          <!-- Digital Wallets (Vodafone, We, Orange, Etisalat) -->
-          <div v-if="['vodafone', 'we', 'orange', 'etisalat'].includes(selectedPaymentType)" class="payment-form">
+          <!-- <template v-if="['vodafone', 'we', 'orange', 'etisalat'].includes(selectedPaymentType)">
             <div class="mb-3">
               <label class="form-label">Phone Number</label>
               <input type="tel" class="form-control" v-model="paymentDetails.phoneNumber">
@@ -178,47 +161,21 @@
               <label class="form-label">Transaction ID</label>
               <input type="text" class="form-control" v-model="paymentDetails.transactionId">
             </div>
-            <div class="mb-3">
-              <label class="form-label">Comment</label>
-              <textarea class="form-control" v-model="paymentDetails.comment" rows="3"></textarea>
-            </div>
-          </div>
+          </template> -->
 
-          <!-- Credit Card (Visa) -->
-          <div v-if="selectedPaymentType === 'visa'" class="payment-form">
+          <!-- <template v-if="selectedPaymentType === 'visa'">
             <div class="mb-3">
               <label class="form-label">Card Number</label>
               <input type="text" class="form-control" v-model="paymentDetails.cardNumber">
             </div>
-            <div class="mb-3">
-              <label class="form-label">Expiry Date</label>
-              <input type="month" class="form-control" v-model="paymentDetails.expiryDate">
-            </div>
-            <div class="mb-3">
-              <label class="form-label">CVV</label>
-              <input type="text" class="form-control" maxlength="3" v-model="paymentDetails.cvv">
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Comment</label>
-              <textarea class="form-control" v-model="paymentDetails.comment" rows="3"></textarea>
-            </div>
-          </div>
+          </template> -->
 
-          <!-- Digital Payment (Apple Pay, Google Pay, Instapay, Fawry) -->
-          <div v-if="['apple_pay', 'google_pay', 'instapay', 'fawry'].includes(selectedPaymentType)" class="payment-form">
+          <!-- <template v-if="['apple_pay', 'google_pay', 'instapay', 'fawry'].includes(selectedPaymentType)">
             <div class="mb-3">
               <label class="form-label">Transaction ID</label>
               <input type="text" class="form-control" v-model="paymentDetails.transactionId">
             </div>
-            <div class="mb-3">
-              <label class="form-label">Amount</label>
-              <input type="number" class="form-control" v-model="paymentDetails.amount">
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Comment</label>
-              <textarea class="form-control" v-model="paymentDetails.comment" rows="3"></textarea>
-            </div>
-          </div>
+          </template> -->
         </div>
       </div>
     </div>
@@ -257,7 +214,7 @@ export default {
         phoneNumber: '',
         transactionId: '',
         cardNumber: '',
-        expiryDate: '',
+        date: '',
         cvv: '',
         comment: '',
       }

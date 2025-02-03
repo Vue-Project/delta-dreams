@@ -654,6 +654,8 @@ export default {
         { field: "children", message: "Children count is required" },
         { field: "rateType", message: "Rate Type is required" },
         { field: "rateAmount", message: "Rate Amount is required" },
+        // { field: "paymentMode", message: "Payment Mode is required", path: "paymentData" },
+
       ];
 
       // Reset validation messages before checking
@@ -717,41 +719,45 @@ export default {
         state: this.formAddReservation.guestInformation.state,
         city: this.formAddReservation.guestInformation.city,
         zip: this.formAddReservation.guestInformation.zip,
-        booking: this.showSelect,
-        booking_option: this.formAddReservation.otherInformation.emailBookingOption,
-        send_email_checkout: this.showInput,
-        email_address_checkout: this.formAddReservation.otherInformation.emailAddressCheckout,
-        access_guest_portal: this.formAddReservation.otherInformation.accessToGuestPortal,
-        suppress_rate_registration_card: this.formAddReservation.otherInformation.suppressRateOnRegistrationCard,
-        room_charges: this.paymentData.roomCharges,
-        taxes: this.paymentData.taxes,
-        total_amount: this.paymentData.totalAmount,
-        due_amount: this.paymentData.dueAmount,
-        bill_to: this.paymentData.billTo,
-        tax_exempt: this.paymentData.taxExempt,
-        payment_mode: this.paymentData.paymentMode,
-        payment_method: this.paymentData.paymentMethod,
-        selected_payment_method: this.paymentData.selectedPaymentMethod,
         payment_details: {
-          room_charges: this.paymentData.roomCharges,
-          taxes: this.paymentData.taxes,
-          due_amount: this.paymentData.dueAmount,
           payment_mode: this.paymentData.paymentMode,
           payment_method: this.paymentData.paymentMethod,
           payment_type: this.paymentData.selectedPaymentType,
-          transaction_details: {
-            amount: this.paymentData.amount,
-            bank_name: this.paymentData.bankName,
-            account_number: this.paymentData.accountNumber,
-            transfer_date: this.paymentData.transferDate,
-            phone_number: this.paymentData.phoneNumber,
-            transaction_id: this.paymentData.transactionId,
-            card_number: this.paymentData.cardNumber,
-            expiry_date: this.paymentData.expiryDate,
-            cvv: this.paymentData.cvv,
-            comment: this.paymentData.comment
-          }
+          payment_price: this.paymentData.roomCharges || 50000,
+          tax: this.paymentData.taxes,
+          // charge_extra: this.paymentData.dueAmount,
+          comment: this.paymentData.comment,
+          amount: this.paymentData.amount,
+          date: this.paymentData.date,
+
+          // transaction_details: {
+          //   bank_name: this.paymentData.bankName,
+          //   account_number: this.paymentData.accountNumber,
+          //   transfer_date: this.paymentData.transferDate,
+          //   phone_number: this.paymentData.phoneNumber,
+          //   transaction_id: this.paymentData.transactionId,
+          //   card_number: this.paymentData.cardNumber,
+          //   expiry_date: this.paymentData.expiryDate,
+          //   cvv: this.paymentData.cvv,
+          //   comment: this.paymentData.comment
+          // }
         }
+        // booking: this.showSelect,
+        // booking_option: this.formAddReservation.otherInformation.emailBookingOption,
+        // send_email_checkout: this.showInput,
+        // email_address_checkout: this.formAddReservation.otherInformation.emailAddressCheckout,
+        // access_guest_portal: this.formAddReservation.otherInformation.accessToGuestPortal,
+        // suppress_rate_registration_card: this.formAddReservation.otherInformation.suppressRateOnRegistrationCard,
+        // room_charges: this.paymentData.roomCharges,
+        // taxes: this.paymentData.taxes,
+        // total_amount: this.paymentData.totalAmount,
+        // due_amount: this.paymentData.dueAmount,
+        // bill_to: this.paymentData.billTo,
+        // tax_exempt: this.paymentData.taxExempt,
+        // payment_mode: this.paymentData.paymentMode,
+        // payment_method: this.paymentData.paymentMethod,
+        // selected_payment_method: this.paymentData.selectedPaymentMethod,
+
       };
       console.log(bookingData);
 
@@ -760,7 +766,7 @@ export default {
 
       // If no errors, send the data to the server
       try {
-        // const response = await postAddReservationData(bookingData);
+        const response = await postAddReservationData(bookingData);
 
         await showSuccessAlert(
           "Reservation submitted successfully!", // Custom message
