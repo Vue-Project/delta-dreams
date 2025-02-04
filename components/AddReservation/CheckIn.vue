@@ -719,31 +719,31 @@ export default {
         state: this.formAddReservation.guestInformation.state,
         city: this.formAddReservation.guestInformation.city,
         zip: this.formAddReservation.guestInformation.zip,
-        payment_details: {
-          room_charges: this.paymentData.roomCharges,
+        // room_charges: this.paymentData.roomCharges,
           tax: this.paymentData.taxes,
           charge_extra: this.paymentData.dueAmount,
-          payment_mode: this.paymentData.paymentMode,
-          payment_method: this.paymentData.paymentMethod,
+          // payment_mode: this.paymentData.paymentMode,
+          payment_id: this.paymentData.paymentMethod,
           payment_type: this.paymentData.selectedPaymentType,
-
           payment_price: this.paymentData.amount,
-          date: this.paymentData.date,
+          date_at: this.paymentData.date,
           note: this.paymentData.comment,
-          // payment_price: this.paymentData.roomCharges || 50000,
+        // payment_details: {
 
-          // transaction_details: {
-          //   bank_name: this.paymentData.bankName,
-          //   account_number: this.paymentData.accountNumber,
-          //   transfer_date: this.paymentData.transferDate,
-          //   phone_number: this.paymentData.phoneNumber,
-          //   transaction_id: this.paymentData.transactionId,
-          //   card_number: this.paymentData.cardNumber,
-          //   expiry_date: this.paymentData.expiryDate,
-          //   cvv: this.paymentData.cvv,
-          //   comment: this.paymentData.comment
-          // }
-        }
+        //   // payment_price: this.paymentData.roomCharges || 50000,
+
+        //   // transaction_details: {
+        //   //   bank_name: this.paymentData.bankName,
+        //   //   account_number: this.paymentData.accountNumber,
+        //   //   transfer_date: this.paymentData.transferDate,
+        //   //   phone_number: this.paymentData.phoneNumber,
+        //   //   transaction_id: this.paymentData.transactionId,
+        //   //   card_number: this.paymentData.cardNumber,
+        //   //   expiry_date: this.paymentData.expiryDate,
+        //   //   cvv: this.paymentData.cvv,
+        //   //   comment: this.paymentData.comment
+        //   // }
+        // }
         // booking: this.showSelect,
         // booking_option: this.formAddReservation.otherInformation.emailBookingOption,
         // send_email_checkout: this.showInput,
@@ -768,7 +768,7 @@ export default {
 
       // If no errors, send the data to the server
       try {
-        // const response = await postAddReservationData(bookingData);
+        const response = await postAddReservationData(bookingData);
 
         await showSuccessAlert(
           "Reservation submitted successfully!", // Custom message
