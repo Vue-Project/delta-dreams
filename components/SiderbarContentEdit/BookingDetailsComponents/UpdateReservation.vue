@@ -413,9 +413,9 @@
               <li class="mb-4 pb-1 d-flex justify-content-between align-items-center">
                 <div class="badge bg-label-danger  rounded p-2"><i class="fa-solid fa-dollar-sign"></i></div>
                 <div class="d-flex justify-content-between w-100 flex-wrap">
-                  <h6 class="mb-0 ms-3">Reamining</h6>
+                  <h6 class="mb-0 ms-3">Remaining</h6>
                   <div class="d-flex">
-                    <p class="mb-0 fw-medium">{{ formAddReservation.BillingSummary.reamining }}</p>
+                    <p class="mb-0 fw-medium">{{ formAddReservation.BillingSummary.remaining}}</p>
                     <!-- <p class="ms-3 text-success mb-0">0.3%</p> -->
                   </div>
                 </div>
@@ -550,7 +550,7 @@ export default {
         BillingSummary: {
           total: "",
           paid: "",
-          reamining: "",
+          remaining: "",
           // billTo: "",
           // roomCharges: "",
           // taxes: "",
@@ -994,7 +994,7 @@ export default {
         BillingSummary: {
           total: reservationData.total || "",
           paid: reservationData.paid || "",
-          reamining: reservationData.reamining || "",
+          remaining: reservationData.remaining || "",
           // billTo: reservationData.bill_to || "",
           // roomCharges: reservationData.room_charges || "",
           // taxes: reservationData.taxes || "",
