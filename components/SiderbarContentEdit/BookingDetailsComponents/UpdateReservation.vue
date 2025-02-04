@@ -386,90 +386,42 @@
           <h6 class="mb-3">BillingSummary</h6>
           <div class="row">
             <div class="col-md-4">
-              <label class="form-label" for="BillingSummaryBillTo">Bill To</label>
-              <select class="form-select" id="BillingSummaryBillTo" v-model="formAddReservation.BillingSummary.billTo">
-                <option selected>Choose...</option>
-                <option value="Company">Company</option>
-                <option value="GroupOwner">GroupOwner</option>
-                <option value="Guest">Guest</option>
-                <option value="Room and Tax to Company, Extra to Guest">Room and Tax to Company, Extra to Guest</option>
-              </select>
+              <li class="mb-4 pb-1 d-flex justify-content-between align-items-center">
+                <div class="badge bg-label-success rounded p-2"><i class="fa-solid fa-money-bills"></i></div>
+                <div class="d-flex justify-content-between w-100 flex-wrap">
+                  <h6 class="mb-0 ms-3">Total</h6>
+                  <div class="d-flex">
+                    <p class="mb-0 fw-medium">{{ formAddReservation.BillingSummary.total }}</p>
+                    <!-- <p class="ms-3 text-success mb-0">0.3%</p> -->
+                  </div>
+                </div>
+              </li>
             </div>
-            <div class="col-md-6">
-              <div class="row">
-                <div class="col-md-4 col-12">
-                  <label for="BillingSummaryRoomCharges" class="form-label">RoomCharges</label>
-                  <div class="input-group">
-                    <input type="number" class="form-control" placeholder="0" id="BillingSummaryRoomCharges" v-model="formAddReservation.BillingSummary.roomCharges" />
-                    <span class="input-group-text groupStyle">EGP</span>
+            <div class="col-md-4">
+              <li class="mb-4 pb-1 d-flex justify-content-between align-items-center">
+                <div class="badge bg-label-secondary  rounded p-2"><i class="fa-solid fa-money-check"></i></div>
+                <div class="d-flex justify-content-between w-100 flex-wrap">
+                  <h6 class="mb-0 ms-3">Paid</h6>
+                  <div class="d-flex">
+                    <p class="mb-0 fw-medium">{{ formAddReservation.BillingSummary.paid }}</p>
+                    <!-- <p class="ms-3 text-success mb-0">0.3%</p> -->
                   </div>
                 </div>
-                <div class="col-md-4 col-12">
-                  <label for="BillingSummaryTaxes" class="form-label">Taxes</label>
-                  <div class="input-group">
-                    <input type="number" class="form-control" placeholder="0" id="BillingSummaryTaxes" v-model="formAddReservation.BillingSummary.taxes" />
-                    <span class="input-group-text groupStyle">EGP</span>
+              </li>
+            </div>
+            <div class="col-md-4">
+              <li class="mb-4 pb-1 d-flex justify-content-between align-items-center">
+                <div class="badge bg-label-danger  rounded p-2"><i class="fa-solid fa-dollar-sign"></i></div>
+                <div class="d-flex justify-content-between w-100 flex-wrap">
+                  <h6 class="mb-0 ms-3">Reamining</h6>
+                  <div class="d-flex">
+                    <p class="mb-0 fw-medium">{{ formAddReservation.BillingSummary.reamining }}</p>
+                    <!-- <p class="ms-3 text-success mb-0">0.3%</p> -->
                   </div>
                 </div>
-                <div class="col-md-4 col-12">
-                  <label for="BillingSummaryDueAmount" class="form-label">Due Amount</label>
-                  <div class="input-group">
-                    <input type="number" class="form-control" placeholder="0" id="BillingSummaryDueAmount" v-model="formAddReservation.BillingSummary.dueAmount" />
-                    <span class="input-group-text groupStyle">EGP</span>
-                  </div>
-                </div>
-
-              </div>
+              </li>
             </div>
 
-            <div class="row mt-4">
-              <div class="col-md-4 ">
-                <div class="row">
-                  <div class="col-md-4 py-2">Payment Mode</div>
-                  <div class="col-md-8">
-                    <div class="row">
-                      <div class="col-md-8 col-xl-6 d-flex align-items-center">
-                        <div class="input-group">
-                          <div class="input-group-text border-0 ml-3">
-                            <label class="pl-1 mb-0" for="PaymentModeCash">Cash/Bank</label>
-                            <input id="PaymentModeCash" class="form-check-input mt-0" name="PaymentMode" type="radio" v-model="formAddReservation.BillingSummary.CashAndBank" />
-                          </div>
-                        </div>
-                        <div class="input-group float-right">
-                          <div class="input-group-text border-0 ml-3">
-                            <label class="pl-1 mb-0" for="PaymentModeCityLedger">City Ledger</label>
-                            <input id="PaymentModeCityLedger" class="form-check-input mt-0" name="PaymentMode" type="radio" v-model="formAddReservation.BillingSummary.CityLedger" />
-                          </div>
-                        </div>
-                      </div>
-
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4 pl-md-5">
-                <div class="row">
-                  <div class="input-group">
-                    <select class="form-select" id="PaymentMethods " v-model="formAddReservation.BillingSummary.payMentUser">
-                      <option selected>Select...</option>
-                      <option value="Mohamed">Mohamed</option>
-                      <option value="testing">testing</option>
-                      <option value="بد الله سامى">بد الله سامى</option>
-                      <option value="testing20">testing20</option>
-                      <option value="SS ss">SS ss</option>
-                      <option value="retfd">retfd</option>
-                      <option value="MOHAMED">MOHAMED</option>
-                      <option value="retfd">retfd</option>
-                      <option value="shhhh">shhhh</option>
-                      <option value="Shad">Shad</option>
-                      <option value="shady">shady</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-
-            </div>
           </div>
           <hr class="my-4" />
           <!-- FORM SUBMISSION BUTTON -->
@@ -596,13 +548,16 @@ export default {
           suppressRateOnRegistrationCard: false,
         },
         BillingSummary: {
-          billTo: "",
-          roomCharges: "",
-          taxes: "",
-          dueAmount: "",
-          CashAndBank: false,
-          CityLedger: false,
-          payMentUser: ""
+          total: "",
+          paid: "",
+          reamining: "",
+          // billTo: "",
+          // roomCharges: "",
+          // taxes: "",
+          // dueAmount: "",
+          // CashAndBank: false,
+          // CityLedger: false,
+          // payMentUser: ""
         },
       },
 
@@ -776,21 +731,21 @@ export default {
         state: this.formAddReservation.guestInformation.state,
         city: this.formAddReservation.guestInformation.city,
         zip: this.formAddReservation.guestInformation.zip,
-        email_booking: this.showSelect,
-        email_booking_option: this.formAddReservation.otherInformation.emailBookingOption,
-        send_email_checkout: this.showInput,
-        email_address_checkout: this.formAddReservation.otherInformation.emailAddressCheckout,
-        access_guest_portal: this.formAddReservation.otherInformation.accessToGuestPortal,
-        suppress_rate_registration_card: this.formAddReservation.otherInformation.suppressRateOnRegistrationCard,
-        room_charges: this.formAddReservation.BillingSummary.roomCharges,
-        taxes: this.formAddReservation.BillingSummary.taxes,
-        due_amount: this.formAddReservation.BillingSummary.dueAmount,
-        bill_to: this.formAddReservation.BillingSummary.billTo,
-        payment_method_cash: this.formAddReservation.BillingSummary.CashAndBank,
-        payment_method_city: this.formAddReservation.BillingSummary.CityLedger,
-        selected_payment_method: this.formAddReservation.BillingSummary.payMentUser,
+        // email_booking: this.showSelect,
+        // email_booking_option: this.formAddReservation.otherInformation.emailBookingOption,
+        // send_email_checkout: this.showInput,
+        // email_address_checkout: this.formAddReservation.otherInformation.emailAddressCheckout,
+        // access_guest_portal: this.formAddReservation.otherInformation.accessToGuestPortal,
+        // suppress_rate_registration_card: this.formAddReservation.otherInformation.suppressRateOnRegistrationCard,
+        // room_charges: this.formAddReservation.BillingSummary.roomCharges,
+        // taxes: this.formAddReservation.BillingSummary.taxes,
+        // due_amount: this.formAddReservation.BillingSummary.dueAmount,
+        // bill_to: this.formAddReservation.BillingSummary.billTo,
+        // payment_method_cash: this.formAddReservation.BillingSummary.CashAndBank,
+        // payment_method_city: this.formAddReservation.BillingSummary.CityLedger,
+        // selected_payment_method: this.formAddReservation.BillingSummary.payMentUser,
       };
-      console.log(bookingData);
+      // console.log(bookingData);
 
 
       try {
@@ -1037,13 +992,16 @@ export default {
           zip: reservationData.guest_zip || "",
         },
         BillingSummary: {
-          billTo: reservationData.bill_to || "",
-          roomCharges: reservationData.room_charges || "",
-          taxes: reservationData.taxes || "",
-          dueAmount: reservationData.due_amount || "",
-          CashAndBank: Boolean(reservationData.payment_method_cash),
-          CityLedger: Boolean(reservationData.payment_method_city),
-          payMentUser: reservationData.selected_payment_method || "",
+          total: reservationData.total || "",
+          paid: reservationData.paid || "",
+          reamining: reservationData.reamining || "",
+          // billTo: reservationData.bill_to || "",
+          // roomCharges: reservationData.room_charges || "",
+          // taxes: reservationData.taxes || "",
+          // dueAmount: reservationData.due_amount || "",
+          // CashAndBank: Boolean(reservationData.payment_method_cash),
+          // CityLedger: Boolean(reservationData.payment_method_city),
+          // payMentUser: reservationData.selected_payment_method || "",
         }
       };
 
