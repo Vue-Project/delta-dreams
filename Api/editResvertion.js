@@ -20,4 +20,16 @@ import apiClient from './apiClient';
         throw error;
       }
     };
+    export const updateWallet = async (walletData) => {
+      try {
+        const response = await apiClient.post(`/reservations/wallets/${walletData}`);
+        return response.data;
+
+      } catch (error) {
+        console.error(`Error cancelling reservation with ID "${walletData}":`, error);
+        throw error;
+      }
+    };
+
+
 
