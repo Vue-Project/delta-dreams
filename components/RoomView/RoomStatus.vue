@@ -47,8 +47,7 @@
             </div>
             <div class="card-body p-1 position-relative">
               <p class="fs-5">
-                (Single الفندق غرفه وصاله)
-              </p>
+                {{ room.reservation?.rate_type || "No Data" }} </p>
               <div class="icon-wrapper" @mouseenter="hoveredIcon = { type: 'clean', id: room.id }" @mouseleave="hoveredIcon = null">
                 <i class="fa-solid" :class="room.is_clean === 1 ? 'fa-broom' : 'fa-dust'" style="color: #9f9ca8"></i>
 
