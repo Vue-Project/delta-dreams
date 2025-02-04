@@ -34,7 +34,7 @@
           <dd class="col-6 text-end">{{ paymentDetails.roomCharges }}</dd>
 
           <dt class="col-sm-6 fw-normal">Taxes</dt>
-          <dd class="col-sm-6 text-end">{{ paymentDetails.taxes }}</dd>
+          <dd class="col-sm-6 text-end"> {{ paymentDetails.taxes }}</dd>
 
           <dt class="col-6 fw-normal text-heading">Charge Extra</dt>
           <dd class="col-6 text-end"> {{ paymentDetails.dueAmount }}</dd>
@@ -53,7 +53,7 @@
               <label class="input-group-text" for="inputGroupSelect01">Methods</label>
               <select class="form-select" id="businessSource" v-model="value.paymentMethod">
                 <option disabled value="">Select</option>
-                <option v-for="(paymentMethod, index) in paymentMethods" :key="paymentMethod.index">
+                <option v-for="(paymentMethod, index) in paymentMethods" :key="paymentMethod.id" :value="paymentMethod.id">
                   {{ paymentMethod.content }}
                 </option>
               </select>
@@ -80,7 +80,7 @@
           <h6 class="mb-3">Payment Details</h6>
           <dl class="row">
             <dt class="col-6">Payment Method:</dt>
-            <dd class="col-6">{{ value.paymentMethod || 'Cash' }}</dd>
+            <dd class="col-6">{{  'Cash' }}</dd>
 
             <dt class="col-6">Payment Type:</dt>
             <dd class="col-6">{{ selectedPaymentType || 'Not selected' }}</dd>
