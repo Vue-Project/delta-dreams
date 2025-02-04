@@ -178,13 +178,12 @@
 
                       <tr v-for="(item, index) in formData" :key="index" class="mb-2 selectStyle">
                         <td>
-                          <select class="form-select" id="unitsTypes" :value="reservationData?.unit?.unit_type?.name" v-model="formAddReservation.units[0].roomType" @change="handleUnitTypeChange">
+                          <select class="form-select" id="unitsTypes"  v-model="formAddReservation.units[0].roomType" @change="handleUnitTypeChange">
                             <option disabled value="">Select</option>
                             <option v-for="unitType in unitsTypes" :key="unitType.id" :value="unitType.id">
                               {{ unitType.name }}
                             </option>
                           </select>
-                          <!-- <input type="text" class="form-control" :value="reservationData?.unit?.unit_type?.name" disabled aria-label="Room Type of building ID" /> -->
 
                         </td>
                         <td style="width: 185px">
@@ -622,24 +621,23 @@ export default {
   // ======================
   // Lifecycle Hooks
   // ======================
-  async mounted ()
-  {
-
+  async mounted() {
     try {
+      // Fetch initial data for the component
       const [
         businessSourcesResponse,
         bookingSourcesResponse,
         reservationTypesResponse,
         usersResponse,
         unitTypesResponse,
-
+        unitsResponse // Add this line to fetch units
       ] = await Promise.all([
         getBusinessSources(),
         getBookingSources(),
         getReservationTypes(),
         getGuestsInfo(),
         getUnitTypes(),
-        getUnits(),
+        getUnits() // Fetch all units initially
       ]);
 
       this.businessSources = businessSourcesResponse.data.data;
@@ -647,11 +645,13 @@ export default {
       this.reservationTypes = reservationTypesResponse.data.data;
       this.filteredNames = usersResponse.data.data;
       this.unitsTypes = unitTypesResponse.data.data;
+      this.availableUnits = unitsResponse.data.data; // Populate availableUnits with fetched data
+
+      if (this.reservationData) {
+        this.fillFormWithReservationData(this.reservationData);
+      }
     } catch (error) {
       console.error("Error loading data:", error);
-    }
-    if (this.reservationData) {
-      this.fillFormWithReservationData(this.reservationData);
     }
   },
 
@@ -958,12 +958,13 @@ export default {
           rateAmount: Array.isArray(reservationData?.items) && reservationData.items.length > 0
             ? reservationData.items[0].price
             : "",
-          unitId: Array.isArray(reservationData?.items) && reservationData.items.length > 0
-            ? reservationData.items[0].unit.code
+            unitId: Array.isArray(reservationData?.items) && reservationData.items.length > 0
+            ? reservationData.items[0].unit?.id
             : "",
           roomType: Array.isArray(reservationData?.items) && reservationData.items.length > 0
-            ? reservationData?.unit?.unit_type?.name
+            ? reservationData.items[0].unit?.unit_type_id
             : "",
+
 
 
         }],
@@ -1007,23 +1008,19 @@ export default {
 
       this.selectedNameId = reservationData.user?.id || null;
     },
-    async handleUnitTypeChange ()
-    {
+    async handleUnitTypeChange() {
       try {
-        const unitTypeId = this.formAddReservation.units[0].roomType
+        const unitTypeId = this.formAddReservation.units[0].roomType;
         if (unitTypeId) {
-          // Reset selected unit when changing type
-          this.selectedUnit = ''
-
-          // Fetch units for selected type
-          const response = await getUnits(unitTypeId)
-          this.availableUnits = response.data.data
+          // Fetch units for the selected room type
+          const response = await getUnits(unitTypeId);
+          this.availableUnits = response.data.data;
         } else {
-          this.availableUnits = []
+          this.availableUnits = [];
         }
       } catch (error) {
-        console.error('Error fetching units:', error)
-        this.availableUnits = []
+        console.error('Error fetching units:', error);
+        this.availableUnits = [];
       }
     }
 
