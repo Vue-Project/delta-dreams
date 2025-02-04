@@ -37,7 +37,7 @@
           <dd class="col-sm-6 text-end">{{ paymentDetails.taxes }}</dd>
 
           <dt class="col-6 fw-normal text-heading">Charge Extra</dt>
-          <dd class="col-6 text-end">EGP {{ paymentDetails.dueAmount }}</dd>
+          <dd class="col-6 text-end"> {{ paymentDetails.dueAmount }}</dd>
         </dl>
 
         <div class="input-group">
