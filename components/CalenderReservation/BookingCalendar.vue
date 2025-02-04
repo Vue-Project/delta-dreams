@@ -1,8 +1,10 @@
 <template>
   <section class="card">
     <momenalert></momenalert>
+
     <Loader :visible="isLoading" />
-    <FilterCalendar ref="filterComponent" :statistics="statistics" :buildingNames="buildingNames" @show-all-resources="showAllResources" @show-building-resources="showBuildingResources" @date-selected="SelectedDateFilterCalendar" />
+    <div :class="{ 'loading-overlay': isLoading }">
+      <FilterCalendar ref="filterComponent" :statistics="statistics" :buildingNames="buildingNames" @show-all-resources="showAllResources" @show-building-resources="showBuildingResources" @date-selected="SelectedDateFilterCalendar" />
     <FullCalendar :options="calendarOptions" @select="handleSelect" ref="calendar" :selectedDate="selectedDate">
       <template v-slot:eventContent="arg">
         <b>{{ arg.event.title }}</b>
@@ -15,9 +17,7 @@
       <BlockRoomForm :selectedDates="selectedDates" :selectedResourceId="selectedResourceId" @close-sidebar="toggleSidebar" />
     </SidebarBlockRoom>
     <SelectedEventSidebar :selectedEvent="selectedEvent" @navigate-to-edit-reservation="navigateToEditReservation" />
-    <!-- <div v-if="!isLoading">
-
-    </div> -->
+    </div>
   </section>
 </template>
 
