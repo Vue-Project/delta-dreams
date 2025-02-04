@@ -761,7 +761,7 @@ export default {
         // selected_payment_method: this.paymentData.selectedPaymentMethod,
 
       };
-      console.log(bookingData);
+      // console.log(bookingData);
 
 
 
