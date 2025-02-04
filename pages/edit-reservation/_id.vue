@@ -638,7 +638,7 @@
         </div>
         <!--  End Audit Trail tab  -->
         <div class="tab-pane fade" id="form-tabs-Wallet" role="tabpanel">
-
+          <WalletDetails :reservationData="reservationsDataById[0]" :reservationId="selectedReservationId" />
         </div>
       </template>
     </HeaderReservation>
@@ -674,6 +674,7 @@ import { dateMixin } from "../../components/Mixin/DateMixin";
 import UpdateReservation from "../../components/SiderbarContentEdit/BookingDetailsComponents/UpdateReservation.vue";
 import { GetReservationItems } from "../../Api/addResvertionApi";
 import { showSuccessAlert, handleSubmissionError } from '../../Api/MassageValidation/alertUtilities';
+import WalletDetails from "../../components/SiderbarContentEdit/WalletDetails.vue";
 
 
 export default {
@@ -703,7 +704,7 @@ export default {
     AddCharges,
     AddOperation,
     AddDiscount,
-    UpdateReservation
+    UpdateReservation,WalletDetails
   },
   data ()
   {
