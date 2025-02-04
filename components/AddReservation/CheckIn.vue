@@ -709,7 +709,7 @@ export default {
         book_all_available: this.formAddReservation.rateOffered.bookAll,
         hold_release_date: this.formAddReservation.releaseDate,
         hold_release_time: this.formAddReservation.releaseTime,
-        release_term_value: this.formAddReservation.releaseTermValue || 24,
+        release_term_value: this.formAddReservation.releaseTermValue ,
         release_term_type: this.formAddReservation.releaseTerm || "24 hours",
         remind_before_days: this.formAddReservation.remindGuest,
         user_id: this.selectedNameId,
@@ -720,15 +720,17 @@ export default {
         city: this.formAddReservation.guestInformation.city,
         zip: this.formAddReservation.guestInformation.zip,
         payment_details: {
+          room_charges: this.paymentData.roomCharges,
+          tax: this.paymentData.taxes,
+          charge_extra: this.paymentData.dueAmount,
           payment_mode: this.paymentData.paymentMode,
           payment_method: this.paymentData.paymentMethod,
           payment_type: this.paymentData.selectedPaymentType,
-          payment_price: this.paymentData.roomCharges || 50000,
-          tax: this.paymentData.taxes,
-          // charge_extra: this.paymentData.dueAmount,
-          comment: this.paymentData.comment,
-          amount: this.paymentData.amount,
+
+          payment_price: this.paymentData.amount,
           date: this.paymentData.date,
+          note: this.paymentData.comment,
+          // payment_price: this.paymentData.roomCharges || 50000,
 
           // transaction_details: {
           //   bank_name: this.paymentData.bankName,
@@ -766,7 +768,7 @@ export default {
 
       // If no errors, send the data to the server
       try {
-        const response = await postAddReservationData(bookingData);
+        // const response = await postAddReservationData(bookingData);
 
         await showSuccessAlert(
           "Reservation submitted successfully!", // Custom message
