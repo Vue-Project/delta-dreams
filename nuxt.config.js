@@ -36,6 +36,10 @@ export default {
       },
     ],
   },
+  router: {
+    base: '/', // If deploying to a subdirectory (e.g., /my-app/), set this to '/my-app/'
+    mode: 'history', // Remove the hash (#) from URLs
+  },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
@@ -127,13 +131,13 @@ export default {
 
 
 
-  generate: {
-    fallback: true, // Ensures SPA fallback
-    subFolders: false,
-    exclude: [/admin/]
+  // generate: {
+  //   fallback: true, // Ensures SPA fallback
+  //   // subFolders: false,
+  //   exclude: [/admin/]
 
 
-  },
+  // },
 
 
 };
