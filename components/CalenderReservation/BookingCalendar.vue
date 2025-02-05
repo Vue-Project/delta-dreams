@@ -115,10 +115,11 @@ export default {
         duration: { days: 20 },
         weekends: true,
          editable: true, // Enable dragging and resizing
-
          eventDrop: this.handleEventChange,
         eventResize: this.handleEventChange,
-        resources: this.createResources(),
+        eventDidMount: (info) => {
+          this.adjustHarnessPosition(info);
+        },        resources: this.createResources(),
         selectable: true, // Enable date selection
         selectMirror: true, // Make the selection draggable
         eventOverlap: false, // Disallow overlapping events
@@ -231,6 +232,8 @@ export default {
   },
 
   methods: {
+
+
     // ==============================================
     // RESOURCE MANAGEMENT
     // ==============================================
@@ -684,7 +687,6 @@ export default {
                 },
                 classNames: ['custom-event'],
               };
-              console.log(currentBlock);
             }
 
             // Update end date to the end of the current day
@@ -839,6 +841,25 @@ export default {
 
     return true;
   },
+  adjustHarnessPosition(info) {
+      // Get the harness element parent
+      const harness = info.el.closest('.fc-timeline-event-harness');
+
+      if (harness) {
+        // Get current left position (parse as number)
+        const currentLeft = parseInt(harness.style.left) || 0;
+        const currentRight = parseInt(harness.style.right) || 0;
+        console.log('right',currentRight );
+        console.log('left',currentLeft );
+
+        // Apply offset while maintaining the dynamic right value
+        harness.style.left = `${currentLeft + 10}px`;
+        // harness.style.right = `${currentRight * 60}px`;
+
+
+    }
+  },
+
     // ==============================================
     // CALENDAR NAVIGATION
     // ==============================================
@@ -1255,6 +1276,8 @@ export default {
     } finally {
       this.isLoading = false;
     }
-  },
+
+}
+
 }
 </script>
