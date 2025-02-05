@@ -645,7 +645,6 @@ export default {
           const reservation = dateInfo.reservation;
           const start = reservation.checkin_date.split('T')[0];
           const end = reservation.checkout_date.split('T')[0];
-          console.log(start, end,reservation);
 
           events.push({
             resourceId: unitData.code,
