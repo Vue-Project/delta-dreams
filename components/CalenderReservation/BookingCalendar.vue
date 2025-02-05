@@ -60,6 +60,7 @@ import HeaderCalender from "./HeaderCalender.vue";
 // API service for fetching calendar data
 import { deleteBlock, getCalenderAllUnits } from "../../Api/CalenderApi";
 import Swal from 'sweetalert2'
+import { handleSubmissionError, showSuccessAlert } from "../../Api/MassageValidation/alertUtilities";
 
 export default {
   components: {
@@ -114,6 +115,8 @@ export default {
         duration: { days: 20 },
         weekends: true,
          editable: true, // Enable dragging and resizing
+         eventDrop: this.handleEventChange,
+        eventResize: this.handleEventChange,
         resources: this.createResources(),
         selectable: true, // Enable date selection
         selectMirror: true, // Make the selection draggable
@@ -739,6 +742,98 @@ export default {
 
       return allEvents;
     },
+    async handleEventChange(info) {
+    // Show loading state
+    this.isLoading = true;
+
+    try {
+      const event = info.event;
+    const resourceId = event.getResources()[0]?.id;
+
+    const unitId = resourceId?.split('-')[1];
+
+
+    const startDate = event.start.toISOString().split('T')[0];
+    const endDate = event.end.toISOString().split('T')[0];
+
+      // Prepare the update data
+      const updateData = {
+        unit_id: unitId,
+        start_date: startDate,
+        end_date: endDate,
+        reservation_id: event.extendedProps?.reservation?.id
+      };
+      console.log(updateData);
+
+
+      // Show confirmation dialog
+      const result = await Swal.fire({
+        title: 'Confirm Changes',
+        text: 'Are you sure you want to update this reservation?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#7367f0',
+        cancelButtonColor: '#e2e1e5',
+        confirmButtonText: 'Yes, update it!'
+      });
+
+      if (result.isConfirmed) {
+        // Make API call to update the reservation
+        // Replace 'updateReservation' with your actual API endpoint
+        // const response = await axios.put(`/api/reservations/${updateData.reservation_id}`, updateData);
+
+        if (response.data.success) {
+          await showSuccessAlert(
+          "Reservation updated successfully!", // Custom message
+
+        );
+        } else {
+          throw new Error('Failed to update reservation');
+        }
+      } else {
+        // If user cancels, revert the change
+        info.revert();
+      }
+    } catch (error) {
+
+      // Show error message
+      handleSubmissionError(
+          error,
+          "Failed to update reservation." // Custom default error
+        );
+
+      // Revert the calendar event to its original position/size
+      info.revert();
+    } finally {
+      this.isLoading = false;
+    }
+  },
+
+  // Add validation method
+  validateEventChange(event, newStart, newEnd) {
+    // Check if dates are valid
+    if (!newStart || !newEnd || newStart >= newEnd) {
+      return false;
+    }
+
+    // Check if the new dates overlap with other events
+    const calendar = this.$refs.calendar.getApi();
+    const events = calendar.getEvents();
+    const resourceId = event.getResources()[0]?.id;
+
+    for (const existingEvent of events) {
+      if (existingEvent === event) continue;
+
+      if (existingEvent.getResources()[0]?.id === resourceId) {
+        // Check for overlap
+        if (!(newEnd <= existingEvent.start || newStart >= existingEvent.end)) {
+          return false;
+        }
+      }
+    }
+
+    return true;
+  },
     // ==============================================
     // CALENDAR NAVIGATION
     // ==============================================
