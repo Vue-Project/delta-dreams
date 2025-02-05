@@ -4,24 +4,11 @@
       <div class="row">
         <div class="col-12">
           <label for="flatpickr-date-01" class="form-label">Date Range</label>
-          <input
-            type="text"
-            class="form-control flatpickr-input"
-            placeholder="YYYY-MM-DD to YYYY-MM-DD"
-            id="flatpickr-range-01"
-            ref="rangePicker5"
-            v-model="formBlock.dateStartAndEnd"
-            aria-label="input Text to Date"
-            disabled
-          />
-        </div>
-        <div class="col-12">
-          <label for="formBlockRoomRoomType" class="form-label">Room Type</label>
-          <input type="text" class="form-control" id="formBlockRoomRoomType" v-model="formBlock.roomType" placeholder="Room Type of building ID" disabled />
+          <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD to YYYY-MM-DD" id="flatpickr-range-01" ref="rangePicker5" v-model="formBlock.dateStartAndEnd" aria-label="input Text to Date" disabled />
         </div>
         <div class="col-12">
           <label for="formBlockRoomRoom" class="form-label">Room</label>
-          <input type="text" class="form-control" id="formBlockRoomRoom" v-model="formBlock.room" placeholder="Second part of Room ID" disabled />
+          <input type="text" class="form-control" id="formBlockRoomRoom" v-model="formBlock.roomType" placeholder="Room ID" disabled />
         </div>
         <div class="col-12">
           <label for="formBlockRoomReason" class="form-label">Reason</label>
@@ -46,11 +33,11 @@
 </template>
 
 <script>
-
 import flatpickrMixin from '../Mixin/flatpickrMixin';
-import { blockRoomService ,getReasonsSources} from '../../Api/CalenderApi';
+import { blockRoomService, getReasonsSources } from '../../Api/CalenderApi';
 import { dateUtils } from '../../Api/utils/data';
 import { formUtils } from '../../Api/utils/form';
+import { showSuccessAlert, handleSubmissionError } from '../../Api/MassageValidation/alertUtilities';
 
 export default {
   name: "BlockRoomForm",
@@ -66,12 +53,13 @@ export default {
     }
   },
 
-  data() {
+  data ()
+  {
     return {
       reasonsSources: [],
       flatpickrInstance: null,
       isSubmitting: false,
-      isSidebarOpen: false, // This controls the sidebar visibility
+      isSidebarOpen: false,
       formBlock: {
         dateStartAndEnd: "",
         roomType: "",
@@ -82,18 +70,18 @@ export default {
   },
 
   methods: {
-    getFirstAndLastDates(dates) {
+    getFirstAndLastDates (dates)
+    {
       if (!dates || dates.length === 0) return [];
 
-      // Handle dates array with dateTime property
       if (dates[0].dateTime) {
         const firstDate = dates[0].dateTime.split(",")[0];
         const lastDate = dates[dates.length - 1].dateTime.split(",")[0];
         return [firstDate, lastDate];
       }
 
-      // Handle Date objects
-      return dates.map(date => {
+      return dates.map(date =>
+      {
         if (date instanceof Date) {
           return this.formatDate(date);
         }
@@ -101,22 +89,32 @@ export default {
       });
     },
 
-    formatDate(date) {
+    formatDate (date)
+    {
       const day = String(date.getDate()).padStart(2, '0');
       const month = String(date.getMonth() + 1).padStart(2, '0');
       const year = date.getFullYear();
       return `${day}-${month}-${year}`;
     },
 
-    splitResourceId() {
+    splitResourceId ()
+    {
       if (this.selectedResourceId) {
-        const [roomType, room] = this.selectedResourceId.split("-");
-        this.formBlock.roomType = roomType;
-        this.formBlock.room = room;
+        const parts = this.selectedResourceId.split("-");
+
+        if (parts.length >= 3) {
+          // Show "UNIT-5480" in the input field
+          this.formBlock.roomType = `${parts[0]}-${parts[1]}`;
+
+          // Get the last number from the last part (e.g., "7" from "21-7")
+          const lastPart = parts[parts.length - 1].split("-");
+          this.formBlock.room = lastPart[lastPart.length - 1];
+        }
       }
     },
 
-    initFlatpickr() {
+    initFlatpickr ()
+    {
       const dates = this.getFirstAndLastDates(this.selectedDates);
       this.formBlock.dateStartAndEnd = dates.join(' to ');
 
@@ -124,13 +122,15 @@ export default {
         mode: "range",
         dateFormat: "d-m-Y",
         defaultDate: dates,
-        onReady: (selectedDates) => {
+        onReady: (selectedDates) =>
+        {
           if (selectedDates.length > 0) {
             const formattedDates = this.getFirstAndLastDates(selectedDates);
             this.formBlock.dateStartAndEnd = formattedDates.join(' to ');
           }
         },
-        onChange: (selectedDates) => {
+        onChange: (selectedDates) =>
+        {
           if (selectedDates.length > 0) {
             const formattedDates = selectedDates.map(date => this.formatDate(date));
             this.formBlock.dateStartAndEnd = formattedDates.join(' to ');
@@ -139,49 +139,52 @@ export default {
       });
     },
 
-    async submitFormBlockRoom() {
+    async submitFormBlockRoom ()
+    {
       try {
-        // Validate the form before proceeding
         formUtils.validateBlockRoomForm(this.formBlock);
 
         const [startDate, endDate] = this.formBlock.dateStartAndEnd.split(' to ');
 
         const blockRoomData = {
-          unit_id: `${this.formBlock.roomType}-${this.formBlock.room}`,
+          unit_id: this.formBlock.room, // Will now send only the last number
           reason_id: this.formBlock.reason,
           start_date: dateUtils.formatForApi(startDate),
           end_date: dateUtils.formatForApi(endDate),
         };
+        // console.log(blockRoomData);
 
         const responseBlockRoom = await blockRoomService(blockRoomData);
+        await showSuccessAlert(
+          "Room blocked successfully!", // Custom message
 
-        // Check if the response indicates success using the 'status' field
-        if (responseBlockRoom?.status === 'success') {
-          await formUtils.showSuccess(responseBlockRoom.message || 'Room blocked successfully!');
+          this.$emit('close-sidebar')
+        );
+        location.reload();
 
-          // Emit the 'close-sidebar' event to the parent component
-          this.$emit('close-sidebar');
-        } else {
-          // Handle API-reported failure
-          const errorMessage = responseBlockRoom?.message || 'Failed to block room';
-          await formUtils.showError(errorMessage);
-        }
+
+        // if (responseBlockRoom?.status === 'success') {
+        //   await formUtils.showSuccess(responseBlockRoom.message || 'Room blocked successfully!');
+        // } else {
+        //   const errorMessage = responseBlockRoom?.message || 'Failed to block room';
+        //   await formUtils.showError(errorMessage);
+        // }
       } catch (error) {
-        const errorMessage =
-          error.response?.data?.message ||
-          Object.values(error.response?.data?.errors || {}).flat().join(', ') ||
-          error.message ||
-          'Failed to block room. Please try again.';
-        await formUtils.showError(errorMessage);
+        handleSubmissionError(
+          error,
+          "Please fill in all required fields" // Custom default error
+        );
       }
     },
 
-    closeSidebar() {
+    closeSidebar ()
+    {
       this.$emit('close-sidebar');
     },
   },
 
-  async mounted() {
+  async mounted ()
+  {
     try {
       const reasonsResponse = await getReasonsSources();
       this.reasonsSources = reasonsResponse.data.data.data;
@@ -193,7 +196,8 @@ export default {
     this.initFlatpickr();
   },
 
-  beforeUnmount() {
+  beforeUnmount ()
+  {
     if (this.flatpickrInstance) {
       this.flatpickrInstance.destroy();
     }
@@ -202,4 +206,3 @@ export default {
   mixins: [flatpickrMixin],
 };
 </script>
-

@@ -1,21 +1,22 @@
 <template>
   <section class="card">
     <momenalert></momenalert>
+
     <Loader :visible="isLoading" />
-    <div v-if="!isLoading">
+    <div :class="{ 'loading-overlay': isLoading }">
       <FilterCalendar ref="filterComponent" :statistics="statistics" :buildingNames="buildingNames" @show-all-resources="showAllResources" @show-building-resources="showBuildingResources" @date-selected="SelectedDateFilterCalendar" />
-      <FullCalendar :options="calendarOptions" @select="handleSelect" ref="calendar" :selectedDate="selectedDate">
-        <template v-slot:eventContent="arg">
-          <b>{{ arg.event.title }}</b>
-        </template>
-      </FullCalendar>
-      <CalendarFooter :occupancyData="occupancyData" />
-      <div v-if="isOverlayVisible" class="overlay" @click="closePopover"></div>
-      <PopoverComponent v-if="isPopoverVisible" :isPopoverVisible="isPopoverVisible" :popoverStyle="popoverStyle" :popoverArrowLeft="popoverArrowLeft" :firstSelectedDate="firstSelectedDate" :lastSelectedDate="lastSelectedDate" @go-to-add-reservation="goToAddReservation" @toggle-sidebar="toggleSidebar" @close-popover="closePopover" />
-      <SidebarBlockRoom :is-sidebar-open="isSidebarOpen" title="Block Room" width="400px" @close-sidebar="toggleSidebar">
-        <BlockRoomForm :selectedDates="selectedDates" :selectedResourceId="selectedResourceId" @close-sidebar="toggleSidebar" />
-      </SidebarBlockRoom>
-      <SelectedEventSidebar :selectedEvent="selectedEvent" @navigate-to-edit-reservation="navigateToEditReservation" />
+    <FullCalendar :options="calendarOptions" @select="handleSelect" ref="calendar" :selectedDate="selectedDate">
+      <template v-slot:eventContent="arg">
+        <b>{{ arg.event.title }}</b>
+      </template>
+    </FullCalendar>
+    <CalendarFooter :occupancyData="occupancyData" />
+    <div v-if="isOverlayVisible" class="overlay" @click="closePopover"></div>
+    <PopoverComponent v-if="isPopoverVisible" :isPopoverVisible="isPopoverVisible" :popoverStyle="popoverStyle" :popoverArrowLeft="popoverArrowLeft" :firstSelectedDate="firstSelectedDate" :lastSelectedDate="lastSelectedDate" @go-to-add-reservation="goToAddReservation" @toggle-sidebar="toggleSidebar" @close-popover="closePopover" />
+    <SidebarBlockRoom :is-sidebar-open="isSidebarOpen" title="Block Room" width="400px" @close-sidebar="toggleSidebar" height="auto">
+      <BlockRoomForm :selectedDates="selectedDates" :selectedResourceId="selectedResourceId" @close-sidebar="toggleSidebar" />
+    </SidebarBlockRoom>
+    <SelectedEventSidebar :selectedEvent="selectedEvent" @navigate-to-edit-reservation="navigateToEditReservation" />
     </div>
   </section>
 </template>
@@ -57,7 +58,9 @@ import SelectedEventSidebar from "./SelectedEventSidebar.vue";
 import HeaderCalender from "./HeaderCalender.vue";
 
 // API service for fetching calendar data
-import { getCalenderAllUnits } from "../../Api/CalenderApi";
+import { deleteBlock, getCalenderAllUnits } from "../../Api/CalenderApi";
+import Swal from 'sweetalert2'
+
 export default {
   components: {
     momenalert,
@@ -77,7 +80,7 @@ export default {
       linkToAddReservation: '/add-reservation',
       datesBuilding: [],
       buildingNames: [], // Store building names dynamically
-      selectedDates: '',
+      // selectedDates: '',
       selectedResourceId: '',
       selectedResourceName: '',
       isLoading: true,
@@ -102,13 +105,7 @@ export default {
           },
           today: {
             text: 'Today',
-            click: () =>
-            {
-              if (this.calendarApi) {
-                const twoDaysAgo = this.getTwoDaysAgoDate()
-                this.calendarApi.gotoDate(twoDaysAgo)
-              }
-            }
+            click: () => this.handleTodayClick()
           }
         },
         plugins: [resourceTimelinePlugin, interactionPlugin],
@@ -245,28 +242,19 @@ export default {
       if (Array.isArray(this.data)) {
         this.data.forEach((building) =>
         {
-          // Include building resource if "Show All" or selectedIds includes building.name
+          // Only process if building is selected
           if (selectedIds.length === 0 || selectedIds.includes(building.name)) {
-            // Add the building resource
-            resources.push({
-              id: building.name, // Unique ID for the building
-              groupId: building.name, // Group ID for the building
-              title: building.name, // Display name for the building
-              classNames: ["building"], // CSS class for styling
-            });
-
             // Add units under the building if they exist
             if (building.units) {
               building.units.forEach((unit) =>
               {
-                // Include unit if no date is selected or unit.date matches selectedDate
                 if (!selectedDate || (unit.date && unit.date === selectedDate)) {
                   resources.push({
-                    id: `${building.id}-${unit.id}`, // Unique ID for the unit
-                    resourceId: building.id, // Link unit to the building
-                    title: unit.code, // Display unit code (not building name)
-                    groupId: building.name, // Group ID for the building
-                    classNames: ["unit"], // CSS class for styling
+                    id: `${building.id}-${unit.id}`,
+                    resourceId: building.id,
+                    title: unit.code,  // This should display "UNIT-XXXX"
+                    groupId: building.name,  // Group by building name (e.g., "Studio")
+                    classNames: ["unit"],
                     extendedProps: {
                       is_clean: unit.is_clean,
                       is_smoking: unit.is_smoking,
@@ -281,7 +269,7 @@ export default {
         });
       }
 
-      return resources; // Return the filtered resources
+      return resources;
     },
     // ==============================================
     // Updating Calendar based on selected building IDs
@@ -394,7 +382,7 @@ export default {
         const buildingName = resource.extendedProps.groupId || 'Unknown Building';
         const resourceId = resource.id || 'Unknown ID';  // Get the resource ID
         this.selectedResourceName = `${unitTitle} - ${buildingName} - ID: ${resourceId}`;  // Include the ID in the name
-        this.selectedResourceId = resource.id;
+        this.selectedResourceId = `${resource.title}  - ID: ${resourceId}`;
       } else {
         this.selectedResourceId = null;
         this.selectedResourceName = null;
@@ -411,8 +399,13 @@ export default {
     getTwoDaysAgoDate ()
     {
       const today = new Date()
+      //   console.log(today);
+
       const twoDaysAgo = new Date(today)
+      //   console.log(twoDaysAgo)
       twoDaysAgo.setDate(today.getDate() - 2)
+      //   console.log(twoDaysAgo)
+
       return twoDaysAgo
     },
 
@@ -495,10 +488,143 @@ export default {
     // ==============================================
     handleEventClick (info)
     {
-      // console.log('Event Data:', info.event); // Debugging
-      this.selectedEvent = this.transformEventToReservationData(info.event);
-      this.openOffcanvas();
+      if (info.event.extendedProps.is_blocked) {
+        // Format dates for display
+        const startDate = info.event.start.toLocaleString('en-US', {
+          dateStyle: 'medium',
+          timeStyle: 'short'
+        });
+        const endDate = info.event.end.toLocaleString('en-US', {
+          dateStyle: 'medium',
+          timeStyle: 'short'
+        });
+
+        // Store blocked event details
+        this.selectedBlockedEvent = {
+          id: info.event.id,
+          start: info.event.start,
+          end: info.event.end,
+          title: info.event.title,
+          room: info.event.extendedProps.room || 'Not specified'
+        };
+
+
+        // Show detailed confirmation dialog
+        Swal.fire({
+          title: 'Blocked Room Details',
+          html: `
+        <div class="text-left">
+          <p><strong>Start:</strong> ${startDate}</p>
+          <p><strong>End:</strong> ${endDate}</p>
+          <p><strong>Room:</strong> ${this.selectedBlockedEvent.title}</p>
+        </div>
+      `,
+          icon: 'info',
+          showCancelButton: true,
+          confirmButtonColor: '#7367f0',
+          cancelButtonColor: '#e2e1e5',
+          confirmButtonText: 'Delete',
+          cancelButtonText: 'Close',
+        }).then((result) =>
+        {
+          if (result.isConfirmed) {
+            // Show delete confirmation
+            Swal.fire({
+              title: 'Are you sure?',
+              text: 'This blocked period will be permanently deleted.',
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#7367f0',
+              cancelButtonColor: '#e2e1e5',
+              confirmButtonText: 'Yes, delete it!'
+            }).then((deleteResult) =>
+            {
+              if (deleteResult.isConfirmed) {
+                this.deleteBlockedPeriod();
+              }
+            });
+          } else if (result.isDenied) {
+            // Handle edit functionality
+            this.editBlockedPeriod();
+          }
+        });
+      } else {
+        // For reservations (existing logic)
+        this.selectedEvent = this.transformEventToReservationData(info.event);
+        this.openOffcanvas();
+      }
     },
+
+    async deleteBlockedPeriod ()
+    {
+      try {
+        // Make API call to delete the blocked period
+        await deleteBlock(this.selectedBlockedEvent.id);
+
+        // Remove the event from the calendar
+        const calendar = this.$refs.calendar.getApi();
+        const event = calendar.getEventById(this.selectedBlockedEvent.id);
+        if (event) {
+          event.remove();
+        }
+
+        // Show success message
+        Swal.fire({
+          title: 'Deleted!',
+          text: 'The blocked period has been successfully removed.',
+          icon: 'success',
+          timer: 1000,
+          timerProgressBar: true,
+          showConfirmButton: false
+        });
+      } catch (error) {
+        // Handle error
+        Swal.fire({
+          title: 'Error!',
+          text: 'Failed to delete the blocked period. Please try again.',
+          icon: 'error',
+          confirmButtonColor: '#7367f0'
+        });
+        console.error('Error deleting blocked period:', error);
+      }
+    },
+    // editBlockedPeriod() {
+    //   // You can implement your edit logic here
+    //   Swal.fire({
+    //     title: 'Edit Blocked Period',
+    //     html: `
+    //       <form id="edit-form">
+    //         <div class="mb-3">
+    //           <label class="form-label">Start Date</label>
+    //           <input type="datetime-local" id="edit-start"
+    //                  class="swal2-input"
+    //                  value="${this.selectedBlockedEvent.start.toISOString().slice(0, 16)}">
+    //         </div>
+    //         <div class="mb-3">
+    //           <label class="form-label">End Date</label>
+    //           <input type="datetime-local" id="edit-end"
+    //                  class="swal2-input"
+    //                  value="${this.selectedBlockedEvent.end.toISOString().slice(0, 16)}">
+    //         </div>
+    //       </form>
+    //     `,
+    //     showCancelButton: true,
+    //     confirmButtonText: 'Save Changes',
+    //     confirmButtonColor: '#3085d6',
+    //     cancelButtonColor: '#d33',
+    //     preConfirm: () => {
+    //       return {
+    //         start: document.getElementById('edit-start').value,
+    //         end: document.getElementById('edit-end').value
+    //       };
+    //     }
+    //   }).then((result) => {
+    //     if (result.isConfirmed) {
+    //       // Handle the update API call here
+    //       // this.updateBlockedPeriod(result.value);
+    //     }
+    //   });
+    // },
     transformUnitToEvents (unitData)
     {
       const events = [];
@@ -517,7 +643,7 @@ export default {
             title: `Reserved by ${reservation.user?.name || 'Unknown'}`,
             start: start,
             end: end,
-            color :'#7367f0',
+            color: '#7367f0',
             reservationId: reservation.id,
             extendedProps: {
               reservation: reservation, // Include the full reservation object
@@ -538,10 +664,12 @@ export default {
           if (dateInfo.is_blocked) {
             if (!currentBlock) {
               currentBlock = {
+                id: dateInfo.block.id, // Add this line to include the block ID
                 resourceId: unitData.code,
-                title: `Blocked: ${dateInfo.block_reason || 'No reason provided'}`,
+                title: `Blocked Reason: ${dateInfo.block.reason.name || 'No reason provided'}`,
                 start: dateInfo.date,
                 end: dateInfo.date,
+                color: '#000000',
                 color: '#4b4b4b',
                 extendedProps: {
                   is_blocked: true, // Indicate this is a blocked date
@@ -639,31 +767,34 @@ export default {
         const end = view.activeEnd;
 
         // Format dates for server
-        const startDate = start.toISOString().split('T')[0];
+        let startDate = start.toISOString().split('T')[0];
         const endDate = end.toISOString().split('T')[0];
 
-        console.log(`Navigation type: ${direction} | Dates: ${startDate} to ${endDate}`);
+        // Modify startDate by adding 1 day
+        const startDateObj = new Date(startDate);
+        startDateObj.setDate(startDateObj.getDate() + 1);
+        startDate = startDateObj.toISOString().split('T')[0];
 
-        // Fetch data for new date range
-        // const response = await getCalenderAllUnits({ // Fixed typo: awat -> await
-        //   start: startDate,
-        //   end: endDate
-        // });
+        // Fetch data for the new date range
+        const response = await getCalenderAllUnits({
+          start: startDate,
+          end: endDate
+        });
 
         // Update data sources
         this.data = response.data;
-        // this.occupancyData = response.data.calendar.data;
-        // this.statistics = response.data.statistics;
 
-        // Force calendar refresh
-        calendarApi.refetchEvents(); // Important: Tell FullCalendar to reload events
+        // Transform the new data into events
+        const newEvents = this.transformAllUnitsToEvents();
 
-        // If using resources:
-        // this.calendarOptions.resources = this.createResources();
+        // Update the calendar with new events
+        calendarApi.removeAllEvents(); // Clear existing events
+        calendarApi.addEventSource(newEvents); // Add new events
+
+        // If you're using resources, uncomment these lines:
+        // const resources = this.createResources();
+        // calendarApi.setOption('resources', resources);
         // calendarApi.refetchResources();
-
-        // Alternative: Reset calendar view
-        // calendarApi.changeView(view.type, view.title);
 
       } catch (error) {
         console.error('Navigation error:', error);
@@ -671,6 +802,45 @@ export default {
         this.isLoading = false;
       }
     },
+    async handleTodayClick ()
+    {
+      try {
+        this.isLoading = true;
+        const calendarApi = this.$refs.calendar.getApi();
+
+        // Navigate to two days ago
+        const twoDaysAgo = this.getTwoDaysAgoDate();
+        calendarApi.gotoDate(twoDaysAgo);
+
+        // Get the new date range
+        const view = calendarApi.view;
+        let startDate = view.activeStart.toISOString().split('T')[0];
+        const endDate = view.activeEnd.toISOString().split('T')[0];
+
+        // Adjust start date
+        const startDateObj = new Date(startDate);
+        startDateObj.setDate(startDateObj.getDate() + 1);
+        startDate = startDateObj.toISOString().split('T')[0];
+
+        // Fetch new data
+        const response = await getCalenderAllUnits({
+          start: startDate,
+          end: endDate
+        });
+
+        // Update data and events
+        this.data = response.data;
+        const newEvents = this.transformAllUnitsToEvents();
+        calendarApi.removeAllEvents();
+        calendarApi.addEventSource(newEvents);
+
+      } catch (error) {
+        console.error('Today navigation error:', error);
+      } finally {
+        this.isLoading = false;
+      }
+    }
+    ,
 
     // ==============================================
     // CALENDAR SETUP & CONFIG

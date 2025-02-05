@@ -6,7 +6,6 @@
       <!-- CARD HEADER -->
       <h5 class="card-header">
 
-        <!-- <p> {{ reservationData }}</p> -->
         Update Reservation
       </h5>
       <hr class="m-0" />
@@ -179,12 +178,17 @@
 
                       <tr v-for="(item, index) in formData" :key="index" class="mb-2 selectStyle">
                         <td>
-                          <input type="text" class="form-control"  :value="reservationData?.unit?.unit_type?.name" disabled aria-label="Room Type of building ID" />
+                          <select class="form-select" id="unitsTypes"  v-model="formAddReservation.units[0].roomType" @change="handleUnitTypeChange">
+                            <option disabled value="">Select</option>
+                            <option v-for="unitType in unitsTypes" :key="unitType.id" :value="unitType.id">
+                              {{ unitType.name }}
+                            </option>
+                          </select>
 
                         </td>
                         <td style="width: 185px">
                           <select class="form-select" v-model="formAddReservation.units[0].rateType" ref="rateType" :class="{ 'input-error': validationMessages.rateType }">
-                            <option value="">Rate Type</option>
+                            <option value="" disabled>select</option>
                             <option value="breakfast">Breakfast</option>
                             <option value="nobreakfast">NoBreakfast</option>
 
@@ -193,7 +197,13 @@
 
                         </td>
                         <td>
-                          <input type="text" class="form-control" :value="reservationData?.unit?.code" disabled aria-label="Room of building ID" />
+                          <!-- <input type="text" class="form-control" :value="reservationData?.unit?.code" disabled aria-label="Room of building ID" /> -->
+                          <select class="form-select" v-model="formAddReservation.units[0].unitId">
+                            <option disabled value="">Select Unit</option>
+                            <option v-for="unit in availableUnits" :key="unit.id" :value="unit.id">
+                              {{ unit.code }}
+                            </option>
+                          </select>
 
                         </td>
                         <td>
@@ -209,7 +219,7 @@
                           <div class="row">
                             <div class="col-md-10">
                               <div class="input-group">
-                                <input type="text" class="form-control" placeholder="0.00" id="rateAmount" v-model="formattedRateAmount" @blur="formatRateAmount" aria-label="number of rateAmount" ref="rateAmount" :class="{ 'input-error': validationMessages.rateAmount }" />
+                                <input type="text" class="form-control" placeholder="0.00" id="rateAmount" v-model="formAddReservation.units[0].rateAmount" aria-label="number of rateAmount" ref="rateAmount" :class="{ 'input-error': validationMessages.rateAmount }" />
                                 <span class="input-group-text groupStyle">EGP</span>
                               </div>
                               <span class="error-message" v-if="validationMessages.rateAmount">{{ validationMessages.rateAmount }}</span>
@@ -375,90 +385,42 @@
           <h6 class="mb-3">BillingSummary</h6>
           <div class="row">
             <div class="col-md-4">
-              <label class="form-label" for="BillingSummaryBillTo">Bill To</label>
-              <select class="form-select" id="BillingSummaryBillTo" v-model="formAddReservation.BillingSummary.billTo">
-                <option selected>Choose...</option>
-                <option value="Company">Company</option>
-                <option value="GroupOwner">GroupOwner</option>
-                <option value="Guest">Guest</option>
-                <option value="Room and Tax to Company, Extra to Guest">Room and Tax to Company, Extra to Guest</option>
-              </select>
+              <li class="mb-4 pb-1 d-flex justify-content-between align-items-center">
+                <div class="badge bg-label-success rounded p-2"><i class="fa-solid fa-money-bills"></i></div>
+                <div class="d-flex justify-content-between w-100 flex-wrap">
+                  <h6 class="mb-0 ms-3">Total</h6>
+                  <div class="d-flex">
+                    <p class="mb-0 fw-medium">{{ formAddReservation.BillingSummary.total }}</p>
+                    <!-- <p class="ms-3 text-success mb-0">0.3%</p> -->
+                  </div>
+                </div>
+              </li>
             </div>
-            <div class="col-md-6">
-              <div class="row">
-                <div class="col-md-4 col-12">
-                  <label for="BillingSummaryRoomCharges" class="form-label">RoomCharges</label>
-                  <div class="input-group">
-                    <input type="number" class="form-control" placeholder="0" id="BillingSummaryRoomCharges" v-model="formAddReservation.BillingSummary.roomCharges" />
-                    <span class="input-group-text groupStyle">EGP</span>
+            <div class="col-md-4">
+              <li class="mb-4 pb-1 d-flex justify-content-between align-items-center">
+                <div class="badge bg-label-secondary  rounded p-2"><i class="fa-solid fa-money-check"></i></div>
+                <div class="d-flex justify-content-between w-100 flex-wrap">
+                  <h6 class="mb-0 ms-3">Paid</h6>
+                  <div class="d-flex">
+                    <p class="mb-0 fw-medium">{{ formAddReservation.BillingSummary.paid }}</p>
+                    <!-- <p class="ms-3 text-success mb-0">0.3%</p> -->
                   </div>
                 </div>
-                <div class="col-md-4 col-12">
-                  <label for="BillingSummaryTaxes" class="form-label">Taxes</label>
-                  <div class="input-group">
-                    <input type="number" class="form-control" placeholder="0" id="BillingSummaryTaxes" v-model="formAddReservation.BillingSummary.taxes" />
-                    <span class="input-group-text groupStyle">EGP</span>
+              </li>
+            </div>
+            <div class="col-md-4">
+              <li class="mb-4 pb-1 d-flex justify-content-between align-items-center">
+                <div class="badge bg-label-danger  rounded p-2"><i class="fa-solid fa-dollar-sign"></i></div>
+                <div class="d-flex justify-content-between w-100 flex-wrap">
+                  <h6 class="mb-0 ms-3">Remaining</h6>
+                  <div class="d-flex">
+                    <p class="mb-0 fw-medium">{{ formAddReservation.BillingSummary.remaining}}</p>
+                    <!-- <p class="ms-3 text-success mb-0">0.3%</p> -->
                   </div>
                 </div>
-                <div class="col-md-4 col-12">
-                  <label for="BillingSummaryDueAmount" class="form-label">Due Amount</label>
-                  <div class="input-group">
-                    <input type="number" class="form-control" placeholder="0" id="BillingSummaryDueAmount" v-model="formAddReservation.BillingSummary.dueAmount" />
-                    <span class="input-group-text groupStyle">EGP</span>
-                  </div>
-                </div>
-
-              </div>
+              </li>
             </div>
 
-            <div class="row mt-4">
-              <div class="col-md-4 ">
-                <div class="row">
-                  <div class="col-md-4 py-2">Payment Mode</div>
-                  <div class="col-md-8">
-                    <div class="row">
-                      <div class="col-md-8 col-xl-6 d-flex align-items-center">
-                        <div class="input-group">
-                          <div class="input-group-text border-0 ml-3">
-                            <label class="pl-1 mb-0" for="PaymentModeCash">Cash/Bank</label>
-                            <input id="PaymentModeCash" class="form-check-input mt-0" name="PaymentMode" type="radio" v-model="formAddReservation.BillingSummary.CashAndBank" />
-                          </div>
-                        </div>
-                        <div class="input-group float-right">
-                          <div class="input-group-text border-0 ml-3">
-                            <label class="pl-1 mb-0" for="PaymentModeCityLedger">City Ledger</label>
-                            <input id="PaymentModeCityLedger" class="form-check-input mt-0" name="PaymentMode" type="radio" v-model="formAddReservation.BillingSummary.CityLedger" />
-                          </div>
-                        </div>
-                      </div>
-
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4 pl-md-5">
-                <div class="row">
-                  <div class="input-group">
-                    <select class="form-select" id="PaymentMethods " v-model="formAddReservation.BillingSummary.payMentUser">
-                      <option selected>Select...</option>
-                      <option value="Mohamed">Mohamed</option>
-                      <option value="testing">testing</option>
-                      <option value="بد الله سامى">بد الله سامى</option>
-                      <option value="testing20">testing20</option>
-                      <option value="SS ss">SS ss</option>
-                      <option value="retfd">retfd</option>
-                      <option value="MOHAMED">MOHAMED</option>
-                      <option value="retfd">retfd</option>
-                      <option value="shhhh">shhhh</option>
-                      <option value="Shad">Shad</option>
-                      <option value="shady">shady</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-
-            </div>
           </div>
           <hr class="my-4" />
           <!-- FORM SUBMISSION BUTTON -->
@@ -476,25 +438,27 @@
   </section>
 </template>
 <script>
-import Swal from 'sweetalert2';
 import
-  {
-    getBookingSources,
-    getBusinessSources,
-    getReservationTypes,
-    getGuestsInfo,
-    postAddReservationData,
-    PutReservation
-  } from "../../../Api/addResvertionApi";
+{
+  getBookingSources,
+  getBusinessSources,
+  getReservationTypes,
+  getGuestsInfo,
+
+  postAddReservationData,
+  PutReservation,
+  getUnits,
+  getUnitTypes
+} from "../../../Api/addResvertionApi";
 import flatpickrMixin from "../../Mixin/flatpickrMixin";
 import { dateMixin } from '../../Mixin/DateMixin';
-// import DateMixin from "../../Mixin/DateMixin";
+import { showSuccessAlert, handleSubmissionError } from '../../../Api/MassageValidation/alertUtilities';
 
 export default {
   name: "updateReservation",
   layout: "component",
   middleware: 'restrict-access', // Apply the middleware
-  mixins: [flatpickrMixin,dateMixin],
+  mixins: [flatpickrMixin, dateMixin],
   props: {
     reservationId: {
       type: [String, Number],
@@ -531,6 +495,9 @@ export default {
       bookingSources: [],
       reservationTypes: [],
       filteredNames: [],
+      unitsTypes: [],
+      availableUnits: [],
+      selectedUnit: '',
 
       // Form Data
       formAddReservation: {
@@ -551,9 +518,9 @@ export default {
           rateType: "",
           room: "",
           adults: "",
-          children: this.reservationData?.unit?.unit_type?.name || '',
+          children: "",
           rateAmount: "",
-          unitTypeId:this.reservationData?.unit?.unit_type?.name || '',
+          roomType: "",
           unitId: "",
         }],
         releaseDate: "",
@@ -580,13 +547,16 @@ export default {
           suppressRateOnRegistrationCard: false,
         },
         BillingSummary: {
-          billTo: "",
-          roomCharges: "",
-          taxes: "",
-          dueAmount: "",
-          CashAndBank: false,
-          CityLedger: false,
-          payMentUser: ""
+          total: "",
+          paid: "",
+          remaining: "",
+          // billTo: "",
+          // roomCharges: "",
+          // taxes: "",
+          // dueAmount: "",
+          // CashAndBank: false,
+          // CityLedger: false,
+          // payMentUser: ""
         },
       },
 
@@ -651,32 +621,38 @@ export default {
   // ======================
   // Lifecycle Hooks
   // ======================
-  async mounted ()
-  {
-
+  async mounted() {
     try {
+      // Fetch initial data for the component
       const [
         businessSourcesResponse,
         bookingSourcesResponse,
         reservationTypesResponse,
         usersResponse,
+        unitTypesResponse,
+        unitsResponse // Add this line to fetch units
       ] = await Promise.all([
         getBusinessSources(),
         getBookingSources(),
         getReservationTypes(),
         getGuestsInfo(),
+        getUnitTypes(),
+        getUnits() // Fetch all units initially
       ]);
 
       this.businessSources = businessSourcesResponse.data.data;
       this.bookingSources = bookingSourcesResponse.data.data;
       this.reservationTypes = reservationTypesResponse.data.data;
       this.filteredNames = usersResponse.data.data;
+      this.unitsTypes = unitTypesResponse.data.data;
+      this.availableUnits = unitsResponse.data.data; // Populate availableUnits with fetched data
+
+      if (this.reservationData) {
+        this.fillFormWithReservationData(this.reservationData);
+      }
     } catch (error) {
       console.error("Error loading data:", error);
     }
-    if (this.reservationData) {
-    this.fillFormWithReservationData(this.reservationData);
-  }
   },
 
   // ======================
@@ -728,13 +704,13 @@ export default {
         checkin_time: this.formAddReservation.checkInTime,
         checkout_date: this.formAddReservation.checkOutDate,
         checkout_time: this.formAddReservation.checkOutTime,
-       rooms: this.formAddReservation.numberRooms,
+        rooms: this.formAddReservation.numberRooms,
         booking_source_id: this.formAddReservation.bookingSource,
         business_source_id: this.formAddReservation.businessSource,
         reservation_type_id: this.formAddReservation.reservationType,
         units: this.formAddReservation.units.map(unit => ({
-          unit_id: this.reservationData?.unit?.id,
-          unit_type_id:this.reservationData?.unit?.unit_type?.id,
+          unit_id: unit.unitId,
+          unit_type_id: unit.roomType,
           rate_type: unit.rateType,
           adults: unit.adults,
           children: unit.children,
@@ -755,31 +731,43 @@ export default {
         state: this.formAddReservation.guestInformation.state,
         city: this.formAddReservation.guestInformation.city,
         zip: this.formAddReservation.guestInformation.zip,
-        email_booking: this.showSelect,
-        email_booking_option: this.formAddReservation.otherInformation.emailBookingOption,
-        send_email_checkout: this.showInput,
-        email_address_checkout: this.formAddReservation.otherInformation.emailAddressCheckout,
-        access_guest_portal: this.formAddReservation.otherInformation.accessToGuestPortal,
-        suppress_rate_registration_card: this.formAddReservation.otherInformation.suppressRateOnRegistrationCard,
-        room_charges: this.formAddReservation.BillingSummary.roomCharges,
-        taxes: this.formAddReservation.BillingSummary.taxes,
-        due_amount: this.formAddReservation.BillingSummary.dueAmount,
-        bill_to: this.formAddReservation.BillingSummary.billTo,
-        payment_method_cash: this.formAddReservation.BillingSummary.CashAndBank,
-        payment_method_city: this.formAddReservation.BillingSummary.CityLedger,
-        selected_payment_method: this.formAddReservation.BillingSummary.payMentUser,
+        // email_booking: this.showSelect,
+        // email_booking_option: this.formAddReservation.otherInformation.emailBookingOption,
+        // send_email_checkout: this.showInput,
+        // email_address_checkout: this.formAddReservation.otherInformation.emailAddressCheckout,
+        // access_guest_portal: this.formAddReservation.otherInformation.accessToGuestPortal,
+        // suppress_rate_registration_card: this.formAddReservation.otherInformation.suppressRateOnRegistrationCard,
+        // room_charges: this.formAddReservation.BillingSummary.roomCharges,
+        // taxes: this.formAddReservation.BillingSummary.taxes,
+        // due_amount: this.formAddReservation.BillingSummary.dueAmount,
+        // bill_to: this.formAddReservation.BillingSummary.billTo,
+        // payment_method_cash: this.formAddReservation.BillingSummary.CashAndBank,
+        // payment_method_city: this.formAddReservation.BillingSummary.CityLedger,
+        // selected_payment_method: this.formAddReservation.BillingSummary.payMentUser,
       };
       // console.log(bookingData);
 
 
       try {
         const response = await PutReservation(this.reservationId, bookingData);
-        this.showSuccessAlert();
+        await showSuccessAlert(
+          "Reservation submitted successfully!", // Custom message
+          this.$router,
+          'index' // Route name
+        );
       } catch (error) {
-        this.handleSubmissionError(error);
+        handleSubmissionError(
+          error,
+          "There was an issue with your reservation." // Custom default error
+        );
       }
     },
 
+
+
+    // ======================
+    // Methods - UI Helpers
+    // ======================
     // Reset form to initial state
     resetForm ()
     {
@@ -860,59 +848,8 @@ export default {
     },
 
     // ======================
-    // Methods - UI Helpers
-    // ======================
-    showSuccessAlert ()
-    {
-      Swal.fire({
-        icon: "success",
-        title: "Success!",
-        text: "Reservation submitted successfully.",
-        confirmButtonText: "OK",
-      }).then(() =>
-      {
-        // this.resetForm();
-        this.$router.push({ name: 'index' }); // Replace 'index' with the actual route name
-
-
-      });
-    },
-
-    handleSubmissionError (error)
-    {
-      console.error("Error submitting booking:", error.response?.data || error.message);
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "There was an issue submitting the booking.",
-        confirmButtonText: "OK",
-      });
-    },
-
-    // ======================
     // Methods - Guest Information
     // ======================
-    // handleInput() {
-    //   this.fetchNames(this.formAddReservation.guestInformation.name);
-    // },
-
-    // handleBlur() {
-    //   setTimeout(() => {
-    //     this.showDropdown = false;
-    //   }, 200);
-    // },
-
-    // selectName(name) {
-    //   this.formAddReservation.guestInformation.name = name.name;
-    //   this.selectedNameId = name.id;
-    //   this.showDropdown = false;
-    // },
-
-    // fetchNames(query) {
-    //   this.filteredNames = this.filteredNames.filter(item =>
-    //     item.name.toLowerCase().includes(query.toLowerCase())
-    //   );
-    // },
     async handleSearch ()
     {
       this.currentPage = 1
@@ -990,7 +927,8 @@ export default {
         this.formAddReservation.units[0].rateAmount = parseFloat(value).toFixed(2);
       }
     },
-    fillFormWithReservationData(reservationData) {
+    fillFormWithReservationData (reservationData)
+    {
       if (!reservationData || typeof reservationData !== 'object') {
         console.warn('Invalid reservation data received');
         return;
@@ -1008,13 +946,26 @@ export default {
         bookingSource: reservationData.booking_source?.id || "",
         businessSource: reservationData.business_source?.id || "",
         units: [{
-          // rateType: "",
-          // room: reservationData.unit?.name || "",
-          adults: reservationData.unit?.adults || "",
-          children: reservationData.unit?.children || "",
-          rateAmount: reservationData.unit?.price || "",
-          // unitTypeId: reservationData.unit?.unit_type?.id || "",
-          // unitId: reservationData.unit?.id || "",
+          rateType: Array.isArray(reservationData?.items) && reservationData.items.length > 0
+            ? reservationData.items[0].rate_type
+            : "",
+          adults: Array.isArray(reservationData?.items) && reservationData.items.length > 0
+            ? reservationData.items[0].adults
+            : "",
+          children: Array.isArray(reservationData?.items) && reservationData.items.length > 0
+            ? reservationData.items[0].children
+            : "",
+          rateAmount: Array.isArray(reservationData?.items) && reservationData.items.length > 0
+            ? reservationData.items[0].price
+            : "",
+            unitId: Array.isArray(reservationData?.items) && reservationData.items.length > 0
+            ? reservationData.items[0].unit?.id
+            : "",
+          roomType: Array.isArray(reservationData?.items) && reservationData.items.length > 0
+            ? reservationData.items[0].unit?.unit_type_id
+            : "",
+
+
 
         }],
 
@@ -1024,7 +975,7 @@ export default {
           quickGroup: Boolean(reservationData.is_quick_group_booking),
           complimentaryRoom: Boolean(reservationData.is_complimentary),
         },
-        releaseDate:  this.formatDateNumber(reservationData.hold_release_date) || "",
+        releaseDate: this.formatDateNumber(reservationData.hold_release_date) || "",
         releaseTime: reservationData.hold_release_time || "",
         releaseTerm: reservationData.release_term_type || "",
         releaseTermValue: reservationData.release_term_value || "",
@@ -1034,7 +985,7 @@ export default {
         guestInformation: {
           name: reservationData.user?.name || "",
           email: reservationData.user?.email || "",
-          mobile: reservationData.user?.phone|| "",
+          mobile: reservationData.user?.phone || "",
           address: reservationData.guest_address || "",
           country: reservationData.guest_country || "",
           state: reservationData.guest_state || "",
@@ -1042,17 +993,35 @@ export default {
           zip: reservationData.guest_zip || "",
         },
         BillingSummary: {
-          billTo: reservationData.bill_to || "",
-          roomCharges: reservationData.room_charges || "",
-          taxes: reservationData.taxes || "",
-          dueAmount: reservationData.due_amount || "",
-          CashAndBank: Boolean(reservationData.payment_method_cash),
-          CityLedger: Boolean(reservationData.payment_method_city),
-          payMentUser: reservationData.selected_payment_method || "",
+          total: reservationData.total || "",
+          paid: reservationData.paid || "",
+          remaining: reservationData.remaining || "",
+          // billTo: reservationData.bill_to || "",
+          // roomCharges: reservationData.room_charges || "",
+          // taxes: reservationData.taxes || "",
+          // dueAmount: reservationData.due_amount || "",
+          // CashAndBank: Boolean(reservationData.payment_method_cash),
+          // CityLedger: Boolean(reservationData.payment_method_city),
+          // payMentUser: reservationData.selected_payment_method || "",
         }
       };
 
       this.selectedNameId = reservationData.user?.id || null;
+    },
+    async handleUnitTypeChange() {
+      try {
+        const unitTypeId = this.formAddReservation.units[0].roomType;
+        if (unitTypeId) {
+          // Fetch units for the selected room type
+          const response = await getUnits(unitTypeId);
+          this.availableUnits = response.data.data;
+        } else {
+          this.availableUnits = [];
+        }
+      } catch (error) {
+        console.error('Error fetching units:', error);
+        this.availableUnits = [];
+      }
     }
 
 
@@ -1069,16 +1038,18 @@ export default {
 
     // Watch for changes in reservationData.items and update the form data
 
-  reservationData: {
-    immediate: true, // This ensures the watcher is triggered immediately when the component is created
-    handler(newData) {
-      if (newData) {
-        this.fillFormWithReservationData(newData);
-      }
-    },
-  },reservationData: {
+    reservationData: {
+      immediate: true, // This ensures the watcher is triggered immediately when the component is created
+      handler (newData)
+      {
+        if (newData) {
+          this.fillFormWithReservationData(newData);
+        }
+      },
+    }, reservationData: {
       immediate: true,
-      handler(newData) {
+      handler (newData)
+      {
         if (newData && typeof newData === 'object') {
           this.fillFormWithReservationData(newData);
         }

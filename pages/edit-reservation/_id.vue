@@ -62,8 +62,8 @@
           </div>
           <div class="col-12 col-md-6 col-xl-1 text-center ">
             <div class="me-2">
-              <!-- <h6>Cancel Reservation</h6> -->
-              <button type="button" class="btn btn-label-danger waves-effect mt-3" title="Cancel Reservation"><i class="fa-solid fa-xmark"></i></button>
+              <button type="button" class="btn btn-label-danger waves-effect mt-3" title="Cancel Reservation"     @click="cancelReservation"
+              >Cancel Reservation</button>
             </div>
           </div>
         </div>
@@ -101,6 +101,11 @@
         <li class="nav-item col-6 col-md" role="presentation">
           <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-AuditTrail" role="tab" aria-selected="true">
             Audit Trail
+          </button>
+        </li>
+        <li class="nav-item col-6 col-md" role="presentation">
+          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-Wallet" role="tab" aria-selected="true">
+            Wallet
           </button>
         </li>
         <!--  End Nav Tabs -->
@@ -632,6 +637,9 @@
           </div>
         </div>
         <!--  End Audit Trail tab  -->
+        <div class="tab-pane fade" id="form-tabs-Wallet" role="tabpanel">
+          <WalletDetails :reservationData="reservationsDataById[0]" :reservationId="selectedReservationId" />
+        </div>
       </template>
     </HeaderReservation>
   </div>
@@ -660,11 +668,14 @@ import AddPayment from "../../components/SiderbarContentEdit/AddPayment.vue";
 import AddCharges from "../../components/SiderbarContentEdit/AddCharges.vue";
 import AddDiscount from "../../components/SiderbarContentEdit/AddDiscount.vue";
 import AddOperation from "../../components/SiderbarContentEdit/AddOperation.vue";
-import { getReservationDataById } from "../../Api/editResvertion";
+import { cancelReservation, getReservationDataById } from "../../Api/editResvertion";
 import moment from "moment";
 import { dateMixin } from "../../components/Mixin/DateMixin";
 import UpdateReservation from "../../components/SiderbarContentEdit/BookingDetailsComponents/UpdateReservation.vue";
 import { GetReservationItems } from "../../Api/addResvertionApi";
+import { showSuccessAlert, handleSubmissionError } from '../../Api/MassageValidation/alertUtilities';
+import WalletDetails from "../../components/SiderbarContentEdit/WalletDetails.vue";
+
 
 export default {
   name: "EditsPage",
@@ -693,7 +704,7 @@ export default {
     AddCharges,
     AddOperation,
     AddDiscount,
-    UpdateReservation
+    UpdateReservation,WalletDetails
   },
   data ()
   {
@@ -832,6 +843,29 @@ export default {
       } else {
         console.error("Offcanvas element not found.");
       }
+    },
+    async cancelReservation() {
+      // if (!confirm('Are you sure you want to cancel this reservation?')) {
+      //   return;
+      // }
+
+      this.isCancelling = true;
+
+      try {
+        const response = await cancelReservation(this.selectedReservationId);
+        await showSuccessAlert(
+          "Reservation cancelled successfully!", // Custom message
+          this.$router,
+          'index' // Route name
+
+
+        );
+
+      } catch (error) {
+        handleSubmissionError(
+          error,
+          "failed to cancel reservation" // Custom default error
+        );      }
     },
 
 
