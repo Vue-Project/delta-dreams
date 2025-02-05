@@ -33,11 +33,29 @@
           <dt class="col-6 fw-normal text-heading">Room Charges</dt>
           <dd class="col-6 text-end">{{ paymentDetails.roomCharges }}</dd>
 
-          <dt class="col-sm-6 fw-normal">Taxes</dt>
-          <dd class="col-sm-6 text-end"> {{ paymentDetails.taxes }}</dd>
+          <label for="taxes" class="col-sm-8 col-form-label fw-normal">Taxes</label>
+          <div class="col-sm-4">
+            <input
+              type="number"
+              id="taxes"
+              name="taxes"
+              class="form-control text-end"
+              :value="paymentDetails.taxes"
+            >
+          </div>
 
-          <dt class="col-6 fw-normal text-heading">Charge Extra</dt>
-          <dd class="col-6 text-end"> {{ paymentDetails.dueAmount }}</dd>
+
+            <label for="dueAmount" class="col-8 col-form-label fw-normal text-heading">Charge Extra</label>
+            <div class="col-4">
+              <input
+                type="number"
+                id="dueAmount"
+                name="dueAmount"
+                class="form-control text-end"
+                v-model="paymentDetails.dueAmount"
+              >
+            </div>
+
         </dl>
 
         <div class="input-group">
