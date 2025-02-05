@@ -964,5 +964,9 @@ body{
   color:#685dd8 !important;
   padding-left: 5px;
 }
-
-
+.modal-backdrop.show.fade{
+  display:none !important;
+}
+.fc-scroller::-webkit-scrollbar {
+  width: 0px;
+}
