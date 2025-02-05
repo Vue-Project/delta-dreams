@@ -113,7 +113,7 @@ export default {
         eventClick: this.handleEventClick,
         duration: { days: 20 },
         weekends: true,
-        // editable: true, // Enable dragging and resizing
+         editable: true, // Enable dragging and resizing
         resources: this.createResources(),
         selectable: true, // Enable date selection
         selectMirror: true, // Make the selection draggable
@@ -698,23 +698,23 @@ export default {
     transformEventToReservationData (event)
     {
       return {
+        user: event.extendedProps?.reservation?.user,
         id: event.extendedProps?.reservation?.id || event.id,
         checkin_date: event.start,
         checkout_date: event.end,
         checkin_time: event.extendedProps?.reservation?.checkin_time,
         checkout_time: event.extendedProps?.reservation?.checkout_time,
-        number_of_rooms: event.extendedProps?.reservation?.number_of_rooms,
+        rooms: event.extendedProps?.reservation?.rooms,
         rate_type: event.extendedProps?.reservation?.rate_type,
         adults: event.extendedProps?.reservation?.adults,
         children: event.extendedProps?.reservation?.children,
         status: event.extendedProps?.reservation?.status,
         status_name: event.extendedProps?.reservation?.status_name,
+        unit_price: event.extendedProps?.reservation?.unit_price,
         total: event.extendedProps?.reservation?.total,
-        created_at: event.extendedProps?.reservation?.created_at,
-        user: event.extendedProps?.reservation?.user,
-        guest_address: event.extendedProps?.reservation?.guest_address,
-        guest_city: event.extendedProps?.reservation?.guest_city,
-        guest_country: event.extendedProps?.reservation?.guest_country,
+        paid: event.extendedProps?.reservation?.paid,
+        balance: event.extendedProps?.reservation?.remaining,
+
       };
     },
     transformAllUnitsToEvents ()

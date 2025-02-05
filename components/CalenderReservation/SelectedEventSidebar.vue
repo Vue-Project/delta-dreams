@@ -11,7 +11,7 @@
           <div>
             <span class="mr-3">
               <i class="text-secondary fa-solid fa-location-dot"></i>
-              {{ selectedEvent.guest_country || "Egypt" }}
+              {{ selectedEvent.user?.country || "Egypt" }}
             </span>
             <span>
               <i class="text-success fa-solid fa-phone"></i>
@@ -24,42 +24,7 @@
                 Edit
               </button>
             </div>
-            <div class="col-md-6">
-              <!-- <button type="button" class="btn btn-primary waves-effect waves-light btn-block" data-bs-toggle="modal" data-bs-target="#paymentModal">
-                Add Payment </button> -->
-              <!-- <div class="demo-inline-spacing">
-                <div class="btn-group btn-block" id="dropdown-icon-demo">
-                  <button type="button" class="btn btn-primary dropdown-toggle waves-effect waves-light" data-bs-toggle="dropdown" aria-expanded="false">
-                    Options
-                  </button>
-                  <ul class="dropdown-menu">
-                    <li>
-                      <a href="#" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#paymentModal">
-                        <i class="fa-regular fa-credit-card mr-2"></i>Add Payment
-                      </a>
-                    </li>
 
-
-
-                  </ul>
-                </div>
-              </div> -->
-            </div>
-            <!-- <div class="col-md-4">
-              <div class="btn-group ms-auto">
-                <button type="button" class="btn btn-outline-primary dropdown-toggle waves-effect waves-light" data-bs-toggle="dropdown" aria-expanded="false">
-                  Print/Send
-                </button>
-                <ul class="dropdown-menu">
-                  <li>
-                    <a class="dropdown-item" href="javascript:void(0);">Print Invoice</a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="javascript:void(0);">Send Invoice</a>
-                  </li>
-                </ul>
-              </div>
-            </div> -->
           </div>
         </template>
       </h5>
@@ -118,30 +83,17 @@
                     <div class="me-2">
                       <h6 class="mb-0">Room Number</h6>
                       <small class="text-muted">
-                        {{ selectedEvent.number_of_rooms || 5 }}</small>
+                        {{ selectedEvent.rooms || 5 }}</small>
                     </div>
                   </div>
                 </div>
               </li>
-              <li class="mb-3 pb-1">
-                <div class="d-flex align-items-start">
-                  <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
-                    <div class="me-2">
-                      <h6 class="mb-0">
-                        <i class="fa-solid fa-person"></i>
-                        <i class="fa-solid fa-child"></i>
-                      </h6>
-                      <small class="text-muted">{{ selectedEvent.adults }}
-                        {{ selectedEvent.children }}</small>
-                    </div>
-                  </div>
-                </div>
-              </li>
+
             </ul>
           </div>
           <div class="col-md-6">
             <ul class="list-unstyled mb-0">
-              <li class="mb-3 pb-1">
+              <!-- <li class="mb-3 pb-1">
                 <div class="d-flex align-items-start">
                   <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                     <div class="me-2">
@@ -151,7 +103,7 @@
                     </div>
                   </div>
                 </div>
-              </li>
+              </li> -->
               <li class="mb-3 pb-1">
                 <div class="d-flex align-items-start">
                   <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
@@ -169,7 +121,7 @@
                   <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                     <div class="me-2">
                       <h6 class="mb-0">Room Type</h6>
-                      <small class="text-muted">{{ selectedEvent.roomType || 'Suite شاليهات بخدمات فندقية غرفتين وصاله' }}
+                      <small class="text-muted">{{ selectedEvent.rate_type }}
                       </small>
                     </div>
                   </div>
@@ -177,13 +129,28 @@
               </li>
               <li class="mb-3 pb-1">
                 <div class="d-flex align-items-start">
+                  <li >
+                <div class="d-flex align-items-start">
                   <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                    <div class="me-2">
+                      <h6 class="mb-0">
+                        <i class="fa-solid fa-person"></i>
+                        -
+                        <i class="fa-solid fa-child"></i>
+                      </h6>
+                      <small class="text-muted m-1">{{ selectedEvent.adults }}-
+                        {{ selectedEvent.children }}</small>
+                    </div>
+                  </div>
+                </div>
+              </li>
+                  <!-- <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                     <div class="me-2">
                       <h6 class="mb-0">Rate Plan</h6>
                       <small class="text-muted">
                         {{ selectedEvent.ratePlan || "السعر غير شامل" }}</small>
                     </div>
-                  </div>
+                  </div> -->
                 </div>
               </li>
               <li class="mb-3 pb-1">
@@ -191,7 +158,7 @@
                   <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                     <div class="me-2">
                       <h6 class="mb-0">Avg. Daily Rate</h6>
-                      <small class="text-muted">{{ selectedEvent.dailyRate || '£ 1,350.00' }}
+                      <small class="text-muted">{{ selectedEvent.unit_price || '0' }}
                       </small>
                     </div>
                   </div>
@@ -203,14 +170,14 @@
         <div class="new-div mt-3 position-absolute right-0 w-100 px-4 bottom-1">
           <dl class=" row mb-0">
             <dt class="col-6 fw-normal text-heading">Total</dt>
-            <dd class="col-6 text-end">{{ selectedEvent.total || "0.0 " }} EGP</dd>
+            <dd class="col-6 text-end">{{ selectedEvent.total || "0 " }} EGP</dd>
 
             <dt class="col-sm-6 fw-normal">Paid</dt>
-            <dd class="col-sm-6 text-end">{{ selectedEvent.paid || "0.0 " }}EGP</dd>
+            <dd class="col-sm-6 text-end">{{ selectedEvent.paid || "0 " }} EGP</dd>
 
             <dt class="col-6 fw-normal text-danger">Balance</dt>
             <dd class="col-6 text-end text-danger">
-              {{ selectedEvent.balance || "0.0 " }}EGP
+              {{ selectedEvent.balance || "0.0 " }} EGP
             </dd>
           </dl>
         </div>
