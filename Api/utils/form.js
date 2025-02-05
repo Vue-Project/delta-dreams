@@ -18,8 +18,8 @@ export const formUtils = {
   },
 
   validateBlockRoomForm(formData) {
-    const { dateStartAndEnd, roomType, room, reason } = formData;
-    if (!dateStartAndEnd || !roomType || !room || !reason) {
+    const { dateStartAndEnd, room, reason } = formData;
+    if (!dateStartAndEnd || !room || !reason) {
       throw new Error('Please fill in all required fields');
     }
   }

@@ -154,10 +154,16 @@
                     <tbody>
                       <tr v-for="(item, index) in formData" :key="index" class="mb-2 selectStyle">
                         <td>
-                          <input type="text" class="form-control" v-model="formAddReservation.units[0].roomType" disabled aria-label="Room Type of building ID" />
+                          <select class="form-select" id="unitsTypes" v-model="formAddReservation.units[0].roomType" @change="handleUnitTypeChange">
+                            <option disabled value="">Select</option>
+                            <option v-for="unitType in unitsTypes" :key="unitType.id" :value="unitType.id">
+                              {{ unitType.name }}
+                            </option>
+                          </select>
+                          <!-- <input type="text" class="form-control" v-model="formAddReservation.units[0].roomType" disabled aria-label="Room Type of building ID" /> -->
 
                         </td>
-                        <td style="width: 185px">
+                        <td>
                           <select class="form-select" v-model="formAddReservation.units[0].rateType" ref="rateType" :class="{ 'input-error': validationMessages.rateType }">
                             <option value="">Rate Type</option>
                             <option value="breakfast">Breakfast</option>
@@ -168,7 +174,14 @@
 
                         </td>
                         <td>
-                          <input type="text" class="form-control" v-model="formAddReservation.units[0].room" disabled aria-label="Room  of building ID" />
+                          <select class="form-select " v-model="formAddReservation.units[0].unitId" :disabled="!availableUnits.length">
+                            <option disabled value="">Select Unit</option>
+                            <option v-for="unit in availableUnits" :key="unit.id" :value="unit.id">
+                              {{ unit.code }}
+                            </option>
+                          </select>
+
+                          <!-- <input type="text" class="form-control" v-model="formAddReservation.units[0].room" disabled aria-label="Room  of building ID" /> -->
 
                         </td>
                         <td>
@@ -184,7 +197,7 @@
                           <div class="row">
                             <div class="col-lg-10">
                               <div class="input-group">
-                                <input type="text" class="form-control" placeholder="0.00" id="rateAmount" v-model="formattedRateAmount" @blur="formatRateAmount" aria-label="number of rateAmount" ref="rateAmount" :class="{ 'input-error': validationMessages.rateAmount }" />
+                                <input type="text" class="form-control" placeholder="0.00" id="rateAmount" v-model="formAddReservation.units[0].rateAmount" aria-label="number of rateAmount" ref="rateAmount" :class="{ 'input-error': validationMessages.rateAmount }" />
                                 <span class="input-group-text groupStyle">EGP</span>
                               </div>
                               <span class="error-message" v-if="validationMessages.rateAmount">{{ validationMessages.rateAmount }}</span>
@@ -275,43 +288,24 @@
                   </option>
                 </select>
                 <div class="position-relative flex-grow-1">
-  <input
-    type="text"
-    class="form-control w-100"
-    v-model="formAddReservation.guestInformation.name"
-    @input="handleSearch"
-    @focus="showDropdown = true"
-    @blur="handleBlur"
-    ref="name"
-    :class="{ 'input-error': validationMessages.name }"
-  />
+                  <input type="text" class="form-control w-100" v-model="formAddReservation.guestInformation.name" @input="handleSearch" @focus="showDropdown = true" @blur="handleBlur" ref="name" :class="{ 'input-error': validationMessages.name }" />
 
-  <!-- Suggestions Dropdown -->
-  <div
-    v-if="showDropdown"
-    class="position-absolute w-100 mt-1 bg-white border rounded shadow z-5 cursor-pointer"
-    style="max-height: 200px; overflow-y: auto"
-    @scroll.passive="handleScroll"
-  >
-    <div v-if="isLoading" class="p-2 text-muted">Loading...</div>
-    <div v-else>
-      <div
-        v-for="name in filteredNames"
-        :key="name.id"
-        class="p-2 cursor-pointer hover:bg-light"
-        @mousedown.prevent="selectName(name)"
-      >
-        {{ name.name }}
-      </div>
-      <div v-if="!hasMore && filteredNames.length === 0" class="p-2 text-muted">
-        No results found
-      </div>
-      <div v-if="hasMore && filteredNames.length > 0" class="p-2 text-muted">
-        Loading more...
-      </div>
-    </div>
-  </div>
-</div>
+                  <!-- Suggestions Dropdown -->
+                  <div v-if="showDropdown" class="position-absolute w-100 mt-1 bg-white border rounded shadow z-5 cursor-pointer" style="max-height: 200px; overflow-y: auto" @scroll.passive="handleScroll">
+                    <div v-if="isLoading" class="p-2 text-muted">Loading...</div>
+                    <div v-else>
+                      <div v-for="name in filteredNames" :key="name.id" class="p-2 cursor-pointer hover:bg-light" @mousedown.prevent="selectName(name)">
+                        {{ name.name }}
+                      </div>
+                      <div v-if="!hasMore && filteredNames.length === 0" class="p-2 text-muted">
+                        No results found
+                      </div>
+                      <div v-if="hasMore && filteredNames.length > 0" class="p-2 text-muted">
+                        Loading more...
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 <button class="btn btn-outline-primary waves-effect" type="button" @click="toggleSidebar">
                   <i class="fa-solid fa-user-plus"></i>
                 </button>
@@ -423,8 +417,8 @@
   </section>
 </template>
 <script>
-import Swal from 'sweetalert2';  // Import SweetAlert2
-import { getBookingSources, getBusinessSources, getReservationTypes, getGuestsInfo, postAddReservationData } from "../../Api/addResvertionApi";
+import { showSuccessAlert, handleSubmissionError } from '../../Api/MassageValidation/alertUtilities';
+import { getBookingSources, getBusinessSources, getReservationTypes, getGuestsInfo, postAddReservationData, getUnitTypes, getUnits } from "../../Api/addResvertionApi";
 import flatpickrMixin from "../Mixin/flatpickrMixin";
 import SidebarAddGuest from "../layout/AddGuestSidebar.vue";
 
@@ -454,6 +448,9 @@ export default {
       businessSources: [],
       bookingSources: [],
       reservationTypes: [],
+      unitsTypes: [],
+      availableUnits: [],
+      selectedUnit: '',
       formAddReservation: {
         checkInDate: "",
         checkInTime: "",
@@ -469,7 +466,7 @@ export default {
           complimentaryRoom: false,
         },
         units: [{
-          // roomType: "",
+          roomType: "",
           rateType: "",
           room: "",
           adults: "",
@@ -477,6 +474,7 @@ export default {
           rateAmount: "",
           unitTypeId: "",
           unitId: "",
+
         }],
         releaseDate: "",
         releaseTime: "",
@@ -524,6 +522,7 @@ export default {
   },
 
   methods: {
+
     updateRepeater ()
     {
       const currentCount = this.formData.length;
@@ -566,28 +565,28 @@ export default {
       // Fetch or filter names based on the input
       this.fetchNames(this.formAddReservation.guestInformation.name);
     },
-  //  handleBlur ()
-  //   {
-  //     // Hide dropdown after a small delay to allow selection
-  //     setTimeout(() =>
-  //     {
-  //       this.showDropdown = false;
-  //     }, 200);
-  //   },
-  //   selectName (name)
-  //   {
-  //     // Set the name for display and store the ID
-  //     this.formAddReservation.guestInformation.name = name.name;
-  //     this.selectedNameId = name.id;
-  //     this.showDropdown = false;
-  //   },
-  //   fetchNames (query)
-  //   {
-  //     // Fetch or filter names dynamically
-  //     // Replace with your API call
-  //     const allNames = this.filteredNames
-  //     this.filteredNames = allNames.filter(item => item.name.toLowerCase().includes(query.toLowerCase()));
-  //   },
+    //  handleBlur ()
+    //   {
+    //     // Hide dropdown after a small delay to allow selection
+    //     setTimeout(() =>
+    //     {
+    //       this.showDropdown = false;
+    //     }, 200);
+    //   },
+    //   selectName (name)
+    //   {
+    //     // Set the name for display and store the ID
+    //     this.formAddReservation.guestInformation.name = name.name;
+    //     this.selectedNameId = name.id;
+    //     this.showDropdown = false;
+    //   },
+    //   fetchNames (query)
+    //   {
+    //     // Fetch or filter names dynamically
+    //     // Replace with your API call
+    //     const allNames = this.filteredNames
+    //     this.filteredNames = allNames.filter(item => item.name.toLowerCase().includes(query.toLowerCase()));
+    //   },
 
     // Reset validation messages
     resetValidationMessages ()
@@ -655,6 +654,8 @@ export default {
         { field: "children", message: "Children count is required" },
         { field: "rateType", message: "Rate Type is required" },
         { field: "rateAmount", message: "Rate Amount is required" },
+        // { field: "paymentMode", message: "Payment Mode is required", path: "paymentData" },
+
       ];
 
       // Reset validation messages before checking
@@ -691,7 +692,7 @@ export default {
         checkin_time: this.formAddReservation.checkInTime,
         checkout_date: this.formAddReservation.checkOutDate,
         checkout_time: this.formAddReservation.checkOutTime,
-       rooms: this.formAddReservation.numberRooms,
+        rooms: this.formAddReservation.numberRooms,
         booking_source_id: this.formAddReservation.bookingSource,
         business_source_id: this.formAddReservation.businessSource,
         reservation_type_id: this.formAddReservation.reservationType,
@@ -708,33 +709,60 @@ export default {
         book_all_available: this.formAddReservation.rateOffered.bookAll,
         hold_release_date: this.formAddReservation.releaseDate,
         hold_release_time: this.formAddReservation.releaseTime,
-        release_term_value: this.formAddReservation.releaseTermValue || 24,
+        release_term_value: this.formAddReservation.releaseTermValue ,
         release_term_type: this.formAddReservation.releaseTerm || "24 hours",
         remind_before_days: this.formAddReservation.remindGuest,
         user_id: this.selectedNameId,
         mobile: this.formAddReservation.guestInformation.mobile,
-       address: this.formAddReservation.guestInformation.address,
+        address: this.formAddReservation.guestInformation.address,
         country: this.formAddReservation.guestInformation.country,
-       state: this.formAddReservation.guestInformation.state,
-       city: this.formAddReservation.guestInformation.city,
-       zip: this.formAddReservation.guestInformation.zip,
-       booking: this.showSelect,
-        booking_option: this.formAddReservation.otherInformation.emailBookingOption,
-        send_email_checkout: this.showInput,
-        email_address_checkout: this.formAddReservation.otherInformation.emailAddressCheckout,
-        access_guest_portal: this.formAddReservation.otherInformation.accessToGuestPortal,
-        suppress_rate_registration_card: this.formAddReservation.otherInformation.suppressRateOnRegistrationCard,
-        room_charges: this.paymentData.roomCharges,
-        taxes: this.paymentData.taxes,
-        total_amount: this.paymentData.totalAmount,
-        due_amount: this.paymentData.dueAmount,
-        bill_to: this.paymentData.billTo,
-        tax_exempt: this.paymentData.taxExempt,
-        payment_mode: this.paymentData.paymentMode,
-        payment_method: this.paymentData.paymentMethod,
-        selected_payment_method: this.paymentData.selectedPaymentMethod
+        state: this.formAddReservation.guestInformation.state,
+        city: this.formAddReservation.guestInformation.city,
+        zip: this.formAddReservation.guestInformation.zip,
+        // room_charges: this.paymentData.roomCharges,
+          tax: this.paymentData.taxes,
+          charge_extra: this.paymentData.dueAmount,
+          // payment_mode: this.paymentData.paymentMode,
+          payment_id: this.paymentData.paymentMethod,
+          payment_type: this.paymentData.selectedPaymentType,
+          payment_price: this.paymentData.amount,
+          date_at: this.paymentData.date,
+          note: this.paymentData.comment,
+        // payment_details: {
+
+        //   // payment_price: this.paymentData.roomCharges || 50000,
+
+        //   // transaction_details: {
+        //   //   bank_name: this.paymentData.bankName,
+        //   //   account_number: this.paymentData.accountNumber,
+        //   //   transfer_date: this.paymentData.transferDate,
+        //   //   phone_number: this.paymentData.phoneNumber,
+        //   //   transaction_id: this.paymentData.transactionId,
+        //   //   card_number: this.paymentData.cardNumber,
+        //   //   expiry_date: this.paymentData.expiryDate,
+        //   //   cvv: this.paymentData.cvv,
+        //   //   comment: this.paymentData.comment
+        //   // }
+        // }
+        // booking: this.showSelect,
+        // booking_option: this.formAddReservation.otherInformation.emailBookingOption,
+        // send_email_checkout: this.showInput,
+        // email_address_checkout: this.formAddReservation.otherInformation.emailAddressCheckout,
+        // access_guest_portal: this.formAddReservation.otherInformation.accessToGuestPortal,
+        // suppress_rate_registration_card: this.formAddReservation.otherInformation.suppressRateOnRegistrationCard,
+        // room_charges: this.paymentData.roomCharges,
+        // taxes: this.paymentData.taxes,
+        // total_amount: this.paymentData.totalAmount,
+        // due_amount: this.paymentData.dueAmount,
+        // bill_to: this.paymentData.billTo,
+        // tax_exempt: this.paymentData.taxExempt,
+        // payment_mode: this.paymentData.paymentMode,
+        // payment_method: this.paymentData.paymentMethod,
+        // selected_payment_method: this.paymentData.selectedPaymentMethod,
+
       };
-      console.log(bookingData);
+      // console.log(bookingData);
+
 
 
 
@@ -742,26 +770,19 @@ export default {
       try {
         const response = await postAddReservationData(bookingData);
 
-        // Show success message
-        Swal.fire({
-          icon: "success",
-          title: "Success!",
-          text: "Reservation submitted successfully.",
-          confirmButtonText: "OK",
-        }).then(() =>
-        {
-          // Navigate to index.vue (or a route associated with it)
-          this.$router.push({ name: 'index' }); // Replace 'index' with the actual route name
-        });
+        await showSuccessAlert(
+          "Reservation submitted successfully!", // Custom message
+          this.$router,
+          'index' // Route name
+        );
 
       } catch (error) {
-        console.error("Error submitting booking:", error.response?.data || error.message);
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "There was an issue submitting the booking.",
-          confirmButtonText: "OK",
-        });
+        // Handle the error response from the server
+        // Check if there are validation errors from the server in the response
+        handleSubmissionError(
+          error,
+          "There was an issue with your reservation." // Custom default error
+        );
       }
 
     },
@@ -800,34 +821,28 @@ export default {
     {
       this.$router.go(-1);
     },
-    spliceSelectedResourceName ()
+    async spliceSelectedResourceName ()
     {
       if (this.selectedResourceName) {
-        // Split the selectedResourceName by ' - ' to get unit and roomType
-        const [unitWithPrefix, room] = this.selectedResourceName.split(' - ');
+        const parts = this.selectedResourceName.split(' - ')
+        const displayUnit = parts[0]
+        const displayType = parts[1]
+        const idPart = parts[2]
+        const [unitTypeId, unitId] = idPart
+          .replace('ID: ', '')
+          .split('-')
 
-        // The unit with the prefix remains as it is, and room is assigned as roomType
-        const roomType = room || '';  // Default to empty if room is missing
-        const unit = unitWithPrefix.trim();  // Keep 'UNIT-' part intact
+        // Update to set both roomType and unitTypeId
+        this.formAddReservation.units[0].roomType = unitTypeId
+        this.formAddReservation.units[0].unitTypeId = unitTypeId
+        this.formAddReservation.units[0].unitId = unitId
 
-        // Extract the ID part after 'ID: '
-        const idPart = this.selectedResourceName.split('ID: ')[1] || '';
-
-        // Split the ID part into two values (21 and 1 in this case)
-        const [unitTypeId, unitId] = idPart.split('-');
-
-        // Assign values to formAddReservation
-        this.formAddReservation.units[0].roomType = roomType;
-        this.formAddReservation.units[0].room = unit;
-
-        // Assign the separate ID parts to the form (unitTypeId = 21, unitId = 1)
-        this.formAddReservation.units[0].unitTypeId = unitTypeId || ''; // 21
-        this.formAddReservation.units[0].unitId = unitId || ''; // 1
-
-        // For display, you can combine unit and roomType
-        this.selectedResourceNameForDisplay = `${unit} - ${roomType}`;
+        this.handleUnitTypeChange()
       }
     },
+
+
+
     formatRateAmount ()
     {
       const value = this.formAddReservation.units[0].rateAmount;
@@ -840,20 +855,41 @@ export default {
         this.formAddReservation.units[0].rateAmount = parseFloat(value).toFixed(2);
       }
     },
+    async handleUnitTypeChange ()
+    {
+      try {
+        const unitTypeId = this.formAddReservation.units[0].roomType
+        if (unitTypeId) {
+          // Reset selected unit when changing type
+          this.selectedUnit = ''
+
+          // Fetch units for selected type
+          const response = await getUnits(unitTypeId)
+          this.availableUnits = response.data.data
+        } else {
+          this.availableUnits = []
+        }
+      } catch (error) {
+        console.error('Error fetching units:', error)
+        this.availableUnits = []
+      }
+    },
 
 
-    async handleSearch() {
+    async handleSearch ()
+    {
       this.currentPage = 1
       this.searchQuery = this.formAddReservation.guestInformation.name
       await this.fetchNames()
     },
 
-    async fetchNames() {
+    async fetchNames ()
+    {
       if (this.isLoading) return
 
       this.isLoading = true
       try {
-        const response = await getGuestsInfo( {
+        const response = await getGuestsInfo({
           params: {
             query: this.searchQuery,
             page: this.currentPage,
@@ -876,7 +912,8 @@ export default {
       }
     },
 
-    handleScroll(event) {
+    handleScroll (event)
+    {
       const element = event.target
       const bottom = element.scrollHeight - element.scrollTop === element.clientHeight
       if (bottom && this.hasMore && !this.isLoading) {
@@ -885,7 +922,8 @@ export default {
       }
     },
 
-    selectName(name) {
+    selectName (name)
+    {
       this.formAddReservation.guestInformation.name = name.name
       this.showDropdown = false
       this.selectedNameId = name.id;
@@ -893,8 +931,10 @@ export default {
       // Optionally fetch other guest details if needed
     },
 
-    handleBlur() {
-      setTimeout(() => {
+    handleBlur ()
+    {
+      setTimeout(() =>
+      {
         this.showDropdown = false
       }, 200)
     }
@@ -910,17 +950,21 @@ export default {
         bookingSourcesResponse,
         reservationTypesResponse,
         usersResponse,
+        unitTypesResponse,
       ] = await Promise.all([
         getBusinessSources(),
         getBookingSources(),
         getReservationTypes(),
         getGuestsInfo(),
+        getUnitTypes(),
+        getUnits(),
       ]);
 
       this.businessSources = businessSourcesResponse.data.data;
       this.bookingSources = bookingSourcesResponse.data.data;
       this.reservationTypes = reservationTypesResponse.data.data;
       this.filteredNames = usersResponse.data.data;
+      this.unitsTypes = unitTypesResponse.data.data;
     } catch (error) {
       console.error("Error loading data:", error);
     }

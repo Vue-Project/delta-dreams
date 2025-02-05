@@ -32,9 +32,10 @@
 </template>
 
 <script>
-import Swal from "sweetalert2";
 import flatpickrMixin from "../Mixin/flatpickrMixin";
 import { PostReservationItems } from "../../Api/addResvertionApi";
+import { showSuccessAlert, handleSubmissionError } from '../../Api/MassageValidation/alertUtilities';
+
 
 export default {
   name: "UpdateDetails",
@@ -98,29 +99,19 @@ export default {
         };
 
         const response = await PostReservationItems(this.reservationId, updateReservationItems);
+        await showSuccessAlert(
+          "Reservation Items updated successfully.", // Custom message
+          this.$router,
+          'index' // Route name
+        );
 
-        await Swal.fire({
-          icon: "success",
-          title: "Success!",
-          text: "Reservation Items updated successfully.",
-          confirmButtonText: "OK",
-        }).then(() =>
-      {
-        this.$router.push({ name: 'index' }); // Replace 'index' with the actual route name
-
-
-      });
 
         this.hideOffcanvas();
       } catch (error) {
-        await Swal.fire({
-          icon: "error",
-          title: "Error",
-          text:
-            error.response?.data?.message ||
-            error.message ||
-            "Failed to Update Reservation. Please try again.",
-        });
+        handleSubmissionError(
+          error,
+          "There was an issue with your reservation." // Custom default error
+        );
       }
     },
   },

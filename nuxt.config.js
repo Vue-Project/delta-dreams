@@ -5,7 +5,7 @@ export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   // store: true,
   head: {
-    title: "deltaDreams",
+    title: "deltadreams",
 
     meta: [
       { charset: "utf-8" },
@@ -35,6 +35,10 @@ export default {
         body: true,
       },
     ],
+  },
+  router: {
+    base: '/', // If deploying to a subdirectory (e.g., /my-app/), set this to '/my-app/'
+    mode: 'history', // Remove the hash (#) from URLs
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
@@ -127,13 +131,13 @@ export default {
 
 
 
-  generate: {
-    fallback: true, // Ensures SPA fallback
-    subFolders: false,
-    exclude: [/admin/]
+  // generate: {
+  //   fallback: true, // Ensures SPA fallback
+  //   // subFolders: false,
+  //   exclude: [/admin/]
 
 
-  },
+  // },
 
 
 };

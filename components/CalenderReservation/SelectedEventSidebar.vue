@@ -217,7 +217,7 @@
 
       </template>
       <!-- Modal Payment -->
-      <div class="modal fade" id="paymentModal" data-bs-backdrop="static" tabindex="-1" style="display: none;" aria-hidden="true">
+      <!-- <div class="modal fade" id="paymentModal" data-bs-backdrop="static" tabindex="-1" style="display: none;" aria-hidden="true">
         <div class="modal-dialog">
           <form class="modal-content" @submit.prevent="submitPayment">
             <div class="modal-header">
@@ -277,7 +277,7 @@
             </div>
           </form>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>

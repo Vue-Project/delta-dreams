@@ -1,8 +1,10 @@
 <template>
   <section class="summary position-sticky top-0">
     <div class="card">
+      <!-- <p>{{ paymentDetails }}</p> -->
       <h5 class="card-header">
         Billing Summary
+
         <span class="badge bg-label-success float-right">حجز مؤكد معلق بتحويل المبلغ</span>
       </h5>
       <hr class="m-0" />
@@ -29,36 +31,14 @@
         </div>
         <dl class="row mb-2 billingMoney rounded p-2">
           <dt class="col-6 fw-normal text-heading">Room Charges</dt>
-          <dd class="col-6 text-end">{{ value.roomCharges }}</dd>
+          <dd class="col-6 text-end">{{ paymentDetails.roomCharges }}</dd>
 
           <dt class="col-sm-6 fw-normal">Taxes</dt>
-          <dd class="col-sm-6 text-end">{{ value.taxes }}</dd>
+          <dd class="col-sm-6 text-end"> {{ paymentDetails.taxes }}</dd>
 
-          <dt class="col-6 fw-normal text-heading">Due Amount</dt>
-          <dd class="col-6 text-end">EGP {{ value.dueAmount }}</dd>
+          <dt class="col-6 fw-normal text-heading">Charge Extra</dt>
+          <dd class="col-6 text-end"> {{ paymentDetails.dueAmount }}</dd>
         </dl>
-        <div class="row align-items-center">
-          <div class="col-md-9">
-            <div class="input-group">
-              <label class="input-group-text" for="inputGroupSelect01">Bill To</label>
-              <select class="form-select" id="inputGroupSelect01" v-model="value.billTo">
-                <option selected>Choose...</option>
-                <option value="Company">Company</option>
-                <option value="GroupOwner">GroupOwner</option>
-                <option value="Guest">Guest</option>
-                <option value="Room and Tax to Company, Extra to Guest">Room and Tax to Company, Extra to Guest</option>
-              </select>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="input-group justify-content-end">
-              <div class="input-group-text border-0 px-2">
-                <label class="pl-1 mb-0" for="inputCheckBox01">Tax Exempt</label>
-                <input id="inputCheckBox01" class="form-check-input mt-0" type="checkbox" v-model="value.taxExempt" />
-              </div>
-            </div>
-          </div>
-        </div>
 
         <div class="input-group">
           <div class="input-group-text border-0 px-2 ml-3">
@@ -68,35 +48,25 @@
         </div>
 
         <div class="row" v-if="value.paymentMode">
-          <div class="col-md-6 d-flex align-items-center">
-            <div class="input-group">
-              <div class="input-group-text border-0 ml-3">
-                <label class="pl-1 mb-0" for="inputRadio01">Cash/Bank</label>
-                <input id="inputRadio01" class="form-check-input mt-0" type="radio" value="Cash/Bank" v-model="value.paymentMethod" />
-              </div>
-            </div>
-            <div class="input-group float-right">
-              <div class="input-group-text border-0 ml-3">
-                <label class="pl-1 mb-0" for="inputRadio02">City Ledger</label>
-                <input id="inputRadio02" class="form-check-input mt-0" type="radio" value="City Ledger" v-model="value.paymentMethod" />
-              </div>
-            </div>
-          </div>
           <div class="col-md-6">
             <div class="input-group">
-              <select class="form-select" id="PaymentMethods" v-model="value.selectedPaymentMethod">
-                <option selected>Select...</option>
-                <option value="Mohamed">Mohamed</option>
-                <option value="testing">testing</option>
-                <option value="بد الله سامى">بد الله سامى</option>
-                <option value="testing20">testing20</option>
-                <option value="SS ss">SS ss</option>
-                <option value="retfd">retfd</option>
-                <option value="MOHAMED">MOHAMED</option>
-                <option value="retfd">retfd</option>
-                <option value="shhhh">shhhh</option>
-                <option value="Shad">Shad</option>
-                <option value="shady">shady</option>
+              <label class="input-group-text" for="inputGroupSelect01">Methods</label>
+              <select class="form-select" id="businessSource" v-model="value.paymentMethod">
+                <option disabled value="">Select</option>
+                <option v-for="(paymentMethod, index) in paymentMethods" :key="paymentMethod.id" :value="paymentMethod.id">
+                  {{ paymentMethod.content }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-6 d-flex align-items-center">
+            <div class="input-group">
+              <label class="input-group-text" for="inputGroupSelect01">Types</label>
+              <select class="form-select" id="businessSource" v-model="selectedPaymentType">
+                <option disabled value="">Select</option>
+                <option v-for="(label, value) in paymentTypes" :key="value" :value="value">
+                  {{ label }}
+                </option>
               </select>
             </div>
           </div>
@@ -104,12 +74,117 @@
         <p v-if="!value.paymentMode && validationMessage" class="validation-message">
           Payment Mode is required.
         </p>
+
+        <!-- Payment Details Summary -->
+        <div v-if="value.paymentMode" class="payment-summary mt-3">
+          <h6 class="mb-3">Payment Details</h6>
+          <dl class="row">
+            <dt class="col-6">Payment Method:</dt>
+            <dd class="col-6">{{  'Cash' }}</dd>
+
+            <dt class="col-6">Payment Type:</dt>
+            <dd class="col-6">{{ selectedPaymentType || 'Not selected' }}</dd>
+
+            <!-- Common fields for all payment types -->
+            <dt class="col-6">Amount:</dt>
+            <dd class="col-6">{{ paymentDetails.amount || 'Not specified' }}</dd>
+
+            <dt class="col-6">Date:</dt>
+            <dd class="col-6">{{ paymentDetails.date || 'Not specified' }}</dd>
+
+            <template v-if="paymentDetails.comment">
+              <dt class="col-6">Comment:</dt>
+              <dd class="col-6">{{ paymentDetails.comment }}</dd>
+            </template>
+
+            <!-- Payment specific fields -->
+            <!-- <template v-if="selectedPaymentType === 'bank_transfer'">
+              <dt class="col-6">Bank Name:</dt>
+              <dd class="col-6">{{ paymentDetails.bankName || 'Not specified' }}</dd>
+              <dt class="col-6">Account Number:</dt>
+              <dd class="col-6">{{ paymentDetails.accountNumber || 'Not specified' }}</dd>
+            </template>
+
+            <template v-if="['vodafone', 'we', 'orange', 'etisalat'].includes(selectedPaymentType)">
+              <dt class="col-6">Phone Number:</dt>
+              <dd class="col-6">{{ paymentDetails.phoneNumber || 'Not specified' }}</dd>
+              <dt class="col-6">Transaction ID:</dt>
+              <dd class="col-6">{{ paymentDetails.transactionId || 'Not specified' }}</dd>
+            </template>
+
+            <template v-if="selectedPaymentType === 'visa'">
+              <dt class="col-6">Card Number:</dt>
+              <dd class="col-6">{{ maskCardNumber(paymentDetails.cardNumber) }}</dd>
+            </template>
+
+            <template v-if="['apple_pay', 'google_pay', 'instapay', 'fawry'].includes(selectedPaymentType)">
+              <dt class="col-6">Transaction ID:</dt>
+              <dd class="col-6">{{ paymentDetails.transactionId || 'Not specified' }}</dd>
+            </template> -->
+          </dl>
+        </div>
+
+        <!-- Dynamic form fields based on payment type -->
+        <div class="mt-3" v-if="selectedPaymentType">
+          <!-- Common fields for all payment types -->
+          <div class="mb-3">
+            <label class="form-label">Amount</label>
+            <input type="number" class="form-control" v-model="paymentDetails.amount">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Date</label>
+            <input type="date" class="form-control" v-model="paymentDetails.date">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Comment</label>
+            <textarea class="form-control" v-model="paymentDetails.comment" rows="3"></textarea>
+          </div>
+
+          <!-- Payment specific fields -->
+          <!-- <template v-if="selectedPaymentType === 'bank_transfer'">
+            <div class="mb-3">
+              <label class="form-label">Bank Name</label>
+              <input type="text" class="form-control" v-model="paymentDetails.bankName">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Account Number</label>
+              <input type="text" class="form-control" v-model="paymentDetails.accountNumber">
+            </div>
+          </template> -->
+
+          <!-- <template v-if="['vodafone', 'we', 'orange', 'etisalat'].includes(selectedPaymentType)">
+            <div class="mb-3">
+              <label class="form-label">Phone Number</label>
+              <input type="tel" class="form-control" v-model="paymentDetails.phoneNumber">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Transaction ID</label>
+              <input type="text" class="form-control" v-model="paymentDetails.transactionId">
+            </div>
+          </template> -->
+
+          <!-- <template v-if="selectedPaymentType === 'visa'">
+            <div class="mb-3">
+              <label class="form-label">Card Number</label>
+              <input type="text" class="form-control" v-model="paymentDetails.cardNumber">
+            </div>
+          </template> -->
+
+          <!-- <template v-if="['apple_pay', 'google_pay', 'instapay', 'fawry'].includes(selectedPaymentType)">
+            <div class="mb-3">
+              <label class="form-label">Transaction ID</label>
+              <input type="text" class="form-control" v-model="paymentDetails.transactionId">
+            </div>
+          </template> -->
+        </div>
       </div>
     </div>
   </section>
 </template>
 
 <script>
+import { getPaymentMethods } from '../../Api/addResvertionApi';
+
 export default {
   name: "BillingSummary",
   props: {
@@ -125,6 +200,24 @@ export default {
   data() {
     return {
       validationMessage: "",
+      paymentMethods: [],
+      paymentTypes: [],
+      selectedPaymentType: '',
+      paymentDetails: {
+        roomCharges: 0.0,
+        taxes: 0.0,
+        dueAmount: 0.0,
+        amount: null,
+        bankName: '',
+        accountNumber: '',
+        transferDate: '',
+        phoneNumber: '',
+        transactionId: '',
+        cardNumber: '',
+        date: new Date().toISOString().split('T')[0],
+        cvv: '',
+        comment: '',
+      }
     };
   },
   computed: {
@@ -145,6 +238,24 @@ export default {
       return "--/--/----";
     },
   },
+  async mounted ()
+  {
+    try {
+      const [
+        paymentMethodsResponse,
+
+      ] = await Promise.all([
+      getPaymentMethods(),
+      ]);
+
+      this.paymentMethods = paymentMethodsResponse.data.data;
+      this.paymentTypes = paymentMethodsResponse.data.payment_type;
+    } catch (error) {
+      console.error("Error loading data:", error);
+    }
+
+
+  },
   watch: {
     "value.paymentMode": function (newVal) {
       if (!newVal) {
@@ -153,8 +264,51 @@ export default {
         this.validationMessage = "";
       }
     },
+    selectedPaymentType(newVal) {
+      this.$emit('input', {
+        ...this.value,
+        selectedPaymentType: newVal
+      });
+    },
+    'paymentDetails': {
+      deep: true,
+      handler(newVal) {
+        this.$emit('input', {
+          ...this.value,
+          ...newVal
+        });
+      }
+    }
+  },
+  methods: {
+    // Add this new method to mask card numbers
+    maskCardNumber(cardNumber) {
+      if (!cardNumber) return 'Not specified';
+      return `****-****-****-${cardNumber.slice(-4)}`;
+    },
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.payment-summary {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 0.375rem;
+  margin-bottom: 1rem;
+}
+
+.payment-summary dt {
+  font-weight: 500;
+  color: #566a7f;
+}
+
+.payment-summary dd {
+  text-align: right;
+  margin-bottom: 0.5rem;
+}
+
+.billingMoney {
+  background-color: #f8f9fa;
+}
+</style>

@@ -52,3 +52,12 @@ export const blockRoomService =  async (blockRoomData) =>
         throw error;
       }
     };
+    export const deleteBlock = async (id) => {
+      try {
+        const response = await apiClient.delete(`/blocks/${id}`);
+        return response.data;
+      } catch (error) {
+        console.error('Error deleting block:', error);
+        throw error;
+      }
+    };
