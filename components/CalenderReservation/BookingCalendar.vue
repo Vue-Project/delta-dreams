@@ -677,7 +677,6 @@ export default {
                 title: `Blocked Reason: ${dateInfo.block.reason.name || 'No reason provided'}`,
                 start: dateInfo.date,
                 end: dateInfo.date,
-                color: '#000000',
                 color: '#4b4b4b',
                 extendedProps: {
                   is_blocked: true, // Indicate this is a blocked date
@@ -685,12 +684,13 @@ export default {
                 },
                 classNames: ['custom-event'],
               };
+              console.log(currentBlock);
             }
 
-            // Update end date to next day
+            // Update end date to the end of the current day
             const endDate = new Date(dateInfo.date);
-            endDate.setDate(endDate.getDate() + 1);
-            currentBlock.end = endDate.toISOString().split('T')[0];
+            endDate.setHours(23, 59, 59, 999); // Set to the end of the day
+            currentBlock.end = endDate.toISOString();
           } else if (currentBlock) {
             events.push(currentBlock);
             currentBlock = null;
