@@ -1,7 +1,7 @@
 <template>
   <div class="row p-3">
     <div class="col-xl-8 col-md-12">
-      <CheckIn :paymentData="paymentData"  :selectedDates="selectedDates" :selectedResourceName="selectedResourceName" />
+      <CheckIn :paymentData="paymentData" @change="changeRoomCharges" :selectedDates="selectedDates" :selectedResourceName="selectedResourceName" />
     </div>
     <div class="col-xl-4 col-md-12">
       <BillingSummary v-model="paymentData" :selectedDates="selectedDates" />
@@ -35,13 +35,19 @@ export default {
       },
     }
   },
+  methods:{
+    changeRoomCharges(charges){
+      this.paymentData.roomCharges = charges
+      console.log(charges);
+    }
+  },
   computed: {
     selectedDates() {
       return this.$store.state.selectedDates;
     },
     selectedResourceName() {
       return this.$store.state.selectedResourceName;
-    }
+    },
   },
   // beforeMount() {
   //   this.$store.dispatch('resetAccess')

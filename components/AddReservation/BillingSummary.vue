@@ -53,7 +53,7 @@
               <label class="input-group-text" for="inputGroupSelect01">Methods</label>
               <select class="form-select" id="businessSource" v-model="value.paymentMethod">
                 <option disabled value="">Select</option>
-                <option v-for="(paymentMethod, index) in paymentMethods" :key="paymentMethod.id" :value="paymentMethod.id">
+                <option v-for="paymentMethod in paymentMethods" :key="paymentMethod.id" :value="paymentMethod.id">
                   {{ paymentMethod.content }}
                 </option>
               </select>
@@ -263,6 +263,9 @@ export default {
       } else {
         this.validationMessage = "";
       }
+    },
+    "value.roomCharges" : function(value){
+      this.paymentDetails.roomCharges = value
     },
     selectedPaymentType(newVal) {
       this.$emit('input', {

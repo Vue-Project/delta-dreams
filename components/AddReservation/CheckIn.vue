@@ -197,7 +197,7 @@
                           <div class="row">
                             <div class="col-lg-10">
                               <div class="input-group">
-                                <input type="text" class="form-control" placeholder="0.00" id="rateAmount" v-model="formAddReservation.units[0].rateAmount" aria-label="number of rateAmount" ref="rateAmount" :class="{ 'input-error': validationMessages.rateAmount }" />
+                                <input @change="(value)=>$emit('change',value.target.value)" class="form-control" placeholder="0.00" id="rateAmount" v-model="formAddReservation.units[0].rateAmount" aria-label="number of rateAmount" ref="rateAmount" :class="{ 'input-error': validationMessages.rateAmount }" />
                                 <span class="input-group-text groupStyle">EGP</span>
                               </div>
                               <span class="error-message" v-if="validationMessages.rateAmount">{{ validationMessages.rateAmount }}</span>
@@ -1102,8 +1102,8 @@ export default {
 
 
   },
+  emits:['change'],
   watch: {
-
     roomCount (newValue)
     {
       this.formAddReservation.numberRooms = newValue;
