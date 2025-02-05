@@ -115,6 +115,7 @@ export default {
         duration: { days: 20 },
         weekends: true,
          editable: true, // Enable dragging and resizing
+
          eventDrop: this.handleEventChange,
         eventResize: this.handleEventChange,
         resources: this.createResources(),
@@ -324,7 +325,10 @@ export default {
       // Get current Egypt time and initialize start/end dates
       const currentEgyptTime = getCurrentEgyptTime();
       const startDate = new Date(start);
+
+      // Adjust end date to be the last selected day (subtract 1 day from end)
       const endDate = new Date(end);
+      endDate.setDate(endDate.getDate() - 1);
 
       // Align start and end dates to Egypt's current time
       startDate.setHours(currentEgyptTime.getHours(), currentEgyptTime.getMinutes(), 0, 0);
@@ -368,12 +372,13 @@ export default {
         currentDate.setDate(currentDate.getDate() + 1);
       }
 
-      // Store first and last selected dates
+      // Store first and last selected dates (endDate is now correct)
       this.firstSelectedDate = formatDateOnly(startDate);
       this.lastSelectedDate = formatDateOnly(endDate);
 
-      // Calculate total days/nights
-      const totalDays = Math.ceil((endDate - startDate) / (1000 * 3600 * 24));
+
+      // Calculate total days/nights (using adjusted endDate)
+      const totalDays = Math.ceil((endDate - startDate) / (1000 * 3600 * 24)) + 1;
       const nights = totalDays > 0 ? totalDays : 1; // Minimum of 1 night
 
       // Store nights count
@@ -640,12 +645,13 @@ export default {
           const reservation = dateInfo.reservation;
           const start = reservation.checkin_date.split('T')[0];
           const end = reservation.checkout_date.split('T')[0];
+          console.log(start, end,reservation);
 
           events.push({
             resourceId: unitData.code,
             title: `Reserved by ${reservation.user?.name || 'Unknown'}`,
             start: start,
-            end: end,
+            end: end + 'T23:59:59',
             color: '#7367f0',
             reservationId: reservation.id,
             extendedProps: {
