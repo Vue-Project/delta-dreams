@@ -61,6 +61,10 @@
               </div>
             </div> -->
           </div>
+          <div class="text-center">
+              <button type="button" title="Cancel Reservation" class="btn btn-label-danger waves-effect mt-3 w-100 px-0">
+                Cancel Reservation</button>
+          </div>
         </template>
       </h5>
       <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -157,9 +161,20 @@
                   <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                     <div class="me-2">
                       <h6 class="mb-0">Status</h6>
-                      <small class="badge" :class="statusBadgeClass(selectedEvent.status)">
-                        {{ selectedEvent.status_name }}
-                      </small>
+                      <select 
+                          class="badge"
+                          :class="statusBadgeClass(selectedEvent.status)"
+                          v-model="selectedEvent.status"
+                          @change="updateStatusName"
+                        >
+                          <option 
+                            v-for="status in statusOptions"
+                            :key="status.value"
+                            :value="status.value"
+                          >
+                            {{ status.name }}
+                          </option>
+                        </select> 
                     </div>
                   </div>
                 </div>
@@ -217,7 +232,7 @@
 
       </template>
       <!-- Modal Payment -->
-      <!-- <div class="modal fade" id="paymentModal" data-bs-backdrop="static" tabindex="-1" style="display: none;" aria-hidden="true">
+      <div class="modal fade" id="paymentModal" data-bs-backdrop="static" tabindex="-1" style="display: none;" aria-hidden="true">
         <div class="modal-dialog">
           <form class="modal-content" @submit.prevent="submitPayment">
             <div class="modal-header">
@@ -255,13 +270,21 @@
                     <label class="input-group-text" for="inputGroupSelect02">Method</label>
                   </div>
                 </div>
-                <div class="col-12 mb-2">
+                <div class="col-6">
                   <div class="input-group">
                     <span class="input-group-text">EGP</span>
                     <input type="text" class="form-control" placeholder="Amount" aria-label="Amount (to the nearest dollar)" v-model="formAddPayment.amount">
                   </div>
                 </div>
-                <div class="col-12 mb-2">
+                <div class="col-6 mt-2">
+                    <select class="form-select" id="count">
+                      <option selected="">Count</option>
+                      <option value="1">One</option>
+                      <option value="2">Two</option>
+                      <option value="3">Three</option>
+                    </select>
+                </div>
+                <div class="col-12 mb-2 mt-3">
                   <div class="input-group">
                     <span class="input-group-text">Comment</span>
                     <textarea class="form-control" aria-label="With textarea" placeholder="Comment" v-model="formAddPayment.comment"></textarea>
@@ -277,13 +300,14 @@
             </div>
           </form>
         </div>
-      </div> -->
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import flatpickr from "../Mixin/flatpickrMixin";
+import { cancelReservation, getReservationDataById } from "../../Api/editResvertion";
 export default {
   data() {
     return {
@@ -293,7 +317,12 @@ export default {
         type: '',
         comment: '',
         reservation_id: null
-      }
+      },
+      statusOptions: [
+      { value: 'pending', name: 'قيد الانتظار' },
+      { value: 'approved', name: 'مقبول' },
+      { value: 'cancelled', name: 'مرفوض' }
+    ]
     }
   },
   props: {
@@ -337,6 +366,10 @@ export default {
         'bg-label-danger': status === 'cancelled',
       };
     },
+    updateStatusName(event) {
+      const status = this.statusOptions.find(s => s.value === event.target.value);
+      if (status) this.selectedEvent.status_name = status.name;
+    },
     submitPayment() {
       this.$emit('add-payment', {
         ...this.formAddPayment,
@@ -355,7 +388,30 @@ export default {
         comment: '',
         reservation_id: null
       }
-    }
+    },
+    async cancelReservation() {
+      // if (!confirm('Are you sure you want to cancel this reservation?')) {
+      //   return;
+      // }
+
+      this.isCancelling = true;
+
+      try {
+        const response = await cancelReservation(this.selectedReservationId);
+        await showSuccessAlert(
+          "Reservation cancelled successfully!", // Custom message
+          this.$router,
+          'index' // Route name
+
+
+        );
+
+      } catch (error) {
+        handleSubmissionError(
+          error,
+          "failed to cancel reservation" // Custom default error
+        );      }
+    },
   },
 };
 </script>
@@ -364,6 +420,8 @@ export default {
 .badge {
   padding: 0.5em 0.75em;
   font-size: 0.875em;
+  border: none;
+  cursor: pointer;
 }
 
 .bg-label-primary {
