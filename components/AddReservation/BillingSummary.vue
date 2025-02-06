@@ -33,29 +33,31 @@
           <dt class="col-6 fw-normal text-heading">Room Charges</dt>
           <dd class="col-6 text-end">{{ paymentDetails.roomCharges }}</dd>
 
-          <label for="taxes" class="col-sm-8 col-form-label fw-normal">Taxes</label>
-          <div class="col-sm-4">
+          <label for="taxes" class="col-sm-10 col-form-label fw-normal">Taxes</label>
+          <div class="col-sm-2">
             <input
               type="number"
               id="taxes"
               name="taxes"
-              class="form-control text-end"
-              :value="paymentDetails.taxes"
+              class="form-control fw-bold text-end"
+              v-model="paymentDetails.taxes"
+              min="0"
+              @input="paymentDetails.taxes = Math.max(Number($event.target.value), 0)"
             >
           </div>
 
-
-            <label for="dueAmount" class="col-8 col-form-label fw-normal text-heading">Charge Extra</label>
-            <div class="col-4">
-              <input
-                type="number"
-                id="dueAmount"
-                name="dueAmount"
-                class="form-control text-end"
-                v-model="paymentDetails.dueAmount"
-              >
-            </div>
-
+          <label for="dueAmount" class="col-10 col-form-label fw-normal text-heading">Charge Extra</label>
+          <div class="col-2">
+            <input
+              type="number"
+              id="dueAmount"
+              name="dueAmount"
+              class="form-control fw-bold text-end"
+              v-model="paymentDetails.dueAmount"
+              min="0"
+              @input="paymentDetails.dueAmount = Math.max(Number($event.target.value), 0)"
+            >
+          </div>
         </dl>
 
         <div class="input-group">
