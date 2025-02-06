@@ -61,10 +61,35 @@
               </div>
             </div> -->
           </div>
-          <div class="text-center">
-              <button type="button" title="Cancel Reservation" class="btn btn-label-danger waves-effect mt-3 w-100 px-0">
-                Cancel Reservation</button>
-          </div>
+          <div class="row mt-4">
+            <div class="col-6 pt-1">
+                <div class="d-flex align-items-start">
+                  <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                    <div>
+                      <h6 class="mb-0">Status</h6>
+                      <select
+                      class="badge"
+                      :class="statusBadgeClass(selectedEvent.status)"
+                      :value="selectedEvent.status"
+                      @change="handleStatusChange($event)"
+                    >
+                      <option
+                        v-for="status in statusOptions"
+                        :key="status.value"
+                        :value="status.value"
+                      >
+                        {{ status.name }}
+                      </option>
+                    </select>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <div class="col-6 ">
+              <label for="flatpickr-date" class="form-label">Date Picker</label>
+              <input type="text" class="form-control flatpickr-input active" placeholder="YYYY-MM-DD" id="flatpickr-date" readonly="readonly">
+            </div>
+        </div>
         </template>
       </h5>
       <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -161,20 +186,9 @@
                   <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                     <div class="me-2">
                       <h6 class="mb-0">Status</h6>
-                      <select 
-                          class="badge"
-                          :class="statusBadgeClass(selectedEvent.status)"
-                          v-model="selectedEvent.status"
-                          @change="updateStatusName"
-                        >
-                          <option 
-                            v-for="status in statusOptions"
-                            :key="status.value"
-                            :value="status.value"
-                          >
-                            {{ status.name }}
-                          </option>
-                        </select> 
+                      <small class="badge" :class="statusBadgeClass(selectedEvent.status)">
+                        {{ selectedEvent.status_name }}
+                      </small>
                     </div>
                   </div>
                 </div>
@@ -229,6 +243,10 @@
             </dd>
           </dl>
         </div>
+        <div class="text-center">
+          <button @click="cancelReservation" type="button" title="Cancel Reservation" class="btn btn-label-danger waves-effect mt-3 w-100 px-0">
+            Cancel Reservation</button>
+      </div>
 
       </template>
       <!-- Modal Payment -->
@@ -308,6 +326,7 @@
 <script>
 import flatpickr from "../Mixin/flatpickrMixin";
 import { cancelReservation, getReservationDataById } from "../../Api/editResvertion";
+import Swal from 'sweetalert2';
 export default {
   data() {
     return {
@@ -333,6 +352,84 @@ export default {
   },
   mixins: [flatpickr],
   methods: {
+    async handleStatusChange(event) {
+    // Store old and new values
+    const oldStatus = this.selectedEvent.status;
+    const newStatus = event.target.value;
+
+    // Show confirmation dialog
+    const result = await Swal.fire({
+      title: 'Confirm Status Change',
+      text: `Are you sure you want to change status from ${oldStatus} to ${newStatus}?`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, change it!',
+      cancelButtonText: 'Cancel',
+      customClass: {
+        popup: 'swal-z-index' // Add custom z-index class if needed
+      }
+    });
+
+    if (result.isConfirmed) {
+      // Update status and call API
+      this.selectedEvent.status = newStatus;
+      this.updateStatusName();
+    } else {
+      // Revert to previous value
+      event.target.value = oldStatus;
+    }
+  },
+  updateStatusName() {
+    // Your existing update logic
+  },
+
+    async cancelReservation() {
+  // Show confirmation dialog using SweetAlert
+  const result = await Swal.fire({
+  title: 'Are you sure?',
+  text: 'You are about to cancel this reservation. This action cannot be undone!',
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Yes, cancel it!',
+  cancelButtonText: 'No, keep it',
+  reverseButtons: true,
+  didOpen: () => {
+    // Directly set the z-index of the SweetAlert2 popup
+    const popup = Swal.getPopup();
+    if (popup) {
+      popup.style.zIndex = '9999'; // Adjust the value as needed
+    }
+  },
+});
+
+  // Proceed only if user confirmed
+  if (result.isConfirmed) {
+    try {
+      await deletewallet(
+        "Payment Details Is Deleted Successfully!",
+        this.$router,
+        'index'
+      );
+
+      // Optional: Show success alert
+      await Swal.fire(
+        'Deleted!',
+        'Your payment details have been deleted.',
+        'success'
+      );
+
+    } catch (error) {
+      handleSubmissionError(
+        error,
+        "Failed to delete wallet" // Updated error message
+      );
+    }
+  }
+},
     navigateToEditReservation (id)
     {
       this.$emit("navigate-to-edit-reservation", id);
@@ -388,29 +485,6 @@ export default {
         comment: '',
         reservation_id: null
       }
-    },
-    async cancelReservation() {
-      // if (!confirm('Are you sure you want to cancel this reservation?')) {
-      //   return;
-      // }
-
-      this.isCancelling = true;
-
-      try {
-        const response = await cancelReservation(this.selectedReservationId);
-        await showSuccessAlert(
-          "Reservation cancelled successfully!", // Custom message
-          this.$router,
-          'index' // Route name
-
-
-        );
-
-      } catch (error) {
-        handleSubmissionError(
-          error,
-          "failed to cancel reservation" // Custom default error
-        );      }
     },
   },
 };
