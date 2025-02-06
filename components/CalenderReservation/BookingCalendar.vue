@@ -842,23 +842,35 @@ export default {
     return true;
   },
   adjustHarnessPosition(info) {
-      // Get the harness element parent
-      const harness = info.el.closest('.fc-timeline-event-harness');
+    // Get the harness element parent
+    const harness = info.el.closest('.fc-timeline-event-harness');
 
-      if (harness) {
+    if (harness) {
         // Get current left position (parse as number)
         const currentLeft = parseInt(harness.style.left) || 0;
         const currentRight = parseInt(harness.style.right) || 0;
-        console.log('right',currentRight );
-        console.log('left',currentLeft );
 
-        // Apply offset while maintaining the dynamic right value
-        harness.style.left = `${currentLeft + 10}px`;
-        // harness.style.right = `${currentRight * 60}px`;
+        // Add 50px offset to left (moving event slightly right)
+        const leftOffset = 20; // Adjust this value to move the event to the right
+        harness.style.left = `${currentLeft + leftOffset}px`;
 
+        // If you want to adjust the right side, you can uncomment and adjust this line
+        // Add 80px offset to the right (ensuring enough space for the event)
+        const rightOffset = 80; // Adjust this value for spacing on the right side
+        harness.style.right = `${currentRight + rightOffset}px`;
 
+        // Adjust the width of the event element
+        const eventElement = harness.querySelector('.fc-timeline-event');
+        if (eventElement) {
+            const currentWidth = eventElement.offsetWidth;
+
+            // Subtract offsets from the total width (50px for left, 80px for right)
+            const widthAdjustment = leftOffset + rightOffset;
+            eventElement.style.width = `${currentWidth - widthAdjustment}px`;
+        }
     }
-  },
+},
+
 
     // ==============================================
     // CALENDAR NAVIGATION
