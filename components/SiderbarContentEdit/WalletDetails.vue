@@ -80,7 +80,7 @@
                               Cancel Payment</button>
                         </div>
                     </div>
-                    
+
                   </td> -->
                   <td>
                     <div class="dropdown">
@@ -89,7 +89,7 @@
                       </button>
                       <div class="dropdown-menu">
                         <a class="dropdown-item" href="javascript:void(0);"><i class="fa-regular fa-pen-to-square me-1"></i> Edit</a>
-                        <a class="dropdown-item" href="javascript:void(0);"><i class="fa-regular fa-trash-can me-1"></i> Delete</a>
+                        <a  @click="deletewallet" class="dropdown-item" href="javascript:void(0);"><i class="fa-regular fa-trash-can me-1"></i> Delete</a>
                         <a class="dropdown-item" href="javascript:void(0);"><button type="button" class="btn btn-label-primary waves-effect px-3 w-100" data-bs-toggle="modal" data-bs-target="#paymentModal">
                           Add Payment </button></a>
                       </div>
@@ -106,7 +106,7 @@
             <dt class="col-6">Payment Type:</dt>
             <dd class="col-6">{{ selectedPaymentType || 'Not selected' }}</dd>
 
-            Common fields for all payment types 
+            Common fields for all payment types
             <dt class="col-6">Amount:</dt>
             <dd class="col-6">{{ paymentDetails.amount || 'Not specified' }}</dd>
 
@@ -217,7 +217,7 @@
             </div>
           </form>
         </div>
-      </div> 
+      </div>
   </section>
 </template>
 
@@ -225,6 +225,7 @@
 import { getPaymentMethods } from '../../Api/addResvertionApi';
 import { updateWallet } from '../../Api/editResvertion';
 import { showSuccessAlert, handleSubmissionError } from '../../Api/MassageValidation/alertUtilities';
+import Swal from 'sweetalert2';
 
 
 export default {
@@ -271,6 +272,44 @@ export default {
     };
   },
   methods: {
+    async deletewallet() {
+  // Show confirmation dialog using SweetAlert
+  const result = await Swal.fire({
+    title: 'Are you sure?',
+    text: "You won't be able to revert this!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!',
+    cancelButtonText: 'Cancel',
+    reverseButtons: true
+  });
+
+  // Proceed only if user confirmed
+  if (result.isConfirmed) {
+    try {
+      await deletewallet(
+        "Payment Details Is Deleted Successfully!",
+        this.$router,
+        'index'
+      );
+
+      // Optional: Show success alert
+      await Swal.fire(
+        'Deleted!',
+        'Your payment details have been deleted.',
+        'success'
+      );
+
+    } catch (error) {
+      handleSubmissionError(
+        error,
+        "Failed to delete wallet" // Updated error message
+      );
+    }
+  }
+},
     // Add this new method to mask card numbers
     maskCardNumber (cardNumber)
     {
@@ -350,7 +389,9 @@ export default {
           "There was an issue with your reservation." // Custom default error
         );
       }
+
     }
+
   },
   watch: {
     reservationData: {
