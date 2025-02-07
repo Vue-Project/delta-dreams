@@ -970,3 +970,6 @@ body{
 .fc-scroller::-webkit-scrollbar {
   width: 0px;
 }
+.layout-navbar{
+  z-index: 0;
+}
