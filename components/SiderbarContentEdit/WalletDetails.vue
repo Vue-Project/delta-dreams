@@ -103,7 +103,7 @@
                           data-title="Edit Payment" href="javascript:void(0);">
                           <i class="fa-regular fa-pen-to-square me-1"></i> Edit
                         </a>
-                        <a class="dropdown-item" href="javascript:void(0);"><i class="fa-regular fa-trash-can me-1"></i> Delete</a>
+                        <a class="dropdown-item" @click="deletewallet" href="javascript:void(0);"><i class="fa-regular fa-trash-can me-1"></i> Delete</a>
                         <a class="dropdown-item" data-bs-toggle="offcanvas" data-bs-target="#Sidebar" 
                           data-title="Add Payment" href="javascript:void(0);">
                           <i class="fa-solid fa-plus mt-1 me-1"></i> Add
