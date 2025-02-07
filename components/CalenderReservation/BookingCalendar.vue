@@ -850,13 +850,12 @@ export default {
         const currentLeft = parseInt(harness.style.left) || 0;
         const currentRight = parseInt(harness.style.right) || 0;
 
-        // Add 50px offset to left (moving event slightly right)
-        const leftOffset = 20; // Adjust this value to move the event to the right
+        // Add  offset to left (moving event slightly right)
+        const leftOffset = 35; // Adjust this value to move the event to the right
         harness.style.left = `${currentLeft + leftOffset}px`;
 
-        // If you want to adjust the right side, you can uncomment and adjust this line
-        // Add 80px offset to the right (ensuring enough space for the event)
-        const rightOffset = 80; // Adjust this value for spacing on the right side
+
+        const rightOffset = 5; // Adjust this value for spacing on the right side
         harness.style.right = `${currentRight + rightOffset}px`;
 
         // Adjust the width of the event element
@@ -866,6 +865,7 @@ export default {
 
             // Subtract offsets from the total width (50px for left, 80px for right)
             const widthAdjustment = leftOffset + rightOffset;
+            console.log( 'widthAdjustment', widthAdjustment);
             eventElement.style.width = `${currentWidth - widthAdjustment}px`;
         }
     }
