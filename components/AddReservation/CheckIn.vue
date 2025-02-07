@@ -197,7 +197,7 @@
                           <div class="row">
                             <div class="col-lg-10">
                               <div class="input-group">
-                                <input @change="(value)=>$emit('change',value.target.value)" class="form-control" placeholder="0.00" id="rateAmount" v-model="formAddReservation.units[0].rateAmount" aria-label="number of rateAmount" ref="rateAmount" :class="{ 'input-error': validationMessages.rateAmount }" />
+                                <input @change="(value) => $emit('change', value.target.value)" class="form-control" placeholder="0.00" id="rateAmount" v-model="formAddReservation.units[0].rateAmount" aria-label="number of rateAmount" ref="rateAmount" :class="{ 'input-error': validationMessages.rateAmount }" />
                                 <span class="input-group-text groupStyle">EGP</span>
                               </div>
                               <span class="error-message" v-if="validationMessages.rateAmount">{{ validationMessages.rateAmount }}</span>
@@ -709,7 +709,7 @@ export default {
         book_all_available: this.formAddReservation.rateOffered.bookAll,
         hold_release_date: this.formAddReservation.releaseDate,
         hold_release_time: this.formAddReservation.releaseTime,
-        release_term_value: this.formAddReservation.releaseTermValue ,
+        release_term_value: this.formAddReservation.releaseTermValue,
         release_term_type: this.formAddReservation.releaseTerm || "24 hours",
         remind_before_days: this.formAddReservation.remindGuest,
         user_id: this.selectedNameId,
@@ -719,15 +719,16 @@ export default {
         state: this.formAddReservation.guestInformation.state,
         city: this.formAddReservation.guestInformation.city,
         zip: this.formAddReservation.guestInformation.zip,
-        // room_charges: this.paymentData.roomCharges,
-          tax: this.paymentData.taxes,
-          charge_extra: this.paymentData.dueAmount,
-          // payment_mode: this.paymentData.paymentMode,
-          payment_id: this.paymentData.paymentMethod,
-          payment_type: this.paymentData.selectedPaymentType,
-          payment_price: this.paymentData.amount,
-          date_at: this.paymentData.date,
-          note: this.paymentData.comment,
+        room_charges: this.paymentData.roomCharges,
+        tax: this.paymentData.taxes,
+        charge_extra: this.paymentData.dueAmount,
+        payment_id: this.paymentData.paymentMethod,
+        payment_type: this.paymentData.selectedPaymentType,
+        payment_price: this.paymentData.amount,
+        date_at: this.paymentData.date,
+        note: this.paymentData.comment,
+        // payment_mode: this.paymentData.paymentMode,
+
         // payment_details: {
 
         //   // payment_price: this.paymentData.roomCharges || 50000,
@@ -761,7 +762,6 @@ export default {
         // selected_payment_method: this.paymentData.selectedPaymentMethod,
 
       };
-      // console.log(bookingData);
 
 
 
@@ -1102,7 +1102,7 @@ export default {
 
 
   },
-  emits:['change'],
+  emits: ['change'],
   watch: {
     roomCount (newValue)
     {
