@@ -4,6 +4,17 @@
       <form id="formReservation" class=" g-3" @submit.prevent="FormUpdateWallet" ref="emptyForm">
 
       <div class="card-body">
+        <div class="offcanvas offcanvas-end event-sidebar" tabindex="-1" id="Sidebar" aria-labelledby="SidebarLabel" aria-modal="true">
+          <div class="offcanvas-header my-1">
+            <h5 class="offcanvas-title" id="SidebarLabel">{{ sidebarTitle }}</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </div>
+          <hr class="mt-0">
+          <div class="offcanvas-body pt-0">
+            <PaymentContent />
+          </div>
+          <button type="button" class="btn btn-primary waves-effect waves-light offcanvas-footer w-25" style="position:absolute; bottom: 20px;right: 25px;">Save</button>
+      </div>
         <!-- {{reservationData.wallets}} -->
 
 
@@ -88,10 +99,15 @@
                         <i class="fa-solid fa-ellipsis-vertical"></i>
                       </button>
                       <div class="dropdown-menu">
-                        <a class="dropdown-item" href="javascript:void(0);"><i class="fa-regular fa-pen-to-square me-1"></i> Edit</a>
-                        <a  @click="deletewallet" class="dropdown-item" href="javascript:void(0);"><i class="fa-regular fa-trash-can me-1"></i> Delete</a>
-                        <a class="dropdown-item" href="javascript:void(0);"><button type="button" class="btn btn-label-primary waves-effect px-3 w-100" data-bs-toggle="modal" data-bs-target="#paymentModal">
-                          Add Payment </button></a>
+                        <a class="dropdown-item" data-bs-toggle="offcanvas" data-bs-target="#Sidebar" 
+                          data-title="Edit Payment" href="javascript:void(0);">
+                          <i class="fa-regular fa-pen-to-square me-1"></i> Edit
+                        </a>
+                        <a class="dropdown-item" href="javascript:void(0);"><i class="fa-regular fa-trash-can me-1"></i> Delete</a>
+                        <a class="dropdown-item" data-bs-toggle="offcanvas" data-bs-target="#Sidebar" 
+                          data-title="Add Payment" href="javascript:void(0);">
+                          <i class="fa-solid fa-plus mt-1 me-1"></i> Add
+                        </a>
                       </div>
                     </div>
                   </td>
@@ -140,84 +156,8 @@
 
         </div> -->
       </div>
-      <div class="row">
-        <div class="col-12 text-end ">
-          <button type="submit" class="btn btn-lg btn-primary waves-effect waves-light m-3">
-            Update
-          </button>
-        </div>
-      </div>
       </form>
     </div>
-    <div class="modal fade" id="paymentModal" data-bs-backdrop="static" tabindex="-1" style="display: none;" aria-hidden="true">
-        <div class="modal-dialog" >
-          <form class="modal-content" style="position: relative; top: 100px;" @submit.prevent="submitPayment">
-            <div class="modal-header">
-              <h5 class="modal-title" id="paymentModalTitle">Add Payment</h5>
-              <button @click="cancelPayment" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <div class="row">
-                <div class="col mb-3">
-                  <label for="flatpickr-date-01" class="form-label">Date</label>
-                  <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" id="flatpickr-date-01" ref="datePicker1" aria-label="input Text to Check-in Date" v-model="formAddPayment.date" />
-                  <i class="fa-solid fa-calendar-days icon-date me-3"></i>
-                </div>
-              </div>
-              <div class="row g-2">
-                <div class="col-6 mb-2">
-                  <div class="input-group">
-                    <select class="form-select" id="inputGroupSelect02" v-model="formAddPayment.type">
-                      <option selected="">Choose...</option>
-                      <option value="1">One</option>
-                      <option value="2">Two</option>
-                      <option value="3">Three</option>
-                    </select>
-                    <label class="input-group-text" for="inputGroupSelect02">Type</label>
-                  </div>
-                </div>
-                <div class="col-6 mb-2">
-                  <div class="input-group">
-                    <select class="form-select" id="inputGroupSelect02" v-model="formAddPayment.method">
-                      <option selected="">Choose...</option>
-                      <option value="1">One</option>
-                      <option value="2">Two</option>
-                      <option value="3">Three</option>
-                    </select>
-                    <label class="input-group-text" for="inputGroupSelect02">Method</label>
-                  </div>
-                </div>
-                <div class="col-6">
-                  <div class="input-group">
-                    <span class="input-group-text">EGP</span>
-                    <input type="text" class="form-control" placeholder="Amount" aria-label="Amount (to the nearest dollar)" v-model="formAddPayment.amount">
-                  </div>
-                </div>
-                <div class="col-6 mt-2">
-                    <select class="form-select" id="count">
-                      <option selected="">Count</option>
-                      <option value="1">One</option>
-                      <option value="2">Two</option>
-                      <option value="3">Three</option>
-                    </select>
-                </div>
-                <div class="col-12 mb-2 mt-3">
-                  <div class="input-group">
-                    <span class="input-group-text">Comment</span>
-                    <textarea class="form-control" aria-label="With textarea" placeholder="Comment" v-model="formAddPayment.comment"></textarea>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-label-secondary waves-effect" data-bs-dismiss="modal" @click="cancelPayment">
-                Close
-              </button>
-              <button type="submit" class="btn btn-primary waves-effect waves-light">Save</button>
-            </div>
-          </form>
-        </div>
-      </div>
   </section>
 </template>
 
@@ -226,7 +166,7 @@ import { getPaymentMethods } from '../../Api/addResvertionApi';
 import { updateWallet } from '../../Api/editResvertion';
 import { showSuccessAlert, handleSubmissionError } from '../../Api/MassageValidation/alertUtilities';
 import Swal from 'sweetalert2';
-
+import PaymentContent from '../../components/SiderbarContentEdit/PaymentContent.vue';
 
 export default {
   name: "WalletDetails",
@@ -239,7 +179,10 @@ export default {
     reservationData: {
       type: Object,
       default: () => ({})
-    }
+    },
+  },
+  components: {
+    PaymentContent, // تسجيل المكون هنا
   },
   data ()
   {
@@ -269,6 +212,7 @@ export default {
         comment: '',
         reservation_id: null
       },
+      sidebarTitle: '',
     };
   },
   methods: {
@@ -421,6 +365,16 @@ export default {
     }
 
 
+  },
+  mounted() {
+    // Listen for offcanvas show event
+    const offcanvas = document.getElementById('Sidebar');
+    offcanvas.addEventListener('show.bs.offcanvas', (event) => {
+      // Get the clicked trigger element
+      const trigger = event.relatedTarget;
+      // Get the title from data-title attribute
+      this.sidebarTitle = trigger.getAttribute('data-title');
+    });
   },
   // watch: {
   //   "value.paymentMode": function (newVal) {
