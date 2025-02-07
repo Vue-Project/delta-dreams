@@ -33,8 +33,8 @@
           <dt class="col-6 fw-normal text-heading">Room Charges</dt>
           <dd class="col-6 text-end">{{ paymentDetails.roomCharges }}</dd>
 
-          <label for="taxes" class="col-sm-10 col-form-label fw-normal">Taxes</label>
-          <div class="col-sm-2">
+          <label for="taxes" class="col-sm-9 col-form-label fw-normal">Taxes</label>
+          <div class="col-sm-3">
             <input
               type="number"
               id="taxes"
@@ -46,8 +46,8 @@
             >
           </div>
 
-          <label for="dueAmount" class="col-10 col-form-label fw-normal text-heading">Charge Extra</label>
-          <div class="col-2">
+          <label for="dueAmount" class="col-9 col-form-label fw-normal text-heading">Charge Extra</label>
+          <div class="col-3">
             <input
               type="number"
               id="dueAmount"
