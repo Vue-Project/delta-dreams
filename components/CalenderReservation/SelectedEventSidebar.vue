@@ -244,7 +244,7 @@
           </dl>
         </div>
         <div class="text-center">
-          <button @click="cancelReservation" type="button" title="Cancel Reservation" class="btn btn-label-danger waves-effect mt-3 w-100 px-0">
+          <button @click="cancelReservation" type="button" title="Cancel Reservation" class="btn btn-danger waves-effect waves-light mt-3 w-100 px-0">
             Cancel Reservation</button>
       </div>
 
