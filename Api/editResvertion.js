@@ -11,7 +11,7 @@ import apiClient from './apiClient';
       }
     };
 
-    export const cancelReservation = async (id) => {
+    export const postCancelReservation = async (id) => {
       try {
         const response = await apiClient.post(`/reservations/cancel/${id}`);
         return response.data;

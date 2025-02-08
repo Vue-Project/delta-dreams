@@ -19,13 +19,59 @@
             </span>
           </div>
           <div class="row mt-4">
-            <div class="col-md-12">
+            <div class="col-6 ">
               <button type="button" class="btn btn-primary waves-effect waves-light btn-block" @click="navigateToEditReservation(selectedEvent.id)">
                 Edit
               </button>
             </div>
+<<<<<<< HEAD
+=======
+            <div class="col-6">
+              <button type="button" class="btn btn-primary waves-effect waves-light btn-block" data-bs-toggle="modal" data-bs-target="#paymentModal">
+                Add Payment </button>
+              <!-- <div class="demo-inline-spacing">
+                <div class="btn-group btn-block" id="dropdown-icon-demo">
+                  <button type="button" class="btn btn-primary dropdown-toggle waves-effect waves-light" data-bs-toggle="dropdown" aria-expanded="false">
+                    Options
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a href="#" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#paymentModal">
+                        <i class="fa-regular fa-credit-card mr-2"></i>Add Payment
+                      </a>
+                    </li>
+>>>>>>> BitBuckt/test
 
           </div>
+          <div class="row mt-4">
+            <div class="col-6 pt-1">
+                <div class="d-flex align-items-start">
+                  <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                    <div>
+                      <h6 class="mb-0">Status</h6>
+                      <select
+                      class="badge"
+                      :class="statusBadgeClass(selectedEvent.status)"
+                      :value="selectedEvent.status"
+                      @change="handleStatusChange($event)"
+                    >
+                      <option
+                        v-for="status in statusOptions"
+                        :key="status.value"
+                        :value="status.value"
+                      >
+                        {{ status.name }}
+                      </option>
+                    </select>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <div class="col-6 ">
+              <label for="flatpickr-date" class="form-label">Date Picker</label>
+              <input type="text" class="form-control flatpickr-input active" placeholder="YYYY-MM-DD" id="flatpickr-date" readonly="readonly">
+            </div>
+        </div>
         </template>
       </h5>
       <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -181,10 +227,14 @@
             </dd>
           </dl>
         </div>
+        <div class="text-center">
+          <button @click="cancelReservation" type="button" title="Cancel Reservation" class="btn btn-danger waves-effect waves-light mt-3 w-100 px-0">
+            Cancel Reservation</button>
+      </div>
 
       </template>
       <!-- Modal Payment -->
-      <!-- <div class="modal fade" id="paymentModal" data-bs-backdrop="static" tabindex="-1" style="display: none;" aria-hidden="true">
+      <div class="modal fade" id="paymentModal" data-bs-backdrop="static" tabindex="-1" style="display: none;" aria-hidden="true">
         <div class="modal-dialog">
           <form class="modal-content" @submit.prevent="submitPayment">
             <div class="modal-header">
@@ -222,13 +272,21 @@
                     <label class="input-group-text" for="inputGroupSelect02">Method</label>
                   </div>
                 </div>
-                <div class="col-12 mb-2">
+                <div class="col-6">
                   <div class="input-group">
                     <span class="input-group-text">EGP</span>
                     <input type="text" class="form-control" placeholder="Amount" aria-label="Amount (to the nearest dollar)" v-model="formAddPayment.amount">
                   </div>
                 </div>
-                <div class="col-12 mb-2">
+                <div class="col-6 mt-2">
+                    <select class="form-select" id="count">
+                      <option selected="">Count</option>
+                      <option value="1">One</option>
+                      <option value="2">Two</option>
+                      <option value="3">Three</option>
+                    </select>
+                </div>
+                <div class="col-12 mb-2 mt-3">
                   <div class="input-group">
                     <span class="input-group-text">Comment</span>
                     <textarea class="form-control" aria-label="With textarea" placeholder="Comment" v-model="formAddPayment.comment"></textarea>
@@ -244,13 +302,15 @@
             </div>
           </form>
         </div>
-      </div> -->
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import flatpickr from "../Mixin/flatpickrMixin";
+import { cancelReservation, getReservationDataById } from "../../Api/editResvertion";
+import Swal from 'sweetalert2';
 export default {
   data() {
     return {
@@ -260,7 +320,12 @@ export default {
         type: '',
         comment: '',
         reservation_id: null
-      }
+      },
+      statusOptions: [
+      { value: 'pending', name: 'قيد الانتظار' },
+      { value: 'approved', name: 'مقبول' },
+      { value: 'cancelled', name: 'مرفوض' }
+    ]
     }
   },
   props: {
@@ -271,6 +336,84 @@ export default {
   },
   mixins: [flatpickr],
   methods: {
+    async handleStatusChange(event) {
+    // Store old and new values
+    const oldStatus = this.selectedEvent.status;
+    const newStatus = event.target.value;
+
+    // Show confirmation dialog
+    const result = await Swal.fire({
+      title: 'Confirm Status Change',
+      text: `Are you sure you want to change status from ${oldStatus} to ${newStatus}?`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, change it!',
+      cancelButtonText: 'Cancel',
+      customClass: {
+        popup: 'swal-z-index' // Add custom z-index class if needed
+      }
+    });
+
+    if (result.isConfirmed) {
+      // Update status and call API
+      this.selectedEvent.status = newStatus;
+      this.updateStatusName();
+    } else {
+      // Revert to previous value
+      event.target.value = oldStatus;
+    }
+  },
+  updateStatusName() {
+    // Your existing update logic
+  },
+
+    async cancelReservation() {
+  // Show confirmation dialog using SweetAlert
+  const result = await Swal.fire({
+  title: 'Are you sure?',
+  text: 'You are about to cancel this reservation. This action cannot be undone!',
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Yes, cancel it!',
+  cancelButtonText: 'No, keep it',
+  reverseButtons: true,
+  didOpen: () => {
+    // Directly set the z-index of the SweetAlert2 popup
+    const popup = Swal.getPopup();
+    if (popup) {
+      popup.style.zIndex = '9999'; // Adjust the value as needed
+    }
+  },
+});
+
+  // Proceed only if user confirmed
+  if (result.isConfirmed) {
+    try {
+      await deletewallet(
+        "Payment Details Is Deleted Successfully!",
+        this.$router,
+        'index'
+      );
+
+      // Optional: Show success alert
+      await Swal.fire(
+        'Deleted!',
+        'Your payment details have been deleted.',
+        'success'
+      );
+
+    } catch (error) {
+      handleSubmissionError(
+        error,
+        "Failed to delete wallet" // Updated error message
+      );
+    }
+  }
+},
     navigateToEditReservation (id)
     {
       this.$emit("navigate-to-edit-reservation", id);
@@ -304,6 +447,10 @@ export default {
         'bg-label-danger': status === 'cancelled',
       };
     },
+    updateStatusName(event) {
+      const status = this.statusOptions.find(s => s.value === event.target.value);
+      if (status) this.selectedEvent.status_name = status.name;
+    },
     submitPayment() {
       this.$emit('add-payment', {
         ...this.formAddPayment,
@@ -322,7 +469,7 @@ export default {
         comment: '',
         reservation_id: null
       }
-    }
+    },
   },
 };
 </script>
@@ -331,6 +478,8 @@ export default {
 .badge {
   padding: 0.5em 0.75em;
   font-size: 0.875em;
+  border: none;
+  cursor: pointer;
 }
 
 .bg-label-primary {
