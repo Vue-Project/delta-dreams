@@ -973,7 +973,6 @@ body{
   color:#685dd8 !important;
   padding-left: 5px;
 }
-<<<<<<< HEAD
 .fc-timeline-event-harness{
   top: 0 !important;
   /* left: 20px !important; */
@@ -986,7 +985,6 @@ body{
 }
 
 
-=======
 .modal-backdrop.show.fade{
   display:none !important;
 }
@@ -996,4 +994,3 @@ body{
 .layout-navbar{
   z-index: 0;
 }
->>>>>>> BitBuckt/test

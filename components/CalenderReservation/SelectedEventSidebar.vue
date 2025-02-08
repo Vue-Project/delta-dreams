@@ -24,32 +24,21 @@
                 Edit
               </button>
             </div>
-<<<<<<< HEAD
-=======
             <div class="col-6">
               <button type="button" class="btn btn-primary waves-effect waves-light btn-block" data-bs-toggle="modal" data-bs-target="#paymentModal">
-                Add Payment </button>
-              <!-- <div class="demo-inline-spacing">
-                <div class="btn-group btn-block" id="dropdown-icon-demo">
-                  <button type="button" class="btn btn-primary dropdown-toggle waves-effect waves-light" data-bs-toggle="dropdown" aria-expanded="false">
-                    Options
-                  </button>
-                  <ul class="dropdown-menu">
-                    <li>
-                      <a href="#" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#paymentModal">
-                        <i class="fa-regular fa-credit-card mr-2"></i>Add Payment
-                      </a>
-                    </li>
->>>>>>> BitBuckt/test
+                Add Payment
+              </button>
 
+
+            </div>
           </div>
           <div class="row mt-4">
             <div class="col-6 pt-1">
-                <div class="d-flex align-items-start">
-                  <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
-                    <div>
-                      <h6 class="mb-0">Status</h6>
-                      <select
+              <div class="d-flex align-items-start">
+                <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                  <div>
+                    <h6 class="mb-0">Status</h6>
+                    <select
                       class="badge"
                       :class="statusBadgeClass(selectedEvent.status)"
                       :value="selectedEvent.status"
@@ -63,15 +52,15 @@
                         {{ status.name }}
                       </option>
                     </select>
-                    </div>
                   </div>
                 </div>
+              </div>
             </div>
             <div class="col-6 ">
               <label for="flatpickr-date" class="form-label">Date Picker</label>
               <input type="text" class="form-control flatpickr-input active" placeholder="YYYY-MM-DD" id="flatpickr-date" readonly="readonly">
             </div>
-        </div>
+          </div>
         </template>
       </h5>
       <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
