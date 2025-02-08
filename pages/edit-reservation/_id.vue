@@ -675,6 +675,7 @@ import UpdateReservation from "../../components/SiderbarContentEdit/BookingDetai
 import { GetReservationItems } from "../../Api/addResvertionApi";
 import { showSuccessAlert, handleSubmissionError } from '../../Api/MassageValidation/alertUtilities';
 import WalletDetails from "../../components/SiderbarContentEdit/WalletDetails.vue";
+import Swal from 'sweetalert2';
 
 
 export default {
@@ -845,28 +846,46 @@ export default {
       }
     },
     async cancelReservation() {
-      // if (!confirm('Are you sure you want to cancel this reservation?')) {
-      //   return;
-      // }
+  // Show SweetAlert2 confirmation dialog
+  const result = await Swal.fire({
+    title: 'Are you sure?',
+    text: 'You are about to cancel this reservation. This action cannot be undone!',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, cancel it!',
+    cancelButtonText: 'No, keep it',
+    reverseButtons: true, // Reverse button order (confirm on the right)
+  });
 
-      this.isCancelling = true;
+  // Proceed only if the user confirms
+  if (result.isConfirmed) {
+    try {
+      const response = await postCancelReservation(this.selectedReservationId);
 
-      try {
-        const response = await cancelReservation(this.selectedReservationId);
-        await showSuccessAlert(
-          "Reservation cancelled successfully!", // Custom message
-          this.$router,
-          'index' // Route name
+      // Show success alert
+      await showSuccessAlert(
+        "Reservation cancelled successfully!", // Custom message
+        this.$router,
+        'index' // Route name
+      );
 
+      // Optional: Show SweetAlert2 success message
+      await Swal.fire(
+        'Cancelled!',
+        'Your reservation has been cancelled successfully.',
+        'success'
+      );
 
-        );
-
-      } catch (error) {
-        handleSubmissionError(
-          error,
-          "failed to cancel reservation" // Custom default error
-        );      }
-    },
+    } catch (error) {
+      handleSubmissionError(
+        error,
+        "Failed to cancel reservation" // Updated error message
+      );
+    }
+  }
+},
 
 
   },

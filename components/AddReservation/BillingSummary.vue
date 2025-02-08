@@ -33,11 +33,31 @@
           <dt class="col-6 fw-normal text-heading">Room Charges</dt>
           <dd class="col-6 text-end">{{ paymentDetails.roomCharges }}</dd>
 
-          <dt class="col-sm-6 fw-normal">Taxes</dt>
-          <dd class="col-sm-6 text-end"> {{ paymentDetails.taxes }}</dd>
+          <label for="taxes" class="col-sm-10 col-form-label fw-normal">Taxes</label>
+          <div class="col-sm-2">
+            <input
+              type="number"
+              id="taxes"
+              name="taxes"
+              class="form-control fw-bold text-end"
+              v-model="paymentDetails.taxes"
+              min="0"
+              @input="paymentDetails.taxes = Math.max(Number($event.target.value), 0)"
+            >
+          </div>
 
-          <dt class="col-6 fw-normal text-heading">Charge Extra</dt>
-          <dd class="col-6 text-end"> {{ paymentDetails.dueAmount }}</dd>
+          <label for="dueAmount" class="col-10 col-form-label fw-normal text-heading">Charge Extra</label>
+          <div class="col-2">
+            <input
+              type="number"
+              id="dueAmount"
+              name="dueAmount"
+              class="form-control fw-bold text-end"
+              v-model="paymentDetails.dueAmount"
+              min="0"
+              @input="paymentDetails.dueAmount = Math.max(Number($event.target.value), 0)"
+            >
+          </div>
         </dl>
 
         <div class="input-group">
@@ -53,7 +73,7 @@
               <label class="input-group-text" for="inputGroupSelect01">Methods</label>
               <select class="form-select" id="businessSource" v-model="value.paymentMethod">
                 <option disabled value="">Select</option>
-                <option v-for="(paymentMethod, index) in paymentMethods" :key="paymentMethod.id" :value="paymentMethod.id">
+                <option v-for="paymentMethod in paymentMethods" :key="paymentMethod.id" :value="paymentMethod.id">
                   {{ paymentMethod.content }}
                 </option>
               </select>
@@ -263,6 +283,9 @@ export default {
       } else {
         this.validationMessage = "";
       }
+    },
+    "value.roomCharges" : function(value){
+      this.paymentDetails.roomCharges = value
     },
     selectedPaymentType(newVal) {
       this.$emit('input', {
