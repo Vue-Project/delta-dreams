@@ -58,9 +58,9 @@ import SelectedEventSidebar from "./SelectedEventSidebar.vue";
 import HeaderCalender from "./HeaderCalender.vue";
 
 // API service for fetching calendar data
-import { deleteBlock, getCalenderAllUnits } from "../../Api/CalenderApi";
+import { deleteBlock, getCalenderAllUnits, postUpdateReservation } from "../../Api/CalenderApi";
 import Swal from 'sweetalert2'
-import { handleSubmissionError, showSuccessAlert } from "../../Api/MassageValidation/alertUtilities";
+import { handleSubmissionError, showSuccessAlert, showConfirmationDialog, showAlert } from "../../Api/MassageValidation/alertUtilities";
 
 export default {
   components: {
@@ -81,7 +81,7 @@ export default {
       linkToAddReservation: '/add-reservation',
       datesBuilding: [],
       buildingNames: [], // Store building names dynamically
-      // selectedDates: '',
+      selectedDate: null,
       selectedResourceId: '',
       selectedResourceName: '',
       isLoading: true,
@@ -540,20 +540,7 @@ export default {
         {
           if (result.isConfirmed) {
             // Show delete confirmation
-            Swal.fire({
-              title: 'Are you sure?',
-              text: 'This blocked period will be permanently deleted.',
-              icon: 'warning',
-              showCancelButton: true,
-              confirmButtonColor: '#7367f0',
-              cancelButtonColor: '#e2e1e5',
-              confirmButtonText: 'Yes, delete it!'
-            }).then((deleteResult) =>
-            {
-              if (deleteResult.isConfirmed) {
-                this.deleteBlockedPeriod();
-              }
-            });
+            this.deleteBlockedPeriod();
           } else if (result.isDenied) {
             // Handle edit functionality
             this.editBlockedPeriod();
@@ -580,62 +567,24 @@ export default {
         }
 
         // Show success message
-        Swal.fire({
+        showAlert({
           title: 'Deleted!',
           text: 'The blocked period has been successfully removed.',
-          icon: 'success',
           timer: 1000,
           timerProgressBar: true,
           showConfirmButton: false
         });
       } catch (error) {
         // Handle error
-        Swal.fire({
+        showAlert({
           title: 'Error!',
           text: 'Failed to delete the blocked period. Please try again.',
-          icon: 'error',
-          confirmButtonColor: '#7367f0'
+          icon: 'error'
         });
-        console.error('Error deleting blocked period:', error);
+        // console.error('Error deleting blocked period:', error);
       }
     },
-    // editBlockedPeriod() {
-    //   // You can implement your edit logic here
-    //   Swal.fire({
-    //     title: 'Edit Blocked Period',
-    //     html: `
-    //       <form id="edit-form">
-    //         <div class="mb-3">
-    //           <label class="form-label">Start Date</label>
-    //           <input type="datetime-local" id="edit-start"
-    //                  class="swal2-input"
-    //                  value="${this.selectedBlockedEvent.start.toISOString().slice(0, 16)}">
-    //         </div>
-    //         <div class="mb-3">
-    //           <label class="form-label">End Date</label>
-    //           <input type="datetime-local" id="edit-end"
-    //                  class="swal2-input"
-    //                  value="${this.selectedBlockedEvent.end.toISOString().slice(0, 16)}">
-    //         </div>
-    //       </form>
-    //     `,
-    //     showCancelButton: true,
-    //     confirmButtonText: 'Save Changes',
-    //     confirmButtonColor: '#3085d6',
-    //     cancelButtonColor: '#d33',
-    //     preConfirm: () => {
-    //       return {
-    //         start: document.getElementById('edit-start').value,
-    //         end: document.getElementById('edit-end').value
-    //       };
-    //     }
-    //   }).then((result) => {
-    //     if (result.isConfirmed) {
-    //       // Handle the update API call here
-    //       // this.updateBlockedPeriod(result.value);
-    //     }
-    //   });
-    // },
+
     transformUnitToEvents (unitData)
     {
       const events = [];
@@ -751,7 +700,6 @@ export default {
     },
     async handleEventChange(info) {
     // Show loading state
-    this.isLoading = true;
 
     try {
       const event = info.event;
@@ -766,28 +714,19 @@ export default {
       // Prepare the update data
       const updateData = {
         unit_id: unitId,
-        start_date: startDate,
-        end_date: endDate,
+        checkin_date: startDate,
+        checkout_date: endDate,
         reservation_id: event.extendedProps?.reservation?.id
       };
       console.log(updateData);
 
 
       // Show confirmation dialog
-      const result = await Swal.fire({
-        title: 'Confirm Changes',
-        text: 'Are you sure you want to update this reservation?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#7367f0',
-        cancelButtonColor: '#e2e1e5',
-        confirmButtonText: 'Yes, update it!'
-      });
+      const result = await showConfirmationDialog("Are you sure you want to update this reservation?");
 
       if (result.isConfirmed) {
-        // Make API call to update the reservation
         // Replace 'updateReservation' with your actual API endpoint
-        // const response = await axios.put(`/api/reservations/${updateData.reservation_id}`, updateData);
+        const response = await postUpdateReservation(updateData.reservation_id, updateData);
 
         if (response.data.success) {
           await showSuccessAlert(
@@ -850,12 +789,30 @@ export default {
         const currentLeft = parseInt(harness.style.left) || 0;
         const currentRight = parseInt(harness.style.right) || 0;
 
-        // Add  offset to left (moving event slightly right)
-        const leftOffset = 35; // Adjust this value to move the event to the right
+        // Determine breakpoints and adjust accordingly
+        let leftOffset = 35; // Default value
+        let rightOffset = 5; // Default value
+        let widthAdjustment = 0;
+
+        const screenWidth = window.innerWidth;
+
+        // Example breakpoints for different screen sizes
+        if (screenWidth < 600) {
+            // Small screens (mobile)
+            leftOffset = 20;
+            rightOffset = 5;
+        } else if (screenWidth < 1200) {
+            // Medium screens (tablets)
+            leftOffset = 30;
+            rightOffset =0;
+        } else {
+            // Large screens (desktops)
+            leftOffset = 40;
+            rightOffset = 15;
+        }
+
+        // Adjust the left and right positions
         harness.style.left = `${currentLeft + leftOffset}px`;
-
-
-        const rightOffset = 5; // Adjust this value for spacing on the right side
         harness.style.right = `${currentRight + rightOffset}px`;
 
         // Adjust the width of the event element
@@ -863,13 +820,14 @@ export default {
         if (eventElement) {
             const currentWidth = eventElement.offsetWidth;
 
-            // Subtract offsets from the total width (50px for left, 80px for right)
-            const widthAdjustment = leftOffset + rightOffset;
-            console.log( 'widthAdjustment', widthAdjustment);
+            // Calculate width adjustment based on the offsets
+            widthAdjustment = leftOffset + rightOffset;
+            console.log('widthAdjustment', widthAdjustment);
             eventElement.style.width = `${currentWidth - widthAdjustment}px`;
         }
     }
-},
+}
+,
 
 
     // ==============================================
