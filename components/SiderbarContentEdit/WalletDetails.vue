@@ -2,8 +2,10 @@
   <section class="summary position-sticky top-0">
     <div class="card">
       <form id="formReservation" class=" g-3" @submit.prevent="FormUpdateWallet" ref="emptyForm">
-
-      <div class="card-body">
+        
+        <div class="card-body">
+          <button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="offcanvas" data-bs-target="#Sidebar" 
+          data-title="Add Payment">Add Payment</button>
         <div class="offcanvas offcanvas-end event-sidebar" tabindex="-1" id="Sidebar" aria-labelledby="SidebarLabel" aria-modal="true">
           <div class="offcanvas-header my-1">
             <h5 class="offcanvas-title" id="SidebarLabel">{{ sidebarTitle }}</h5>
@@ -46,7 +48,6 @@
 
         <!-- Payment Details Summary -->
         <div class="payment-summary mt-3">
-          <h5 class="mb-3 text-center">Payment Details</h5>
           <div class="table-responsive text-nowrap">
             <table class="table">
               <thead>
@@ -104,10 +105,6 @@
                           <i class="fa-regular fa-pen-to-square me-1"></i> Edit
                         </a>
                         <a class="dropdown-item" @click="deletewallet" href="javascript:void(0);"><i class="fa-regular fa-trash-can me-1"></i> Delete</a>
-                        <a class="dropdown-item" data-bs-toggle="offcanvas" data-bs-target="#Sidebar" 
-                          data-title="Add Payment" href="javascript:void(0);">
-                          <i class="fa-solid fa-plus mt-1 me-1"></i> Add
-                        </a>
                       </div>
                     </div>
                   </td>
