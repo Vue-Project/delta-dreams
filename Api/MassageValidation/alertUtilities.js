@@ -44,3 +44,15 @@ export const handleSubmissionError = (error, defaultMessage = "There was an issu
     confirmButtonText: "OK",
   });
 }
+
+export const showConfirmationDialog = (message = "Are you sure you want to proceed?") => {
+  return Swal.fire({
+    title: 'Confirm Changes',
+    text: message,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#7367f0',
+    cancelButtonColor: '#e2e1e5',
+    confirmButtonText: 'Yes, proceed!'
+  });
+}
