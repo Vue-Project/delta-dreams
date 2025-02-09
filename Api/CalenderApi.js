@@ -17,16 +17,6 @@ export const blockRoomService =  async (blockRoomData) =>
     }
 
   }
-  // export const getCalenderAllUnits = async () =>
-  // {
-  //   try {
-  //     const response = await apiClient.get(`/units`);
-  //     return response.data;
-  //   } catch (error) {
-  //     console.error('Error fetching reservations:', error);
-  //     throw error;
-  //   }
-  // };
   export const getReasonsSources = async () =>
     {
       try {
@@ -55,6 +45,15 @@ export const blockRoomService =  async (blockRoomData) =>
     export const deleteBlock = async (id) => {
       try {
         const response = await apiClient.delete(`/blocks/${id}`);
+        return response.data;
+      } catch (error) {
+        console.error('Error deleting block:', error);
+        throw error;
+      }
+    };
+    export const postUpdateReservation = async (id, updateData) => {
+      try {
+        const response = await apiClient.put(`/reservations/update/${id}`, updateData);
         return response.data;
       } catch (error) {
         console.error('Error deleting block:', error);

@@ -56,3 +56,62 @@ export const showConfirmationDialog = (message = "Are you sure you want to proce
     confirmButtonText: 'Yes, proceed!'
   });
 }
+
+export const showAlert = ({
+  title = 'Notification',
+  text = '',
+  icon = 'success',
+  timer,
+  timerProgressBar = false,
+  showConfirmButton = true,
+  confirmButtonText = 'OK',
+  confirmButtonColor = '#7367f0',
+  showCancelButton = false,
+  cancelButtonColor = '#e2e1e5',
+  error = null
+} = {}) => {
+  // Handle server error if provided
+  if (error) {
+    let errorMessage = '';
+
+    if (error.response?.data?.errors) {
+      const validationErrors = error.response.data.errors;
+      if (typeof validationErrors === 'object') {
+        errorMessage = Object.values(validationErrors)
+          .flat()
+          .join('\n');
+      }
+    } else if (error.response?.data?.message) {
+      errorMessage = error.response.data.message;
+    } else if (error.response?.data?.error) {
+      errorMessage = error.response.data.error;
+    } else if (error.message) {
+      errorMessage = error.message;
+    } else {
+      errorMessage = 'An unexpected error occurred';
+    }
+
+    return Swal.fire({
+      title: 'Error',
+      text: errorMessage,
+      icon: 'error',
+      confirmButtonColor: '#7367f0',
+      confirmButtonText: 'OK'
+    });
+  }
+
+  // Regular alert if no error
+  return Swal.fire({
+    title,
+    text,
+    icon,
+    timer,
+    timerProgressBar,
+    showConfirmButton,
+    confirmButtonText,
+    confirmButtonColor,
+    showCancelButton,
+    cancelButtonColor,
+  });
+}
+
