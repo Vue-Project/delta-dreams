@@ -822,7 +822,6 @@ export default {
 
             // Calculate width adjustment based on the offsets
             widthAdjustment = leftOffset + rightOffset;
-            console.log('widthAdjustment', widthAdjustment);
             eventElement.style.width = `${currentWidth - widthAdjustment}px`;
         }
     }
