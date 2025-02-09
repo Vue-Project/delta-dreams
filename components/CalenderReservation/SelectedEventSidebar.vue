@@ -352,23 +352,6 @@ export default {
   },
   mixins: [flatpickr],
   methods: {
-    initFlatpickr() {
-    flatpickr("#flatpickr-date", {
-      dateFormat: "Y-m-d",
-      static: true,
-      allowInput: false,
-      clickOpens: true,
-      // Add other options as needed
-    });
-  },
-  initFlatpickr() {
-    if (this.flatpickrInstance) {
-      this.flatpickrInstance.destroy();
-    }
-    this.flatpickrInstance = flatpickr("#flatpickr-date", {
-      // options
-    });
-  },
     async handleStatusChange(event) {
     // Store old and new values
     const oldStatus = this.selectedEvent.status;
@@ -504,21 +487,7 @@ export default {
       }
     },
   },
-    watch: {
-    selectedEvent(newVal) {
-      if (newVal) {
-        this.$nextTick(() => {
-          this.initFlatpickr();
-        });
-      }
-    }
-  },
-    mounted() {
-    const offcanvasEl = document.getElementById('offcanvasEnd');
-    offcanvasEl.addEventListener('shown.bs.offcanvas', () => {
-      this.initFlatpickr();
-    });
-  },
+
 };
 </script>
 
