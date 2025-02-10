@@ -677,6 +677,7 @@ import { showSuccessAlert, handleSubmissionError } from '../../Api/MassageValida
 import { showConfirmationAlert } from '../../Api/MassageValidation/alertUtilities';
 import WalletDetails from "../../components/SiderbarContentEdit/WalletDetails.vue";
 import Swal from 'sweetalert2';
+import { postCancelReservation, postStatusChange } from "../../Api/editResvertion";
 
 
 export default {
@@ -851,6 +852,7 @@ export default {
   const result = await showConfirmationAlert(
     'Are you sure?',
     "You won't be able to restore it again",
+    'Yes, cancel it!',
  
   );
 
@@ -865,13 +867,6 @@ export default {
         "Reservation cancelled successfully!", // Custom message
         this.$router,
         'index' // Route name
-      );
-
-      // Optional: Show SweetAlert2 success message
-      await Swal.fire(
-        'Cancelled!',
-        'Your reservation has been cancelled successfully.',
-        'success'
       );
 
     } catch (error) {
