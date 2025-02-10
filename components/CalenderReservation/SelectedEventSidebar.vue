@@ -1,5 +1,5 @@
 <template>
-  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEnd" aria-labelledby="offcanvasEndLabel">
+  <div class="offcanvas offcanvas-end"  tabindex="-1" id="offcanvasEnd" aria-labelledby="offcanvasEndLabel">
     <!-- Offcanvas Header -->
     <div class="offcanvas-header">
       <h5 id="offcanvasEndLabel" class="offcanvas-title w-100">
@@ -31,16 +31,24 @@
             </div>
           </div>
           <div class="row mt-4">
-            <div class="col-12 mb-3 ">
-              <label for="flatpickr-date" class="form-label">Dates Picker</label>
+            <div class="row mb-4">
+              <div class="col-9  ">
+                <!-- <label for="flatpickr-date" class="form-label">Dates Picker</label> -->
               <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD" id="flatpickr-range-06" ref="rangePicker6" aria-label="input Text to Date" />
               <i class="fa-solid fa-calendar-days icon-date"></i>
             </div>
+              <div class="col-3 ">
+                <button type="button" class="btn btn-primary waves-effect waves-light btn-block">
+                 confirm
+              </button>
+            </div>
+          </div>
+
             <div class="col-4 pt-1">
               <label class="form-label" for="status-reservation">Status</label>
             </div>
             <div class="col-8 pt-1">
-              <select class="badge w-100" :class="statusBadgeClass(selectedEvent.status)" :value="selectedEvent.status" @change="handleStatusChange($event)">
+              <select class="badge w-100" :class="statusBadgeClass(selectedEvent.status)" :value="selectedEvent.status" @change="handleStatusChange">
                 <option v-for="status in statusOptions" :key="status.value" :value="status.value">
                   {{ status.name }}
                 </option>
@@ -255,7 +263,7 @@
         </button>
         <button type="submit" class="btn btn-primary waves-effect waves-light">Save</button>
       </div>
-    </form>zd
+    </form>
   </div>
 </div>
 </div>
@@ -264,7 +272,7 @@
 
 <script>
 import flatpickrMixin from "../Mixin/flatpickrMixin";
-import { postCancelReservation, postStatusChange } from "../../Api/editResvertion";
+import { postAddPayment, postCancelReservation, postStatusChange } from "../../Api/editResvertion";
 import Swal from 'sweetalert2';
 import { showConfirmationDialog, showSuccessAlert, handleSubmissionError } from "../../Api/MassageValidation/alertUtilities";
 import { getGuestsInfo, getPaymentMethods } from "../../Api/addResvertionApi";
@@ -305,13 +313,16 @@ export default {
     const result = await showConfirmationDialog('Are you sure you want to change the status of this reservation?');
 
     if (result.isConfirmed) {
-      this.selectedEvent.status = newStatus;
-      this.updateStatusName(newStatus);
+      // this.selectedEvent.status = newStatus;
+      // this.updateStatusName(newStatus);
+      const changeStatus = {
+        status: newStatus
+      }
 
       // Send the new status to the server
       try {
-        const response = await postStatusChange(this.selectedEvent.id, newStatus);
-        showSuccessAlert("Status updated successfully!");
+        const response = await postStatusChange(this.selectedEvent.id, changeStatus);
+        showSuccessAlert("Status updated successfully!", location.reload());
       } catch (error) {
         handleSubmissionError(error, "Failed to update status");
         // Revert to previous value if the server update fails
@@ -388,21 +399,21 @@ export default {
       try {
         // Ensure all fields are included in the payload
         const paymentData = {
-          created_at: this.formAddPayment.date,
-          payment_method: this.formAddPayment.method,
-          payment_type: this.formAddPayment.type,
-          account_id: this.formAddPayment.account,
+          date_at: this.formAddPayment.date,
+          payment_id: this.formAddPayment.method,
+          type: this.formAddPayment.type,
+          assigned_to: this.formAddPayment.account,
           note: this.formAddPayment.comment,
           reservation_id: this.selectedEvent.id,
-          payment_price: this.formAddPayment.amount, // Add amount field
+          price: this.formAddPayment.amount, // Add amount field
           // Add any additional fields here
         };
-        console.log(paymentData);
-        // const response = await postAddPayment(paymentData);
+        // console.log(paymentData);
+        const response = await postAddPayment(paymentData);
         showSuccessAlert(
           "Payment added successfully!", // Custom message
-          location.reload()
         );
+        location.reload()
 
         // Close the modal after saving
         const modalElement = document.getElementById('paymentModal');

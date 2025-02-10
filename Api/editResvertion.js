@@ -30,14 +30,25 @@ import apiClient from './apiClient';
         throw error;
       }
     };
-    export const postStatusChange = async (id,newStatus) => {
+    export const postStatusChange = async (id,changeStatus) => {
       try {
-        const response = await apiClient.post(`/reservations/status/${id}`,newStatus);
+        const response = await apiClient.post(`/reservations/status/${id}`,changeStatus);
         return response.data;
 
 
       } catch (error) {
         console.error(`Error cancelling reservation with ID "${newStatus}":`, error);
+        throw error;
+      }
+    };
+    export const postAddPayment = async (paymentData) => {
+      try {
+        const response = await apiClient.post(`/wallets`,paymentData);
+        return response.data;
+
+
+      } catch (error) {
+        console.error(`Error cancelling reservation with ID "${paymentData}":`, error);
         throw error;
       }
     };
