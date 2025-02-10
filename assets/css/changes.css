@@ -948,9 +948,13 @@ select.form-select option {
 body{
   overflow-y: auto !important;
 }
-.fc-direction-ltr .fc-timeline-event.fc-event-end, .fc-direction-ltr .fc-timeline-more-link {
-  margin-left: 15px;
-}
+/* .fc-direction-ltr .fc-timeline-event.fc-event-end, .fc-direction-ltr .fc-timeline-more-link {
+ margin: 0 40px;
+} */
+/* .fc-direction-ltr .fc-timeline-event.fc-event-end, .fc-direction-ltr .fc-timeline-more-link {
+  margin-right:40px;
+  margin-left: 40px;
+} */
 .fa-calendar-days{
   color:#7367f0 !important;
 }
@@ -969,6 +973,18 @@ body{
   color:#685dd8 !important;
   padding-left: 5px;
 }
+.fc-timeline-event-harness{
+  top: 0 !important;
+  /* left: 20px !important; */
+}
+.fc .fc-timeline-lane-frame {
+  height: 40px !important;
+}
+ .fc-datagrid-cell.fc-resource .fc-datagrid-cell-frame{
+  height: 40px !important;
+}
+
+
 .modal-backdrop.show.fade{
   display:none !important;
 }

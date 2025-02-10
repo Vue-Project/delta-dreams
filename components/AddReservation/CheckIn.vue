@@ -165,7 +165,7 @@
                         </td>
                         <td>
                           <select class="form-select" v-model="formAddReservation.units[0].rateType" ref="rateType" :class="{ 'input-error': validationMessages.rateType }">
-                            <option value="">Rate Type</option>
+                            <option disabled value="">select</option>
                             <option value="breakfast">Breakfast</option>
                             <option value="nobreakfast">NoBreakfast</option>
 
@@ -976,9 +976,9 @@ export default {
         // Initialize date pickers with correct format
         this.datePicker1Instance = flatpickr(this.$refs.datePicker1, {
           enableTime: false,
-          dateFormat: "d/m/Y",
+          dateFormat: "Y-m-d", // Ensure the format is YYYY-MM-DD
           defaultDate: this.firstDate,
-          enable: [this.firstDate],
+          // enable: [this.firstDate],
           disableMobile: true,
           onChange: (selectedDates) =>
           {
@@ -990,9 +990,9 @@ export default {
 
         this.datePicker2Instance = flatpickr(this.$refs.datePicker2, {
           enableTime: false,
-          dateFormat: "d/m/Y",
+          dateFormat: "Y-m-d", // Ensure the format is YYYY-MM-DD
           defaultDate: this.lastDate,
-          enable: [this.lastDate],
+          // enable: [this.lastDate],
           disableMobile: true,
           onChange: (selectedDates) =>
           {

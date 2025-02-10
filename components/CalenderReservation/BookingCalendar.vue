@@ -60,6 +60,7 @@ import HeaderCalender from "./HeaderCalender.vue";
 // API service for fetching calendar data
 import { deleteBlock, getCalenderAllUnits } from "../../Api/CalenderApi";
 import Swal from 'sweetalert2'
+import { handleSubmissionError, showSuccessAlert } from "../../Api/MassageValidation/alertUtilities";
 
 export default {
   components: {
@@ -113,8 +114,12 @@ export default {
         eventClick: this.handleEventClick,
         duration: { days: 20 },
         weekends: true,
-        // editable: true, // Enable dragging and resizing
-        resources: this.createResources(),
+         editable: true, // Enable dragging and resizing
+         eventDrop: this.handleEventChange,
+        eventResize: this.handleEventChange,
+        eventDidMount: (info) => {
+          this.adjustHarnessPosition(info);
+        },        resources: this.createResources(),
         selectable: true, // Enable date selection
         selectMirror: true, // Make the selection draggable
         eventOverlap: false, // Disallow overlapping events
@@ -227,6 +232,8 @@ export default {
   },
 
   methods: {
+
+
     // ==============================================
     // RESOURCE MANAGEMENT
     // ==============================================
@@ -321,7 +328,10 @@ export default {
       // Get current Egypt time and initialize start/end dates
       const currentEgyptTime = getCurrentEgyptTime();
       const startDate = new Date(start);
+
+      // Adjust end date to be the last selected day (subtract 1 day from end)
       const endDate = new Date(end);
+      endDate.setDate(endDate.getDate() - 1);
 
       // Align start and end dates to Egypt's current time
       startDate.setHours(currentEgyptTime.getHours(), currentEgyptTime.getMinutes(), 0, 0);
@@ -365,12 +375,13 @@ export default {
         currentDate.setDate(currentDate.getDate() + 1);
       }
 
-      // Store first and last selected dates
+      // Store first and last selected dates (endDate is now correct)
       this.firstSelectedDate = formatDateOnly(startDate);
       this.lastSelectedDate = formatDateOnly(endDate);
 
-      // Calculate total days/nights
-      const totalDays = Math.ceil((endDate - startDate) / (1000 * 3600 * 24));
+
+      // Calculate total days/nights (using adjusted endDate)
+      const totalDays = Math.ceil((endDate - startDate) / (1000 * 3600 * 24)) + 1;
       const nights = totalDays > 0 ? totalDays : 1; // Minimum of 1 night
 
       // Store nights count
@@ -642,7 +653,7 @@ export default {
             resourceId: unitData.code,
             title: `Reserved by ${reservation.user?.name || 'Unknown'}`,
             start: start,
-            end: end,
+            end: end + 'T23:59:59',
             color: '#7367f0',
             reservationId: reservation.id,
             extendedProps: {
@@ -669,7 +680,6 @@ export default {
                 title: `Blocked Reason: ${dateInfo.block.reason.name || 'No reason provided'}`,
                 start: dateInfo.date,
                 end: dateInfo.date,
-                color: '#000000',
                 color: '#4b4b4b',
                 extendedProps: {
                   is_blocked: true, // Indicate this is a blocked date
@@ -679,10 +689,10 @@ export default {
               };
             }
 
-            // Update end date to next day
+            // Update end date to the end of the current day
             const endDate = new Date(dateInfo.date);
-            endDate.setDate(endDate.getDate() + 1);
-            currentBlock.end = endDate.toISOString().split('T')[0];
+            endDate.setHours(23, 59, 59, 999); // Set to the end of the day
+            currentBlock.end = endDate.toISOString();
           } else if (currentBlock) {
             events.push(currentBlock);
             currentBlock = null;
@@ -698,23 +708,23 @@ export default {
     transformEventToReservationData (event)
     {
       return {
+        user: event.extendedProps?.reservation?.user,
         id: event.extendedProps?.reservation?.id || event.id,
         checkin_date: event.start,
         checkout_date: event.end,
         checkin_time: event.extendedProps?.reservation?.checkin_time,
         checkout_time: event.extendedProps?.reservation?.checkout_time,
-        number_of_rooms: event.extendedProps?.reservation?.number_of_rooms,
+        rooms: event.extendedProps?.reservation?.rooms,
         rate_type: event.extendedProps?.reservation?.rate_type,
         adults: event.extendedProps?.reservation?.adults,
         children: event.extendedProps?.reservation?.children,
         status: event.extendedProps?.reservation?.status,
         status_name: event.extendedProps?.reservation?.status_name,
+        unit_price: event.extendedProps?.reservation?.unit_price,
         total: event.extendedProps?.reservation?.total,
-        created_at: event.extendedProps?.reservation?.created_at,
-        user: event.extendedProps?.reservation?.user,
-        guest_address: event.extendedProps?.reservation?.guest_address,
-        guest_city: event.extendedProps?.reservation?.guest_city,
-        guest_country: event.extendedProps?.reservation?.guest_country,
+        paid: event.extendedProps?.reservation?.paid,
+        balance: event.extendedProps?.reservation?.remaining,
+
       };
     },
     transformAllUnitsToEvents ()
@@ -739,6 +749,129 @@ export default {
 
       return allEvents;
     },
+    async handleEventChange(info) {
+    // Show loading state
+    this.isLoading = true;
+
+    try {
+      const event = info.event;
+    const resourceId = event.getResources()[0]?.id;
+
+    const unitId = resourceId?.split('-')[1];
+
+
+    const startDate = event.start.toISOString().split('T')[0];
+    const endDate = event.end.toISOString().split('T')[0];
+
+      // Prepare the update data
+      const updateData = {
+        unit_id: unitId,
+        start_date: startDate,
+        end_date: endDate,
+        reservation_id: event.extendedProps?.reservation?.id
+      };
+      console.log(updateData);
+
+
+      // Show confirmation dialog
+      const result = await Swal.fire({
+        title: 'Confirm Changes',
+        text: 'Are you sure you want to update this reservation?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#7367f0',
+        cancelButtonColor: '#e2e1e5',
+        confirmButtonText: 'Yes, update it!'
+      });
+
+      if (result.isConfirmed) {
+        // Make API call to update the reservation
+        // Replace 'updateReservation' with your actual API endpoint
+        // const response = await axios.put(`/api/reservations/${updateData.reservation_id}`, updateData);
+
+        if (response.data.success) {
+          await showSuccessAlert(
+          "Reservation updated successfully!", // Custom message
+
+        );
+        } else {
+          throw new Error('Failed to update reservation');
+        }
+      } else {
+        // If user cancels, revert the change
+        info.revert();
+      }
+    } catch (error) {
+
+      // Show error message
+      handleSubmissionError(
+          error,
+          "Failed to update reservation." // Custom default error
+        );
+
+      // Revert the calendar event to its original position/size
+      info.revert();
+    } finally {
+      this.isLoading = false;
+    }
+  },
+
+  // Add validation method
+  validateEventChange(event, newStart, newEnd) {
+    // Check if dates are valid
+    if (!newStart || !newEnd || newStart >= newEnd) {
+      return false;
+    }
+
+    // Check if the new dates overlap with other events
+    const calendar = this.$refs.calendar.getApi();
+    const events = calendar.getEvents();
+    const resourceId = event.getResources()[0]?.id;
+
+    for (const existingEvent of events) {
+      if (existingEvent === event) continue;
+
+      if (existingEvent.getResources()[0]?.id === resourceId) {
+        // Check for overlap
+        if (!(newEnd <= existingEvent.start || newStart >= existingEvent.end)) {
+          return false;
+        }
+      }
+    }
+
+    return true;
+  },
+  adjustHarnessPosition(info) {
+    // Get the harness element parent
+    const harness = info.el.closest('.fc-timeline-event-harness');
+
+    if (harness) {
+        // Get current left position (parse as number)
+        const currentLeft = parseInt(harness.style.left) || 0;
+        const currentRight = parseInt(harness.style.right) || 0;
+
+        // Add  offset to left (moving event slightly right)
+        const leftOffset = 35; // Adjust this value to move the event to the right
+        harness.style.left = `${currentLeft + leftOffset}px`;
+
+
+        const rightOffset = 5; // Adjust this value for spacing on the right side
+        harness.style.right = `${currentRight + rightOffset}px`;
+
+        // Adjust the width of the event element
+        const eventElement = harness.querySelector('.fc-timeline-event');
+        if (eventElement) {
+            const currentWidth = eventElement.offsetWidth;
+
+            // Subtract offsets from the total width (50px for left, 80px for right)
+            const widthAdjustment = leftOffset + rightOffset;
+            console.log( 'widthAdjustment', widthAdjustment);
+            eventElement.style.width = `${currentWidth - widthAdjustment}px`;
+        }
+    }
+},
+
+
     // ==============================================
     // CALENDAR NAVIGATION
     // ==============================================
@@ -1155,6 +1288,8 @@ export default {
     } finally {
       this.isLoading = false;
     }
-  },
+
+}
+
 }
 </script>
