@@ -1,5 +1,5 @@
 <template>
-  <div class="offcanvas offcanvas-end" data-bs-backdrop="static" tabindex="-1" id="offcanvasEnd" aria-labelledby="offcanvasEndLabel">
+  <div class="offcanvas offcanvas-end"  tabindex="-1" id="offcanvasEnd" aria-labelledby="offcanvasEndLabel">
     <!-- Offcanvas Header -->
     <div class="offcanvas-header">
       <h5 id="offcanvasEndLabel" class="offcanvas-title w-100">
