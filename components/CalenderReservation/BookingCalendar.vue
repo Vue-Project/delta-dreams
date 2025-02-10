@@ -712,13 +712,12 @@ export default {
     const endDate = event.end.toISOString().split('T')[0];
 
       // Prepare the update data
-      const updateData = {
+      const updateDataUnit = {
         unit_id: unitId,
         checkin_date: startDate,
         checkout_date: endDate,
         reservation_id: event.extendedProps?.reservation?.id
       };
-      console.log(updateData);
 
 
       // Show confirmation dialog
@@ -726,19 +725,13 @@ export default {
 
       if (result.isConfirmed) {
         // Replace 'updateReservation' with your actual API endpoint
-        const response = await postUpdateReservation(updateData.reservation_id, updateData);
+        const response = await postUpdateReservation(updateDataUnit.reservation_id, updateDataUnit);
 
-        if (response.data.success) {
           await showSuccessAlert(
           "Reservation updated successfully!", // Custom message
 
         );
-        } else {
-          throw new Error('Failed to update reservation');
-        }
-      } else {
-        // If user cancels, revert the change
-        info.revert();
+
       }
     } catch (error) {
 
