@@ -30,14 +30,14 @@ import apiClient from './apiClient';
         throw error;
       }
     };
-    export const postStatusChange = async (id,newStatus) => {
+    export const postStatusChange = async (id,changeStatus) => {
       try {
-        const response = await apiClient.post(`/reservations/status/${id}`,newStatus);
+        const response = await apiClient.post(`/reservations/status/${id}`,changeStatus);
         return response.data;
 
 
       } catch (error) {
-        console.error(`Error cancelling reservation with ID "${newStatus}":`, error);
+        console.error(`Error cancelling reservation with ID "${changeStatus}":`, error);
         throw error;
       }
     };
