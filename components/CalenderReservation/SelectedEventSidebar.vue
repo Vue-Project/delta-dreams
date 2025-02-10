@@ -1,5 +1,5 @@
 <template>
-  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEnd" aria-labelledby="offcanvasEndLabel">
+  <div class="offcanvas offcanvas-end" data-bs-backdrop="static" tabindex="-1" id="offcanvasEnd" aria-labelledby="offcanvasEndLabel">
     <!-- Offcanvas Header -->
     <div class="offcanvas-header">
       <h5 id="offcanvasEndLabel" class="offcanvas-title w-100">
@@ -244,7 +244,7 @@
           </dl>
         </div>
         <div class="text-center">
-          <button @click="cancelReservation" type="button" title="Cancel Reservation" class="btn btn-danger waves-effect waves-light mt-3 w-100 px-0">
+          <button @click="cancelReservation($event)" type="button" title="Cancel Reservation" class="btn btn-danger waves-effect waves-light mt-3 w-100 px-0">
             Cancel Reservation</button>
       </div>
 
@@ -326,6 +326,8 @@
 <script>
 import flatpickr from "../Mixin/flatpickrMixin";
 import { cancelReservation, getReservationDataById } from "../../Api/editResvertion";
+import { handleSubmissionError } from '../../Api/MassageValidation/alertUtilities';
+import { showConfirmationAlert } from '../../Api/MassageValidation/alertUtilities';
 import Swal from 'sweetalert2';
 export default {
   data() {
@@ -358,24 +360,15 @@ export default {
     const newStatus = event.target.value;
 
     // Show confirmation dialog
-    const result = await Swal.fire({
-      title: 'Confirm Status Change',
-      text: `Are you sure you want to change status from ${oldStatus} to ${newStatus}?`,
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, change it!',
-      cancelButtonText: 'Cancel',
-      customClass: {
-        popup: 'swal-z-index' // Add custom z-index class if needed
-      }
-    });
+    const result = await showConfirmationAlert(
+    'Are you sure?',
+    "You won't be able to restore it again", 
+  );
 
     if (result.isConfirmed) {
       // Update status and call API
       this.selectedEvent.status = newStatus;
-      this.updateStatusName();
+      this.updateStatusName(event);
     } else {
       // Revert to previous value
       event.target.value = oldStatus;
@@ -385,32 +378,19 @@ export default {
     // Your existing update logic
   },
 
-    async cancelReservation() {
+  async cancelReservation(event) {
+    event.stopPropagation(); // أوقف انتشار الحدث هنا
   // Show confirmation dialog using SweetAlert
-  const result = await Swal.fire({
-  title: 'Are you sure?',
-  text: 'You are about to cancel this reservation. This action cannot be undone!',
-  icon: 'warning',
-  showCancelButton: true,
-  confirmButtonColor: '#3085d6',
-  cancelButtonColor: '#d33',
-  confirmButtonText: 'Yes, cancel it!',
-  cancelButtonText: 'No, keep it',
-  reverseButtons: true,
-  didOpen: () => {
-    // Directly set the z-index of the SweetAlert2 popup
-    const popup = Swal.getPopup();
-    if (popup) {
-      popup.style.zIndex = '9999'; // Adjust the value as needed
-    }
-  },
-});
+  const result = await showConfirmationAlert(
+    'Are you sure?',
+    "You won't be able to restore it again", 
+  );
 
   // Proceed only if user confirmed
   if (result.isConfirmed) {
     try {
-      await deletewallet(
-        "Payment Details Is Deleted Successfully!",
+      await cancelReservation(
+        "reservation Is Deleted Successfully!",
         this.$router,
         'index'
       );
@@ -418,14 +398,16 @@ export default {
       // Optional: Show success alert
       await Swal.fire(
         'Deleted!',
-        'Your payment details have been deleted.',
+        'reservation details have been deleted.',
         'success'
       );
+      const offcanvas = bootstrap.Offcanvas.getInstance(document.getElementById('offcanvasEnd'));
+      offcanvas.hide();
 
     } catch (error) {
       handleSubmissionError(
         error,
-        "Failed to delete wallet" // Updated error message
+        "Failed to delete reservation." // Updated error message
       );
     }
   }

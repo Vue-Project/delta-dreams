@@ -162,6 +162,7 @@
 import { getPaymentMethods } from '../../Api/addResvertionApi';
 import { updateWallet } from '../../Api/editResvertion';
 import { showSuccessAlert, handleSubmissionError } from '../../Api/MassageValidation/alertUtilities';
+import { showConfirmationAlert } from '../../Api/MassageValidation/alertUtilities';
 import Swal from 'sweetalert2';
 import PaymentContent from '../../components/SiderbarContentEdit/PaymentContent.vue';
 
@@ -215,17 +216,11 @@ export default {
   methods: {
     async deletewallet() {
   // Show confirmation dialog using SweetAlert
-  const result = await Swal.fire({
-    title: 'Are you sure?',
-    text: "You won't be able to revert this!",
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Yes, delete it!',
-    cancelButtonText: 'Cancel',
-    reverseButtons: true
-  });
+  const result = await showConfirmationAlert(
+    'Are you sure?',
+    "You won't be able to restore it again", 
+  );
+
 
   // Proceed only if user confirmed
   if (result.isConfirmed) {
