@@ -1,5 +1,16 @@
 // alertUtilities.js
 import Swal from 'sweetalert2'
+export async function showConfirmationAlert(title, text, confirmText = "Yes", cancelText = "No",router,routeName) {
+  return await Swal.fire({
+    title: title,
+    text: text,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: confirmText,
+    cancelButtonText: cancelText,
+    
+  });
+}
 
 export const showSuccessAlert = (successMessage = "Operation completed successfully!", router, routeName) => {
   return Swal.fire({
