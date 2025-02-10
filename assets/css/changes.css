@@ -978,3 +978,6 @@ body{
 .layout-navbar{
   z-index: 0;
 }
+.offcanvas-backdrop{
+  z-index:1;
+}
