@@ -265,7 +265,7 @@
 <script>
 import flatpickrMixin from "../Mixin/flatpickrMixin";
 import { postCancelReservation, postStatusChange } from "../../Api/editResvertion";
-import { showConfirmationDialog, showSuccessAlert, handleSubmissionError,showConfirmationAlert } from "../../Api/MassageValidation/alertUtilities";
+import { showSuccessAlert, handleSubmissionError,showConfirmationAlert } from "../../Api/MassageValidation/alertUtilities";
 import { getGuestsInfo, getPaymentMethods } from "../../Api/addResvertionApi";
 
 export default {
@@ -342,7 +342,8 @@ export default {
         // Show success alert
         await showSuccessAlert(
           "Reservation cancelled successfully!", // Custom message
-          location.reload()
+          this.$router,
+          'index' // Route name
         );
 
       } catch (error) {
