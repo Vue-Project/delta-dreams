@@ -1,17 +1,7 @@
 <template>
   <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEnd" aria-labelledby="offcanvasEndLabel">
     <!-- Offcanvas Header -->
-    <!-- <div class="row mb-4">
-              <div class="col-9">
-                <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD to YYYY-MM-DD" id="flatpickr-range" ref="rangePicker1" v-model="dateRange" aria-label="input Text to Date" />
 
-              </div>
-              <div class="col-3">
-                <button type="button" class="btn btn-primary waves-effect waves-light btn-block" @click="submitForm">
-                  Confirm
-                </button>
-              </div>
-            </div> -->
 
     <div class="offcanvas-header">
       <h5 id="offcanvasEndLabel" class="offcanvas-title w-100">
@@ -43,9 +33,10 @@
               </button>
             </div>
           </div>
-          <div class="row mt-4">
+
+          <div class="row mt-4 mb-4">
             <div class="col-4 pt-1">
-              <label class="form-label" for="status-reservation">Status</label>
+              <label class="form-label fs-4" for="status-reservation">Status</label>
             </div>
             <div class="col-8 pt-1">
               <select class="badge w-100" :class="statusBadgeClass(selectedEvent.status)" :value="selectedEvent.status" @change="handleStatusChange">
@@ -55,6 +46,18 @@
               </select>
             </div>
           </div>
+          <div class="row ">
+              <div class="col-9">
+                <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD to YYYY-MM-DD" id="flatpickr-range" ref="rangePicker1" v-model="dateRange" @change='parseDateRange'  aria-label="input Text to Date" />
+
+              </div>
+              <div class="col-3">
+                <button type="button" class="btn btn-primary waves-effect waves-light btn-block" @click="changeDateReservation">
+                  Confirm
+                </button>
+              </div>
+            </div>
+
         </template>
       </h5>
 
@@ -187,23 +190,14 @@
             <dt class="col-6 fw-normal text-danger">Balance</dt>
             <dd class="col-6 text-end text-danger">
               {{ selectedEvent.balance || "0.0 " }} EGP
+
             </dd>
           </dl>
         </div>
         <div class="text-center">
           <button @click="cancelReservation" type="button" title="Cancel Reservation" class="btn btn-danger waves-effect waves-light mt-3 w-100 px-0">
             Cancel Reservation</button>
-          <!-- <div class="row mb-4">
-        <div class="col-9">
-          <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD to YYYY-MM-DD" id="flatpickr-range" ref="rangePicker1" v-model="dateRange" aria-label="input Text to Date" />
 
-        </div>
-        <div class="col-3">
-          <button type="button" class="btn btn-primary waves-effect waves-light btn-block" @click="submitForm">
-            Confirm
-          </button>
-        </div>
-      </div> -->
         </div>
 
       </template>
@@ -294,7 +288,6 @@ import { getGuestsInfo, getPaymentMethods } from "../../Api/addResvertionApi";
 import { postUpdateReservation } from '../../Api/CalenderApi';
 
 export default {
-  mixins: [flatpickrMixin],
 
   data ()
   {
@@ -341,6 +334,7 @@ export default {
           const response = await postStatusChange(this.selectedEvent.id, changeStatus);
           this.selectedEvent.status = newStatus;
           showSuccessAlert("Status updated successfully!");
+          location.reload()
         } catch (error) {
           handleSubmissionError(error, "Failed to update status");
           // Revert to previous value if the server update fails
@@ -489,6 +483,7 @@ export default {
           unit_id: this.selectedEvent.unit_id,
           reservation_id: this.selectedEvent.id,
         };
+        // console.log(updateDataUnit);
 
 
         // Send data to the server
@@ -530,6 +525,8 @@ export default {
 
 
   },
+  mixins: [flatpickrMixin],
+
 
 };
 </script>
