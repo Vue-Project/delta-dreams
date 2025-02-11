@@ -595,12 +595,13 @@ export default {
       {
         if (dateInfo.is_reserved && dateInfo.reservation && !handledReservations.has(dateInfo.reservation.id)) {
           const reservation = dateInfo.reservation;
+
           const start = reservation.checkin_date.split('T')[0];
           const end = reservation.checkout_date.split('T')[0];
 
           events.push({
             resourceId: unitData.code,
-            title: `Reserved by ${reservation.user?.name || 'Unknown'}`,
+            title: ` ${reservation.user?.name || 'Unknown'}`,
             start: start,
             end: end + 'T23:59:59',
             color: '#7367f0',
@@ -656,8 +657,10 @@ export default {
     },
     transformEventToReservationData (event)
     {
+
       return {
         user: event.extendedProps?.reservation?.user,
+        unit_id: event.extendedProps?.reservation?.unit_id,
         id: event.extendedProps?.reservation?.id || event.id,
         checkin_date: event.start,
         checkout_date: event.end,
@@ -673,7 +676,6 @@ export default {
         total: event.extendedProps?.reservation?.total,
         paid: event.extendedProps?.reservation?.paid,
         balance: event.extendedProps?.reservation?.remaining,
-        unit_id: event.extendedProps?.reservation?.unit?.id ,
       };
     },
     transformAllUnitsToEvents ()
@@ -731,6 +733,7 @@ export default {
           "Reservation updated successfully!", // Custom message
 
         );
+        location.reload()
 
       }
     } catch (error) {
@@ -793,15 +796,15 @@ export default {
         if (screenWidth < 600) {
             // Small screens (mobile)
             leftOffset = 20;
-            rightOffset = 5;
+            rightOffset = 0;
         } else if (screenWidth < 1200) {
             // Medium screens (tablets)
             leftOffset = 30;
             rightOffset =0;
         } else {
             // Large screens (desktops)
-            leftOffset = 40;
-            rightOffset = 15;
+            leftOffset = 50;
+            rightOffset = -6;
         }
 
         // Adjust the left and right positions
@@ -816,6 +819,7 @@ export default {
             // Calculate width adjustment based on the offsets
             widthAdjustment = leftOffset + rightOffset;
             eventElement.style.width = `${currentWidth - widthAdjustment}px`;
+
         }
     }
 }
