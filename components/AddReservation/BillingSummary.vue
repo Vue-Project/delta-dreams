@@ -68,10 +68,10 @@
         </div>
 
         <div class="row" v-if="value.paymentMode">
-          <div class="col-md-6">
+          <div class="col-md-6 mb-3">
             <div class="input-group">
-              <label class="input-group-text" for="inputGroupSelect01">Methods</label>
-              <select class="form-select" id="businessSource" v-model="value.paymentMethod">
+              <label class="input-group-text" for="paymentMethod">Methods</label>
+              <select class="form-select" id="paymentMethod" v-model="value.paymentMethod">
                 <option disabled value="">Select</option>
                 <option v-for="paymentMethod in paymentMethods" :key="paymentMethod.id" :value="paymentMethod.id">
                   {{ paymentMethod.content }}
@@ -79,13 +79,30 @@
               </select>
             </div>
           </div>
-          <div class="col-md-6 d-flex align-items-center">
+          <div class="col-md-6 mb-3">
             <div class="input-group">
-              <label class="input-group-text" for="inputGroupSelect01">Types</label>
-              <select class="form-select" id="businessSource" v-model="selectedPaymentType">
+              <label class="input-group-text" for="paymentType">Types</label>
+              <select class="form-select" id="paymentType" v-model="selectedPaymentType">
                 <option disabled value="">Select</option>
                 <option v-for="(label, value) in paymentTypes" :key="value" :value="value">
                   {{ label }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-6 d-flex align-items-center">
+            <div class="input-group">
+              <label class="input-group-text" for="paymentInsurance">Insurance</label>
+              <input type="text" class="form-control" id="paymentInsurance" v-model="paymentDetails.insurance">
+            </div>
+          </div>
+          <div class="col-md-6 d-flex align-items-center">
+            <div class="input-group">
+              <label class="input-group-text" for="paymentInsuranceBy">Insurance By</label>
+              <select class="form-select" id="paymentInsuranceBy" v-model="paymentDetails.insurance_by">
+                <option disabled value="">Select</option>
+                <option v-for="account in accounts" :key="account.id" :value="account.id">
+                  {{ account.name }}
                 </option>
               </select>
             </div>
@@ -100,7 +117,7 @@
           <h6 class="mb-3">Payment Details</h6>
           <dl class="row">
             <dt class="col-6">Payment Method:</dt>
-            <dd class="col-6">{{  'Cash' }}</dd>
+            <dd class="col-6">{{ 'Cash' }}</dd>
 
             <dt class="col-6">Payment Type:</dt>
             <dd class="col-6">{{ selectedPaymentType || 'Not selected' }}</dd>
@@ -117,30 +134,16 @@
               <dd class="col-6">{{ paymentDetails.comment }}</dd>
             </template>
 
-            <!-- Payment specific fields -->
-            <!-- <template v-if="selectedPaymentType === 'bank_transfer'">
-              <dt class="col-6">Bank Name:</dt>
-              <dd class="col-6">{{ paymentDetails.bankName || 'Not specified' }}</dd>
-              <dt class="col-6">Account Number:</dt>
-              <dd class="col-6">{{ paymentDetails.accountNumber || 'Not specified' }}</dd>
+            <!-- New fields for insurance details -->
+            <template v-if="paymentDetails.insurance">
+              <dt class="col-6">Insurance:</dt>
+              <dd class="col-6">{{ paymentDetails.insurance }}</dd>
             </template>
 
-            <template v-if="['vodafone', 'we', 'orange', 'etisalat'].includes(selectedPaymentType)">
-              <dt class="col-6">Phone Number:</dt>
-              <dd class="col-6">{{ paymentDetails.phoneNumber || 'Not specified' }}</dd>
-              <dt class="col-6">Transaction ID:</dt>
-              <dd class="col-6">{{ paymentDetails.transactionId || 'Not specified' }}</dd>
+            <template v-if="paymentDetails.insurance_by">
+              <dt class="col-6">Insurance By:</dt>
+              <dd class="col-6">{{ accounts.find(account => account.id === paymentDetails.insurance_by)?.name || 'Not specified' }}</dd>
             </template>
-
-            <template v-if="selectedPaymentType === 'visa'">
-              <dt class="col-6">Card Number:</dt>
-              <dd class="col-6">{{ maskCardNumber(paymentDetails.cardNumber) }}</dd>
-            </template>
-
-            <template v-if="['apple_pay', 'google_pay', 'instapay', 'fawry'].includes(selectedPaymentType)">
-              <dt class="col-6">Transaction ID:</dt>
-              <dd class="col-6">{{ paymentDetails.transactionId || 'Not specified' }}</dd>
-            </template> -->
           </dl>
         </div>
 
@@ -203,7 +206,7 @@
 </template>
 
 <script>
-import { getPaymentMethods } from '../../Api/addResvertionApi';
+import { getAccounts, getPaymentMethods } from '../../Api/addResvertionApi';
 
 export default {
   name: "BillingSummary",
@@ -222,6 +225,7 @@ export default {
       validationMessage: "",
       paymentMethods: [],
       paymentTypes: [],
+      accounts: [],
       selectedPaymentType: '',
       paymentDetails: {
         roomCharges: 0.0,
@@ -237,6 +241,11 @@ export default {
         date: new Date().toISOString().split('T')[0],
         cvv: '',
         comment: '',
+        insurance: '',
+        insurance_by: '',
+
+
+
       }
     };
   },
@@ -263,13 +272,16 @@ export default {
     try {
       const [
         paymentMethodsResponse,
+        accountsResponse,
 
       ] = await Promise.all([
       getPaymentMethods(),
+      getAccounts(),
       ]);
 
       this.paymentMethods = paymentMethodsResponse.data.data;
       this.paymentTypes = paymentMethodsResponse.data.payment_type;
+      this.accounts = accountsResponse.data.data;
     } catch (error) {
       console.error("Error loading data:", error);
     }

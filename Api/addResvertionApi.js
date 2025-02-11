@@ -148,4 +148,13 @@ export const PostReservationItems = async (reservationId ,updateReservationItems
       throw error;
     }
   };
+  export const getAccounts = async () => {
+    try {
+      const response = await apiClient.get('/accounts');
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching payment methods:', error);
+      throw error;
+    }
+  };
 

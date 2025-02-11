@@ -38,7 +38,7 @@ export default {
   methods:{
     changeRoomCharges(charges){
       this.paymentData.roomCharges = charges
-      console.log(charges);
+      // console.log(charges);
     }
   },
   computed: {

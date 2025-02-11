@@ -643,7 +643,6 @@ export default {
 
     async submitFormReservation ()
     {
-
       const requiredFields = [
         { field: "businessSource", message: "Business Source is required" },
         { field: "bookingSource", message: "Booking Source is required" },
@@ -654,8 +653,7 @@ export default {
         { field: "children", message: "Children count is required" },
         { field: "rateType", message: "Rate Type is required" },
         { field: "rateAmount", message: "Rate Amount is required" },
-        // { field: "paymentMode", message: "Payment Mode is required", path: "paymentData" },
-
+        { field: "paymentMode", message: "Payment Mode is required", path: "paymentData" },
       ];
 
       // Reset validation messages before checking
@@ -664,7 +662,7 @@ export default {
       let hasError = false;
 
       // Validate each required field
-      for (const { field, message } of requiredFields) {
+      for (const { field, message, path } of requiredFields) {
         let value;
 
         // Handle fields related to `units[0]`
@@ -672,6 +670,8 @@ export default {
           value = this.formAddReservation.units[0]?.[field];
         } else if (field === "name" || field === "mobile") {
           value = this.formAddReservation.guestInformation[field];
+        } else if (path) {
+          value = this[path][field];
         } else {
           value = this.formAddReservation[field];
         }
@@ -686,6 +686,7 @@ export default {
 
       // Stop submission if there are errors
       if (hasError) return;
+
       // Prepare the data to send to the server
       const bookingData = {
         checkin_date: this.formAddReservation.checkInDate,
@@ -727,44 +728,11 @@ export default {
         payment_price: this.paymentData.amount,
         date_at: this.paymentData.date,
         note: this.paymentData.comment,
-        // payment_mode: this.paymentData.paymentMode,
-
-        // payment_details: {
-
-        //   // payment_price: this.paymentData.roomCharges || 50000,
-
-        //   // transaction_details: {
-        //   //   bank_name: this.paymentData.bankName,
-        //   //   account_number: this.paymentData.accountNumber,
-        //   //   transfer_date: this.paymentData.transferDate,
-        //   //   phone_number: this.paymentData.phoneNumber,
-        //   //   transaction_id: this.paymentData.transactionId,
-        //   //   card_number: this.paymentData.cardNumber,
-        //   //   expiry_date: this.paymentData.expiryDate,
-        //   //   cvv: this.paymentData.cvv,
-        //   //   comment: this.paymentData.comment
-        //   // }
-        // }
-        // booking: this.showSelect,
-        // booking_option: this.formAddReservation.otherInformation.emailBookingOption,
-        // send_email_checkout: this.showInput,
-        // email_address_checkout: this.formAddReservation.otherInformation.emailAddressCheckout,
-        // access_guest_portal: this.formAddReservation.otherInformation.accessToGuestPortal,
-        // suppress_rate_registration_card: this.formAddReservation.otherInformation.suppressRateOnRegistrationCard,
-        // room_charges: this.paymentData.roomCharges,
-        // taxes: this.paymentData.taxes,
-        // total_amount: this.paymentData.totalAmount,
-        // due_amount: this.paymentData.dueAmount,
-        // bill_to: this.paymentData.billTo,
-        // tax_exempt: this.paymentData.taxExempt,
-        // payment_mode: this.paymentData.paymentMode,
-        // payment_method: this.paymentData.paymentMethod,
-        // selected_payment_method: this.paymentData.selectedPaymentMethod,
-
+        payment_mode: this.paymentData.paymentMode,
+        insurance : this.paymentData.insurance,
+        insurance_by: this.paymentData.insurance_by,
       };
-
-
-
+console.log(bookingData);
 
       // If no errors, send the data to the server
       try {
@@ -784,27 +752,8 @@ export default {
           "There was an issue with your reservation." // Custom default error
         );
       }
-
     },
 
-
-
-
-    // Reset all validation messages
-    resetValidationMessages ()
-    {
-      this.validationMessages = {
-        name: '',
-        mobile: '',
-        businessSource: '',
-        bookingSource: '',
-        reservationType: '',
-        adults: '',
-        children: '',
-        rateAmount: '',
-        rateType: '',
-      };
-    },
     formatDate (date)
     {
       const day = String(date.getDate()).padStart(2, '0');
@@ -841,8 +790,6 @@ export default {
       }
     },
 
-
-
     formatRateAmount ()
     {
       const value = this.formAddReservation.units[0].rateAmount;
@@ -874,7 +821,6 @@ export default {
         this.availableUnits = []
       }
     },
-
 
     async handleSearch ()
     {
@@ -939,8 +885,6 @@ export default {
       }, 200)
     }
   },
-
-
 
   async mounted ()
   {
