@@ -673,7 +673,7 @@ export default {
         total: event.extendedProps?.reservation?.total,
         paid: event.extendedProps?.reservation?.paid,
         balance: event.extendedProps?.reservation?.remaining,
-        unit_id: event.extendedProps?.reservation?.unit.id ,
+        unit_id: event.extendedProps?.reservation?.unit?.id ,
       };
     },
     transformAllUnitsToEvents ()
