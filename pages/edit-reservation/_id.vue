@@ -674,8 +674,10 @@ import { dateMixin } from "../../components/Mixin/DateMixin";
 import UpdateReservation from "../../components/SiderbarContentEdit/BookingDetailsComponents/UpdateReservation.vue";
 import { GetReservationItems } from "../../Api/addResvertionApi";
 import { showSuccessAlert, handleSubmissionError } from '../../Api/MassageValidation/alertUtilities';
+import { showConfirmationAlert } from '../../Api/MassageValidation/alertUtilities';
 import WalletDetails from "../../components/SiderbarContentEdit/WalletDetails.vue";
 import Swal from 'sweetalert2';
+import { postCancelReservation, postStatusChange } from "../../Api/editResvertion";
 
 
 export default {
@@ -847,17 +849,13 @@ export default {
     },
     async cancelReservation() {
   // Show SweetAlert2 confirmation dialog
-  const result = await Swal.fire({
-    title: 'Are you sure?',
-    text: 'You are about to cancel this reservation. This action cannot be undone!',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Yes, cancel it!',
-    cancelButtonText: 'No, keep it',
-    reverseButtons: true, // Reverse button order (confirm on the right)
-  });
+  const result = await showConfirmationAlert(
+    'Are you sure?',
+    "You won't be able to restore it again",
+    'Yes, cancel it!',
+ 
+  );
+
 
   // Proceed only if the user confirms
   if (result.isConfirmed) {
@@ -869,13 +867,6 @@ export default {
         "Reservation cancelled successfully!", // Custom message
         this.$router,
         'index' // Route name
-      );
-
-      // Optional: Show SweetAlert2 success message
-      await Swal.fire(
-        'Cancelled!',
-        'Your reservation has been cancelled successfully.',
-        'success'
       );
 
     } catch (error) {

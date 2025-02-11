@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- <TheHeader /> -->
-    <VuexyHeader></VuexyHeader>
+    <HeaderNav></HeaderNav>
     <Nuxt />
   </div>
 </template>
@@ -9,11 +9,11 @@
 <script>
 import { CursorFx } from "@luxdamore/vue-cursor-fx";
 import TheHeader from "../components/layout/TheHeader.vue";
-import VuexyHeader from "../components/layout/VuexyHeader.vue";
+import HeaderNav from "../components/layout/HeaderNav.vue";
 // import 'themify-icons/css/themify-icons.css';
 
 export default {
-  components: { CursorFx, TheHeader, VuexyHeader },
+  components: { CursorFx, TheHeader, HeaderNav },
 };
 </script>
 

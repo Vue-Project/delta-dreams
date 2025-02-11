@@ -20,13 +20,13 @@ import apiClient from './apiClient';
         throw error;
       }
     };
-    export const updateWallet = async (walletData) => {
+    export const updateWallet = async (id,walletData) => {
       try {
-        const response = await apiClient.post(`/reservations/wallets/${walletData}`);
+        const response = await apiClient.post(`/reservations/wallets/${id}`,walletData);
         return response.data;
 
       } catch (error) {
-        console.error(`Error cancelling reservation with ID "${walletData}":`, error);
+        console.error(`Error cancelling reservation with ID "${id}":`, error);
         throw error;
       }
     };
@@ -37,7 +37,7 @@ import apiClient from './apiClient';
 
 
       } catch (error) {
-        console.error(`Error cancelling reservation with ID "${newStatus}":`, error);
+        console.error(`Error cancelling reservation with ID "${changeStatus}":`, error);
         throw error;
       }
     };

@@ -2,8 +2,10 @@
   <section class="summary position-sticky top-0">
     <div class="card">
       <form id="formReservation" class=" g-3" @submit.prevent="FormUpdateWallet" ref="emptyForm">
-
-      <div class="card-body">
+        
+        <div class="card-body">
+          <button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="offcanvas" data-bs-target="#Sidebar" 
+          data-title="Add Payment">Add Payment</button>
         <div class="offcanvas offcanvas-end event-sidebar" tabindex="-1" id="Sidebar" aria-labelledby="SidebarLabel" aria-modal="true">
           <div class="offcanvas-header my-1">
             <h5 class="offcanvas-title" id="SidebarLabel">{{ sidebarTitle }}</h5>
@@ -46,7 +48,6 @@
 
         <!-- Payment Details Summary -->
         <div class="payment-summary mt-3">
-          <h5 class="mb-3 text-center">Payment Details</h5>
           <div class="table-responsive text-nowrap">
             <table class="table">
               <thead>
@@ -104,10 +105,6 @@
                           <i class="fa-regular fa-pen-to-square me-1"></i> Edit
                         </a>
                         <a class="dropdown-item" @click="deletewallet" href="javascript:void(0);"><i class="fa-regular fa-trash-can me-1"></i> Delete</a>
-                        <a class="dropdown-item" data-bs-toggle="offcanvas" data-bs-target="#Sidebar" 
-                          data-title="Add Payment" href="javascript:void(0);">
-                          <i class="fa-solid fa-plus mt-1 me-1"></i> Add
-                        </a>
                       </div>
                     </div>
                   </td>
@@ -164,8 +161,7 @@
 <script>
 import { getPaymentMethods } from '../../Api/addResvertionApi';
 import { updateWallet } from '../../Api/editResvertion';
-import { showSuccessAlert, handleSubmissionError } from '../../Api/MassageValidation/alertUtilities';
-import Swal from 'sweetalert2';
+import { showSuccessAlert, handleSubmissionError,showConfirmationAlert } from '../../Api/MassageValidation/alertUtilities';
 import PaymentContent from '../../components/SiderbarContentEdit/PaymentContent.vue';
 
 export default {
@@ -217,41 +213,31 @@ export default {
   },
   methods: {
     async deletewallet() {
-  // Show confirmation dialog using SweetAlert
-  const result = await Swal.fire({
-    title: 'Are you sure?',
-    text: "You won't be able to revert this!",
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Yes, delete it!',
-    cancelButtonText: 'Cancel',
-    reverseButtons: true
-  });
-
-  // Proceed only if user confirmed
-  if (result.isConfirmed) {
-    try {
-      await deletewallet(
-        "Payment Details Is Deleted Successfully!",
-        this.$router,
-        'index'
+      
+      // Show confirmation dialog using SweetAlert
+      const result = await showConfirmationAlert(
+        'Are you sure?',
+        "You won't be able to restore it again", 
       );
+      
+      
+      // Proceed only if user confirmed
+      if (result.isConfirmed) {
+      try {
+        const response = await updateWallet(walletData);
 
-      // Optional: Show success alert
-      await Swal.fire(
-        'Deleted!',
-        'Your payment details have been deleted.',
-        'success'
-      );
+        await showSuccessAlert(
+          "Payment Details Is Deleted Successfully!",
+          this.$router,
+          'index'
+        );
 
-    } catch (error) {
-      handleSubmissionError(
-        error,
-        "Failed to delete wallet" // Updated error message
-      );
-    }
+      } catch (error) {
+        handleSubmissionError(
+          error,
+          "Failed to delete wallet" // Updated error message
+        );
+      }
   }
 },
     // Add this new method to mask card numbers

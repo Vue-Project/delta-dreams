@@ -272,10 +272,10 @@
 
 <script>
 import flatpickrMixin from "../Mixin/flatpickrMixin";
-import { postAddPayment, postCancelReservation, postStatusChange } from "../../Api/editResvertion";
-import Swal from 'sweetalert2';
-import { showConfirmationDialog, showSuccessAlert, handleSubmissionError } from "../../Api/MassageValidation/alertUtilities";
+import { postCancelReservation, postStatusChange } from "../../Api/editResvertion";
+import { showSuccessAlert, handleSubmissionError,showConfirmationAlert } from "../../Api/MassageValidation/alertUtilities";
 import { getGuestsInfo, getPaymentMethods } from "../../Api/addResvertionApi";
+
 export default {
   data ()
   {
@@ -310,57 +310,58 @@ export default {
     const oldStatus = this.selectedEvent.status;
     const newStatus = event.target.value;
 
-    const result = await showConfirmationDialog('Are you sure you want to change the status of this reservation?');
+    const result = await showConfirmationAlert('Are you sure you want to change the status of this reservation?');
 
     if (result.isConfirmed) {
-      // this.selectedEvent.status = newStatus;
-      // this.updateStatusName(newStatus);
-      const changeStatus = {
+      const changeStatus={
         status: newStatus
       }
-
       // Send the new status to the server
       try {
         const response = await postStatusChange(this.selectedEvent.id, changeStatus);
-        showSuccessAlert("Status updated successfully!", location.reload());
+        this.selectedEvent.status = newStatus;
+        showSuccessAlert("Status updated successfully!");
       } catch (error) {
         handleSubmissionError(error, "Failed to update status");
         // Revert to previous value if the server update fails
-        this.selectedEvent.status = oldStatus;
+        event.target.value = oldStatus;
       }
     } else {
       event.target.value = oldStatus;
     }
   },
 
-  updateStatusName(statusValue) {
-    const status = this.statusOptions.find(s => s.value === statusValue);
-    if (status) this.selectedEvent.status_name = status.name;
-  },
 
-    async cancelReservation ()
-    {
+    async cancelReservation() {
+    // Show SweetAlert2 confirmation dialog
+    const result = await showConfirmationAlert(
+      'Are you sure?',
+      "You won't be able to restore it again",
+      'Yes, cancel it!',
+
+    );
+
+
+    // Proceed only if the user confirms
+    if (result.isConfirmed) {
       try {
-        // Show confirmation dialog using SweetAlert
-        const result = await showConfirmationDialog('Are you sure you want to cancel this reservation?');
-        // Proceed only if user confirmed
-        if (result.isConfirmed) {
+        const response = await postCancelReservation(this.selectedEvent.id);
 
-          // Make API call to cancel reservation
-          const response = await postCancelReservation(this.selectedEvent.id);
-          // Show success alert
-          await showSuccessAlert(
-            "Reservation cancelled successfully!", // Custom message
-            location.reload()
-          );
-        }
+        // Show success alert
+        await showSuccessAlert(
+          "Reservation cancelled successfully!", // Custom message
+          this.$router,
+          'index' // Route name
+        );
+
       } catch (error) {
         handleSubmissionError(
           error,
           "Failed to cancel reservation" // Updated error message
         );
       }
-    },
+    }
+  },
     navigateToEditReservation (id)
     {
       this.$emit("navigate-to-edit-reservation", id);
