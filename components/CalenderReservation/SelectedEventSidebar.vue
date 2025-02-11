@@ -1,8 +1,21 @@
 <template>
-  <div class="offcanvas offcanvas-end"  tabindex="-1" id="offcanvasEnd" aria-labelledby="offcanvasEndLabel">
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEnd" aria-labelledby="offcanvasEndLabel">
     <!-- Offcanvas Header -->
+    <!-- <div class="row mb-4">
+              <div class="col-9">
+                <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD to YYYY-MM-DD" id="flatpickr-range" ref="rangePicker1" v-model="dateRange" aria-label="input Text to Date" />
+
+              </div>
+              <div class="col-3">
+                <button type="button" class="btn btn-primary waves-effect waves-light btn-block" @click="submitForm">
+                  Confirm
+                </button>
+              </div>
+            </div> -->
+
     <div class="offcanvas-header">
       <h5 id="offcanvasEndLabel" class="offcanvas-title w-100">
+
         <template v-if="selectedEvent">
           <h6>
             <i class="fa-solid fa-user pr-2 text-primary fs-3 mb-2"></i>
@@ -31,19 +44,6 @@
             </div>
           </div>
           <div class="row mt-4">
-            <div class="row mb-4">
-              <div class="col-9  ">
-                <!-- <label for="flatpickr-date" class="form-label">Dates Picker</label> -->
-              <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD" id="flatpickr-range-06" ref="rangePicker6" aria-label="input Text to Date" />
-              <i class="fa-solid fa-calendar-days icon-date"></i>
-            </div>
-              <div class="col-3 ">
-                <button type="button" class="btn btn-primary waves-effect waves-light btn-block">
-                 confirm
-              </button>
-            </div>
-          </div>
-
             <div class="col-4 pt-1">
               <label class="form-label" for="status-reservation">Status</label>
             </div>
@@ -57,12 +57,14 @@
           </div>
         </template>
       </h5>
+
       <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
 
     <!-- Offcanvas Body -->
     <hr />
     <div class="offcanvas-body mx-0 flex-grow-0 pt-0">
+
       <template v-if="selectedEvent">
         <div class="row">
           <div class="col-md-6">
@@ -79,6 +81,7 @@
                   </div>
                 </div>
               </li>
+
               <li class="mb-3 pb-1">
                 <div class="d-flex align-items-start">
                   <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
@@ -142,141 +145,157 @@
               </li>
               <li class="mb-3 pb-1">
                 <div class="d-flex align-items-start">
-              <li>
-                <div class="d-flex align-items-start">
                   <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
-                    <div class="me-2">
-                      <h6 class="mb-0">
-                        <i class="fa-solid fa-person"></i>
-                        -
-                        <i class="fa-solid fa-child"></i>
-                      </h6>
-                      <small class="text-muted m-1">{{ selectedEvent.adults }}-
-                        {{ selectedEvent.children }}</small>
+                    <div class="d-flex align-items-start">
+                      <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                        <div class="me-2">
+                          <h6 class="mb-0">
+                            <i class="fa-solid fa-person"></i>
+                            -
+                            <i class="fa-solid fa-child"></i>
+                          </h6>
+                          <small class="text-muted m-1">{{ selectedEvent.adults }}-
+                            {{ selectedEvent.children }}</small>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </li>
+              <li class="mb-3 pb-1">
+                <div class="d-flex align-items-start">
+                  <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                    <div class="me-2">
+                      <h6 class="mb-0">Avg. Daily Rate</h6>
+                      <small class="text-muted">{{ selectedEvent.unit_price || '0' }}
+                      </small>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </ul>
           </div>
-          </li>
-          <li class="mb-3 pb-1">
-            <div class="d-flex align-items-start">
-              <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
-                <div class="me-2">
-                  <h6 class="mb-0">Avg. Daily Rate</h6>
-                  <small class="text-muted">{{ selectedEvent.unit_price || '0' }}
-                  </small>
+        </div>
+        <div class="new-div mt-3 position-absolute right-0 w-100 px-4 bottom-1">
+          <dl class=" row mb-0">
+            <dt class="col-6 fw-normal text-heading">Total</dt>
+            <dd class="col-6 text-end">{{ selectedEvent.total || "0 " }} EGP</dd>
+
+            <dt class="col-sm-6 fw-normal">Paid</dt>
+            <dd class="col-sm-6 text-end">{{ selectedEvent.paid || "0 " }} EGP</dd>
+
+            <dt class="col-6 fw-normal text-danger">Balance</dt>
+            <dd class="col-6 text-end text-danger">
+              {{ selectedEvent.balance || "0.0 " }} EGP
+            </dd>
+          </dl>
+        </div>
+        <div class="text-center">
+          <button @click="cancelReservation" type="button" title="Cancel Reservation" class="btn btn-danger waves-effect waves-light mt-3 w-100 px-0">
+            Cancel Reservation</button>
+          <!-- <div class="row mb-4">
+        <div class="col-9">
+          <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD to YYYY-MM-DD" id="flatpickr-range" ref="rangePicker1" v-model="dateRange" aria-label="input Text to Date" />
+
+        </div>
+        <div class="col-3">
+          <button type="button" class="btn btn-primary waves-effect waves-light btn-block" @click="submitForm">
+            Confirm
+          </button>
+        </div>
+      </div> -->
+        </div>
+
+      </template>
+      <!-- Modal Payment -->
+      <div class="modal fade" id="paymentModal" data-bs-backdrop="static" tabindex="-1" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog">
+          <form class="modal-content" @submit.prevent="submitPayment">
+            <div class="modal-header">
+              <h5 class="modal-title" id="paymentModalTitle">Add Payment</h5>
+              <button @click="cancelPayment" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col mb-3">
+                  <label for="flatpickr-date-01" class="form-label">Date</label>
+                  <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" id="flatpickr-date-01" ref="datePicker1" aria-label="input Text to Check-in Date" v-model="formAddPayment.date" />
+                  <i class="fa-solid fa-calendar-days icon-date"></i>
+                </div>
+              </div>
+              <div class="row g-2">
+                <div class="col-6 mb-2">
+                  <div class="input-group">
+                    <select class="form-select" id="payment_type" v-model="formAddPayment.type">
+                      <option disabled value="">Select Type</option>
+                      <option v-for="(label, value) in paymentTypes" :key="value" :value="value">
+                        {{ label }}
+                      </option>
+                    </select>
+                    <label class="input-group-text" for="payment_type">Type</label>
+                  </div>
+                </div>
+                <div class="col-6 mb-2">
+                  <div class="input-group">
+                    <select class="form-select" id="payment_method" v-model="formAddPayment.method">
+                      <option disabled value="">Select Method</option>
+                      <option v-for="paymentMethod in paymentMethods" :key="paymentMethod.id" :value="paymentMethod.id">
+                        {{ paymentMethod.content }}
+                      </option>
+                    </select>
+                    <label class="input-group-text" for="payment_method">Method</label>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="input-group">
+                    <span class="input-group-text">EGP</span>
+                    <input type="text" class="form-control" placeholder="Amount" aria-label="Amount (to the nearest dollar)" v-model="formAddPayment.amount">
+                  </div>
+                </div>
+                <div class="col-6 mt-2">
+                  <div class="input-group">
+                    <select class="form-select" id="payment_accounts" v-model="formAddPayment.account">
+                      <option disabled value="">Select Accounts</option>
+                      <option v-for="account in accounts" :key="account.id" :value="account.id">
+                        {{ account.name }}
+                      </option>
+                    </select>
+                    <label class="input-group-text" for="payment_accounts">Accounts</label>
+                  </div>
+                </div>
+                <div class="col-12 mb-2 mt-3">
+                  <div class="input-group">
+                    <span class="input-group-text">Comment</span>
+                    <textarea class="form-control" aria-label="With textarea" placeholder="Comment" v-model="formAddPayment.comment"></textarea>
+                  </div>
                 </div>
               </div>
             </div>
-          </li>
-          </ul>
-        </div>
-    </div>
-    <div class="new-div mt-3 position-absolute right-0 w-100 px-4 bottom-1">
-      <dl class=" row mb-0">
-        <dt class="col-6 fw-normal text-heading">Total</dt>
-        <dd class="col-6 text-end">{{ selectedEvent.total || "0 " }} EGP</dd>
-
-        <dt class="col-sm-6 fw-normal">Paid</dt>
-        <dd class="col-sm-6 text-end">{{ selectedEvent.paid || "0 " }} EGP</dd>
-
-        <dt class="col-6 fw-normal text-danger">Balance</dt>
-        <dd class="col-6 text-end text-danger">
-          {{ selectedEvent.balance || "0.0 " }} EGP
-        </dd>
-      </dl>
-    </div>
-    <div class="text-center">
-      <button @click="cancelReservation" type="button" title="Cancel Reservation" class="btn btn-danger waves-effect waves-light mt-3 w-100 px-0">
-        Cancel Reservation</button>
-    </div>
-
-</template>
-<!-- Modal Payment -->
-<div class="modal fade" id="paymentModal" data-bs-backdrop="static" tabindex="-1" style="display: none;" aria-hidden="true">
-  <div class="modal-dialog">
-    <form class="modal-content" @submit.prevent="submitPayment">
-      <div class="modal-header">
-        <h5 class="modal-title" id="paymentModalTitle">Add Payment</h5>
-        <button @click="cancelPayment" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col mb-3">
-            <label for="flatpickr-date-01" class="form-label">Date</label>
-            <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" id="flatpickr-date-01" ref="datePicker1" aria-label="input Text to Check-in Date" v-model="formAddPayment.date" />
-            <i class="fa-solid fa-calendar-days icon-date"></i>
-          </div>
-        </div>
-        <div class="row g-2">
-          <div class="col-6 mb-2">
-            <div class="input-group">
-              <select class="form-select" id="payment_type" v-model="formAddPayment.type">
-                <option disabled value="">Select Type</option>
-                <option v-for="(label, value) in paymentTypes" :key="value" :value="value">
-                  {{ label }}
-                </option>
-              </select>
-              <label class="input-group-text" for="payment_type">Type</label>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-label-secondary waves-effect" data-bs-dismiss="modal" @click="cancelPayment">
+                Close
+              </button>
+              <button type="submit" class="btn btn-primary waves-effect waves-light">Save</button>
             </div>
-          </div>
-          <div class="col-6 mb-2">
-            <div class="input-group">
-              <select class="form-select" id="payment_method" v-model="formAddPayment.method">
-                <option disabled value="">Select Method</option>
-                <option v-for="paymentMethod in paymentMethods" :key="paymentMethod.id" :value="paymentMethod.id">
-                  {{ paymentMethod.content }}
-                </option>
-              </select>
-              <label class="input-group-text" for="payment_method">Method</label>
-            </div>
-          </div>
-          <div class="col-6">
-            <div class="input-group">
-              <span class="input-group-text">EGP</span>
-              <input type="text" class="form-control" placeholder="Amount" aria-label="Amount (to the nearest dollar)" v-model="formAddPayment.amount">
-            </div>
-          </div>
-          <div class="col-6 mt-2">
-            <div class="input-group">
-              <select class="form-select" id="payment_accounts" v-model="formAddPayment.account">
-                <option disabled value="">Select Accounts</option>
-                <option v-for="account in accounts" :key="account.id" :value="account.id">
-                  {{ account.name }}
-                </option>
-                </select>
-              <label class="input-group-text" for="payment_accounts">Accounts</label>
-            </div>
-          </div>
-          <div class="col-12 mb-2 mt-3">
-            <div class="input-group">
-              <span class="input-group-text">Comment</span>
-              <textarea class="form-control" aria-label="With textarea" placeholder="Comment" v-model="formAddPayment.comment"></textarea>
-            </div>
-          </div>
+          </form>
         </div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-label-secondary waves-effect" data-bs-dismiss="modal" @click="cancelPayment">
-          Close
-        </button>
-        <button type="submit" class="btn btn-primary waves-effect waves-light">Save</button>
-      </div>
-    </form>
+    </div>
+
   </div>
-</div>
-</div>
-</div>
+
 </template>
 
 <script>
 import flatpickrMixin from "../Mixin/flatpickrMixin";
-import { postCancelReservation, postStatusChange } from "../../Api/editResvertion";
-import { showSuccessAlert, handleSubmissionError,showConfirmationAlert } from "../../Api/MassageValidation/alertUtilities";
+import { postAddPayment, postCancelReservation, postStatusChange } from "../../Api/editResvertion";
+import { showSuccessAlert, handleSubmissionError, showConfirmationAlert } from "../../Api/MassageValidation/alertUtilities";
 import { getGuestsInfo, getPaymentMethods } from "../../Api/addResvertionApi";
+import { postUpdateReservation } from '../../Api/CalenderApi';
 
 export default {
+  mixins: [flatpickrMixin],
+
   data ()
   {
     return {
@@ -295,7 +314,8 @@ export default {
         { value: 'pending', name: 'قيد الانتظار' },
         { value: 'approved', name: 'مقبول' },
         { value: 'cancelled', name: 'مرفوض' }
-      ]
+      ],
+
     }
   },
   props: {
@@ -304,64 +324,66 @@ export default {
       default: null,
     },
   },
-  mixins: [flatpickrMixin],
   methods: {
-    async handleStatusChange(event) {
-    const oldStatus = this.selectedEvent.status;
-    const newStatus = event.target.value;
+    async handleStatusChange (event)
+    {
+      const oldStatus = this.selectedEvent.status;
+      const newStatus = event.target.value;
 
-    const result = await showConfirmationAlert('Are you sure you want to change the status of this reservation?');
+      const result = await showConfirmationAlert('Are you sure you want to change the status of this reservation?');
 
-    if (result.isConfirmed) {
-      const changeStatus={
-        status: newStatus
-      }
-      // Send the new status to the server
-      try {
-        const response = await postStatusChange(this.selectedEvent.id, changeStatus);
-        this.selectedEvent.status = newStatus;
-        showSuccessAlert("Status updated successfully!");
-      } catch (error) {
-        handleSubmissionError(error, "Failed to update status");
-        // Revert to previous value if the server update fails
+      if (result.isConfirmed) {
+        const changeStatus = {
+          status: newStatus
+        }
+        // Send the new status to the server
+        try {
+          const response = await postStatusChange(this.selectedEvent.id, changeStatus);
+          this.selectedEvent.status = newStatus;
+          showSuccessAlert("Status updated successfully!");
+        } catch (error) {
+          handleSubmissionError(error, "Failed to update status");
+          // Revert to previous value if the server update fails
+          event.target.value = oldStatus;
+        }
+      } else {
         event.target.value = oldStatus;
       }
-    } else {
-      event.target.value = oldStatus;
-    }
-  },
+    },
 
 
-    async cancelReservation() {
-    // Show SweetAlert2 confirmation dialog
-    const result = await showConfirmationAlert(
-      'Are you sure?',
-      "You won't be able to restore it again",
-      'Yes, cancel it!',
+    async cancelReservation ()
+    {
+      // Show SweetAlert2 confirmation dialog
+      const result = await showConfirmationAlert(
+        'Are you sure?',
+        "cancel this reservation",
+        'confirm',
 
-    );
+      );
 
 
-    // Proceed only if the user confirms
-    if (result.isConfirmed) {
-      try {
-        const response = await postCancelReservation(this.selectedEvent.id);
+      // Proceed only if the user confirms
+      if (result.isConfirmed) {
+        try {
+          const response = await postCancelReservation(this.selectedEvent.id);
 
-        // Show success alert
-        await showSuccessAlert(
-          "Reservation cancelled successfully!", // Custom message
-          this.$router,
-          'index' // Route name
-        );
+          // Show success alert
+          await showSuccessAlert(
+            "Reservation cancelled successfully!", // Custom message
 
-      } catch (error) {
-        handleSubmissionError(
-          error,
-          "Failed to cancel reservation" // Updated error message
-        );
+          );
+          location.reload()
+
+
+        } catch (error) {
+          handleSubmissionError(
+            error,
+            "Failed to cancel reservation" // Updated error message
+          );
+        }
       }
-    }
-  },
+    },
     navigateToEditReservation (id)
     {
       this.$emit("navigate-to-edit-reservation", id);
@@ -445,6 +467,46 @@ export default {
         reservation_id: null
       }
     },
+    parseDateRange ()
+    {
+      if (this.dateRange && this.dateRange.includes(' to ')) {
+        const dates = this.dateRange.split(' to ');
+        if (dates.length === 2) {
+          this.checkin_date = dates[0];
+          this.checkout_date = dates[1];
+        }
+      } else {
+        console.error("Date range is not properly defined or formatted.");
+      }
+    },
+    async changeDateReservation ()
+    {
+      try {
+        // Collect data from form inputs
+        const updateDataUnit = {
+          checkin_date: this.checkin_date,
+          checkout_date: this.checkout_date,
+          unit_id: this.selectedEvent.unit_id,
+          reservation_id: this.selectedEvent.id,
+        };
+
+
+        // Send data to the server
+        const response = await postUpdateReservation(updateDataUnit.reservation_id, updateDataUnit);
+        // Handle success
+        await showSuccessAlert(
+          "Reservation updated successfully!", // Custom message
+
+        );
+        location.reload()
+      } catch (error) {
+        // Handle error
+        handleSubmissionError(
+          error,
+          "Failed to update reservation." // Custom default error
+        );
+      }
+    },
   },
   async mounted ()
   {
@@ -455,8 +517,8 @@ export default {
 
 
       ] = await Promise.all([
-      getPaymentMethods(),
-      getGuestsInfo(),
+        getPaymentMethods(),
+        getGuestsInfo(),
       ]);
 
       this.paymentMethods = paymentMethodsResponse.data.data;
@@ -468,6 +530,7 @@ export default {
 
 
   },
+
 };
 </script>
 
