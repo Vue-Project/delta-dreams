@@ -1,6 +1,7 @@
 <template>
   <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEnd" aria-labelledby="offcanvasEndLabel">
     <!-- Offcanvas Header -->
+    <!-- <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD to YYYY-MM-DD" id="flatpickr-range" ref="rangePicker1" v-model="dateRange" @change='parseDateRange'  aria-label="input Text to Date" /> -->
 
 
     <div class="offcanvas-header">
@@ -34,7 +35,7 @@
             </div>
           </div>
 
-          <div class="row mt-4 mb-4">
+          <div class="row mt-4 ">
             <div class="col-4 pt-1">
               <label class="form-label fs-4" for="status-reservation">Status</label>
             </div>
@@ -46,7 +47,7 @@
               </select>
             </div>
           </div>
-          <div class="row ">
+          <!-- <div class="row ">
               <div class="col-9">
                 <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD to YYYY-MM-DD" id="flatpickr-range" ref="rangePicker1" v-model="dateRange" @change='parseDateRange'  aria-label="input Text to Date" />
 
@@ -56,7 +57,7 @@
                   Confirm
                 </button>
               </div>
-            </div>
+            </div> -->
 
         </template>
       </h5>
@@ -67,7 +68,17 @@
     <!-- Offcanvas Body -->
     <hr />
     <div class="offcanvas-body mx-0 flex-grow-0 pt-0">
+      <div class="row mb-4">
+        <div class="col-9">
+          <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD to YYYY-MM-DD" id="flatpickr-range" ref="rangePicker1" v-model="dateRange" @change='parseDateRange' aria-label="input Text to Date" />
 
+        </div>
+        <div class="col-3">
+          <button type="button" class="btn btn-primary waves-effect waves-light btn-block" @click="changeDateReservation">
+            Confirm
+          </button>
+        </div>
+      </div>
       <template v-if="selectedEvent">
         <div class="row">
           <div class="col-md-6">
@@ -79,7 +90,7 @@
                       <h6 class="mb-0">Reservation Number</h6>
                       <small class="text-muted">{{
                         selectedEvent.id || "1025191591"
-                        }}</small>
+                      }}</small>
                     </div>
                   </div>
                 </div>
@@ -295,6 +306,9 @@ export default {
       paymentMethods: [],
       paymentTypes: [],
       accounts: [],
+      dateRange: '',
+      checkin_date: '',
+      checkout_date: '',
       formAddPayment: {
         date: new Date().toISOString().split('T')[0],
         method: '',
@@ -317,6 +331,7 @@ export default {
       default: null,
     },
   },
+
   methods: {
     async handleStatusChange (event)
     {
@@ -461,44 +476,41 @@ export default {
         reservation_id: null
       }
     },
-    parseDateRange ()
-    {
-      if (this.dateRange && this.dateRange.includes(' to ')) {
-        const dates = this.dateRange.split(' to ');
+    parseDateRange() {
+
+      try {
+        const dates = this.dateRange.split(' to ').map(date => date.trim());
         if (dates.length === 2) {
           this.checkin_date = dates[0];
           this.checkout_date = dates[1];
+          console.log('Updated dates:', {
+            checkin: this.checkin_date,
+            checkout: this.checkout_date
+          });
         }
-      } else {
-        console.error("Date range is not properly defined or formatted.");
+      } catch (error) {
+        console.error("Error parsing date range:", error);
       }
     },
-    async changeDateReservation ()
-    {
+    async changeDateReservation() {
+
+
       try {
-        // Collect data from form inputs
+
         const updateDataUnit = {
           checkin_date: this.checkin_date,
           checkout_date: this.checkout_date,
           unit_id: this.selectedEvent.unit_id,
           reservation_id: this.selectedEvent.id,
         };
-        // console.log(updateDataUnit);
 
 
-        // Send data to the server
         const response = await postUpdateReservation(updateDataUnit.reservation_id, updateDataUnit);
-        // Handle success
-        await showSuccessAlert(
-          "Reservation updated successfully!", // Custom message
-
-        );
-        location.reload()
+        await showSuccessAlert("Reservation updated successfully!");
+        location.reload();
       } catch (error) {
-        // Handle error
         handleSubmissionError(
           error,
-          "Failed to update reservation." // Custom default error
         );
       }
     },
@@ -524,6 +536,38 @@ export default {
     }
 
 
+  },
+  watch: {
+    selectedEvent: {
+      immediate: true,
+      handler(newEvent) {
+        if (newEvent) {
+          // Format dates to YYYY-MM-DD while preserving local timezone
+          const formatDate = (date) => {
+            const d = new Date(date);
+            const year = d.getFullYear();
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+          };
+
+          const checkinDate = formatDate(newEvent.checkin_date);
+          const checkoutDate = formatDate(newEvent.checkout_date);
+
+          this.checkin_date = checkinDate;
+          this.checkout_date = checkoutDate;
+          this.dateRange = `${checkinDate} to ${checkoutDate}`;
+
+          // Update flatpickr instance with new dates
+          if (this.$refs.rangePicker1?._flatpickr) {
+            this.$refs.rangePicker1._flatpickr.setDate(
+              [new Date(checkinDate), new Date(checkoutDate)],
+              true
+            );
+          }
+        }
+      }
+    }
   },
   mixins: [flatpickrMixin],
 

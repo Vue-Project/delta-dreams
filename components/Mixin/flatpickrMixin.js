@@ -3,10 +3,7 @@ import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 
 export default {
-  mounted ()
-  {
-    this.initFlatpickers();
-  },
+
   methods: {
     initFlatpickers ()
     {
@@ -69,13 +66,17 @@ export default {
           flatpickr(picker, {
             mode: "range", // Enable range selection
             dateFormat: "Y-m-d", // Set the desired date format
-            onChange: (selectedDates, dateStr) =>
-            {
-              console.log("Range Selected:", dateStr); // Optional: Handle date change
-            },
+            // onChange: (selectedDates, dateStr) =>
+            // {
+            //   console.log("Range Selected:", dateStr); // Optional: Handle date change
+            // },
           });
         });
       });
     },
+  },
+  mounted ()
+  {
+    this.initFlatpickers();
   },
 };
