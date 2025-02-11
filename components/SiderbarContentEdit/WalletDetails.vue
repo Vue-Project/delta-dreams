@@ -161,9 +161,7 @@
 <script>
 import { getPaymentMethods } from '../../Api/addResvertionApi';
 import { updateWallet } from '../../Api/editResvertion';
-import { showSuccessAlert, handleSubmissionError } from '../../Api/MassageValidation/alertUtilities';
-import { showConfirmationAlert } from '../../Api/MassageValidation/alertUtilities';
-import Swal from 'sweetalert2';
+import { showSuccessAlert, handleSubmissionError,showConfirmationAlert } from '../../Api/MassageValidation/alertUtilities';
 import PaymentContent from '../../components/SiderbarContentEdit/PaymentContent.vue';
 
 export default {
@@ -215,35 +213,31 @@ export default {
   },
   methods: {
     async deletewallet() {
-  // Show confirmation dialog using SweetAlert
-  const result = await showConfirmationAlert(
-    'Are you sure?',
-    "You won't be able to restore it again", 
-  );
-
-
-  // Proceed only if user confirmed
-  if (result.isConfirmed) {
-    try {
-      await deletewallet(
-        "Payment Details Is Deleted Successfully!",
-        this.$router,
-        'index'
+      
+      // Show confirmation dialog using SweetAlert
+      const result = await showConfirmationAlert(
+        'Are you sure?',
+        "You won't be able to restore it again", 
       );
+      
+      
+      // Proceed only if user confirmed
+      if (result.isConfirmed) {
+      try {
+        const response = await updateWallet(walletData);
 
-      // Optional: Show success alert
-      await Swal.fire(
-        'Deleted!',
-        'Your payment details have been deleted.',
-        'success'
-      );
+        await showSuccessAlert(
+          "Payment Details Is Deleted Successfully!",
+          this.$router,
+          'index'
+        );
 
-    } catch (error) {
-      handleSubmissionError(
-        error,
-        "Failed to delete wallet" // Updated error message
-      );
-    }
+      } catch (error) {
+        handleSubmissionError(
+          error,
+          "Failed to delete wallet" // Updated error message
+        );
+      }
   }
 },
     // Add this new method to mask card numbers
