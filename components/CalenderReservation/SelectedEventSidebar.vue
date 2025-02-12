@@ -483,10 +483,6 @@ export default {
         if (dates.length === 2) {
           this.checkin_date = dates[0];
           this.checkout_date = dates[1];
-          console.log('Updated dates:', {
-            checkin: this.checkin_date,
-            checkout: this.checkout_date
-          });
         }
       } catch (error) {
         console.error("Error parsing date range:", error);
