@@ -156,6 +156,9 @@
               <div v-if="currentContent === 'addpayment'">
                 <AddPayment />
               </div>
+              <div v-if="currentContent === 'addpayment'">
+                <AddPayment />
+              </div>
               <div v-if="currentContent === 'addcharges'">
                 <AddCharges />
               </div>
@@ -638,7 +641,14 @@
         </div>
         <!--  End Audit Trail tab  -->
         <div class="tab-pane fade" id="form-tabs-Wallet" role="tabpanel">
-          <WalletDetails :reservationData="reservationsDataById[0]" :reservationId="selectedReservationId" />
+          <button class="btn btn-outline-secondary waves-effect mb-2" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('addpayment', 'Add Payment')">
+                  Add payment
+          </button>
+          <WalletDetails
+            :reservation-id="selectedReservationId"
+            :reservation-data="reservationsDataById[0]"
+            @switch-content="currentContent = $event"
+          />
         </div>
       </template>
     </HeaderReservation>
@@ -853,7 +863,7 @@ export default {
     'Are you sure?',
     "You won't be able to restore it again",
     'Yes, cancel it!',
- 
+
   );
 
 
