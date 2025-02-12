@@ -26,7 +26,7 @@ import apiClient from './apiClient';
         return response.data;
 
       } catch (error) {
-        console.error(`Error cancelling reservation with ID "${id}":`, error);
+        console.error(`Error Updating Wallet with ID "${id}":`, error);
         throw error;
       }
     };
@@ -37,7 +37,7 @@ import apiClient from './apiClient';
 
 
       } catch (error) {
-        console.error(`Error cancelling reservation with ID "${changeStatus}":`, error);
+        console.error(`Error status changed with ID "${changeStatus}":`, error);
         throw error;
       }
     };
