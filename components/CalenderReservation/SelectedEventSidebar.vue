@@ -302,7 +302,7 @@ export default {
     const oldStatus = this.selectedEvent.status;
     const newStatus = event.target.value;
 
-    const result = await showConfirmationAlert('Are you sure you want to change the status of this reservation?');
+    const result = await showConfirmationAlert('Are you sure you?', 'Do you want to change the status of this reservation?');
 
     if (result.isConfirmed) {
       const changeStatus={
@@ -328,7 +328,7 @@ export default {
     // Show SweetAlert2 confirmation dialog
     const result = await showConfirmationAlert(
       'Are you sure?',
-      "You won't be able to restore it again",
+      "This Reservation will be cancelled",
       'Yes, cancel it!',
   
     );

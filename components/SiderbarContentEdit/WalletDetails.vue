@@ -217,7 +217,8 @@ export default {
       // Show confirmation dialog using SweetAlert
       const result = await showConfirmationAlert(
         'Are you sure?',
-        "You won't be able to restore it again", 
+        "You will delete this payment details",
+        'Yes, delete it!',
       );
       
       
@@ -316,7 +317,7 @@ export default {
       } catch (error) {
         handleSubmissionError(
           error,
-          "There was an issue with your reservation." // Custom default error
+          "There was an issue with your update." // Custom default error
         );
       }
 

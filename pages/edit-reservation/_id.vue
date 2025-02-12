@@ -851,7 +851,7 @@ export default {
   // Show SweetAlert2 confirmation dialog
   const result = await showConfirmationAlert(
     'Are you sure?',
-    "You won't be able to restore it again",
+    "This Reservation will be cancelled",
     'Yes, cancel it!',
  
   );
