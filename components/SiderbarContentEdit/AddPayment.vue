@@ -1,98 +1,179 @@
 <template>
-  <div>
-    <div class="row g-3">
-      <div class="col-12">
-        <label class="form-label w-100" for="addPaymentDate">Date</label>
-        <div class="input-group input-group-merge">
-          <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD" id="flatpickr-date-01" ref="datePicker8" aria-label="input Text to Date" />
 
-        </div>
-      </div>
-      <div class="col-md-12">
-        <label for="addPaymentFolio" class="col-form-label">Folio</label>
-        <div class="input-group">
-          <select class="form-select" id="addPaymentFolio">
-            <option value="option1" disabled selected>السعر شامل الافطا</option>
-            <option value="option2">لسعر غير شام </option>
-          </select>
+  <form class="payment-form" @submit.prevent="addPaymentReservation">
+              <div class="row">
+                <div class="col mb-3">
+                  <label for="flatpickr-date-01" class="form-label">Date</label>
+                  <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" id="flatpickr-date-01" ref="datePicker1" aria-label="input Text to Check-in Date" v-model="formAddPayment.date" />
+                  <i class="fa-solid fa-calendar-days icon-date"></i>
+                </div>
+              </div>
+              <div class="row g-2">
+                <div class="col-12 mb-2">
+                  <div class="input-group">
+                    <label class="input-group-text" for="payment_type">Type</label>
 
-        </div>
+                    <select class="form-select" id="payment_type" v-model="formAddPayment.type">
+                      <option disabled value="">Select Type</option>
+                      <option v-for="(label, value) in paymentTypes" :key="value" :value="value">
+                        {{ label }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-12 mb-2">
+                  <div class="input-group">
+                    <label class="input-group-text" for="payment_method">Method</label>
 
-      </div>
-      <!-- <div class="col-12 ">
-        <label for="addPaymentFolio" class="col-form-label">Pax (A/C) </label>
-        <div class="input-group">
-          <select class="form-select" id="updateDetailsPax">
-            <option value="option1" disabled selected> 1</option>
-            <option value="option2"> 2 </option>
-            <option value="option3"> 3 </option>
-            <option value="option4">4</option>
-            <option value="option5">5</option>
-            <option value="option6">6</option>
-            <option value="option7">7</option>
-            <option value="option8">8</option>
-            <option value="option9">9</option>
-            <option value="option10">10</option>
-          </select>
+                    <select class="form-select" id="payment_method" v-model="formAddPayment.method">
+                      <option disabled value="">Select Method</option>
+                      <option v-for="paymentMethod in paymentMethods" :key="paymentMethod.id" :value="paymentMethod.id">
+                        {{ paymentMethod.content }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="input-group">
+                    <span class="input-group-text">EGP</span>
+                    <input type="text" class="form-control" placeholder="Amount" aria-label="Amount (to the nearest dollar)" v-model="formAddPayment.amount">
+                  </div>
+                </div>
+                <div class="col-12 mt-2">
+                  <div class="input-group">
+                    <label class="input-group-text" for="payment_accounts">Accounts</label>
 
-        </div>
+                    <select class="form-select" id="payment_accounts" v-model="formAddPayment.account">
+                      <option disabled value="">Select Accounts</option>
+                      <option v-for="account in accounts" :key="account.id" :value="account.id">
+                        {{ account.name }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-12 mb-2 mt-3">
+                  <div class="input-group">
+                    <span class="input-group-text">Comment</span>
+                    <textarea class="form-control" aria-label="With textarea" placeholder="Comment" v-model="formAddPayment.comment"></textarea>
+                  </div>
+                </div>
+              </div>
+              <div class="gap-2 d-flex" style="position: absolute; bottom: 15px; right: 20px">
+                <button class="btn btn-secondary" data-bs-dismiss="offcanvas">
+                  Close
+                </button>
+                <button type="submit" class="btn btn-primary ">Save</button>
+              </div>
+          </form>
 
-      </div>
-
-      <div class="col-12">
-        <div class="form-check custom mb-2">
-          <input type="checkbox" class="form-check-input" id="newFolioSGenerateInvoice" />
-          <label class="form-check-label" for="newFolioSGenerateInvoice">Generate Invoice Number On/Post Checkout</label>
-        </div>
-      </div> -->
-      <div class="col-12">
-
-        <label for="addPaymentRec" class="form-label">Rec/Vou #</label>
-        <input id="addPaymentRec" class="form-control" type="text" placeholder="Rec/Vou #" disabled>
-      </div>
-
-
-
-
-
-      <div class="col-4">
-        <label for="addPaymentAmount" class="col-form-label">Amount</label>
-        <div class="input-group">
-          <select class="form-select" id="addPaymentAmount">
-            <option value="option1" disabled selected>EGP</option>
-            <option value="option2">Virtual Card</option>
-          </select>
-
-        </div>
-      </div>
-      <div class="col-md-8">
-        <div class="input-group input-group-merge mt-40">
-          <input id="addPaymentAmount" name="addPaymentAmount" class="form-control credit-card-mask" type="text" placeholder="10.00000" aria-describedby="addPaymentAmount">
-
-        </div>
-
-      </div>
-
-      <div class="col-12">
-        <div>
-          <label for="addPaymentComment" class="form-label">Comment</label>
-          <textarea class="form-control" id="addPaymentComment" rows="3"></textarea>
-        </div>
-      </div>
-
-    </div>
-
-
-  </div>
-  </div>
 </template>
 
 <script>
+import { getAccounts, getPaymentMethods } from "../../Api/addResvertionApi";
+import { postAddPayment } from "../../Api/editResvertion";
+import { handleSubmissionError, showSuccessAlert } from "../../Api/MassageValidation/alertUtilities";
 import flatpickrMixin from "../Mixin/flatpickrMixin";
 
 export default {
   name: "AddPayment",
   layout: "component",
+  data ()
+  {
+    return {
+      paymentMethods: [],
+      paymentTypes: [],
+      accounts: [],
+      dateRange: '',
+      checkin_date: '',
+      checkout_date: '',
+      formAddPayment: {
+        date: new Date().toISOString().split('T')[0],
+        method: '',
+        type: '',
+        account: '',
+        comment: '',
+        reservation_id: null
+      },
+
+
+    }
+  },
+  props: {
+    reservationId: {
+      type: [String, Number],
+      required: true,
+    },
+
+  },
+  methods: {
+    async addPaymentReservation ()
+    {
+      try {
+        // Ensure all fields are included in the payload
+        const paymentData = {
+          date_at: this.formAddPayment.date,
+          payment_id: this.formAddPayment.method,
+          type: this.formAddPayment.type,
+          assigned_to: this.formAddPayment.account,
+          note: this.formAddPayment.comment,
+          reservation_id: this.reservationId,
+          price: this.formAddPayment.amount, // Add amount field
+        };
+        const response = await postAddPayment(paymentData);
+        showSuccessAlert(
+          "Payment added successfully!", // Custom message
+        );
+        location.reload()
+
+
+
+      } catch (error) {
+        handleSubmissionError(
+          error,
+          "Failed to payment" // Updated error message
+        );
+      }
+
+      // Reset the payment form
+      this.cancelPayment();
+    },
+    cancelPayment ()
+    {
+      this.resetPaymentForm();
+    },
+    resetPaymentForm ()
+    {
+      this.formAddPayment = {
+        date: '',
+        method: '',
+        type: '',
+        comment: '',
+        reservation_id: null
+      }
+    },
+  },
+  async mounted ()
+  {
+    try {
+      const [
+        paymentMethodsResponse,
+        accountsResponse,
+
+
+      ] = await Promise.all([
+        getPaymentMethods(),
+        getAccounts(),
+      ]);
+
+      this.paymentMethods = paymentMethodsResponse.data.data;
+      this.paymentTypes = paymentMethodsResponse.data.payment_type;
+      this.accounts = accountsResponse.data.data
+    } catch (error) {
+      console.error("Error loading data:", error);
+    }
+
+
+  },
 
   mixins: [flatpickrMixin],
 };
