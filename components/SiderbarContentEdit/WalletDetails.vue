@@ -148,7 +148,7 @@ export default {
             wallet_id: id
 
           }
-          console.log(walletStatus);
+          // console.log(walletStatus);
 
           const response = await PutDeleteWallet( walletStatus.wallet_id, walletStatus);
 
