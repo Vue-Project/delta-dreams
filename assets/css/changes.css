@@ -997,3 +997,6 @@ body{
 .offcanvas-backdrop{
   z-index:1;
 }
+.img-fluid{
+  height: 64px;
+}

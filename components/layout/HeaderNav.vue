@@ -3,7 +3,7 @@
     <div class="container-fluid">
       <div class="navbar-brand app-brand demo d-none d-xl-flex py-0 me-4">
         <a href="/" class="app-brand-link gap-2">
-          <span class="app-brand-logo demo"> </span>
+          <span class="app-brand-logo demo"> <img src="../../assets/images/logo.png" alt="logo" class="img-fluid "> </span>
           <span class="app-brand-text demo menu-text fw-bold">Delta Dream</span>
         </a>
 
