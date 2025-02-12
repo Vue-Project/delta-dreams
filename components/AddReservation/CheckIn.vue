@@ -101,7 +101,7 @@
           <!--   ! check inputs and repeater -->
           <div class="row mb-3">
             <div class="row">
-              <div class="col-lg-4">
+              <!-- <div class="col-lg-4">
                 <div class="row">
                   <div class="col-lg-4">Rate Offered:</div>
                   <div class="col-lg-8">
@@ -111,8 +111,8 @@
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="col-lg-8">
+              </div> -->
+              <!-- <div class="col-lg-8">
                 <div class="row">
                   <div class="col-lg-4">
                     <div class="form-check">
@@ -133,7 +133,7 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> -->
               <!--  ! table Header -->
               <!-- change width delete border color  -->
               <div class="card mt-3 border-0">
@@ -185,12 +185,12 @@
 
                         </td>
                         <td>
-                          <input type="number" class="form-control" v-model="formAddReservation.units[0].adults" placeholder="Number of adults" aria-label="Number of adults" min="0" ref="adults" :class="{ 'input-error': validationMessages.adults }" />
+                          <input type="number" class="form-control" v-model="formAddReservation.units[0].adults" placeholder="1" aria-label="1"  min="1" max="10" ref="adults" :class="{ 'input-error': validationMessages.adults }" />
                           <span class="error-message" v-if="validationMessages.children">{{ validationMessages.children }}</span>
 
                         </td>
                         <td>
-                          <input type="number" class="form-control" v-model="formAddReservation.units[0].children" placeholder="Number of children" aria-label="Number of children" min="0" ref="children" :class="{ 'input-error': validationMessages.children }" />
+                          <input type="number" class="form-control" v-model="formAddReservation.units[0].children" placeholder="1" aria-label="1" value="1" min="1" max="10" ref="children" :class="{ 'input-error': validationMessages.children }" />
                           <span class="error-message" v-if="validationMessages.children">{{ validationMessages.children }}</span>
                         </td>
                         <td>
@@ -231,7 +231,14 @@
                   <div class="row">
                     <div class="col-lg-7 col-12 col-md-6 px-0">
                       <label for="flatpickr-date-03" class="form-label">Hold Release Date & Time</label>
-                      <input type="text" placeholder="YYYY-MM-DD" id="flatpickr-date-03" class="form-control flatpickr-input" ref="datePicker3" v-model="formAddReservation.releaseDate" />
+                      <input
+                        type="text"
+                        placeholder="YYYY-MM-DD"
+                        id="flatpickr-date-03"
+                        class="form-control flatpickr-input"
+                        ref="datePicker3"
+                        v-model="formAddReservation.releaseDate"
+                      />
                       <i class="fa-solid fa-calendar-days icon-date"></i>
                     </div>
                     <div class="col-lg-5 col-12 col-md-6 px-0 mt">
@@ -732,7 +739,6 @@ export default {
         insurance : this.paymentData.insurance,
         insurance_by: this.paymentData.insurance_by,
       };
-console.log(bookingData);
 
       // If no errors, send the data to the server
       try {
@@ -1065,8 +1071,19 @@ console.log(bookingData);
         }
       },
       deep: true
+    },
+    'formAddReservation.checkInDate': {
+      handler(newValue) {
+        this.formAddReservation.releaseDate = newValue;
+      },
+      immediate: true
+    },
+    'formAddReservation.checkInTime': {
+      handler(newValue) {
+        this.formAddReservation.releaseTime = newValue;
+      },
+      immediate: true
     }
-
   },
   mixins: [flatpickrMixin],
   props: {

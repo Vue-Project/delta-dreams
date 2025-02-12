@@ -5,7 +5,7 @@
       <h5 class="card-header">
         Billing Summary
 
-        <span class="badge bg-label-success float-right">حجز مؤكد معلق بتحويل المبلغ</span>
+        <!-- <span class="badge bg-label-success float-right">حجز مؤكد معلق بتحويل المبلغ</span> -->
       </h5>
       <hr class="m-0" />
       <div class="card-body">
