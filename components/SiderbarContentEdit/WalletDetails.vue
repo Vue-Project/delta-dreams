@@ -1,9 +1,6 @@
 <template>
   <section class="summary position-sticky top-0">
     <div class="card">
-      <form id="formReservation" class=" g-3" @submit.prevent="FormUpdateWallet" ref="emptyForm">
-
-        <div class="card-body">
           <div class="offcanvas offcanvas-end event-sidebar" tabindex="-1" id="Sidebar" aria-labelledby="SidebarLabel" aria-modal="true">
             <div class="offcanvas-header my-1">
               <h5 class="offcanvas-title" id="SidebarLabel">{{ sidebarTitle }}</h5>
@@ -11,62 +8,78 @@
             </div>
             <hr class="mt-0">
             <div class="offcanvas-body pt-0">
-              <PaymentContent />
+              <EditPayment :selectedWallet="selectedWallet" />
             </div>
-            <button type="button" class="btn btn-primary waves-effect waves-light offcanvas-footer w-25" style="position:absolute; bottom: 20px;right: 25px;">Save</button>
           </div>
-            <div class="table-responsive text-nowrap">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th>Payment Method</th>
-                    <th>Payment Type</th>
-                    <th>Amount</th>
-                    <th>Date</th>
-                    <th>Comment</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>{{ 'Cash' }}</td>
-                    <td>{{ selectedPaymentType || 'Not selected' }}</td>
-                    <td>{{ paymentDetails.amount || 'Not specified' }}</td>
-                    <td>{{ paymentDetails.date || 'Not specified' }}</td>
-                    <td>
-                      <template v-if="paymentDetails.comment">
-                        <div>{{ paymentDetails.comment }}</div>
-                      </template>
-                    </td>
-                    <td>
-                      <div class="dropdown">
-                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown" aria-expanded="false">
-                          <i class="fa-solid fa-ellipsis-vertical"></i>
-                        </button>
-                        <div class="dropdown-menu">
-                          <a class="dropdown-item" data-bs-toggle="offcanvas" data-bs-target="#Sidebar" data-title="Edit Payment" href="javascript:void(0);">
-                            <i class="fa-regular fa-pen-to-square me-1"></i> Edit
-                          </a>
-                          <a class="dropdown-item" @click="deletewallet" href="javascript:void(0);"><i class="fa-regular fa-trash-can me-1"></i> Delete</a>
-                        </div>
+        <div class="card-body">
+
+          <div class="table-responsive text-nowrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Payment Method</th>
+                  <th>Payment Type</th>
+                  <th>Amount</th>
+                  <th>Date</th>
+                  <th>Comment</th>
+                  <th>Accounts</th>
+                  <th>status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="wallet in reservationData.wallets" :key="wallet.id">
+                  <td>{{ 'Cash' }}</td>
+                  <td>{{ wallet.type || 'Not selected' }}</td>
+                  <td>{{ wallet.price || 'Not specified' }}</td>
+                  <td>{{ wallet.date_at || 'Not specified' }}</td>
+                  <td>
+                    <template v-if="wallet.note">
+                      <div>{{ wallet.note }}</div>
+                    </template>
+                  </td>
+                  <td>{{ wallet.assigned.name || 'Not specified' }}</td>
+                  <td>
+                    <span :class="wallet.active === 1 ? 'badge bg-label-success' : 'badge bg-label-danger'">
+                      {{ wallet.status || 'Not specified' }}
+                    </span>
+                  </td>
+                  <td>
+                    <div class="dropdown">
+                      <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                      </button>
+                      <div class="dropdown-menu" v-if="wallet.active !== 0">
+                        <a
+                           class="dropdown-item"
+                           data-bs-toggle="offcanvas"
+                           data-bs-target="#Sidebar"
+                           data-title="Edit Payment"
+                           @click="updateWallet(wallet)"
+                        >
+                          <i class="fa-regular fa-pen-to-square me-1"></i> Edit
+                        </a>
+                        <a class="dropdown-item" @click="deletedWallet(wallet.id)" >
+                          <i class="fa-regular fa-trash-can me-1"></i> Delete
+                        </a>
                       </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
         </div>
-      </form>
     </div>
   </section>
 </template>
 
 <script>
 import { getPaymentMethods } from '../../Api/addResvertionApi';
-import { updateWallet } from '../../Api/editResvertion';
+import { PutDeleteWallet } from '../../Api/editResvertion';
 import { showSuccessAlert, handleSubmissionError, showConfirmationAlert } from '../../Api/MassageValidation/alertUtilities';
-import PaymentContent from '../../components/SiderbarContentEdit/PaymentContent.vue';
+import EditPayment from './EditPayment.vue';
 
 export default {
   name: "WalletDetails",
@@ -82,7 +95,7 @@ export default {
     },
   },
   components: {
-    PaymentContent, // تسجيل المكون هنا
+    EditPayment, // تسجيل المكون هنا
   },
   data ()
   {
@@ -113,29 +126,37 @@ export default {
         reservation_id: null
       },
       sidebarTitle: '',
+      selectedWallet: null,
     };
   },
   methods: {
-    async deletewallet ()
+    async deletedWallet (id)
     {
 
       // Show confirmation dialog using SweetAlert
       const result = await showConfirmationAlert(
         'Are you sure?',
-        "You won't be able to restore it again",
+        "deleted this payment for this reservation",
       );
 
 
       // Proceed only if user confirmed
       if (result.isConfirmed) {
         try {
-          const response = await updateWallet(walletData);
+          const walletStatus = {
+            status: 'cancelled',
+            wallet_id: id
+
+          }
+          console.log(walletStatus);
+
+          const response = await PutDeleteWallet( walletStatus.wallet_id, walletStatus);
 
           await showSuccessAlert(
             "Payment Details Is Deleted Successfully!",
-            this.$router,
-            'index'
+
           );
+          location.reload()
 
         } catch (error) {
           handleSubmissionError(
@@ -178,71 +199,12 @@ export default {
         }
       }
     },
-    submitPayment ()
-    {
-      this.$emit('add-payment', {
-        ...this.formAddPayment,
-        reservation_id: this.selectedEvent.id
-      });
-      this.cancelPayment();
+    updateWallet(wallet) {
+      this.selectedWallet = wallet;
+      this.$emit('wallet-selected', wallet);
     },
-    cancelPayment ()
-    {
-      this.resetPaymentForm();
-    },
-    resetPaymentForm ()
-    {
-      this.formAddPayment = {
-        date: '',
-        method: '',
-        type: '',
-        comment: '',
-        reservation_id: null
-      }
-    },
-    async FormUpdateWallet ()
-    {
-      try {
-        const walletData = {
-          wallet_id: this.reservationData.wallets[0]?.id, // Get wallet ID from the first wallet
-          payment_id: document.getElementById('businessSource').value,
-          type: this.selectedPaymentType,
-          price: this.paymentDetails.amount,
-          date_at: this.paymentDetails.date,
-          note: this.paymentDetails.comment
-        };
-
-
-        // You'll need to import and call your API function here
-        // const response = await updateWallet(walletData);
-
-        // Show success message
-        await showSuccessAlert(
-          "Wallet updated successfully!", // Custom message
-          this.$router,
-          'index' // Route name
-        );
-      } catch (error) {
-        handleSubmissionError(
-          error,
-          "There was an issue with your reservation." // Custom default error
-        );
-      }
-
-    }
-
   },
-  watch: {
-    reservationData: {
-      immediate: true,
-      handler (newData)
-      {
-        if (newData && typeof newData === 'object') {
-          this.fillWalletsData(newData);
-        }
-      }
-    }
-  },
+
   async mounted ()
   {
     try {
@@ -258,13 +220,8 @@ export default {
     } catch (error) {
       console.error("Error loading data:", error);
     }
-
-
-  },
-  mounted ()
-  {
-    // Listen for offcanvas show event
-    const offcanvas = document.getElementById('Sidebar');
+      // Listen for offcanvas show event
+      const offcanvas = document.getElementById('Sidebar');
     offcanvas.addEventListener('show.bs.offcanvas', (event) =>
     {
       // Get the clicked trigger element
@@ -272,33 +229,25 @@ export default {
       // Get the title from data-title attribute
       this.sidebarTitle = trigger.getAttribute('data-title');
     });
-  },
-  // watch: {
-  //   "value.paymentMode": function (newVal) {
-  //     if (!newVal) {
-  //       this.validationMessage = "Payment Mode is required.";
-  //     } else {
-  //       this.validationMessage = "";
-  //     }
-  //   },
-  //   selectedPaymentType(newVal) {
-  //     this.$emit('input', {
-  //       ...this.value,
-  //       selectedPaymentType: newVal
-  //     });
-  //   },
-  //   'paymentDetails': {
-  //     deep: true,
-  //     handler(newVal) {
-  //       this.$emit('input', {
-  //         ...this.value,
-  //         ...newVal
-  //       });
-  //     }
-  //   }
-  // },
 
+
+  },
+  watch: {
+    reservationData: {
+      immediate: true,
+      handler (newData)
+      {
+        if (newData && typeof newData === 'object') {
+          this.fillWalletsData(newData);
+        }
+      }
+    }
+  },
+
+  provide() {
+    return {
+      selectedWallet: () => this.selectedWallet
+    };
+  }
 };
 </script>
-
-

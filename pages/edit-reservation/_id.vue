@@ -153,11 +153,9 @@
               <div v-if="currentContent === 'newfolio'">
                 <NewFolio />
               </div>
+
               <div v-if="currentContent === 'addpayment'">
-                <AddPayment />
-              </div>
-              <div v-if="currentContent === 'addpayment'">
-                <AddPayment />
+                <AddPayment :reservationId="selectedReservationId " />
               </div>
               <div v-if="currentContent === 'addcharges'">
                 <AddCharges />
@@ -203,7 +201,7 @@
                 <ApplyDiscount />
               </div> -->
 
-              <!-- <div class="gap-2 d-flex" style="position: absolute; bottom: 15px; right: 0">
+             <!-- <div class="gap-2 d-flex" style="position: absolute; bottom: 15px; right: 0">
                 <button class="btn btn-secondary" data-bs-dismiss="offcanvas">
                   Close
                 </button>

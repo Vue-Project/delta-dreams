@@ -1,6 +1,5 @@
 <template>
   <form class="payment-form" @submit.prevent="FormUpdateWallet">
-    <p>{{selectedWallet}}</p>
     <div class="row">
       <div class="col mb-3">
         <label for="flatpickr-date-01" class="form-label">Date</label>

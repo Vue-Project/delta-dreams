@@ -20,13 +20,24 @@ import apiClient from './apiClient';
         throw error;
       }
     };
-    export const updateWallet = async (id,walletData) => {
+    export const putDeleteWallet = async (id,walletStatus) => {
+
       try {
-        const response = await apiClient.post(`/reservations/wallets/${id}`,walletData);
+        const response = await apiClient.put(`/wallets/${id}`,walletStatus);
         return response.data;
 
       } catch (error) {
         console.error(`Error cancelling reservation with ID "${id}":`, error);
+        throw error;
+      }
+    };
+    export const putUpdateWallet = async (id,walletData) => {
+      try {
+        const response = await apiClient.put(`/wallets/${id}`,walletData);
+        return response.data;
+
+      } catch (error) {
+        console.error(`Error updating wallet with ID "${id}":`, error);
         throw error;
       }
     };
