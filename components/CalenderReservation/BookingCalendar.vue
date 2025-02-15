@@ -599,6 +599,7 @@ export default {
           const start = reservation.checkin_date.split('T')[0];
           const end = reservation.checkout_date.split('T')[0];
 
+
           events.push({
             resourceId: unitData.code,
             title: ` ${reservation.user?.name || 'Unknown'}`,
@@ -609,6 +610,7 @@ export default {
             extendedProps: {
               reservation: reservation, // Include the full reservation object
             },
+
             classNames: ['custom-event'],
           });
 
@@ -676,6 +678,7 @@ export default {
         total: event.extendedProps?.reservation?.total,
         paid: event.extendedProps?.reservation?.paid,
         balance: event.extendedProps?.reservation?.remaining,
+        status_select: event.extendedProps?.reservation?.status_select,
       };
     },
     transformAllUnitsToEvents ()

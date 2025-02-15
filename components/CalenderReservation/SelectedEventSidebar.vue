@@ -41,8 +41,8 @@
             </div>
             <div class="col-8 pt-1">
               <select class="badge w-100" :class="statusBadgeClass(selectedEvent.status)" :value="selectedEvent.status" @change="handleStatusChange">
-                <option v-for="status in statusOptions" :key="status.value" :value="status.value">
-                  {{ status.name }}
+                <option v-for="(label, value) in statusOptions" :key="value" :value="value">
+                  {{ label }}
                 </option>
               </select>
             </div>
@@ -317,12 +317,7 @@ export default {
         comment: '',
         reservation_id: null
       },
-      statusOptions: [
-        { value: 'pending', name: 'قيد الانتظار' },
-        { value: 'approved', name: 'مقبول' },
-        { value: 'cancelled', name: 'مرفوض' }
-      ],
-
+      statusOptions: [],
     }
   },
   props: {
@@ -421,9 +416,12 @@ export default {
     statusBadgeClass (status)
     {
       return {
-        'bg-label-primary': status === 'pending',
-        'bg-label-success': status === 'approved',
-        'bg-label-danger': status === 'cancelled',
+        'bg-label-primary': status === 'pending',      // Blue for pending/waiting
+        'bg-label-success': status === 'approved',     // Green for approved
+        'bg-label-danger': status === 'cancelled',     // Red for cancelled
+        'bg-label-info': status === 'check_in',        // Light blue for check in
+        'bg-label-warning': status === 'check_out',    // Orange/yellow for check out
+        'bg-label-secondary': status === 'finished'    // Gray for finished
       };
     },
     async submitPayment ()
@@ -561,6 +559,10 @@ export default {
               true
             );
           }
+
+          if (newEvent.status_select) {
+            this.statusOptions = newEvent.status_select;
+          }
         }
       }
     }
@@ -572,31 +574,5 @@ export default {
 </script>
 
 <style scoped>
-.badge {
-  padding: 0.5em 0.75em;
-  font-size: 0.875em;
-  border: none;
-  cursor: pointer;
-}
 
-.bg-label-primary {
-  background-color: rgba(13, 110, 253, 0.1);
-  color: #0d6efd;
-}
-
-.bg-label-success {
-  background-color: rgba(25, 135, 84, 0.1);
-  color: #198754;
-}
-
-.bg-label-danger {
-  background-color: rgba(220, 53, 69, 0.1);
-  color: #dc3545;
-}
-
-.icon-date {
-  position: absolute;
-  top: 37px;
-  right: 23px;
-}
 </style>
