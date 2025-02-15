@@ -458,7 +458,7 @@
             <!-- <div class="col-9"> -->
               <div v-if="selectedReservationId">
 
-                <component :is="activeComponent" @goBack="goBack" :reservationId="selectedReservationId" />
+                <component :is="activeComponent" @goBack="goBack" :reservationId="selectedReservationId" :reservationData="reservationsDataById[0]" />
               </div>
           </div>
         </div>
