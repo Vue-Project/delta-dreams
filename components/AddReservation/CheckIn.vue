@@ -6,7 +6,7 @@
       </h5>
       <hr class="m-0" />
       <div class="card-body">
-        <form id="formReservation" class=" g-3" @submit.prevent="submitFormReservation" ref="emptyForm">
+        <form id="formReservation" class=" g-3" @submit.prevent="submitAddReservation" ref="emptyForm">
           <!--  ! Reservation  Details -->
           <!-- change in size and icons -->
 
@@ -59,8 +59,8 @@
                   <label for="reservationType" class="form-label">Reservation Type</label>
                   <select class="form-select" id="reservationType" v-model="formAddReservation.reservationType" ref="reservationType" :class="{ 'input-error': validationMessages.reservationType }">
                     <option disabled value="">Select</option>
-                    <option v-for="source in reservationTypes" :key="source.id" :value="source.id">
-                      {{ source.name }}
+                    <option v-for="(type, index) in getReservationTypes" :key="index" :value="type.id">
+                      {{ type }}
                     </option>
                   </select>
                   <span v-if="validationMessages.reservationType" class="error-message">{{ validationMessages.reservationType }}</span>
@@ -166,9 +166,9 @@
                         <td>
                           <select class="form-select" v-model="formAddReservation.units[0].rateType" ref="rateType" :class="{ 'input-error': validationMessages.rateType }">
                             <option disabled value="">select</option>
-                            <option value="breakfast">Breakfast</option>
-                            <option value="nobreakfast">NoBreakfast</option>
-
+                            <option v-for="(type, index) in getRateTypes" :key="index" :value="type">
+                              {{ type }}
+                            </option>
                           </select>
                           <span class="error-message" v-if="validationMessages.rateType">{{ validationMessages.rateType }}</span>
 
@@ -344,7 +344,12 @@
             <div class="row px-0 mx-0">
               <div class="col-lg-3 col-md-6 ps-md-0">
                 <label for="countryGuest" class="col-form-label">Country</label>
-                <input class="form-control" type="text" id="countryGuest" placeholder="country" v-model="formAddReservation.guestInformation.country" />
+                <select class="form-select" v-model="formAddReservation.guestInformation.country" :class="{ 'input-error': validationMessages.country }">
+                  <option disabled value="">Select Country</option>
+                  <option v-for="(country, index) in getCountries" :key="index" :value="country.id">
+                    {{ country }}
+                  </option>
+                </select>
               </div>
               <div class="col-lg-3 col-md-6 px-md-0">
                 <label for="stateGuest" class="col-form-label">State</label>
@@ -425,9 +430,10 @@
 </template>
 <script>
 import { showSuccessAlert, handleSubmissionError } from '../../Api/MassageValidation/alertUtilities';
-import { getBookingSources, getBusinessSources, getReservationTypes, getGuestsInfo, postAddReservationData, getUnitTypes, getUnits } from "../../Api/addResvertionApi";
+import { getBookingSources, getBusinessSources, getGuestsInfo, postAddReservationData, getUnitTypes, getUnits } from "../../Api/addResvertionApi";
 import flatpickrMixin from "../Mixin/flatpickrMixin";
 import SidebarAddGuest from "../layout/AddGuestSidebar.vue";
+import { mapState, mapGetters } from 'vuex';
 
 
 export default {
@@ -454,7 +460,6 @@ export default {
       timePicker2Instance: null,
       businessSources: [],
       bookingSources: [],
-      reservationTypes: [],
       unitsTypes: [],
       availableUnits: [],
       selectedUnit: '',
@@ -648,7 +653,7 @@ export default {
       }
     },
 
-    async submitFormReservation ()
+    async submitAddReservation ()
     {
       const requiredFields = [
         { field: "businessSource", message: "Business Source is required" },
@@ -660,7 +665,6 @@ export default {
         { field: "children", message: "Children count is required" },
         { field: "rateType", message: "Rate Type is required" },
         { field: "rateAmount", message: "Rate Amount is required" },
-        { field: "paymentMode", message: "Payment Mode is required", path: "paymentData" },
       ];
 
       // Reset validation messages before checking
@@ -720,7 +724,7 @@ export default {
         release_term_value: this.formAddReservation.releaseTermValue,
         release_term_type: this.formAddReservation.releaseTerm || "24 hours",
         remind_before_days: this.formAddReservation.remindGuest,
-        user_id: this.selectedNameId,
+        client_id: this.selectedNameId,
         mobile: this.formAddReservation.guestInformation.mobile,
         address: this.formAddReservation.guestInformation.address,
         country: this.formAddReservation.guestInformation.country,
@@ -898,13 +902,11 @@ export default {
       const [
         businessSourcesResponse,
         bookingSourcesResponse,
-        reservationTypesResponse,
         usersResponse,
         unitTypesResponse,
       ] = await Promise.all([
         getBusinessSources(),
         getBookingSources(),
-        getReservationTypes(),
         getGuestsInfo(),
         getUnitTypes(),
         getUnits(),
@@ -912,7 +914,6 @@ export default {
 
       this.businessSources = businessSourcesResponse.data.data;
       this.bookingSources = bookingSourcesResponse.data.data;
-      this.reservationTypes = reservationTypesResponse.data.data;
       this.filteredNames = usersResponse.data.data;
       this.unitsTypes = unitTypesResponse.data.data;
     } catch (error) {
@@ -989,6 +990,15 @@ export default {
     });
   },
   computed: {
+    ...mapState({
+      selectedDates: state => state.selectedDates,
+      selectedResourceName: state => state.selectedResourceName,
+    }),
+    ...mapGetters([
+      'getReservationTypes',
+      'getRateTypes',
+      'getCountries'
+    ]),
     formattedRateAmount: {
       get ()
       {
