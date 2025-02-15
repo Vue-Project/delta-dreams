@@ -16,7 +16,7 @@ export const addGuest = async (addGuestData) => {
 
 export const updateGuest = async (updateGuestData) => {
   try {
-    const response = await apiClient.post('/users', updateGuestData, {
+    const response = await apiClient.post('/clients/update', updateGuestData, {
       headers: {
         'Content-Type': 'application/json',
       },
