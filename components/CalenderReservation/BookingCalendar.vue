@@ -607,7 +607,7 @@ export default {
 
           events.push({
             resourceId: unitData.code,
-            title: ` ${reservation.client?.name || 'Unknown'}`,
+            title: ` ${reservation.client?.name || reservation.user?.name}`,
             start: start,
             end: end + 'T23:59:59',
             color: '#7367f0',

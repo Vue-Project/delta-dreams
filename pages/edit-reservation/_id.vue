@@ -11,7 +11,7 @@
               <i class="ps-3 pr-2 text-primary fs-3 fa-solid fa-user"></i>
 
 
-              {{ reservationDataById.user.name }}
+              {{ reservationDataById.client.name || reservationDataById.user.name }}
               <!-- {{ reservationDataById.id }} -->
               <small class="text-muted ml-3 text-primary">
                 <i class="fa-solid fa-person pr-2 text-primary"></i>{{ reservationDataById.adults }}
