@@ -48,18 +48,7 @@ export const getUnits = async (unitTypeId) =>
     throw error;
   }
 };
-// export const getReservationTypes = async () =>
-// {
-//   try {
-//     const response = await apiClient.get('/reservation-types');
-//     // console.log(response.data);
-//     return response.data;
 
-//   } catch (error) {
-//     console.error('Error fetching rooms:', error);
-//     throw error;
-//   }
-// };
 export const getReservationTypes = async () =>
 {
   try {
@@ -87,7 +76,7 @@ export const postAddReservationData = async (bookingData) =>
 export const getGuestsInfo = async () =>
 {
   try {
-    const response = await apiClient.get('/users');
+    const response = await apiClient.get('/clients');
     // console.log(response.data);
     return response.data;
 
