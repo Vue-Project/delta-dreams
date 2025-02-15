@@ -1,6 +1,7 @@
 <template>
-  <section class="checkIn-reservations">
+  <section class="update-reservations">
     <!-- MAIN CARD CONTAINER -->
+    <p>{{getReservationTypes}}</p>
 
     <div class="card">
       <!-- CARD HEADER -->
@@ -68,12 +69,12 @@
                 </div>
                 <!-- RESERVATION TYPE DROPDOWN -->
 
-                <div class="col-md-9 col-12 mb-4">
+                <div class="col-lg-9 col-12 mb-4 col-md-6 ps-sm-2 p-0 pe-md-0">
                   <label for="reservationType" class="form-label">Reservation Type</label>
                   <select class="form-select" id="reservationType" v-model="formAddReservation.reservationType" ref="reservationType" :class="{ 'input-error': validationMessages.reservationType }">
                     <option disabled value="">Select</option>
-                    <option v-for="source in reservationTypes" :key="source.id" :value="source.id">
-                      {{ source.name }}
+                    <option v-for="(type, index) in getReservationTypes" :key="index" :value="type">
+                      {{ type }}
                     </option>
                   </select>
                   <span v-if="validationMessages.reservationType" class="error-message">{{ validationMessages.reservationType }}</span>
@@ -118,131 +119,7 @@
           <!-- *********************** -->
           <!-- RATE OFFERED SECTION -->
           <!-- *********************** -->
-          <div class="row mb-3">
-            <div class="row">
-              <div class="col-md-4">
-                <div class="row">
-                  <!-- RATE OPTIONS CHECKBOXES -->
 
-                  <div class="col-md-4">Rate Offered:</div>
-                  <div class="col-md-8">
-                    <div class="form-check">
-                      <input type="checkbox" class="form-check-input" id="rateOfferedContract" v-model="formAddReservation.rateOffered.contract" />
-                      <label class="form-check-label" for="rateOfferedContract">Contract</label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- ADDITIONAL RATE OPTIONS -->
-
-              <div class="col-md-8">
-                <div class="row">
-                  <div class="col-md-4">
-                    <div class="form-check">
-                      <input type="checkbox" class="form-check-input" id="rateOfferedBookAll" v-model="formAddReservation.rateOffered.bookAll" />
-                      <label class="form-check-label" for="rateOfferedBookAll">Book All Available Rooms</label>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="form-check">
-                      <input type="checkbox" class="form-check-input" id="rateOfferedQuickGroup" v-model="formAddReservation.rateOffered.quickGroup" />
-                      <label class="form-check-label" for="rateOfferedQuickGroup">Quick Group Booking</label>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="form-check">
-                      <input type="checkbox" class="form-check-input" id="rateOfferedComplimentary" v-model="formAddReservation.rateOffered.complimentaryRoom" />
-                      <label class="form-check-label" for="rateOfferedComplimentary">Complimentary Room</label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!-- ROOM ALLOCATION TABLE -->
-
-              <div class="card mt-3 border-0">
-                <div class="card-datatable table-responsive">
-                  <table class=" table overflow-hidden">
-                    <thead>
-                      <tr class="rounded-1">
-                        <th class="border-0">Room Type</th>
-                        <th class="border-0">Rate Type</th>
-                        <th class="border-0">Room</th>
-                        <th class="border-0">Adult</th>
-                        <th class="border-0">Child</th>
-                        <th class="border-0 w-20">Rate(EGP)(Tax Inc.)</th>
-                      </tr>
-                    </thead>
-
-                    <tbody>
-                      <!-- ROOM TYPE INPUT -->
-
-                      <tr v-for="(item, index) in formData" :key="index" class="mb-2 selectStyle">
-                        <td>
-                          <select class="form-select" id="unitsTypes"  v-model="formAddReservation.units[0].roomType" @change="handleUnitTypeChange">
-                            <option disabled value="">Select</option>
-                            <option v-for="unitType in unitsTypes" :key="unitType.id" :value="unitType.id">
-                              {{ unitType.name }}
-                            </option>
-                          </select>
-
-                        </td>
-                        <td style="width: 185px">
-                          <select class="form-select" v-model="formAddReservation.units[0].rateType" ref="rateType" :class="{ 'input-error': validationMessages.rateType }">
-                            <option value="" disabled>select</option>
-                            <option value="breakfast">Breakfast</option>
-                            <option value="nobreakfast">NoBreakfast</option>
-
-                          </select>
-                          <span class="error-message" v-if="validationMessages.rateType">{{ validationMessages.rateType }}</span>
-
-                        </td>
-                        <td>
-                          <!-- <input type="text" class="form-control" :value="reservationData?.unit?.code" disabled aria-label="Room of building ID" /> -->
-                          <select class="form-select" v-model="formAddReservation.units[0].unitId">
-                            <option disabled value="">Select Unit</option>
-                            <option v-for="unit in availableUnits" :key="unit.id" :value="unit.id">
-                              {{ unit.code }}
-                            </option>
-                          </select>
-
-                        </td>
-                        <td>
-                          <input type="number" class="form-control" v-model="formAddReservation.units[0].adults" placeholder="Number of adults" aria-label="Number of adults" min="0" ref="adults" :class="{ 'input-error': validationMessages.adults }" />
-                          <span class="error-message" v-if="validationMessages.children">{{ validationMessages.children }}</span>
-
-                        </td>
-                        <td>
-                          <input type="number" class="form-control" v-model="formAddReservation.units[0].children" placeholder="Number of children" aria-label="Number of children" min="0" ref="children" :class="{ 'input-error': validationMessages.children }" />
-                          <span class="error-message" v-if="validationMessages.children">{{ validationMessages.children }}</span>
-                        </td>
-                        <td>
-                          <div class="row">
-                            <div class="col-md-10">
-                              <div class="input-group">
-                                <input type="text" class="form-control" placeholder="0.00" id="rateAmount" v-model="formAddReservation.units[0].rateAmount" aria-label="number of rateAmount" ref="rateAmount" :class="{ 'input-error': validationMessages.rateAmount }" />
-                                <span class="input-group-text groupStyle">EGP</span>
-                              </div>
-                              <span class="error-message" v-if="validationMessages.rateAmount">{{ validationMessages.rateAmount }}</span>
-                            </div>
-                          </div>
-
-                        </td>
-                      </tr>
-
-                    </tbody>
-
-
-                    <!--  ! table footer -->
-                  </table>
-                  <!-- <button class="btn btn-primary waves-effect waves-light mt-3" type="button" @click="addItem">
-                    Add Room
-                  </button> -->
-                </div>
-              </div>
-            </div>
-          </div>
-          <hr class="my-4" />
-          <!-- *************************** -->
           <!-- HOLD RELEASE SECTION -->
           <!-- *************************** -->
           <div class="row">
@@ -444,8 +321,6 @@ import
   getBusinessSources,
   getReservationTypes,
   getGuestsInfo,
-
-  postAddReservationData,
   PutReservation,
   getUnits,
   getUnitTypes
@@ -453,6 +328,8 @@ import
 import flatpickrMixin from "../../Mixin/flatpickrMixin";
 import { dateMixin } from '../../Mixin/DateMixin';
 import { showSuccessAlert, handleSubmissionError } from '../../../Api/MassageValidation/alertUtilities';
+import { mapState, mapGetters } from 'vuex';
+
 
 export default {
   name: "updateReservation",
@@ -600,6 +477,11 @@ export default {
         this.formAddReservation.units[0].rateAmount = parseFloat(sanitizedValue) || 0;
       }
     },
+    ...mapGetters([
+      'getReservationTypes',
+      'getRateTypes',
+      'getCountries'
+    ]),
 
     // Calculate total nights between check-in and check-out
     totalNights ()
@@ -942,7 +824,7 @@ export default {
         checkOutDate: this.formatDateNumber(reservationData.checkout_date || ""),
         checkOutTime: reservationData.checkout_time || "",
         numberRooms: reservationData.rooms || 1,
-        reservationType: reservationData.reservation_type?.id || "",
+        reservationType: reservationData.reservation_type|| "",
         bookingSource: reservationData.booking_source?.id || "",
         businessSource: reservationData.business_source?.id || "",
         units: [{

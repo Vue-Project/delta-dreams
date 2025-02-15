@@ -1,7 +1,6 @@
 <template>
   <section class="checkIn-reservations">
     <div class="card">
-
       <h5 class="card-header">
         <NuxtLink to="/"><i class="fa-solid fa-angle-left pr-2" style="color: #6f6b7d"></i> </NuxtLink>Add Reservation
       </h5>
@@ -744,11 +743,10 @@ export default {
         insurance : this.paymentData.insurance,
         insurance_by: this.paymentData.insurance_by,
       };
-console.log(bookingData);
 
       // If no errors, send the data to the server
       try {
-        // const response = await postAddReservationData(bookingData);
+        const response = await postAddReservationData(bookingData);
 
         await showSuccessAlert(
           "Reservation submitted successfully!", // Custom message
