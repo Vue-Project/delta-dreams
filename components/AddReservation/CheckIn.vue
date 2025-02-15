@@ -1,6 +1,7 @@
 <template>
   <section class="checkIn-reservations">
     <div class="card">
+
       <h5 class="card-header">
         <NuxtLink to="/"><i class="fa-solid fa-angle-left pr-2" style="color: #6f6b7d"></i> </NuxtLink>Add Reservation
       </h5>
@@ -59,7 +60,7 @@
                   <label for="reservationType" class="form-label">Reservation Type</label>
                   <select class="form-select" id="reservationType" v-model="formAddReservation.reservationType" ref="reservationType" :class="{ 'input-error': validationMessages.reservationType }">
                     <option disabled value="">Select</option>
-                    <option v-for="(type, index) in getReservationTypes" :key="index" :value="type.id">
+                    <option v-for="(type, index) in getReservationTypes" :key="index" :value="type">
                       {{ type }}
                     </option>
                   </select>
@@ -707,7 +708,7 @@ export default {
         rooms: this.formAddReservation.numberRooms,
         booking_source_id: this.formAddReservation.bookingSource,
         business_source_id: this.formAddReservation.businessSource,
-        reservation_type_id: this.formAddReservation.reservationType,
+        reservation_type: this.formAddReservation.reservationType,
         units: this.formAddReservation.units.map(unit => ({
           unit_id: unit.unitId,
           unit_type_id: unit.unitTypeId,
@@ -743,10 +744,11 @@ export default {
         insurance : this.paymentData.insurance,
         insurance_by: this.paymentData.insurance_by,
       };
+console.log(bookingData);
 
       // If no errors, send the data to the server
       try {
-        const response = await postAddReservationData(bookingData);
+        // const response = await postAddReservationData(bookingData);
 
         await showSuccessAlert(
           "Reservation submitted successfully!", // Custom message
