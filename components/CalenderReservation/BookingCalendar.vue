@@ -1,7 +1,6 @@
 <template>
   <section class="card">
     <momenalert></momenalert>
-
     <Loader :visible="isLoading" />
     <div :class="{ 'loading-overlay': isLoading }">
       <FilterCalendar ref="filterComponent" :statistics="statistics" :buildingNames="buildingNames" @show-all-resources="showAllResources" @show-building-resources="showBuildingResources" @date-selected="SelectedDateFilterCalendar" />
@@ -61,6 +60,7 @@ import HeaderCalender from "./HeaderCalender.vue";
 import { deleteBlock, getCalenderAllUnits, postUpdateReservation } from "../../Api/CalenderApi";
 import Swal from 'sweetalert2'
 import { handleSubmissionError, showSuccessAlert, showConfirmationDialog, showAlert } from "../../Api/MassageValidation/alertUtilities";
+import { mapActions } from 'vuex';
 
 export default {
   components: {
@@ -86,6 +86,12 @@ export default {
       selectedResourceName: '',
       isLoading: true,
       data: [],
+      selectedEvent: null, // Store the data for the selectedEvent
+      reservationType: [],
+      rateType: [],
+      vipStatus: [],
+      nationalTypes: [],
+      genderTypes: [],
       isSidebarOpen: false,
       isPopoverBodyVisible: true, // Body visibility
       isPopoverVisible: false, // State to control popover visibility
@@ -227,12 +233,11 @@ export default {
           right: "",
         },
       },
-      selectedEvent: null, // Store the data for the selectedEvent
+
     };
   },
 
   methods: {
-
 
     // ==============================================
     // RESOURCE MANAGEMENT
@@ -1026,196 +1031,15 @@ export default {
         }
       });
     },
-    // ==============================================
-    // DEPRECATED/UNUSED METHODS
-    // ==============================================
 
-    // Custom resource header function
-    // customResourceHeader ()
-    // {
-    //   let htmlContent = `
-    // <div class="resource-header" style="position: relative;">
-    //   <div class="btn-group" style="width: 100%;">
-    //     <button class="btn btn-primary dropdown-toggle waves-effect waves-light" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-    //       Room Type
-    //     </button>
-    //     <ul class="dropdown-menu" style="width: 100%;">
-    //       <li>
-    //         <div class="form-check" style="padding:10px 40px;">
-    //           <input type="checkbox" class="form-check-input" id="select-all-checkbox" @click="selectAllResources">
-    //           <label class="form-check-label" for="select-all-checkbox">Select All</label>
-    //         </div>
-    //       </li>`;
-
-    //   const allResources = this.createResources(); // Get all resources initially
-
-    //   // Add room options dynamically as checkboxes
-    //   allResources.forEach((resource) =>
-    //   {
-    //     if (!resource.classNames.includes('unit')) { // Filter out units, as we only want rooms
-    //       htmlContent += `
-    //     <li>
-    //       <div class="form-check" style="padding:10px 40px;">
-    //         <input type="checkbox" class="form-check-input room-checkbox"
-    //           id="bs-validation-checkbox-${resource.id}"
-    //           data-id="${resource.id}" @click="toggleResourceSelection(resource)">
-    //         <label class="form-check-label"
-    //           for="bs-validation-checkbox-${resource.id}">${resource.title}</label>
-    //       </div>
-    //     </li>`;
-    //     }
-    //   });
-
-    //   htmlContent += `
-    //     </ul>
-    //   </div>
-    // </div>`;
-
-    //   const div = document.createElement("div");
-    //   div.innerHTML = htmlContent.trim();
-
-    //   // Return the div element to be inserted into the DOM
-    //   return { domNodes: [div.firstElementChild] };
-    // },
-
-
-    // Add this method to transform all units data
-    // Update calendar events
-    // updateCalendarEvents ()
-    // {
-    //   const events = this.transformAllUnitsToEvents();
-    //   const calendar = this.$refs.calendar?.getApi();
-    //   if (calendar) {
-    //     calendar.removeAllEvents();
-    //     calendar.addEventSource(events);
-    //   }
-
-    // },
-
-    //   groupBuildingsByDate (datesBuilding)
-    // {
-    //   const grouped = {};
-    //   datesBuilding.forEach(buildingDate =>
-    //   {
-    //     const dateKey = buildingDate.date; // Assuming date is a string like '2025-01-18'
-    //     if (!grouped[dateKey]) {
-    //       grouped[dateKey] = [];
-    //     }
-    //     grouped[dateKey].push(buildingDate);
-    //   });
-    //   return grouped;
-    // },
-    // resourceGroupLaneContent (arg)
-    // {
-    //   // console.log(this.datesBuilding);
-
-    //   const laneContent = document.createElement('div');
-    //   laneContent.style.display = 'flex';
-    //   laneContent.style.width = '100%';
-    //   laneContent.style.height = '37px';
-    //   laneContent.style.padding = '0px';
-
-    //   const slotMinWidth = arg.view.calendar.getOption('slotMinWidth');
-    //   console.log(slotMinWidth);
-    //   const visibleStartDate = arg.view.intervalStart;
-    //   console.log(visibleStartDate);
-
-    //   const visibleEndDate = arg.view.intervalEnd;
-    //   console.log(visibleEndDate);
-
-
-    //   // Generate array of dates in visible range
-    //   const visibleDates = [];
-    //   let currentDate = new Date(visibleStartDate);
-    //   while (currentDate < visibleEndDate) {
-    //     visibleDates.push(new Date(currentDate));
-    //     currentDate.setDate(currentDate.getDate() + 1);
-    //   }
-
-    //   // Group buildings by date
-    //   const groupedBuildings = this.groupBuildingsByDate(this.datesBuilding);
-    //   console.log(groupedBuildings);
-
-    //   visibleDates.forEach(date =>
-    //   {
-    //     const dateKey = date.toISOString().split('T')[0]; // '2025-01-18'
-    //     const buildingsForDate = groupedBuildings[dateKey] || [];
-
-    //     const dateContainer = document.createElement('div');
-    //     dateContainer.style.display = 'flex';
-    //     dateContainer.style.flexDirection = 'column';
-    //     dateContainer.style.alignItems = 'center';
-    //     dateContainer.style.width = slotMinWidth + 'px';
-    //     dateContainer.style.borderRight = '1px solid #ccc';
-    //     dateContainer.style.boxSizing = 'border-box';
-
-    //     if (buildingsForDate.length > 0) {
-    //       buildingsForDate.forEach(building =>
-    //       {
-    //         const buildingInfo = document.createElement('div');
-    //         buildingInfo.textContent = `Units: ${building.available_units}, Price: ${building.price}`;
-    //         dateContainer.appendChild(buildingInfo);
-    //       });
-    //     } else {
-    //       const noDataMessage = document.createElement('div');
-    //       noDataMessage.textContent = 'No data';
-    //       dateContainer.appendChild(noDataMessage);
-    //     }
-
-    //     laneContent.appendChild(dateContainer);
-    //   });
-    // toggleResourceExpand (selectedRoomId = null)
-    // {
-    //   this.isExpanded = !this.isExpanded; // Toggle expand/collapse state
-
-    //   const resourceCells = document.querySelectorAll(
-    //     ".fc-datagrid-cell.fc-resource"
-    //   );
-    //   const subroomCells = document.querySelectorAll(
-    //     ".fc-datagrid-cell.fc-subroom"
-    //   );
-
-    //   // If a room is selected, collapse or expand that specific resource
-    //   if (selectedRoomId) {
-    //     const resourceCell = document.querySelector(
-    //       `[data-resource-id='${selectedRoomId}']`
-    //     );
-    //     if (resourceCell) {
-    //       const subCells = document.querySelectorAll(
-    //         `[data-resource-id='${selectedRoomId}']`
-    //       );
-    //       subCells.forEach((subCell) =>
-    //       {
-    //         if (this.isExpanded) {
-    //           subCell.classList.remove("collapsed");
-    //         } else {
-    //           subCell.classList.add("collapsed");
-    //         }
-    //       });
-    //     }
-    //   } else {
-    //     // If no specific room is selected, toggle all rooms
-    //     resourceCells.forEach((cell) =>
-    //     {
-    //       const roomId = cell.dataset.resourceId;
-    //       if (this.isExpanded) {
-    //         document
-    //           .querySelectorAll(`[data-resource-id='${roomId}']`)
-    //           .forEach((subCell) =>
-    //           {
-    //             subCell.classList.remove("collapsed");
-    //           });
-    //       } else {
-    //         document
-    //           .querySelectorAll(`[data-resource-id='${roomId}']`)
-    //           .forEach((subCell) =>
-    //           {
-    //             subCell.classList.add("collapsed");
-    //           });
-    //       }
-    //     });
-    //   }
-    // },
+    ...mapActions([
+      'updateReservationTypes',
+      'updateRateTypes',
+      'updateCountries',
+      'updateVipStatus',
+      'updateNationalTypes',
+      'updateGenderTypes',
+    ]),
 
 
 
@@ -1225,8 +1049,13 @@ export default {
     try {
       const [CalenderDataResponse] = await Promise.all([getCalenderAllUnits()]);
       this.data = CalenderDataResponse.data;
+      this.reservationType = CalenderDataResponse.reservation_type;
+      this.rateType = CalenderDataResponse.rate_type;
+      this.countries = CalenderDataResponse.countries;
+      this.vipStatus = CalenderDataResponse.vip_status;
+      this.nationalTypes = CalenderDataResponse.national_type;
+      this.genderTypes = CalenderDataResponse.gender_type;
       this.buildingNames = this.getBuildingNames();
-
       const events = this.transformAllUnitsToEvents();
       this.calendarOptions = { ...this.calendarOptions, events };
 
@@ -1239,6 +1068,14 @@ export default {
         const footerElement = document.querySelector("#calendar-footer");
         if (footerElement) footerElement.style.display = "block";
       });
+
+      // Store the data in Vuex when received
+      this.updateReservationTypes(this.reservationType);
+      this.updateRateTypes(this.rateType);
+      this.updateCountries(this.countries);
+      this.updateVipStatus(this.vipStatus);
+      this.updateNationalTypes(this.nationalTypes);
+      this.updateGenderTypes(this.genderTypes);
 
     } catch (error) {
       console.error("Error loading data:", error);
