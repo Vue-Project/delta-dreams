@@ -370,7 +370,7 @@
                 <div class="d-flex justify-content-between w-100 flex-wrap">
                   <h6 class="mb-0 ms-3">Total</h6>
                   <div class="d-flex">
-                    <p class="mb-0 fw-medium">{{ formAddReservation.BillingSummary.total }}</p>
+                    <p class="mb-0 fw-medium">{{ formAddReservation.BillingSummary.total || 0 }}</p>
                     <!-- <p class="ms-3 text-success mb-0">0.3%</p> -->
                   </div>
                 </div>
@@ -382,7 +382,7 @@
                 <div class="d-flex justify-content-between w-100 flex-wrap">
                   <h6 class="mb-0 ms-3">Paid</h6>
                   <div class="d-flex">
-                    <p class="mb-0 fw-medium">{{ formAddReservation.BillingSummary.paid }}</p>
+                    <p class="mb-0 fw-medium">{{ formAddReservation.BillingSummary.paid || 0}}</p>
                     <!-- <p class="ms-3 text-success mb-0">0.3%</p> -->
                   </div>
                 </div>
@@ -394,7 +394,7 @@
                 <div class="d-flex justify-content-between w-100 flex-wrap">
                   <h6 class="mb-0 ms-3">Remaining</h6>
                   <div class="d-flex">
-                    <p class="mb-0 fw-medium">{{ formAddReservation.BillingSummary.remaining}}</p>
+                    <p class="mb-0 fw-medium">{{ formAddReservation.BillingSummary.remaining || 0 }}</p>
                     <!-- <p class="ms-3 text-success mb-0">0.3%</p> -->
                   </div>
                 </div>
@@ -896,7 +896,7 @@ export default {
         holdRelease: Boolean(reservationData.hold_release),
         arrivalDate: Boolean(reservationData.arrival_date),
         guestInformation: {
-          name: reservationData.client?.name || "",
+          name: reservationData.client?.name ||  reservationData.user?.name,
           email: reservationData.client?.email || "",
           mobile: reservationData.client?.phone || "",
           address: reservationData.client?.address || "",
@@ -1002,15 +1002,16 @@ export default {
           this.fillFormWithReservationData(newData);
         }
       },
-    }, reservationData: {
-      immediate: true,
-      handler (newData)
-      {
-        if (newData && typeof newData === 'object') {
-          this.fillFormWithReservationData(newData);
-        }
-      }
-    }
+    },
+    //  reservationData: {
+    //   immediate: true,
+    //   handler (newData)
+    //   {
+    //     if (newData && typeof newData === 'object') {
+    //       this.fillFormWithReservationData(newData);
+    //     }
+    //   }
+    // }
 
   },
     // ======================
