@@ -31,7 +31,7 @@ import apiClient from './apiClient';
         throw error;
       }
     };
-    export const putUpdateWallet = async (id,walletData) => {
+    export const putUpdateWallet = async (id, walletData) => {
       try {
         const response = await apiClient.put(`/wallets/${id}`,walletData);
         return response.data;

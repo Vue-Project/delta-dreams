@@ -812,9 +812,12 @@ export default {
     statusBadgeClass (status)
     {
       return {
-        'bg-label-primary': status === 'pending',
-        'bg-label-success': status === 'approved',
-        'bg-label-danger': status === 'cancelled',
+        'bg-label-primary': status === 'pending',      // Blue for pending/waiting
+        'bg-label-success': status === 'approved',     // Green for approved
+        'bg-label-danger': status === 'cancelled',     // Red for cancelled
+        'bg-label-info': status === 'check_in',        // Light blue for check in
+        'bg-label-warning': status === 'check_out',    // Orange/yellow for check out
+        'bg-label-secondary': status === 'finished'    // Gray for finished
       };
     },
     handleShowUpdateDetails(rowData) {
@@ -858,7 +861,7 @@ export default {
   // Show SweetAlert2 confirmation dialog
   const result = await showConfirmationAlert(
     'Are you sure?',
-    "You won't be able to restore it again",
+    "cancel this reservation",
     'Yes, cancel it!',
 
   );

@@ -286,9 +286,9 @@
                     </div>
                   </div>
                 </div>
-                <button class="btn btn-outline-primary waves-effect" type="button">
+                <!-- <button class="btn btn-outline-primary waves-effect" type="button">
                   <i class="fa-solid fa-user-plus"></i>
-                </button>
+                </button> -->
               </div>
               <span class="error-message" v-if="validationMessages.name">{{ validationMessages.name }}</span>
 
@@ -424,7 +424,7 @@ import
   getBusinessSources,
   getReservationTypes,
   getGuestsInfo,
-  PutReservation,
+  PutUpdateReservation,
   getUnits,
   getUnitTypes,
   getAccounts
@@ -620,7 +620,7 @@ export default {
         rooms: this.formAddReservation.numberRooms,
         booking_source_id: this.formAddReservation.bookingSource,
         business_source_id: this.formAddReservation.businessSource,
-        reservation_type_id: this.formAddReservation.reservationType,
+        reservation_type: this.formAddReservation.reservationType,
         units: this.formAddReservation.units.map(unit => ({
           unit_id: unit.unitId,
           unit_type_id: unit.roomType,
@@ -637,7 +637,7 @@ export default {
         release_term_value: this.formAddReservation.releaseTermValue || 24,
         release_term_type: this.formAddReservation.releaseTerm || "24 hours",
         remind_before_days: this.formAddReservation.remindGuest,
-        user_id: this.selectedNameId,
+        client_id: this.selectedNameId,
         mobile: this.formAddReservation.guestInformation.mobile,
         address: this.formAddReservation.guestInformation.address,
         country: this.formAddReservation.guestInformation.country,
@@ -658,11 +658,10 @@ export default {
         // payment_method_city: this.formAddReservation.BillingSummary.CityLedger,
         // selected_payment_method: this.formAddReservation.BillingSummary.payMentUser,
       };
-      // console.log(bookingData);
 
 
       try {
-        const response = await PutReservation(this.reservationId, bookingData);
+        const response = await PutUpdateReservation(this.reservationId, bookingData);
         await showSuccessAlert(
           "Reservation submitted successfully!", // Custom message
           this.$router,
@@ -921,7 +920,7 @@ export default {
         }
       };
 
-      this.selectedNameId = reservationData.user?.id || null;
+      this.selectedNameId = reservationData.client?.id || reservationData.user?.id;
     },
     async handleUnitTypeChange() {
       try {

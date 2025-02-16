@@ -115,7 +115,7 @@ export const PostReservationItems = async (reservationId ,updateReservationItems
     }
   }
 
-  export const PutReservation = async (reservationId, bookingData) => {
+  export const PutUpdateReservation = async (reservationId, bookingData) => {
     try {
       // Use PUT method for updating a reservation
       const response = await apiClient.put(`/reservations/${reservationId}`, bookingData);
