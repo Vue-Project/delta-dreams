@@ -113,14 +113,12 @@
                       <label for="formIdentityInfoId" class="col-form-label">ID Number</label>
                       <input class="form-control" type="text" id="formIdentityInfoId" placeholder="Enter ID Number" aria-label="Enter ID Number Guest" v-model="formGuest.OtherInformation.idNumber" />
                     </div>
-                    <div class="mb-3">
-                      <label for="flatpickr-date-04" class="col-form-label">Expiry Date</label>
-                      <input type="text" class="form-control" placeholder="YYYY-MM-D " id="flatpickr-date-04" ref="datePicker4" aria-label="input Text to Expiry Date" v-model="formGuest.OtherInformation.expiryDate" />
-                      <i class="fa-solid fa-calendar-days icon-date top"></i>
-                    </div>
+
 
 
                   </div>
+
+
                 </div>
               </div>
 
@@ -137,6 +135,14 @@
                           {{ nationalType }}
                         </option>
                       </select>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                     <div class="mb-3">
+                      <label for="flatpickr-date-08" class="col-form-label">Expiry Date</label>
+                      <input type="text" class="form-control" placeholder="YYYY-MM-D " id="flatpickr-date-08" ref="datePicker8" aria-label="input Text to Expiry Date" v-model="formGuest.OtherInformation.expiryDate" />
+                      <i class="fa-solid fa-calendar-days icon-date top"></i>
+
                     </div>
                   </div>
                 </div>
@@ -203,7 +209,7 @@
 <script>
 import DropzoneComponent from "../../layout/DropzoneComponent.vue";
 import flatpickrMixin from "../../Mixin/flatpickrMixin";
-import { updateGuest } from "../../../Api/userApi";
+import { PostUpdateGuest } from "../../../Api/userApi";
 import { mapGetters } from 'vuex';
 import { handleSubmissionError, showSuccessAlert } from "../../../Api/MassageValidation/alertUtilities";
 
@@ -339,7 +345,7 @@ export default {
           throw new Error("Please fill in all required fields");
         }
         const updateGuestData = {
-          reservationId: this.reservationId,
+          // reservationId: this.reservationId,
           image: this.formGuest.image,
           name: this.formGuest.name,
           email: this.formGuest.email,
@@ -396,11 +402,10 @@ export default {
         //   },
 
         // };
-        console.log(updateGuestData);
 
 
         // Make API call
-        const response = await updateGuest(updateGuestData);
+        const response = await PostUpdateGuest(this.reservationData.client.id, updateGuestData);
 
         // Show success message
         await showSuccessAlert("Guest updated successfully.", );
@@ -421,10 +426,8 @@ export default {
       }
 
       // Debug log to see what data we're receiving
-      console.log('Received reservation data:', reservationData);
 
       const client = reservationData.client || reservationData.user || {};
-      console.log('Client data:', client);
 
       this.formGuest = {
         ...this.formGuest,
