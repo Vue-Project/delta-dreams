@@ -47,14 +47,14 @@
             </div>
             <div class="col-lg-4">
               <div class="row">
-                <!-- <div class="col-md-3 col-12">
+                <div class="col-md-3 col-12">
                   <label for="roomCount" class="form-label">Room(s)</label>
-                  <input class="form-control" type="number" id="roomCount" v-model="roomCount" min="1" @input="updateRepeater" />
-                </div> -->
-                <div class="col-lg-3 col-12 col-md-6 p-0 pe-sm-3">
+                  <input class="form-control" type="number" id="roomCount" v-model="formAddReservation.numberRooms" min="1" @input="updateRepeater" />
+                </div>
+                <!-- <div class="col-lg-3 col-12 col-md-6 p-0 pe-sm-3">
                   <label for="roomCount" class="form-label">Room(s)</label>
                   <input class="form-control" type="number" id="roomCount" v-model="formAddReservation.numberRooms" min="1" max="1" />
-                </div>
+                </div> -->
                 <div class="col-lg-9 col-12 mb-4 col-md-6 ps-sm-2 p-0 pe-md-0">
                   <label for="reservationType" class="form-label">Reservation Type</label>
                   <select class="form-select" id="reservationType" v-model="formAddReservation.reservationType" ref="reservationType" :class="{ 'input-error': validationMessages.reservationType }">
@@ -215,9 +215,9 @@
                     <!--change style button  -->
                     <!--  ! table footer -->
                   </table>
-                  <!-- <button class="btn btn-primary waves-effect waves-light mt-3" type="button" @click="addItem">
+                  <button class="btn btn-primary waves-effect waves-light mt-3" type="button" @click="addItem">
                     Add Room
-                  </button> -->
+                  </button>
                 </div>
               </div>
               <!--   ! check inputs and repeater -->
