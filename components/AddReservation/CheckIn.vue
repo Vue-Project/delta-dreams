@@ -74,11 +74,12 @@
                   <div class="col-lg-6 col-md-6">
                     <label for="bookingSource" class="form-label">Booking Source</label>
                     <select class="form-select" id="bookingSource" v-model="formAddReservation.bookingSource" ref="bookingSource" :class="{ 'input-error': validationMessages.bookingSource }">
-                      <option disabled value="">Select</option>
+                      <option value="" disabled>Select</option>
                       <option v-for="source in bookingSources" :key="source.id" :value="source.id">
                         {{ source.name }}
                       </option>
                     </select>
+
                     <span v-if="validationMessages.bookingSource" class="error-message">{{ validationMessages.bookingSource }}</span>
                   </div>
                   <div class="col-lg-6 col-md-6">
@@ -511,6 +512,7 @@ export default {
           accessToGuestPortal: false, // Toggle for Access To Guest Portal
           suppressRateOnRegistrationCard: false, // Toggle for Suppress Rate on Registration Card
         },
+        bookingSource: "", // Initialize with empty string
       },
       validationMessages: {
         businessSource: '',
@@ -649,7 +651,14 @@ export default {
           state: "",
           city: "",
           zip: "",
-        }
+        },
+        otherInformation: {
+          emailBookingOption: '', // Selected booking option
+          emailAddressCheckout: '', // Email addresses input
+          accessToGuestPortal: false, // Toggle for Access To Guest Portal
+          suppressRateOnRegistrationCard: false, // Toggle for Suppress Rate on Registration Card
+        },
+        bookingSource: "", // Initialize with empty string
       }
     },
 
