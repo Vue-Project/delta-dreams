@@ -459,7 +459,6 @@ export default {
       };
 
       // Debug log to see the final form data
-      console.log('Populated form data:', this.formGuest);
     }
   },
   computed: {
