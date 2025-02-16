@@ -507,6 +507,9 @@ select {
 
 
 }
+.right-24{
+  right: 24px;
+}
 
 .icon-time {
   position: absolute;
