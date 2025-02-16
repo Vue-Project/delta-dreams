@@ -1,8 +1,6 @@
 <template>
   <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEnd" aria-labelledby="offcanvasEndLabel">
     <!-- Offcanvas Header -->
-    <!-- <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD to YYYY-MM-DD" id="flatpickr-range" ref="rangePicker1" v-model="dateRange" @change='parseDateRange'  aria-label="input Text to Date" /> -->
-
 
     <div class="offcanvas-header">
       <h5 id="offcanvasEndLabel" class="offcanvas-title w-100">
@@ -225,7 +223,7 @@
                 <div class="col mb-3">
                   <label for="flatpickr-date-01" class="form-label">Date</label>
                   <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" id="flatpickr-date-01" ref="datePicker1" aria-label="input Text to Check-in Date" v-model="formAddPayment.date" />
-                  <i class="fa-solid fa-calendar-days icon-date"></i>
+                  <i class="fa-solid fa-calendar-days icon-date right-24"></i>
                 </div>
               </div>
               <div class="row g-2">
@@ -475,37 +473,49 @@ export default {
       }
     },
     parseDateRange() {
-
       try {
-        const dates = this.dateRange.split(' to ').map(date => date.trim());
-        if (dates.length === 2) {
-          this.checkin_date = dates[0];
-          this.checkout_date = dates[1];
+        const flatpickrInstance = this.$refs.rangePicker1._flatpickr;
+        const selectedDates = flatpickrInstance.selectedDates;
+
+        if (selectedDates.length === 2) {
+          const formatDate = (date) => {
+            const localDate = new Date(date.getTime() - (date.getTimezoneOffset() * 60000));
+            return localDate.toISOString().split('T')[0];
+          };
+
+          this.checkin_date = formatDate(selectedDates[0]);
+          this.checkout_date = formatDate(selectedDates[1]);
+          this.dateRange = `${this.checkin_date} to ${this.checkout_date}`;
         }
       } catch (error) {
         console.error("Error parsing date range:", error);
       }
     },
     async changeDateReservation() {
+      const result = await showConfirmationAlert(
+        'Are you sure?',
+        "change the date of this reservation",
+        'confirm',
+      );
 
+      if (result.isConfirmed && this.checkin_date && this.checkout_date) {
+        try {
+          const updateDataUnit = {
+            checkin_date: this.checkin_date,
+            checkout_date: this.checkout_date,
+            unit_id: this.selectedEvent.unit_id,
+            reservation_id: this.selectedEvent.id,
+          };
 
-      try {
+          const response = await postUpdateReservation(updateDataUnit.reservation_id, updateDataUnit);
 
-        const updateDataUnit = {
-          checkin_date: this.checkin_date,
-          checkout_date: this.checkout_date,
-          unit_id: this.selectedEvent.unit_id,
-          reservation_id: this.selectedEvent.id,
-        };
-
-
-        const response = await postUpdateReservation(updateDataUnit.reservation_id, updateDataUnit);
-        await showSuccessAlert("Reservation updated successfully!");
-        location.reload();
-      } catch (error) {
-        handleSubmissionError(
-          error,
-        );
+          if (response.data) {
+            await showSuccessAlert("Reservation updated successfully!");
+            location.reload();
+          }
+        } catch (error) {
+          handleSubmissionError(error);
+        }
       }
     },
   },
