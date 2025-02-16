@@ -22,27 +22,27 @@
       </div>
     </div>
     <div class="col-lg-4 col-12">
-      <div class="d-flex items-center gap-4">
-        <div class="w-100">
+      <div class="d-flex items-center justify-content-end gap-4">
+        <!-- <div class="w-100">
           <select class="form-select" id="exampleFormControlSelect1" aria-label="Default select example">
             <option selected>السعر غير شامل</option>
             <option value="1">السعر شامل الافطار</option>
           </select>
-        </div>
-        <label class="switch">
+        </div> -->
+        <!-- <label class="switch">
           <input type="checkbox" class="switch-input" v-model="isOn" aria-label="switch input to copy and compact" />
           <span class="switch-toggle-slider">
             <span class="switch-on">Copy</span>
             <span class="switch-off">compact</span>
           </span>
-        </label>
+        </label> -->
 
         <div @mouseenter="isHovered = true" @mouseleave="isHovered = false">
           <button type="button" class="btn btn-outline-primary waves-effect">
             <i class="fa-solid fa-circle-info"></i>
           </button>
           <!-- Hover Menu -->
-          <div v-show="isHovered" class="position-absolute left-0 mt-2 w-40 bg-white shadow-lg">
+          <div v-show="isHovered" class="position-absolute  ">
             <!-- start ul -->
             <div class="fullbox">
               <div class="row">

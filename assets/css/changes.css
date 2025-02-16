@@ -311,7 +311,7 @@
   left: -333px;
   width: 375px;
   background: #ffffff;
-  z-index: 10;
+  z-index: 99999;
   border-radius: 10px;
 }
 
