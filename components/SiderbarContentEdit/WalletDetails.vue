@@ -60,7 +60,7 @@
                           <i class="fa-regular fa-pen-to-square me-1"></i> Edit
                         </a>
                         <a class="dropdown-item" @click="deletedWallet(wallet.id)" >
-                          <i class="fa-regular fa-trash-can me-1"></i> Delete
+                          <i class="fa-regular fa-trash-can me-1"></i> cancel
                         </a>
                       </div>
                     </div>
@@ -77,7 +77,7 @@
 
 <script>
 import { getPaymentMethods } from '../../Api/addResvertionApi';
-import { PutDeleteWallet } from '../../Api/editResvertion';
+import { putDeleteWallet } from '../../Api/editResvertion';
 import { showSuccessAlert, handleSubmissionError, showConfirmationAlert } from '../../Api/MassageValidation/alertUtilities';
 import EditPayment from './EditPayment.vue';
 
@@ -145,17 +145,18 @@ export default {
         try {
           const walletStatus = {
             status: 'cancelled',
-            wallet_id: id
-
+            wallet_id: id,
           }
-          // console.log(walletStatus);
 
-          const response = await PutDeleteWallet( walletStatus.wallet_id, walletStatus);
+          const response = await putDeleteWallet( walletStatus.wallet_id, walletStatus);
+          console.log('after response');
 
           await showSuccessAlert(
-            "Payment Details Is Deleted Successfully!",
+            "Payment Details Is Cancelled Successfully!",
 
           );
+          console.log('after success alert');
+
           location.reload()
 
         } catch (error) {
@@ -166,7 +167,6 @@ export default {
         }
       }
     },
-    // Add this new method to mask card numbers
     maskCardNumber (cardNumber)
     {
       if (!cardNumber) return 'Not specified';
