@@ -59,9 +59,7 @@
                 </div>
               </div>
               <div class="gap-2 d-flex" style="position: absolute; bottom: 15px; right: 20px">
-                <button class="btn btn-secondary" data-bs-dismiss="offcanvas">
-                  Close
-                </button>
+
                 <button type="submit" class="btn btn-primary ">Save</button>
               </div>
           </form>
