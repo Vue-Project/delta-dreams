@@ -1,6 +1,7 @@
 <template>
   <section class="checkIn-reservations">
     <div class="card">
+      <h1>{{selectedResourceName}}</h1>
       <h5 class="card-header">
         <NuxtLink to="/"><i class="fa-solid fa-angle-left pr-2" style="color: #6f6b7d"></i> </NuxtLink>Add Reservation
       </h5>
@@ -51,10 +52,7 @@
                   <label for="roomCount" class="form-label">Room(s)</label>
                   <input class="form-control" type="number" id="roomCount" v-model="formAddReservation.numberRooms" min="1" @input="updateRepeater" />
                 </div>
-                <!-- <div class="col-lg-3 col-12 col-md-6 p-0 pe-sm-3">
-                  <label for="roomCount" class="form-label">Room(s)</label>
-                  <input class="form-control" type="number" id="roomCount" v-model="formAddReservation.numberRooms" min="1" max="1" />
-                </div> -->
+
                 <div class="col-lg-9 col-12 mb-4 col-md-6 ps-sm-2 p-0 pe-md-0">
                   <label for="reservationType" class="form-label">Reservation Type</label>
                   <select class="form-select" id="reservationType" v-model="formAddReservation.reservationType" ref="reservationType" :class="{ 'input-error': validationMessages.reservationType }">
@@ -153,19 +151,18 @@
                     <!--  ! table Header -->
                     <!--  ! table body -->
                     <tbody>
-                      <tr v-for="(item, index) in formData" :key="index" class="mb-2 selectStyle">
+                      <tr v-for="(item, index) in formAddReservation.units" :key="index" class="mb-2 selectStyle">
                         <td>
-                          <select class="form-select" id="unitsTypes" v-model="formAddReservation.units[0].roomType" @change="handleUnitTypeChange">
+                          <select class="form-select" id="unitsTypes" v-model="item.roomType"
+                            @change="() => handleUnitTypeChange(index, item.roomType)">
                             <option disabled value="">Select</option>
                             <option v-for="unitType in unitsTypes" :key="unitType.id" :value="unitType.id">
                               {{ unitType.name }}
                             </option>
                           </select>
-                          <!-- <input type="text" class="form-control" v-model="formAddReservation.units[0].roomType" disabled aria-label="Room Type of building ID" /> -->
-
                         </td>
                         <td>
-                          <select class="form-select" v-model="formAddReservation.units[0].rateType" ref="rateType" :class="{ 'input-error': validationMessages.rateType }">
+                          <select class="form-select" v-model="item.rateType" ref="rateType" :class="{ 'input-error': validationMessages.rateType }">
                             <option disabled value="">select</option>
                             <option v-for="(type, index) in getRateTypes" :key="index" :value="type">
                               {{ type }}
@@ -175,33 +172,38 @@
 
                         </td>
                         <td>
-                          <select class="form-select " v-model="formAddReservation.units[0].unitId" :disabled="!availableUnits.length">
+                          <select class="form-select" v-model="item.unitId"
+                            :disabled="!availableUnitsByRoom[index]?.length">
                             <option disabled value="">Select Unit</option>
-                            <option v-for="unit in availableUnits" :key="unit.id" :value="unit.id">
+                            <option v-for="unit in availableUnitsByRoom[index] || []"
+                              :key="unit.id" :value="unit.id">
                               {{ unit.code }}
                             </option>
                           </select>
-
-                          <!-- <input type="text" class="form-control" v-model="formAddReservation.units[0].room" disabled aria-label="Room  of building ID" /> -->
-
                         </td>
                         <td>
-                          <input type="number" class="form-control" v-model="formAddReservation.units[0].adults" placeholder="1" aria-label="1"  min="1" max="10" ref="adults" :class="{ 'input-error': validationMessages.adults }" />
+                          <input type="number" class="form-control" v-model="item.adults" placeholder="1" aria-label="1"  min="1" max="10" ref="adults" :class="{ 'input-error': validationMessages.adults }" />
                           <span class="error-message" v-if="validationMessages.children">{{ validationMessages.children }}</span>
 
                         </td>
                         <td>
-                          <input type="number" class="form-control" v-model="formAddReservation.units[0].children" placeholder="1" aria-label="1" value="1" min="1" max="10" ref="children" :class="{ 'input-error': validationMessages.children }" />
+                          <input type="number" class="form-control" v-model="item.children" placeholder="1" aria-label="1" value="1" min="1" max="10" ref="children" :class="{ 'input-error': validationMessages.children }" />
                           <span class="error-message" v-if="validationMessages.children">{{ validationMessages.children }}</span>
                         </td>
                         <td>
                           <div class="row">
                             <div class="col-lg-10">
                               <div class="input-group">
-                                <input @change="(value) => $emit('change', value.target.value)" class="form-control" placeholder="0.00" id="rateAmount" v-model="formAddReservation.units[0].rateAmount" aria-label="number of rateAmount" ref="rateAmount" :class="{ 'input-error': validationMessages.rateAmount }" />
+                                <input @change="(value) => $emit('change', value.target.value)" class="form-control" placeholder="0.00" id="rateAmount" v-model="item.rateAmount" aria-label="number of rateAmount" ref="rateAmount" :class="{ 'input-error': validationMessages.rateAmount }" />
                                 <span class="input-group-text groupStyle">EGP</span>
                               </div>
                               <span class="error-message" v-if="validationMessages.rateAmount">{{ validationMessages.rateAmount }}</span>
+                            </div>
+                            <div class="col-md-2 p-0">
+                              <button class="btn btn-label-danger" type="button" v-if="index > 0"
+                                @click="removeItem(index)">
+                                <i class="fa-solid fa-xmark"></i>
+                              </button>
                             </div>
                           </div>
 
@@ -280,7 +282,9 @@
                 </div>
               </div>
             </div>
-          </div>
+
+            </div>
+
           <!--  ! Hold Release Date & Time -->
           <hr class="my-4" />
           <!--  ! Guest Information -->
@@ -481,13 +485,11 @@ export default {
         units: [{
           roomType: "",
           rateType: "",
-          room: "",
+          unitId: "",
           adults: "",
           children: "",
           rateAmount: "",
           unitTypeId: "",
-          unitId: "",
-
         }],
         releaseDate: "",
         releaseTime: "",
@@ -532,6 +534,7 @@ export default {
       hasMore: false,
       isLoading: false,
       searchQuery: '',
+      availableUnitsByRoom: {}, // Store available units for each room index
     };
   },
 
@@ -539,29 +542,65 @@ export default {
 
     updateRepeater ()
     {
-      const currentCount = this.formData.length;
-      if (currentCount < this.roomCount) {
-        for (let i = currentCount; i < this.roomCount; i++) {
-          this.formData.push({
-            rooms: 1,
-          });
+      const currentCount = this.formAddReservation.units.length;
+      const targetCount = parseInt(this.formAddReservation.numberRooms);
+
+      if (currentCount < targetCount) {
+        // Get the first room's data as a template
+        const firstRoom = this.formAddReservation.units[0];
+
+        // Add new units
+        for (let i = currentCount; i < targetCount; i++) {
+          const newRoom = {
+            roomType: firstRoom.roomType,
+            rateType: firstRoom.rateType,
+            unitId: "", // Leave empty as it needs to be unique
+            adults: firstRoom.adults,
+            children: firstRoom.children,
+            rateAmount: firstRoom.rateAmount,
+            unitTypeId: firstRoom.unitTypeId, // Make sure to copy the unitTypeId
+          };
+
+          this.formAddReservation.units.push(newRoom);
+          this.$set(this.availableUnitsByRoom, i, []);
+
+          if (newRoom.roomType) {
+            this.handleUnitTypeChange(i, newRoom.roomType);
+          }
         }
-      } else if (currentCount > this.roomCount) {
-        this.formData.splice(this.roomCount);
+      } else if (currentCount > targetCount) {
+        this.formAddReservation.units.splice(targetCount);
+        this.availableUnitsByRoom.splice(targetCount);
       }
     },
     addItem ()
     {
-      this.formData.push({
-        rooms: 1,
-      });
-      this.roomCount = this.formData.length;
+      // Get the unitTypeId from the first unit
+      const firstUnitTypeId = this.formAddReservation.units[0]?.unitTypeId;
+
+      const newRoom = {
+        roomType: "",
+        rateType: "",
+        unitId: "",
+        adults: "",
+        children: "",
+        rateAmount: "",
+        unitTypeId: firstUnitTypeId, // Set the unitTypeId from the first unit
+      };
+
+      this.formAddReservation.units.push(newRoom);
+      const newIndex = this.formAddReservation.units.length - 1;
+
+      this.$set(this.availableUnitsByRoom, newIndex, []);
+      this.formAddReservation.numberRooms = this.formAddReservation.units.length.toString();
     },
     removeItem (index)
     {
-      if (this.formData.length > 1) {
-        this.formData.splice(index, 1);
-        this.roomCount = this.formData.length;
+      if (this.formAddReservation.units.length > 1) {
+        this.formAddReservation.units.splice(index, 1);
+        // Remove available units for this room
+        this.$delete(this.availableUnitsByRoom, index);
+        this.formAddReservation.numberRooms = this.formAddReservation.units.length.toString();
       }
     },
 
@@ -628,12 +667,11 @@ export default {
         units: [{
           roomType: "",
           rateType: "",
-          room: "",
+          unitId: "",
           adults: "",
           children: "",
           rateAmount: "",
           unitTypeId: "",
-          unitId: "",
         }],
         releaseDate: "",
         releaseTime: "",
@@ -719,7 +757,7 @@ export default {
         reservation_type: this.formAddReservation.reservationType,
         units: this.formAddReservation.units.map(unit => ({
           unit_id: unit.unitId,
-          unit_type_id: unit.unitTypeId,
+          unit_type_id: unit.unitTypeId, // Include for all units
           rate_type: unit.rateType,
           adults: unit.adults,
           children: unit.children,
@@ -739,7 +777,7 @@ export default {
         country: this.formAddReservation.guestInformation.country,
         state: this.formAddReservation.guestInformation.state,
         city: this.formAddReservation.guestInformation.city,
-        zip: this.formAddReservation.guestInformation.zip,
+        zip_code: this.formAddReservation.guestInformation.zip,
         room_charges: this.paymentData.roomCharges,
         tax: this.paymentData.taxes,
         charge_extra: this.paymentData.dueAmount,
@@ -752,6 +790,7 @@ export default {
         insurance : this.paymentData.insurance,
         insurance_by: this.paymentData.insurance_by,
       };
+      // console.log(bookingData);
 
       // If no errors, send the data to the server
       try {
@@ -800,12 +839,24 @@ export default {
           .replace('ID: ', '')
           .split('-')
 
-        // Update to set both roomType and unitTypeId
+        // First set the room type
         this.formAddReservation.units[0].roomType = unitTypeId
         this.formAddReservation.units[0].unitTypeId = unitTypeId
-        this.formAddReservation.units[0].unitId = unitId
 
-        this.handleUnitTypeChange()
+        // Wait for units to be fetched
+        await this.handleUnitTypeChange(0, unitTypeId)
+
+        // After units are loaded, set the unit ID
+        this.$nextTick(() => {
+          // Convert unitId to number if needed (since select values are often strings)
+          const numericUnitId = Number(unitId)
+          this.formAddReservation.units[0].unitId = numericUnitId
+
+          // Force update the select component
+          if (this.$refs.unitSelect && this.$refs.unitSelect[0]) {
+            this.$refs.unitSelect[0].value = numericUnitId
+          }
+        })
       }
     },
 
@@ -821,23 +872,24 @@ export default {
         this.formAddReservation.units[0].rateAmount = parseFloat(value).toFixed(2);
       }
     },
-    async handleUnitTypeChange ()
+    async handleUnitTypeChange (roomIndex, unitTypeId)
     {
       try {
-        const unitTypeId = this.formAddReservation.units[0].roomType
         if (unitTypeId) {
-          // Reset selected unit when changing type
-          this.selectedUnit = ''
+          // Reset selected unit for this room
+          this.formAddReservation.units[roomIndex].unitId = '';
+          // Set the unitTypeId for this specific unit
+          this.formAddReservation.units[roomIndex].unitTypeId = unitTypeId;
 
           // Fetch units for selected type
-          const response = await getUnits(unitTypeId)
-          this.availableUnits = response.data.data
+          const response = await getUnits(unitTypeId);
+          this.$set(this.availableUnitsByRoom, roomIndex, response.data.data);
         } else {
-          this.availableUnits = []
+          this.$set(this.availableUnitsByRoom, roomIndex, []);
         }
       } catch (error) {
-        console.error('Error fetching units:', error)
-        this.availableUnits = []
+        console.error('Error fetching units:', error);
+        this.$set(this.availableUnitsByRoom, roomIndex, []);
       }
     },
 
