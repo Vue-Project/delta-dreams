@@ -1,7 +1,6 @@
 <template>
   <section class="checkIn-reservations">
     <div class="card">
-      <h1>{{selectedResourceName}}</h1>
       <h5 class="card-header">
         <NuxtLink to="/"><i class="fa-solid fa-angle-left pr-2" style="color: #6f6b7d"></i> </NuxtLink>Add Reservation
       </h5>
