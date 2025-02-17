@@ -5,7 +5,7 @@
                 <div class="col mb-3">
                   <label for="flatpickr-date-01" class="form-label">Date</label>
                   <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" id="flatpickr-date-01" ref="datePicker1" aria-label="input Text to Check-in Date" v-model="formAddPayment.date" />
-                  <i class="fa-solid fa-calendar-days icon-date"></i>
+                  <i class="fa-solid fa-calendar-days icon-date right-24"></i>
                 </div>
               </div>
               <div class="row g-2">

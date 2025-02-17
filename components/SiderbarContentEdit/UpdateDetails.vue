@@ -25,7 +25,7 @@
         <input id="updateDetailsRateAmount" type="text" class="form-control" placeholder="00.00" aria-label="rate amount" min="00.00" v-model="formUpdateReservationItems.rateAmount" />
       </div>
     </div>
-    <div class="gap-2 d-flex" style="position: absolute; bottom: 15px; right: 0">
+    <div class="gap-2 d-flex" style="position: absolute; bottom: 15px; right: 15px">
       <button type="submit" class="btn btn-primary">Update</button>
     </div>
   </form>
