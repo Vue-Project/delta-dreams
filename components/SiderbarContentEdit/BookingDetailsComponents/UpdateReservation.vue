@@ -337,7 +337,7 @@
                 <label for="countryGuest" class="col-form-label">Country</label>
                 <select class="form-select" v-model="formAddReservation.guestInformation.country" :class="{ 'input-error': validationMessages.country }">
                   <option disabled value="">Select Country</option>
-                  <option v-for="(country, index) in getCountries" :key="index" :value="country.id">
+                  <option v-for="(country, index) in getCountries" :key="index" :value="index">
                     {{ country }}
                   </option>
                 </select>
@@ -643,7 +643,7 @@ export default {
         country: this.formAddReservation.guestInformation.country,
         state: this.formAddReservation.guestInformation.state,
         city: this.formAddReservation.guestInformation.city,
-        zip: this.formAddReservation.guestInformation.zip,
+        zip_code: this.formAddReservation.guestInformation.zip,
         // email_booking: this.showSelect,
         // email_booking_option: this.formAddReservation.otherInformation.emailBookingOption,
         // send_email_checkout: this.showInput,
