@@ -2,10 +2,10 @@ import apiClient from './apiClient';
 
 export const addGuest = async (addGuestData) => {
   try {
-    const response = await apiClient.post('/users', addGuestData, {
+    const response = await apiClient.post('/clients', addGuestData, {
       headers: {
-        'Content-Type': 'application/json',
-      },
+        'Content-Type': 'multipart/form-data'
+      }
     });
     return response.data;
   } catch (error) {

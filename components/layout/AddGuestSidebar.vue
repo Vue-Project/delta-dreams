@@ -10,7 +10,7 @@
               <div class="col-md-6">
                 <div class="row">
                   <div div class="col-md-4">
-                    <DropzoneComponent :id="'my-dropzone'" />
+                    <DropzoneComponent :id="'profile-image'" v-model="formGuest.image" @dropzone-error="handleDropzoneError" />
                   </div>
                   <div class="col-md-8">
                     <div class="mb-3">
@@ -51,7 +51,7 @@
                       <label for="formGustIdentityGender" class="col-form-label">Gender</label>
                   <select class="form-select" v-model="formGuest.gender" ref="gender" :class="{ 'input-error': validationMessages.gender }">
                       <option value="" disabled selected>Select Gender</option>
-                      <option v-for="(gender, index) in getGenderTypes" :key="index" :value="gender">
+                      <option v-for="(gender, index) in getGenderTypes" :key="index" :value="index">
                         {{ gender }}
                       </option>
                   </select>
@@ -77,7 +77,7 @@
                 <label for="countryGuest" class="col-form-label">Country</label>
                 <select class="form-select" v-model="formGuest.country" id="countryGuest" >
                   <option disabled value="">Select Country</option>
-                  <option v-for="(country, index) in getCountries" :key="index" :value="country">
+                  <option v-for="(country, index) in getCountries" :key="index" :value="index">
                     {{ country }}
                   </option>
                 </select>
@@ -119,27 +119,34 @@
                               <label for="formIdentityInfoId" class="col-form-label">ID Number</label>
                               <input class="form-control" type="text" id="formIdentityInfoId" placeholder="Enter ID Number" aria-label="Enter ID Number Guest" v-model="formGuest.OtherInformation.idNumber" />
                             </div>
-                            <div class="mb-3">
-                              <label for="flatpickr-date-04" class="col-form-label">Expiry Date</label>
-                            <input type="text" class="form-control" placeholder="YYYY-MM-D " id="flatpickr-date-04" ref="datePicker4" aria-label="input Text to Expiry Date" v-model="formGuest.OtherInformation.expiryDate" />
-                            <i class="fa-solid fa-calendar-days icon-date top"></i>
-                            </div>
+
                           </div>
                         </div>
                       </div>
 
                       <div class="col-md-6">
-                        <div class="mb-3">
+                        <div class="row">
+                          <div class="col-md-6">
                           <label for="formGustIdentityIdType" class="col-form-label">ID Type</label>
                           <select class="form-select" id="formGustIdentityIdType" aria-label="select ID Type" v-model="formGuest.OtherInformation.idType">
                             <option value="" disabled selected>
                               Select
                               </option>
-                                <option v-for="(nationalType, index) in getNationalTypes" :key="index" :value="nationalType.id">
+                                <option v-for="(nationalType, index) in getNationalTypes" :key="index" :value="index">
                                   {{ nationalType }}
                                 </option>
                           </select>
                         </div>
+                          <div class="col-md-6">
+                            <div class="mb-3">
+                              <label for="flatpickr-date-04" class="col-form-label">Expiry Date</label>
+                            <input type="text" class="form-control" placeholder="YYYY-MM-D " id="flatpickr-date-09" ref="datePicker9" aria-label="input Text to Expiry Date" v-model="formGuest.OtherInformation.expiryDate" />
+                            <i class="fa-solid fa-calendar-days icon-date top"></i>
+                            </div>
+
+                        </div>
+                        </div>
+
                       </div>
                     </div>
                     <div class="col-12 mb-3">Personal Information</div>
@@ -161,7 +168,7 @@
                           <option value="" disabled selected>
                             Select
                           </option>
-                          <option v-for="(country, index) in getCountries" :key="index" :value="country.id">
+                          <option v-for="(country, index) in getCountries" :key="index" :value="index">
                             {{country}}
                           </option>
 
@@ -175,7 +182,7 @@
                           <option value="" disabled selected>
                             Select
                           </option>
-                          <option v-for="(vipStatus, index) in getVipStatus" :key="index" :value="vipStatus.id">
+                          <option v-for="(vipStatus, index) in getVipStatus" :key="index" :value="index">
                             {{vipStatus}}
                           </option>
                         </select>
@@ -318,13 +325,13 @@ export default {
       this.resetValidationMessages();
     },
 
-    async submitFormGuest ()
-    {
-      try {
-        const formData = new FormData();
-        formData.append('image', this.formGuest.image ? this.formGuest.image.file : null);
-        formData.append('image', this.formGuest.OtherInformation.image ? this.formGuest.OtherInformation.image.file : null);
+    handleDropzoneError(error) {
+      // Handle the error appropriately
+      this.handleSubmissionError(error, "Error uploading image");
+    },
 
+    async submitFormGuest() {
+      try {
         this.resetValidationMessages();
         this.isSubmitting = true;
 
@@ -332,12 +339,10 @@ export default {
         const requiredFields = ["name", "gender", "phone"];
         let hasError = false;
 
-        requiredFields.forEach((field) =>
-        {
+        requiredFields.forEach((field) => {
           if (!this.formGuest[field]) {
             hasError = true;
-            this.validationMessages[field] = `${field.charAt(0).toUpperCase() + field.slice(1)
-              } is required`;
+            this.validationMessages[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} is required`;
 
             const element = this.$refs[field];
             if (element && element.classList) {
@@ -349,8 +354,12 @@ export default {
         if (hasError) {
           throw new Error("Please fill in all required fields");
         }
+
+        // Create FormData instance
+        const formData = new FormData();
+
+        // Append all the text data
         const addGuestData = {
-          image: this.formGuest.image,
           name: this.formGuest.name,
           email: this.formGuest.email,
           mobile: this.formGuest.mobile,
@@ -365,37 +374,33 @@ export default {
           birth_date: this.formGuest.OtherInformation.paymentMethod.birthDate,
           vip_status: this.formGuest.OtherInformation.paymentMethod.vipStatus,
           nationality: this.formGuest.OtherInformation.paymentMethod.nationality,
-          vip_status: this.formGuest.OtherInformation.paymentMethod.vipStatus,
           national_id: this.formGuest.OtherInformation.idNumber,
           national_expire_date: this.formGuest.OtherInformation.expiryDate,
           national_type: this.formGuest.OtherInformation.idType,
-
         };
-        // console.log(addGuestData);
 
+        // Append all text data to FormData
+        Object.keys(addGuestData).forEach(key => {
+          formData.append(key, addGuestData[key]);
+        });
 
-        // Make API call
-        const response = await addGuest(addGuestData);
+        // Append images if they exist
+        if (this.formGuest.image?.file) {
+          formData.append('profile_image', this.formGuest.image.file);
+        }
 
+        if (this.formGuest.OtherInformation?.image?.file) {
+          formData.append('identity_image', this.formGuest.OtherInformation.image.file);
+        }
 
-        await showSuccessAlert(
-          "Guest added successfully.!", // Custom message
+        // Make API call with FormData
+        const response = await addGuest(formData);
 
-        );
-
-        // Reset form after success
+        await showSuccessAlert("Guest added successfully!");
         this.resetForm();
-
-        // Emit event for parent component
         this.$emit("guest-added", response.data);
       } catch (error) {
-
-        // Show error message
-        handleSubmissionError(
-          error,
-          "Please fill in all required fields" // Custom default error
-        );
-
+        handleSubmissionError(error, "Please fill in all required fields");
       } finally {
         this.isSubmitting = false;
       }
