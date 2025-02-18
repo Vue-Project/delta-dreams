@@ -658,10 +658,9 @@ export default {
         // payment_method_city: this.formAddReservation.BillingSummary.CityLedger,
         // selected_payment_method: this.formAddReservation.BillingSummary.payMentUser,
       };
-      console.log(bookingData);
 
       try {
-        // const response = await PutUpdateReservation(this.reservationId, bookingData);
+        const response = await PutUpdateReservation(this.reservationId, bookingData);
         await showSuccessAlert(
           "Reservation submitted successfully!", // Custom message
           this.$router,
