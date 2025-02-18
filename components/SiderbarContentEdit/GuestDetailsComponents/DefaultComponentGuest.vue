@@ -131,7 +131,7 @@
                         <option value="" disabled selected>
                           Select
                         </option>
-                        <option v-for="(nationalType, index) in getNationalTypes" :key="index" :value="nationalType.id">
+                        <option v-for="(nationalType, index) in getNationalTypes" :key="index" :value="index">
                           {{ nationalType }}
                         </option>
                       </select>
@@ -170,8 +170,8 @@
                   <option value="" disabled selected>
                     Select
                   </option>
-                  <option v-for="(country, index) in getCountries" :key="index" :value="country.id">
-                    {{ country }}
+                  <option v-for="(nationality, index) in getCountries" :key="index" :value="index">
+                    {{ nationality }}
                   </option>
 
 
@@ -184,7 +184,7 @@
                   <option value="" disabled selected>
                     Select
                   </option>
-                  <option v-for="(vipStatus, index) in getVipStatus" :key="index" :value="vipStatus.id">
+                  <option v-for="(vipStatus, index) in getVipStatus" :key="index" :value="index">
                     {{ vipStatus }}
                   </option>
                 </select>
@@ -345,7 +345,6 @@ export default {
           throw new Error("Please fill in all required fields");
         }
         const updateGuestData = {
-          // reservationId: this.reservationId,
           image: this.formGuest.image,
           name: this.formGuest.name,
           email: this.formGuest.email,
@@ -359,13 +358,11 @@ export default {
           zip_code: this.formGuest.zip,
           international_phone: this.formGuest.internationalNumber,
           birth_date: this.formGuest.OtherInformation.paymentMethod.birthDate,
-          vip_status: this.formGuest.OtherInformation.paymentMethod.vipStatus,
           nationality: this.formGuest.OtherInformation.paymentMethod.nationality,
           vip_status: this.formGuest.OtherInformation.paymentMethod.vipStatus,
           national_id: this.formGuest.OtherInformation.idNumber,
           national_expire_date: this.formGuest.OtherInformation.expiryDate,
           national_type: this.formGuest.OtherInformation.idType,
-
         };
         // const updateGuestData = {
         //   reservationId: this.reservationId,
@@ -402,7 +399,6 @@ export default {
         //   },
 
         // };
-
 
         // Make API call
         const response = await PostUpdateGuest(this.reservationData.client.id, updateGuestData);
