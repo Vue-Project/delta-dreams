@@ -56,7 +56,7 @@
                   <label for="reservationType" class="form-label">Reservation Type</label>
                   <select class="form-select" id="reservationType" v-model="formAddReservation.reservationType" ref="reservationType" :class="{ 'input-error': validationMessages.reservationType }">
                     <option disabled value="">Select</option>
-                    <option v-for="(type, index) in getReservationTypes" :key="index" :value="type">
+                    <option v-for="(type, index) in getReservationTypes" :key="index" :value="index">
                       {{ type }}
                     </option>
                   </select>
@@ -163,7 +163,7 @@
                         <td>
                           <select class="form-select" v-model="item.rateType" ref="rateType" :class="{ 'input-error': validationMessages.rateType }">
                             <option disabled value="">select</option>
-                            <option v-for="(type, index) in getRateTypes" :key="index" :value="type">
+                            <option v-for="(type, index) in getRateTypes" :key="index" :value="index">
                               {{ type }}
                             </option>
                           </select>
@@ -217,7 +217,7 @@
                     <!--  ! table footer -->
                   </table>
                   <button class="btn btn-primary waves-effect waves-light mt-3" type="button" @click="addItem">
-                    Add Room
+                    Add Unit
                   </button>
                 </div>
               </div>
@@ -350,7 +350,7 @@
                 <label for="countryGuest" class="col-form-label">Country</label>
                 <select class="form-select" v-model="formAddReservation.guestInformation.country" :class="{ 'input-error': validationMessages.country }">
                   <option disabled value="">Select Country</option>
-                  <option v-for="(country, index) in getCountries" :key="index" :value="country.id">
+                  <option v-for="(country, index) in getCountries" :key="index" :value="index">
                     {{ country }}
                   </option>
                 </select>
@@ -767,7 +767,7 @@ export default {
         book_all_available: this.formAddReservation.rateOffered.bookAll,
         hold_release_date: this.formAddReservation.releaseDate,
         hold_release_time: this.formAddReservation.releaseTime,
-        release_term_value: this.formAddReservation.releaseTermValue,
+        // release_term_value: this.formAddReservation.releaseTermValue,
         release_term_type: this.formAddReservation.releaseTerm || "24 hours",
         remind_before_days: this.formAddReservation.remindGuest,
         client_id: this.selectedNameId,
@@ -789,7 +789,6 @@ export default {
         insurance : this.paymentData.insurance,
         insurance_by: this.paymentData.insurance_by,
       };
-      // console.log(bookingData);
 
       // If no errors, send the data to the server
       try {
