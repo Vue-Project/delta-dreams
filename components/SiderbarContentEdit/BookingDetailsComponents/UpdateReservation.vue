@@ -149,7 +149,7 @@
                         <td style="width: 185px">
                           <select class="form-select" v-model="formAddReservation.units[0].rateType" ref="rateType" :class="{ 'input-error': validationMessages.rateType }">
                             <option value="" disabled>select</option>
-                            <option v-for="(type, index) in getRateTypes" :key="index" :value="type">
+                            <option v-for="(type, index) in getRateTypes" :key="index" :value="index">
                               {{ type }}
                             </option>
                           </select>
@@ -658,10 +658,10 @@ export default {
         // payment_method_city: this.formAddReservation.BillingSummary.CityLedger,
         // selected_payment_method: this.formAddReservation.BillingSummary.payMentUser,
       };
-
+      console.log(bookingData);
 
       try {
-        const response = await PutUpdateReservation(this.reservationId, bookingData);
+        // const response = await PutUpdateReservation(this.reservationId, bookingData);
         await showSuccessAlert(
           "Reservation submitted successfully!", // Custom message
           this.$router,
