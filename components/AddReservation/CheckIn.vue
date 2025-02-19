@@ -182,7 +182,7 @@
                         </td>
                         <td>
                           <input type="number" class="form-control" v-model="item.adults" placeholder="1" aria-label="1"  min="1" max="10" ref="adults" :class="{ 'input-error': validationMessages.adults }" />
-                          <span class="error-message" v-if="validationMessages.children">{{ validationMessages.children }}</span>
+                          <span class="error-message" v-if="validationMessages.adults">{{ validationMessages.adults }}</span>
 
                         </td>
                         <td>
