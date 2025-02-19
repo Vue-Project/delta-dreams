@@ -667,7 +667,7 @@ export default {
     {
 
       return {
-        user: event.extendedProps?.reservation?.user,
+        client: event.extendedProps?.reservation?.client,
         unit_id: event.extendedProps?.reservation?.unit_id,
         id: event.extendedProps?.reservation?.id || event.id,
         checkin_date: event.start,

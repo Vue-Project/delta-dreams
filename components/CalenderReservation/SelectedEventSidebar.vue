@@ -8,7 +8,7 @@
         <template v-if="selectedEvent">
           <h6>
             <i class="fa-solid fa-user pr-2 text-primary fs-3 mb-2"></i>
-            {{ selectedEvent.user?.name }}
+            {{ selectedEvent.client?.name }}
           </h6>
           <div>
             <span class="mr-3">
