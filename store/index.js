@@ -8,6 +8,7 @@ export const state = () => ({
   nationalTypes: [],
   genderTypes: [],
   projects: [],
+  remindGuestType: [],
 // acces page in URl
   // accessAllowed: {},
 
@@ -41,6 +42,7 @@ export const mutations = {
     state.nationalTypes = [];
     state.genderTypes = [];
     state.projects = [];
+    state.remindGuestType = [];
   },
       // acces page in URl
 
@@ -76,6 +78,9 @@ export const mutations = {
     state.projects = projects;
   },
 
+  setRemindGuestType(state, remindGuestType) {
+    state.remindGuestType = remindGuestType;
+  },
 };
     // acces page in URl
 
@@ -87,6 +92,7 @@ export const getters = {
   getNationalTypes: state => state.nationalTypes,
   getGenderTypes: state => state.genderTypes,
   getProjects: state => state.projects,
+  getRemindGuestType: state => state.remindGuestType,
 };
 
 export const actions = {
@@ -111,5 +117,8 @@ export const actions = {
   },
   updateProjects({ commit }, projects) {
     commit('setProjects', projects);
+  },
+  updateRemindGuestType({ commit }, remindGuestType) {
+    commit('setRemindGuestType', remindGuestType);
   },
 };

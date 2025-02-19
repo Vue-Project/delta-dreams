@@ -93,6 +93,7 @@ export default {
       nationalTypes: [],
       genderTypes: [],
       projects: [],
+      remindGuestType: [],
       isSidebarOpen: false,
       isPopoverBodyVisible: true, // Body visibility
       isPopoverVisible: false, // State to control popover visibility
@@ -1041,6 +1042,7 @@ export default {
       'updateNationalTypes',
       'updateGenderTypes',
       'updateProjects',
+      'updateRemindGuestType',
     ]),
 
 
@@ -1058,6 +1060,7 @@ export default {
       this.nationalTypes = CalenderDataResponse.national_type;
       this.genderTypes = CalenderDataResponse.gender_type;
       this.projects = CalenderDataResponse.projects;
+      this.remindGuestType = CalenderDataResponse.release_type;
       this.buildingNames = this.getBuildingNames();
       const events = this.transformAllUnitsToEvents();
       this.calendarOptions = { ...this.calendarOptions, events };
@@ -1080,6 +1083,7 @@ export default {
       this.updateNationalTypes(this.nationalTypes);
       this.updateGenderTypes(this.genderTypes);
       this.updateProjects(this.projects);
+      this.updateRemindGuestType(this.remindGuestType);
     } catch (error) {
       console.error("Error loading data:", error);
     } finally {

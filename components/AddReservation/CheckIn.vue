@@ -229,7 +229,7 @@
           <div class="row">
             <div class="col-lg-5">
               <div class="row">
-                <div class="col-lg-8">
+                <div class="col-lg-12">
                   <div class="row">
                     <div class="col-lg-7 col-12 col-md-6 px-0">
                       <label for="flatpickr-date-03" class="form-label">Hold Release Date & Time</label>
@@ -249,13 +249,13 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-lg-4 px-0  px-md-0 px-lg-3 col-12">
+                <!-- <div class="col-lg-4 px-0  px-md-0 px-lg-3 col-12">
                   <label for="releaseTerm" class="form-label">Release Term</label>
                   <div class="input-group">
                     <input type="text" class="form-control" placeholder="Value" id="releaseTerm" v-model="formAddReservation.releaseTerm" />
                     <span class="input-group-text groupStyle">%</span>
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
             <div class="col-lg-7">
@@ -268,16 +268,13 @@
                   </div>
                 </div>
                 <div class="col-lg-8 col-12">
-                  <div class="d-flex mt-4">
-                    <div class="form-check mr-2">
-                      <input type="radio" id="hold-release" name="optionRadioDate" class="form-check-input" v-model="formAddReservation.holdRelease" />
-                      <label class="form-check-label" for="hold-release">Hold Release Date</label>
-                    </div>
-                    <div class="form-check">
-                      <input type="radio" id="arrival-date" name="optionRadioDate" class="form-check-input" v-model="formAddReservation.arrivalDate" />
-                      <label class="form-check-label" for="arrival-date">Arrival Date</label>
-                    </div>
-                  </div>
+                  <label for="remindGuestType" class="form-label">Remind Guest Type</label>
+                  <select class="form-select" v-model="formAddReservation.remindGuestType">
+                    <option disabled value="">Select Remind Guest Type</option>
+                    <option v-for="(remindGuestType, index) in getRemindGuestType" :key="index" :value="index">
+                      {{ remindGuestType}}
+                    </option>
+                  </select>
                 </div>
               </div>
             </div>
@@ -495,6 +492,7 @@ export default {
         releaseTerm: "",
         releaseTermValue: "",
         remindGuest: "",
+        remindGuestType: "",
         holdRelease: false,
         arrivalDate: false,
         guestInformation: {
@@ -762,14 +760,15 @@ export default {
           children: unit.children,
           rate_amount: unit.rateAmount,
         })),
-        is_quick_group_booking: this.formAddReservation.rateOffered.quickGroup,
-        is_complimentary: this.formAddReservation.rateOffered.complimentaryRoom,
-        book_all_available: this.formAddReservation.rateOffered.bookAll,
+        // is_quick_group_booking: this.formAddReservation.rateOffered.quickGroup,
+        is_free: this.formAddReservation.rateOffered.complimentaryRoom,
+        // book_all_available: this.formAddReservation.rateOffered.bookAll,
         hold_release_date: this.formAddReservation.releaseDate,
         hold_release_time: this.formAddReservation.releaseTime,
         // release_term_value: this.formAddReservation.releaseTermValue,
-        release_term_type: this.formAddReservation.releaseTerm || "24 hours",
+        // release_term_type: this.formAddReservation.releaseTerm || "24 hours",
         remind_before_days: this.formAddReservation.remindGuest,
+        remind_before_type: this.formAddReservation.remindGuestType,
         client_id: this.selectedNameId,
         mobile: this.formAddReservation.guestInformation.mobile,
         address: this.formAddReservation.guestInformation.address,
@@ -789,6 +788,7 @@ export default {
         insurance : this.paymentData.insurance,
         insurance_by: this.paymentData.insurance_by,
       };
+
 
       // If no errors, send the data to the server
       try {
@@ -1056,7 +1056,8 @@ export default {
     ...mapGetters([
       'getReservationTypes',
       'getRateTypes',
-      'getCountries'
+      'getCountries',
+      'getRemindGuestType',
     ]),
     formattedRateAmount: {
       get ()
