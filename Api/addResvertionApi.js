@@ -3,7 +3,7 @@ import apiClient from './apiClient';
 export const getBusinessSources = async () =>
 {
   try {
-    const response = await apiClient.get('/business-sources');
+    const response = await apiClient.get('/business_sources');
     // console.log(response.data);
     return response.data;
 
@@ -15,7 +15,7 @@ export const getBusinessSources = async () =>
 export const getBookingSources = async () =>
 {
   try {
-    const response = await apiClient.get('/booking-sources');
+    const response = await apiClient.get('/booking_sources');
     // console.log(response.data);
     return response.data;
 
@@ -49,18 +49,18 @@ export const getUnits = async (unitTypeId) =>
   }
 };
 
-export const getReservationTypes = async () =>
-{
-  try {
-    const response = await apiClient.get('/reservation-types');
-    // console.log(response.data);
-    return response.data;
+// export const getReservationTypes = async () =>
+// {
+//   try {
+//     const response = await apiClient.get('/reservation_types');
+//     // console.log(response.data);
+//     return response.data;
 
-  } catch (error) {
-    console.error('Error fetching rooms:', error);
-    throw error;
-  }
-};
+//   } catch (error) {
+//     console.error('Error fetching rooms:', error);
+//     throw error;
+//   }
+// };
 export const postAddReservationData = async (bookingData) =>
 {
   try {
