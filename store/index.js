@@ -7,6 +7,7 @@ export const state = () => ({
   vipStatus: [],
   nationalTypes: [],
   genderTypes: [],
+  projects: [],
 // acces page in URl
   // accessAllowed: {},
 
@@ -39,6 +40,7 @@ export const mutations = {
     state.vipStatus = [];
     state.nationalTypes = [];
     state.genderTypes = [];
+    state.projects = [];
   },
       // acces page in URl
 
@@ -70,6 +72,10 @@ export const mutations = {
     state.genderTypes = genderTypes;
   },
 
+  setProjects(state, projects) {
+    state.projects = projects;
+  },
+
 };
     // acces page in URl
 
@@ -80,6 +86,7 @@ export const getters = {
   getVipStatus: state => state.vipStatus,
   getNationalTypes: state => state.nationalTypes,
   getGenderTypes: state => state.genderTypes,
+  getProjects: state => state.projects,
 };
 
 export const actions = {
@@ -101,5 +108,8 @@ export const actions = {
   },
   updateGenderTypes({ commit }, genderTypes) {
     commit('setGenderTypes', genderTypes);
+  },
+  updateProjects({ commit }, projects) {
+    commit('setProjects', projects);
   },
 };

@@ -92,6 +92,7 @@ export default {
       vipStatus: [],
       nationalTypes: [],
       genderTypes: [],
+      projects: [],
       isSidebarOpen: false,
       isPopoverBodyVisible: true, // Body visibility
       isPopoverVisible: false, // State to control popover visibility
@@ -1039,6 +1040,7 @@ export default {
       'updateVipStatus',
       'updateNationalTypes',
       'updateGenderTypes',
+      'updateProjects',
     ]),
 
 
@@ -1055,6 +1057,7 @@ export default {
       this.vipStatus = CalenderDataResponse.vip_status;
       this.nationalTypes = CalenderDataResponse.national_type;
       this.genderTypes = CalenderDataResponse.gender_type;
+      this.projects = CalenderDataResponse.projects;
       this.buildingNames = this.getBuildingNames();
       const events = this.transformAllUnitsToEvents();
       this.calendarOptions = { ...this.calendarOptions, events };
@@ -1076,7 +1079,7 @@ export default {
       this.updateVipStatus(this.vipStatus);
       this.updateNationalTypes(this.nationalTypes);
       this.updateGenderTypes(this.genderTypes);
-
+      this.updateProjects(this.projects);
     } catch (error) {
       console.error("Error loading data:", error);
     } finally {

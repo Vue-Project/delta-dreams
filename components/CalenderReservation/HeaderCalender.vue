@@ -1,14 +1,8 @@
 <template>
   <div class="row d-flex justify-content-between p-2 position-relative">
+
     <div class="col-lg-2 col-12 calendarDate">
-      <input
-        type="text"
-        class="form-control flatpickr-input mb-sm-2"
-        placeholder="YYYY-MM-DD"
-        id="flatpickr-date-04"
-        ref="datePicker4"
-        aria-label="input for date"
-      />
+      <input type="text" class="form-control flatpickr-input mb-sm-2" placeholder="YYYY-MM-DD" id="flatpickr-date-04" ref="datePicker4" aria-label="input for date" />
       <i class="fa-solid fa-calendar-days date-icon"></i>
     </div>
     <div class="col-lg-6 col-12">
@@ -23,12 +17,28 @@
     </div>
     <div class="col-lg-4 col-12">
       <div class="d-flex items-center justify-content-end gap-4">
-        <!-- <div class="w-100">
-          <select class="form-select" id="exampleFormControlSelect1" aria-label="Default select example">
-            <option selected>السعر غير شامل</option>
-            <option value="1">السعر شامل الافطار</option>
-          </select>
-        </div> -->
+        <div class="w-100">
+          <div class="row">
+            <div class="col-md-6">
+              <select class="form-select">
+                <option disabled value="">select</option>
+                <option v-for="(type, index) in getRateTypes" :key="index" :value="index">
+                  {{ type }}
+                </option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <select class="form-select">
+                <option disabled value="">select</option>
+                <option v-for="project in getProjects" :key="project.id" :value="project.id">
+                  {{ project.name }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+
+        </div>
         <!-- <label class="switch">
           <input type="checkbox" class="switch-input" v-model="isOn" aria-label="switch input to copy and compact" />
           <span class="switch-toggle-slider">
@@ -133,11 +143,14 @@
 
 <script>
 import flatpickrMixin from "../Mixin/flatpickrMixin";
+import { mapState, mapGetters } from 'vuex';
+
 export default {
   name: "HeaderCalender",
   layout: "Component",
 
-  data() {
+  data ()
+  {
     return {
       isHovered: false,
       sidebarVisible: false,
@@ -147,10 +160,12 @@ export default {
   },
 
   methods: {
-    filterCalenderByDate() {
+    filterCalenderByDate ()
+    {
       const flatpickrInstance = flatpickr(this.$refs.datePicker4, {
         dateFormat: "Y-m-d", // Format the date as YYYY-MM-DD
-        onChange: (selectedDates) => {
+        onChange: (selectedDates) =>
+        {
           if (selectedDates.length > 0) {
             const selectedDate = selectedDates[0];
             this.$emit("date-selected", selectedDate); // Emit the selected date
@@ -158,14 +173,16 @@ export default {
         },
       });
     },
-    updateFlatpickr(date) {
+    updateFlatpickr (date)
+    {
       if (this.$refs.datePicker4 && this.$refs.datePicker4._flatpickr) {
         this.$refs.datePicker4._flatpickr.setDate(date); // Update Flatpickr with the new date
       }
     },
   },
 
-  mounted() {
+  mounted ()
+  {
     this.filterCalenderByDate();
 
     // Set the default date in Flatpickr (e.g., 2 days before today)
@@ -174,6 +191,16 @@ export default {
     defaultDate.setDate(today.getDate() - 2); // Subtract 2 days from today
     this.updateFlatpickr(defaultDate); // Update Flatpickr with the default date
     this.$emit("date-selected", defaultDate); // Emit the default date
+  },
+  computed: {
+
+    ...mapGetters([
+      'getRateTypes',
+      'getProjects',
+      'getProjects'
+    ]),
+
+
   },
 
   mixins: [flatpickrMixin],
