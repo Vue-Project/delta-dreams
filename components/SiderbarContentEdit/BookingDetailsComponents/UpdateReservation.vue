@@ -422,7 +422,6 @@ import
 {
   getBookingSources,
   getBusinessSources,
-  getReservationTypes,
   getGuestsInfo,
   PutUpdateReservation,
   getUnits,
