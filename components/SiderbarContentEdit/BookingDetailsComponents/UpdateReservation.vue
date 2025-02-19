@@ -116,12 +116,10 @@
 
           <hr class="my-4" />
           <!-- *********************** -->
-            <!-- RATE OFFERED SECTION -->
+          <!-- RATE OFFERED SECTION -->
           <!-- *********************** -->
           <div class="row mb-3">
             <div class="row">
-
-              <!-- ROOM ALLOCATION TABLE -->
               <div class="card mt-3 border-0">
                 <div class="card-datatable table-responsive">
                   <table class=" table overflow-hidden">
@@ -187,13 +185,14 @@
                     </tbody>
                     <!--  ! table footer -->
                   </table>
-                  <!-- <button class="btn btn-primary waves-effect waves-light mt-3" type="button" @click="addItem">
-                    Add Room
-                  </button> -->
+
                 </div>
               </div>
             </div>
-          </div>
+
+              <!-- ROOM ALLOCATION TABLE -->
+
+            </div>
           <hr class="my-4" />
           <!-- *************************** -->
           <!-- RATE OFFERED SECTION -->
@@ -206,7 +205,7 @@
               <!-- HOLD RELEASE DATE/TIME -->
 
               <div class="row">
-                <div class="col-md-8 ">
+                <div class="col-md-12">
                   <div class="row">
                     <div class="col-md-12 col-xl-6 col-12 px-0">
                       <label for="flatpickr-date-03" class="form-label">Hold Release Date & Time</label>
@@ -219,13 +218,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-md-4 col-12">
-                  <label for="releaseTerm" class="form-label">Release Term</label>
-                  <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Value" id="releaseTerm" v-model="formAddReservation.releaseTerm" />
-                    <span class="input-group-text groupStyle">%</span>
-                  </div>
-                </div>
+
               </div>
             </div>
             <div class="col-md-7">
@@ -237,17 +230,14 @@
                     <span class="input-group-text groupStyle">Days</span>
                   </div>
                 </div>
-                <div class="col-md-8 col-12">
-                  <div class="d-flex mt-4">
-                    <div class="form-check mr-2">
-                      <input type="radio" id="hold-release" name="optionRadioDate" class="form-check-input" v-model="formAddReservation.holdRelease" />
-                      <label class="form-check-label" for="hold-release">Hold Release Date</label>
-                    </div>
-                    <div class="form-check">
-                      <input type="radio" id="arrival-date" name="optionRadioDate" class="form-check-input" v-model="formAddReservation.arrivalDate" />
-                      <label class="form-check-label" for="arrival-date">Arrival Date</label>
-                    </div>
-                  </div>
+                <div class="col-lg-8 col-12">
+                  <label for="remindGuestType" class="form-label">Remind Guest Type</label>
+                  <select class="form-select" v-model="formAddReservation.remindGuestType">
+                    <option disabled value="">Select Remind Guest Type</option>
+                    <option v-for="(remindGuestType, index) in getRemindGuestType" :key="index" :value="index">
+                      {{ remindGuestType }}
+                    </option>
+                  </select>
                 </div>
               </div>
             </div>
@@ -286,9 +276,7 @@
                     </div>
                   </div>
                 </div>
-                <!-- <button class="btn btn-outline-primary waves-effect" type="button">
-                  <i class="fa-solid fa-user-plus"></i>
-                </button> -->
+
               </div>
               <span class="error-message" v-if="validationMessages.name">{{ validationMessages.name }}</span>
 
@@ -323,11 +311,12 @@
                 <div class="col-md-4">
                   <label for="insurance_by" class="col-form-label">Insurance_by</label>
                   <select class="form-select" id="paymentInsuranceBy" v-model="formAddReservation.BillingSummary.insurance_by">
-                <option disabled value="">Select</option>
-                <option v-for="account in accounts" :key="account.id" :value="account.id">
-                  {{ account.name }}
-                </option>
-              </select>                </div>
+                    <option disabled value="">Select</option>
+                    <option v-for="account in accounts" :key="account.id" :value="account.id">
+                      {{ account.name }}
+                    </option>
+                  </select>
+                </div>
               </div>
 
             </div>
@@ -382,7 +371,7 @@
                 <div class="d-flex justify-content-between w-100 flex-wrap">
                   <h6 class="mb-0 ms-3">Paid</h6>
                   <div class="d-flex">
-                    <p class="mb-0 fw-medium">{{ formAddReservation.BillingSummary.paid || 0}}</p>
+                    <p class="mb-0 fw-medium">{{ formAddReservation.BillingSummary.paid || 0 }}</p>
                     <!-- <p class="ms-3 text-success mb-0">0.3%</p> -->
                   </div>
                 </div>
@@ -852,7 +841,7 @@ export default {
         checkOutDate: this.formatDateNumber(reservationData.checkout_date || ""),
         checkOutTime: reservationData.checkout_time || "",
         numberRooms: reservationData.rooms || 1,
-        reservationType: reservationData.reservation_type|| "",
+        reservationType: reservationData.reservation_type_name || "",
         bookingSource: reservationData.booking_source?.id || "",
         businessSource: reservationData.business_source?.id || "",
         units: [{
@@ -868,7 +857,7 @@ export default {
           rateAmount: Array.isArray(reservationData?.items) && reservationData.items.length > 0
             ? reservationData.items[0].price
             : "",
-            unitId: Array.isArray(reservationData?.items) && reservationData.items.length > 0
+          unitId: Array.isArray(reservationData?.items) && reservationData.items.length > 0
             ? reservationData.items[0].unit?.id
             : "",
           roomType: Array.isArray(reservationData?.items) && reservationData.items.length > 0
@@ -893,7 +882,7 @@ export default {
         holdRelease: Boolean(reservationData.hold_release),
         arrivalDate: Boolean(reservationData.arrival_date),
         guestInformation: {
-          name: reservationData.client?.name ||  reservationData.user?.name,
+          name: reservationData.client?.name || reservationData.user?.name,
           email: reservationData.client?.email || "",
           mobile: reservationData.client?.phone || "",
           address: reservationData.client?.address || "",
@@ -920,7 +909,8 @@ export default {
 
       this.selectedNameId = reservationData.client?.id || reservationData.user?.id;
     },
-    async handleUnitTypeChange() {
+    async handleUnitTypeChange ()
+    {
       try {
         const unitTypeId = this.formAddReservation.units[0].roomType;
         if (unitTypeId) {
@@ -941,13 +931,13 @@ export default {
   // ======================
   // Lifecycle Hooks
   // ======================
-  async mounted() {
+  async mounted ()
+  {
     try {
       // Fetch initial data for the component
       const [
         businessSourcesResponse,
         bookingSourcesResponse,
-        reservationTypesResponse,
         usersResponse,
         unitTypesResponse,
         unitsResponse,
@@ -955,17 +945,14 @@ export default {
       ] = await Promise.all([
         getBusinessSources(),
         getBookingSources(),
-        getReservationTypes(),
         getGuestsInfo(),
         getUnitTypes(),
         getUnits(),
         getAccounts(),
-        // Fetch all units initially
       ]);
 
       this.businessSources = businessSourcesResponse.data.data;
       this.bookingSources = bookingSourcesResponse.data.data;
-      this.reservationTypes = reservationTypesResponse.data.data;
       this.filteredNames = usersResponse.data.data;
       this.unitsTypes = unitTypesResponse.data.data;
       this.availableUnits = unitsResponse.data.data;
@@ -1011,7 +998,7 @@ export default {
     // }
 
   },
-    // ======================
+  // ======================
   // Computed Properties
   // ======================
   computed: {
@@ -1031,7 +1018,8 @@ export default {
     ...mapGetters([
       'getReservationTypes',
       'getRateTypes',
-      'getCountries'
+      'getCountries',
+      'getRemindGuestType',
     ]),
 
     // Calculate total nights between check-in and check-out
