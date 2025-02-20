@@ -141,11 +141,7 @@
                     <tbody>
                       <tr v-for="(item, index) in formAddReservation.units" :key="index" class="mb-2 selectStyle">
                         <td>
-                          <select class="form-select"
-                                  id="unitsTypes"
-                                  v-model="item.roomType"
-                                  @change="() => handleUnitTypeChange(index, item.roomType)"
-                                  :disabled="index > 0">
+                          <select class="form-select" id="unitsTypes" v-model="item.roomType" @change="() => handleUnitTypeChange(index, item.roomType)" :disabled="index > 0">
                             <option disabled value="">Select</option>
                             <option v-for="unitType in unitsTypes" :key="unitType.id" :value="unitType.id">
                               {{ unitType.name }}
@@ -153,11 +149,7 @@
                           </select>
                         </td>
                         <td>
-                          <select class="form-select"
-                                  v-model="item.rateType"
-                                  ref="rateType"
-                                  :class="{ 'input-error': validationMessages.rateType }"
-                                  :disabled="index > 0">
+                          <select class="form-select" v-model="item.rateType" ref="rateType" :class="{ 'input-error': validationMessages.rateType }" :disabled="index > 0">
                             <option disabled value="">select</option>
                             <option v-for="(type, index) in getRateTypes" :key="index" :value="index">
                               {{ type }}
@@ -166,9 +158,7 @@
                           <span class="error-message" v-if="validationMessages.rateType">{{ validationMessages.rateType }}</span>
                         </td>
                         <td>
-                          <select class="form-select"
-                                  v-model="item.unitId"
-                                  :disabled="!availableUnitsByRoom[index]?.length || index > 0">
+                          <select class="form-select" v-model="item.unitId" :disabled="!availableUnitsByRoom[index]?.length || index > 0">
                             <option disabled value="">Select Unit</option>
                             <option v-for="unit in availableUnitsByRoom[index] || []" :key="unit.id" :value="unit.id">
                               {{ unit.code }}
@@ -176,60 +166,47 @@
                           </select>
                         </td>
                         <td>
-                          <input type="number"
-                                 class="form-control"
-                                 v-model="item.adults"
-                                 placeholder="1"
-                                 aria-label="1"
-                                 min="1"
-                                 max="10"
-                                 ref="adults"
-                                 :class="{ 'input-error': validationMessages.adults }"
-                                 :disabled="index > 0" />
+                          <input type="number" class="form-control" v-model="item.adults" placeholder="1" aria-label="1" min="1" max="10" ref="adults" :class="{ 'input-error': validationMessages.adults }" :disabled="index > 0" />
                           <span class="error-message" v-if="validationMessages.adults">{{ validationMessages.adults }}</span>
                         </td>
                         <td>
-                          <input type="number"
-                                 class="form-control"
-                                 v-model="item.children"
-                                 placeholder="1"
-                                 aria-label="1"
-                                 value="1"
-                                 min="1"
-                                 max="10"
-                                 ref="children"
-                                 :class="{ 'input-error': validationMessages.children }"
-                                 :disabled="index > 0" />
+                          <input type="number" class="form-control" v-model="item.children" placeholder="1" aria-label="1" value="1" min="1" max="10" ref="children" :class="{ 'input-error': validationMessages.children }" :disabled="index > 0" />
                           <span class="error-message" v-if="validationMessages.children">{{ validationMessages.children }}</span>
                         </td>
                         <td>
                           <div class="row">
                             <div class="col-lg-10">
                               <div class="input-group">
-                                <input @change="(value) => $emit('change', value.target.value)"
-                                       class="form-control"
-                                       placeholder="0.00"
-                                       id="rateAmount"
-                                       v-model="item.rateAmount"
-                                       aria-label="number of rateAmount"
-                                       ref="rateAmount"
-                                       :class="{ 'input-error': validationMessages.rateAmount }"
-                                       :disabled="index > 0" />
+                                <input
+                                  @change="(value) => $emit('change', value.target.value)"
+                                  class="form-control"
+                                  placeholder="0.00"
+                                  id="rateAmount"
+                                  v-model="item.rateAmount"
+                                  aria-label="number of rateAmount"
+                                  ref="rateAmount"
+                                  :class="{ 'input-error': validationMessages.rateAmount }"
+                                  :disabled="index > 0"
+                                />
                                 <span class="input-group-text groupStyle">EGP</span>
                               </div>
                               <span class="error-message" v-if="validationMessages.rateAmount">{{ validationMessages.rateAmount }}</span>
                             </div>
                             <div class="col-md-2 p-0 d-flex">
-                              <button class="btn btn-label-danger"
-                                      type="button"
-                                      v-if="index > 0"
-                                      @click="cancelReservation()">
+                              <button
+                                class="btn btn-label-danger"
+                                type="button"
+                                v-if="index > 0"
+                                @click="cancelReservation(index)"
+                              >
                                 <i class="fa-solid fa-xmark"></i>
                               </button>
-                              <button class="btn btn-label-info ml-2"
-                                      type="button"
-                                      v-if="index > 0"
-                                      @click="navigateToEditReservation(formAddReservation.units[index].reservationId)">
+                              <button
+                                class="btn btn-label-info ml-2"
+                                type="button"
+                                v-if="index > 0"
+                                @click="navigateToEditReservation(item.reservationId)"
+                              >
                                 <i class="fa-regular fa-pen-to-square me-1"></i>
                               </button>
                             </div>
@@ -942,7 +919,8 @@ export default {
         this.showDropdown = false
       }, 200)
     },
-    async cancelReservation() {
+    async cancelReservation (index)
+    {
       const result = await showConfirmationAlert(
         'Are you sure?',
         "cancel this reservation",
@@ -951,11 +929,12 @@ export default {
 
       if (result.isConfirmed) {
         try {
-          const response = await postCancelReservation(this.formAddReservation.units[0].reservationId);
+          const reservationId = this.formAddReservation.units[index].reservationId;
+          const response = await postCancelReservation(reservationId);
 
           // Remove the cancelled reservation from the units array
           const cancelledIndex = this.formAddReservation.units.findIndex(
-            unit => unit.reservationId === this.formAddReservation.units[0].reservationId
+            unit => unit.reservationId === this.formAddReservation.units[index].reservationId
           );
           if (cancelledIndex > -1) {
             this.formAddReservation.units.splice(cancelledIndex, 1);
