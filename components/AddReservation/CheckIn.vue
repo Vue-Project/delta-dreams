@@ -268,7 +268,7 @@
                   </div>
                 </div>
                 <div class="col-lg-8 col-12">
-                  <label for="remindGuestType" class="form-label">Remind Guest Type</label>
+                  <label for="remindGuestType" class="form-label">Remind Type before</label>
                   <select class="form-select" v-model="formAddReservation.remindGuestType">
                     <option disabled value="">Select Remind Guest Type</option>
                     <option v-for="(remindGuestType, index) in getRemindGuestType" :key="index" :value="index">
@@ -788,6 +788,7 @@ export default {
         insurance : this.paymentData.insurance,
         insurance_by: this.paymentData.insurance_by,
       };
+console.log(bookingData);
 
 
       // If no errors, send the data to the server
