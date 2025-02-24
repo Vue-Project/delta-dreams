@@ -289,13 +289,13 @@ export default {
 
   },
   watch: {
-    "value.paymentMode": function (newVal) {
-      if (!newVal) {
-        this.validationMessage = "Payment Mode is required.";
-      } else {
-        this.validationMessage = "";
-      }
-    },
+    // "value.paymentMode": function (newVal) {
+    //   if (!newVal) {
+    //     this.validationMessage = "Payment Mode is required.";
+    //   } else {
+    //     this.validationMessage = "";
+    //   }
+    // },
     "value.roomCharges" : function(value){
       this.paymentDetails.roomCharges = value
     },
