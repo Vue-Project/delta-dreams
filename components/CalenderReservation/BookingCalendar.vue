@@ -709,60 +709,106 @@ export default {
       }
 
       return allEvents;
-    },
-    async handleEventChange(info) {
-    // Show loading state
+     },
 
+async handleEventChange(info) {
     try {
       const event = info.event;
-    const resourceId = event.getResources()[0]?.id;
+      const resourceId = event.getResources()[0]?.id;
+      const unitId = resourceId?.split('-')[1];
 
-    const unitId = resourceId?.split('-')[1];
+      // Get the original reservation times from extendedProps
+      const originalCheckinTime = event.extendedProps?.reservation?.checkin_time || '14:00:00';
+      const originalCheckoutTime = event.extendedProps?.reservation?.checkout_time || '12:00:00';
 
+      // Adjust dates to handle timezone offset
+      const startDateObj = new Date(event.start);
+      const endDateObj = new Date(event.end);
 
-    const startDate = event.start.toISOString().split('T')[0];
-    const endDate = event.end.toISOString().split('T')[0];
+      // Format dates correctly with local timezone
+      const startDate = `${startDateObj.getFullYear()}-${String(startDateObj.getMonth() + 1).padStart(2, '0')}-${String(startDateObj.getDate()).padStart(2, '0')}T${originalCheckinTime}`;
+      const endDate = `${endDateObj.getFullYear()}-${String(endDateObj.getMonth() + 1).padStart(2, '0')}-${String(endDateObj.getDate()).padStart(2, '0')}T${originalCheckoutTime}`;
 
-      // Prepare the update data
-      const updateDataUnit = {
-        unit_id: unitId,
-        checkin_date: startDate,
-        checkout_date: endDate,
-        reservation_id: event.extendedProps?.reservation?.id
-      };
+      // Check if this is a blocked event or reservation
+      if (event.extendedProps?.is_blocked) {
+        // Handle blocked event update
+        const updateDataBlock = {
+          unit_id: unitId,
+          start_date: startDate,
+          end_date: endDate,
+          block_id: event.id
+        };
 
+        const result = await showConfirmationDialog("Are you sure you want to update this blocked period?");
 
-      // Show confirmation dialog
-      const result = await showConfirmationDialog("Are you sure you want to update this reservation?");
+        if (result.isConfirmed) {
+          // Make API call to update blocked period
+          const response = await postUpdateBlock(updateDataBlock.block_id, updateDataBlock);
 
-      if (result.isConfirmed) {
-        // Replace 'updateReservation' with your actual API endpoint
-        const response = await postUpdateReservation(updateDataUnit.reservation_id, updateDataUnit);
+          // Update the event in the calendar
+          event.setDates(startDate, endDate);
+          event.setResources([resourceId]);
 
-          await showSuccessAlert(
-          "Reservation updated successfully!", // Custom message
+          await showSuccessAlert("Blocked period updated successfully!");
+        } else {
+          info.revert(); // Revert the change if not confirmed
+        }
+      } else {
+        // Handle reservation update
+        const updateDataUnit = {
+          unit_id: unitId,
+          checkin_date: startDate,
+          checkout_date: endDate,
+          reservation_id: event.extendedProps?.reservation?.id
+        };
 
-        );
-        location.reload()
+        const result = await showConfirmationDialog("Are you sure you want to update this reservation?");
 
+        if (result.isConfirmed) {
+          const response = await postUpdateReservation(updateDataUnit.reservation_id, updateDataUnit);
+
+          // Get the calendar API
+          const calendarApi = this.$refs.calendar.getApi();
+
+          // Remove the old event
+          event.remove();
+
+          // Create a new event with updated properties
+          calendarApi.addEvent({
+            resourceId: resourceId,
+            title: event.title,
+            start: startDate,
+            end: endDate,
+            color: event.backgroundColor,
+            extendedProps: {
+              ...event.extendedProps,
+              reservation: {
+                ...event.extendedProps.reservation,
+                checkin_date: startDate,
+                checkout_date: endDate,
+                checkin_time: originalCheckinTime,
+                checkout_time: originalCheckoutTime,
+                unit_id: unitId
+              }
+            },
+            classNames: event.classNames
+          });
+
+          await showSuccessAlert("Reservation updated successfully!");
+        } else {
+          info.revert(); // Revert the change if not confirmed
+        }
       }
     } catch (error) {
-
-      // Show error message
-      handleSubmissionError(
-          error,
-          "Failed to update reservation." // Custom default error
-        );
-
-      // Revert the calendar event to its original position/size
+      handleSubmissionError(error, "Failed to update event");
       info.revert();
     } finally {
       this.isLoading = false;
     }
-  },
+},
 
-  // Add validation method
-  validateEventChange(event, newStart, newEnd) {
+// Add validation method
+validateEventChange(event, newStart, newEnd) {
     // Check if dates are valid
     if (!newStart || !newEnd || newStart >= newEnd) {
       return false;
