@@ -85,6 +85,14 @@ export const getGuestsInfo = async () =>
     throw error;
   }
 };
+export const getGuestDetails = async (guestId) => {
+  try {
+    const response = await apiClient.get(`/clients/${guestId}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
 
 
 export const GetReservationItems = async (reservationId) =>

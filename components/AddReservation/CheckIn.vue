@@ -181,12 +181,12 @@
                           </select>
                         </td>
                         <td>
-                          <input type="number" class="form-control" v-model="item.adults" placeholder="1" aria-label="1"  min="1" max="10" ref="adults" :class="{ 'input-error': validationMessages.adults }" />
+                          <input type="number" class="form-control" v-model="item.adults" placeholder="1" aria-label="1" min="1" max="10" ref="adults" :class="{ 'input-error': validationMessages.adults }" />
                           <span class="error-message" v-if="validationMessages.adults">{{ validationMessages.adults }}</span>
 
                         </td>
                         <td>
-                          <input type="number" class="form-control" v-model="item.children" placeholder="1" aria-label="1" value="1" min="1" max="10" ref="children" :class="{ 'input-error': validationMessages.children }" />
+                          <input type="number" class="form-control" v-model="item.children" placeholder="0" aria-label="0" min="0" max="10" ref="children" :class="{ 'input-error': validationMessages.children }" />
                           <span class="error-message" v-if="validationMessages.children">{{ validationMessages.children }}</span>
                         </td>
                         <td>
@@ -431,7 +431,7 @@
 </template>
 <script>
 import { showSuccessAlert, handleSubmissionError } from '../../Api/MassageValidation/alertUtilities';
-import { getBookingSources, getBusinessSources, getGuestsInfo, postAddReservationData, getUnitTypes, getUnits } from "../../Api/addResvertionApi";
+import { getBookingSources, getBusinessSources, getGuestsInfo, postAddReservationData, getUnitTypes, getUnits, getGuestDetails } from "../../Api/addResvertionApi";
 import flatpickrMixin from "../Mixin/flatpickrMixin";
 import SidebarAddGuest from "../layout/AddGuestSidebar.vue";
 import { mapState, mapGetters } from 'vuex';
@@ -482,8 +482,8 @@ export default {
           roomType: "",
           rateType: "",
           unitId: "",
-          adults: "",
-          children: "",
+          adults: "1",
+          children: "0",
           rateAmount: "",
           unitTypeId: "",
         }],
@@ -572,17 +572,16 @@ export default {
     },
     addItem ()
     {
-      // Get the unitTypeId from the first unit
       const firstUnitTypeId = this.formAddReservation.units[0]?.unitTypeId;
 
       const newRoom = {
         roomType: "",
         rateType: "",
         unitId: "",
-        adults: "",
-        children: "",
+        adults: "1",
+        children: "0",
         rateAmount: "",
-        unitTypeId: firstUnitTypeId, // Set the unitTypeId from the first unit
+        unitTypeId: firstUnitTypeId,
       };
 
       this.formAddReservation.units.push(newRoom);
@@ -665,8 +664,8 @@ export default {
           roomType: "",
           rateType: "",
           unitId: "",
-          adults: "",
-          children: "",
+          adults: "1",
+          children: "0",
           rateAmount: "",
           unitTypeId: "",
         }],
@@ -938,13 +937,34 @@ console.log(bookingData);
       }
     },
 
-    selectName (name)
+    async selectName (name)
     {
-      this.formAddReservation.guestInformation.name = name.name
-      this.showDropdown = false
-      this.selectedNameId = name.id;
+      try {
+        // Set the name and ID as before
+        this.formAddReservation.guestInformation.name = name.name;
+        this.selectedNameId = name.id;
+        this.showDropdown = false;
 
-      // Optionally fetch other guest details if needed
+        // Fetch detailed guest information using the selected ID
+        const response = await getGuestDetails(name.id); // You'll need to create this API function
+
+        const guestDetails = response.data;
+
+        // Populate all guest information fields
+        this.formAddReservation.guestInformation = {
+          ...this.formAddReservation.guestInformation, // Keep existing data
+          email: guestDetails.email || '',
+          mobile: guestDetails.mobile || '',
+          address: guestDetails.address || '',
+          country: guestDetails.country || '',
+          state: guestDetails.state || '',
+          city: guestDetails.city || '',
+          zip: guestDetails.zip_code || ''
+        };
+      } catch (error) {
+        console.error('Error fetching guest details:', error);
+        // Optionally show an error message to the user
+      }
     },
 
     handleBlur ()
