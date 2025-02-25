@@ -1003,3 +1003,48 @@ body{
 .img-fluid{
   height: 64px;
 }
+.hoverable-event {
+  position: relative;
+}
+
+.hoverable-event:hover::after {
+  content: attr(data-full-name);
+  position: absolute;
+  background: #FFB673;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 14px;
+  z-index: 1000;
+  white-space: nowrap;
+  top: -30px;
+  left: 10%;
+  transform: translateX(-50%);
+}
+.dropdown-menu {
+  padding: 10px;
+  width: 280px;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.form-check-input {
+  margin-right: 8px;
+}
+.dropdown {
+  position: absolute;
+  left: 0px;
+  width: 280px;
+  max-width: 280px;
+  /* margin: 0 9px ; */
+}
+.layout-navbar .navbar-dropdown .badge-notifications{
+  top: 17px;
+}
+.btn .badge{
+  padding: 2px 6px;
+}
