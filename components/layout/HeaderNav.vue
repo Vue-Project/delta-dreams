@@ -23,7 +23,7 @@
       <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
         <ul class="navbar-nav flex-row align-items-center ms-auto">
           <!-- Language -->
-          <li class="nav-item dropdown-language dropdown me-2 me-xl-0">
+          <li class="nav-item dropdown-language  me-2 me-xl-0">
             <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
               <i class="fa-solid fa-language"></i>
             </a>
@@ -61,7 +61,7 @@
           <!-- /Search -->
 
           <!-- Style Switcher -->
-          <li class="nav-item dropdown-style-switcher dropdown me-2 me-xl-0">
+          <li class="nav-item dropdown-style-switcher  me-2 me-xl-0">
             <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
               <i class="fa-solid fa-sun"></i>
             </a>
@@ -89,7 +89,7 @@
           <!-- / Style Switcher-->
 
           <!-- Quick links  -->
-          <li class="nav-item dropdown-shortcuts navbar-dropdown dropdown me-2 me-xl-0">
+          <li class="nav-item dropdown-shortcuts navbar-dropdown  me-2 me-xl-0">
             <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
               <i class="fa-solid fa-border-all fa-md"></i>
             </a>
@@ -172,7 +172,7 @@
           <!-- Quick links -->
 
           <!-- Notification -->
-          <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-1">
+          <li class="nav-item dropdown-notifications navbar-dropdown  me-3 me-xl-1">
             <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
               <i class="fa-solid fa-bell fa-md"></i>
               <span class="badge bg-danger rounded-pill badge-notifications">5</span>
@@ -359,77 +359,7 @@
           <!--/ Notification -->
 
           <!-- User -->
-          <li class="nav-item navbar-dropdown dropdown-user dropdown">
-            <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
-              <div class="avatar avatar-online">
-                <i class="fa-solid fa-user"></i>
-              </div>
-            </a>
-            <!-- <ul class="dropdown-menu dropdown-menu-end">
-              <li>
-                <a class="dropdown-item" href="pages-account-settings-account.html">
-                  <div class="d-flex">
-                    <div class="flex-shrink-0 me-3">
-                      <div class="avatar avatar-online">
-                      </div>
-                    </div>
-                    <div class="flex-grow-1">
-                      <span class="fw-medium d-block">John Doe</span>
-                      <small class="text-muted">Admin</small>
-                    </div>
-                  </div>
-                </a>
-              </li>
-              <li>
-                <div class="dropdown-divider"></div>
-              </li>
-              <li>
-                <a class="dropdown-item" href="pages-profile-user.html">
-                  <i class="fa-solid fa-user-check me-2 fa-sm"></i>
-                  <span class="align-middle">My Profile</span>
-                </a>
-              </li>
-              <li>
-                <a class="dropdown-item" href="pages-account-settings-account.html">
-                  <i class="fa-solid fa-gear me-2 fa-sm"></i>
-                  <span class="align-middle">Settings</span>
-                </a>
-              </li>
-              <li>
-                <a class="dropdown-item" href="pages-account-settings-billing.html">
-                  <span class="d-flex align-items-center align-middle">
-                    <i class="fa-solid fa-credit-card me-2 fa-sm"></i>
-                    <span class="flex-grow-1 align-middle">Billing</span>
-                    <span class="flex-shrink-0 badge badge-center rounded-pill bg-label-danger w-px-20 h-px-20">2</span>
-                  </span>
-                </a>
-              </li>
-              <li>
-                <div class="dropdown-divider"></div>
-              </li>
-              <li>
-                <a class="dropdown-item" href="pages-faq.html">
-                  <i class="fa-solid fa-question-circle me-2 fa-sm"></i>
-                  <span class="align-middle">FAQ</span>
-                </a>
-              </li>
-              <li>
-                <a class="dropdown-item" href="pages-pricing.html">
-                  <i class="fa-solid fa-dollar-sign me-2 fa-sm"></i>
-                  <span class="align-middle">Pricing</span>
-                </a>
-              </li>
-              <li>
-                <div class="dropdown-divider"></div>
-              </li>
-              <li>
-                <a class="dropdown-item" href="auth-login-cover.html" target="_blank">
-                  <i class="fa-solid fa-right-from-bracket me-2 fa-sm"></i>
-                  <span class="align-middle">Log Out</span>
-                </a>
-              </li>
-            </ul> -->
-          </li>
+
           <!--/ User -->
         </ul>
       </div>
