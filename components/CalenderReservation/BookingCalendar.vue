@@ -13,7 +13,7 @@
     <div v-if="isOverlayVisible" class="overlay" @click="closePopover"></div>
     <PopoverComponent v-if="isPopoverVisible" :isPopoverVisible="isPopoverVisible" :popoverStyle="popoverStyle" :popoverArrowLeft="popoverArrowLeft" :firstSelectedDate="firstSelectedDate" :lastSelectedDate="lastSelectedDate" @go-to-add-reservation="goToAddReservation" @toggle-sidebar="toggleSidebar" @close-popover="closePopover" />
     <SidebarBlockRoom :is-sidebar-open="isSidebarOpen" title="Block Room" width="400px" @close-sidebar="toggleSidebar" height="auto">
-      <BlockRoomForm :selectedDates="selectedDates" :selectedResourceId="selectedResourceId" @close-sidebar="toggleSidebar" />
+      <BlockRoomForm :selectedDates="selectedDates" :selectedResourceId="selectedResourceId"  @close-sidebar="toggleSidebar" />
     </SidebarBlockRoom>
     <SelectedEventSidebar :selectedEvent="selectedEvent" @navigate-to-edit-reservation="navigateToEditReservation" />
     </div>
@@ -127,6 +127,9 @@ export default {
         eventResize: this.handleEventChange,
         eventDidMount: (info) => {
           this.adjustHarnessPosition(info);
+          if (info.event.extendedProps?.fullName) {
+            info.el.setAttribute('data-full-name', info.event.extendedProps.fullName);
+          }
         },        resources: this.createResources(),
         selectable: true, // Enable date selection
         selectMirror: true, // Make the selection draggable
@@ -602,23 +605,21 @@ export default {
       {
         if (dateInfo.is_reserved && dateInfo.reservation && !handledReservations.has(dateInfo.reservation.id)) {
           const reservation = dateInfo.reservation;
-
-          const start = reservation.checkin_date.split('T')[0];
-          const end = reservation.checkout_date.split('T')[0];
-
+          const fullName = reservation.client?.name || reservation.user?.name || 'Unknown';
+          const shortName = fullName.substring(0, 2).toUpperCase(); // Get first 2 letters and capitalize
 
           events.push({
             resourceId: unitData.code,
-            title: ` ${reservation.client?.name || reservation.user?.name}`,
-            start: start,
-            end: end + 'T23:59:59',
+            title: shortName,
+            start: reservation.checkin_date.split('T')[0],
+            end: reservation.checkout_date.split('T')[0] + 'T23:59:59',
             color: '#7367f0',
             reservationId: reservation.id,
             extendedProps: {
-              reservation: reservation, // Include the full reservation object
+              reservation: reservation,
+              fullName: fullName, // Store full name for tooltip
             },
-
-            classNames: ['custom-event'],
+            classNames: ['custom-event', 'hoverable-event'], // Add hoverable class
           });
 
           handledReservations.add(reservation.id);
@@ -1091,7 +1092,10 @@ validateEventChange(event, newStart, newEnd) {
       'updateRemindGuestType',
     ]),
 
-
+    refreshCalendarData () {
+      // Implement the logic to refresh the calendar data
+      this.handleNavigation('refresh');
+    },
 
   },
   async mounted ()
@@ -1140,3 +1144,9 @@ validateEventChange(event, newStart, newEnd) {
 
 }
 </script>
+
+<style>
+/* ... existing styles ... */
+
+
+</style>
