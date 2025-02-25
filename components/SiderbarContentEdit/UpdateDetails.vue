@@ -7,8 +7,9 @@
         <div class="input-group">
           <select class="form-select" id="updateDetailsRateType" v-model="formUpdateReservationItems.rateType">
             <option disabled selected> select</option>
-            <option value="breakfast"> breakfast </option>
-            <option value="nobreakfast"> nobreakfast </option>
+            <option v-for="(type, index) in getRateTypes" :key="index" :value="index">
+                              {{ type }}
+                            </option>
           </select>
         </div>
       </div>
@@ -35,6 +36,7 @@
 import flatpickrMixin from "../Mixin/flatpickrMixin";
 import { PostReservationItems } from "../../Api/addResvertionApi";
 import { showSuccessAlert, handleSubmissionError } from '../../Api/MassageValidation/alertUtilities';
+import { mapGetters } from "vuex/";
 
 
 export default {
@@ -114,6 +116,13 @@ export default {
         );
       }
     },
+  },
+  computed: {
+
+    ...mapGetters([
+      'getRateTypes',
+
+    ]),
   },
 };
 </script>

@@ -110,7 +110,7 @@ export const GetReservationItems = async (reservationId) =>
 export const PostReservationItems = async (reservationId ,updateReservationItems) =>
   {
     try {
-      const response = await apiClient.post(`/reservation-items/${reservationId}` , updateReservationItems, {
+      const response = await apiClient.post(`/reservation_items/${reservationId}` , updateReservationItems, {
         headers: {
           'Content-Type': 'application/json'
         }
