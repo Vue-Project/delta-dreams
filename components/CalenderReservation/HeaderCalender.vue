@@ -200,6 +200,7 @@
 import flatpickrMixin from "../Mixin/flatpickrMixin";
 import { mapState, mapGetters } from 'vuex';
 import { handleSubmissionError, showSuccessAlert } from "../../Api/MassageValidation/alertUtilities";
+import { getCalenderFilter, postCalenderFilter } from "../../Api/CalenderApi";
 
 export default {
   name: "HeaderCalender",
@@ -280,7 +281,7 @@ export default {
         this.selectedRateTypes.splice(idx, 1);
       }
       this.selectAllRateTypes = this.selectedRateTypes.length === this.getRateTypes.length;
-      await this.sendSelectionsToServer();
+      // await this.getFilterData();
     },
     async toggleProject (projectId)
     {
@@ -291,7 +292,7 @@ export default {
         this.selectedProjects.splice(idx, 1);
       }
       this.selectAllProjects = this.selectedProjects.length === this.getProjects.length;
-      await this.sendSelectionsToServer();
+      // await this.getFilterData();
     },
     toggleSelectAllBuildings ()
     {
@@ -312,34 +313,28 @@ export default {
       }
       this.selectAllBuildings = this.selectedBuildings.length === 0;
       this.$emit("show-building-resources", this.selectedBuildings);
-      await this.sendSelectionsToServer();
+      await this.getFilterData();
     },
-    async sendSelectionsToServer ()
+    async getFilterData ()
     {
-
       try {
-        const payload = {
-          project_id: this.selectedProjects,
+        const filterCalender = {
+          project_ids: this.selectedProjects,
           rate_types: this.selectedRateTypes,
         };
-        // console.log(payload);
-
-        // await showSuccessAlert(
-        //     "Reservation cancelled successfully!", // Custom message
-
-        //   );
+        const response = await getCalenderFilter(filterCalender);
+        this.data = response.data;
+        // location.reload();
+        // Emit the updated data to BookingCalendar
+        this.$root.$emit('calendar-data-updated', response.data);
 
       } catch (error) {
-        // handleSubmissionError(
-        //     error,
-        //     "Failed to cancel reservation" // Updated error message
-        //   );
+        console.log(error);
       }
     },
     async applyFilters ()
     {
-      await this.sendSelectionsToServer();
-
+      await this.getFilterData();
     },
   },
 
@@ -390,19 +385,19 @@ export default {
   //   },
   //   selectedRateTypes: {
   //     handler: _.debounce(async function(newVal) {
-  //       await this.sendSelectionsToServer();
+  //       await this.getFilterData();
   //     }, 500),
   //     deep: true
   //   },
   //   selectedProjects: {
   //     handler: _.debounce(async function(newVal) {
-  //       await this.sendSelectionsToServer();
+  //       await this.getFilterData();
   //     }, 500),
   //     deep: true
   //   },
   //   selectedBuildings: {
   //     handler: _.debounce(async function(newVal) {
-  //       await this.sendSelectionsToServer();
+  //       await this.getFilterData();
   //     }, 500),
   //     deep: true
   //   }

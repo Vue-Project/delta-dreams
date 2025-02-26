@@ -1,5 +1,6 @@
 <template>
   <section class="card">
+    <!-- {{ data }} -->
     <momenalert></momenalert>
     <Loader :visible="isLoading" />
     <div :class="{ 'loading-overlay': isLoading }">
@@ -57,7 +58,7 @@ import SelectedEventSidebar from "./SelectedEventSidebar.vue";
 import HeaderCalender from "./HeaderCalender.vue";
 
 // API service for fetching calendar data
-import { deleteBlock, getCalenderAllUnits, postUpdateReservation } from "../../Api/CalenderApi";
+import { deleteBlock, getCalenderAllUnits, postUpdateBlock, postUpdateReservation, putUpdateBlock } from "../../Api/CalenderApi";
 import Swal from 'sweetalert2'
 import { handleSubmissionError, showSuccessAlert, showConfirmationDialog, showAlert } from "../../Api/MassageValidation/alertUtilities";
 import { mapActions } from 'vuex';
@@ -635,15 +636,17 @@ export default {
           if (dateInfo.is_blocked) {
             if (!currentBlock) {
               currentBlock = {
-                id: dateInfo.block.id, // Add this line to include the block ID
+                id: dateInfo.block.id,
                 resourceId: unitData.code,
                 title: `Blocked Reason: ${dateInfo.block.reason.name || 'No reason provided'}`,
                 start: dateInfo.date,
                 end: dateInfo.date,
                 color: '#4b4b4b',
                 extendedProps: {
-                  is_blocked: true, // Indicate this is a blocked date
+                  is_blocked: true,
                   block_reason: dateInfo.block_reason || 'No reason provided',
+                  block: dateInfo.block,
+                  reason_id: dateInfo.block.reason?.id
                 },
                 classNames: ['custom-event'],
               };
@@ -715,6 +718,7 @@ export default {
 async handleEventChange(info) {
     try {
       const event = info.event;
+      console.log(event);
       const resourceId = event.getResources()[0]?.id;
       const unitId = resourceId?.split('-')[1];
 
@@ -727,24 +731,29 @@ async handleEventChange(info) {
       const endDateObj = new Date(event.end);
 
       // Format dates correctly with local timezone
-      const startDate = `${startDateObj.getFullYear()}-${String(startDateObj.getMonth() + 1).padStart(2, '0')}-${String(startDateObj.getDate()).padStart(2, '0')}T${originalCheckinTime}`;
-      const endDate = `${endDateObj.getFullYear()}-${String(endDateObj.getMonth() + 1).padStart(2, '0')}-${String(endDateObj.getDate()).padStart(2, '0')}T${originalCheckoutTime}`;
+      const startDate = `${startDateObj.getFullYear()}-${String(startDateObj.getMonth() + 1).padStart(2, '0')}-${String(startDateObj.getDate())}`;
+      const endDate = `${endDateObj.getFullYear()}-${String(endDateObj.getMonth() + 1).padStart(2, '0')}-${String(endDateObj.getDate())}`;
 
       // Check if this is a blocked event or reservation
       if (event.extendedProps?.is_blocked) {
+        // Extract reason_id from the block event
+        const reasonId = event.extendedProps?.block?.reason?.id ||
+                        event.extendedProps?.reason_id;
+
         // Handle blocked event update
         const updateDataBlock = {
           unit_id: unitId,
           start_date: startDate,
           end_date: endDate,
-          block_id: event.id
+          block_id: event.id,
+          reason_id: reasonId // Add the reason_id here
         };
 
         const result = await showConfirmationDialog("Are you sure you want to update this blocked period?");
 
         if (result.isConfirmed) {
           // Make API call to update blocked period
-          const response = await postUpdateBlock(updateDataBlock.block_id, updateDataBlock);
+          const response = await putUpdateBlock(updateDataBlock.block_id, updateDataBlock);
 
           // Update the event in the calendar
           event.setDates(startDate, endDate);
@@ -762,6 +771,7 @@ async handleEventChange(info) {
           checkout_date: endDate,
           reservation_id: event.extendedProps?.reservation?.id
         };
+
 
         const result = await showConfirmationDialog("Are you sure you want to update this reservation?");
 
@@ -1097,6 +1107,35 @@ validateEventChange(event, newStart, newEnd) {
       this.handleNavigation('refresh');
     },
 
+    // Add this new method to handle data updates
+    async updateCalendarData(filterData) {
+      try {
+        this.isLoading = true;
+
+        // Get the calendar API instance
+        const calendarApi = this.$refs.calendar.getApi();
+
+        // Update the component's data
+        this.data = filterData;
+
+        // Transform the new data into events
+        const newEvents = this.transformAllUnitsToEvents();
+
+        // Update calendar events
+        calendarApi.removeAllEvents();
+        calendarApi.addEventSource(newEvents);
+
+        // Update resources if needed
+        const resources = this.createResources();
+        calendarApi.setOption('resources', resources);
+
+      } catch (error) {
+        console.error('Error updating calendar data:', error);
+      } finally {
+        this.isLoading = false;
+      }
+    },
+
   },
   async mounted ()
   {
@@ -1134,14 +1173,20 @@ validateEventChange(event, newStart, newEnd) {
       this.updateGenderTypes(this.genderTypes);
       this.updateProjects(this.projects);
       this.updateRemindGuestType(this.remindGuestType);
+
+      // Listen for data updates from HeaderCalender
+      this.$root.$on('calendar-data-updated', this.updateCalendarData);
     } catch (error) {
       console.error("Error loading data:", error);
     } finally {
       this.isLoading = false;
     }
 
-}
-
+  },
+  beforeDestroy() {
+    // Clean up the event listener when component is destroyed
+    this.$root.$off('calendar-data-updated', this.updateCalendarData);
+  }
 }
 </script>
 
