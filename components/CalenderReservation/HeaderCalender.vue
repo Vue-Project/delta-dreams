@@ -1,56 +1,54 @@
 <template>
-  <div class="row d-flex justify-content-between p-2 position-relative">
-
-    <div class="col-lg-2 col-12 calendarDate">
+  <div class="row  justify-content-between p-2 position-relative ">
+      <div class="col-md-4">
+        <div class="row">
+          <div class="col-lg-6 col-12 calendarDate">
       <input type="text" class="form-control flatpickr-input mb-sm-2" placeholder="YYYY-MM-DD" id="flatpickr-date-04" ref="datePicker4" aria-label="input for date" />
       <i class="fa-solid fa-calendar-days date-icon"></i>
     </div>
-
-    <div class="col-lg-4 col-12">
-      <div v-if="hasSelections">
-        <button class="btn btn-success float-end" @click="applyFilters">
-          Apply Filters
+    <div class="col-md-6">
+      <div class="dropdown w-100 px-1">
+        <button class="btn  btn-primary  dropdown-toggle w-100 " type="button" id="buildingsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="fa-solid fa-filter pe-2"></i>Filter Buildings
         </button>
+        <ul class="dropdown-menu" aria-labelledby="buildingsDropdown">
+          <li>
+            <a class="dropdown-item" href="#" @click.prevent="toggleSelectAllBuildings">
+              <input type="checkbox" v-model="selectAllBuildings" class="form-check-input me-2" />
+              <span>Show All</span>
+            </a>
+          </li>
+          <li>
+            <hr class="dropdown-divider" />
+          </li>
+          <li v-for="building in buildingNames" :key="building">
+            <a class="dropdown-item" href="#" @click.prevent="toggleBuilding(building)">
+              <input type="checkbox" v-model="selectedBuildings" :value="building" class="form-check-input me-2" />
+              <span>{{ building }}</span>
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
-    <!-- <div class="d-flex items-center gap-4">
-        <div v-for="(count, label) in statistics" :key="label">
-          <span>{{ label }}</span>
-          <span class="statistics-count">
-            {{ count }}
-          </span>
         </div>
-      </div> -->
+
+
+
+      </div>
+
+
     <div class="col-lg-6 col-12">
-      <div class="d-flex items-center justify-content-end gap-4">
-        <div class="w-100">
-          <div class="row">
-            <div class="col-md-4">
-              <div class="dropdown w-100 ">
-                <button class="btn  btn-primary  dropdown-toggle w-100" type="button" id="buildingsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                  <i class="fa-solid fa-filter pe-2"></i>Filter Buildings
+        <div class="row">
+            <div class="col-lg-3 col-12">
+              <div v-if="hasSelections">
+                <button class="btn btn-success float-end" @click="applyFilters">
+                  Apply Filters
                 </button>
-                <ul class="dropdown-menu" aria-labelledby="buildingsDropdown">
-                  <li>
-                    <a class="dropdown-item" href="#" @click.prevent="toggleSelectAllBuildings">
-                      <input type="checkbox" v-model="selectAllBuildings" class="form-check-input me-2" />
-                      <span>Show All</span>
-                    </a>
-                  </li>
-                  <li>
-                    <hr class="dropdown-divider" />
-                  </li>
-                  <li v-for="building in buildingNames" :key="building">
-                    <a class="dropdown-item" href="#" @click.prevent="toggleBuilding(building)">
-                      <input type="checkbox" v-model="selectedBuildings" :value="building" class="form-check-input me-2" />
-                      <span>{{ building }}</span>
-                    </a>
-                  </li>
-                </ul>
               </div>
             </div>
-            <div class="col-md-4">
-              <div class="dropdown w-100">
+
+            <div class="col-md-4 ">
+              <div class="dropdown w-100 px-1 ">
                 <button class="btn btn-primary dropdown-toggle w-100" type="button" id="rateTypesDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                   <i class="fa-solid fa-filter pe-2"></i>Filter Rate Types
                   <span v-if="selectedRateTypes.length" class="badge bg-light text-dark ms-1">
@@ -75,7 +73,7 @@
               </div>
             </div>
             <div class="col-md-4">
-              <div class="dropdown w-100 ">
+              <div class="dropdown w-100 px-1 ">
                 <button class="btn btn-primary dropdown-toggle w-100" type="button" id="projectsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                   <i class="fa-solid fa-filter pe-2"></i>Filter Projects
                   <span v-if="selectedProjects.length" class="badge bg-light text-dark ms-1">
@@ -99,21 +97,8 @@
                 </ul>
               </div>
             </div>
-
-
-          </div>
-
-
-        </div>
-        <!-- <label class="switch">
-          <input type="checkbox" class="switch-input" v-model="isOn" aria-label="switch input to copy and compact" />
-          <span class="switch-toggle-slider">
-            <span class="switch-on">Copy</span>
-            <span class="switch-off">compact</span>
-          </span>
-        </label> -->
-
-        <div @mouseenter="isHovered = true" @mouseleave="isHovered = false">
+            <div class="col-md-1">
+              <div class="float-right" @mouseenter="isHovered = true" @mouseleave="isHovered = false">
           <button type="button" class="btn btn-outline-primary waves-effect">
             <i class="fa-solid fa-circle-info"></i>
           </button>
@@ -202,7 +187,11 @@
             <!-- end ul -->
           </div>
         </div>
-      </div>
+            </div>
+
+
+        </div>
+
     </div>
   </div>
 </template>
@@ -210,7 +199,6 @@
 <script>
 import flatpickrMixin from "../Mixin/flatpickrMixin";
 import { mapState, mapGetters } from 'vuex';
-import _ from 'lodash';
 import { handleSubmissionError, showSuccessAlert } from "../../Api/MassageValidation/alertUtilities";
 
 export default {
@@ -334,7 +322,7 @@ export default {
           project_id: this.selectedProjects,
           rate_types: this.selectedRateTypes,
         };
-        console.log(payload);
+        // console.log(payload);
 
         // await showSuccessAlert(
         //     "Reservation cancelled successfully!", // Custom message
@@ -346,7 +334,7 @@ export default {
         //     error,
         //     "Failed to cancel reservation" // Updated error message
         //   );
-        }
+      }
     },
     async applyFilters ()
     {
@@ -422,6 +410,4 @@ export default {
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
