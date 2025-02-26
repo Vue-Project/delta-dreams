@@ -26,7 +26,7 @@
         <div class="w-100">
           <div class="row">
             <div class="col-md-4">
-              <div class="dropdown">
+              <div class="dropdown w-100 ">
                 <button class="btn  btn-primary  dropdown-toggle w-100" type="button" id="buildingsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                   <i class="fa-solid fa-filter pe-2"></i>Filter Buildings
                 </button>
@@ -50,7 +50,7 @@
               </div>
             </div>
             <div class="col-md-4">
-              <div class="dropdown">
+              <div class="dropdown w-100">
                 <button class="btn btn-primary dropdown-toggle w-100" type="button" id="rateTypesDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                   <i class="fa-solid fa-filter pe-2"></i>Filter Rate Types
                   <span v-if="selectedRateTypes.length" class="badge bg-light text-dark ms-1">
@@ -75,7 +75,7 @@
               </div>
             </div>
             <div class="col-md-4">
-              <div class="dropdown">
+              <div class="dropdown w-100 ">
                 <button class="btn btn-primary dropdown-toggle w-100" type="button" id="projectsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                   <i class="fa-solid fa-filter pe-2"></i>Filter Projects
                   <span v-if="selectedProjects.length" class="badge bg-light text-dark ms-1">
