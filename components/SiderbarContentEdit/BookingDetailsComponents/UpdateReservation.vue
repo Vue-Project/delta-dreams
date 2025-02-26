@@ -62,7 +62,7 @@
                 </div> -->
                 <!-- ROOM & RESERVATION TYPE -->
 
-                <div class="col-md-3 col-12">
+                <div class="col-md-3 col-12 px-0">
                   <label for="roomCount" class="form-label">Room(s)</label>
                   <input class="form-control" type="number" id="roomCount" v-model="formAddReservation.numberRooms" min="1" max="10" @input="updateRepeater" disabled />
                 </div>
@@ -85,12 +85,12 @@
                 </div>
               </div>
             </div>
-            <div class="row">
+            <div class="###### px-0">
               <!-- BOOKING SOURCE SELECTION -->
 
-              <div class="col-md-6 col-12 mb-4 p-0">
+              <div class="col-md-6 mb-4 ">
                 <div class="row">
-                  <div class="col-md-6">
+                  <div class=" col-md-6 col-12  px-0 px-md-3">
                     <label for="bookingSource" class="form-label">Booking Source</label>
                     <select class="form-select" id="bookingSource" v-model="formAddReservation.bookingSource" ref="bookingSource" :class="{ 'input-error': validationMessages.bookingSource }">
                       <option disabled value="">Select</option>
@@ -102,7 +102,7 @@
                   </div>
                   <!-- BUSINESS SOURCE SELECTION -->
 
-                  <div class="col-md-6">
+                  <div class="col-md-6 col-12 px-0">
                     <label for="businessSource" class="form-label">Business Source</label>
                     <select class="form-select" id="businessSource" v-model="formAddReservation.businessSource" ref="businessSource" :class="{ 'input-error': validationMessages.businessSource }">
                       <option disabled value="">Select</option>
@@ -261,14 +261,14 @@
             </div>
             <div class="col-md-7">
               <div class="row">
-                <div class="col-md-4 col-12">
+                <div class="col-md-4 col-12 px-0 px-md-3">
                   <label for="releaseTerm" class="form-label">Remind Guest before</label>
                   <div class="input-group">
                     <input type="number" class="form-control" placeholder="0" id="releaseTerm" v-model="formAddReservation.remindGuest" />
                     <span class="input-group-text groupStyle">Days</span>
                   </div>
                 </div>
-                <div class="col-lg-8 col-12">
+                <div class="col-lg-8 col-12 px-0 px-md-3">
                   <label for="remindGuestType" class="form-label">Remind Guest Type</label>
                   <select class="form-select" v-model="formAddReservation.remindGuestType">
                     <option disabled value="">Select Remind Guest Type</option>
@@ -286,7 +286,7 @@
           <!-- *************************** -->
           <h6 class="mb-2">Guest Information</h6>
           <div class="row">
-            <div class="col-md-5">
+            <div class="col-md-5 col-12 px-0">
               <label for="nameGuest" class="col-form-label">Guest Name</label>
               <div class="input-group">
                 <select class="form-select" id="nameGuest">
@@ -322,12 +322,12 @@
             </div>
             <div class="col-md-7">
               <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-6 col-12 px-0 px-md-3">
                   <label for="emailGuest" class="col-form-label">Email</label>
                   <input class="form-control" type="email" id="emailGuest" placeholder="Email" v-model="formAddReservation.guestInformation.email" />
                 </div>
                 <div class="col-md-6">
-                  <div class="mb-3 row">
+                  <div class="mb-3 row ">
                     <label for="mobileGuest" class="col-form-label">Mobile</label>
                     <input class="form-control" type="tel" id="mobileGuest" placeholder="Mobile" v-model="formAddReservation.guestInformation.mobile" ref="mobile" :class="{ 'input-error': validationMessages.mobile }" />
                     <span class="error-message" v-if="validationMessages.mobile">{{ validationMessages.mobile }}</span>
@@ -338,16 +338,16 @@
             </div>
             <div class="col-md-12">
               <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-4 col-12 px-0 pe-md-3">
                   <label for="addressGuest" class="col-form-label">Address</label>
                   <input class="form-control" type="text" id="addressGuest" placeholder="Address" v-model="formAddReservation.guestInformation.address" />
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 col-12 px-0 pe-md-3">
                   <label for="insurance" class="col-form-label">Insurance</label>
                   <input class="form-control" type="text" id="insurance" placeholder="insurance" v-model="formAddReservation.BillingSummary.insurance" />
                 </div>
-                <div class="col-md-4">
-                  <label for="insurance_by" class="col-form-label">Insurance_by</label>
+                <div class="col-md-4 col-12 px-0">
+                  <label for="insurance_by" class="col-form-label">Insurance By</label>
                   <select class="form-select" id="paymentInsuranceBy" v-model="formAddReservation.BillingSummary.insurance_by">
                     <option disabled value="">Select</option>
                     <option v-for="account in accounts" :key="account.id" :value="account.id">
@@ -358,8 +358,8 @@
               </div>
 
             </div>
-            <div class="row">
-              <div class="col-md-3">
+            <div class="px-0 row m-auto">
+              <div class="col-md-3 col-12 px-0 pe-md-3">
 
                 <label for="countryGuest" class="col-form-label">Country</label>
                 <select class="form-select" v-model="formAddReservation.guestInformation.country" :class="{ 'input-error': validationMessages.country }">
@@ -370,15 +370,15 @@
                 </select>
 
               </div>
-              <div class="col-md-3">
+              <div class="col-md-3 col-12 px-0 pe-md-3">
                 <label for="stateGuest" class="col-form-label">State</label>
                 <input class="form-control" type="text" id="stateGuest" placeholder="state" v-model="formAddReservation.guestInformation.state" />
               </div>
-              <div class="col-md-3">
+              <div class="col-md-3 col-12 px-0 pe-md-3">
                 <label for="cityGuest" class="col-form-label">City</label>
                 <input class="form-control" type="text" id="cityGuest" placeholder="city" v-model="formAddReservation.guestInformation.city" />
               </div>
-              <div class="col-md-3">
+              <div class="col-md-3 col-12 px-0">
                 <label for="ZipGuest" class="col-form-label">Zip</label>
                 <input class="form-control" type="text" id="ZipGuest" placeholder="Zip" v-model="formAddReservation.guestInformation.zip" />
               </div>

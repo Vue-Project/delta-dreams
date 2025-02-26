@@ -60,9 +60,9 @@
               </small>
             </div>
           </div>
-          <div class="col-12 col-md-6 col-xl-1 text-center ">
+          <div class="col-6 col-md-6 col-xl-1 text-center ">
             <div class="me-2">
-              <button type="button" class="btn btn-label-danger waves-effect mt-3" title="Cancel Reservation"     @click="cancelReservation"
+              <button type="button" class="btn btn-label-danger waves-effect mt-3 " title="Cancel Reservation"     @click="cancelReservation"
               >Cancel Reservation</button>
             </div>
           </div>
@@ -78,17 +78,17 @@
             Folio Operations
           </button>
         </li> -->
-        <li class="nav-item col-6 col-md" role="presentation">
+        <li class="nav-item col-12 col-md" role="presentation">
           <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#form-tabs-BookingDetails" role="tab" aria-selected="false" tabindex="-1">
             Booking Details
           </button>
         </li>
-        <li class="nav-item col-6 col-md" role="presentation">
+        <li class="nav-item col-12 col-md" role="presentation">
           <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-GuestDetails" role="tab" aria-selected="true">
             Guest Details
           </button>
         </li>
-        <li class="nav-item col-6 col-md" role="presentation">
+        <li class="nav-item col-12 col-md" role="presentation">
           <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-RoomCharges" role="tab" aria-selected="true">
             Room Charges
           </button>
@@ -98,12 +98,12 @@
             Credit Card
           </button>
         </li> -->
-        <li class="nav-item col-6 col-md" role="presentation">
+        <li class="nav-item col-12 col-md" role="presentation">
           <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-AuditTrail" role="tab" aria-selected="true">
             Audit Trail
           </button>
         </li>
-        <li class="nav-item col-6 col-md" role="presentation">
+        <li class="nav-item col-12 col-md" role="presentation">
           <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-Wallet" role="tab" aria-selected="true">
             Wallet
           </button>
