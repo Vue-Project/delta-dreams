@@ -17,6 +17,7 @@
             <table class="table">
               <thead>
                 <tr>
+                  <th>Payment image</th>
                   <th>Payment Method</th>
                   <th>Payment Type</th>
                   <th>Amount</th>
@@ -29,6 +30,7 @@
               </thead>
               <tbody>
                 <tr v-for="wallet in reservationData.wallets" :key="wallet.id">
+                  <td><img :src="wallet.image" alt="Payment Image" style="width: 50px; height: 50px;"></td>
                   <td>{{ 'Cash' }}</td>
                   <td>{{ wallet.type || 'Not selected' }}</td>
                   <td>{{ wallet.price || 'Not specified' }}</td>
