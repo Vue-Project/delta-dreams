@@ -121,7 +121,7 @@ export default {
         plugins: [resourceTimelinePlugin, interactionPlugin],
         initialView: "resourceTimeline",
         eventClick: this.handleEventClick,
-        duration: { days: 20 },
+        duration: this.getDuration(),
         weekends: true,
          editable: true, // Enable dragging and resizing
          eventDrop: this.handleEventChange,
@@ -1136,6 +1136,16 @@ validateEventChange(event, newStart, newEnd) {
       }
     },
 
+    getDuration() {
+      // Check if the device is mobile
+      const isMobile = window.innerWidth <= 768; // You can adjust the width threshold as needed
+      return { days: isMobile ? 10 : 20 };
+    },
+
+    updateDuration() {
+      this.calendarOptions.duration = this.getDuration();
+    },
+
   },
   async mounted ()
   {
@@ -1176,6 +1186,9 @@ validateEventChange(event, newStart, newEnd) {
 
       // Listen for data updates from HeaderCalender
       this.$root.$on('calendar-data-updated', this.updateCalendarData);
+
+      // Add an event listener to update duration on window resize
+      window.addEventListener('resize', this.updateDuration);
     } catch (error) {
       console.error("Error loading data:", error);
     } finally {
@@ -1186,6 +1199,9 @@ validateEventChange(event, newStart, newEnd) {
   beforeDestroy() {
     // Clean up the event listener when component is destroyed
     this.$root.$off('calendar-data-updated', this.updateCalendarData);
+
+    // Clean up the event listener
+    window.removeEventListener('resize', this.updateDuration);
   }
 }
 </script>

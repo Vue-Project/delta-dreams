@@ -40,7 +40,7 @@
     <div class="col-lg-6 col-12">
         <div class="row">
             <div class="col-lg-3 col-12">
-                <button class="btn btn-success float-end" @click="applyFilters">
+                <button class="btn btn-primary float-end" @click="applyFilters">
                   Apply Filters
                 </button>
             </div>

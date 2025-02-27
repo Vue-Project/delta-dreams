@@ -8,6 +8,9 @@
       :statistics="statistics"
       :buildingNames="buildingNames"
     />
+    <button type="button" class="btn btn-primary waves-effect waves-light position-absolute top-5 start-0 ml-2" @click="quickReservation">
+      <i class="fa-solid fa-hotel pr-2"></i>Quick Reservation
+                          </button>
     <!-- <div class="dropdown">
         <button class="btn btn-primary dropdown-toggle btn-block col-lg-12 col-sm-7" type="button" id="dropdownFilterButton" data-bs-toggle="dropdown" aria-expanded="false">
           <i class="fa-solid fa-filter pe-2"></i>Filter Resources
@@ -54,6 +57,9 @@ export default {
   methods: {
     handleDateSelected(selectedDate) {
       this.$emit("date-selected", selectedDate);
+    },
+    quickReservation() {
+      this.$router.push("/add-reservation");
     },
   },
 };
