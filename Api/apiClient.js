@@ -1,10 +1,18 @@
 import axios from 'axios';
+// Import your store
+import { state } from '../store/index'; // Adjust the path to your store
+
 
 // Function to get dynamic code and type
 function getDynamicParams() {
-  // Replace with actual logic to retrieve dynamic values
-  const code = 'dynamicCode'; // Example: retrieve from a global state or context
-  const type = 'dynamicType'; // Example: retrieve from a global state or context
+  // Check URL for code and type
+  const urlParams = new URLSearchParams(window.location.search);
+  const codeFromUrl = urlParams.get('code');
+  const typeFromUrl = urlParams.get('type');
+
+  // Retrieve code and type from the store if not in URL
+  const code = codeFromUrl || state.code || 'defaultCode'; // Use a default if not set
+  const type = typeFromUrl || state.type || 'defaultType'; // Use a default if not set
   return { code, type };
 }
 
