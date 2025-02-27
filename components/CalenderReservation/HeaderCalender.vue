@@ -11,7 +11,7 @@
         <button class="btn  btn-primary  dropdown-toggle w-100 " type="button" id="buildingsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
           <i class="fa-solid fa-filter pe-2"></i>Filter Buildings
         </button>
-        <ul class="dropdown-menu" aria-labelledby="buildingsDropdown">
+        <ul class="dropdown-menu w-100" aria-labelledby="buildingsDropdown">
           <li>
             <a class="dropdown-item" href="#" @click.prevent="toggleSelectAllBuildings">
               <input type="checkbox" v-model="selectAllBuildings" class="form-check-input me-2" />
@@ -53,7 +53,7 @@
                     {{ selectedRateTypes.length }}
                   </span>
                 </button>
-                <ul class="dropdown-menu" aria-labelledby="rateTypesDropdown">
+                <ul class="dropdown-menu w-100" aria-labelledby="rateTypesDropdown">
                   <!-- <li>
                     <a class="dropdown-item" href="#" @click.prevent="toggleSelectAllRateTypes">
                       <input type="checkbox" v-model="selectAllRateTypes" class="form-check-input me-2">
@@ -78,7 +78,7 @@
                     {{ selectedProjects.length }}
                   </span>
                 </button>
-                <ul class="dropdown-menu" aria-labelledby="projectsDropdown">
+                <ul class="dropdown-menu w-100" aria-labelledby="projectsDropdown">
                   <!-- <li>
                     <a class="dropdown-item" href="#" @click.prevent="toggleSelectAllProjects">
                       <input type="checkbox" v-model="selectAllProjects" class="form-check-input me-2">
