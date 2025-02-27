@@ -47,9 +47,9 @@
             </div>
             <div class="col-lg-4">
               <div class="row">
-                <div class="col-md-3 col-12">
+                <div class="col-lg-3 col-md-6 ps-md-0 ps-lg-2 col-12 reservationRoom">
                   <label for="roomCount" class="form-label">Room(s)</label>
-                  <input class="form-control" type="number" id="roomCount" v-model="formAddReservation.numberRooms" min="1" @input="updateRepeater" />
+                  <input class="form-control rounded-2" type="number" id="roomCount" v-model="formAddReservation.numberRooms" min="1" @input="updateRepeater" />
                 </div>
 
                 <div class="col-lg-9 col-12 mb-4 col-md-6 ps-sm-2 p-0 pe-md-0">
@@ -79,7 +79,7 @@
 
                     <span v-if="validationMessages.bookingSource" class="error-message">{{ validationMessages.bookingSource }}</span>
                   </div>
-                  <div class="col-lg-6 col-md-6">
+                  <div class="col-lg-6 col-md-6 buisnessSourceInput">
                     <label for="businessSource" class="form-label">Business Source</label>
                     <select class="form-select" id="businessSource" v-model="formAddReservation.businessSource" ref="businessSource" :class="{ 'input-error': validationMessages.businessSource }">
                       <option disabled value="">Select</option>
@@ -97,7 +97,7 @@
 
           <hr class="my-4" />
           <!--   ! check inputs and repeater -->
-          <div class="row mb-3">
+          <div class="mb-3">
             <div class="row">
               <!-- <div class="col-lg-4">
                 <div class="row">
@@ -136,22 +136,20 @@
               <!-- change width delete border color  -->
               <div class="card mt-3 border-0">
                 <div class="card-datatable table-responsive">
-                  <table class=" table overflow-hidden">
+                  <table class="table overflow-hidden">
                     <thead>
                       <tr class="rounded-1">
-                        <th class="border-0">Room Type</th>
-                        <th class="border-0">Rate Type</th>
-                        <th class="border-0">Room</th>
-                        <th class="border-0">Adult</th>
-                        <th class="border-0">Child</th>
-                        <th class="border-0 w-20">Rate(EGP)(Tax Inc.)</th>
+                        <th class="border-0 roomHeader">Room Type</th>
+                        <th class="border-0 roomHeader">Rate Type</th>
+                        <th class="border-0 roomHeader">Room</th>
+                        <th class="border-0 roomHeader">Adult</th>
+                        <th class="border-0 roomHeader">Child</th>
+                        <th class="border-0 w-20 roomHeader">Rate(EGP)(Tax Inc.)</th>
                       </tr>
                     </thead>
-                    <!--  ! table Header -->
-                    <!--  ! table body -->
                     <tbody>
                       <tr v-for="(item, index) in formAddReservation.units" :key="index" class="mb-2 selectStyle">
-                        <td>
+                        <td data-label="Room Type">
                           <select class="form-select" id="unitsTypes" v-model="item.roomType"
                             @change="() => handleUnitTypeChange(index, item.roomType)">
                             <option disabled value="">Select</option>
@@ -160,7 +158,7 @@
                             </option>
                           </select>
                         </td>
-                        <td>
+                        <td data-label="Rate Type">
                           <select class="form-select" v-model="item.rateType" ref="rateType" :class="{ 'input-error': validationMessages.rateType }">
                             <option disabled value="">select</option>
                             <option v-for="(type, index) in getRateTypes" :key="index" :value="index">
@@ -168,28 +166,24 @@
                             </option>
                           </select>
                           <span class="error-message" v-if="validationMessages.rateType">{{ validationMessages.rateType }}</span>
-
                         </td>
-                        <td>
-                          <select class="form-select" v-model="item.unitId"
-                            :disabled="!availableUnitsByRoom[index]?.length">
+                        <td data-label="Room">
+                          <select class="form-select" v-model="item.unitId" :disabled="!availableUnitsByRoom[index]?.length">
                             <option disabled value="">Select Unit</option>
-                            <option v-for="unit in availableUnitsByRoom[index] || []"
-                              :key="unit.id" :value="unit.id">
+                            <option v-for="unit in availableUnitsByRoom[index] || []" :key="unit.id" :value="unit.id">
                               {{ unit.code }}
                             </option>
                           </select>
                         </td>
-                        <td>
-                          <input type="number" class="form-control" v-model="item.adults" placeholder="1" aria-label="1" min="1" max="10" ref="adults" :class="{ 'input-error': validationMessages.adults }" />
+                        <td data-label="Adult">
+                          <input type="number" class="form-control rounded-2" v-model="item.adults" placeholder="1" aria-label="1" min="1" max="10" ref="adults" :class="{ 'input-error': validationMessages.adults }" />
                           <span class="error-message" v-if="validationMessages.adults">{{ validationMessages.adults }}</span>
-
                         </td>
-                        <td>
-                          <input type="number" class="form-control" v-model="item.children" placeholder="0" aria-label="0" min="0" max="10" ref="children" :class="{ 'input-error': validationMessages.children }" />
+                        <td data-label="Child">
+                          <input type="number" class="form-control rounded-2" v-model="item.children" placeholder="0" aria-label="0" min="0" max="10" ref="children" :class="{ 'input-error': validationMessages.children }" />
                           <span class="error-message" v-if="validationMessages.children">{{ validationMessages.children }}</span>
                         </td>
-                        <td>
+                        <td data-label="Rate(EGP)(Tax Inc.)">
                           <div class="row">
                             <div class="col-lg-10">
                               <div class="input-group">
@@ -199,23 +193,16 @@
                               <span class="error-message" v-if="validationMessages.rateAmount">{{ validationMessages.rateAmount }}</span>
                             </div>
                             <div class="col-md-2 p-0">
-                              <button class="btn btn-label-danger" type="button" v-if="index > 0"
-                                @click="removeItem(index)">
+                              <button class="btn btn-label-danger" type="button" v-if="index > 0" @click="removeItem(index)">
                                 <i class="fa-solid fa-xmark"></i>
                               </button>
                             </div>
                           </div>
-
                         </td>
                       </tr>
-
                     </tbody>
-                    <!--  ! table body -->
-                    <!--  ! table footer -->
-                    <!-- <tfoot> -->
-                    <!--change style button  -->
-                    <!--  ! table footer -->
                   </table>
+
                   <button class="btn btn-primary waves-effect waves-light mt-3" type="button" @click="addItem">
                     Add Unit
                   </button>
@@ -260,14 +247,14 @@
             </div>
             <div class="col-lg-7">
               <div class="row">
-                <div class="col-lg-4 px-0 p-md-0 col-12">
+                <div class="col-lg-4 px-0 p-md-0 col-12 px-lg-3">
                   <label for="releaseTerm" class="form-label">Remind Guest before</label>
                   <div class="input-group">
                     <input type="number" class="form-control" placeholder="0" id="releaseTerm" v-model="formAddReservation.remindGuest" />
                     <span class="input-group-text groupStyle">Days</span>
                   </div>
                 </div>
-                <div class="col-lg-8 col-12">
+                <div class="col-lg-8 col-12 px-md-0 ps-lg-0 remindTypeReservation">
                   <label for="remindGuestType" class="form-label">Remind Type before</label>
                   <select class="form-select" v-model="formAddReservation.remindGuestType">
                     <option disabled value="">Select Remind Guest Type</option>
@@ -286,7 +273,7 @@
           <!--  ! Guest Information -->
           <h6 class="mb-2">Guest Information</h6>
           <div class="row">
-            <div class="col-lg-5 px-md-0">
+            <div class="col-lg-5  px-md-0">
               <label for="nameGuest" class="col-form-label">Guest Name</label>
               <div class="input-group">
                 <select class="form-select" id="nameGuest">
@@ -323,24 +310,22 @@
 
               <SidebarAddGuest :is-sidebar-open="isSidebarOpen" @close-sidebar="toggleSidebar" />
             </div>
-            <div class="col-lg-7">
-              <div class="row">
-                <div class="col-lg-6 col-md-6 ps-md-0 ps-lg-3">
-                  <label for="emailGuest" class="col-form-label">Email</label>
-                  <input class="form-control" type="email" id="emailGuest" placeholder="Email" v-model="formAddReservation.guestInformation.email" />
-                </div>
-                <div class="col-lg-6 col-md-6 px-4 mx-0 px-md-2">
-                  <div class="mb-lg-3 row">
-                    <label for="mobileGuest" class="col-form-label">Mobile</label>
-                    <input class="form-control" type="tel" id="mobileGuest" placeholder="Mobile" v-model="formAddReservation.guestInformation.mobile" ref="mobile" :class="{ 'input-error': validationMessages.mobile }" />
-                    <span class="error-message" v-if="validationMessages.mobile">{{ validationMessages.mobile }}</span>
-                  </div>
-                </div>
+            <div class="offset-md-7">
+            </div>
+            <div class="col-lg-3 col-md-6  ps-2 ps-md-0">
+              <label for="emailGuest" class="col-form-label">Email</label>
+              <input class="form-control rounded-2 " type="email" id="emailGuest" placeholder="Email" v-model="formAddReservation.guestInformation.email" />
+            </div>
+            <div class="col-lg-3 col-md-6 ">
+              <div class="mb-lg-3 row px-2 px-md-0 reservationMobile">
+                <label for="mobileGuest" class="col-form-label ps-0">Mobile</label>
+                <input class="form-control rounded-2 mobileInput" type="tel" id="mobileGuest" placeholder="Mobile" v-model="formAddReservation.guestInformation.mobile" ref="mobile" :class="{ 'input-error': validationMessages.mobile }" />
+                <span class="error-message" v-if="validationMessages.mobile">{{ validationMessages.mobile }}</span>
               </div>
             </div>
-            <div class="col-lg-7 mb-lg-3 px-md-0">
+            <div class="col-lg-6 mb-lg-3 pe-md-0">
               <label for="addressGuest" class="col-form-label">Address</label>
-              <input class="form-control" type="text" id="addressGuest" placeholder="Address" v-model="formAddReservation.guestInformation.address" />
+              <input class="form-control rounded-2" type="text" id="addressGuest" placeholder="Address" v-model="formAddReservation.guestInformation.address" />
             </div>
             <div class="row px-0 mx-0">
               <div class="col-lg-3 col-md-6 ps-md-0">
@@ -354,15 +339,15 @@
               </div>
               <div class="col-lg-3 col-md-6 px-md-0">
                 <label for="stateGuest" class="col-form-label">State</label>
-                <input class="form-control" type="text" id="stateGuest" placeholder="state" v-model="formAddReservation.guestInformation.state" />
+                <input class="form-control rounded-2" type="text" id="stateGuest" placeholder="state" v-model="formAddReservation.guestInformation.state" />
               </div>
               <div class="col-lg-3 col-md-6 ps-md-0 ps-lg-3">
                 <label for="cityGuest" class="col-form-label">City</label>
-                <input class="form-control" type="text" id="cityGuest" placeholder="city" v-model="formAddReservation.guestInformation.city" />
+                <input class="form-control rounded-2" type="text" id="cityGuest" placeholder="city" v-model="formAddReservation.guestInformation.city" />
               </div>
               <div class="col-lg-3 col-md-6 px-md-0">
                 <label for="ZipGuest" class="col-form-label">Zip</label>
-                <input class="form-control" type="text" id="ZipGuest" placeholder="Zip" v-model="formAddReservation.guestInformation.zip" />
+                <input class="form-control rounded-2" type="text" id="ZipGuest" placeholder="Zip" v-model="formAddReservation.guestInformation.zip" />
               </div>
             </div>
           </div>
@@ -1200,4 +1185,50 @@ console.log(bookingData);
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+@media (max-width: 576px) {
+  /* Make table elements display as block */
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+
+  /* Hide table header */
+  thead tr {
+    display: none;
+  }
+
+  /* Style each table row as a card */
+  tr {
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    padding: 0.5rem;
+  }
+
+  /* Style each table cell */
+  td {
+    position: relative;
+    padding: 0.5rem 0.5rem 0.5rem 50%;
+    width: 100%;
+    box-sizing: border-box;
+    border-top: 1px solid #ddd;
+  }
+
+  /* Insert the data-label before each cell content */
+  td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 0;
+    width: 45%;
+    padding-left: 15px;
+    font-weight: bold;
+    white-space: nowrap;
+  }
+
+  /* Ensure inputs and selects take full width */
+  input,
+  select {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+</style>

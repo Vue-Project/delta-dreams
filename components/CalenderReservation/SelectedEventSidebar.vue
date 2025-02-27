@@ -340,7 +340,7 @@ export default {
       const oldStatus = this.selectedEvent.status;
       const newStatus = event.target.value;
 
-      const result = await showConfirmationAlert('Are you sure you want to change the status of this reservation?');
+    const result = await showConfirmationAlert('Are you sure you?', 'Do you want to change the status of this reservation?');
 
       if (result.isConfirmed) {
         const changeStatus = {
@@ -363,15 +363,14 @@ export default {
     },
 
 
-    async cancelReservation ()
-    {
-      // Show SweetAlert2 confirmation dialog
-      const result = await showConfirmationAlert(
-        'Are you sure?',
-        "cancel this reservation",
-        'confirm',
+    async cancelReservation() {
+    // Show SweetAlert2 confirmation dialog
+    const result = await showConfirmationAlert(
+      'Are you sure?',
+      "You won't be able to restore it again",
+      'Yes, cancel it!',
 
-      );
+    );
 
 
       // Proceed only if the user confirms
@@ -423,12 +422,13 @@ export default {
     statusBadgeClass (status)
     {
       return {
-        'bg-label-primary': status === 'pending',      // Blue for pending/waiting
-        'bg-label-success': status === 'approved',     // Green for approved
         'bg-label-danger': status === 'cancelled',     // Red for cancelled
-        'bg-label-info': status === 'check_in',        // Light blue for check in
-        'bg-label-warning': status === 'check_out',    // Orange/yellow for check out
-        'bg-label-secondary': status === 'finished'    // Gray for finished
+        'bg-label-warning': status === 'request',
+        'bg-label-warning': status === 'pending',      // Blue for pending/waiting
+        'bg-label-primary': status === 'approved',     // Green for approved
+        'bg-label-primary': status === 'check_in',        // Light blue for check in
+        'bg-label-success': status === 'check_out',    // Orange/yellow for check out
+        'bg-label-success': status === 'finished',    // Gray for finished
       };
     },
     async submitPayment ()

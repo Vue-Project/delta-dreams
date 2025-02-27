@@ -14,9 +14,12 @@
         </a>
       </div>
 
-      <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
-        <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
-          <i class="fa-solid fa-bars"></i>
+      <div class="navbar-brand app-brand demo d-xl-none d-xl-flex py-0 me-4">
+         <a href="https://deltadream.swevey.com/admin" class="app-brand-link gap-2">
+          <span class="app-brand-logo demo"> <img src="../../assets/images/logo.png" alt="logo" class="img-fluid "> </span>
+        </a>
+        <a href="/" class="app-brand-link gap-2">
+          <span class="app-brand-text demo menu-text fw-bold">Delta Dream</span>
         </a>
       </div>
 

@@ -138,7 +138,7 @@ export default {
       // Show confirmation dialog using SweetAlert
       const result = await showConfirmationAlert(
         'Are you sure?',
-        "deleted this payment for this reservation",
+        "You won't be able to restore it again",
       );
 
 
@@ -201,10 +201,66 @@ export default {
         }
       }
     },
-    updateWallet(wallet) {
-      this.selectedWallet = wallet;
-      this.$emit('wallet-selected', wallet);
+    submitPayment() {
+      this.$emit('add-payment', {
+        ...this.formAddPayment,
+        reservation_id: this.selectedEvent.id
+      });
+      this.cancelPayment();
     },
+    cancelPayment() {
+      this.resetPaymentForm();
+    },
+    resetPaymentForm() {
+      this.formAddPayment = {
+        date: '',
+        method: '',
+        type: '',
+        comment: '',
+        reservation_id: null
+      }
+    },
+    async FormUpdateWallet() {
+      try {
+        const walletData = {
+          wallet_id: this.reservationData.wallets[0]?.id, // Get wallet ID from the first wallet
+          payment_id: document.getElementById('businessSource').value,
+          type: this.selectedPaymentType,
+          price: this.paymentDetails.amount,
+          date_at: this.paymentDetails.date,
+          note: this.paymentDetails.comment
+        };
+
+
+        // You'll need to import and call your API function here
+        // const response = await updateWallet(walletData);
+
+        // Show success message
+        await showSuccessAlert(
+          "Wallet updated successfully!", // Custom message
+          this.$router,
+          'index' // Route name
+        );
+      } catch (error) {
+        handleSubmissionError(
+          error,
+          "There was an issue with your update." // Custom default error
+        );
+      }
+
+    }
+
+  },
+  watch: {
+    reservationData: {
+      immediate: true,
+      handler (newData)
+      {
+        if (newData && typeof newData === 'object') {
+          this.fillWalletsData(newData);
+        }
+      }
+    }
   },
 
   async mounted ()

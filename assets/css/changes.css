@@ -536,7 +536,9 @@ select {
 .billingMoney {
   background-color: rgb(242, 246, 249);
 }
-
+.mobileInput{
+  width:317px !important;
+}
 /* start sidebar  */
 .sidebar-open {
   overflow-y: auto;
