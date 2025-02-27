@@ -117,7 +117,9 @@
                           <div class="col-md-8">
                             <div class="mb-3">
                               <label for="formIdentityInfoId" class="col-form-label">ID Number</label>
-                              <input class="form-control" type="text" id="formIdentityInfoId" placeholder="Enter ID Number" aria-label="Enter ID Number Guest" v-model="formGuest.OtherInformation.idNumber" />
+                              <input class="form-control" type="text" id="formIdentityInfoId" placeholder="Enter ID Number" aria-label="Enter ID Number Guest" v-model="formGuest.OtherInformation.idNumber" :class="{ 'input-error': validationMessages.idNumber }" />
+                              <span class="error-message" v-if="validationMessages.idNumber">{{ validationMessages.idNumber }}</span>
+
                             </div>
 
                           </div>
@@ -128,7 +130,7 @@
                         <div class="row">
                           <div class="col-md-6">
                           <label for="formGustIdentityIdType" class="col-form-label">ID Type</label>
-                          <select class="form-select" id="formGustIdentityIdType" aria-label="select ID Type" v-model="formGuest.OtherInformation.idType">
+                          <select class="form-select" id="formGustIdentityIdType" aria-label="select ID Type" v-model="formGuest.OtherInformation.idType" :class="{ 'input-error': validationMessages.idType }">
                             <option value="" disabled selected>
                               Select
                               </option>
@@ -136,12 +138,14 @@
                                   {{ nationalType }}
                                 </option>
                           </select>
+                          <span class="error-message" v-if="validationMessages.idType">{{ validationMessages.idType }}</span>
                         </div>
                           <div class="col-md-6">
                             <div class="mb-3">
                               <label for="flatpickr-date-04" class="col-form-label">Expiry Date</label>
-                            <input type="text" class="form-control" placeholder="YYYY-MM-D " id="flatpickr-date-09" ref="datePicker9" aria-label="input Text to Expiry Date" v-model="formGuest.OtherInformation.expiryDate" />
+                            <input type="text" class="form-control" placeholder="YYYY-MM-D " id="flatpickr-date-09" ref="datePicker9" aria-label="input Text to Expiry Date" v-model="formGuest.OtherInformation.expiryDate" :class="{ 'input-error': validationMessages.expiryDate }" />
                             <i class="fa-solid fa-calendar-days icon-date top"></i>
+                            <span class="error-message" v-if="validationMessages.expiryDate">{{ validationMessages.expiryDate }}</span>
                             </div>
 
                         </div>
@@ -336,7 +340,7 @@ export default {
         this.isSubmitting = true;
 
         // Validate required fields
-        const requiredFields = ["name", "gender", "phone"];
+        const requiredFields = ["name", "gender", "phone", "idNumber", "idType", "expiryDate"];
         let hasError = false;
 
         requiredFields.forEach((field) => {
