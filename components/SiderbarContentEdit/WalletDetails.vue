@@ -50,7 +50,7 @@
                         <i class="fa-solid fa-ellipsis-vertical"></i>
                       </button>
                       <div class="dropdown-menu" v-if="wallet.active !== 0">
-                        <a
+                        <!-- <a
                            class="dropdown-item"
                            data-bs-toggle="offcanvas"
                            data-bs-target="#Sidebar"
@@ -58,7 +58,7 @@
                            @click="updateWallet(wallet)"
                         >
                           <i class="fa-regular fa-pen-to-square me-1"></i> Edit
-                        </a>
+                        </a> -->
                         <a class="dropdown-item" @click="deletedWallet(wallet.id)" >
                           <i class="fa-regular fa-trash-can me-1"></i> cancel
                         </a>
