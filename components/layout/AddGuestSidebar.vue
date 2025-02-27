@@ -64,11 +64,11 @@
                   </div>
 
               </div>
-              <div class="col-md-7">
-                <label for="formGustInfoAddress" class="col-form-label">Address</label>
-                <input class="form-control" type="text" id="formGustInfoAddress" placeholder="Address" aria-label="input Text to Gust Address" v-model="formGuest.address" />
-              </div>
               <div class="row">
+                <div class="col-md-3">
+                  <label for="formGustInfoAddress" class="col-form-label">Address</label>
+                  <input class="form-control" type="text" id="formGustInfoAddress" placeholder="Address" aria-label="input Text to Gust Address" v-model="formGuest.address" />
+                </div>
                 <div class="col-md-3">
                   <!-- <label for="countryGuest" class="col-form-label">Country</label>
 
@@ -90,10 +90,7 @@
                   <label for="formGustInfoCity" class="col-form-label">City</label>
                   <input class="form-control" type="text" id="formGustInfoCity" placeholder="city" aria-label="input Text to Gust city" v-model="formGuest.city" />
                 </div>
-                <div class="col-md-3">
-                  <label for="formGustInfoZip" class="col-form-label">Zip</label>
-                  <input class="form-control" type="text" id="formGustInfoZip" placeholder="Zip" aria-label="input Text to Gust Zip" v-model="formGuest.zip" />
-                </div>
+
               </div>
             </div>
             <div class="accordion mt-3 mb-5" id="accordionExample">
@@ -152,7 +149,7 @@
                     <div class="col-12 mb-3">Personal Information</div>
                     <div class="row mb-3">
 
-                      <div class="col-md-4">
+                      <div class="col-md-3">
                         <label for="flatpickr-date-07" class="col-form-label">Birth Date</label>
                         <input type="text" class="form-control flatpickr-input" placeholder="Select Date" id="flatpickr-date-07" ref="datePicker7" aria-label="input Text to Birth Date" v-model="formGuest.OtherInformation.paymentMethod
                           .birthDate
@@ -160,7 +157,7 @@
                         <i class="fa-solid fa-calendar-days icon-date top"></i>
 
                       </div>
-                      <div class="col-md-4">
+                      <div class="col-md-3">
                         <label for="NationalityGuest" class="col-form-label">Nationality</label>
                         <select class="form-select" id="formGustNationality" aria-label="select Nationality" v-model="formGuest.OtherInformation.paymentMethod.nationality
                           ">
@@ -175,7 +172,7 @@
 
                         </select>
                       </div>
-                      <div class="col-md-4">
+                      <div class="col-md-3">
                         <label for="VIPGuest" class="col-form-label">VIP Status</label>
                         <select class="form-select" id="formGustVIP" aria-label="select VIP" v-model="formGuest.OtherInformation.paymentMethod.vipStatus
                           ">
@@ -186,6 +183,10 @@
                             {{vipStatus}}
                           </option>
                         </select>
+                      </div>
+                      <div class="col-md-3">
+                        <label for="formGustInfoZip" class="col-form-label">Zip</label>
+                        <input class="form-control" type="text" id="formGustInfoZip" placeholder="Zip" aria-label="input Text to Gust Zip" v-model="formGuest.zip" />
                       </div>
                     </div>
                   </div>

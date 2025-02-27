@@ -97,7 +97,7 @@
 
           <hr class="my-4" />
           <!--   ! check inputs and repeater -->
-          <div class="row mb-3">
+          <div class="mb-3">
             <div class="row">
               <!-- <div class="col-lg-4">
                 <div class="row">
@@ -136,7 +136,7 @@
               <!-- change width delete border color  -->
               <div class="card mt-3 border-0">
                 <div class="card-datatable table-responsive">
-                  <table class=" table overflow-hidden">
+                  <table class="table overflow-hidden">
                     <thead>
                       <tr class="rounded-1">
                         <th class="border-0 roomHeader">Room Type</th>
@@ -147,11 +147,9 @@
                         <th class="border-0 w-20 roomHeader">Rate(EGP)(Tax Inc.)</th>
                       </tr>
                     </thead>
-                    <!--  ! table Header -->
-                    <!--  ! table body -->
                     <tbody>
                       <tr v-for="(item, index) in formAddReservation.units" :key="index" class="mb-2 selectStyle">
-                        <td>
+                        <td data-label="Room Type">
                           <select class="form-select" id="unitsTypes" v-model="item.roomType"
                             @change="() => handleUnitTypeChange(index, item.roomType)">
                             <option disabled value="">Select</option>
@@ -160,7 +158,7 @@
                             </option>
                           </select>
                         </td>
-                        <td>
+                        <td data-label="Rate Type">
                           <select class="form-select" v-model="item.rateType" ref="rateType" :class="{ 'input-error': validationMessages.rateType }">
                             <option disabled value="">select</option>
                             <option v-for="(type, index) in getRateTypes" :key="index" :value="index">
@@ -168,28 +166,24 @@
                             </option>
                           </select>
                           <span class="error-message" v-if="validationMessages.rateType">{{ validationMessages.rateType }}</span>
-
                         </td>
-                        <td>
-                          <select class="form-select" v-model="item.unitId"
-                            :disabled="!availableUnitsByRoom[index]?.length">
+                        <td data-label="Room">
+                          <select class="form-select" v-model="item.unitId" :disabled="!availableUnitsByRoom[index]?.length">
                             <option disabled value="">Select Unit</option>
-                            <option v-for="unit in availableUnitsByRoom[index] || []"
-                              :key="unit.id" :value="unit.id">
+                            <option v-for="unit in availableUnitsByRoom[index] || []" :key="unit.id" :value="unit.id">
                               {{ unit.code }}
                             </option>
                           </select>
                         </td>
-                        <td>
+                        <td data-label="Adult">
                           <input type="number" class="form-control rounded-2" v-model="item.adults" placeholder="1" aria-label="1" min="1" max="10" ref="adults" :class="{ 'input-error': validationMessages.adults }" />
                           <span class="error-message" v-if="validationMessages.adults">{{ validationMessages.adults }}</span>
-
                         </td>
-                        <td>
+                        <td data-label="Child">
                           <input type="number" class="form-control rounded-2" v-model="item.children" placeholder="0" aria-label="0" min="0" max="10" ref="children" :class="{ 'input-error': validationMessages.children }" />
                           <span class="error-message" v-if="validationMessages.children">{{ validationMessages.children }}</span>
                         </td>
-                        <td>
+                        <td data-label="Rate(EGP)(Tax Inc.)">
                           <div class="row">
                             <div class="col-lg-10">
                               <div class="input-group">
@@ -199,23 +193,16 @@
                               <span class="error-message" v-if="validationMessages.rateAmount">{{ validationMessages.rateAmount }}</span>
                             </div>
                             <div class="col-md-2 p-0">
-                              <button class="btn btn-label-danger" type="button" v-if="index > 0"
-                                @click="removeItem(index)">
+                              <button class="btn btn-label-danger" type="button" v-if="index > 0" @click="removeItem(index)">
                                 <i class="fa-solid fa-xmark"></i>
                               </button>
                             </div>
                           </div>
-
                         </td>
                       </tr>
-
                     </tbody>
-                    <!--  ! table body -->
-                    <!--  ! table footer -->
-                    <!-- <tfoot> -->
-                    <!--change style button  -->
-                    <!--  ! table footer -->
                   </table>
+
                   <button class="btn btn-primary waves-effect waves-light mt-3" type="button" @click="addItem">
                     Add Unit
                   </button>
@@ -329,8 +316,8 @@
                   <label for="emailGuest" class="col-form-label">Email</label>
                   <input class="form-control rounded-2 " type="email" id="emailGuest" placeholder="Email" v-model="formAddReservation.guestInformation.email" />
                 </div>
-                <div class="col-lg-6 col-md-6 px-4 mx-0 px-md-2">
-                  <div class="mb-lg-3 row reservationMobile">
+                <div class="col-lg-6 col-md-6 px-md-2">
+                  <div class="mb-lg-3 row px-2 px-md-0 reservationMobile">
                     <label for="mobileGuest" class="col-form-label ps-0">Mobile</label>
                     <input class="form-control rounded-2 mobileInput" type="tel" id="mobileGuest" placeholder="Mobile" v-model="formAddReservation.guestInformation.mobile" ref="mobile" :class="{ 'input-error': validationMessages.mobile }" />
                     <span class="error-message" v-if="validationMessages.mobile">{{ validationMessages.mobile }}</span>
@@ -338,7 +325,18 @@
                 </div>
               </div>
             </div>
-            <div class="col-lg-7 mb-lg-3 px-md-0">
+            <div class="col-lg-3 col-md-6 ps-md-0 ps-lg-3">
+              <label for="emailGuest" class="col-form-label">Email</label>
+              <input class="form-control rounded-2 " type="email" id="emailGuest" placeholder="Email" v-model="formAddReservation.guestInformation.email" />
+            </div>
+            <div class="col-lg-3 col-md-6 px-md-2">
+              <div class="mb-lg-3 row px-2 px-md-0 reservationMobile">
+                <label for="mobileGuest" class="col-form-label ps-0">Mobile</label>
+                <input class="form-control rounded-2 mobileInput" type="tel" id="mobileGuest" placeholder="Mobile" v-model="formAddReservation.guestInformation.mobile" ref="mobile" :class="{ 'input-error': validationMessages.mobile }" />
+                <span class="error-message" v-if="validationMessages.mobile">{{ validationMessages.mobile }}</span>
+              </div>
+            </div>
+            <div class="col-lg-6 mb-lg-3 px-md-0">
               <label for="addressGuest" class="col-form-label">Address</label>
               <input class="form-control rounded-2" type="text" id="addressGuest" placeholder="Address" v-model="formAddReservation.guestInformation.address" />
             </div>
@@ -1200,4 +1198,50 @@ console.log(bookingData);
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+@media (max-width: 576px) {
+  /* Make table elements display as block */
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+
+  /* Hide table header */
+  thead tr {
+    display: none;
+  }
+
+  /* Style each table row as a card */
+  tr {
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    padding: 0.5rem;
+  }
+
+  /* Style each table cell */
+  td {
+    position: relative;
+    padding: 0.5rem 0.5rem 0.5rem 50%;
+    width: 100%;
+    box-sizing: border-box;
+    border-top: 1px solid #ddd;
+  }
+
+  /* Insert the data-label before each cell content */
+  td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 0;
+    width: 45%;
+    padding-left: 15px;
+    font-weight: bold;
+    white-space: nowrap;
+  }
+
+  /* Ensure inputs and selects take full width */
+  input,
+  select {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+</style>
