@@ -273,7 +273,7 @@
           <!--  ! Guest Information -->
           <h6 class="mb-2">Guest Information</h6>
           <div class="row">
-            <div class="col-lg-5 px-md-0">
+            <div class="col-lg-5  px-md-0">
               <label for="nameGuest" class="col-form-label">Guest Name</label>
               <div class="input-group">
                 <select class="form-select" id="nameGuest">
@@ -310,33 +310,20 @@
 
               <SidebarAddGuest :is-sidebar-open="isSidebarOpen" @close-sidebar="toggleSidebar" />
             </div>
-            <div class="col-lg-7">
-              <div class="row">
-                <div class="col-lg-6 col-md-6 ps-md-0 ps-lg-3">
-                  <label for="emailGuest" class="col-form-label">Email</label>
-                  <input class="form-control rounded-2 " type="email" id="emailGuest" placeholder="Email" v-model="formAddReservation.guestInformation.email" />
-                </div>
-                <div class="col-lg-6 col-md-6 px-md-2">
-                  <div class="mb-lg-3 row px-2 px-md-0 reservationMobile">
-                    <label for="mobileGuest" class="col-form-label ps-0">Mobile</label>
-                    <input class="form-control rounded-2 mobileInput" type="tel" id="mobileGuest" placeholder="Mobile" v-model="formAddReservation.guestInformation.mobile" ref="mobile" :class="{ 'input-error': validationMessages.mobile }" />
-                    <span class="error-message" v-if="validationMessages.mobile">{{ validationMessages.mobile }}</span>
-                  </div>
-                </div>
-              </div>
+            <div class="offset-md-7">
             </div>
-            <div class="col-lg-3 col-md-6 ps-md-0 ps-lg-3">
+            <div class="col-lg-3 col-md-6  ps-2 ps-md-0">
               <label for="emailGuest" class="col-form-label">Email</label>
               <input class="form-control rounded-2 " type="email" id="emailGuest" placeholder="Email" v-model="formAddReservation.guestInformation.email" />
             </div>
-            <div class="col-lg-3 col-md-6 px-md-2">
+            <div class="col-lg-3 col-md-6 ">
               <div class="mb-lg-3 row px-2 px-md-0 reservationMobile">
                 <label for="mobileGuest" class="col-form-label ps-0">Mobile</label>
                 <input class="form-control rounded-2 mobileInput" type="tel" id="mobileGuest" placeholder="Mobile" v-model="formAddReservation.guestInformation.mobile" ref="mobile" :class="{ 'input-error': validationMessages.mobile }" />
                 <span class="error-message" v-if="validationMessages.mobile">{{ validationMessages.mobile }}</span>
               </div>
             </div>
-            <div class="col-lg-6 mb-lg-3 px-md-0">
+            <div class="col-lg-6 mb-lg-3 pe-md-0">
               <label for="addressGuest" class="col-form-label">Address</label>
               <input class="form-control rounded-2" type="text" id="addressGuest" placeholder="Address" v-model="formAddReservation.guestInformation.address" />
             </div>
