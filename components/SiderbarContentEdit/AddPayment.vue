@@ -57,6 +57,10 @@
                     <textarea class="form-control" aria-label="With textarea" placeholder="Comment" v-model="formAddPayment.comment"></textarea>
                   </div>
                 </div>
+                <div class="col-12 mb-2 mt-3">
+                  <DropzoneComponent ref="dropzone" :id="'profile-image'" />
+
+                </div>
               </div>
               <div class="gap-2 d-flex" style="position: absolute; bottom: 15px; right: 20px">
 
@@ -70,6 +74,7 @@
 import { getAccounts, getPaymentMethods } from "../../Api/addResvertionApi";
 import { postAddPayment } from "../../Api/editResvertion";
 import { handleSubmissionError, showSuccessAlert } from "../../Api/MassageValidation/alertUtilities";
+import DropzoneComponent from "../layout/DropzoneComponent.vue";
 import flatpickrMixin from "../Mixin/flatpickrMixin";
 
 export default {
@@ -96,6 +101,9 @@ export default {
 
     }
   },
+  components: {
+    DropzoneComponent
+  },
   props: {
     reservationId: {
       type: [String, Number],
@@ -107,7 +115,14 @@ export default {
     async addPaymentReservation ()
     {
       try {
-        // Ensure all fields are included in the payload
+        // Get the file from DropzoneComponent
+        const dropzoneElement = this.$refs.dropzone; // Add ref to DropzoneComponent
+        const files = dropzoneElement?.getFiles();
+
+        // Create FormData to handle file upload
+        const formData = new FormData();
+
+        // Add payment data
         const paymentData = {
           date_at: this.formAddPayment.date,
           payment_id: this.formAddPayment.method,
@@ -115,21 +130,24 @@ export default {
           assigned_to: this.formAddPayment.account,
           note: this.formAddPayment.comment,
           reservation_id: this.reservationId,
-          price: this.formAddPayment.amount, // Add amount field
+          price: this.formAddPayment.amount,
         };
-        const response = await postAddPayment(paymentData);
-        showSuccessAlert(
-          "Payment added successfully!", // Custom message
-        );
-        location.reload()
 
+        // Append payment data to FormData
+        Object.keys(paymentData).forEach(key => {
+          formData.append(key, paymentData[key]);
+        });
 
+        // Append file if exists
+        if (files?.[0]) {
+          formData.append('image', files[0]);
+        }
 
+        const response = await postAddPayment(formData);
+        showSuccessAlert("Payment added successfully!");
+        location.reload();
       } catch (error) {
-        handleSubmissionError(
-          error,
-          "Failed to payment" // Updated error message
-        );
+        handleSubmissionError(error, "Failed to add payment");
       }
 
       // Reset the payment form

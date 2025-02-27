@@ -272,6 +272,10 @@
                     <textarea class="form-control" aria-label="With textarea" placeholder="Comment" v-model="formAddPayment.comment"></textarea>
                   </div>
                 </div>
+                <div class="col-12 mb-2 mt-3">
+                  <DropzoneComponent :id="'profile-image'" />
+
+                </div>
               </div>
             </div>
             <div class="modal-footer">
@@ -295,6 +299,7 @@ import { postAddPayment, postCancelReservation, postStatusChange } from "../../A
 import { showSuccessAlert, handleSubmissionError, showConfirmationAlert } from "../../Api/MassageValidation/alertUtilities";
 import { getGuestsInfo, getPaymentMethods } from "../../Api/addResvertionApi";
 import { postUpdateReservation } from '../../Api/CalenderApi';
+import DropzoneComponent from "../layout/DropzoneComponent.vue";
 
 export default {
 
@@ -317,6 +322,9 @@ export default {
       },
       statusOptions: [],
     }
+  },
+  components: {
+    DropzoneComponent
   },
   props: {
     selectedEvent: {
