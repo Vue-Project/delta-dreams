@@ -118,6 +118,8 @@ export default {
             click: () => this.handleTodayClick()
           }
         },
+        resourceAreaHeaderContent: 'Units', // Change the header to "Units"
+
         plugins: [resourceTimelinePlugin, interactionPlugin],
         initialView: "resourceTimeline",
         eventClick: this.handleEventClick,
