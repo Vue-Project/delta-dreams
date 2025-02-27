@@ -1,17 +1,35 @@
-@media (max-width: 991.98px) {
+@media (max-width: 991px) {
     .sidebar {
       width: 80% !important;
     }
     .scbuttons {
       width: 80% !important;
     }
+    .buisnessSourceInput{
+      padding-left:9px;
+    }
+    .mobileInput{
+      width:100% !important;
+    }
+    .reservationMobile{
+      margin-left:-9px;
+      margin-right: -8px;
+    }
   }
   
-  @media (max-width: 767.98px) {
+  @media (max-width: 767px) {
     .sidebar {
       width: 75% !important;
     }
     .scbuttons {
         width: 75% !important;
+    }
+    .reservationRoom{
+      padding-left:0px;
+      padding-right: 0px;
+    }
+    .remindTypeReservation{
+      padding-left:0px;
+      padding-right: 0px;
     }
   }
