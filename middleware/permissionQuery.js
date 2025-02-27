@@ -1,8 +1,11 @@
 export default function ({ route, redirect }) {
-  // Define your query parameters
+  // Extract code and type from the route's query parameters or another source
+  const { code, type } = route.query;
+
+  // Define your query parameters dynamically
   const queryParams = {
-    code: 'fLWKqJqshtwrX8vV',
-    type: 'admin',
+    code: code || 'defaultCode', // Use a default value if code is not provided
+    type: type || 'defaultType', // Use a default value if type is not provided
   };
 
   // Merge existing query parameters with the new ones
