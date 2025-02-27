@@ -1139,18 +1139,29 @@ validateEventChange(event, newStart, newEnd) {
     },
 
     getDuration() {
-      // Check if the device is mobile
-      const isMobile = window.innerWidth <= 768; // You can adjust the width threshold as needed
-      return { days: isMobile ? 10 : 20 };
+      // Check if the code is running in a browser environment
+      if (typeof window !== 'undefined') {
+        const isMobile = window.innerWidth <= 768; // You can adjust the width threshold as needed
+        return { days: isMobile ? 10 : 20 };
+      }
+      // Default duration if window is not available
+      return { days: 20 };
     },
 
     updateDuration() {
-      this.calendarOptions.duration = this.getDuration();
+      if (typeof window !== 'undefined') {
+        this.calendarOptions.duration = this.getDuration();
+      }
     },
 
   },
   async mounted ()
   {
+    if (typeof window !== 'undefined') {
+      // Add an event listener to update duration on window resize
+      window.addEventListener('resize', this.updateDuration);
+    }
+
     try {
       const [CalenderDataResponse] = await Promise.all([getCalenderAllUnits()]);
       this.data = CalenderDataResponse.data;
@@ -1189,8 +1200,6 @@ validateEventChange(event, newStart, newEnd) {
       // Listen for data updates from HeaderCalender
       this.$root.$on('calendar-data-updated', this.updateCalendarData);
 
-      // Add an event listener to update duration on window resize
-      window.addEventListener('resize', this.updateDuration);
     } catch (error) {
       console.error("Error loading data:", error);
     } finally {
@@ -1199,11 +1208,13 @@ validateEventChange(event, newStart, newEnd) {
 
   },
   beforeDestroy() {
+    if (typeof window !== 'undefined') {
+      // Clean up the event listener
+      window.removeEventListener('resize', this.updateDuration);
+    }
+
     // Clean up the event listener when component is destroyed
     this.$root.$off('calendar-data-updated', this.updateCalendarData);
-
-    // Clean up the event listener
-    window.removeEventListener('resize', this.updateDuration);
   }
 }
 </script>
