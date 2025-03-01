@@ -1,5 +1,5 @@
 <template>
-  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEnd" aria-labelledby="offcanvasEndLabel">
+  <div class="offcanvas offcanvas-end editSidebar" tabindex="-1" id="offcanvasEnd" aria-labelledby="offcanvasEndLabel">
     <!-- Offcanvas Header -->
 
     <div class="offcanvas-header">
@@ -72,14 +72,14 @@
 
         </div>
         <div class="col-3">
-          <button type="button" class="btn btn-primary waves-effect waves-light btn-block" @click="changeDateReservation">
+          <button type="button" class="btn btn-primary waves-effect waves-light btn-block confirmButton" @click="changeDateReservation">
             Confirm
           </button>
         </div>
       </div>
       <template v-if="selectedEvent">
-        <div class="row">
-          <div class="col-md-6">
+        <div class="row editSidebarDetails">
+          <div class="col-6">
             <ul class="list-unstyled mb-0">
               <li class="mb-3 pb-1">
                 <div class="d-flex align-items-start">
@@ -130,7 +130,7 @@
 
             </ul>
           </div>
-          <div class="col-md-6">
+          <div class="col-6">
             <ul class="list-unstyled mb-0">
               <li class="mb-3 pb-1">
                 <div class="d-flex align-items-start">
@@ -187,14 +187,21 @@
               </li>
             </ul>
           </div>
+          <div class="text-center">
+          <button @click="cancelReservation" type="button" title="Cancel Reservation" class="btn btn-danger waves-effect waves-light mt-3 w-100 px-0">
+            Cancel Reservation</button>
+
         </div>
-        <div class="new-div mt-3 position-absolute right-0 w-100 px-4 bottom-1">
+        </div>
+
+
+        <div class="new-div mt-3 position-absolute right-0 w-100 px-4 bottom-1 TotalPayment">
           <dl class=" row mb-0">
             <dt class="col-6 fw-normal text-heading">Total</dt>
             <dd class="col-6 text-end">{{ selectedEvent.total || "0 " }} EGP</dd>
 
-            <dt class="col-sm-6 fw-normal">Paid</dt>
-            <dd class="col-sm-6 text-end">{{ selectedEvent.paid || "0 " }} EGP</dd>
+            <dt class="col-6 fw-normal">Paid</dt>
+            <dd class="col-6 text-end">{{ selectedEvent.paid || "0 " }} EGP</dd>
 
             <dt class="col-6 fw-normal text-danger">Balance</dt>
             <dd class="col-6 text-end text-danger">
@@ -203,12 +210,7 @@
             </dd>
           </dl>
         </div>
-        <div class="text-center">
-          <button @click="cancelReservation" type="button" title="Cancel Reservation" class="btn btn-danger waves-effect waves-light mt-3 w-100 px-0">
-            Cancel Reservation</button>
-
-        </div>
-
+        
       </template>
       <!-- Modal Payment -->
       <div class="modal fade" id="paymentModal" data-bs-backdrop="static" tabindex="-1" style="display: none;" aria-hidden="true">
