@@ -52,7 +52,7 @@
                   <input class="form-control rounded-2" type="number" id="roomCount" v-model="formAddReservation.numberRooms" min="1" @input="updateRepeater" />
                 </div>
 
-                <div class="col-lg-9 col-12 mb-4 col-md-6 ps-sm-2 p-0 pe-md-0">
+                <div class="col-lg-9 col-12 mb-lg-4 col-md-6 ps-sm-2 p-0 pe-md-0">
                   <label for="reservationType" class="form-label">Reservation Type</label>
                   <select class="form-select" id="reservationType" v-model="formAddReservation.reservationType" ref="reservationType" :class="{ 'input-error': validationMessages.reservationType }">
                     <option disabled value="">Select</option>
@@ -271,9 +271,9 @@
           <!--  ! Hold Release Date & Time -->
           <hr class="my-4" />
           <!--  ! Guest Information -->
-          <h6 class="mb-2">Guest Information</h6>
+          <h6 class="mb-2 GuestTitle">Guest Information</h6>
           <div class="row">
-            <div class="col-lg-5  px-md-0">
+            <div class="col-lg-5  px-md-0 GuestNameReservation">
               <label for="nameGuest" class="col-form-label">Guest Name</label>
               <div class="input-group">
                 <select class="form-select" id="nameGuest">
@@ -312,7 +312,7 @@
             </div>
             <div class="offset-md-7">
             </div>
-            <div class="col-lg-3 col-md-6  ps-2 ps-md-0">
+            <div class="col-lg-3 col-md-6  ps-2 ps-md-0 EmailReservation">
               <label for="emailGuest" class="col-form-label">Email</label>
               <input class="form-control rounded-2 " type="email" id="emailGuest" placeholder="Email" v-model="formAddReservation.guestInformation.email" />
             </div>
@@ -323,12 +323,12 @@
                 <span class="error-message" v-if="validationMessages.mobile">{{ validationMessages.mobile }}</span>
               </div>
             </div>
-            <div class="col-lg-6 mb-lg-3 ps-lg-3 pe-lg-0 px-md-0">
+            <div class="col-lg-6 mb-lg-3 ps-lg-3 pe-lg-0 px-md-0 AddressReservation">
               <label for="addressGuest" class="col-form-label">Address</label>
               <input class="form-control rounded-2" type="text" id="addressGuest" placeholder="Address" v-model="formAddReservation.guestInformation.address" />
             </div>
             <div class="row px-0 mx-0">
-              <div class="col-lg-3 col-md-6 ps-md-0">
+              <div class="col-lg-3 col-md-6 ps-md-0 CountryReservation">
                 <label for="countryGuest" class="col-form-label">Country</label>
                 <select class="form-select" v-model="formAddReservation.guestInformation.country" :class="{ 'input-error': validationMessages.country }">
                   <option disabled value="">Select Country</option>
@@ -337,15 +337,15 @@
                   </option>
                 </select>
               </div>
-              <div class="col-lg-3 col-md-6 px-md-0">
+              <div class="col-lg-3 col-md-6 px-md-0 StateReservation">
                 <label for="stateGuest" class="col-form-label">State</label>
                 <input class="form-control rounded-2" type="text" id="stateGuest" placeholder="state" v-model="formAddReservation.guestInformation.state" />
               </div>
-              <div class="col-lg-3 col-md-6 ps-md-0 ps-lg-3">
+              <div class="col-lg-3 col-md-6 ps-md-0 ps-lg-3 CityReservation">
                 <label for="cityGuest" class="col-form-label">City</label>
                 <input class="form-control rounded-2" type="text" id="cityGuest" placeholder="city" v-model="formAddReservation.guestInformation.city" />
               </div>
-              <div class="col-lg-3 col-md-6 px-md-0">
+              <div class="col-lg-3 col-md-6 px-md-0 ZipReservation">
                 <label for="ZipGuest" class="col-form-label">Zip</label>
                 <input class="form-control rounded-2" type="text" id="ZipGuest" placeholder="Zip" v-model="formAddReservation.guestInformation.zip" />
               </div>
