@@ -1026,10 +1026,10 @@ body{
   left: 10%;
   transform: translateX(-50%);
 }
-.dropdown-menu {
+/* .dropdown-menu {
   padding: 10px;
   width: 100%;
-}
+} */
 
 .dropdown-item {
   display: flex;

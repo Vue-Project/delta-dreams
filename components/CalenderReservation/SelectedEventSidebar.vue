@@ -88,7 +88,7 @@
                       <h6 class="mb-0">Reservation Number</h6>
                       <small class="text-muted">{{
                         selectedEvent.id || "1025191591"
-                      }}</small>
+                        }}</small>
                     </div>
                   </div>
                 </div>
@@ -220,10 +220,14 @@
             </div>
             <div class="modal-body">
               <div class="row">
-                <div class="col mb-3">
+                <div class="col ">
                   <label for="flatpickr-date-01" class="form-label">Date</label>
                   <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" id="flatpickr-date-01" ref="datePicker1" aria-label="input Text to Check-in Date" v-model="formAddPayment.date" />
                   <i class="fa-solid fa-calendar-days icon-date right-24"></i>
+                </div>
+                <div class="col-12 mb-3 ">
+                  <label class="form-label" for="payment_Image">Payment Image</label>
+                  <input type="file" class="form-control" id="payment_Image" ref="paymentImage" required="">
                 </div>
               </div>
               <div class="row g-2">
@@ -272,6 +276,7 @@
                     <textarea class="form-control" aria-label="With textarea" placeholder="Comment" v-model="formAddPayment.comment"></textarea>
                   </div>
                 </div>
+
               </div>
             </div>
             <div class="modal-footer">
@@ -295,6 +300,7 @@ import { postAddPayment, postCancelReservation, postStatusChange } from "../../A
 import { showSuccessAlert, handleSubmissionError, showConfirmationAlert } from "../../Api/MassageValidation/alertUtilities";
 import { getGuestsInfo, getPaymentMethods } from "../../Api/addResvertionApi";
 import { postUpdateReservation } from '../../Api/CalenderApi';
+import DropzoneComponent from "../layout/DropzoneComponent.vue";
 
 export default {
 
@@ -317,6 +323,9 @@ export default {
       },
       statusOptions: [],
     }
+  },
+  components: {
+    DropzoneComponent
   },
   props: {
     selectedEvent: {
@@ -425,7 +434,13 @@ export default {
     async submitPayment ()
     {
       try {
-        // Ensure all fields are included in the payload
+        // Get the file from the file input
+        const paymentImageFile = this.$refs.paymentImage.files[0]; // Ensure you have a ref on your file input
+
+        // Create FormData to handle file upload
+        const formData = new FormData();
+
+        // Add payment data
         const paymentData = {
           date_at: this.formAddPayment.date,
           payment_id: this.formAddPayment.method,
@@ -433,15 +448,31 @@ export default {
           assigned_to: this.formAddPayment.account,
           note: this.formAddPayment.comment,
           reservation_id: this.selectedEvent.id,
-          price: this.formAddPayment.amount, // Add amount field
-          // Add any additional fields here
+          price: this.formAddPayment.amount,
         };
-        // console.log(paymentData);
-        const response = await postAddPayment(paymentData);
-        showSuccessAlert(
-          "Payment added successfully!", // Custom message
-        );
-        location.reload()
+
+        // Append payment data to FormData
+        Object.keys(paymentData).forEach(key => {
+          formData.append(key, paymentData[key]);
+        });
+
+        // Append image file if it exists
+        if (paymentImageFile) {
+          formData.append('image', paymentImageFile);
+        }
+
+        // Log the payment data and image
+        // console.log("Payment Data:", paymentData);
+        // console.log("Image File:", paymentImageFile);
+
+        // Log FormData entries
+        // for (let [key, value] of formData.entries()) {
+        //   console.log(`${key}:`, value);
+        // }
+
+        const response = await postAddPayment(formData);
+        showSuccessAlert("Payment added successfully!");
+        // location.reload();
 
         // Close the modal after saving
         const modalElement = document.getElementById('paymentModal');
@@ -449,10 +480,7 @@ export default {
         modalInstance.hide();
 
       } catch (error) {
-        handleSubmissionError(
-          error,
-          "Failed to payment" // Updated error message
-        );
+        handleSubmissionError(error, "Failed to payment");
       }
 
       // Reset the payment form
@@ -472,13 +500,15 @@ export default {
         reservation_id: null
       }
     },
-    parseDateRange() {
+    parseDateRange ()
+    {
       try {
         const flatpickrInstance = this.$refs.rangePicker1._flatpickr;
         const selectedDates = flatpickrInstance.selectedDates;
 
         if (selectedDates.length === 2) {
-          const formatDate = (date) => {
+          const formatDate = (date) =>
+          {
             const localDate = new Date(date.getTime() - (date.getTimezoneOffset() * 60000));
             return localDate.toISOString().split('T')[0];
           };
@@ -491,7 +521,8 @@ export default {
         console.error("Error parsing date range:", error);
       }
     },
-    async changeDateReservation() {
+    async changeDateReservation ()
+    {
       const result = await showConfirmationAlert(
         'Are you sure?',
         "change the date of this reservation",
@@ -544,10 +575,12 @@ export default {
   watch: {
     selectedEvent: {
       immediate: true,
-      handler(newEvent) {
+      handler (newEvent)
+      {
         if (newEvent) {
           // Format dates to YYYY-MM-DD while preserving local timezone
-          const formatDate = (date) => {
+          const formatDate = (date) =>
+          {
             const d = new Date(date);
             const year = d.getFullYear();
             const month = String(d.getMonth() + 1).padStart(2, '0');
@@ -583,6 +616,4 @@ export default {
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -11,7 +11,7 @@
         <button class="btn  btn-primary  dropdown-toggle w-100 " type="button" id="buildingsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
           <i class="fa-solid fa-filter pe-2"></i>Filter Buildings
         </button>
-        <ul class="dropdown-menu" aria-labelledby="buildingsDropdown">
+        <ul class="dropdown-menu w-100" aria-labelledby="buildingsDropdown">
           <li>
             <a class="dropdown-item" href="#" @click.prevent="toggleSelectAllBuildings">
               <input type="checkbox" v-model="selectAllBuildings" class="form-check-input me-2" />
@@ -40,11 +40,9 @@
     <div class="col-lg-6 col-12">
         <div class="row">
             <div class="col-lg-3 col-12">
-              <div v-if="hasSelections">
-                <button class="btn btn-success float-end" @click="applyFilters">
+                <button class="btn btn-primary float-end" @click="applyFilters">
                   Apply Filters
                 </button>
-              </div>
             </div>
 
             <div class="col-md-4 ">
@@ -55,7 +53,7 @@
                     {{ selectedRateTypes.length }}
                   </span>
                 </button>
-                <ul class="dropdown-menu" aria-labelledby="rateTypesDropdown">
+                <ul class="dropdown-menu w-100" aria-labelledby="rateTypesDropdown">
                   <!-- <li>
                     <a class="dropdown-item" href="#" @click.prevent="toggleSelectAllRateTypes">
                       <input type="checkbox" v-model="selectAllRateTypes" class="form-check-input me-2">
@@ -80,7 +78,7 @@
                     {{ selectedProjects.length }}
                   </span>
                 </button>
-                <ul class="dropdown-menu" aria-labelledby="projectsDropdown">
+                <ul class="dropdown-menu w-100" aria-labelledby="projectsDropdown">
                   <!-- <li>
                     <a class="dropdown-item" href="#" @click.prevent="toggleSelectAllProjects">
                       <input type="checkbox" v-model="selectAllProjects" class="form-check-input me-2">
@@ -200,6 +198,7 @@
 import flatpickrMixin from "../Mixin/flatpickrMixin";
 import { mapState, mapGetters } from 'vuex';
 import { handleSubmissionError, showSuccessAlert } from "../../Api/MassageValidation/alertUtilities";
+import { getCalenderFilter, postCalenderFilter } from "../../Api/CalenderApi";
 
 export default {
   name: "HeaderCalender",
@@ -280,7 +279,7 @@ export default {
         this.selectedRateTypes.splice(idx, 1);
       }
       this.selectAllRateTypes = this.selectedRateTypes.length === this.getRateTypes.length;
-      await this.sendSelectionsToServer();
+      // await this.getFilterData();
     },
     async toggleProject (projectId)
     {
@@ -291,7 +290,7 @@ export default {
         this.selectedProjects.splice(idx, 1);
       }
       this.selectAllProjects = this.selectedProjects.length === this.getProjects.length;
-      await this.sendSelectionsToServer();
+      // await this.getFilterData();
     },
     toggleSelectAllBuildings ()
     {
@@ -312,34 +311,28 @@ export default {
       }
       this.selectAllBuildings = this.selectedBuildings.length === 0;
       this.$emit("show-building-resources", this.selectedBuildings);
-      await this.sendSelectionsToServer();
+      await this.getFilterData();
     },
-    async sendSelectionsToServer ()
+    async getFilterData ()
     {
-
       try {
-        const payload = {
-          project_id: this.selectedProjects,
+        const filterCalender = {
+          project_ids: this.selectedProjects,
           rate_types: this.selectedRateTypes,
         };
-        // console.log(payload);
-
-        // await showSuccessAlert(
-        //     "Reservation cancelled successfully!", // Custom message
-
-        //   );
+        const response = await getCalenderFilter(filterCalender);
+        this.data = response.data;
+        // location.reload();
+        // Emit the updated data to BookingCalendar
+        this.$root.$emit('calendar-data-updated', response.data);
 
       } catch (error) {
-        // handleSubmissionError(
-        //     error,
-        //     "Failed to cancel reservation" // Updated error message
-        //   );
+        console.log(error);
       }
     },
     async applyFilters ()
     {
-      await this.sendSelectionsToServer();
-
+      await this.getFilterData();
     },
   },
 
@@ -361,10 +354,7 @@ export default {
       'getProjects',
       'getProjects'
     ]),
-    hasSelections ()
-    {
-      return this.selectedRateTypes.length > 0 || this.selectedProjects.length > 0;
-    }
+
 
 
   },
@@ -390,19 +380,19 @@ export default {
   //   },
   //   selectedRateTypes: {
   //     handler: _.debounce(async function(newVal) {
-  //       await this.sendSelectionsToServer();
+  //       await this.getFilterData();
   //     }, 500),
   //     deep: true
   //   },
   //   selectedProjects: {
   //     handler: _.debounce(async function(newVal) {
-  //       await this.sendSelectionsToServer();
+  //       await this.getFilterData();
   //     }, 500),
   //     deep: true
   //   },
   //   selectedBuildings: {
   //     handler: _.debounce(async function(newVal) {
-  //       await this.sendSelectionsToServer();
+  //       await this.getFilterData();
   //     }, 500),
   //     deep: true
   //   }

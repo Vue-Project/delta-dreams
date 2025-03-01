@@ -1,68 +1,74 @@
 <template>
 
   <form class="payment-form" @submit.prevent="addPaymentReservation">
-              <div class="row">
-                <div class="col mb-3">
-                  <label for="flatpickr-date-01" class="form-label">Date</label>
-                  <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" id="flatpickr-date-01" ref="datePicker1" aria-label="input Text to Check-in Date" v-model="formAddPayment.date" />
-                  <i class="fa-solid fa-calendar-days icon-date right-24"></i>
-                </div>
-              </div>
-              <div class="row g-2">
-                <div class="col-12 mb-2">
-                  <div class="input-group">
-                    <label class="input-group-text" for="payment_type">Type</label>
+    <div class="row">
 
-                    <select class="form-select" id="payment_type" v-model="formAddPayment.type">
-                      <option disabled value="">Select Type</option>
-                      <option v-for="(label, value) in paymentTypes" :key="value" :value="value">
-                        {{ label }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-                <div class="col-12 mb-2">
-                  <div class="input-group">
-                    <label class="input-group-text" for="payment_method">Method</label>
+      <div class="col-12 mb-3">
+        <label for="flatpickr-date-01" class="form-label">Date</label>
+        <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" id="flatpickr-date-01" ref="datePicker1" aria-label="input Text to Check-in Date" v-model="formAddPayment.date" />
+        <i class="fa-solid fa-calendar-days icon-date right-24"></i>
+      </div>
+      <div class=" col-12 mb-3">
+        <label class="form-label" for="payment_Image">Payment Image</label>
+        <input type="file" class="form-control" id="payment_Image" ref="paymentImage" required="">
+      </div>
+    </div>
+    <div class="row g-2">
+      <div class="col-12 mb-2">
+        <div class="input-group">
+          <label class="input-group-text" for="payment_type">Type</label>
 
-                    <select class="form-select" id="payment_method" v-model="formAddPayment.method">
-                      <option disabled value="">Select Method</option>
-                      <option v-for="paymentMethod in paymentMethods" :key="paymentMethod.id" :value="paymentMethod.id">
-                        {{ paymentMethod.content }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-                <div class="col-12">
-                  <div class="input-group">
-                    <span class="input-group-text">EGP</span>
-                    <input type="text" class="form-control" placeholder="Amount" aria-label="Amount (to the nearest dollar)" v-model="formAddPayment.amount">
-                  </div>
-                </div>
-                <div class="col-12 mt-2">
-                  <div class="input-group">
-                    <label class="input-group-text" for="payment_accounts">Accounts</label>
+          <select class="form-select" id="payment_type" v-model="formAddPayment.type">
+            <option disabled value="">Select Type</option>
+            <option v-for="(label, value) in paymentTypes" :key="value" :value="value">
+              {{ label }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="col-12 mb-2">
+        <div class="input-group">
+          <label class="input-group-text" for="payment_method">Method</label>
 
-                    <select class="form-select" id="payment_accounts" v-model="formAddPayment.account">
-                      <option disabled value="">Select Accounts</option>
-                      <option v-for="account in accounts" :key="account.id" :value="account.id">
-                        {{ account.name }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-                <div class="col-12 mb-2 mt-3">
-                  <div class="input-group">
-                    <span class="input-group-text">Comment</span>
-                    <textarea class="form-control" aria-label="With textarea" placeholder="Comment" v-model="formAddPayment.comment"></textarea>
-                  </div>
-                </div>
-              </div>
-              <div class="gap-2 d-flex" style="position: absolute; bottom: 15px; right: 20px">
+          <select class="form-select" id="payment_method" v-model="formAddPayment.method">
+            <option disabled value="">Select Method</option>
+            <option v-for="paymentMethod in paymentMethods" :key="paymentMethod.id" :value="paymentMethod.id">
+              {{ paymentMethod.content }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="input-group">
+          <span class="input-group-text">EGP</span>
+          <input type="text" class="form-control" placeholder="Amount" aria-label="Amount (to the nearest dollar)" v-model="formAddPayment.amount">
+        </div>
+      </div>
+      <div class="col-12 mt-2">
+        <div class="input-group">
+          <label class="input-group-text" for="payment_accounts">Accounts</label>
 
-                <button type="submit" class="btn btn-primary ">Save</button>
-              </div>
-          </form>
+          <select class="form-select" id="payment_accounts" v-model="formAddPayment.account">
+            <option disabled value="">Select Accounts</option>
+            <option v-for="account in accounts" :key="account.id" :value="account.id">
+              {{ account.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="col-12 mb-2 mt-3">
+        <div class="input-group">
+          <span class="input-group-text">Comment</span>
+          <textarea class="form-control" aria-label="With textarea" placeholder="Comment" v-model="formAddPayment.comment"></textarea>
+        </div>
+      </div>
+
+    </div>
+    <div class="gap-2 d-flex" style="position: absolute; bottom: 15px; right: 20px">
+
+      <button type="submit" class="btn btn-primary ">Save</button>
+    </div>
+  </form>
 
 </template>
 
@@ -70,6 +76,7 @@
 import { getAccounts, getPaymentMethods } from "../../Api/addResvertionApi";
 import { postAddPayment } from "../../Api/editResvertion";
 import { handleSubmissionError, showSuccessAlert } from "../../Api/MassageValidation/alertUtilities";
+import DropzoneComponent from "../layout/DropzoneComponent.vue";
 import flatpickrMixin from "../Mixin/flatpickrMixin";
 
 export default {
@@ -96,6 +103,9 @@ export default {
 
     }
   },
+  components: {
+    DropzoneComponent
+  },
   props: {
     reservationId: {
       type: [String, Number],
@@ -107,7 +117,17 @@ export default {
     async addPaymentReservation ()
     {
       try {
-        // Ensure all fields are included in the payload
+        // Get the file from DropzoneComponent
+        const dropzoneElement = this.$refs.dropzone; // Add ref to DropzoneComponent
+        const files = dropzoneElement?.getFiles();
+
+        // Get the file from the file input
+        const paymentImageFile = this.$refs.paymentImage.files[0];
+
+        // Create FormData to handle file upload
+        const formData = new FormData();
+
+        // Add payment data
         const paymentData = {
           date_at: this.formAddPayment.date,
           payment_id: this.formAddPayment.method,
@@ -115,21 +135,38 @@ export default {
           assigned_to: this.formAddPayment.account,
           note: this.formAddPayment.comment,
           reservation_id: this.reservationId,
-          price: this.formAddPayment.amount, // Add amount field
+          price: this.formAddPayment.amount,
         };
-        const response = await postAddPayment(paymentData);
-        showSuccessAlert(
-          "Payment added successfully!", // Custom message
-        );
-        location.reload()
 
+        // Append payment data to FormData
+        Object.keys(paymentData).forEach(key =>
+        {
+          formData.append(key, paymentData[key]);
+        });
 
+        // Append file if exists
+        if (files?.[0]) {
+          formData.append('image', files[0]);
+        }
 
+        if (paymentImageFile) {
+          formData.append('image', paymentImageFile);
+        }
+
+        // Log the payment data and image
+        // console.log("Payment Data:", paymentData);
+        // console.log("Image File:", paymentImageFile);
+
+        // Log FormData entries
+        // for (let [key, value] of formData.entries()) {
+        //   console.log(`${key}:`, value);
+        // }
+
+        const response = await postAddPayment(formData);
+        showSuccessAlert("Payment added successfully!");
+        // location.reload();
       } catch (error) {
-        handleSubmissionError(
-          error,
-          "Failed to payment" // Updated error message
-        );
+        handleSubmissionError(error, "Failed to add payment");
       }
 
       // Reset the payment form

@@ -9,11 +9,18 @@ export const state = () => ({
   genderTypes: [],
   projects: [],
   remindGuestType: [],
+  code: null,
+  type: null,
+  lastUpdated: null
 // acces page in URl
   // accessAllowed: {},
 
 
 });
+// store/index.js
+
+
+
 
 export const mutations = {
   setSelectedDates(state, dates) {
@@ -81,6 +88,12 @@ export const mutations = {
   setRemindGuestType(state, remindGuestType) {
     state.remindGuestType = remindGuestType;
   },
+  setParams(state, { code, type, lastUpdated }) {
+    if (code) state.code = code
+    if (type) state.type = type
+    if (lastUpdated) state.lastUpdated = lastUpdated
+  },
+
 };
     // acces page in URl
 
