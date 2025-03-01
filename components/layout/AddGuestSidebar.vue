@@ -17,14 +17,14 @@
                       <label for="formGustInfoName" class="col-form-label">Name
                       </label>
 
-                      <input type="text" class="form-control" id="formGustInfoName" placeholder="Name Guest" aria-label="input text to Gust Name" v-model="formGuest.name" ref="name" :class="{ 'input-error': validationMessages.name }" />
+                      <input type="text" class="form-control rounded-2" id="formGustInfoName" placeholder="Name Guest" aria-label="input text to Gust Name" v-model="formGuest.name" ref="name" :class="{ 'input-error': validationMessages.name }" />
                       <span class="error-message" v-if="validationMessages.name">{{ validationMessages.name }}</span>
                     </div>
 
                     <div class="mb-3">
                       <label for="formGustInfoEmail" class="col-form-label">Email
                       </label>
-                      <input type="email" class="form-control" id="formGustInfoEmail" placeholder="Use comma to add multiple Email Ids" aria-label="input email to Gust Email" v-model="formGuest.email" r />
+                      <input type="email" class="form-control rounded-2" id="formGustInfoEmail" placeholder="Use comma to add multiple Email Ids" aria-label="input email to Gust Email" v-model="formGuest.email" r />
                     </div>
                   </div>
                 </div>
@@ -35,19 +35,19 @@
                   <div class="col-md-6">
                     <div class="mb-3">
                       <label for="formGustInfoPhone" class="col-form-label">Phone</label>
-                      <input class="form-control" type="text" value="Phone" id="formGustInfoPhone" aria-label="input tel to Gust Phone" v-model="formGuest.phone" ref="phone" :class="{ 'input-error': validationMessages.phone }" />
+                      <input class="form-control rounded-2" type="text" value="Phone" id="formGustInfoPhone" aria-label="input tel to Gust Phone" v-model="formGuest.phone" ref="phone" :class="{ 'input-error': validationMessages.phone }" />
                       <span class="error-message" v-if="validationMessages.phone">{{ validationMessages.phone }}</span>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="mb-3">
                       <label for="formGustInfoMobile" class="col-form-label">Mobile</label>
-                      <input class="form-control" type="text" value="Mobile" id="formGustInfoMobile" aria-label="input tel to Gust Mobile" v-model="formGuest.mobile" />
+                      <input class="form-control rounded-2" type="text" value="Mobile" id="formGustInfoMobile" aria-label="input tel to Gust Mobile" v-model="formGuest.mobile" />
                     </div>
                   </div>
                 </div>
                   <div class="row">
-                    <div class="col-6">
+                    <div class="col-lg-6 col-md-6 col-12">
                       <label for="formGustIdentityGender" class="col-form-label">Gender</label>
                   <select class="form-select" v-model="formGuest.gender" ref="gender" :class="{ 'input-error': validationMessages.gender }">
                       <option value="" disabled selected>Select Gender</option>
@@ -57,9 +57,9 @@
                   </select>
                   <span class="error-message" v-if="validationMessages.gender">{{ validationMessages.gender }}</span>
                     </div>
-                    <div class="col-6">
-                      <label for="formGustInformInternationalNumber" class="col-form-label">International Number</label>
-                      <input class="form-control" type="text" value="International Number" id="formGustInformInternationalNumber" aria-label="input tel to Gust International Number" v-model="formGuest.internationalNumber" />
+                    <div class="col-lg-6 col-md-6 col-12">
+                      <label for="formGustInformInternationalNumber" class="col-form-label internationalNumber">International Number</label>
+                      <input class="form-control rounded-2" type="text" value="International Number" id="formGustInformInternationalNumber" aria-label="input tel to Gust International Number" v-model="formGuest.internationalNumber" />
                     </div>
                   </div>
 
@@ -67,7 +67,7 @@
               <div class="row">
                 <div class="col-md-3">
                   <label for="formGustInfoAddress" class="col-form-label">Address</label>
-                  <input class="form-control" type="text" id="formGustInfoAddress" placeholder="Address" aria-label="input Text to Gust Address" v-model="formGuest.address" />
+                  <input class="form-control rounded-2" type="text" id="formGustInfoAddress" placeholder="Address" aria-label="input Text to Gust Address" v-model="formGuest.address" />
                 </div>
                 <div class="col-md-3">
                   <!-- <label for="countryGuest" class="col-form-label">Country</label>
@@ -84,11 +84,11 @@
                 </div>
                 <div class="col-md-3">
                   <label for="formGustInfoState" class="col-form-label">State</label>
-                  <input class="form-control" type="text" id="formGustInfoState" placeholder="state" aria-label="input Text to Gust state" v-model="formGuest.state" />
+                  <input class="form-control rounded-2" type="text" id="formGustInfoState" placeholder="state" aria-label="input Text to Gust state" v-model="formGuest.state" />
                 </div>
                 <div class="col-md-3">
                   <label for="formGustInfoCity" class="col-form-label">City</label>
-                  <input class="form-control" type="text" id="formGustInfoCity" placeholder="city" aria-label="input Text to Gust city" v-model="formGuest.city" />
+                  <input class="form-control rounded-2" type="text" id="formGustInfoCity" placeholder="city" aria-label="input Text to Gust city" v-model="formGuest.city" />
                 </div>
 
               </div>
@@ -114,7 +114,7 @@
                           <div class="col-md-8">
                             <div class="mb-3">
                               <label for="formIdentityInfoId" class="col-form-label">ID Number</label>
-                              <input class="form-control" type="text" id="formIdentityInfoId" placeholder="Enter ID Number" aria-label="Enter ID Number Guest" v-model="formGuest.OtherInformation.idNumber" />
+                              <input class="form-control rounded-2" type="text" id="formIdentityInfoId" placeholder="Enter ID Number" aria-label="Enter ID Number Guest" v-model="formGuest.OtherInformation.idNumber" />
                             </div>
 
                           </div>
@@ -125,7 +125,7 @@
                         <div class="row">
                           <div class="col-md-6">
                           <label for="formGustIdentityIdType" class="col-form-label">ID Type</label>
-                          <select class="form-select" id="formGustIdentityIdType" aria-label="select ID Type" v-model="formGuest.OtherInformation.idType">
+                          <select class="form-select rounded-2" id="formGustIdentityIdType" aria-label="select ID Type" v-model="formGuest.OtherInformation.idType">
                             <option value="" disabled selected>
                               Select
                               </option>
@@ -186,7 +186,7 @@
                       </div>
                       <div class="col-md-3">
                         <label for="formGustInfoZip" class="col-form-label">Zip</label>
-                        <input class="form-control" type="text" id="formGustInfoZip" placeholder="Zip" aria-label="input Text to Gust Zip" v-model="formGuest.zip" />
+                        <input class="form-control rounded-2" type="text" id="formGustInfoZip" placeholder="Zip" aria-label="input Text to Gust Zip" v-model="formGuest.zip" />
                       </div>
                     </div>
                   </div>
@@ -448,4 +448,6 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+
+</style>
