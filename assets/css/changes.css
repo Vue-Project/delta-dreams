@@ -545,6 +545,10 @@ select {
 .GuestTitle{
   margin-left:-13px;
 }
+#paymentInsurance{
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
 /* start sidebar  */
 .sidebar-open {
   overflow-y: auto;
