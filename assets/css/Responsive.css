@@ -20,7 +20,7 @@
     }
     
     .table th {
-      min-width: 150px;
+      min-width: 177px;
       white-space: nowrap;
     }
     
@@ -40,19 +40,26 @@
     .scbuttons {
         width: 75% !important;
     }
+    .GuestNameReservation{
+      padding-right: 2px !important;
+      padding-left: 0px;
+    }
     .reservationRoom{
       padding-left:0px;
       padding-right: 0px;
     }
-    .remindTypeReservation{
-      padding-left:0px;
-      padding-right: 0px;
+    .remindTypeReservation,.EmailReservation ,.reservationMobile ,.AddressReservation,.StateReservation,.CityReservation,.CountryReservation,.ZipReservation{
+      padding-left:0px !important;
+      padding-right: 0px !important;
+    }
+    .buisnessSourceInput{
+      padding-left:12px;
     }
     .table-responsive{
       overflow-x: auto;
     }
     .table th {
-      min-width: 150px;
+      min-width: 177px;
       white-space: nowrap;
     }
     
@@ -86,5 +93,8 @@
   .confirmButton{
     width:60px;
     margin-left: -16px;
+  }
+  .guestNameInput{
+    padding-right:0px;
   }
 }
