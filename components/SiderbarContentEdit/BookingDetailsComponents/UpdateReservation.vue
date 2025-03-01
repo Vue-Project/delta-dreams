@@ -211,18 +211,18 @@
           <!-- HOLD RELEASE SECTION -->
           <!-- *************************** -->
           <div class="row">
-            <div class="col-md-5">
+            <div class="col-md-6">
               <!-- HOLD RELEASE DATE/TIME -->
 
               <div class="row">
                 <div class="col-md-12">
                   <div class="row">
-                    <div class="col-md-12 col-xl-6 col-12 px-0">
+                    <div class="col-md-6 col-xl-6 col-12 px-0">
                       <label for="flatpickr-date-03" class="form-label">Hold Release Date & Time</label>
                       <input type="text" placeholder="YYYY-MM-DD" id="flatpickr-date-03" class="form-control rounded-2 flatpickr-input" ref="datePicker3" v-model="formAddReservation.releaseDate" />
                       <i class="fa-solid fa-calendar-days icon-date"></i>
                     </div>
-                    <div class="col-md-12 col-xl-6 col-12 px-0 mt">
+                    <div class="col-md-6 col-xl-6 col-12 px-0 mt">
                       <input type="text" placeholder="HH:MM" id="flatpickr-time-03" class="form-control rounded-2 flatpickr-input" ref="timePicker3" aria-label="input Text to Time" v-model="formAddReservation.releaseTime" />
                       <i class="fa-regular fa-clock icon-time right"></i>
                     </div>
@@ -231,16 +231,16 @@
 
               </div>
             </div>
-            <div class="col-md-7">
+            <div class="col-md-6">
               <div class="row">
-                <div class="col-md-4 col-12 px-0 px-md-3">
+                <div class="col-md-6  col-12 px-0 px-md-3">
                   <label for="releaseTerm" class="form-label">Remind Guest before</label>
                   <div class="input-group">
                     <input type="number" class="form-control rounded-2" placeholder="0" id="releaseTerm" v-model="formAddReservation.remindGuest" />
                     <span class="input-group-text groupStyle">Days</span>
                   </div>
                 </div>
-                <div class="col-lg-8 col-12 px-0 px-md-3">
+                <div class="col-lg-6 col-md-6 col-12 px-0 px-md-3">
                   <label for="remindGuestType" class="form-label">Remind Guest Type</label>
                   <select class="form-select rounded-2" v-model="formAddReservation.remindGuestType">
                     <option disabled value="">Select Remind Guest Type</option>
