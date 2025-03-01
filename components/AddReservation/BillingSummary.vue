@@ -90,7 +90,7 @@
               </select>
             </div>
           </div>
-          <div class="col-md-6 d-flex align-items-center">
+          <div class="col-md-6 mb-3 d-flex align-items-center">
             <div class="input-group">
               <label class="input-group-text" for="paymentInsurance">Insurance</label>
               <input type="text" class="form-control" id="paymentInsurance" v-model="paymentDetails.insurance">
