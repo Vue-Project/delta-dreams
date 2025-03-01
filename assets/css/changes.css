@@ -539,6 +539,9 @@ select {
 .mobileInput{
   width:317px !important;
 }
+.guestNameInput{
+  padding-bottom:30px !important;
+}
 /* start sidebar  */
 .sidebar-open {
   overflow-y: auto;
