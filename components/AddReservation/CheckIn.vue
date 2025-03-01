@@ -139,12 +139,12 @@
                   <table class="table overflow-hidden">
                     <thead>
                       <tr class="rounded-1">
-                        <th class="border-0 roomHeader">Room Type</th>
-                        <th class="border-0 roomHeader">Rate Type</th>
-                        <th class="border-0 roomHeader">Room</th>
-                        <th class="border-0 roomHeader">Adult</th>
-                        <th class="border-0 roomHeader">Child</th>
-                        <th class="border-0 w-20 roomHeader">Rate(EGP)(Tax Inc.)</th>
+                        <th class="border-0 ">Room Type</th>
+                        <th class="border-0 ">Rate Type</th>
+                        <th class="border-0 ">Room</th>
+                        <th class="border-0">Adult</th>
+                        <th class="border-0">Child</th>
+                        <th class="border-0 w-20 ">Rate(EGP)(Tax Inc.)</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -283,7 +283,7 @@
                   </option>
                 </select>
                 <div class="position-relative flex-grow-1">
-                  <input type="text" class="form-control w-100" v-model="formAddReservation.guestInformation.name" @input="handleSearch" @focus="showDropdown = true" @blur="handleBlur" ref="name" :class="{ 'input-error': validationMessages.name }" />
+                  <input type="text" class="form-control w-100 guestNameInput" v-model="formAddReservation.guestInformation.name" @input="handleSearch" @focus="showDropdown = true" @blur="handleBlur" ref="name" :class="{ 'input-error': validationMessages.name }" />
 
                   <!-- Suggestions Dropdown -->
                   <div v-if="showDropdown" class="position-absolute w-100 mt-1 bg-white border rounded shadow z-5 cursor-pointer" style="max-height: 200px; overflow-y: auto" @scroll.passive="handleScroll">
@@ -323,7 +323,7 @@
                 <span class="error-message" v-if="validationMessages.mobile">{{ validationMessages.mobile }}</span>
               </div>
             </div>
-            <div class="col-lg-6 mb-lg-3 pe-md-0">
+            <div class="col-lg-6 mb-lg-3 ps-lg-3 pe-lg-0 px-md-0">
               <label for="addressGuest" class="col-form-label">Address</label>
               <input class="form-control rounded-2" type="text" id="addressGuest" placeholder="Address" v-model="formAddReservation.guestInformation.address" />
             </div>
@@ -1186,49 +1186,5 @@ console.log(bookingData);
 </script>
 
 <style scoped>
-@media (max-width: 576px) {
-  /* Make table elements display as block */
-  table, thead, tbody, th, td, tr {
-    display: block;
-  }
 
-  /* Hide table header */
-  thead tr {
-    display: none;
-  }
-
-  /* Style each table row as a card */
-  tr {
-    margin-bottom: 1rem;
-    border: 1px solid #ddd;
-    padding: 0.5rem;
-  }
-
-  /* Style each table cell */
-  td {
-    position: relative;
-    padding: 0.5rem 0.5rem 0.5rem 50%;
-    width: 100%;
-    box-sizing: border-box;
-    border-top: 1px solid #ddd;
-  }
-
-  /* Insert the data-label before each cell content */
-  td::before {
-    content: attr(data-label);
-    position: absolute;
-    left: 0;
-    width: 45%;
-    padding-left: 15px;
-    font-weight: bold;
-    white-space: nowrap;
-  }
-
-  /* Ensure inputs and selects take full width */
-  input,
-  select {
-    width: 100%;
-    box-sizing: border-box;
-  }
-}
 </style>
