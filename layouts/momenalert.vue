@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div v-if="showAlert" class="rotate-alert">
     <div class="rotate-message">
       📱 Please rotate your device to landscape mode!
@@ -61,4 +61,4 @@ onBeforeUnmount(() => {
     display: none;
   }
 }
-</style>
+</style> -->
