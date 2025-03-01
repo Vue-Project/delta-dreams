@@ -13,7 +13,7 @@
                     <DropzoneComponent :id="'profile-image'" v-model="formGuest.image" @dropzone-error="handleDropzoneError" />
                   </div>
                   <div class="col-md-8">
-                    <div class="mb-3">
+                    <div class="mb-lg-3">
                       <label for="formGustInfoName" class="col-form-label">Name
                       </label>
 
@@ -21,7 +21,7 @@
                       <span class="error-message" v-if="validationMessages.name">{{ validationMessages.name }}</span>
                     </div>
 
-                    <div class="mb-3">
+                    <div class="mb-lg-3">
                       <label for="formGustInfoEmail" class="col-form-label">Email
                       </label>
                       <input type="email" class="form-control rounded-2" id="formGustInfoEmail" placeholder="Use comma to add multiple Email Ids" aria-label="input email to Gust Email" v-model="formGuest.email" r />
@@ -33,14 +33,14 @@
               <div class="col-md-6">
                 <div class="row">
                   <div class="col-md-6">
-                    <div class="mb-3">
+                    <div class="mb-lg-3">
                       <label for="formGustInfoPhone" class="col-form-label">Phone</label>
                       <input class="form-control rounded-2" type="text" value="Phone" id="formGustInfoPhone" aria-label="input tel to Gust Phone" v-model="formGuest.phone" ref="phone" :class="{ 'input-error': validationMessages.phone }" />
                       <span class="error-message" v-if="validationMessages.phone">{{ validationMessages.phone }}</span>
                     </div>
                   </div>
                   <div class="col-md-6">
-                    <div class="mb-3">
+                    <div class="mb-lg-3">
                       <label for="formGustInfoMobile" class="col-form-label">Mobile</label>
                       <input class="form-control rounded-2" type="text" value="Mobile" id="formGustInfoMobile" aria-label="input tel to Gust Mobile" v-model="formGuest.mobile" />
                     </div>
@@ -111,8 +111,8 @@
                           <div div class="col-md-4">
                             <DropzoneComponent id="dropzone2" v-model="formGuest.OtherInformation.image" />
                           </div>
-                          <div class="col-md-8 pe-0">
-                            <div class="mb-3">
+                          <div class="col-md-8 pe-0 ps-1">
+                            <div class="mb-lg-3">
                               <label for="formIdentityInfoId" class="col-form-label">ID Number</label>
                               <input class="form-control rounded-2" type="text" id="formIdentityInfoId" placeholder="Enter ID Number" aria-label="Enter ID Number Guest" v-model="formGuest.OtherInformation.idNumber" :class="{ 'input-error': validationMessages.idNumber }" />
                               <span class="error-message" v-if="validationMessages.idNumber">{{ validationMessages.idNumber }}</span>
@@ -125,7 +125,7 @@
 
                       <div class="col-md-6 pe-0">
                         <div class="row">
-                          <div class="col-md-6">
+                          <div class="col-md-6 ps-1">
                           <label for="formGustIdentityIdType" class="col-form-label">ID Type</label>
                           <select class="form-select rounded-2" id="formGustIdentityIdType" aria-label="select ID Type" v-model="formGuest.OtherInformation.idType" :class="{ 'input-error': validationMessages.idType }">
                             <option value="" disabled selected>
@@ -137,8 +137,8 @@
                           </select>
                           <span class="error-message" v-if="validationMessages.idType">{{ validationMessages.idType }}</span>
                         </div>
-                          <div class="col-md-6">
-                            <div class="mb-3">
+                          <div class="col-md-6 ps-1">
+                            <div class="mb-lg-3">
                               <label for="flatpickr-date-04" class="col-form-label">Expiry Date</label>
                             <input type="text" class="form-control rounded-2" placeholder="YYYY-MM-D " id="flatpickr-date-09" ref="datePicker9" aria-label="input Text to Expiry Date" v-model="formGuest.OtherInformation.expiryDate" :class="{ 'input-error': validationMessages.expiryDate }" />
                             <i class="fa-solid fa-calendar-days icon-date top"></i>
@@ -150,8 +150,8 @@
 
                       </div>
                     </div>
-                    <div class="col-12 mb-3">Personal Information</div>
-                    <div class="row mb-3 pe-0">
+                    <div class="col-12 mb-lg-3">Personal Information</div>
+                    <div class="row mb-lg-3 pe-0">
 
                       <div class="col-md-3">
                         <label for="flatpickr-date-07" class="col-form-label">Birth Date</label>
