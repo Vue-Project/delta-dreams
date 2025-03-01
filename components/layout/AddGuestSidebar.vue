@@ -64,12 +64,12 @@
                   </div>
 
               </div>
-              <div class="row">
-                <div class="col-md-3">
+              <div class="row pe-0">
+                <div class="col-md-3 pe-0">
                   <label for="formGustInfoAddress" class="col-form-label">Address</label>
                   <input class="form-control rounded-2" type="text" id="formGustInfoAddress" placeholder="Address" aria-label="input Text to Gust Address" v-model="formGuest.address" />
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3 pe-0">
                   <!-- <label for="countryGuest" class="col-form-label">Country</label>
 
 
@@ -82,18 +82,18 @@
                   </option>
                 </select>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3 pe-0">
                   <label for="formGustInfoState" class="col-form-label">State</label>
                   <input class="form-control rounded-2" type="text" id="formGustInfoState" placeholder="state" aria-label="input Text to Gust state" v-model="formGuest.state" />
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3 pe-0">
                   <label for="formGustInfoCity" class="col-form-label">City</label>
                   <input class="form-control rounded-2" type="text" id="formGustInfoCity" placeholder="city" aria-label="input Text to Gust city" v-model="formGuest.city" />
                 </div>
 
               </div>
             </div>
-            <div class="accordion mt-3 mb-5" id="accordionExample">
+            <div class="accordion px-0 mt-3 mb-5" id="accordionExample">
               <div class="card accordion-item active">
                 <h2 class="accordion-header" id="headingOne">
                   <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionOne" aria-expanded="true" aria-controls="accordionOne">
@@ -102,7 +102,7 @@
                 </h2>
 
                 <div id="accordionOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample" style="">
-                  <div class="row accordion-body">
+                  <div class="row accordion-body pe-0">
                     <div class="col-12 mb-3">Identity Information</div>
 
                     <div class="row p-3 mb-2">
@@ -111,7 +111,7 @@
                           <div div class="col-md-4">
                             <DropzoneComponent id="dropzone2" v-model="formGuest.OtherInformation.image" />
                           </div>
-                          <div class="col-md-8">
+                          <div class="col-md-8 pe-0">
                             <div class="mb-3">
                               <label for="formIdentityInfoId" class="col-form-label">ID Number</label>
                               <input class="form-control rounded-2" type="text" id="formIdentityInfoId" placeholder="Enter ID Number" aria-label="Enter ID Number Guest" v-model="formGuest.OtherInformation.idNumber" :class="{ 'input-error': validationMessages.idNumber }" />
@@ -123,7 +123,7 @@
                         </div>
                       </div>
 
-                      <div class="col-md-6">
+                      <div class="col-md-6 pe-0">
                         <div class="row">
                           <div class="col-md-6">
                           <label for="formGustIdentityIdType" class="col-form-label">ID Type</label>
@@ -140,7 +140,7 @@
                           <div class="col-md-6">
                             <div class="mb-3">
                               <label for="flatpickr-date-04" class="col-form-label">Expiry Date</label>
-                            <input type="text" class="form-control" placeholder="YYYY-MM-D " id="flatpickr-date-09" ref="datePicker9" aria-label="input Text to Expiry Date" v-model="formGuest.OtherInformation.expiryDate" :class="{ 'input-error': validationMessages.expiryDate }" />
+                            <input type="text" class="form-control rounded-2" placeholder="YYYY-MM-D " id="flatpickr-date-09" ref="datePicker9" aria-label="input Text to Expiry Date" v-model="formGuest.OtherInformation.expiryDate" :class="{ 'input-error': validationMessages.expiryDate }" />
                             <i class="fa-solid fa-calendar-days icon-date top"></i>
                             <span class="error-message" v-if="validationMessages.expiryDate">{{ validationMessages.expiryDate }}</span>
                             </div>
@@ -151,11 +151,11 @@
                       </div>
                     </div>
                     <div class="col-12 mb-3">Personal Information</div>
-                    <div class="row mb-3">
+                    <div class="row mb-3 pe-0">
 
                       <div class="col-md-3">
                         <label for="flatpickr-date-07" class="col-form-label">Birth Date</label>
-                        <input type="text" class="form-control flatpickr-input" placeholder="Select Date" id="flatpickr-date-07" ref="datePicker7" aria-label="input Text to Birth Date" v-model="formGuest.OtherInformation.paymentMethod
+                        <input type="text" class="form-control rounded-2 flatpickr-input" placeholder="Select Date" id="flatpickr-date-07" ref="datePicker7" aria-label="input Text to Birth Date" v-model="formGuest.OtherInformation.paymentMethod
                           .birthDate
                           " />
                         <i class="fa-solid fa-calendar-days icon-date top"></i>
@@ -178,7 +178,7 @@
                       </div>
                       <div class="col-md-3">
                         <label for="VIPGuest" class="col-form-label">VIP Status</label>
-                        <select class="form-select" id="formGustVIP" aria-label="select VIP" v-model="formGuest.OtherInformation.paymentMethod.vipStatus
+                        <select class="form-select rounded-2" id="formGustVIP" aria-label="select VIP" v-model="formGuest.OtherInformation.paymentMethod.vipStatus
                           ">
                           <option value="" disabled selected>
                             Select
@@ -188,7 +188,7 @@
                           </option>
                         </select>
                       </div>
-                      <div class="col-md-3">
+                      <div class="col-md-3 h_respons">
                         <label for="formGustInfoZip" class="col-form-label">Zip</label>
                         <input class="form-control rounded-2" type="text" id="formGustInfoZip" placeholder="Zip" aria-label="input Text to Gust Zip" v-model="formGuest.zip" />
                       </div>
@@ -453,5 +453,9 @@ export default {
 </script>
 
 <style scoped>
-
+@media (max-width:768px){
+  .h_respons{
+    padding-bottom: 35px;
+  }
+}
 </style>

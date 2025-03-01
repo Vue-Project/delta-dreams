@@ -1,7 +1,7 @@
 <template>
 
   <form ref="guestForm" id="formGustInfo" @submit.prevent="submitFormUpdateGuest">
-    <div class="row px-0 p-3 mb-5">
+    <div class="row pe-0 p-3 mb-5">
       <div class="col-md-6">
         <div class="row">
           <div div class="col-md-4">
@@ -84,35 +84,30 @@
         </div>
       </div>
     </div>
-    <div class="accordion mt-3" id="accordionExample">
-      <div class="card accordion-item active">
+    <div class="accordion px-0 mt-3" id="accordionExample">
+      <div class="card px-0 accordion-item active">
         <h2 class="accordion-header" id="headingOne">
           <button type="button" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionOne" aria-expanded="true" aria-controls="accordionOne">
             Other Information
           </button>
         </h2>
 
-        <div id="accordionOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample" style="">
-          <div class="row accordion-body">
+        <div id="accordionOne" class="accordion-collapse px-0 collapse show" data-bs-parent="#accordionExample" style="">
+          <div class="row accordion-body px-0">
             <div class="col-12 mb-3">Identity Information</div>
 
-            <div class="row p-3 px-0 mb-2">
-              <div class="col-md-6">
+            <div class="row p-3 pe-0  mb-2">
+              <div class="col-md-6 pe-0 ">
                 <div class="row">
                   <div div class="col-md-4">
                     <DropzoneComponent id="dropzone2" v-model="formGuest.OtherInformation.image" />
                   </div>
-                  <div class="col-md-8 px-0">
+                  <div class="col-md-8">
                     <div class="mb-3">
                       <label for="formIdentityInfoId" class="col-form-label">ID Number</label>
                       <input class="form-control" type="text" id="formIdentityInfoId" placeholder="Enter ID Number" aria-label="Enter ID Number Guest" v-model="formGuest.OtherInformation.idNumber" />
                     </div>
-
-
-
                   </div>
-
-
                 </div>
               </div>
 
@@ -146,7 +141,7 @@
 
 
             <div class="col-12 mb-3">Personal Information</div>
-            <div class="row mb-3 px-0">
+            <div class="row mb-3 pe-0">
 
               <div class="col-md-3 pe-0">
                 <label for="flatpickr-date-07" class="col-form-label">Birth Date</label>

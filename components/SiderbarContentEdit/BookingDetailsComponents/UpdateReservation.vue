@@ -19,34 +19,34 @@
 
           <div class="row">
             <!-- DATE/TIME SELECTION -->
-            <div class="col-md-8">
+            <div class="col-md-12 col-lg-8">
               <div class="row align-items-center">
                 <!-- CHECK-IN DATE/TIME -->
 
-                <div class="col-md-3 col-12 px-0">
+                <div class="col-md-3 col-lg-3 col-12 px-0">
                   <label for="flatpickr-date-01" class="form-label">Check-in</label>
-                  <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" id="flatpickr-date-01" ref="datePicker1" v-model="formAddReservation.checkInDate" aria-label="input Text to Check-in Date" />
+                  <input type="text" class="form-control rounded-2 flatpickr-input" placeholder="DD/MM/YYYY" id="flatpickr-date-01" ref="datePicker1" v-model="formAddReservation.checkInDate" aria-label="input Text to Check-in Date" />
                   <i class="fa-solid fa-calendar-days icon-date"></i>
                 </div>
 
                 <!-- Check-in Time Picker-->
-                <div class="col-md-3 col-12 px-0">
+                <div class="col-md-4 col-lg-3 col-12 px-0">
                   <div class="input-group mt-4">
-                    <input type="text" class="form-control flatpickr-input" placeholder="HH:MM" id="flatpickr-time-01" ref="timePicker1" v-model="formAddReservation.checkInTime" aria-label="input Text to Check-in Time" />
+                    <input type="text" class="form-control rounded-2 flatpickr-input" placeholder="HH:MM" id="flatpickr-time-01" ref="timePicker1" v-model="formAddReservation.checkInTime" aria-label="input Text to Check-in Time" />
                     <i class="fa-regular fa-clock icon-time"></i>
                     <span class="input-group-text total-nights bg-primary" id="basic-addon13">{{ totalNights }} Nights</span>
                   </div>
                 </div>
 
                 <!-- CHECK-OUT DATE/TIME -->
-                <div class="col-md-3 col-12 px-0">
+                <div class="col-md-3 col-lg-3 col-12 px-0">
                   <label for="flatpickr-date-02" class="form-label ms-3">Check-out</label>
-                  <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" id="flatpickr-date-02" ref="datePicker2" v-model="formAddReservation.checkOutDate" aria-label="input Text to Check-out Date" />
+                  <input type="text" class="form-control rounded-2 flatpickr-input" placeholder="DD/MM/YYYY" id="flatpickr-date-02" ref="datePicker2" v-model="formAddReservation.checkOutDate" aria-label="input Text to Check-out Date" />
                   <i class="fa-solid fa-calendar-days icon-date"></i>
                 </div>
 
-                <div class="col-md-3 col-12 mt-4 px-0">
-                  <input type="text" class="form-control flatpickr-input" placeholder="HH:MM" id="flatpickr-time-02" ref="timePicker2" v-model="formAddReservation.checkOutTime" aria-label="input Text to Check-out Time" />
+                <div class="col-md-2 col-lg-3 col-12 mt-4 px-0">
+                  <input type="text" class="form-control rounded-2 flatpickr-input" placeholder="HH:MM" id="flatpickr-time-02" ref="timePicker2" v-model="formAddReservation.checkOutTime" aria-label="input Text to Check-out Time" />
                   <i class="fa-regular fa-clock icon-time right"></i>
                 </div>
               </div>
@@ -54,7 +54,7 @@
             </div>
             <!-- ROOM & RESERVATION TYPE -->
 
-            <div class="col-md-4">
+            <div class="col-md-12 col-lg-4">
               <div class="row">
                 <!-- <div class="col-md-3 col-12">
                   <label for="roomCount" class="form-label">Room(s)</label>
@@ -63,7 +63,7 @@
                 <!-- ROOM & RESERVATION TYPE -->
 
                 <div class="col-md-3 col-12 px-0">
-                  <label for="roomCount" class="form-label">Room(s)</label>
+                  <label for="roomCount" class="form-label rounded-2">Room(s)</label>
                   <input class="form-control" type="number" id="roomCount" v-model="formAddReservation.numberRooms" min="1" max="10" @input="updateRepeater" disabled />
                 </div>
 
@@ -72,7 +72,7 @@
 
                 <!-- RESERVATION TYPE DROPDOWN -->
 
-                <div class="col-lg-9 col-12 mb-4 col-md-6 ps-sm-2 p-0 pe-md-0">
+                <div class="col-lg-9 col-12 mb-4 col-md-9 ps-sm-2 p-0 pe-md-0">
                   <label for="reservationType" class="form-label">Reservation Type</label>
                   <select class="form-select" id="reservationType" v-model="formAddReservation.reservationType" ref="reservationType" :class="{ 'input-error': validationMessages.reservationType }">
                     <option disabled value="">Select</option>
@@ -88,9 +88,9 @@
             <div class="###### px-0">
               <!-- BOOKING SOURCE SELECTION -->
 
-              <div class="col-md-6 mb-4 ">
+              <div class="col-md-6 mb-4 px-0 ">
                 <div class="row">
-                  <div class=" col-md-6 col-12  px-0 px-md-3">
+                  <div class=" col-md-6 col-12">
                     <label for="bookingSource" class="form-label">Booking Source</label>
                     <select class="form-select" id="bookingSource" v-model="formAddReservation.bookingSource" ref="bookingSource" :class="{ 'input-error': validationMessages.bookingSource }">
                       <option disabled value="">Select</option>
@@ -102,7 +102,7 @@
                   </div>
                   <!-- BUSINESS SOURCE SELECTION -->
 
-                  <div class="col-md-6 col-12 px-0">
+                  <div class="col-md-6 col-12">
                     <label for="businessSource" class="form-label">Business Source</label>
                     <select class="form-select" id="businessSource" v-model="formAddReservation.businessSource" ref="businessSource" :class="{ 'input-error': validationMessages.businessSource }">
                       <option disabled value="">Select</option>
@@ -219,11 +219,11 @@
                   <div class="row">
                     <div class="col-md-12 col-xl-6 col-12 px-0">
                       <label for="flatpickr-date-03" class="form-label">Hold Release Date & Time</label>
-                      <input type="text" placeholder="YYYY-MM-DD" id="flatpickr-date-03" class="form-control flatpickr-input" ref="datePicker3" v-model="formAddReservation.releaseDate" />
+                      <input type="text" placeholder="YYYY-MM-DD" id="flatpickr-date-03" class="form-control rounded-2 flatpickr-input" ref="datePicker3" v-model="formAddReservation.releaseDate" />
                       <i class="fa-solid fa-calendar-days icon-date"></i>
                     </div>
                     <div class="col-md-12 col-xl-6 col-12 px-0 mt">
-                      <input type="text" placeholder="HH:MM" id="flatpickr-time-03" class="form-control flatpickr-input" ref="timePicker3" aria-label="input Text to Time" v-model="formAddReservation.releaseTime" />
+                      <input type="text" placeholder="HH:MM" id="flatpickr-time-03" class="form-control rounded-2 flatpickr-input" ref="timePicker3" aria-label="input Text to Time" v-model="formAddReservation.releaseTime" />
                       <i class="fa-regular fa-clock icon-time right"></i>
                     </div>
                   </div>
@@ -236,13 +236,13 @@
                 <div class="col-md-4 col-12 px-0 px-md-3">
                   <label for="releaseTerm" class="form-label">Remind Guest before</label>
                   <div class="input-group">
-                    <input type="number" class="form-control" placeholder="0" id="releaseTerm" v-model="formAddReservation.remindGuest" />
+                    <input type="number" class="form-control rounded-2" placeholder="0" id="releaseTerm" v-model="formAddReservation.remindGuest" />
                     <span class="input-group-text groupStyle">Days</span>
                   </div>
                 </div>
                 <div class="col-lg-8 col-12 px-0 px-md-3">
                   <label for="remindGuestType" class="form-label">Remind Guest Type</label>
-                  <select class="form-select" v-model="formAddReservation.remindGuestType">
+                  <select class="form-select rounded-2" v-model="formAddReservation.remindGuestType">
                     <option disabled value="">Select Remind Guest Type</option>
                     <option v-for="(remindGuestType, index) in getRemindGuestType" :key="index" :value="index">
                       {{ remindGuestType }}
@@ -261,14 +261,14 @@
             <div class="col-md-5 col-12 px-0">
               <label for="nameGuest" class="col-form-label">Guest Name</label>
               <div class="input-group">
-                <select class="form-select" id="nameGuest">
+                <select class="form-select rounded-2" id="nameGuest">
                   <option value="" disabled>MR.</option>
                   <option v-for="title in titles" :key="title" :value="title">
                     {{ title }}
                   </option>
                 </select>
                 <div class="position-relative flex-grow-1">
-                  <input type="text" class="form-control w-100" v-model="formAddReservation.guestInformation.name" @input="handleSearch" @focus="showDropdown = true" @blur="handleBlur" ref="name" :class="{ 'input-error': validationMessages.name }" />
+                  <input type="text" class="form-control rounded-2 w-100" v-model="formAddReservation.guestInformation.name" @input="handleSearch" @focus="showDropdown = true" @blur="handleBlur" ref="name" :class="{ 'input-error': validationMessages.name }" />
 
                   <!-- Suggestions Dropdown -->
                   <div v-if="showDropdown" class="position-absolute w-100 mt-1 bg-white border rounded shadow z-5 cursor-pointer" style="max-height: 200px; overflow-y: auto" @scroll.passive="handleScroll">
@@ -296,12 +296,12 @@
               <div class="row">
                 <div class="col-md-6 col-12 px-0 px-md-3">
                   <label for="emailGuest" class="col-form-label">Email</label>
-                  <input class="form-control" type="email" id="emailGuest" placeholder="Email" v-model="formAddReservation.guestInformation.email" />
+                  <input class="form-control rounded-2" type="email" id="emailGuest" placeholder="Email" v-model="formAddReservation.guestInformation.email" />
                 </div>
                 <div class="col-md-6">
                   <div class="mb-3 row ">
                     <label for="mobileGuest" class="col-form-label">Mobile</label>
-                    <input class="form-control" type="tel" id="mobileGuest" placeholder="Mobile" v-model="formAddReservation.guestInformation.mobile" ref="mobile" :class="{ 'input-error': validationMessages.mobile }" />
+                    <input class="form-control rounded-2" type="tel" id="mobileGuest" placeholder="Mobile" v-model="formAddReservation.guestInformation.mobile" ref="mobile" :class="{ 'input-error': validationMessages.mobile }" />
                     <span class="error-message" v-if="validationMessages.mobile">{{ validationMessages.mobile }}</span>
 
                   </div>
@@ -311,16 +311,16 @@
             <div class="col-md-12">
               <div class="row">
                 <div class="col-md-4 col-12 px-0 pe-md-3">
-                  <label for="addressGuest" class="col-form-label">Address</label>
-                  <input class="form-control" type="text" id="addressGuest" placeholder="Address" v-model="formAddReservation.guestInformation.address" />
+                  <label for="addressGuest " class="col-form-label">Address</label>
+                  <input class="form-control rounded-2" type="text" id="addressGuest" placeholder="Address" v-model="formAddReservation.guestInformation.address" />
                 </div>
                 <div class="col-md-4 col-12 px-0 pe-md-3">
-                  <label for="insurance" class="col-form-label">Insurance</label>
-                  <input class="form-control" type="text" id="insurance" placeholder="insurance" v-model="formAddReservation.BillingSummary.insurance" />
+                  <label for="insurance " class="col-form-label">Insurance</label>
+                  <input class="form-control rounded-2" type="text" id="insurance" placeholder="insurance" v-model="formAddReservation.BillingSummary.insurance" />
                 </div>
                 <div class="col-md-4 col-12 px-0">
                   <label for="insurance_by" class="col-form-label">Insurance By</label>
-                  <select class="form-select" id="paymentInsuranceBy" v-model="formAddReservation.BillingSummary.insurance_by">
+                  <select class="form-select rounded-2" id="paymentInsuranceBy" v-model="formAddReservation.BillingSummary.insurance_by">
                     <option disabled value="">Select</option>
                     <option v-for="account in accounts" :key="account.id" :value="account.id">
                       {{ account.name }}
@@ -344,15 +344,15 @@
               </div>
               <div class="col-md-3 col-12 px-0 pe-md-3">
                 <label for="stateGuest" class="col-form-label">State</label>
-                <input class="form-control" type="text" id="stateGuest" placeholder="state" v-model="formAddReservation.guestInformation.state" />
+                <input class="form-control rounded-2" type="text" id="stateGuest" placeholder="state" v-model="formAddReservation.guestInformation.state" />
               </div>
               <div class="col-md-3 col-12 px-0 pe-md-3">
                 <label for="cityGuest" class="col-form-label">City</label>
-                <input class="form-control" type="text" id="cityGuest" placeholder="city" v-model="formAddReservation.guestInformation.city" />
+                <input class="form-control rounded-2" type="text" id="cityGuest" placeholder="city" v-model="formAddReservation.guestInformation.city" />
               </div>
               <div class="col-md-3 col-12 px-0">
                 <label for="ZipGuest" class="col-form-label">Zip</label>
-                <input class="form-control" type="text" id="ZipGuest" placeholder="Zip" v-model="formAddReservation.guestInformation.zip" />
+                <input class="form-control rounded-2" type="text" id="ZipGuest" placeholder="Zip" v-model="formAddReservation.guestInformation.zip" />
               </div>
             </div>
           </div>
