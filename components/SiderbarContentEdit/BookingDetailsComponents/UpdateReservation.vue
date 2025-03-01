@@ -1194,49 +1194,4 @@ export default {
 </script>
 
 <style scoped>
-@media (max-width: 576px) {
-  /* Make table elements display as block */
-  table, thead, tbody, th, td, tr {
-    display: block;
-  }
-
-  /* Hide table header */
-  thead tr {
-    display: none;
-  }
-
-  /* Style each table row as a card */
-  tr {
-    margin-bottom: 1rem;
-    border: 1px solid #ddd;
-    padding: 0.5rem;
-  }
-
-  /* Style each table cell */
-  td {
-    position: relative;
-    padding: 0.5rem 0.5rem 0.5rem 50%;
-    width: 100%;
-    box-sizing: border-box;
-    border-top: 1px solid #ddd;
-  }
-
-  /* Insert the data-label before each cell content */
-  td::before {
-    content: attr(data-label);
-    position: absolute;
-    left: 0;
-    width: 45%;
-    padding-left: 15px;
-    font-weight: bold;
-    white-space: nowrap;
-  }
-
-  /* Ensure inputs and selects take full width */
-  input,
-  select {
-    width: 100%;
-    box-sizing: border-box;
-  }
-}
 </style>
