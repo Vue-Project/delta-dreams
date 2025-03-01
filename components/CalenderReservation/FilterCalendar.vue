@@ -8,7 +8,7 @@
       :statistics="statistics"
       :buildingNames="buildingNames"
     />
-    <button type="button" class="btn btn-primary waves-effect waves-light position-absolute top-5 start-0 ml-2" @click="quickReservation">
+    <button type="button" class="btn btn-primary waves-effect waves-light position-absolute top-5 start-0 ml-2 mb-5" @click="quickReservation">
       <i class="fa-solid fa-hotel pr-2"></i>Quick Reservation
                           </button>
     <!-- <div class="dropdown">

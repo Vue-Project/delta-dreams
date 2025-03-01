@@ -38,7 +38,7 @@
               <label class="form-label fs-4" for="status-reservation">Status</label>
             </div>
             <div class="col-8 pt-1">
-              <select class="badge w-100" :class="statusBadgeClass(selectedEvent.status)" :value="selectedEvent.status" @change="handleStatusChange">
+              <select class="badge w-100 bg-white text-dark" :value="selectedEvent.status" @change="handleStatusChange">
                 <option v-for="(label, value) in statusOptions" :key="value" :value="value">
                   {{ label }}
                 </option>
@@ -190,8 +190,7 @@
           <div class="text-center">
           <button @click="cancelReservation" type="button" title="Cancel Reservation" class="btn btn-danger waves-effect waves-light mt-3 w-100 px-0">
             Cancel Reservation</button>
-
-        </div>
+          </div>
         </div>
 
 
@@ -210,7 +209,7 @@
             </dd>
           </dl>
         </div>
-        
+
       </template>
       <!-- Modal Payment -->
       <div class="modal fade" id="paymentModal" data-bs-backdrop="static" tabindex="-1" style="display: none;" aria-hidden="true">
