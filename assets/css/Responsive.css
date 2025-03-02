@@ -79,22 +79,56 @@
     }
 
   }
-@media (max-width:400px){
-  .TotalPayment{
-    background-color: white;
-    margin-bottom: -16px;
-  }
-  .editSidebarDetails{
-    padding-bottom:100px;
-  }
+@media (max-width:480px){
   .editSidebar{
     width:80% !important;
   }
   .confirmButton{
-    width:60px;
+    width:62px;
     margin-left: -16px;
   }
   .guestNameInput{
     padding-right:0px;
   }
-}
+  .CityPhoneHeader{
+    font-size:14px;
+    display: flex;
+    gap:30px;
+    margin-top:-8px;
+    margin-bottom:-4px;
+  }
+  .editSideBarHeader{
+    margin-bottom:-19px;
+  }
+  .EditBtnSideBar, .AddPaymentBtnSideBar{
+    height: 70% !important;
+  }
+  .cancelBtnSideBar{
+    display: none;
+    height:30px !important;
+  }
+  .StatusSideBar{
+    margin-top:7px !important;
+  }
+  .StatusSideBarTitle{
+    font-size:19px !important;
+  }
+  .StatusSideBarSelect{
+    margin-top:-8px;
+  }
+  .offcanvas-backdrop.show{
+    height: 100%;
+  }
+  .editSidebarDetails{
+    margin-top: -9px !important;;
+  }
+  .CloseSidebarEdit{
+    margin-top:-22px !important;
+  }
+  } 
+  @media (min-width: 389px) and (max-width:431px){
+    .confirmButton{
+      width:72px !important;
+    }
+
+  }
