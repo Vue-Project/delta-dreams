@@ -404,9 +404,8 @@
           <hr class="my-4" />
           <!-- FORM SUBMISSION BUTTON -->
           <div class="row">
-            <div class="col-12 text-end">
-
-              <button type="submit" class="btn btn-lg btn-primary waves-effect waves-light">
+            <div class="offset-md-10 col-md-2 col-12 text-end ">
+              <button type="submit" class="btn btn-lg btn-primary waves-effect waves-light w-100">
                 Update
               </button>
             </div>

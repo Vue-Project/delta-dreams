@@ -400,14 +400,26 @@
           <!--  ! Other Information -->
           <hr class="my-4" />
           <div class="row">
-            <div class="col-12 text-end">
-              <button type="button" class="btn btn-lg btn-secondary waves-effect waves-light" @click="goBack">
+            <div class="offset-md-8 col-md-2 col-6 text-end ">
+              <button type="button" class="btn btn-lg btn-secondary waves-effect waves-light w-100" @click="goBack">
                 Cancel
               </button>
-              <button type="submit" class="btn btn-lg btn-primary waves-effect waves-light">
+            </div>
+            <div class="offset-md- col-md-2 col-6 text-end ">
+              <button type="submit" class="btn btn-lg btn-primary waves-effect waves-light w-100">
                 Reserver
               </button>
             </div>
+            <!-- <div class="col-6  text-end">
+              <button type="button" class="btn btn-lg btn-secondary waves-effect waves-light" @click="goBack">
+                Cancel
+              </button>
+            </div>
+            <div class="col-6  text-end">
+              <button type="submit" class="btn btn-lg btn-primary waves-effect waves-light">
+                Reserver
+              </button>
+            </div> -->
           </div>
         </form>
       </div>

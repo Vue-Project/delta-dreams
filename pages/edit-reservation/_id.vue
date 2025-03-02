@@ -60,10 +60,10 @@
               </small>
             </div>
           </div>
-          <div class="col-6 col-md-6 col-xl-1 text-center ">
-            <div class="me-2">
+          <div class="col-6 col-md-5 col-xl-1  text-cente text-md-center ">
+            <div class="me-">
               <button type="button" class="btn btn-label-danger waves-effect mt-3 " title="Cancel Reservation"     @click="cancelReservation"
-              >Cancel Reservation</button>
+              >Cancel</button>
             </div>
           </div>
         </div>
