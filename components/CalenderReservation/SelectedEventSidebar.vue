@@ -2,7 +2,7 @@
   <div class="offcanvas offcanvas-end editSidebar" tabindex="-1" id="offcanvasEnd" aria-labelledby="offcanvasEndLabel">
     <!-- Offcanvas Header -->
 
-    <div class="offcanvas-header">
+    <div class="offcanvas-header editSideBarHeader">
       <h5 id="offcanvasEndLabel" class="offcanvas-title w-100">
 
         <template v-if="selectedEvent">
@@ -10,7 +10,7 @@
             <i class="fa-solid fa-user pr-2 text-primary fs-3 mb-2"></i>
             {{ selectedEvent.client?.name }}
           </h6>
-          <div>
+          <div class="CityPhoneHeader">
             <span class="mr-3">
               <i class="text-secondary fa-solid fa-location-dot"></i>
               {{ selectedEvent.user?.country || "Egypt" }}
@@ -21,24 +21,24 @@
             </span>
           </div>
           <div class="row mt-4">
-            <div class="col-6 ">
-              <button type="button" class="btn btn-primary waves-effect waves-light btn-block" @click="navigateToEditReservation(selectedEvent.id)">
+            <div class="col-6">
+              <button type="button" class="btn btn-primary waves-effect waves-light btn-block EditBtnSideBar" @click="navigateToEditReservation(selectedEvent.id)">
                 Edit
               </button>
             </div>
             <div class="col-6">
-              <button type="button" class="btn btn-primary waves-effect waves-light btn-block" data-bs-toggle="modal" data-bs-target="#paymentModal">
+              <button type="button" class="btn btn-primary waves-effect waves-light btn-block AddPaymentBtnSideBar" data-bs-toggle="modal" data-bs-target="#paymentModal">
                 Add Payment
               </button>
             </div>
           </div>
 
-          <div class="row mt-4 ">
+          <div class="row mt-4  StatusSideBar">
             <div class="col-4 pt-1">
-              <label class="form-label fs-4" for="status-reservation">Status</label>
+              <label class="form-label fs-4 StatusSideBarTitle" for="status-reservation">Status</label>
             </div>
             <div class="col-8 pt-1">
-              <select class="badge w-100 bg-white text-dark" :value="selectedEvent.status" @change="handleStatusChange">
+              <select class="badge w-100 bg-white text-dark StatusSideBarSelect" :value="selectedEvent.status" @change="handleStatusChange">
                 <option v-for="(label, value) in statusOptions" :key="value" :value="value">
                   {{ label }}
                 </option>
@@ -60,7 +60,7 @@
         </template>
       </h5>
 
-      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      <button type="button" class="btn-close text-reset CloseSidebarEdit" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
 
     <!-- Offcanvas Body -->
@@ -81,7 +81,7 @@
         <div class="row editSidebarDetails">
           <div class="col-6">
             <ul class="list-unstyled mb-0">
-              <li class="mb-3 pb-1">
+              <!-- <li class="mb-3 pb-1">
                 <div class="d-flex align-items-start">
                   <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                     <div class="me-2">
@@ -92,7 +92,7 @@
                     </div>
                   </div>
                 </div>
-              </li>
+              </li> -->
 
               <li class="mb-3 pb-1">
                 <div class="d-flex align-items-start">
@@ -188,13 +188,12 @@
             </ul>
           </div>
           <div class="text-center">
-          <button @click="cancelReservation" type="button" title="Cancel Reservation" class="btn btn-danger waves-effect waves-light mt-3 w-100 px-0">
+          <button @click="cancelReservation" type="button" title="Cancel Reservation" class="btn btn-danger waves-effect waves-light mt-3 w-100 px-0 cancelBtnSideBar">
             Cancel Reservation</button>
           </div>
         </div>
 
-
-        <div class="new-div mt-3 position-absolute right-0 w-100 px-4 bottom-1 TotalPayment">
+        <div class="new-div mt-lg-5 mt-md-5 mt-2 w-100 TotalPayment">
           <dl class=" row mb-0">
             <dt class="col-6 fw-normal text-heading">Total</dt>
             <dd class="col-6 text-end">{{ selectedEvent.total || "0 " }} EGP</dd>
