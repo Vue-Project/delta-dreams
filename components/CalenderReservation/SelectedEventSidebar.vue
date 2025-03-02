@@ -193,8 +193,7 @@
           </div>
         </div>
 
-
-        <div class="new-div mt-3 position-absolute right-0 w-100 px-4 bottom-0 TotalPayment">
+        <div class="new-div mt-lg-5 mt-md-5 mt-2 w-100 TotalPayment">
           <dl class=" row mb-0">
             <dt class="col-6 fw-normal text-heading">Total</dt>
             <dd class="col-6 text-end">{{ selectedEvent.total || "0 " }} EGP</dd>

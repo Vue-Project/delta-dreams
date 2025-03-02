@@ -124,9 +124,10 @@
   }
   .CloseSidebarEdit{
     margin-top:-22px !important;
+    margin-right: 10px !important;
   }
   } 
-  @media (min-width: 389px) and (max-width:431px){
+  @media (min-width: 390px) and (max-width:480px){
     .confirmButton{
       width:72px !important;
     }
