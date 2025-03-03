@@ -8,7 +8,7 @@
           <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD" id="flatpickr-date-04" ref="datePicker4" aria-label="input for date" v-model="selectedDate" />
           <i class="fa-solid fa-calendar-days date-icon"></i>
         </div>
-        <li class="nav-item" role="presentation" v-for="tab in tabs" :key="tab">
+        <li class="nav-item col-6 col-md" role="presentation" v-for="tab in tabs" :key="tab">
           <button class="nav-link" :class="{ active: activeTab === tab }" @click="setActiveTab(tab)">
             {{ tab }}
             <span class="badge rounded-pill badge-center h-px-30 w-px-30 bg-label-danger ms-1 p-2">
