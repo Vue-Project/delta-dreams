@@ -60,14 +60,14 @@
     <div class="col-lg-6 col-md-12 pt-3 pt-md-0">
       <div class="row g-2">
         <!-- Apply Button -->
-        <div class="col-xl-3 col-lg-4 col-md-6 col-6 order-md-1">
+        <div class="col-xl-3 col-lg-4 col-md-6 col-6 d-none d-sm-block order-md-1">
           <button class="btn btn-primary w-100" @click="applyFilters">
             Apply Filters
           </button>
         </div>
 
         <!-- Rate Types Filter -->
-        <div class="col-xl-4 col-lg-4 col-md-6 col-6  pt-md-0 order-md-2">
+        <div class="col-xl-4 col-lg-4 col-md-6 col-6 pe-1  pt-md-0 order-md-2">
           <div class="dropdown w-100">
             <button class="btn btn-primary dropdown-toggle w-100"
                     type="button"
@@ -95,8 +95,8 @@
         </div>
 
         <!-- Projects Filter -->
-        <div class="col-xl-4 col-lg-4 col-md-6 offset-md-0  col-12 order-md-3 pt-3 pt-md-0">
-          <div class="dropdown w-100   ps-lg-2">
+        <div class="col-xl-4 col-lg-4 col-md-6 offset-md-0 ps-1 col-6 order-md-3  pt-md-0">
+          <div class="dropdown w-100 ps-1 pe-1 ps-lg-2">
             <button class="btn btn-primary dropdown-toggle w-100"
                     type="button"
                     id="projectsDropdown"
@@ -108,20 +108,28 @@
                 {{ selectedProjects.length }}
               </span>
             </button>
-            <ul class="dropdown-menu  w-100" aria-labelledby="projectsDropdown">
+            <ul class="dropdown-menu w-100" aria-labelledby="projectsDropdown">
               <li v-for="project in getProjects" :key="project.id">
                 <a class="dropdown-item" href="#" @click.prevent="toggleProject(project.id)">
                   <input type="checkbox"
-                         :value="project.id"
-                         v-model="selectedProjects"
-                         class="form-check-input me-2" />
+                        :value="project.id"
+                        v-model="selectedProjects"
+                        class="form-check-input me-2" />
                   <span>{{ project.name }}</span>
                 </a>
               </li>
             </ul>
           </div>
-
         </div>
+
+        <!-- Apply Button -->
+        <div class=" pt-5 col-md-6 d-block d-sm-none col-12 ">
+          <button class="btn btn-primary w-100" @click="applyFilters">
+            Apply Filters
+          </button>
+        </div>
+
+
 
         <!-- Info Button with Hover Menu -->
 
@@ -402,7 +410,7 @@ export default {
 @media (max-width: 767px) {
   .dropdown-menu {
     position: fixed !important;
-    top: 50% !important;
+    top: 48% !important;
     left: 50% !important;
     transform: translate(-50%, -50%) !important;
     right: auto !important;
