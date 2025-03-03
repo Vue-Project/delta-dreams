@@ -17,7 +17,7 @@
         </div>
 
         <!-- Building Filter -->
-        <div class="col-md-6 col-12 ">
+        <div class="col-md-6 col-6 ">
           <div class="dropdown w-100">
             <button class="btn btn-primary dropdown-toggle w-100"
                     type="button"
@@ -26,7 +26,7 @@
                     aria-expanded="false">
               <i class="fa-solid fa-filter pe-2"></i>Filter Buildings
             </button>
-            <ul class="dropdown-menu w-100" aria-labelledby="buildingsDropdown">
+            <ul class="dropdown-menu  w-100" aria-labelledby="buildingsDropdown">
               <li>
                 <a class="dropdown-item" href="#" @click.prevent="toggleSelectAllBuildings">
                   <input type="checkbox"
@@ -48,21 +48,26 @@
             </ul>
           </div>
         </div>
+        <div class=" d-block col-6 d-sm-none">
+          <button type="button" class="btn w-100 btn-primary waves-effect waves-light" @click="quickReservation">
+            <i class="fa-solid fa-hotel pr-2"></i>Quick Reservation
+          </button>
+        </div>
       </div>
     </div>
 
     <!-- Right Column - Filters and Info -->
-    <div class="col-lg-6 col-md-12 pt-5 pt-md-0">
+    <div class="col-lg-6 col-md-12 pt-3 pt-md-0">
       <div class="row g-2">
         <!-- Apply Button -->
-        <div class="col-xl-3 col-lg-4 col-md-6 col-12 order-md-1">
+        <div class="col-xl-3 col-lg-4 col-md-6 col-6 order-md-1">
           <button class="btn btn-primary w-100" @click="applyFilters">
             Apply Filters
           </button>
         </div>
 
         <!-- Rate Types Filter -->
-        <div class="col-xl-4 col-lg-4 col-md-6 col-12 pt-2 pt-md-0 order-md-2">
+        <div class="col-xl-4 col-lg-4 col-md-6 col-6  pt-md-0 order-md-2">
           <div class="dropdown w-100">
             <button class="btn btn-primary dropdown-toggle w-100"
                     type="button"
@@ -75,7 +80,7 @@
                 {{ selectedRateTypes.length }}
               </span>
             </button>
-            <ul class="dropdown-menu w-100" aria-labelledby="rateTypesDropdown">
+            <ul class="dropdown-menu   w-100" aria-labelledby="rateTypesDropdown">
               <li v-for="(type, index) in getRateTypes" :key="index">
                 <a class="dropdown-item" href="#" @click.prevent="toggleRateType(index)">
                   <input type="checkbox"
@@ -90,8 +95,8 @@
         </div>
 
         <!-- Projects Filter -->
-        <div class="col-xl-4 col-lg-4 col-md-6 col-12 order-md-3 pt-5 pt-md-0">
-          <div class="dropdown w-100 ps-lg-2">
+        <div class="col-xl-4 col-lg-4 col-md-6 offset-md-0  col-12 order-md-3 pt-3 pt-md-0">
+          <div class="dropdown w-100   ps-lg-2">
             <button class="btn btn-primary dropdown-toggle w-100"
                     type="button"
                     id="projectsDropdown"
@@ -103,7 +108,7 @@
                 {{ selectedProjects.length }}
               </span>
             </button>
-            <ul class="dropdown-menu w-100" aria-labelledby="projectsDropdown">
+            <ul class="dropdown-menu  w-100" aria-labelledby="projectsDropdown">
               <li v-for="project in getProjects" :key="project.id">
                 <a class="dropdown-item" href="#" @click.prevent="toggleProject(project.id)">
                   <input type="checkbox"
@@ -115,6 +120,7 @@
               </li>
             </ul>
           </div>
+
         </div>
 
         <!-- Info Button with Hover Menu -->
@@ -389,5 +395,34 @@ export default {
 
 .list-unstyled li {
   padding: 3px 0;
+}
+
+/* ############### */
+/* Mobile-first approach for dropdown centering */
+@media (max-width: 767px) {
+  .dropdown-menu {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    right: auto !important;
+    min-width: 280px;
+    max-width: 90vw;
+    max-height: 70vh;
+    overflow-y: auto;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Optional: Add triangle indicator */
+  .dropdown-menu::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 0 5px 5px 5px;
+    border-style: solid;
+    border-color: transparent transparent rgba(0, 0, 0, 0.15) transparent;
+  }
 }
 </style>
