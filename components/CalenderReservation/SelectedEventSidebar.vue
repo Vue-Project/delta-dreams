@@ -231,7 +231,7 @@
                 </div>
               </div>
               <div class="row g-2">
-                <div class="col-6 mb-2">
+                <div class="col-lg-6 col-md-6 col-12 mb-2">
                   <div class="input-group">
                     <select class="form-select" id="payment_type" v-model="formAddPayment.type">
                       <option disabled value="">Select Type</option>
@@ -242,7 +242,7 @@
                     <label class="input-group-text" for="payment_type">Type</label>
                   </div>
                 </div>
-                <div class="col-6 mb-2">
+                <div class="col-lg-6 col-md-6 col-12 mb-2">
                   <div class="input-group">
                     <select class="form-select" id="payment_method" v-model="formAddPayment.method">
                       <option disabled value="">Select Method</option>
@@ -253,13 +253,13 @@
                     <label class="input-group-text" for="payment_method">Method</label>
                   </div>
                 </div>
-                <div class="col-6">
+                <div class="col-lg-6 col-md-6 col-12">
                   <div class="input-group">
                     <span class="input-group-text">EGP</span>
                     <input type="text" class="form-control" placeholder="Amount" aria-label="Amount (to the nearest dollar)" v-model="formAddPayment.amount">
                   </div>
                 </div>
-                <div class="col-6 mt-2">
+                <div class="col-lg-6 col-md-6 col-12 mt-2">
                   <div class="input-group">
                     <select class="form-select" id="payment_accounts" v-model="formAddPayment.account">
                       <option disabled value="">Select Accounts</option>

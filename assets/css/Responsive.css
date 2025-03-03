@@ -2,7 +2,6 @@
   .checkIn-reservations{
     margin-bottom: 15px;
   }
-
   }
 
 @media (max-width: 991px) {
@@ -79,6 +78,7 @@
     }
     .editSidebar{
       width:80% !important;
+      z-index:10;
     }
     .confirmButton{
       width:72px;
@@ -89,6 +89,7 @@
 @media (max-width:480px){
   .editSidebar{
     width:80% !important;
+    z-index:10;
   }
   .confirmButton{
     width:62px;
