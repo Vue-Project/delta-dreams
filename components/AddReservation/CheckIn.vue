@@ -52,7 +52,7 @@
                   <input class="form-control rounded-2" type="number" id="roomCount" v-model="formAddReservation.numberRooms" min="1" @input="updateRepeater" />
                 </div>
 
-                <div class="col-lg-9 col-12 mb-lg-4 col-md-6 ps-sm-2 p-0 pe-md-0">
+                <div class="col-lg-9 col-12 mb-lg-4 ps-md-2 col-md-6 p-0 pe-md-0">
                   <label for="reservationType" class="form-label">Reservation Type</label>
                   <select class="form-select" id="reservationType" v-model="formAddReservation.reservationType" ref="reservationType" :class="{ 'input-error': validationMessages.reservationType }">
                     <option disabled value="">Select</option>
