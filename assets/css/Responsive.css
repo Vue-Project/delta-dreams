@@ -1,3 +1,10 @@
+@media (max-width: 1200px) {
+  .checkIn-reservations{
+    margin-bottom: 15px;
+  }
+
+  }
+
 @media (max-width: 991px) {
     .sidebar {
       width: 80% !important;
@@ -18,21 +25,21 @@
     .table-responsive{
       overflow-x: auto;
     }
-    
+
     .table th {
       min-width: 177px;
       white-space: nowrap;
     }
-    
+
     .table {
-      min-width: 800px; 
+      min-width: 800px;
     }
     .internationalNumber{
       font-size:13px ;
       margin-top: 3px;
     }
   }
-  
+
   @media (max-width: 767px) {
     .sidebar {
       width: 75% !important;
@@ -62,9 +69,9 @@
       min-width: 177px;
       white-space: nowrap;
     }
-    
+
     .table {
-      min-width: 800px; 
+      min-width: 800px;
     }
     .internationalNumber{
       font-size:16px ;
@@ -126,7 +133,7 @@
     margin-top:-22px !important;
     margin-right: 10px !important;
   }
-  } 
+  }
   @media (min-width: 390px) and (max-width:480px){
     .confirmButton{
       width:72px !important;
