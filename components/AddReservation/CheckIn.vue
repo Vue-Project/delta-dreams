@@ -528,7 +528,7 @@ export default {
       hasMore: false,
       isLoading: false,
       searchQuery: '',
-      availableUnitsByRoom: {}, // Store available units for each room index
+      availableUnitsByRoom: [], // Initialize as an array
     };
   },
 
