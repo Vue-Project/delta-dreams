@@ -1018,6 +1018,22 @@ body{
 .hoverable-event {
   position: relative;
 }
+.date-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.flatpickr-input {
+  padding-right: 35px;
+}
+
+.dropdown-menu {
+  max-height: 300px;
+  overflow-y: auto;
+}
 
 .hoverable-event:hover::after {
   content: attr(data-full-name);
