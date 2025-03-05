@@ -21,7 +21,7 @@
     .reservationMobile{
       margin-left:-13px;
       margin-right: -13px;
-    }
+    }editSidebar
     .table-responsive{
       overflow-x: auto;
     }
@@ -41,6 +41,9 @@
   }
 
   @media (max-width: 767px) {
+    .quick-reservation{
+      display: block;
+    }
     .sidebar {
       width: 75% !important;
     }
@@ -79,6 +82,8 @@
     }
     .editSidebar{
       width:80% !important;
+      z-index:10;
+
     }
     .confirmButton{
       width:72px;
@@ -87,6 +92,10 @@
 
   }
 @media (max-width:480px){
+  .fc .fc-toolbar-title{
+    font-size: 15px;
+    justify-content: center;
+  }
   .editSidebar{
     width:80% !important;
   }
@@ -140,3 +149,9 @@
     }
 
   }
+  @media (max-width:768px){
+    .h_respons{
+      padding-bottom: 35px;
+    }
+  }
+

@@ -1047,13 +1047,13 @@ body{
 .form-check-input {
   margin-right: 8px;
 }
-.dropdown {
+/* .dropdown {
   position: absolute;
   left: 0px;
   /* width: 280px; */
   /* max-width: 280px; */
   /* margin: 0 9px ; */
-}
+/* } */ */
 .layout-navbar .navbar-dropdown .badge-notifications{
   top: 17px;
 }
@@ -1063,4 +1063,32 @@ body{
 
 body{
   padding: 0 !important;
+}
+.date-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.flatpickr-input {
+  padding-right: 35px;
+}
+
+.dropdown-menu {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.z-3 {
+  z-index: 1000;
+}
+
+.list-unstyled li {
+  padding: 3px 0;
+}
+
+.quick-reservation{
+  display: none;
 }
