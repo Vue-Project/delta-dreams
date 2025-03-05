@@ -38,7 +38,7 @@
               <label class="form-label fs-4 StatusSideBarTitle" for="status-reservation">Status</label>
             </div>
             <div class="col-8 pt-1">
-              <select class="badge w-100 bg-white text-dark StatusSideBarSelect" :value="selectedEvent.status" @change="handleStatusChange">
+              <select class="  form-select badge w-100 bg-white text-dark StatusSideBarSelect" :value="selectedEvent.status" @change="handleStatusChange">
                 <option v-for="(label, value) in statusOptions" :key="value" :value="value">
                   {{ label }}
                 </option>
