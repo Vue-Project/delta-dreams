@@ -503,12 +503,12 @@ export default {
           zip: "",
         },
         otherInformation: {
-          emailBookingOption: '', // Selected booking option
-          emailAddressCheckout: '', // Email addresses input
-          accessToGuestPortal: false, // Toggle for Access To Guest Portal
-          suppressRateOnRegistrationCard: false, // Toggle for Suppress Rate on Registration Card
+          emailBookingOption: '',
+          emailAddressCheckout: '',
+          accessToGuestPortal: false,
+          suppressRateOnRegistrationCard: false,
         },
-        bookingSource: "", // Initialize with empty string
+        bookingSource: "",
       },
       validationMessages: {
         businessSource: '',
@@ -518,17 +518,17 @@ export default {
         adults: '',
         children: '',
         rateType: '',
-
+        rateAmount: '',
       },
-      selectedNameId: null, // ID to send to the server
+      selectedNameId: null,
       showDropdown: false,
-      filteredNames: [], // List of objects with { id, name }
+      filteredNames: [],
       currentPage: 1,
       totalPages: 1,
       hasMore: false,
       isLoading: false,
       searchQuery: '',
-      availableUnitsByRoom: [], // Initialize as an array
+      availableUnitsByRoom: [],
     };
   },
 
@@ -972,7 +972,26 @@ console.log(bookingData);
       {
         this.showDropdown = false
       }, 200)
-    }
+    },
+
+    initializeFromStore() {
+      // Initialize form data from Vuex store
+      if (this.selectedDates.length > 0) {
+        const [firstDate] = this.parsedDates;
+        const [lastDate] = [...this.parsedDates].reverse();
+
+        if (firstDate && lastDate) {
+          this.formAddReservation.checkInDate = this.formatDate(firstDate);
+          this.formAddReservation.checkOutDate = this.formatDate(lastDate);
+          this.formAddReservation.checkInTime = this.formatTime(firstDate);
+          this.formAddReservation.checkOutTime = this.formatTime(lastDate);
+        }
+      }
+
+      if (this.selectedResourceName) {
+        this.spliceSelectedResourceName();
+      }
+    },
   },
 
   async mounted ()
@@ -998,7 +1017,7 @@ console.log(bookingData);
     } catch (error) {
       console.error("Error loading data:", error);
     }
-    this.spliceSelectedResourceName();
+    this.initializeFromStore();
 
     this.$nextTick(() =>
     {
@@ -1070,8 +1089,12 @@ console.log(bookingData);
   },
   computed: {
     ...mapState({
-      selectedDates: state => state.selectedDates,
-      selectedResourceName: state => state.selectedResourceName,
+      selectedDates: state => state.selectedDates || [],
+      selectedResourceName: state => state.selectedResourceName || "",
+      reservationTypes: state => state.reservationTypes || [],
+      rateTypes: state => state.rateTypes || [],
+      countries: state => state.countries || [],
+      remindGuestType: state => state.remindGuestType || [],
     }),
     ...mapGetters([
       'getReservationTypes',
@@ -1195,6 +1218,11 @@ console.log(bookingData);
     },
   },
   middleware: 'restrict-access', // Apply the middleware
+
+  async created() {
+    // Initialize store data from localStorage
+    await this.$store.dispatch('initializeStore');
+  },
 
 };
 </script>

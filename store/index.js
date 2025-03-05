@@ -57,6 +57,9 @@ export const mutations = {
     if (code) state.code = code;
     if (type) state.type = type;
     if (lastUpdated) state.lastUpdated = lastUpdated;
+  },
+  resetStore(state) {
+    Object.assign(state, state());
   }
 };
 
@@ -95,9 +98,44 @@ export const actions = {
   },
   updateRemindGuestType({ commit }, remindGuestType) {
     commit('setRemindGuestType', remindGuestType);
+  },
+  initializeStore({ commit, state }) {
+    if (process.client) {
+      // Get data from localStorage
+      const storedData = localStorage.getItem('myVuexStore');
+
+      if (storedData) {
+        const parsedData = JSON.parse(storedData);
+
+        // Initialize all stored data
+        if (parsedData.rateTypes) {
+          commit('setRateTypes', parsedData.rateTypes);
+        }
+        if (parsedData.reservationTypes) {
+          commit('setReservationTypes', parsedData.reservationTypes);
+        }
+        if (parsedData.countries) {
+          commit('setCountries', parsedData.countries);
+        }
+        if (parsedData.vipStatus) {
+          commit('setVipStatus', parsedData.vipStatus);
+        }
+        if (parsedData.nationalTypes) {
+          commit('setNationalTypes', parsedData.nationalTypes);
+        }
+        if (parsedData.genderTypes) {
+          commit('setGenderTypes', parsedData.genderTypes);
+        }
+        if (parsedData.projects) {
+          commit('setProjects', parsedData.projects);
+        }
+        if (parsedData.remindGuestType) {
+          commit('setRemindGuestType', parsedData.remindGuestType);
+        }
+      }
+    }
   }
 };
-
 
 export const plugins = [
   process.client
@@ -117,7 +155,8 @@ export const plugins = [
           'code',
           'type',
           'lastUpdated'
-        ]
+        ],
+        storage: window.localStorage
       })
     : () => {}
 ];
