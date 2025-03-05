@@ -39,18 +39,18 @@ export const mutations = {
     state.selectedResourceName = "";
   },
 
-  clearAll(state) {
-    state.selectedDates = [];
-    state.selectedResourceName = "";
-    state.reservationTypes = [];
-    state.rateTypes = [];
-    state.countries = [];
-    state.vipStatus = [];
-    state.nationalTypes = [];
-    state.genderTypes = [];
-    state.projects = [];
-    state.remindGuestType = [];
-  },
+  // clearAll(state) {
+  //   state.selectedDates = [];
+  //   state.selectedResourceName = "";
+  //   state.reservationTypes = [];
+  //   state.rateTypes = [];
+  //   state.countries = [];
+  //   state.vipStatus = [];
+  //   state.nationalTypes = [];
+  //   state.genderTypes = [];
+  //   state.projects = [];
+  //   state.remindGuestType = [];
+  // },
       // acces page in URl
 
   // setAccessAllowed(state, { path, value }) {
