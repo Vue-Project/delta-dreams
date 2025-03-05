@@ -671,6 +671,7 @@ export default {
         releaseTerm: "",
         releaseTermValue: "",
         remindGuest: "",
+        remindGuestType: "",
         holdRelease: false,
         arrivalDate: false,
         guestInformation: {
@@ -937,30 +938,31 @@ console.log(bookingData);
     async selectName (name)
     {
       try {
-        // Set the name and ID as before
-        this.formAddReservation.guestInformation.name = name.name;
-        this.selectedNameId = name.id;
-        this.showDropdown = false;
+        console.log('Selected name:', name);
 
-        // Fetch detailed guest information using the selected ID
-        const response = await getGuestDetails(name.id); // You'll need to create this API function
+        const response = await getGuestDetails(name.id);
 
-        const guestDetails = response.data;
+        const guestDetails = response.data.data;
 
-        // Populate all guest information fields
-        this.formAddReservation.guestInformation = {
-          ...this.formAddReservation.guestInformation, // Keep existing data
-          email: guestDetails.email || '',
-          mobile: guestDetails.mobile || '',
-          address: guestDetails.address || '',
-          country: guestDetails.country || '',
-          state: guestDetails.state || '',
-          city: guestDetails.city || '',
-          zip: guestDetails.zip_code || ''
-        };
+        // Check if response.data exists and has the expected structure
+        if (guestDetails) {
+          // Update form data with explicit property access
+          this.formAddReservation.guestInformation = {
+            name: name.name,
+            email: guestDetails.email || '',
+            mobile: guestDetails.mobile || '',
+            address: guestDetails.address || '',
+            country: guestDetails.country || '',
+            state: guestDetails.state || '',
+            city: guestDetails.city || '',
+            zip: guestDetails.zip_code || '',
+          };
+
+          // Log the final form data
+        }
+
       } catch (error) {
-        console.error('Error fetching guest details:', error);
-        // Optionally show an error message to the user
+        console.error('Error details:', error);
       }
     },
 
