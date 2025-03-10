@@ -41,8 +41,10 @@
                   </div>
                   <div class="col-md-6">
                     <div class="mb-lg-3">
-                      <label for="formGustInfoMobile" class="col-form-label">Mobile</label>
-                      <input class="form-control rounded-2" type="text" value="Mobile" id="formGustInfoMobile" aria-label="input tel to Gust Mobile" v-model="formGuest.mobile" />
+                      <label for="formGustInformInternationalNumber" class="col-form-label internationalNumber">International Number</label>
+                    <input class="form-control rounded-2" type="text" value="International Number" id="formGustInformInternationalNumber" aria-label="input tel to Gust International Number" v-model="formGuest.internationalNumber" />
+                  </div>
+
                     </div>
                   </div>
                 </div>
@@ -58,9 +60,9 @@
                     <span class="error-message" v-if="validationMessages.gender">{{ validationMessages.gender }}</span>
                   </div>
                   <div class="col-lg-6 col-md-6 col-12">
-                    <label for="formGustInformInternationalNumber" class="col-form-label internationalNumber">International Number</label>
-                    <input class="form-control rounded-2" type="text" value="International Number" id="formGustInformInternationalNumber" aria-label="input tel to Gust International Number" v-model="formGuest.internationalNumber" />
-                  </div>
+                    <label for="formGustInfoMobile" class="col-form-label">Mobile</label>
+                    <input class="form-control rounded-2" type="text" value="Mobile" id="formGustInfoMobile" aria-label="input tel to Gust Mobile" v-model="formGuest.mobile" />
+
                 </div>
 
               </div>
