@@ -229,8 +229,8 @@ export default {
       selectedPaymentType: '',
       paymentDetails: {
         roomCharges: 0.0,
-        taxes: 0.0,
-        dueAmount: 0.0,
+        taxes: "1",
+        dueAmount: "1",
         amount: null,
         bankName: '',
         accountNumber: '',
