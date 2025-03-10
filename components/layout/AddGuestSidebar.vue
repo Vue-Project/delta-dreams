@@ -421,12 +421,19 @@ export default {
           formData.append('identity_image', this.formGuest.identityImage.file);
         }
 
+        // Add this code to log all FormData entries
+        // for (let pair of formData.entries()) {
+        //   console.log(pair[0] + ': ' + pair[1]);
+        // }
+
         // Make API call with FormData
         const response = await addGuest(formData);
+
 
         await showSuccessAlert("Guest added successfully!");
         this.resetForm();
         this.$emit("guest-added", response.data);
+
       } catch (error) {
         handleSubmissionError(error, "Please fill in all required fields");
       } finally {
