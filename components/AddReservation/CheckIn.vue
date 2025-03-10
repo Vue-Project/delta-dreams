@@ -785,7 +785,6 @@ export default {
         insurance : this.paymentData.insurance,
         insurance_by: this.paymentData.insurance_by,
       };
-console.log(bookingData);
 
 
       // If no errors, send the data to the server
@@ -889,12 +888,22 @@ console.log(bookingData);
       }
     },
 
-    async handleSearch ()
-    {
-      this.currentPage = 1
-      this.searchQuery = this.formAddReservation.guestInformation.name
-      await this.fetchNames()
-    },
+    async handleSearch() {
+  this.currentPage = 1;
+  this.searchQuery = this.formAddReservation.guestInformation.name;
+
+  // Filter names locally based on searchQuery
+  if (this.searchQuery) {
+    this.filteredNames = this.filteredNames.filter(name =>
+      name.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+    );
+    this.showDropdown = true;
+  } else {
+    // If no search query, show all names
+    await this.fetchNames();
+  }
+},
+
 
     async fetchNames ()
     {
@@ -938,7 +947,7 @@ console.log(bookingData);
     async selectName (name)
     {
       try {
-        console.log('Selected name:', name);
+        // console.log('Selected name:', name);
 
         const response = await getGuestDetails(name.id);
 
