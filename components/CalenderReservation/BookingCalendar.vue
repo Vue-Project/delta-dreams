@@ -5,18 +5,18 @@
     <Loader :visible="isLoading" />
     <div :class="{ 'loading-overlay': isLoading }">
       <FilterCalendar ref="filterComponent" :statistics="statistics" :buildingNames="buildingNames" @show-all-resources="showAllResources" @show-building-resources="showBuildingResources" @date-selected="SelectedDateFilterCalendar" />
-    <FullCalendar :options="calendarOptions" @select="handleSelect" ref="calendar" :selectedDate="selectedDate">
-      <template v-slot:eventContent="arg">
-        <b>{{ arg.event.title }}</b>
-      </template>
-    </FullCalendar>
-    <CalendarFooter :occupancyData="occupancyData" />
-    <div v-if="isOverlayVisible" class="overlay" @click="closePopover"></div>
-    <PopoverComponent v-if="isPopoverVisible" :isPopoverVisible="isPopoverVisible" :popoverStyle="popoverStyle" :popoverArrowLeft="popoverArrowLeft" :firstSelectedDate="firstSelectedDate" :lastSelectedDate="lastSelectedDate" @go-to-add-reservation="goToAddReservation" @toggle-sidebar="toggleSidebar" @close-popover="closePopover" />
-    <SidebarBlockRoom :is-sidebar-open="isSidebarOpen" title="Block Room" width="400px" @close-sidebar="toggleSidebar" height="auto">
-      <BlockRoomForm :selectedDates="selectedDates" :selectedResourceId="selectedResourceId"  @close-sidebar="toggleSidebar" />
-    </SidebarBlockRoom>
-    <SelectedEventSidebar :selectedEvent="selectedEvent" @navigate-to-edit-reservation="navigateToEditReservation" />
+      <FullCalendar :options="calendarOptions" @select="handleSelect" ref="calendar" :selectedDate="selectedDate">
+        <template v-slot:eventContent="arg">
+          <b>{{ arg.event.title }}</b>
+        </template>
+      </FullCalendar>
+      <!-- <CalendarFooter :occupancyData="occupancyData" /> -->
+      <div v-if="isOverlayVisible" class="overlay" @click="closePopover"></div>
+      <PopoverComponent v-if="isPopoverVisible" :isPopoverVisible="isPopoverVisible" :popoverStyle="popoverStyle" :popoverArrowLeft="popoverArrowLeft" :firstSelectedDate="firstSelectedDate" :lastSelectedDate="lastSelectedDate" @go-to-add-reservation="goToAddReservation" @toggle-sidebar="toggleSidebar" @close-popover="closePopover" />
+      <SidebarBlockRoom :is-sidebar-open="isSidebarOpen" title="Block Room" width="400px" @close-sidebar="toggleSidebar" height="auto">
+        <BlockRoomForm :selectedDates="selectedDates" :selectedResourceId="selectedResourceId" @close-sidebar="toggleSidebar" />
+      </SidebarBlockRoom>
+      <SelectedEventSidebar :selectedEvent="selectedEvent" @navigate-to-edit-reservation="navigateToEditReservation" />
     </div>
   </section>
 </template>
@@ -125,15 +125,16 @@ export default {
         eventClick: this.handleEventClick,
         duration: this.getDuration(),
         weekends: true,
-         editable: true, // Enable dragging and resizing
-         eventDrop: this.handleEventChange,
+        editable: true, // Enable dragging and resizing
+        eventDrop: this.handleEventChange,
         eventResize: this.handleEventChange,
-        eventDidMount: (info) => {
+        eventDidMount: (info) =>
+        {
           this.adjustHarnessPosition(info);
           // if (info.event.extendedProps?.fullName) {
           //   info.el.setAttribute('data-full-name', info.event.extendedProps.fullName);
           // }
-        },        resources: this.createResources(),
+        }, resources: this.createResources(),
         selectable: true, // Enable date selection
         selectMirror: true, // Make the selection draggable
         eventOverlap: false, // Disallow overlapping events
@@ -715,141 +716,144 @@ export default {
       }
 
       return allEvents;
-     },
+    },
 
-async handleEventChange(info) {
-    try {
-      const event = info.event;
-      console.log(event);
+    async handleEventChange (info)
+    {
+      try {
+        const event = info.event;
+        console.log(event);
+        const resourceId = event.getResources()[0]?.id;
+        const unitId = resourceId?.split('-')[1];
+
+        // Get the original reservation times from extendedProps
+        const originalCheckinTime = event.extendedProps?.reservation?.checkin_time || '14:00:00';
+        const originalCheckoutTime = event.extendedProps?.reservation?.checkout_time || '12:00:00';
+
+        // Adjust dates to handle timezone offset
+        const startDateObj = new Date(event.start);
+        const endDateObj = new Date(event.end);
+
+        // Format dates correctly with local timezone
+        const startDate = `${startDateObj.getFullYear()}-${String(startDateObj.getMonth() + 1).padStart(2, '0')}-${String(startDateObj.getDate())}`;
+        const endDate = `${endDateObj.getFullYear()}-${String(endDateObj.getMonth() + 1).padStart(2, '0')}-${String(endDateObj.getDate())}`;
+
+        // Check if this is a blocked event or reservation
+        if (event.extendedProps?.is_blocked) {
+          // Extract reason_id from the block event
+          const reasonId = event.extendedProps?.block?.reason?.id ||
+            event.extendedProps?.reason_id;
+
+          // Handle blocked event update
+          const updateDataBlock = {
+            unit_id: unitId,
+            start_date: startDate,
+            end_date: endDate,
+            block_id: event.id,
+            reason_id: reasonId // Add the reason_id here
+          };
+
+          const result = await showConfirmationDialog("Are you sure you want to update this blocked period?");
+
+          if (result.isConfirmed) {
+            // Make API call to update blocked period
+            const response = await putUpdateBlock(updateDataBlock.block_id, updateDataBlock);
+
+            // Update the event in the calendar
+            event.setDates(startDate, endDate);
+            event.setResources([resourceId]);
+
+            await showSuccessAlert("Blocked period updated successfully!");
+          } else {
+            info.revert(); // Revert the change if not confirmed
+          }
+        } else {
+          // Handle reservation update
+          const updateDataUnit = {
+            unit_id: unitId,
+            checkin_date: startDate,
+            checkout_date: endDate,
+            reservation_id: event.extendedProps?.reservation?.id
+          };
+
+
+          const result = await showConfirmationDialog("Are you sure you want to update this reservation?");
+
+          if (result.isConfirmed) {
+            const response = await postUpdateReservation(updateDataUnit.reservation_id, updateDataUnit);
+
+            // Get the calendar API
+            const calendarApi = this.$refs.calendar.getApi();
+
+            // Remove the old event
+            event.remove();
+
+            // Create a new event with updated properties
+            calendarApi.addEvent({
+              resourceId: resourceId,
+              title: event.title,
+              start: startDate,
+              end: endDate,
+              color: event.backgroundColor,
+              extendedProps: {
+                ...event.extendedProps,
+                reservation: {
+                  ...event.extendedProps.reservation,
+                  checkin_date: startDate,
+                  checkout_date: endDate,
+                  checkin_time: originalCheckinTime,
+                  checkout_time: originalCheckoutTime,
+                  unit_id: unitId
+                }
+              },
+              classNames: event.classNames
+            });
+
+            await showSuccessAlert("Reservation updated successfully!");
+          } else {
+            info.revert(); // Revert the change if not confirmed
+          }
+        }
+      } catch (error) {
+        handleSubmissionError(error, "Failed to update event");
+        info.revert();
+      } finally {
+        this.isLoading = false;
+      }
+    },
+
+    // Add validation method
+    validateEventChange (event, newStart, newEnd)
+    {
+      // Check if dates are valid
+      if (!newStart || !newEnd || newStart >= newEnd) {
+        return false;
+      }
+
+      // Check if the new dates overlap with other events
+      const calendar = this.$refs.calendar.getApi();
+      const events = calendar.getEvents();
       const resourceId = event.getResources()[0]?.id;
-      const unitId = resourceId?.split('-')[1];
 
-      // Get the original reservation times from extendedProps
-      const originalCheckinTime = event.extendedProps?.reservation?.checkin_time || '14:00:00';
-      const originalCheckoutTime = event.extendedProps?.reservation?.checkout_time || '12:00:00';
+      for (const existingEvent of events) {
+        if (existingEvent === event) continue;
 
-      // Adjust dates to handle timezone offset
-      const startDateObj = new Date(event.start);
-      const endDateObj = new Date(event.end);
-
-      // Format dates correctly with local timezone
-      const startDate = `${startDateObj.getFullYear()}-${String(startDateObj.getMonth() + 1).padStart(2, '0')}-${String(startDateObj.getDate())}`;
-      const endDate = `${endDateObj.getFullYear()}-${String(endDateObj.getMonth() + 1).padStart(2, '0')}-${String(endDateObj.getDate())}`;
-
-      // Check if this is a blocked event or reservation
-      if (event.extendedProps?.is_blocked) {
-        // Extract reason_id from the block event
-        const reasonId = event.extendedProps?.block?.reason?.id ||
-                        event.extendedProps?.reason_id;
-
-        // Handle blocked event update
-        const updateDataBlock = {
-          unit_id: unitId,
-          start_date: startDate,
-          end_date: endDate,
-          block_id: event.id,
-          reason_id: reasonId // Add the reason_id here
-        };
-
-        const result = await showConfirmationDialog("Are you sure you want to update this blocked period?");
-
-        if (result.isConfirmed) {
-          // Make API call to update blocked period
-          const response = await putUpdateBlock(updateDataBlock.block_id, updateDataBlock);
-
-          // Update the event in the calendar
-          event.setDates(startDate, endDate);
-          event.setResources([resourceId]);
-
-          await showSuccessAlert("Blocked period updated successfully!");
-        } else {
-          info.revert(); // Revert the change if not confirmed
-        }
-      } else {
-        // Handle reservation update
-        const updateDataUnit = {
-          unit_id: unitId,
-          checkin_date: startDate,
-          checkout_date: endDate,
-          reservation_id: event.extendedProps?.reservation?.id
-        };
-
-
-        const result = await showConfirmationDialog("Are you sure you want to update this reservation?");
-
-        if (result.isConfirmed) {
-          const response = await postUpdateReservation(updateDataUnit.reservation_id, updateDataUnit);
-
-          // Get the calendar API
-          const calendarApi = this.$refs.calendar.getApi();
-
-          // Remove the old event
-          event.remove();
-
-          // Create a new event with updated properties
-          calendarApi.addEvent({
-            resourceId: resourceId,
-            title: event.title,
-            start: startDate,
-            end: endDate,
-            color: event.backgroundColor,
-            extendedProps: {
-              ...event.extendedProps,
-              reservation: {
-                ...event.extendedProps.reservation,
-                checkin_date: startDate,
-                checkout_date: endDate,
-                checkin_time: originalCheckinTime,
-                checkout_time: originalCheckoutTime,
-                unit_id: unitId
-              }
-            },
-            classNames: event.classNames
-          });
-
-          await showSuccessAlert("Reservation updated successfully!");
-        } else {
-          info.revert(); // Revert the change if not confirmed
+        if (existingEvent.getResources()[0]?.id === resourceId) {
+          // Check for overlap
+          if (!(newEnd <= existingEvent.start || newStart >= existingEvent.end)) {
+            return false;
+          }
         }
       }
-    } catch (error) {
-      handleSubmissionError(error, "Failed to update event");
-      info.revert();
-    } finally {
-      this.isLoading = false;
-    }
-},
 
-// Add validation method
-validateEventChange(event, newStart, newEnd) {
-    // Check if dates are valid
-    if (!newStart || !newEnd || newStart >= newEnd) {
-      return false;
-    }
+      return true;
+    },
+    adjustHarnessPosition (info)
+    {
+      // Get the harness element parent
+      const harness = info.el.closest('.fc-timeline-event-harness');
 
-    // Check if the new dates overlap with other events
-    const calendar = this.$refs.calendar.getApi();
-    const events = calendar.getEvents();
-    const resourceId = event.getResources()[0]?.id;
-
-    for (const existingEvent of events) {
-      if (existingEvent === event) continue;
-
-      if (existingEvent.getResources()[0]?.id === resourceId) {
-        // Check for overlap
-        if (!(newEnd <= existingEvent.start || newStart >= existingEvent.end)) {
-          return false;
-        }
-      }
-    }
-
-    return true;
-  },
-  adjustHarnessPosition(info) {
-    // Get the harness element parent
-    const harness = info.el.closest('.fc-timeline-event-harness');
-
-    if (harness) {
+      if (harness) {
         // Get current left position (parse as number)
         const currentLeft = parseInt(harness.style.left) || 0;
         const currentRight = parseInt(harness.style.right) || 0;
@@ -863,17 +867,17 @@ validateEventChange(event, newStart, newEnd) {
 
         // Example breakpoints for different screen sizes
         if (screenWidth < 600) {
-            // Small screens (mobile)
-            leftOffset = 20;
-            rightOffset = 0;
+          // Small screens (mobile)
+          leftOffset = 20;
+          rightOffset = 0;
         } else if (screenWidth < 1200) {
-            // Medium screens (tablets)
-            leftOffset = 30;
-            rightOffset =0;
+          // Medium screens (tablets)
+          leftOffset = 30;
+          rightOffset = 0;
         } else {
-            // Large screens (desktops)
-            leftOffset = 50;
-            rightOffset = -6;
+          // Large screens (desktops)
+          leftOffset = 50;
+          rightOffset = -6;
         }
 
         // Adjust the left and right positions
@@ -883,16 +887,16 @@ validateEventChange(event, newStart, newEnd) {
         // Adjust the width of the event element
         const eventElement = harness.querySelector('.fc-timeline-event');
         if (eventElement) {
-            const currentWidth = eventElement.offsetWidth;
+          const currentWidth = eventElement.offsetWidth;
 
-            // Calculate width adjustment based on the offsets
-            widthAdjustment = leftOffset + rightOffset;
-            eventElement.style.width = `${currentWidth - widthAdjustment}px`;
+          // Calculate width adjustment based on the offsets
+          widthAdjustment = leftOffset + rightOffset;
+          eventElement.style.width = `${currentWidth - widthAdjustment}px`;
 
         }
+      }
     }
-}
-,
+    ,
 
 
     // ==============================================
@@ -1104,13 +1108,15 @@ validateEventChange(event, newStart, newEnd) {
       'updateRemindGuestType',
     ]),
 
-    refreshCalendarData () {
+    refreshCalendarData ()
+    {
       // Implement the logic to refresh the calendar data
       this.handleNavigation('refresh');
     },
 
     // Add this new method to handle data updates
-    async updateCalendarData(filterData) {
+    async updateCalendarData (filterData)
+    {
       try {
         this.isLoading = true;
 
@@ -1138,7 +1144,8 @@ validateEventChange(event, newStart, newEnd) {
       }
     },
 
-    getDuration() {
+    getDuration ()
+    {
       // Check if the code is running in a browser environment
       if (typeof window !== 'undefined') {
         const isMobile = window.innerWidth <= 768; // You can adjust the width threshold as needed
@@ -1148,7 +1155,8 @@ validateEventChange(event, newStart, newEnd) {
       return { days: 20 };
     },
 
-    updateDuration() {
+    updateDuration ()
+    {
       if (typeof window !== 'undefined') {
         this.calendarOptions.duration = this.getDuration();
       }
@@ -1207,7 +1215,8 @@ validateEventChange(event, newStart, newEnd) {
     }
 
   },
-  beforeDestroy() {
+  beforeDestroy ()
+  {
     if (typeof window !== 'undefined') {
       // Clean up the event listener
       window.removeEventListener('resize', this.updateDuration);
@@ -1221,6 +1230,4 @@ validateEventChange(event, newStart, newEnd) {
 
 <style>
 /* ... existing styles ... */
-
-
 </style>
