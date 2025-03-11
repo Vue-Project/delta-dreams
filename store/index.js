@@ -1,9 +1,11 @@
+import createPersistedState from 'vuex-persistedstate';
+
 export const state = () => ({
   selectedDates: [],
-  selectedResourceName: "", // Add selectedResourceId to the state
-  reservationTypes: [], // Add new state
-  rateTypes: [], // Add new state
-  countries: [], // Add new state
+  selectedResourceName: "",
+  reservationTypes: [],
+  rateTypes: [],
+  countries: [],
   vipStatus: [],
   nationalTypes: [],
   genderTypes: [],
@@ -12,90 +14,54 @@ export const state = () => ({
   code: null,
   type: null,
   lastUpdated: null
-// acces page in URl
-  // accessAllowed: {},
-
-
 });
-// store/index.js
-
-
-
 
 export const mutations = {
   setSelectedDates(state, dates) {
     state.selectedDates = dates;
   },
-
   setSelectedResourceName(state, resourceName) {
     state.selectedResourceName = resourceName;
   },
-
   clearSelectedDates(state) {
     state.selectedDates = [];
   },
-
   clearSelectedResourceName(state) {
     state.selectedResourceName = "";
   },
-
-  clearAll(state) {
-    state.selectedDates = [];
-    state.selectedResourceName = "";
-    state.reservationTypes = [];
-    state.rateTypes = [];
-    state.countries = [];
-    state.vipStatus = [];
-    state.nationalTypes = [];
-    state.genderTypes = [];
-    state.projects = [];
-    state.remindGuestType = [];
-  },
-      // acces page in URl
-
-  // setAccessAllowed(state, { path, value }) {
-  //   state.accessAllowed[path] = value;
-  // },
-
   setReservationTypes(state, types) {
     state.reservationTypes = types;
   },
-
   setRateTypes(state, types) {
     state.rateTypes = types;
   },
-
   setCountries(state, countries) {
     state.countries = countries;
   },
-
   setVipStatus(state, vipStatus) {
     state.vipStatus = vipStatus;
   },
-
   setNationalTypes(state, nationalTypes) {
     state.nationalTypes = nationalTypes;
   },
-
   setGenderTypes(state, genderTypes) {
     state.genderTypes = genderTypes;
   },
-
   setProjects(state, projects) {
     state.projects = projects;
   },
-
   setRemindGuestType(state, remindGuestType) {
     state.remindGuestType = remindGuestType;
   },
   setParams(state, { code, type, lastUpdated }) {
-    if (code) state.code = code
-    if (type) state.type = type
-    if (lastUpdated) state.lastUpdated = lastUpdated
+    if (code) state.code = code;
+    if (type) state.type = type;
+    if (lastUpdated) state.lastUpdated = lastUpdated;
   },
-
+  resetStore(state) {
+    Object.assign(state, state());
+  }
 };
-    // acces page in URl
 
 export const getters = {
   getReservationTypes: state => state.reservationTypes,
@@ -109,7 +75,6 @@ export const getters = {
 };
 
 export const actions = {
-  // Add actions to fetch and set the data
   updateReservationTypes({ commit }, types) {
     commit('setReservationTypes', types);
   },
@@ -134,4 +99,65 @@ export const actions = {
   updateRemindGuestType({ commit }, remindGuestType) {
     commit('setRemindGuestType', remindGuestType);
   },
+  initializeStore({ commit, state }) {
+    if (process.client) {
+      // Get data from localStorage
+      const storedData = localStorage.getItem('myVuexStore');
+
+      if (storedData) {
+        const parsedData = JSON.parse(storedData);
+
+        // Initialize all stored data
+        if (parsedData.rateTypes) {
+          commit('setRateTypes', parsedData.rateTypes);
+        }
+        if (parsedData.reservationTypes) {
+          commit('setReservationTypes', parsedData.reservationTypes);
+        }
+        if (parsedData.countries) {
+          commit('setCountries', parsedData.countries);
+        }
+        if (parsedData.vipStatus) {
+          commit('setVipStatus', parsedData.vipStatus);
+        }
+        if (parsedData.nationalTypes) {
+          commit('setNationalTypes', parsedData.nationalTypes);
+        }
+        if (parsedData.genderTypes) {
+          commit('setGenderTypes', parsedData.genderTypes);
+        }
+        if (parsedData.projects) {
+          commit('setProjects', parsedData.projects);
+        }
+        if (parsedData.remindGuestType) {
+          commit('setRemindGuestType', parsedData.remindGuestType);
+        }
+      }
+    }
+  }
 };
+
+export const plugins = [
+  process.client
+    ? createPersistedState({
+        key: 'myVuexStore',
+        paths: [
+          'selectedDates',
+          'selectedResourceName',
+          'reservationTypes',
+          'rateTypes',
+          'countries',
+          'vipStatus',
+          'nationalTypes',
+          'genderTypes',
+          'projects',
+          'remindGuestType',
+          'code',
+          'type',
+          'lastUpdated'
+        ],
+        storage: window.localStorage
+      })
+    : () => {}
+];
+

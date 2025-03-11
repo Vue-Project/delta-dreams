@@ -80,7 +80,6 @@
       @view-history="handleViewHistory"
     /> -->
   </div>
-  </div>
 </template>
 
 <script>

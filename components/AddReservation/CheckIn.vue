@@ -480,7 +480,7 @@ export default {
           rateType: "",
           unitId: "",
           adults: "1",
-          children: "0",
+          children: "1",
           rateAmount: "",
           unitTypeId: "",
         }],
@@ -488,7 +488,7 @@ export default {
         releaseTime: "",
         releaseTerm: "",
         releaseTermValue: "",
-        remindGuest: "",
+        remindGuest: "1",
         remindGuestType: "",
         holdRelease: false,
         arrivalDate: false,
@@ -503,12 +503,12 @@ export default {
           zip: "",
         },
         otherInformation: {
-          emailBookingOption: '', // Selected booking option
-          emailAddressCheckout: '', // Email addresses input
-          accessToGuestPortal: false, // Toggle for Access To Guest Portal
-          suppressRateOnRegistrationCard: false, // Toggle for Suppress Rate on Registration Card
+          emailBookingOption: '',
+          emailAddressCheckout: '',
+          accessToGuestPortal: false,
+          suppressRateOnRegistrationCard: false,
         },
-        bookingSource: "", // Initialize with empty string
+        bookingSource: "",
       },
       validationMessages: {
         businessSource: '',
@@ -518,17 +518,17 @@ export default {
         adults: '',
         children: '',
         rateType: '',
-
+        rateAmount: '',
       },
-      selectedNameId: null, // ID to send to the server
+      selectedNameId: null,
       showDropdown: false,
-      filteredNames: [], // List of objects with { id, name }
+      filteredNames: [],
       currentPage: 1,
       totalPages: 1,
       hasMore: false,
       isLoading: false,
       searchQuery: '',
-      availableUnitsByRoom: {}, // Store available units for each room index
+      availableUnitsByRoom: [],
     };
   },
 
@@ -671,6 +671,7 @@ export default {
         releaseTerm: "",
         releaseTermValue: "",
         remindGuest: "",
+        remindGuestType: "",
         holdRelease: false,
         arrivalDate: false,
         guestInformation: {
@@ -784,7 +785,6 @@ export default {
         insurance : this.paymentData.insurance,
         insurance_by: this.paymentData.insurance_by,
       };
-console.log(bookingData);
 
 
       // If no errors, send the data to the server
@@ -888,12 +888,22 @@ console.log(bookingData);
       }
     },
 
-    async handleSearch ()
-    {
-      this.currentPage = 1
-      this.searchQuery = this.formAddReservation.guestInformation.name
-      await this.fetchNames()
-    },
+    async handleSearch() {
+  this.currentPage = 1;
+  this.searchQuery = this.formAddReservation.guestInformation.name;
+
+  // Filter names locally based on searchQuery
+  if (this.searchQuery) {
+    this.filteredNames = this.filteredNames.filter(name =>
+      name.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+    );
+    this.showDropdown = true;
+  } else {
+    // If no search query, show all names
+    await this.fetchNames();
+  }
+},
+
 
     async fetchNames ()
     {
@@ -937,30 +947,31 @@ console.log(bookingData);
     async selectName (name)
     {
       try {
-        // Set the name and ID as before
-        this.formAddReservation.guestInformation.name = name.name;
-        this.selectedNameId = name.id;
-        this.showDropdown = false;
+        // console.log('Selected name:', name);
 
-        // Fetch detailed guest information using the selected ID
-        const response = await getGuestDetails(name.id); // You'll need to create this API function
+        const response = await getGuestDetails(name.id);
 
-        const guestDetails = response.data;
+        const guestDetails = response.data.data;
 
-        // Populate all guest information fields
-        this.formAddReservation.guestInformation = {
-          ...this.formAddReservation.guestInformation, // Keep existing data
-          email: guestDetails.email || '',
-          mobile: guestDetails.mobile || '',
-          address: guestDetails.address || '',
-          country: guestDetails.country || '',
-          state: guestDetails.state || '',
-          city: guestDetails.city || '',
-          zip: guestDetails.zip_code || ''
-        };
+        // Check if response.data exists and has the expected structure
+        if (guestDetails) {
+          // Update form data with explicit property access
+          this.formAddReservation.guestInformation = {
+            name: name.name,
+            email: guestDetails.email || '',
+            mobile: guestDetails.mobile || '',
+            address: guestDetails.address || '',
+            country: guestDetails.country || '',
+            state: guestDetails.state || '',
+            city: guestDetails.city || '',
+            zip: guestDetails.zip_code || '',
+          };
+
+          // Log the final form data
+        }
+
       } catch (error) {
-        console.error('Error fetching guest details:', error);
-        // Optionally show an error message to the user
+        console.error('Error details:', error);
       }
     },
 
@@ -970,7 +981,26 @@ console.log(bookingData);
       {
         this.showDropdown = false
       }, 200)
-    }
+    },
+
+    initializeFromStore() {
+      // Initialize form data from Vuex store
+      if (this.selectedDates.length > 0) {
+        const [firstDate] = this.parsedDates;
+        const [lastDate] = [...this.parsedDates].reverse();
+
+        if (firstDate && lastDate) {
+          this.formAddReservation.checkInDate = this.formatDate(firstDate);
+          this.formAddReservation.checkOutDate = this.formatDate(lastDate);
+          this.formAddReservation.checkInTime = this.formatTime(firstDate);
+          this.formAddReservation.checkOutTime = this.formatTime(lastDate);
+        }
+      }
+
+      if (this.selectedResourceName) {
+        this.spliceSelectedResourceName();
+      }
+    },
   },
 
   async mounted ()
@@ -996,7 +1026,7 @@ console.log(bookingData);
     } catch (error) {
       console.error("Error loading data:", error);
     }
-    this.spliceSelectedResourceName();
+    this.initializeFromStore();
 
     this.$nextTick(() =>
     {
@@ -1068,8 +1098,12 @@ console.log(bookingData);
   },
   computed: {
     ...mapState({
-      selectedDates: state => state.selectedDates,
-      selectedResourceName: state => state.selectedResourceName,
+      selectedDates: state => state.selectedDates || [],
+      selectedResourceName: state => state.selectedResourceName || "",
+      reservationTypes: state => state.reservationTypes || [],
+      rateTypes: state => state.rateTypes || [],
+      countries: state => state.countries || [],
+      remindGuestType: state => state.remindGuestType || [],
     }),
     ...mapGetters([
       'getReservationTypes',
@@ -1193,6 +1227,11 @@ console.log(bookingData);
     },
   },
   middleware: 'restrict-access', // Apply the middleware
+
+  async created() {
+    // Initialize store data from localStorage
+    await this.$store.dispatch('initializeStore');
+  },
 
 };
 </script>

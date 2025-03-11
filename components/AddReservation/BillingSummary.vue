@@ -39,7 +39,7 @@
               type="number"
               id="taxes"
               name="taxes"
-              class="form-control rounded-2 fw-bold text-end"
+              class="form-control rounded-2  fw-normal text-end"
               v-model="paymentDetails.taxes"
               min="0"
               @input="paymentDetails.taxes = Math.max(Number($event.target.value), 0)"
@@ -52,7 +52,7 @@
               type="number"
               id="dueAmount"
               name="dueAmount"
-              class="form-control rounded-2 mt-1 fw-bold text-end"
+              class="form-control rounded-2 mt-1 fw-normal text-end"
               v-model="paymentDetails.dueAmount"
               min="0"
               @input="paymentDetails.dueAmount = Math.max(Number($event.target.value), 0)"
@@ -229,8 +229,8 @@ export default {
       selectedPaymentType: '',
       paymentDetails: {
         roomCharges: 0.0,
-        taxes: 0.0,
-        dueAmount: 0.0,
+        taxes: "1",
+        dueAmount: "1",
         amount: null,
         bankName: '',
         accountNumber: '',

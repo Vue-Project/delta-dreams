@@ -130,9 +130,9 @@ export default {
         eventResize: this.handleEventChange,
         eventDidMount: (info) => {
           this.adjustHarnessPosition(info);
-          if (info.event.extendedProps?.fullName) {
-            info.el.setAttribute('data-full-name', info.event.extendedProps.fullName);
-          }
+          // if (info.event.extendedProps?.fullName) {
+          //   info.el.setAttribute('data-full-name', info.event.extendedProps.fullName);
+          // }
         },        resources: this.createResources(),
         selectable: true, // Enable date selection
         selectMirror: true, // Make the selection draggable
@@ -540,7 +540,7 @@ export default {
         <div class="text-left">
           <p><strong>Start:</strong> ${startDate}</p>
           <p><strong>End:</strong> ${endDate}</p>
-          <p><strong>Room:</strong> ${this.selectedBlockedEvent.title}</p>
+          <p><strong>Blocked Reason:</strong> ${this.selectedBlockedEvent.title}</p>
         </div>
       `,
           icon: 'info',
@@ -608,19 +608,19 @@ export default {
       {
         if (dateInfo.is_reserved && dateInfo.reservation && !handledReservations.has(dateInfo.reservation.id)) {
           const reservation = dateInfo.reservation;
-          const fullName = reservation.client?.name || reservation.user?.name || 'Unknown';
-          const shortName = fullName.substring(0, 2).toUpperCase(); // Get first 2 letters and capitalize
+          // const fullName = reservation.client?.name || reservation.user?.name || 'Unknown';
+          // const shortName = fullName.substring(0, 2).toUpperCase(); // Get first 2 letters and capitalize
 
           events.push({
             resourceId: unitData.code,
-            title: shortName,
+            title: reservation.client?.name || reservation.user?.name || 'Unknown',
             start: reservation.checkin_date.split('T')[0],
             end: reservation.checkout_date.split('T')[0] + 'T23:59:59',
             color: '#7367f0',
             reservationId: reservation.id,
             extendedProps: {
               reservation: reservation,
-              fullName: fullName, // Store full name for tooltip
+              // fullName: fullName, // Store full name for tooltip
             },
             classNames: ['custom-event', 'hoverable-event'], // Add hoverable class
           });
@@ -640,7 +640,7 @@ export default {
               currentBlock = {
                 id: dateInfo.block.id,
                 resourceId: unitData.code,
-                title: `Blocked Reason: ${dateInfo.block.reason.name || 'No reason provided'}`,
+                title: ` ${dateInfo.block.reason.name || 'No reason provided'}`,
                 start: dateInfo.date,
                 end: dateInfo.date,
                 color: '#4b4b4b',

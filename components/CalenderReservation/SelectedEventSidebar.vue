@@ -38,7 +38,7 @@
               <label class="form-label fs-4 StatusSideBarTitle" for="status-reservation">Status</label>
             </div>
             <div class="col-8 pt-1">
-              <select class="badge w-100 bg-white text-dark StatusSideBarSelect" :value="selectedEvent.status" @change="handleStatusChange">
+              <select class="  form-select badge w-100 bg-white text-dark StatusSideBarSelect" :value="selectedEvent.status" @change="handleStatusChange">
                 <option v-for="(label, value) in statusOptions" :key="value" :value="value">
                   {{ label }}
                 </option>
@@ -188,8 +188,8 @@
             </ul>
           </div>
           <div class="text-center">
-          <button @click="cancelReservation" type="button" title="Cancel Reservation" class="btn btn-danger waves-effect waves-light mt-3 w-100 px-0 cancelBtnSideBar">
-            Cancel Reservation</button>
+            <button @click="cancelReservation" type="button" title="Cancel Reservation" class="btn btn-danger waves-effect waves-light mt-3 w-100 px-0 cancelBtnSideBar">
+              Cancel Reservation</button>
           </div>
         </div>
 
@@ -242,7 +242,7 @@
                     <label class="input-group-text" for="payment_type">Type</label>
                   </div>
                 </div>
-                <div class="col-lg-6 col-md-6 col-12 mb-2">
+                <div class="col-lg-6 col-md-6 col-12">
                   <div class="input-group">
                     <select class="form-select" id="payment_method" v-model="formAddPayment.method">
                       <option disabled value="">Select Method</option>
@@ -340,7 +340,7 @@ export default {
       const oldStatus = this.selectedEvent.status;
       const newStatus = event.target.value;
 
-    const result = await showConfirmationAlert('Are you sure you?', 'Do you want to change the status of this reservation?');
+      const result = await showConfirmationAlert('Are you sure you?', 'Do you want to change the status of this reservation?');
 
       if (result.isConfirmed) {
         const changeStatus = {
@@ -363,14 +363,15 @@ export default {
     },
 
 
-    async cancelReservation() {
-    // Show SweetAlert2 confirmation dialog
-    const result = await showConfirmationAlert(
-      'Are you sure?',
-      "You won't be able to restore it again",
-      'Yes, cancel it!',
+    async cancelReservation ()
+    {
+      // Show SweetAlert2 confirmation dialog
+      const result = await showConfirmationAlert(
+        'Are you sure?',
+        "You won't be able to restore it again",
+        'Yes, cancel it!',
 
-    );
+      );
 
 
       // Proceed only if the user confirms
@@ -452,7 +453,8 @@ export default {
         };
 
         // Append payment data to FormData
-        Object.keys(paymentData).forEach(key => {
+        Object.keys(paymentData).forEach(key =>
+        {
           formData.append(key, paymentData[key]);
         });
 

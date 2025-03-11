@@ -1,47 +1,35 @@
 <template>
-  <div class="row justify-content-between pb-5 p-2 position-relative g-2">
+  <div class="row justify-content-between p-2 position-relative ">
     <!-- Left Column - Date and Building Filter -->
-    <div class="col-lg-4 col-md-12 mb-2 mb-md-0">
-      <div class="row g-2">
+    <div class=" col-lg-6 col-md-8 col-md-12 mb-2 ">
+      <div class="row ">
         <!-- Date Picker -->
-        <div class="col-md-6 col-12">
+        <div class="col-lg-4 col-md-6 col-12">
           <div class="position-relative">
-            <input type="text"
-                   class="form-control flatpickr-input"
-                   placeholder="YYYY-MM-DD"
-                   id="flatpickr-date-04"
-                   ref="datePicker4"
-                   aria-label="Select date" />
+            <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD" id="flatpickr-date-04" ref="datePicker4" aria-label="Select date" />
             <i class="fa-solid fa-calendar-days date-icon"></i>
           </div>
         </div>
 
         <!-- Building Filter -->
-        <div class="col-md-6 col-6 ">
+        <div class="col-md-6 col-12 ">
           <div class="dropdown w-100">
-            <button class="btn btn-primary dropdown-toggle w-100"
-                    type="button"
-                    id="buildingsDropdown"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false">
+            <button class="btn btn-primary dropdown-toggle w-100" type="button" id="buildingsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
               <i class="fa-solid fa-filter pe-2"></i>Filter Buildings
             </button>
             <ul class="dropdown-menu  w-100" aria-labelledby="buildingsDropdown">
               <li>
                 <a class="dropdown-item" href="#" @click.prevent="toggleSelectAllBuildings">
-                  <input type="checkbox"
-                         v-model="selectAllBuildings"
-                         class="form-check-input me-2" />
+                  <input type="checkbox" v-model="selectAllBuildings" class="form-check-input me-2" />
                   <span>Show All</span>
                 </a>
               </li>
-              <li><hr class="dropdown-divider" /></li>
+              <li>
+                <hr class="dropdown-divider" />
+              </li>
               <li v-for="building in buildingNames" :key="building">
                 <a class="dropdown-item" href="#" @click.prevent="toggleBuilding(building)">
-                  <input type="checkbox"
-                         v-model="selectedBuildings"
-                         :value="building"
-                         class="form-check-input me-2" />
+                  <input type="checkbox" v-model="selectedBuildings" :value="building" class="form-check-input me-2" />
                   <span>{{ building }}</span>
                 </a>
               </li>
@@ -57,36 +45,33 @@
     </div>
 
     <!-- Right Column - Filters and Info -->
-    <div class="col-lg-6 col-md-12 pt-3 pt-md-0">
+    <div class="col-lg-6 col-md-12 pt-5 pt-md-0">
       <div class="row g-2">
         <!-- Apply Button -->
-        <div class="col-xl-3 col-lg-4 col-md-6 col-6 d-none d-sm-block order-md-1">
+        <div class="col-xl-3 col-lg-4 col-md-6 col-12 order-md-1">
           <button class="btn btn-primary w-100" @click="applyFilters">
             Apply Filters
           </button>
         </div>
+        <div class="col-xl-3 col-lg-4 col-md-4 col-6 order-md-1 order-sm-2 quick-reservation">
+          <button class="btn btn-primary w-100" @click="quickReservation">
+            Quick Reservation
+          </button>
+        </div>
 
         <!-- Rate Types Filter -->
-        <div class="col-xl-4 col-lg-4 col-md-6 col-6 pe-1  pt-md-0 order-md-2">
+        <div class="col-xl-4 col-lg-4 col-md-6 col-12 pt-2 pt-md-0 order-md-2">
           <div class="dropdown w-100">
-            <button class="btn btn-primary dropdown-toggle w-100"
-                    type="button"
-                    id="rateTypesDropdown"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false">
+            <button class="btn btn-primary dropdown-toggle w-100" type="button" id="rateTypesDropdown" data-bs-toggle="dropdown" aria-expanded="false">
               <i class="fa-solid fa-filter pe-2"></i>Filter Rate Types
-              <span v-if="selectedRateTypes.length"
-                    class="badge bg-light text-dark ms-1">
+              <span v-if="selectedRateTypes.length" class="badge bg-light text-dark ms-1">
                 {{ selectedRateTypes.length }}
               </span>
             </button>
             <ul class="dropdown-menu   w-100" aria-labelledby="rateTypesDropdown">
               <li v-for="(type, index) in getRateTypes" :key="index">
                 <a class="dropdown-item" href="#" @click.prevent="toggleRateType(index)">
-                  <input type="checkbox"
-                         :value="index"
-                         v-model="selectedRateTypes"
-                         class="form-check-input me-2" />
+                  <input type="checkbox" :value="index" v-model="selectedRateTypes" class="form-check-input me-2" />
                   <span>{{ type }}</span>
                 </a>
               </li>
@@ -95,26 +80,18 @@
         </div>
 
         <!-- Projects Filter -->
-        <div class="col-xl-4 col-lg-4 col-md-6 offset-md-0 ps-1 col-6 order-md-3  pt-md-0">
-          <div class="dropdown w-100 ps-1 pe-1 ps-lg-2">
-            <button class="btn btn-primary dropdown-toggle w-100"
-                    type="button"
-                    id="projectsDropdown"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false">
+        <div class="col-xl-4 col-lg-4 col-md-6 col-12 order-md-3 pt-5 pt-md-0">
+          <div class="dropdown w-100 ps-lg-2">
+            <button class="btn btn-primary dropdown-toggle w-100" type="button" id="projectsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
               <i class="fa-solid fa-filter pe-2"></i>Filter Projects
-              <span v-if="selectedProjects.length"
-                    class="badge bg-light text-dark ms-1">
+              <span v-if="selectedProjects.length" class="badge bg-light text-dark ms-1">
                 {{ selectedProjects.length }}
               </span>
             </button>
             <ul class="dropdown-menu w-100" aria-labelledby="projectsDropdown">
               <li v-for="project in getProjects" :key="project.id">
                 <a class="dropdown-item" href="#" @click.prevent="toggleProject(project.id)">
-                  <input type="checkbox"
-                        :value="project.id"
-                        v-model="selectedProjects"
-                        class="form-check-input me-2" />
+                  <input type="checkbox" :value="project.id" v-model="selectedProjects" class="form-check-input me-2" />
                   <span>{{ project.name }}</span>
                 </a>
               </li>
@@ -135,6 +112,7 @@
 
       </div>
     </div>
+
   </div>
 </template>
 
@@ -246,6 +224,7 @@ export default {
         this.$emit("show-building-resources", this.selectedBuildings);
       }
     },
+
     async toggleBuilding (building)
     {
       if (this.selectedBuildings.includes(building)) {
@@ -277,6 +256,10 @@ export default {
     async applyFilters ()
     {
       await this.getFilterData();
+    },
+    quickReservation ()
+    {
+      this.$router.push("/add-reservation");
     },
   },
 
@@ -345,31 +328,14 @@ export default {
 </script>
 
 <style scoped>
-.date-icon {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none;
-}
-
-.flatpickr-input {
-  padding-right: 35px;
-}
-
-.dropdown-menu {
-  max-height: 300px;
-  overflow-y: auto;
-}
-
 @media (max-width: 768px) {
-  .dropdown-menu {
+  /* .dropdown-menu {
     position: fixed !important;
     left: 50% !important;
     transform: translateX(-50%);
     min-width: 90vw;
     max-width: 95vw;
-  }
+  } */
 
   .btn {
     white-space: nowrap;
@@ -403,34 +369,5 @@ export default {
 
 .list-unstyled li {
   padding: 3px 0;
-}
-
-/* ############### */
-/* Mobile-first approach for dropdown centering */
-@media (max-width: 767px) {
-  .dropdown-menu {
-    position: fixed !important;
-    top: 48% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    right: auto !important;
-    min-width: 280px;
-    max-width: 90vw;
-    max-height: 70vh;
-    overflow-y: auto;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-  }
-
-  /* Optional: Add triangle indicator */
-  .dropdown-menu::before {
-    content: '';
-    position: absolute;
-    top: -5px;
-    left: 50%;
-    transform: translateX(-50%);
-    border-width: 0 5px 5px 5px;
-    border-style: solid;
-    border-color: transparent transparent rgba(0, 0, 0, 0.15) transparent;
-  }
 }
 </style>
