@@ -1,62 +1,63 @@
-// export default function ({ route, redirect, store }) {
-//   // Extract code and type from the current route's query
-//   const { code, type } = route.query
+export default function ({ route, app, redirect })
+{
+  const { $cookies } = app;
 
-//   // Check if we have new parameters in the URL
-//   if (code || type) {
-//     // If new parameters exist, update the store
-//     store.commit('setParams', {
-//       code: code || store.state.code,
-//       type: type || store.state.type,
-//       // Store when these params were last updated
-//       // lastUpdated: new Date().toISOString()
-//     })
-//   }
-
-//   // Get all values from the store
-//   const { code: storedCode, type: storedType } = store.state
-
-//   // Only add parameters to routes that don't already have them
-//   if ((!code && storedCode) || (!type && storedType)) {
-//     // Create new query with stored values for missing parameters
-//     const newQuery = { ...route.query }
-
-//     // Only add parameters that aren't already in the URL
-//     if (!code && storedCode) newQuery.code = storedCode
-//     if (!type && storedType) newQuery.type = storedType
-
-//     // Redirect if we need to add parameters
-//     if (JSON.stringify(route.query) !== JSON.stringify(newQuery)) {
-//       return redirect({
-//         path: route.path,
-//         query: newQuery
-//       })
-//     }
-//   }
-// }
-export default function ({ route, redirect, store }) {
-  const { code, type } = route.query;
-
-  // Update store with URL params or fallback to cookies
-  const storedCode = code || Cookies.get('code');
-  const storedType = type || Cookies.get('type');
-
-  if (storedCode || storedType) {
-    store.commit('setParams', {
-      code: storedCode,
-      type: storedType,
-    });
-    // Save to cookies for persistence
-    Cookies.set('code', storedCode, { expires: 7 });
-    Cookies.set('type', storedType, { expires: 7 });
+  // Check if cookies module is available
+  if (!$cookies) {
+    console.error('ERROR: Cookie module is not available!');
+    return;
   }
 
-  // Redirect if URL is missing params but store/cookies have them
-  const expectedQuery = { ...route.query };
-  if (!code && storedCode) expectedQuery.code = storedCode;
-  if (!type && storedType) expectedQuery.type = storedType;
+  try {
+    // Get parameters from URL and cookies
+    const urlCode = route.query.code;
+    const urlType = route.query.type;
 
-  if (JSON.stringify(route.query) !== JSON.stringify(expectedQuery)) {
-    return redirect({ path: route.path, query: expectedQuery });
+    // Set secure cookie options for production
+    const cookieOptions = {
+      path: '/',
+      maxAge: 60 * 60 * 24 * 7, // 7 days in seconds
+      secure: process.env.NODE_ENV === 'production', // Only send over HTTPS in production
+      sameSite: 'Lax', // Helps with security while allowing cross-subdomain
+      domain: process.env.NODE_ENV === 'production' ? '.swevey.com' : undefined
+    };
+
+    // Always save valid parameters to cookies
+    if (urlCode) {
+      $cookies.set('code', urlCode, cookieOptions);
+    }
+
+    if (urlType) {
+      $cookies.set('type', urlType, cookieOptions);
+    }
+
+    // For navigation, ensure we have parameters
+    const cookieCode = $cookies.get('code');
+    const cookieType = $cookies.get('type');
+
+    // Don't redirect for external URLs
+    if (route.path.includes('://')) {
+      return;
+    }
+
+    const query = { ...route.query };
+    let shouldRedirect = false;
+
+    if (cookieCode && !urlCode) {
+      query.code = cookieCode;
+      shouldRedirect = true;
+    }
+
+    if (cookieType && !urlType) {
+      query.type = cookieType;
+      shouldRedirect = true;
+    }
+
+    if (shouldRedirect) {
+      return redirect({ path: route.path, query });
+    }
+
+  } catch (error) {
+    console.error('Error in persistParams middleware:', error);
   }
 }

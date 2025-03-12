@@ -39,6 +39,7 @@ export default {
   router: {
     base: '/', // If deploying to a subdirectory (e.g., /my-app/), set this to '/my-app/'
     mode: 'history', // Remove the hash (#) from URLs
+    middleware: ['permissionQuery']
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
@@ -84,7 +85,7 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     "~/plugins/vue-wow-config",
-    { src: '~/plugins/store-init.js', mode: 'client' }
+    { src: '~/plugins/store-init.js', mode: 'client' },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -95,7 +96,9 @@ export default {
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: [],
+  modules: [
+    'cookie-universal-nuxt'
+  ],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
@@ -124,7 +127,7 @@ export default {
   },
   ignoredPaths: [""],
 
-    // acces page in URl
+  // acces page in URl
   // router: {
   //   middleware: 'auth'
   // },
@@ -132,7 +135,9 @@ export default {
     middleware: 'permissionQuery', // Apply the middleware to all routes
   },
 
-
+  publicRuntimeConfig: {
+    domain: process.env.DOMAIN || 'swevey.com'
+  },
 
   // generate: {
   //   fallback: true, // Ensures SPA fallback

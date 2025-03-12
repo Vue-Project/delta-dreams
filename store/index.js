@@ -17,48 +17,66 @@ export const state = () => ({
 });
 
 export const mutations = {
-  setSelectedDates(state, dates) {
+  setSelectedDates (state, dates)
+  {
     state.selectedDates = dates;
   },
-  setSelectedResourceName(state, resourceName) {
+  setSelectedResourceName (state, resourceName)
+  {
     state.selectedResourceName = resourceName;
   },
-  clearSelectedDates(state) {
+  clearSelectedDates (state)
+  {
     state.selectedDates = [];
   },
-  clearSelectedResourceName(state) {
+  clearSelectedResourceName (state)
+  {
     state.selectedResourceName = "";
   },
-  setReservationTypes(state, types) {
+  setReservationTypes (state, types)
+  {
     state.reservationTypes = types;
   },
-  setRateTypes(state, types) {
+  setRateTypes (state, types)
+  {
     state.rateTypes = types;
   },
-  setCountries(state, countries) {
+  setCountries (state, countries)
+  {
     state.countries = countries;
   },
-  setVipStatus(state, vipStatus) {
+  setVipStatus (state, vipStatus)
+  {
     state.vipStatus = vipStatus;
   },
-  setNationalTypes(state, nationalTypes) {
+  setNationalTypes (state, nationalTypes)
+  {
     state.nationalTypes = nationalTypes;
   },
-  setGenderTypes(state, genderTypes) {
+  setGenderTypes (state, genderTypes)
+  {
     state.genderTypes = genderTypes;
   },
-  setProjects(state, projects) {
+  setProjects (state, projects)
+  {
     state.projects = projects;
   },
-  setRemindGuestType(state, remindGuestType) {
+  setRemindGuestType (state, remindGuestType)
+  {
     state.remindGuestType = remindGuestType;
   },
-  setParams(state, { code, type, lastUpdated }) {
-    if (code) state.code = code;
-    if (type) state.type = type;
-    if (lastUpdated) state.lastUpdated = lastUpdated;
+  // setParams(state, { code, type, lastUpdated }) {
+  //   if (code) state.code = code;
+  //   if (type) state.type = type;
+  //   if (lastUpdated) state.lastUpdated = lastUpdated;
+  // },
+  setParams (state, { code, type })
+  {
+    if (code) state.code = code
+    if (type) state.type = type
   },
-  resetStore(state) {
+  resetStore (state)
+  {
     Object.assign(state, state());
   }
 };
@@ -75,31 +93,40 @@ export const getters = {
 };
 
 export const actions = {
-  updateReservationTypes({ commit }, types) {
+  updateReservationTypes ({ commit }, types)
+  {
     commit('setReservationTypes', types);
   },
-  updateRateTypes({ commit }, types) {
+  updateRateTypes ({ commit }, types)
+  {
     commit('setRateTypes', types);
   },
-  updateCountries({ commit }, countries) {
+  updateCountries ({ commit }, countries)
+  {
     commit('setCountries', countries);
   },
-  updateVipStatus({ commit }, vipStatus) {
+  updateVipStatus ({ commit }, vipStatus)
+  {
     commit('setVipStatus', vipStatus);
   },
-  updateNationalTypes({ commit }, nationalTypes) {
+  updateNationalTypes ({ commit }, nationalTypes)
+  {
     commit('setNationalTypes', nationalTypes);
   },
-  updateGenderTypes({ commit }, genderTypes) {
+  updateGenderTypes ({ commit }, genderTypes)
+  {
     commit('setGenderTypes', genderTypes);
   },
-  updateProjects({ commit }, projects) {
+  updateProjects ({ commit }, projects)
+  {
     commit('setProjects', projects);
   },
-  updateRemindGuestType({ commit }, remindGuestType) {
+  updateRemindGuestType ({ commit }, remindGuestType)
+  {
     commit('setRemindGuestType', remindGuestType);
   },
-  initializeStore({ commit, state }) {
+  initializeStore ({ commit, state })
+  {
     if (process.client) {
       // Get data from localStorage
       const storedData = localStorage.getItem('myVuexStore');
@@ -134,30 +161,44 @@ export const actions = {
         }
       }
     }
+  },
+  nuxtServerInit ({ commit }, { app, route })
+  {
+    // Get parameters from URL or cookies
+    const urlCode = route.query.code
+    const urlType = route.query.type
+    const cookieCode = app.$cookies.get('code')
+    const cookieType = app.$cookies.get('type')
+
+    // Use URL parameters if available, otherwise use cookies
+    commit('setParams', {
+      code: urlCode || cookieCode,
+      type: urlType || cookieType
+    })
   }
 };
 
 export const plugins = [
   process.client
     ? createPersistedState({
-        key: 'myVuexStore',
-        paths: [
-          'selectedDates',
-          'selectedResourceName',
-          'reservationTypes',
-          'rateTypes',
-          'countries',
-          'vipStatus',
-          'nationalTypes',
-          'genderTypes',
-          'projects',
-          'remindGuestType',
-          'code',
-          'type',
-          'lastUpdated'
-        ],
-        storage: window.localStorage
-      })
-    : () => {}
+      key: 'myVuexStore',
+      paths: [
+        'selectedDates',
+        'selectedResourceName',
+        'reservationTypes',
+        'rateTypes',
+        'countries',
+        'vipStatus',
+        'nationalTypes',
+        'genderTypes',
+        'projects',
+        'remindGuestType',
+        'code',
+        'type',
+        'lastUpdated'
+      ],
+      storage: window.localStorage
+    })
+    : () => { }
 ];
 
