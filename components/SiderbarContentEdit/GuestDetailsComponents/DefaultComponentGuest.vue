@@ -127,7 +127,7 @@
                     </div>
                   </div>
                   <div class="col-md-6 pe-0">
-                     <div class="mb-3">
+                    <div class="mb-3">
                       <label for="flatpickr-date-08" class="col-form-label">Expiry Date</label>
                       <input type="text" class="form-control" placeholder="YYYY-MM-D " id="flatpickr-date-08" ref="datePicker8" aria-label="input Text to Expiry Date" v-model="formGuest.OtherInformation.expiryDate" />
                       <i class="fa-solid fa-calendar-days icon-date top"></i>
@@ -179,8 +179,8 @@
                 </select>
               </div>
               <div class="col-md-3 pe-0">
-                  <label for="formGustInfoZip" class="col-form-label">Zip</label>
-                  <input class="form-control" type="text" id="formGustInfoZip" placeholder="Zip" aria-label="input Text to Gust Zip" v-model="formGuest.zip" />
+                <label for="formGustInfoZip" class="col-form-label">Zip</label>
+                <input class="form-control" type="text" id="formGustInfoZip" placeholder="Zip" aria-label="input Text to Gust Zip" v-model="formGuest.zip" />
               </div>
             </div>
 
@@ -399,18 +399,21 @@ export default {
         const response = await PostUpdateGuest(this.reservationData.client.id, updateGuestData);
 
         // Show success message
-        await showSuccessAlert("Guest updated successfully.", );
-        location.reload();
+        await showSuccessAlert("Guest updated successfully.");
 
-        // Emit event for parent component
+        // Emit event to parent component
+        this.$emit('guest-updated');
+
+        this.isSubmitting = false;
+
       } catch (error) {
-        // Handle validation errors
-       await handleSubmissionError(error);
+        await handleSubmissionError(error);
       } finally {
         this.isSubmitting = false;
       }
     },
-    fillFormGuest(reservationData) {
+    fillFormGuest (reservationData)
+    {
       if (!reservationData || typeof reservationData !== 'object') {
         console.warn('Invalid reservation data received');
         return;

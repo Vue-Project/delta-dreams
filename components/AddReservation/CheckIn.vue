@@ -150,8 +150,7 @@
                     <tbody>
                       <tr v-for="(item, index) in formAddReservation.units" :key="index" class="mb-2 selectStyle">
                         <td data-label="Room Type">
-                          <select class="form-select" id="unitsTypes" v-model="item.roomType"
-                            @change="() => handleUnitTypeChange(index, item.roomType)">
+                          <select class="form-select" id="unitsTypes" v-model="item.roomType" @change="() => handleUnitTypeChange(index, item.roomType)">
                             <option disabled value="">Select</option>
                             <option v-for="unitType in unitsTypes" :key="unitType.id" :value="unitType.id">
                               {{ unitType.name }}
@@ -220,14 +219,7 @@
                   <div class="row">
                     <div class="col-lg-7 col-12 col-md-6 px-0">
                       <label for="flatpickr-date-03" class="form-label">Hold Release Date & Time</label>
-                      <input
-                        type="text"
-                        placeholder="YYYY-MM-DD"
-                        id="flatpickr-date-03"
-                        class="form-control flatpickr-input"
-                        ref="datePicker3"
-                        v-model="formAddReservation.releaseDate"
-                      />
+                      <input type="text" placeholder="YYYY-MM-DD" id="flatpickr-date-03" class="form-control flatpickr-input" ref="datePicker3" v-model="formAddReservation.releaseDate" />
                       <i class="fa-solid fa-calendar-days icon-date"></i>
                     </div>
                     <div class="col-lg-5 col-12 col-md-6 px-0 mt">
@@ -259,14 +251,14 @@
                   <select class="form-select" v-model="formAddReservation.remindGuestType">
                     <option disabled value="">Select Remind Guest Type</option>
                     <option v-for="(remindGuestType, index) in getRemindGuestType" :key="index" :value="index">
-                      {{ remindGuestType}}
+                      {{ remindGuestType }}
                     </option>
                   </select>
                 </div>
               </div>
             </div>
 
-            </div>
+          </div>
 
           <!--  ! Hold Release Date & Time -->
           <hr class="my-4" />
@@ -308,7 +300,7 @@
               <span class="error-message" v-if="validationMessages.name">{{ validationMessages.name }}</span>
 
 
-              <SidebarAddGuest :is-sidebar-open="isSidebarOpen" @close-sidebar="toggleSidebar" />
+              <SidebarAddGuest :is-sidebar-open="isSidebarOpen" @close-sidebar="toggleSidebar" @guest-added="handleGuestAdded" />
             </div>
             <div class="offset-md-7">
             </div>
@@ -782,7 +774,7 @@ export default {
         date_at: this.paymentData.date,
         note: this.paymentData.comment,
         payment_mode: this.paymentData.paymentMode,
-        insurance : this.paymentData.insurance,
+        insurance: this.paymentData.insurance,
         insurance_by: this.paymentData.insurance_by,
       };
 
@@ -842,7 +834,8 @@ export default {
         await this.handleUnitTypeChange(0, unitTypeId)
 
         // After units are loaded, set the unit ID
-        this.$nextTick(() => {
+        this.$nextTick(() =>
+        {
           // Convert unitId to number if needed (since select values are often strings)
           const numericUnitId = Number(unitId)
           this.formAddReservation.units[0].unitId = numericUnitId
@@ -888,21 +881,22 @@ export default {
       }
     },
 
-    async handleSearch() {
-  this.currentPage = 1;
-  this.searchQuery = this.formAddReservation.guestInformation.name;
+    async handleSearch ()
+    {
+      this.currentPage = 1;
+      this.searchQuery = this.formAddReservation.guestInformation.name;
 
-  // Filter names locally based on searchQuery
-  if (this.searchQuery) {
-    this.filteredNames = this.filteredNames.filter(name =>
-      name.name.toLowerCase().includes(this.searchQuery.toLowerCase())
-    );
-    this.showDropdown = true;
-  } else {
-    // If no search query, show all names
-    await this.fetchNames();
-  }
-},
+      // Filter names locally based on searchQuery
+      if (this.searchQuery) {
+        this.filteredNames = this.filteredNames.filter(name =>
+          name.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+        );
+        this.showDropdown = true;
+      } else {
+        // If no search query, show all names
+        await this.fetchNames();
+      }
+    },
 
 
     async fetchNames ()
@@ -983,7 +977,8 @@ export default {
       }, 200)
     },
 
-    initializeFromStore() {
+    initializeFromStore ()
+    {
       // Initialize form data from Vuex store
       if (this.selectedDates.length > 0) {
         const [firstDate] = this.parsedDates;
@@ -1001,6 +996,48 @@ export default {
         this.spliceSelectedResourceName();
       }
     },
+
+    // Handle new guest added
+    handleGuestAdded (newGuest)
+    {
+      // Add the new guest to the beginning of filteredNames
+      this.filteredNames = [newGuest, ...this.filteredNames];
+
+      // If you have a search input, update filtered results
+      if (this.searchQuery) {
+        this.filterNames(this.searchQuery);
+      }
+    },
+
+    // If you have a search/filter function
+    filterNames (query)
+    {
+      if (!query) {
+        return this.filteredNames;
+      }
+
+      return this.filteredNames.filter(guest =>
+        guest.name.toLowerCase().includes(query.toLowerCase()) ||
+        guest.phone.includes(query)
+      );
+    },
+
+    // Method to refresh all guest data if needed
+    async refreshGuestList ()
+    {
+      this.isLoading = true;
+      try {
+        const response = await getUsers(); // Your API call to get users
+        this.filteredNames = response.data.data;
+      } catch (error) {
+        console.error('Error fetching guest list:', error);
+        if (this.$toast) {
+          this.$toast.error('Failed to refresh guest list');
+        }
+      } finally {
+        this.isLoading = false;
+      }
+    }
   },
 
   async mounted ()
@@ -1195,13 +1232,15 @@ export default {
       deep: true
     },
     'formAddReservation.checkInDate': {
-      handler(newValue) {
+      handler (newValue)
+      {
         this.formAddReservation.releaseDate = newValue;
       },
       immediate: true
     },
     'formAddReservation.checkInTime': {
-      handler(newValue) {
+      handler (newValue)
+      {
         this.formAddReservation.releaseTime = newValue;
       },
       immediate: true
@@ -1228,7 +1267,8 @@ export default {
   },
   middleware: 'restrict-access', // Apply the middleware
 
-  async created() {
+  async created ()
+  {
     // Initialize store data from localStorage
     await this.$store.dispatch('initializeStore');
   },
@@ -1236,6 +1276,4 @@ export default {
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

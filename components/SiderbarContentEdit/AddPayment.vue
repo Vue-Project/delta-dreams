@@ -164,7 +164,8 @@ export default {
 
         const response = await postAddPayment(formData);
         showSuccessAlert("Payment added successfully!");
-        // location.reload();
+        this.$emit('payment-added');
+        this.$emit('close-offcanvas');
       } catch (error) {
         handleSubmissionError(error, "Failed to add payment");
       }

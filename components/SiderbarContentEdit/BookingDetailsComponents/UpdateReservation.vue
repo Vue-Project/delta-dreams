@@ -139,8 +139,7 @@
                     <tbody>
                       <tr v-for="(item, index) in formAddReservation.units" :key="index" class="mb-2 selectStyle">
                         <td data-label="Room Type">
-                          <select class="form-select" id="unitsTypes" v-model="item.roomType"
-                            @change="() => handleUnitTypeChange(index, item.roomType)">
+                          <select class="form-select" id="unitsTypes" v-model="item.roomType" @change="() => handleUnitTypeChange(index, item.roomType)">
                             <option disabled value="">Select</option>
                             <option v-for="unitType in unitsTypes" :key="unitType.id" :value="unitType.id">
                               {{ unitType.name }}
@@ -723,20 +722,24 @@ export default {
 
 
       try {
-
         const response = await PutUpdateReservation(this.reservationId, bookingData);
+
+        // Show success message without redirect
         await showSuccessAlert(
-          "Reservation submitted successfully!", // Custom message
-          this.$router,
-          'index' // Route name
+          "Reservation submitted successfully!"
         );
+
+        // Emit event to parent component
+        this.$emit('reservation-updated');
+
       } catch (error) {
         handleSubmissionError(
           error,
-          "There was an issue with your reservation." // Custom default error
+          "There was an issue with your reservation."
         );
       }
-    }, navigateToEditReservation (id)
+    },
+    navigateToEditReservation (id)
     {
       this.$router.push(`/edit-reservation/${id}`);
     },
@@ -1192,5 +1195,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

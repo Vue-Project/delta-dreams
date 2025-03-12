@@ -8,8 +8,8 @@
           <select class="form-select" id="updateDetailsRateType" v-model="formUpdateReservationItems.rateType">
             <option disabled selected> select</option>
             <option v-for="(type, index) in getRateTypes" :key="index" :value="index">
-                              {{ type }}
-                            </option>
+              {{ type }}
+            </option>
           </select>
         </div>
       </div>
@@ -57,7 +57,8 @@ export default {
       required: true,
     },
   },
-  data() {
+  data ()
+  {
     return {
       // Form Data
       formUpdateReservationItems: {
@@ -73,7 +74,8 @@ export default {
     // Watch for changes in reservationData.items and update the form data
     "reservationData.items": {
       immediate: true,
-      handler(newItems) {
+      handler (newItems)
+      {
         if (newItems && newItems.length > 0) {
           const item = newItems[0]; // Assuming the first item is the one to edit
           this.formUpdateReservationItems = {
@@ -88,7 +90,8 @@ export default {
     },
   },
   methods: {
-    async updatingReservationItems() {
+    async updatingReservationItems ()
+    {
       try {
         const updateReservationItems = {
           id: this.reservationData.items[0].id,
@@ -101,18 +104,22 @@ export default {
         };
 
         const response = await PostReservationItems(this.reservationId, updateReservationItems);
+
+        // Show success message without redirect
         await showSuccessAlert(
-          "Reservation Items updated successfully.", // Custom message
-          this.$router,
-          'index' // Route name
+          "Reservation Items updated successfully."
         );
 
+        // Emit event to parent component
+        this.$emit('update-success');
 
-        this.hideOffcanvas();
+        // Close the offcanvas
+        this.$emit('close-offcanvas');
+
       } catch (error) {
         handleSubmissionError(
           error,
-          "There was an issue with your reservation." // Custom default error
+          "There was an issue with your reservation."
         );
       }
     },

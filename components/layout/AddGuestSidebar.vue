@@ -42,26 +42,26 @@
                   <div class="col-md-6">
                     <div class="mb-lg-3">
                       <label for="formGustInformInternationalNumber" class="col-form-label internationalNumber">International Number</label>
-                    <input class="form-control rounded-2" type="text" value="International Number" id="formGustInformInternationalNumber" aria-label="input tel to Gust International Number" v-model="formGuest.internationalNumber" />
-                  </div>
-
+                      <input class="form-control rounded-2" type="text" value="International Number" id="formGustInformInternationalNumber" aria-label="input tel to Gust International Number" v-model="formGuest.internationalNumber" />
                     </div>
+
                   </div>
                 </div>
-                <div class="row">
-                  <div class="col-lg-6 col-md-6 col-12">
-                    <label for="formGustIdentityGender" class="col-form-label">Gender</label>
-                    <select class="form-select" v-model="formGuest.gender" ref="gender" :class="{ 'input-error': validationMessages.gender }">
-                      <option value="" disabled selected>Select Gender</option>
-                      <option v-for="(gender, index) in getGenderTypes" :key="index" :value="index">
-                        {{ gender }}
-                      </option>
-                    </select>
-                    <span class="error-message" v-if="validationMessages.gender">{{ validationMessages.gender }}</span>
-                  </div>
-                  <div class="col-lg-6 col-md-6 col-12">
-                    <label for="formGustInfoMobile" class="col-form-label">Mobile</label>
-                    <input class="form-control rounded-2" type="text" value="Mobile" id="formGustInfoMobile" aria-label="input tel to Gust Mobile" v-model="formGuest.mobile" />
+              </div>
+              <div class="row">
+                <div class="col-lg-6 col-md-6 col-12">
+                  <label for="formGustIdentityGender" class="col-form-label">Gender</label>
+                  <select class="form-select" v-model="formGuest.gender" ref="gender" :class="{ 'input-error': validationMessages.gender }">
+                    <option value="" disabled selected>Select Gender</option>
+                    <option v-for="(gender, index) in getGenderTypes" :key="index" :value="index">
+                      {{ gender }}
+                    </option>
+                  </select>
+                  <span class="error-message" v-if="validationMessages.gender">{{ validationMessages.gender }}</span>
+                </div>
+                <div class="col-lg-6 col-md-6 col-12">
+                  <label for="formGustInfoMobile" class="col-form-label">Mobile</label>
+                  <input class="form-control rounded-2" type="text" value="Mobile" id="formGustInfoMobile" aria-label="input tel to Gust Mobile" v-model="formGuest.mobile" />
 
                 </div>
 
@@ -431,8 +431,13 @@ export default {
 
 
         await showSuccessAlert("Guest added successfully!");
+
+        // Emit the new guest data to parent
+        this.$emit("guest-added", response.data.data);
+
+        // Reset form and close sidebar
         this.resetForm();
-        this.$emit("guest-added", response.data);
+        this.$emit('close-sidebar');
 
       } catch (error) {
         handleSubmissionError(error, "Please fill in all required fields");
@@ -464,6 +469,4 @@ export default {
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
