@@ -942,6 +942,7 @@ export default {
     {
       try {
         // console.log('Selected name:', name);
+        this.selectedNameId = name.id;  // Add this line
 
         const response = await getGuestDetails(name.id);
 
