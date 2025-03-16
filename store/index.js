@@ -162,20 +162,7 @@ export const actions = {
       }
     }
   },
-  nuxtServerInit ({ commit }, { app, route })
-  {
-    // Get parameters from URL or cookies
-    const urlCode = route.query.code
-    const urlType = route.query.type
-    const cookieCode = app.$cookies.get('code')
-    const cookieType = app.$cookies.get('type')
 
-    // Use URL parameters if available, otherwise use cookies
-    commit('setParams', {
-      code: urlCode || cookieCode,
-      type: urlType || cookieType
-    })
-  }
 };
 
 export const plugins = [

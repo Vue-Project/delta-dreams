@@ -36,11 +36,7 @@ export default {
       },
     ],
   },
-  router: {
-    base: '/', // If deploying to a subdirectory (e.g., /my-app/), set this to '/my-app/'
-    mode: 'history', // Remove the hash (#) from URLs
-    middleware: ['permissionQuery']
-  },
+
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
@@ -97,7 +93,6 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
-    'cookie-universal-nuxt'
   ],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
@@ -131,18 +126,11 @@ export default {
   // router: {
   //   middleware: 'auth'
   // },
-  router: {
-    middleware: 'permissionQuery', // Apply the middleware to all routes
-  },
+  // router: {
+  //   middleware: 'permissionQuery', // Apply the middleware to all routes
+  // },
 
-  publicRuntimeConfig: {
-    domain: process.env.DOMAIN || 'swevey.com'
-  },
 
-  // generate: {
-  //   fallback: true, // Ensures SPA fallback
-  //   // subFolders: false,
-  //   exclude: [/admin/]
 
 
   // },
