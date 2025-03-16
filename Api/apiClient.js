@@ -2,18 +2,42 @@ import axios from 'axios';
 // Import your store
 import { state } from '../store/index'; // Adjust the path to your store
 
+// Function to check and save URL parameters
+function checkAndSaveUrlParams() {
+  // Check if we're in a browser environment
+  if (typeof window !== 'undefined') {
+    const urlParams = new URLSearchParams(window.location.search);
+    const codeFromUrl = urlParams.get('code');
+    const typeFromUrl = urlParams.get('type');
+
+    // If URL parameters exist, save them to both store and localStorage
+    if (codeFromUrl) {
+      state.code = codeFromUrl;
+      localStorage.setItem('user_code', codeFromUrl);
+    }
+    if (typeFromUrl) {
+      state.type = typeFromUrl;
+      localStorage.setItem('user_type', typeFromUrl);
+    }
+  }
+}
 
 // Function to get dynamic code and type
 function getDynamicParams() {
-  // Check URL for code and type
-  const urlParams = new URLSearchParams(window.location.search);
-  const codeFromUrl = urlParams.get('code');
-  const typeFromUrl = urlParams.get('type');
+  // First check URL/store values, then fallback to localStorage, then default values
+  const code = state.code || localStorage.getItem('user_code') || 'defaultCode';
+  const type = state.type || localStorage.getItem('user_type') || 'defaultType';
 
-  // Retrieve code and type from the store if not in URL
-  const code = codeFromUrl || state.code || 'defaultCode'; // Use a default if not set
-  const type = typeFromUrl || state.type || 'defaultType'; // Use a default if not set
+  // Keep store in sync with current values
+  state.code = code;
+  state.type = type;
+
   return { code, type };
+}
+
+// Only run the check if we're in a browser environment
+if (typeof window !== 'undefined') {
+  checkAndSaveUrlParams();
 }
 
 const apiClient = axios.create({
