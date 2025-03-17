@@ -11,8 +11,8 @@ export const state = () => ({
   genderTypes: [],
   projects: [],
   remindGuestType: [],
-  code: null,
-  type: null,
+  code: '',
+  type: '',
   lastUpdated: null
 });
 
@@ -65,15 +65,9 @@ export const mutations = {
   {
     state.remindGuestType = remindGuestType;
   },
-  // setParams(state, { code, type, lastUpdated }) {
-  //   if (code) state.code = code;
-  //   if (type) state.type = type;
-  //   if (lastUpdated) state.lastUpdated = lastUpdated;
-  // },
-  setParams (state, { code, type })
-  {
-    if (code) state.code = code
-    if (type) state.type = type
+  setParams(state, { code, type }) {
+    if (code !== null && code !== undefined) state.code = code;
+    if (type !== null && type !== undefined) state.type = type;
   },
   resetStore (state)
   {
@@ -90,6 +84,8 @@ export const getters = {
   getGenderTypes: state => state.genderTypes,
   getProjects: state => state.projects,
   getRemindGuestType: state => state.remindGuestType,
+  getCode: state => state.code,
+  getType: state => state.type
 };
 
 export const actions = {
@@ -158,6 +154,12 @@ export const actions = {
         }
         if (parsedData.remindGuestType) {
           commit('setRemindGuestType', parsedData.remindGuestType);
+        }
+        if (parsedData.code || parsedData.type) {
+          commit('setParams', {
+            code: parsedData.code || '',
+            type: parsedData.type || ''
+          });
         }
       }
     }
