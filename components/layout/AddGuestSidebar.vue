@@ -18,7 +18,9 @@
                       </label>
 
                       <input type="text" class="form-control rounded-2" id="formGustInfoName" placeholder="Name Guest" aria-label="input text to Gust Name" v-model="formGuest.name" ref="name" :class="{ 'input-error': validationMessages.name }" />
-                      <span class="error-message" v-if="validationMessages.name">{{ validationMessages.name }}</span>
+                      <span class="error-message small" v-if="$v.formGuest.name.$error">
+                    Name is required
+                  </span>
                     </div>
 
                     <div class="mb-lg-3">
@@ -36,7 +38,9 @@
                     <div class="mb-lg-3">
                       <label for="formGustInfoPhone" class="col-form-label">Phone</label>
                       <input class="form-control rounded-2" type="text" value="Phone" id="formGustInfoPhone" aria-label="input tel to Gust Phone" v-model="formGuest.phone" ref="phone" :class="{ 'input-error': validationMessages.phone }" />
-                      <span class="error-message" v-if="validationMessages.phone">{{ validationMessages.phone }}</span>
+                      <span class="error-message small" v-if="$v.formGuest.phone.$error">
+                    Phone is required
+                  </span>
                     </div>
                   </div>
                   <div class="col-md-6">
@@ -57,7 +61,9 @@
                       {{ gender }}
                     </option>
                   </select>
-                  <span class="error-message" v-if="validationMessages.gender">{{ validationMessages.gender }}</span>
+                  <span class="error-message small" v-if="$v.formGuest.gender.$error">
+                    Gender is required
+                  </span>
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                   <label for="formGustInfoMobile" class="col-form-label">Mobile</label>
@@ -117,8 +123,9 @@
                             <div class="mb-lg-3">
                               <label for="formIdentityInfoId" class="col-form-label">ID Number</label>
                               <input class="form-control rounded-2" type="text" id="formIdentityInfoId" placeholder="Enter ID Number" aria-label="Enter ID Number Guest" ref="idNumber" v-model="formGuest.idNumber" :class="{ 'input-error': validationMessages.idNumber }" />
-                              <span class="error-message" v-if="validationMessages.idNumber">{{ validationMessages.idNumber }}</span>
-
+                              <span class="error-message small" v-if="$v.formGuest.idNumber.$error">
+                    ID Number is required
+                  </span>
                             </div>
 
                           </div>
@@ -137,14 +144,18 @@
                                 {{ nationalType }}
                               </option>
                             </select>
-                            <span class="error-message" v-if="validationMessages.idType">{{ validationMessages.idType }}</span>
+                            <span class="error-message small" v-if="$v.formGuest.idType.$error">
+                    ID Type is required
+                  </span>
                           </div>
                           <div class="col-md-6 ps-1">
                             <div class="mb-lg-3">
                               <label for="flatpickr-date-04" class="col-form-label">Expiry Date</label>
                               <input type="text" class="form-control rounded-2" placeholder="YYYY-MM-D " id="flatpickr-date-09" ref="datePicker9" aria-label="input Text to Expiry Date" v-model="formGuest.expiryDate" :class="{ 'input-error': validationMessages.expiryDate }" />
                               <i class="fa-solid fa-calendar-days icon-date top"></i>
-                              <span class="error-message" v-if="validationMessages.expiryDate">{{ validationMessages.expiryDate }}</span>
+                              <span class="error-message small" v-if="$v.formGuest.expiryDate.$error">
+                    Expiry Date is required
+                  </span>
                             </div>
 
                           </div>
@@ -221,8 +232,9 @@ import flatpickrMixin from "../Mixin/flatpickrMixin";
 import DropzoneComponent from "./DropzoneComponent.vue";
 import { addGuest } from "../../Api/userApi";
 import { mapGetters } from 'vuex';
-
 import { showSuccessAlert, handleSubmissionError } from '../../Api/MassageValidation/alertUtilities';
+import { validationMixin } from 'vuelidate'
+import { required, email } from 'vuelidate/lib/validators'
 
 
 export default {
@@ -287,6 +299,18 @@ export default {
       uploadedFileData: null,
     };
 
+  },
+  validations: {
+    formGuest: {
+      name: { required },
+      gender: { required },
+      phone: { required },
+      idNumber: { required },
+      idType: { required },
+      expiryDate: { required },
+
+
+    }
   },
 
   components: {
@@ -357,30 +381,10 @@ export default {
     async submitFormGuest ()
     {
       try {
-        this.resetValidationMessages();
-        this.isSubmitting = true;
-        // Validate required fields
-        const requiredFields = ["name", "gender", "phone", "idNumber", "idType", "expiryDate"];
-        let hasError = false;
-
-        requiredFields.forEach((field) =>
-        {
-          if (!this.formGuest[field]) {
-            hasError = true;
-            this.validationMessages[field] = `${field.charAt(0).toLowerCase() + field.slice(1)} is required`;
-            console.log(this.validationMessages[field]);
-
-
-            const element = this.$refs[field];
-            if (element && element.classList) {
-              element.classList.add("input-error");
-            }
-          }
-        });
-
-        if (hasError) {
-          throw new Error("Please fill in all required fields");
-        }
+        this.$v.$touch()
+      if (this.$v.$invalid) {
+        return
+      }
 
         // Create FormData instance
         const formData = new FormData();
@@ -457,7 +461,7 @@ export default {
       'getGenderTypes',
     ]),
   },
-  mixins: [flatpickrMixin],
+  mixins: [flatpickrMixin, validationMixin],
   watch: {
     isSidebarOpen (newVal)
     {
