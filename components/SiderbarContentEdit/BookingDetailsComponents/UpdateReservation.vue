@@ -25,14 +25,14 @@
 
                 <div class="col-md-3 col-lg-3 col-12 px-0">
                   <label for="flatpickr-date-01" class="form-label">Check-in</label>
-                  <input type="text" class="form-control rounded-2 flatpickr-input" placeholder="DD/MM/YYYY" id="flatpickr-date-01" ref="datePicker1" v-model="formAddReservation.checkInDate" aria-label="input Text to Check-in Date" />
+                  <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" id="flatpickr-date-01" ref="datePicker1" v-model="formAddReservation.checkInDate" aria-label="input Text to Check-in Date" />
                   <i class="fa-solid fa-calendar-days icon-date"></i>
                 </div>
 
                 <!-- Check-in Time Picker-->
                 <div class="col-md-4 col-lg-3 col-12 px-0">
                   <div class="input-group mt-4">
-                    <input type="text" class="form-control rounded-2 flatpickr-input" placeholder="HH:MM" id="flatpickr-time-01" ref="timePicker1" v-model="formAddReservation.checkInTime" aria-label="input Text to Check-in Time" />
+                    <input type="text" class="form-control flatpickr-input" placeholder="HH:MM" id="flatpickr-time-01" ref="timePicker1" v-model="formAddReservation.checkInTime" aria-label="input Text to Check-in Time" />
                     <i class="fa-regular fa-clock icon-time"></i>
                     <span class="input-group-text total-nights bg-primary" id="basic-addon13">{{ totalNights }} Nights</span>
                   </div>
@@ -41,12 +41,12 @@
                 <!-- CHECK-OUT DATE/TIME -->
                 <div class="col-md-3 col-lg-3 col-12 px-0">
                   <label for="flatpickr-date-02" class="form-label ms-3">Check-out</label>
-                  <input type="text" class="form-control rounded-2 flatpickr-input" placeholder="DD/MM/YYYY" id="flatpickr-date-02" ref="datePicker2" v-model="formAddReservation.checkOutDate" aria-label="input Text to Check-out Date" />
+                  <input type="text" class="form-control  flatpickr-input" placeholder="DD/MM/YYYY" id="flatpickr-date-02" ref="datePicker2" v-model="formAddReservation.checkOutDate" aria-label="input Text to Check-out Date" />
                   <i class="fa-solid fa-calendar-days icon-date"></i>
                 </div>
 
                 <div class="col-md-2 col-lg-3 col-12 mt-4 px-0">
-                  <input type="text" class="form-control rounded-2 flatpickr-input" placeholder="HH:MM" id="flatpickr-time-02" ref="timePicker2" v-model="formAddReservation.checkOutTime" aria-label="input Text to Check-out Time" />
+                  <input type="text" class="form-control  flatpickr-input" placeholder="HH:MM" id="flatpickr-time-02" ref="timePicker2" v-model="formAddReservation.checkOutTime" aria-label="input Text to Check-out Time" />
                   <i class="fa-regular fa-clock icon-time right"></i>
                 </div>
               </div>
@@ -62,9 +62,9 @@
                 </div> -->
                 <!-- ROOM & RESERVATION TYPE -->
 
-                <div class="col-md-3 col-12 px-0">
-                  <label for="roomCount" class="form-label rounded-2">Room(s)</label>
-                  <input class="form-control" type="number" id="roomCount" v-model="formAddReservation.numberRooms" min="1" max="10" @input="updateRepeater" disabled />
+                <div class="col-md-3 col-12 px-0 ps-lg-2">
+                  <label for="roomCount" class="form-label">Room(s)</label>
+                  <input class="form-control " type="number" id="roomCount" v-model="formAddReservation.numberRooms" min="1" max="10" @input="updateRepeater" disabled />
                 </div>
 
                 <!-- Room details repeater -->
@@ -245,7 +245,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-12 px-0 px-md-3">
                   <label for="remindGuestType" class="form-label">Remind Guest Type</label>
-                  <select class="form-select rounded-2" v-model="formAddReservation.remindGuestType">
+                  <select class="form-select " v-model="formAddReservation.remindGuestType">
                     <option disabled value="">Select Remind Guest Type</option>
                     <option v-for="(remindGuestType, index) in getRemindGuestType" :key="index" :value="index">
                       {{ remindGuestType }}
@@ -271,13 +271,32 @@
                   </option>
                 </select>
                 <div class="position-relative flex-grow-1">
-                  <input type="text" class="form-control rounded-2 w-100" v-model="formAddReservation.guestInformation.name" @input="handleSearch" @focus="showDropdown = true" @blur="handleBlur" ref="name" :class="{ 'input-error': validationMessages.name }" />
+                  <input
+                    type="text"
+                    class="form-control w-100 guestNameInput"
+                    v-model="formAddReservation.guestInformation.name"
+                    @input="handleSearch"
+                    @focus="showDropdown = true"
+                    @blur="handleBlur"
+                    ref="name"
+                    :class="{ 'input-error': validationMessages.name }"
+                  />
 
                   <!-- Suggestions Dropdown -->
-                  <div v-if="showDropdown" class="position-absolute w-100 mt-1 bg-white border rounded shadow z-5 cursor-pointer" style="max-height: 200px; overflow-y: auto" @scroll.passive="handleScroll">
+                  <div
+                    v-if="showDropdown"
+                    class="position-absolute w-100 mt-1 bg-white border rounded shadow z-5 cursor-pointer"
+                    style="max-height: 200px; overflow-y: auto; z-index: 1000;"
+                    @scroll.passive="handleScroll"
+                  >
                     <div v-if="isLoading" class="p-2 text-muted">Loading...</div>
                     <div v-else>
-                      <div v-for="name in filteredNames" :key="name.id" class="p-2 cursor-pointer hover:bg-light" @mousedown.prevent="selectName(name)">
+                      <div
+                        v-for="name in filteredNames"
+                        :key="name.id"
+                        class="p-2 cursor-pointer hover:bg-light"
+                        @mousedown="selectName(name)"
+                      >
                         {{ name.name }}
                       </div>
                       <div v-if="!hasMore && filteredNames.length === 0" class="p-2 text-muted">
@@ -289,7 +308,6 @@
                     </div>
                   </div>
                 </div>
-
               </div>
               <span class="error-message" v-if="validationMessages.name">{{ validationMessages.name }}</span>
 
@@ -336,6 +354,13 @@
             <div class="px-0 row m-auto">
               <div class="col-md-3 col-12 px-0 pe-md-3">
 
+                <!-- <label for="countryGuest" class="col-form-label">Country</label>
+                <select class="form-select" v-model="formAddReservation.guestInformation.country" :class="{ 'input-error': validationMessages.country }">
+                  <option disabled value="">Select Country</option>
+                  <option v-for="(country, index) in getCountries" :key="index" :value="index">
+                    {{ country }}
+                  </option>
+                </select> -->
                 <label for="countryGuest" class="col-form-label">Country</label>
                 <select class="form-select" v-model="formAddReservation.guestInformation.country" :class="{ 'input-error': validationMessages.country }">
                   <option disabled value="">Select Country</option>
@@ -427,7 +452,8 @@ import
   PutUpdateReservation,
   getUnits,
   getUnitTypes,
-  getAccounts
+  getAccounts,
+  getGuestDetails
 } from "../../../Api/addResvertionApi";
 import flatpickrMixin from "../../Mixin/flatpickrMixin";
 import { dateMixin } from '../../Mixin/DateMixin';
@@ -709,6 +735,8 @@ export default {
         state: this.formAddReservation.guestInformation.state,
         city: this.formAddReservation.guestInformation.city,
         zip_code: this.formAddReservation.guestInformation.zip,
+        insurance: this.formAddReservation.BillingSummary.insurance,
+        insurance_by: this.formAddReservation.BillingSummary.insurance_by,
         // email_booking: this.showSelect,
         // email_booking_option: this.formAddReservation.otherInformation.emailBookingOption,
         // send_email_checkout: this.showInput,
@@ -723,6 +751,7 @@ export default {
         // payment_method_city: this.formAddReservation.BillingSummary.CityLedger,
         // selected_payment_method: this.formAddReservation.BillingSummary.payMentUser,
       }
+      console.log(bookingData);
 
 
       try {
@@ -835,18 +864,60 @@ export default {
     // ======================
     // Methods - Guest Information
     // ======================
-    async handleSearch ()
-    {
-      this.currentPage = 1
-      this.searchQuery = this.formAddReservation.guestInformation.name
-      await this.fetchNames()
+    async handleSearch() {
+      this.currentPage = 1;
+      this.searchQuery = this.formAddReservation.guestInformation.name;
+      this.showDropdown = true; // Make sure dropdown is shown when searching
+
+      if (this.searchQuery) {
+        try {
+          await this.fetchNames();
+        } catch (error) {
+          console.error('Error searching names:', error);
+        }
+      }
     },
 
-    async fetchNames ()
-    {
-      if (this.isLoading) return
+    handleBlur() {
+      // Delay hiding the dropdown to allow click events to register
+      setTimeout(() => {
+        this.showDropdown = false;
+      }, 200);
+    },
 
-      this.isLoading = true
+    async selectName(name) {
+      try {
+        this.selectedNameId = name.id;
+        // Immediately update the name in the input
+        this.formAddReservation.guestInformation.name = name.name;
+
+        const response = await getGuestDetails(name.id);
+        const guestDetails = response.data.data;
+
+        if (guestDetails) {
+          this.formAddReservation.guestInformation = {
+            name: name.name, // Keep the name we already set
+            email: guestDetails.email || '',
+            mobile: guestDetails.mobile || guestDetails.phone || '', // Handle both mobile and phone fields
+            address: guestDetails.address || '',
+            country: guestDetails.country || '',
+            state: guestDetails.state || '',
+            city: guestDetails.city || '',
+            zip: guestDetails.zip_code || '',
+          };
+        }
+
+        // Hide dropdown after selection
+        this.showDropdown = false;
+      } catch (error) {
+        console.error('Error fetching guest details:', error);
+      }
+    },
+
+    async fetchNames() {
+      if (this.isLoading) return;
+
+      this.isLoading = true;
       try {
         const response = await getGuestsInfo({
           params: {
@@ -854,20 +925,21 @@ export default {
             page: this.currentPage,
             perPage: 10
           }
-        })
+        });
 
         if (this.currentPage === 1) {
-          this.filteredNames = response.data.data
+          this.filteredNames = response.data.data;
         } else {
-          this.filteredNames = [...this.filteredNames, ...response.data.data]
+          this.filteredNames = [...this.filteredNames, ...response.data.data];
         }
 
-        this.totalPages = response.data.last_page
-        this.hasMore = this.currentPage < this.totalPages
+        this.totalPages = response.data.last_page;
+        this.hasMore = this.currentPage < this.totalPages;
       } catch (error) {
-        console.error('Error fetching names:', error)
+        console.error('Error fetching names:', error);
+        this.filteredNames = [];
       } finally {
-        this.isLoading = false
+        this.isLoading = false;
       }
     },
 
@@ -881,21 +953,66 @@ export default {
       }
     },
 
-    selectName (name)
+    initializeFromStore ()
     {
-      this.formAddReservation.guestInformation.name = name.name
-      this.showDropdown = false
-      this.selectedNameId = name.id;
+      // Initialize form data from Vuex store
+      if (this.selectedDates.length > 0) {
+        const [firstDate] = this.parsedDates;
+        const [lastDate] = [...this.parsedDates].reverse();
 
-      // Optionally fetch other guest details if needed
+        if (firstDate && lastDate) {
+          this.formAddReservation.checkInDate = this.formatDate(firstDate);
+          this.formAddReservation.checkOutDate = this.formatDate(lastDate);
+          this.formAddReservation.checkInTime = this.formatTime(firstDate);
+          this.formAddReservation.checkOutTime = this.formatTime(lastDate);
+        }
+      }
+
+      if (this.selectedResourceName) {
+        this.spliceSelectedResourceName();
+      }
     },
 
-    handleBlur ()
+    // Handle new guest added
+    handleGuestAdded (newGuest)
     {
-      setTimeout(() =>
-      {
-        this.showDropdown = false
-      }, 200)
+      // Add the new guest to the beginning of filteredNames
+      this.filteredNames = [newGuest, ...this.filteredNames];
+
+      // If you have a search input, update filtered results
+      if (this.searchQuery) {
+        this.filterNames(this.searchQuery);
+      }
+    },
+
+    // If you have a search/filter function
+    filterNames (query)
+    {
+      if (!query) {
+        return this.filteredNames;
+      }
+
+      return this.filteredNames.filter(guest =>
+        guest.name.toLowerCase().includes(query.toLowerCase()) ||
+        guest.phone.includes(query)
+      );
+    },
+
+    // Method to refresh all guest data if needed
+    async refreshGuestList ()
+    {
+      this.isLoading = true;
+      try {
+        const response = await getUsers(); // Your API call to get users
+        this.filteredNames = response.data.data;
+      } catch (error) {
+        console.error('Error fetching guest list:', error);
+        if (this.$toast) {
+          this.$toast.error('Failed to refresh guest list');
+        }
+      } finally {
+        this.isLoading = false;
+      }
     },
     async cancelReservation (index)
     {
