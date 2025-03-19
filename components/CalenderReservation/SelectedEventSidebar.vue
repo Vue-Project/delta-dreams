@@ -38,7 +38,7 @@
               <label class="form-label fs-4 StatusSideBarTitle" for="status-reservation">Status</label>
             </div>
             <div class="col-8 pt-1">
-              <select class="  form-select badge w-100 bg-white text-dark StatusSideBarSelect" :value="selectedEvent.status" @change="handleStatusChange">
+              <select class="  form-select badge h-px-40 lh-lg text-dark StatusSideBarSelect" :value="selectedEvent.status" @change="handleStatusChange">
                 <option v-for="(label, value) in statusOptions" :key="value" :value="value">
                   {{ label }}
                 </option>
@@ -368,7 +368,7 @@ export default {
       // Show SweetAlert2 confirmation dialog
       const result = await showConfirmationAlert(
         'Are you sure?',
-        "You won't be able to restore it again",
+        'Are you sure you want to cancel this reservation? ',
         'Yes, cancel it!',
 
       );
