@@ -13,10 +13,10 @@
             <div>{{ lastSelectedDate }}</div>
           </div>
         </div>
-        <div class="row">
+        <div class="row ">
           <hr class="my-2 w-75 mx-auto" />
-          <button class="btn btn-outline-primary waves-effect" @click="goToAddReservation">Add Reservation</button>
-          <button type="button" class="btn btn-outline-primary waves-effect mt-2" @click="toggleSidebar">
+          <button class="btn btn-outline-primary waves-effect w-75" @click="goToAddReservation">Add Reservation</button>
+          <button type="button" class="btn btn-outline-primary waves-effect mt-2 w-75" @click="toggleSidebar">
             <span>Maintenance Block</span>
           </button>
         </div>
@@ -67,32 +67,5 @@ export default {
 </script>
 
 <style scoped>
-.popover{
-  border-radius:5px ;
-}
-.popoverContent button {
-  font-size: 14px;
-  cursor: pointer;
-  transition: color 0.3s ease, transform 0.3s ease;
-  padding: 4px 10px;
-  border-radius: 5px;
-  transition: all 0.3s ease;
-  font-weight: 500;
-  max-width: 230px;
-  margin:auto;
-}
-
-.popoverContent button:hover {
-  transform: scale(1.05);
-
-
-}
-.popover {
-  transition: all 0.3s ease-in-out;
-  max-width: 300px;
-  border: 1px solid #e0e0e0;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
 
 </style>
