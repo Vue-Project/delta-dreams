@@ -46,7 +46,7 @@
             <label for="formGustIdentityGender" class="col-form-label">Gender</label>
             <select class="form-select" v-model="formGuest.gender" ref="gender" :class="{ 'input-error': validationMessages.gender }">
               <option value="" disabled selected>Select Gender</option>
-              <option v-for="(gender, index) in getGenderTypes" :key="index" :value="gender">
+              <option v-for="(gender, index) in getGenderTypes" :key="index" :value="index">
                 {{ gender }}
               </option>
             </select>
@@ -430,7 +430,7 @@ export default {
         email: client.email || '',
         phone: client.phone || '',
         mobile: client.mobile || '',
-        gender: client.gender_name || '',
+        gender: client.gender || '',
         address: client.address || '',
         country: client.country || '',
         state: client.state || '',
