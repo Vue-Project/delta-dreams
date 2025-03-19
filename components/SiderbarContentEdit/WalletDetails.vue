@@ -136,7 +136,8 @@ export default {
     {
       const result = await showConfirmationAlert(
         'Are you sure?',
-        "You won't be able to restore it again",
+        "cancel this payment reservation",
+        'Yes, cancel it!'
       );
 
       if (result.isConfirmed) {

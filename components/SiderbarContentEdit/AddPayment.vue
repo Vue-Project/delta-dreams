@@ -1,19 +1,18 @@
 <template>
 
   <form class="payment-form" @submit.prevent="addPaymentReservation">
+
     <div class="row">
 
-      <div class="col-12 mb-3">
+      <div class="col-12 mb-2">
         <label for="flatpickr-date-01" class="form-label">Date</label>
         <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" id="flatpickr-date-01" ref="datePicker1" aria-label="input Text to Check-in Date" v-model="formAddPayment.date" />
         <i class="fa-solid fa-calendar-days icon-date right-24"></i>
       </div>
-      <div class=" col-12 mb-3">
+      <div class=" col-12 mb-2">
         <label class="form-label" for="payment_Image">Payment Image</label>
         <input type="file" class="form-control" id="payment_Image" ref="paymentImage" required="">
       </div>
-    </div>
-    <div class="row g-2">
       <div class="col-12 mb-2">
         <div class="input-group">
           <label class="input-group-text" for="payment_type">Type</label>
@@ -38,13 +37,13 @@
           </select>
         </div>
       </div>
-      <div class="col-12">
+      <div class="col-12 mb-2">
         <div class="input-group">
           <span class="input-group-text">EGP</span>
           <input type="text" class="form-control" placeholder="Amount" aria-label="Amount (to the nearest dollar)" v-model="formAddPayment.amount">
         </div>
       </div>
-      <div class="col-12 mt-2">
+      <div class="col-12 mb-2">
         <div class="input-group">
           <label class="input-group-text" for="payment_accounts">Accounts</label>
 
@@ -56,7 +55,7 @@
           </select>
         </div>
       </div>
-      <div class="col-12 mb-2 mt-3">
+      <div class="col-12 mb-2 mb-2">
         <div class="input-group">
           <span class="input-group-text">Comment</span>
           <textarea class="form-control" aria-label="With textarea" placeholder="Comment" v-model="formAddPayment.comment"></textarea>
