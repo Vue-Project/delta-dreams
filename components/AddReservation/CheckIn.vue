@@ -18,6 +18,10 @@
                   <label for="flatpickr-date-01" class="form-label">Check-in</label>
                   <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" id="flatpickr-date-01" ref="datePicker1" v-model="formAddReservation.checkInDate" aria-label="input Text to Check-in Date" />
                   <i class="fa-solid fa-calendar-days icon-date"></i>
+                  <span class="error-message small" v-if="$v.formAddReservation.checkInDate.$error">
+                    Check-in date is required
+                  </span>
+
                 </div>
 
 
@@ -28,6 +32,9 @@
                     <i class="fa-regular fa-clock icon-time"></i>
                     <span class="input-group-text total-nights bg-primary waves-effect waves-light" id="basic-addon13">{{ totalNights }} Nights</span>
                   </div>
+                  <span class="error-message small" v-if="$v.formAddReservation.checkInTime.$error">
+                    Check-in time is required
+                  </span>
                 </div>
 
                 <!-- Check-out Date Picker-->
@@ -35,12 +42,19 @@
                   <label for="flatpickr-date-02" class="form-label ms-lg-3">Check-out</label>
                   <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" id="flatpickr-date-02" ref="datePicker2" v-model="formAddReservation.checkOutDate" aria-label="input Text to Check-out Date" />
                   <i class="fa-solid fa-calendar-days icon-date"></i>
+                  <span class="error-message small" v-if="$v.formAddReservation.checkOutDate.$error">
+                    Check-out date is required
+                  </span>
                 </div>
+
 
                 <!-- Check-out Time Picker-->
                 <div class="col-lg-3 col-12 col-md-6 mt-4 px-0">
                   <input type="text" class="form-control flatpickr-input" placeholder="HH:MM" id="flatpickr-time-02" ref="timePicker2" v-model="formAddReservation.checkOutTime" aria-label="input Text to Check-out Time" />
                   <i class="fa-regular fa-clock icon-time right"></i>
+                  <span class="error-message small" v-if="$v.formAddReservation.checkOutTime.$error">
+                    Check-out time is required
+                  </span>
                 </div>
               </div>
 
@@ -60,8 +74,11 @@
                       {{ type }}
                     </option>
                   </select>
-                  <span v-if="validationMessages.reservationType" class="error-message">{{ validationMessages.reservationType }}</span>
 
+
+                  <span class="error-message small" v-if="$v.formAddReservation.reservationType.$error">
+                    Reservation type is required
+                  </span>
                 </div>
               </div>
             </div>
@@ -77,7 +94,9 @@
                       </option>
                     </select>
 
-                    <span v-if="validationMessages.bookingSource" class="error-message">{{ validationMessages.bookingSource }}</span>
+                    <span class="error-message small" v-if="$v.formAddReservation.bookingSource.$error">
+                      Booking source is required
+                    </span>
                   </div>
                   <div class="col-lg-6 col-md-6 buisnessSourceInput">
                     <label for="businessSource" class="form-label">Business Source</label>
@@ -87,8 +106,9 @@
                         {{ source.name }}
                       </option>
                     </select>
-                    <span class="error-message" v-if="validationMessages.businessSource">{{ validationMessages.businessSource }}</span>
-
+                    <span class="error-message small" v-if="$v.formAddReservation.businessSource.$error">
+                      Business source is required
+                    </span>
                   </div>
                 </div>
               </div>
@@ -156,6 +176,9 @@
                               {{ unitType.name }}
                             </option>
                           </select>
+                          <span class="error-message small" v-if="$v.formAddReservation.units.$each[index].roomType.$error">
+                            Room type is required
+                          </span>
                         </td>
                         <td data-label="Rate Type">
                           <select class="form-select" v-model="item.rateType" ref="rateType" :class="{ 'input-error': validationMessages.rateType }">
@@ -164,7 +187,9 @@
                               {{ type }}
                             </option>
                           </select>
-                          <span class="error-message" v-if="validationMessages.rateType">{{ validationMessages.rateType }}</span>
+                          <span class="error-message small" v-if="$v.formAddReservation.units.$each[index].rateType.$error">
+                            Rate type is required
+                          </span>
                         </td>
                         <td data-label="Room">
                           <select class="form-select" v-model="item.unitId" :disabled="!availableUnitsByRoom[index]?.length">
@@ -173,14 +198,21 @@
                               {{ unit.code }}
                             </option>
                           </select>
+                          <span class="error-message small" v-if="$v.formAddReservation.units.$each[index].unitId.$error">
+                            Unit is required
+                          </span>
                         </td>
                         <td data-label="Adult">
                           <input type="number" class="form-control rounded-2" v-model="item.adults" placeholder="1" aria-label="1" min="1" max="10" ref="adults" :class="{ 'input-error': validationMessages.adults }" />
-                          <span class="error-message" v-if="validationMessages.adults">{{ validationMessages.adults }}</span>
+                          <span class="error-message small" v-if="$v.formAddReservation.units.$each[index].adults.$error">
+                            Adults is required
+                          </span>
                         </td>
                         <td data-label="Child">
                           <input type="number" class="form-control rounded-2" v-model="item.children" placeholder="0" aria-label="0" min="0" max="10" ref="children" :class="{ 'input-error': validationMessages.children }" />
-                          <span class="error-message" v-if="validationMessages.children">{{ validationMessages.children }}</span>
+                          <span class="error-message small" v-if="$v.formAddReservation.units.$each[index].children.$error">
+                            Children is required
+                          </span>
                         </td>
                         <td data-label="Rate(EGP)(Tax Inc.)">
                           <div class="row">
@@ -189,7 +221,9 @@
                                 <input @change="(value) => $emit('change', value.target.value)" class="form-control" placeholder="0.00" id="rateAmount" v-model="item.rateAmount" aria-label="number of rateAmount" ref="rateAmount" :class="{ 'input-error': validationMessages.rateAmount }" />
                                 <span class="input-group-text groupStyle">EGP</span>
                               </div>
-                              <span class="error-message" v-if="validationMessages.rateAmount">{{ validationMessages.rateAmount }}</span>
+                              <span class="error-message small" v-if="$v.formAddReservation.units.$each[index].rateAmount.$error">
+                                Rate amount is required
+                              </span>
                             </div>
                             <div class="col-md-2 p-0">
                               <button class="btn btn-label-danger" type="button" v-if="index > 0" @click="removeItem(index)">
@@ -297,7 +331,9 @@
                   <i class="fa-solid fa-user-plus"></i>
                 </button>
               </div>
-              <span class="error-message" v-if="validationMessages.name">{{ validationMessages.name }}</span>
+              <span class="error-message small" v-if="$v.formAddReservation.guestInformation.name.$error">
+                Guest name is required
+              </span>
 
 
               <SidebarAddGuest :is-sidebar-open="isSidebarOpen" @close-sidebar="toggleSidebar" @guest-added="handleGuestAdded" />
@@ -312,7 +348,9 @@
               <div class="mb-lg-3 row px-2 px-md-0 reservationMobile">
                 <label for="mobileGuest" class="col-form-label ps-0">Mobile</label>
                 <input class="form-control rounded-2 mobileInput" type="tel" id="mobileGuest" placeholder="Mobile" v-model="formAddReservation.guestInformation.mobile" ref="mobile" :class="{ 'input-error': validationMessages.mobile }" />
-                <span class="error-message" v-if="validationMessages.mobile">{{ validationMessages.mobile }}</span>
+                <span class="error-message small" v-if="$v.formAddReservation.guestInformation.mobile.$error">
+                  Mobile is required
+                </span>
               </div>
             </div>
             <div class="col-lg-6 mb-lg-3 ps-lg-3 pe-lg-0 px-md-0 AddressReservation">
@@ -399,7 +437,7 @@
             </div>
             <div class="offset-md- col-md-2 col-6 text-end ">
               <button type="submit" class="btn btn-lg btn-primary waves-effect waves-light w-100">
-                Reserver
+                Reserve
               </button>
             </div>
             <!-- <div class="col-6  text-end">
@@ -424,6 +462,9 @@ import { getBookingSources, getBusinessSources, getGuestsInfo, postAddReservatio
 import flatpickrMixin from "../Mixin/flatpickrMixin";
 import SidebarAddGuest from "../layout/AddGuestSidebar.vue";
 import { mapState, mapGetters } from 'vuex';
+import { validationMixin } from 'vuelidate'
+import { required, email } from 'vuelidate/lib/validators'
+
 
 
 export default {
@@ -522,6 +563,34 @@ export default {
       searchQuery: '',
       availableUnitsByRoom: [],
     };
+  },
+  mixins: [validationMixin, flatpickrMixin],
+  validations: {
+    formAddReservation: {
+      checkInDate: { required },
+      checkInTime: { required },
+      checkOutDate: { required },
+      checkOutTime: { required },
+      reservationType: { required },
+      businessSource: { required },
+      bookingSource: { required },
+      units: {
+        $each: {
+          roomType: { required },
+          rateType: { required },
+          unitId: { required },
+          adults: { required },
+          children: { required },
+          rateAmount: { required },
+          unitTypeId: { required }
+        }
+      },
+      guestInformation: {
+        name: { required },
+        email: { email },
+        mobile: { required }
+      }
+    }
   },
 
   methods: {
@@ -688,44 +757,9 @@ export default {
 
     async submitAddReservation ()
     {
-      const requiredFields = [
-        { field: "businessSource", message: "Business Source is required" },
-        { field: "bookingSource", message: "Booking Source is required" },
-        { field: "reservationType", message: "Reservation Type is required" },
-        { field: "name", message: "Guest Name is required" },
-        { field: "mobile", message: "Guest Mobile is required" },
-        { field: "adults", message: "Adults count is required" },
-        { field: "children", message: "Children count is required" },
-        { field: "rateType", message: "Rate Type is required" },
-        { field: "rateAmount", message: "Rate Amount is required" },
-      ];
-
-      // Reset validation messages before checking
-      this.resetValidationMessages();
-
-      let hasError = false;
-
-      // Validate each required field
-      for (const { field, message, path } of requiredFields) {
-        let value;
-
-        // Handle fields related to `units[0]`
-        if (["adults", "children", "rateType", "rateAmount"].includes(field)) {
-          value = this.formAddReservation.units[0]?.[field];
-        } else if (field === "name" || field === "mobile") {
-          value = this.formAddReservation.guestInformation[field];
-        } else if (path) {
-          value = this[path][field];
-        } else {
-          value = this.formAddReservation[field];
-        }
-
-        if (!value) {
-          hasError = true;
-          this.$set(this.validationMessages, field, message); // Set validation message
-        } else {
-          this.$delete(this.validationMessages, field); // Remove validation message if input is valid
-        }
+      this.$v.$touch()
+      if (this.$v.$invalid) {
+        return
       }
 
       // Stop submission if there are errors
@@ -1247,7 +1281,6 @@ export default {
       immediate: true
     }
   },
-  mixins: [flatpickrMixin],
   props: {
     selectedDates: {
       type: Array,
