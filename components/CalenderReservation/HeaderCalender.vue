@@ -214,17 +214,6 @@ export default {
       this.selectAllProjects = this.selectedProjects.length === this.getProjects.length;
       // await this.getFilterData();
     },
-    toggleSelectAllBuildings ()
-    {
-      this.selectAllBuildings = !this.selectAllBuildings;
-      if (this.selectAllBuildings) {
-        this.selectedBuildings = [];
-        this.$emit("show-all-resources");
-      } else {
-        this.$emit("show-building-resources", this.selectedBuildings);
-      }
-    },
-
     async toggleBuilding (building)
     {
       if (this.selectedBuildings.includes(building)) {
@@ -234,7 +223,6 @@ export default {
       }
       this.selectAllBuildings = this.selectedBuildings.length === 0;
       this.$emit("show-building-resources", this.selectedBuildings);
-      await this.getFilterData();
     },
     async getFilterData ()
     {
@@ -242,16 +230,30 @@ export default {
         const filterCalender = {
           project_ids: this.selectedProjects,
           rate_types: this.selectedRateTypes,
+          building_ids: this.selectAllBuildings ? [] : this.selectedBuildings
         };
+
         const response = await getCalenderFilter(filterCalender);
-        this.data = response.data;
-        // location.reload();
-        // Emit the updated data to BookingCalendar
-        this.$root.$emit('calendar-data-updated', response.data);
+
+        this.$root.$emit('calendar-data-updated', {
+          data: response.data,
+          filters: {
+            buildings: this.selectAllBuildings ? [] : this.selectedBuildings
+          }
+        });
 
       } catch (error) {
-        console.log(error);
+        console.error('Filter error:', error);
+        handleSubmissionError(error);
       }
+    },
+    toggleSelectAllBuildings ()
+    {
+      this.selectAllBuildings = !this.selectAllBuildings;
+      if (this.selectAllBuildings) {
+        this.selectedBuildings = [];
+      }
+      this.$emit("show-building-resources", this.selectedBuildings);
     },
     async applyFilters ()
     {
@@ -328,46 +330,5 @@ export default {
 </script>
 
 <style scoped>
-@media (max-width: 768px) {
-  /* .dropdown-menu {
-    position: fixed !important;
-    left: 50% !important;
-    transform: translateX(-50%);
-    min-width: 90vw;
-    max-width: 95vw;
-  } */
 
-  .btn {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-}
-
-@media (max-width: 576px) {
-  .btn {
-    font-size: 14px;
-    padding: 8px 12px;
-  }
-
-  .badge {
-    font-size: 10px;
-    padding: 4px 6px;
-  }
-
-  .position-absolute {
-    position: fixed !important;
-    left: 50%;
-    transform: translateX(-50%);
-    margin-top: 5px;
-  }
-}
-
-.z-3 {
-  z-index: 1000;
-}
-
-.list-unstyled li {
-  padding: 3px 0;
-}
 </style>
