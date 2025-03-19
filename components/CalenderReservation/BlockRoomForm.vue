@@ -187,7 +187,7 @@ export default {
   {
     try {
       const reasonsResponse = await getReasonsSources();
-      this.reasonsSources = reasonsResponse.data.data.data;
+      this.reasonsSources = reasonsResponse.data.data;
     } catch (error) {
       console.error("Error loading data:", error);
     }
