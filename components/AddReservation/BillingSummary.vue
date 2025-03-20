@@ -93,7 +93,7 @@
           <div class="col-md-6 mb-3 d-flex align-items-center">
             <div class="input-group mt-md-3">
               <label class="input-group-text" for="paymentInsurance">Insurance</label>
-              <input type="text" class="form-control" id="paymentInsurance" v-model="paymentDetails.insurance">
+              <input type="text" class="form-control" id="paymentInsurance" v-model="paymentDetails.insurance" placeholder="Insurance">
             </div>
           </div>
           <div class="col-md-6 d-flex align-items-center">
@@ -152,12 +152,24 @@
           <!-- Common fields for all payment types -->
           <div class="mb-3">
             <label class="form-label">Amount</label>
-            <input type="number" class="form-control" v-model="paymentDetails.amount">
+            <input type="number" class="form-control" v-model="paymentDetails.amount" aria-label="Amount">
           </div>
           <div class="mb-3">
             <label class="form-label">Date</label>
-            <input type="date" class="form-control" v-model="paymentDetails.date">
+            <div class="input-group">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="YYYY-MM-DD"
+                ref="datePicker1"
+                v-model="paymentDetails.date"
+              />
+              <span class="input-group-text">
+                <i class="fa-solid fa-calendar-days"></i>
+              </span>
+            </div>
           </div>
+
           <div class="mb-3">
             <label class="form-label">Comment</label>
             <textarea class="form-control" v-model="paymentDetails.comment" rows="3"></textarea>
@@ -207,9 +219,13 @@
 
 <script>
 import { getAccounts, getPaymentMethods } from '../../Api/addResvertionApi';
+import flatpickrMixin from '../Mixin/flatpickrMixin';
+import flatpickr from 'flatpickr';
+import "flatpickr/dist/flatpickr.min.css";
 
 export default {
   name: "BillingSummary",
+  mixins: [flatpickrMixin],
   props: {
     value: {
       type: Object,
@@ -267,26 +283,24 @@ export default {
       return "--/--/----";
     },
   },
-  async mounted ()
-  {
-    try {
-      const [
-        paymentMethodsResponse,
-        accountsResponse,
+  mounted() {
+    // Call original API loading
+    this.loadApiData();
 
-      ] = await Promise.all([
-      getPaymentMethods(),
-      getAccounts(),
-      ]);
-
-      this.paymentMethods = paymentMethodsResponse.data.data;
-      this.paymentTypes = paymentMethodsResponse.data.payment_type;
-      this.accounts = accountsResponse.data.data;
-    } catch (error) {
-      console.error("Error loading data:", error);
-    }
-
-
+    // Initialize flatpickr
+    this.$nextTick(() => {
+      if (this.$refs.datePicker1) {
+        flatpickr(this.$refs.datePicker1, {
+          dateFormat: "Y-m-d",
+          defaultDate: this.paymentDetails.date,
+          onChange: (selectedDates) => {
+            if (selectedDates[0]) {
+              this.paymentDetails.date = this.formatDate(selectedDates[0]);
+            }
+          }
+        });
+      }
+    });
   },
   watch: {
     // "value.paymentMode": function (newVal) {
@@ -316,6 +330,24 @@ export default {
     }
   },
   methods: {
+    formatDate(date) {
+      return date.toISOString().split('T')[0];
+    },
+
+    async loadApiData() {
+      try {
+        const [paymentMethodsResponse, accountsResponse] = await Promise.all([
+          getPaymentMethods(),
+          getAccounts(),
+        ]);
+
+        this.paymentMethods = paymentMethodsResponse.data.data;
+        this.paymentTypes = paymentMethodsResponse.data.payment_type;
+        this.accounts = accountsResponse.data.data;
+      } catch (error) {
+        console.error("Error loading data:", error);
+      }
+    },
     // Add this new method to mask card numbers
     maskCardNumber(cardNumber) {
       if (!cardNumber) return 'Not specified';
