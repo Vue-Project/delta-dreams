@@ -12,12 +12,12 @@
         </div>
 
         <!-- Building Filter -->
-        <div class="col-md-6 col-12 ">
+        <div class="  col-lg-4 col-md-6 col-12 ">
           <div class="dropdown w-100">
             <button class="btn btn-primary dropdown-toggle w-100" type="button" id="buildingsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
               <i class="fa-solid fa-filter pe-2"></i>Filter Buildings
             </button>
-            <ul class="dropdown-menu  w-100" aria-labelledby="buildingsDropdown">
+            <ul class="dropdown-menu w-100" aria-labelledby="buildingsDropdown">
               <li>
                 <a class="dropdown-item" href="#" @click.prevent="toggleSelectAllBuildings">
                   <input type="checkbox" v-model="selectAllBuildings" class="form-check-input me-2" />
@@ -36,19 +36,14 @@
             </ul>
           </div>
         </div>
-        <div class=" d-block col-6 d-sm-none">
-          <button type="button" class="btn w-100 btn-primary waves-effect waves-light" @click="quickReservation">
-            <i class="fa-solid fa-hotel pr-2"></i>Quick Reservation
-          </button>
-        </div>
       </div>
     </div>
 
     <!-- Right Column - Filters and Info -->
-    <div class="col-lg-6 col-md-12 pt-5 pt-md-0">
-      <div class="row g-2">
+    <div class="col-lg-6 col-md-12   ">
+      <div class="row g-2 ">
         <!-- Apply Button -->
-        <div class="col-xl-3 col-lg-4 col-md-6 col-12 order-md-1">
+        <div class="col-xl-3 col-lg-4 col-md-4 col-6 order-md-1 order-sm-1 ">
           <button class="btn btn-primary w-100" @click="applyFilters">
             Apply Filters
           </button>
@@ -60,7 +55,7 @@
         </div>
 
         <!-- Rate Types Filter -->
-        <div class="col-xl-4 col-lg-4 col-md-6 col-12 pt-2 pt-md-0 order-md-2">
+        <div class="col-xl-4 col-lg-4 col-md-4 col-12 pt-2 pt-md-0 order-md-2">
           <div class="dropdown w-100">
             <button class="btn btn-primary dropdown-toggle w-100" type="button" id="rateTypesDropdown" data-bs-toggle="dropdown" aria-expanded="false">
               <i class="fa-solid fa-filter pe-2"></i>Filter Rate Types
@@ -68,7 +63,7 @@
                 {{ selectedRateTypes.length }}
               </span>
             </button>
-            <ul class="dropdown-menu   w-100" aria-labelledby="rateTypesDropdown">
+            <ul class="dropdown-menu w-100" aria-labelledby="rateTypesDropdown">
               <li v-for="(type, index) in getRateTypes" :key="index">
                 <a class="dropdown-item" href="#" @click.prevent="toggleRateType(index)">
                   <input type="checkbox" :value="index" v-model="selectedRateTypes" class="form-check-input me-2" />
@@ -80,7 +75,7 @@
         </div>
 
         <!-- Projects Filter -->
-        <div class="col-xl-4 col-lg-4 col-md-6 col-12 order-md-3 pt-5 pt-md-0">
+        <div class="col-xl-4 col-lg-4 col-md-4 col-12 order-md-3  pt-md-0">
           <div class="dropdown w-100 ps-lg-2">
             <button class="btn btn-primary dropdown-toggle w-100" type="button" id="projectsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
               <i class="fa-solid fa-filter pe-2"></i>Filter Projects
@@ -98,15 +93,6 @@
             </ul>
           </div>
         </div>
-
-        <!-- Apply Button -->
-        <div class=" pt-5 col-md-6 d-block d-sm-none col-12 ">
-          <button class="btn btn-primary w-100" @click="applyFilters">
-            Apply Filters
-          </button>
-        </div>
-
-
 
         <!-- Info Button with Hover Menu -->
 
@@ -214,6 +200,17 @@ export default {
       this.selectAllProjects = this.selectedProjects.length === this.getProjects.length;
       // await this.getFilterData();
     },
+    toggleSelectAllBuildings ()
+    {
+      this.selectAllBuildings = !this.selectAllBuildings;
+      if (this.selectAllBuildings) {
+        this.selectedBuildings = [];
+        this.$emit("show-all-resources");
+      } else {
+        this.$emit("show-building-resources", this.selectedBuildings);
+      }
+    },
+
     async toggleBuilding (building)
     {
       if (this.selectedBuildings.includes(building)) {
@@ -223,6 +220,7 @@ export default {
       }
       this.selectAllBuildings = this.selectedBuildings.length === 0;
       this.$emit("show-building-resources", this.selectedBuildings);
+      await this.getFilterData();
     },
     async getFilterData ()
     {
@@ -230,30 +228,16 @@ export default {
         const filterCalender = {
           project_ids: this.selectedProjects,
           rate_types: this.selectedRateTypes,
-          building_ids: this.selectAllBuildings ? [] : this.selectedBuildings
         };
-
         const response = await getCalenderFilter(filterCalender);
-
-        this.$root.$emit('calendar-data-updated', {
-          data: response.data,
-          filters: {
-            buildings: this.selectAllBuildings ? [] : this.selectedBuildings
-          }
-        });
+        this.data = response.data;
+        // location.reload();
+        // Emit the updated data to BookingCalendar
+        this.$root.$emit('calendar-data-updated', response.data);
 
       } catch (error) {
-        console.error('Filter error:', error);
-        handleSubmissionError(error);
+        console.log(error);
       }
-    },
-    toggleSelectAllBuildings ()
-    {
-      this.selectAllBuildings = !this.selectAllBuildings;
-      if (this.selectAllBuildings) {
-        this.selectedBuildings = [];
-      }
-      this.$emit("show-building-resources", this.selectedBuildings);
     },
     async applyFilters ()
     {
@@ -330,5 +314,38 @@ export default {
 </script>
 
 <style scoped>
+@media (max-width: 768px) {
+  /* .dropdown-menu {
+    position: fixed !important;
+    left: 50% !important;
+    transform: translateX(-50%);
+    min-width: 90vw;
+    max-width: 95vw;
+  } */
 
+  .btn {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+@media (max-width: 576px) {
+  .btn {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+
+  .badge {
+    font-size: 10px;
+    padding: 4px 6px;
+  }
+
+  .position-absolute {
+    position: fixed !important;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 5px;
+  }
+}
 </style>
