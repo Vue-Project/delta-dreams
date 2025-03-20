@@ -763,7 +763,7 @@ export default {
       }
 
       // Stop submission if there are errors
-      if (hasError) return;
+      // if (hasError) return;
 
       // Prepare the data to send to the server
       const bookingData = {
