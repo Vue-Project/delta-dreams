@@ -52,7 +52,7 @@ export const blockRoomService =  async (blockRoomData) =>
     };
     export const postUpdateReservation = async (id, updateDataUnit) => {
       try {
-        const response = await apiClient.post(`/reservations/${id}`, updateDataUnit);
+        const response = await apiClient.post(`/reservations/updatedata/${id}`, updateDataUnit);
         return response.data;
       } catch (error) {
         console.error('Error deleting block:', error);
