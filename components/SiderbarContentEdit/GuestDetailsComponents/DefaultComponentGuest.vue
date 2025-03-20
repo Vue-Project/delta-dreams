@@ -69,7 +69,7 @@
           <label for="countryGuest" class="col-form-label">Country</label>
           <select class="form-select" v-model="formGuest.country" id="countryGuest">
             <option disabled value="">Select Country</option>
-            <option v-for="(country, index) in getCountries" :key="index" :value="country">
+            <option v-for="(country, index) in getCountries" :key="index" :value="index">
               {{ country }}
             </option>
           </select>
