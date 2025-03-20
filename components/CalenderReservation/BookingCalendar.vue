@@ -722,7 +722,6 @@ export default {
     {
       try {
         const event = info.event;
-        console.log(event);
         const resourceId = event.getResources()[0]?.id;
         const unitId = resourceId?.split('-')[1];
 
