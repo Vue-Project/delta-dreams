@@ -106,7 +106,10 @@
     </div>
 
     <!-- Mobile Sidebar -->
-    <div class="mobile-sidebar" :class="{ 'show': isSidebarOpen }">
+    <div
+      class="mobile-sidebar"
+      :class="{ 'show': isSidebarOpen }"
+    >
       <div class="sidebar-header">
         <h5>Filters</h5>
         <button class="btn-close" @click="toggleSidebar"></button>
@@ -139,6 +142,13 @@
         </button>
       </div>
     </div>
+
+    <!-- Add this right before the mobile-sidebar div -->
+    <div
+      class="sidebar-overlay"
+      v-if="isSidebarOpen"
+      @click="toggleSidebar"
+    ></div>
   </div>
 </template>
 
@@ -464,5 +474,15 @@ export default {
   .sidebar-overlay.show {
     display: block;
   }
+}
+
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1049;
 }
 </style>
