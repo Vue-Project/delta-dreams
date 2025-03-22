@@ -90,7 +90,7 @@
               </select>
             </div>
           </div>
-          <div class="col-md-6 mb-3 d-flex align-items-center">
+          <!-- <div class="col-md-6 mb-3 d-flex align-items-center">
             <div class="input-group mt-md-3">
               <label class="input-group-text" for="paymentInsurance">Insurance</label>
               <input type="text" class="form-control" id="paymentInsurance" v-model="paymentDetails.insurance" placeholder="Insurance">
@@ -106,7 +106,7 @@
                 </option>
               </select>
             </div>
-          </div>
+          </div> -->
         </div>
         <p v-if="!value.paymentMode && validationMessage" class="validation-message">
           Payment Mode is required.
@@ -243,6 +243,7 @@ export default {
       paymentTypes: [],
       accounts: [],
       selectedPaymentType: '',
+      datePicker1Instance: null, // Add this line to store the flatpickr instance
       paymentDetails: {
         roomCharges: 0.0,
         taxes: "1",
@@ -289,17 +290,7 @@ export default {
 
     // Initialize flatpickr
     this.$nextTick(() => {
-      if (this.$refs.datePicker1) {
-        flatpickr(this.$refs.datePicker1, {
-          dateFormat: "Y-m-d",
-          defaultDate: this.paymentDetails.date,
-          onChange: (selectedDates) => {
-            if (selectedDates[0]) {
-              this.paymentDetails.date = this.formatDate(selectedDates[0]);
-            }
-          }
-        });
-      }
+      this.initializeDatePicker();
     });
   },
   watch: {
@@ -318,6 +309,11 @@ export default {
         ...this.value,
         selectedPaymentType: newVal
       });
+
+      // Initialize datepicker when payment type is selected
+      this.$nextTick(() => {
+        this.initializeDatePicker();
+      });
     },
     'paymentDetails': {
       deep: true,
@@ -332,6 +328,27 @@ export default {
   methods: {
     formatDate(date) {
       return date.toISOString().split('T')[0];
+    },
+
+    // Add a new method to initialize the datepicker
+    initializeDatePicker() {
+      if (this.$refs.datePicker1) {
+        // Destroy existing instance if it exists to prevent duplicates
+        if (this.datePicker1Instance) {
+          this.datePicker1Instance.destroy();
+        }
+
+        // Create new flatpickr instance
+        this.datePicker1Instance = flatpickr(this.$refs.datePicker1, {
+          dateFormat: "Y-m-d",
+          defaultDate: this.paymentDetails.date,
+          onChange: (selectedDates) => {
+            if (selectedDates[0]) {
+              this.paymentDetails.date = this.formatDate(selectedDates[0]);
+            }
+          }
+        });
+      }
     },
 
     async loadApiData() {
