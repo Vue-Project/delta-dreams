@@ -15,7 +15,7 @@
         <div class="col-lg-4 col-md-6 col-12">
           <div class="dropdown w-100">
             <button class="btn btn-primary dropdown-toggle w-100" type="button" id="buildingsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="fa-solid fa-filter pe-2"></i>Filter Buildings
+              <i class="fa-solid fa-filter pe-2"></i>filter types
             </button>
             <ul class="dropdown-menu w-100" aria-labelledby="buildingsDropdown">
               <li>
