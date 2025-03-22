@@ -289,6 +289,7 @@
                     </option>
                   </select>
                 </div>
+
               </div>
             </div>
 
@@ -338,7 +339,7 @@
 
               <SidebarAddGuest :is-sidebar-open="isSidebarOpen" @close-sidebar="toggleSidebar" @guest-added="handleGuestAdded" />
             </div>
-            <div class="offset-md-7">
+            <!-- <div class="offset-md-7">
             </div>
             <div class="col-lg-3 col-md-6  ps-2 ps-md-0 EmailReservation">
               <label for="emailGuest" class="col-form-label">Email</label>
@@ -379,7 +380,7 @@
                 <label for="ZipGuest" class="col-form-label">Zip</label>
                 <input class="form-control rounded-2" type="text" id="ZipGuest" placeholder="Zip" v-model="formAddReservation.guestInformation.zip" />
               </div>
-            </div>
+            </div> -->
           </div>
 
           <!--  ! Guest Information -->
@@ -496,9 +497,9 @@ export default {
       selectedUnit: '',
       formAddReservation: {
         checkInDate: "",
-        checkInTime: "",
+        checkInTime: "12:00",
         checkOutDate: "",
-        checkOutTime: "",
+        checkOutTime: "2:00",
         numberRooms: "1",
         reservationType: "",
         businessSource: "",
@@ -1022,8 +1023,8 @@ export default {
         if (firstDate && lastDate) {
           this.formAddReservation.checkInDate = this.formatDate(firstDate);
           this.formAddReservation.checkOutDate = this.formatDate(lastDate);
-          this.formAddReservation.checkInTime = this.formatTime(firstDate);
-          this.formAddReservation.checkOutTime = this.formatTime(lastDate);
+          // this.formAddReservation.checkInTime = this.formatTime(firstDate);
+          // this.formAddReservation.checkOutTime = this.formatTime(lastDate);
         }
       }
 
@@ -1099,74 +1100,141 @@ export default {
       console.error("Error loading data:", error);
     }
     this.initializeFromStore();
+ // this is for make time and date selected depended on time and data selected from calender
+    // this.$nextTick(() =>
+    // {
+    //   if (this.firstDate && this.lastDate) {
+    //     // Initialize date pickers with correct format
+    //     this.datePicker1Instance = flatpickr(this.$refs.datePicker1, {
+    //       enableTime: false,
+    //       dateFormat: "Y-m-d", // Ensure the format is YYYY-MM-DD
+    //       defaultDate: this.firstDate,
+    //       // enable: [this.firstDate],
+    //       disableMobile: true,
+    //       // onChange: (selectedDates) =>
+    //       // {
+    //       //   if (selectedDates[0]) {
+    //       //     this.formAddReservation.checkInDate = this.formatDate(selectedDates[0]);
+    //       //   }
+    //       // }
+    //     });
 
-    this.$nextTick(() =>
-    {
-      if (this.firstDate && this.lastDate) {
-        // Initialize date pickers with correct format
-        this.datePicker1Instance = flatpickr(this.$refs.datePicker1, {
-          enableTime: false,
-          dateFormat: "Y-m-d", // Ensure the format is YYYY-MM-DD
-          defaultDate: this.firstDate,
-          // enable: [this.firstDate],
-          disableMobile: true,
-          onChange: (selectedDates) =>
-          {
-            if (selectedDates[0]) {
-              this.formAddReservation.checkInDate = this.formatDate(selectedDates[0]);
-            }
-          }
-        });
+    //     this.datePicker2Instance = flatpickr(this.$refs.datePicker2, {
+    //       enableTime: false,
+    //       dateFormat: "Y-m-d", // Ensure the format is YYYY-MM-DD
+    //       defaultDate: this.lastDate,
+    //       // enable: [this.lastDate],
+    //       disableMobile: true,
+    //       onChange: (selectedDates) =>
+    //       {
+    //         if (selectedDates[0]) {
+    //           this.formAddReservation.checkOutDate = this.formatDate(selectedDates[0]);
+    //         }
+    //       }
+    //     });
 
-        this.datePicker2Instance = flatpickr(this.$refs.datePicker2, {
-          enableTime: false,
-          dateFormat: "Y-m-d", // Ensure the format is YYYY-MM-DD
-          defaultDate: this.lastDate,
-          // enable: [this.lastDate],
-          disableMobile: true,
-          onChange: (selectedDates) =>
-          {
-            if (selectedDates[0]) {
-              this.formAddReservation.checkOutDate = this.formatDate(selectedDates[0]);
-            }
-          }
-        });
-
-        // Set initial values
-        this.formAddReservation.checkInDate = this.formatDate(this.firstDate);
-        this.formAddReservation.checkOutDate = this.formatDate(this.lastDate);
+    //     // Set initial values
+    //     this.formAddReservation.checkInDate = this.formatDate(this.firstDate);
+    //     this.formAddReservation.checkOutDate = this.formatDate(this.lastDate);
 
 
-        // Initialize time pickers
-        this.timePicker1Instance = flatpickr(this.$refs.timePicker1, {
-          enableTime: true,
-          noCalendar: true,
-          dateFormat: "H:i",
-          defaultDate: this.firstDate,
-          onChange: (selectedDates) =>
-          {
-            this.formAddReservation.checkInTime = selectedDates[0] ?
-              this.formatTime(selectedDates[0]) : '';
-          }
-        });
+    //     // Initialize time pickers
+    //     this.timePicker1Instance = flatpickr(this.$refs.timePicker1, {
+    //       enableTime: true,
+    //       noCalendar: true,
+    //       dateFormat: "H:i",
+    //       defaultDate: this.firstDate,
+    //       onChange: (selectedDates) =>
+    //       {
+    //         this.formAddReservation.checkInTime = selectedDates[0] ?
+    //           this.formatTime(selectedDates[0]) : '';
+    //       }
+    //     });
 
-        this.timePicker2Instance = flatpickr(this.$refs.timePicker2, {
-          enableTime: true,
-          noCalendar: true,
-          dateFormat: "H:i",
-          defaultDate: this.lastDate,
-          onChange: (selectedDates) =>
-          {
-            this.formAddReservation.checkOutTime = selectedDates[0] ?
-              this.formatTime(selectedDates[0]) : '';
-          }
-        });
+    //     this.timePicker2Instance = flatpickr(this.$refs.timePicker2, {
+    //       enableTime: true,
+    //       noCalendar: true,
+    //       dateFormat: "H:i",
+    //       // defaultDate: this.lastDate,
+    //        defaultDate: this.lastDate,
+    //       onChange: (selectedDates) =>
+    //       {
+    //         this.formAddReservation.checkOutTime = selectedDates[0] ?
+    //           this.formatTime(selectedDates[0]) : '';
+    //       }
+    //     });
 
-        // Set initial times
-        this.formAddReservation.checkInTime = this.formatTime(this.firstDate);
-        this.formAddReservation.checkOutTime = this.formatTime(this.lastDate);
+    //     // Set initial times
+    //     this.formAddReservation.checkInTime = this.formatTime(this.firstDate);
+    //     this.formAddReservation.checkOutTime = this.formatTime(this.lastDate);
+    //   }
+    // });
+    this.$nextTick(() => {
+  if (this.firstDate && this.lastDate) {
+    // Initialize date pickers with correct format
+    this.datePicker1Instance = flatpickr(this.$refs.datePicker1, {
+      enableTime: false,
+      dateFormat: "Y-m-d", // Ensure the format is YYYY-MM-DD
+      defaultDate: this.firstDate,
+      disableMobile: true,
+      onChange: (selectedDates) => {
+        if (selectedDates[0]) {
+          this.formAddReservation.checkInDate = this.formatDate(selectedDates[0]);
+        }
       }
     });
+
+    this.datePicker2Instance = flatpickr(this.$refs.datePicker2, {
+      enableTime: false,
+      dateFormat: "Y-m-d", // Ensure the format is YYYY-MM-DD
+      defaultDate: this.lastDate,
+      disableMobile: true,
+      onChange: (selectedDates) => {
+        if (selectedDates[0]) {
+          this.formAddReservation.checkOutDate = this.formatDate(selectedDates[0]);
+        }
+      }
+    });
+
+    // Set initial values for dates
+    this.formAddReservation.checkInDate = this.formatDate(this.firstDate);
+    this.formAddReservation.checkOutDate = this.formatDate(this.lastDate);
+
+    // Initialize time pickers with default times from data
+    // For check-in time picker, use the default time "12:00"
+    this.timePicker1Instance = flatpickr(this.$refs.timePicker1, {
+      enableTime: true,
+      noCalendar: true,
+      dateFormat: "H:i",
+      defaultDate: "12:00", // Set default time to 12:00
+      defaultHour: 12,      // Set default hour to 12
+      defaultMinute: 0,     // Set default minute to 0
+      onChange: (selectedDates) => {
+        this.formAddReservation.checkInTime = selectedDates[0] ?
+          this.formatTime(selectedDates[0]) : '12:00';
+      }
+    });
+
+    // For check-out time picker, use the default time "02:00"
+    this.timePicker2Instance = flatpickr(this.$refs.timePicker2, {
+      enableTime: true,
+      noCalendar: true,
+      dateFormat: "H:i",
+      defaultDate: "02:00", // Set default time to 02:00
+      defaultHour: 2,       // Set default hour to 2
+      defaultMinute: 0,     // Set default minute to 0
+      onChange: (selectedDates) => {
+        this.formAddReservation.checkOutTime = selectedDates[0] ?
+          this.formatTime(selectedDates[0]) : '02:00';
+      }
+    });
+
+    // Set initial times from default values in data
+    // This ensures the form has the default times even before user interaction
+    this.formAddReservation.checkInTime = "12:00";
+    this.formAddReservation.checkOutTime = "02:00";
+  }
+});
   },
   computed: {
     ...mapState({
@@ -1183,20 +1251,20 @@ export default {
       'getCountries',
       'getRemindGuestType',
     ]),
-    formattedRateAmount: {
-      get ()
-      {
-        // Safely handle undefined or null values by defaulting to 0
-        const rateAmount = this.formAddReservation.units[0].rateAmount || 0;
-        return Number(rateAmount).toFixed(2); // Ensure it's a number before applying toFixed
-      },
-      set (value)
-      {
-        // Strip non-numeric characters except for the decimal point
-        const sanitizedValue = value.replace(/[^0-9.]/g, '');
-        this.formAddReservation.units[0].rateAmount = parseFloat(sanitizedValue) || 0;
-      }
-    },
+    // formattedRateAmount: {
+    //   get ()
+    //   {
+    //     // Safely handle undefined or null values by defaulting to 0
+    //     const rateAmount = this.formAddReservation.units[0].rateAmount || 0;
+    //     return Number(rateAmount).toFixed(2); // Ensure it's a number before applying toFixed
+    //   },
+    //   set (value)
+    //   {
+    //     // Strip non-numeric characters except for the decimal point
+    //     const sanitizedValue = value.replace(/[^0-9.]/g, '');
+    //     this.formAddReservation.units[0].rateAmount = parseFloat(sanitizedValue) || 0;
+    //   }
+    // },
 
     parsedDates ()
     {
