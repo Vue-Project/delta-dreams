@@ -39,7 +39,7 @@
                   <div class="col-md-6">
                     <div class="mb-lg-3">
                       <label for="formGustInfoPhone" class="col-form-label">Phone</label>
-                      <input class="form-control rounded-2" type="text" value="Phone" id="formGustInfoPhone" aria-label="input tel to Gust Phone" v-model="formGuest.phone" ref="phone" :class="{ 'input-error': validationMessages.phone }" />
+                      <input class="form-control rounded-2" type="text" value="Phone" id="formGustInfoPhone" placeholder="phone" aria-label="input tel to Gust Phone" v-model="formGuest.phone" ref="phone" :class="{ 'input-error': validationMessages.phone }" />
                       <span class="error-message small" v-if="$v.formGuest.phone.$error">
                         Phone is required
                       </span>
@@ -62,7 +62,7 @@
                   <div class="col-md-6">
                     <div class="mb-lg-3">
                       <label for="formGustInformInternationalNumber" class="col-form-label internationalNumber">International Phone</label>
-                      <input class="form-control rounded-2" type="text" value="International Number" id="formGustInformInternationalNumber" aria-label="input tel to Gust International Number" v-model="formGuest.internationalNumber" />
+                      <input class="form-control rounded-2" type="text" value="International Number" placeholder="International Phone" id="formGustInformInternationalNumber" aria-label="input tel to Gust International Number" v-model="formGuest.internationalNumber" />
                     </div>
                     <div class="mb-lg-3 position-relative">
                       <label for="flatpickr-date-04" class="col-form-label">Expiry Date</label>
@@ -140,7 +140,7 @@
                         </div>
                         <div class="col-lg-4 col-md-4s col-12">
                           <label for="formGustInfoMobile" class="col-form-label">Mobile</label>
-                          <input class="form-control rounded-2" type="text" value="Mobile" id="formGustInfoMobile" aria-label="input tel to Gust Mobile" v-model="formGuest.mobile" />
+                          <input class="form-control rounded-2" type="text" value="Mobile" placeholder="Mobile" id="formGustInfoMobile" aria-label="input tel to Gust Mobile" v-model="formGuest.mobile" />
 
                         </div>
                         <div class="col-lg-4 col-md-4 col-12">
