@@ -146,19 +146,16 @@ export default {
     },
   },
   methods: {
-    async addPaymentReservation ()
-    {
+    async addPaymentReservation() {
       try {
-        // Get the file from DropzoneComponent
-        this.formAddPayment.image = this.$refs.paymentImage.files[0] || null;
+        // Get the file from the file input
+        const paymentImageFile = this.$refs.paymentImage.files[0] || null;
+        this.formAddPayment.image = paymentImageFile;
 
         this.$v.$touch()
         if (this.$v.$invalid) {
           return
         }
-
-        // Get the file from the file input
-        const paymentImageFile = this.$refs.paymentImage.files[0];
 
         // Create FormData to handle file upload
         const formData = new FormData();
@@ -175,28 +172,14 @@ export default {
         };
 
         // Append payment data to FormData
-        Object.keys(paymentData).forEach(key =>
-        {
+        Object.keys(paymentData).forEach(key => {
           formData.append(key, paymentData[key]);
         });
 
         // Append file if exists
-        if (files?.[0]) {
-          formData.append('image', files[0]);
-        }
-
         if (paymentImageFile) {
           formData.append('image', paymentImageFile);
         }
-
-        // Log the payment data and image
-        // console.log("Payment Data:", paymentData);
-        // console.log("Image File:", paymentImageFile);
-
-        // Log FormData entries
-        // for (let [key, value] of formData.entries()) {
-        //   console.log(`${key}:`, value);
-        // }
 
         const response = await postAddPayment(formData);
         showSuccessAlert("Payment added successfully!");
