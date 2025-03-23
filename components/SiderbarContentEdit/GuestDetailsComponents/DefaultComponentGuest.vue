@@ -4,22 +4,29 @@
     <div class="row pe-0 p-3 mb-5">
       <div class="col-md-6">
         <div class="row">
-          <div div class="col-md-4">
+          <!-- <div div class="col-md-4">
             <DropzoneComponent :id="'my-dropzone'" />
-          </div>
-          <div class="col-md-8 ps-0">
+          </div> -->
+          <div class="col-md-12 ps-0">
             <div class="mb-3">
               <label for="formGustInfoName" class="col-form-label">Name
               </label>
 
               <input type="text" class="form-control" id="formGustInfoName" placeholder="Name Guest" aria-label="input text to Gust Name" v-model="formGuest.name" ref="name" :class="{ 'input-error': validationMessages.name }" />
-              <span class="error-message" v-if="validationMessages.name">{{ validationMessages.name }}</span>
+              <span class="error-message small" v-if="$v.formGuest.name.$error">
+                Name is required
+              </span>
+
             </div>
 
             <div class="mb-3">
-              <label for="formGustInfoEmail" class="col-form-label">Email
-              </label>
-              <input type="email" class="form-control" id="formGustInfoEmail" placeholder="Use comma to add multiple Email Ids" aria-label="input email to Gust Email" v-model="formGuest.email" r />
+              <label for="formIdentityInfoId" class="col-form-label">ID Number</label>
+              <input class="form-control" type="text" id="formIdentityInfoId" placeholder="Enter ID Number" aria-label="Enter ID Number Guest" v-model="formGuest.OtherInformation.idNumber" />
+              <span class="error-message small" v-if="$v.formGuest.OtherInformation.idNumber.$error">
+  ID Number is required
+</span>
+
+
             </div>
           </div>
         </div>
@@ -30,59 +37,48 @@
           <div class="col-md-6 ps-0">
             <div class="mb-3">
               <label for="formGustInfoPhone" class="col-form-label">Phone</label>
-              <input class="form-control" type="text" value="Phone" id="formGustInfoPhone" aria-label="input tel to Gust Phone" v-model="formGuest.phone" ref="phone" :class="{ 'input-error': validationMessages.phone }" />
-              <span class="error-message" v-if="validationMessages.phone">{{ validationMessages.phone }}</span>
+              <input class="form-control rounded-2" type="text" value="Phone" id="formGustInfoPhone" placeholder="phone" aria-label="input tel to Gust Phone" v-model="formGuest.phone" ref="phone" :class="{ 'input-error': validationMessages.phone }" />
+              <span class="error-message small" v-if="$v.formGuest.phone.$error">
+                        Phone is required
+                      </span>
             </div>
           </div>
           <div class="col-md-6 ps-0">
             <div class="mb-3">
-              <label for="formGustInfoMobile" class="col-form-label">Mobile</label>
-              <input class="form-control" type="text" value="Mobile" id="formGustInfoMobile" aria-label="input tel to Gust Mobile" v-model="formGuest.mobile" />
+              <label for="formGustInformInternationalNumber" class="col-form-label internationalNumber">International Phone</label>
+              <input class="form-control rounded-2" type="text" value="International Number" placeholder="International Phone" id="formGustInformInternationalNumber" aria-label="input tel to Gust International Number" v-model="formGuest.internationalNumber" />
+
+
             </div>
           </div>
         </div>
         <div class="row">
           <div class="col-md-6 col-12 ps-0">
-            <label for="formGustIdentityGender" class="col-form-label">Gender</label>
-            <select class="form-select" v-model="formGuest.gender" ref="gender" :class="{ 'input-error': validationMessages.gender }">
-              <option value="" disabled selected>Select Gender</option>
-              <option v-for="(gender, index) in getGenderTypes" :key="index" :value="index">
-                {{ gender }}
-              </option>
-            </select>
-            <span class="error-message" v-if="validationMessages.gender">{{ validationMessages.gender }}</span>
+            <label for="formGustIdentityIdType" class="col-form-label">ID Type</label>
+                      <select class="form-select" id="formGustIdentityIdType" aria-label="select ID Type" v-model="formGuest.OtherInformation.idType">
+                        <option value="" disabled selected>
+                          Select
+                        </option>
+                        <option v-for="(nationalType, index) in getNationalTypes" :key="index" :value="index">
+                          {{ nationalType }}
+                        </option>
+                      </select>
+                      <span class="error-message small" v-if="$v.formGuest.OtherInformation.idType.$error">
+  ID Type is required
+</span>
+
           </div>
           <div class="col-md-6 col-12 ps-0">
-            <label for="formGustInformInternationalNumber" class="col-form-label">International Number</label>
-            <input class="form-control" type="text" value="International Number" id="formGustInformInternationalNumber" aria-label="input tel to Gust International Number" v-model="formGuest.internationalNumber" />
+            <label for="flatpickr-date-08" class="col-form-label">Expiry Date</label>
+            <input type="text" class="form-control" placeholder="YYYY-MM-D " id="flatpickr-date-08" ref="datePicker8" aria-label="input Text to Expiry Date" v-model="formGuest.OtherInformation.expiryDate" />
+            <span class="error-message small" v-if="$v.formGuest.OtherInformation.expiryDate.$error">
+  Expiry Date is required
+</span>
+            <i class="fa-solid fa-calendar-days icon-date top"></i>
           </div>
         </div>
       </div>
-      <div class="row px-0">
-        <div class="col-md-3 pe-0">
-          <label for="formGustInfoAddress" class="col-form-label">Address</label>
-          <input class="form-control" type="text" id="formGustInfoAddress" placeholder="Address" aria-label="input Text to Gust Address" v-model="formGuest.address" />
-        </div>
-        <div class="col-md-3 pe-0">
-          <!-- <label for="countryGuest" class="col-form-label">Country</label>
-                  <input class="form-control" type="text" id="countryGuest" placeholder="country" aria-label="input Text to Gust country" v-model="formGuest.country" /> -->
-          <label for="countryGuest" class="col-form-label">Country</label>
-          <select class="form-select" v-model="formGuest.country" id="countryGuest">
-            <option disabled value="">Select Country</option>
-            <option v-for="(country, index) in getCountries" :key="index" :value="index">
-              {{ country }}
-            </option>
-          </select>
-        </div>
-        <div class="col-md-3 pe-0">
-          <label for="formGustInfoState" class="col-form-label">State</label>
-          <input class="form-control" type="text" id="formGustInfoState" placeholder="state" aria-label="input Text to Gust state" v-model="formGuest.state" />
-        </div>
-        <div class="col-md-3 pe-0">
-          <label for="formGustInfoCity" class="col-form-label">City</label>
-          <input class="form-control" type="text" id="formGustInfoCity" placeholder="city" aria-label="input Text to Gust city" v-model="formGuest.city" />
-        </div>
-      </div>
+
     </div>
     <div class="accordion px-0 mt-3" id="accordionExample">
       <div class="card px-0 accordion-item active">
@@ -92,50 +88,75 @@
           </button>
         </h2>
 
-        <div id="accordionOne" class="accordion-collapse px-0 collapse show" data-bs-parent="#accordionExample" style="">
+        <div id="accordionOne" class="accordion-collapse px-0 collapse " data-bs-parent="#accordionExample" style="">
           <div class="row accordion-body px-0">
-            <div class="col-12 mb-3">Identity Information</div>
 
             <div class="row p-3 pe-0  mb-2">
               <div class="col-md-6 pe-0 ">
                 <div class="row">
-                  <div div class="col-md-4">
+                  <!-- <div div class="col-md-4">
                     <DropzoneComponent id="dropzone2" v-model="formGuest.OtherInformation.image" />
-                  </div>
+                  </div> -->
                   <div class="col-md-8">
-                    <div class="mb-3">
-                      <label for="formIdentityInfoId" class="col-form-label">ID Number</label>
-                      <input class="form-control" type="text" id="formIdentityInfoId" placeholder="Enter ID Number" aria-label="Enter ID Number Guest" v-model="formGuest.OtherInformation.idNumber" />
-                    </div>
+
                   </div>
                 </div>
               </div>
 
               <div class="col-md-6">
-                <div class="row">
-                  <div class="col-md-6 pe-0 ">
+
+
+              </div>
+              <div class="row">
+                <div class="col-md-4 pe-0">
+                      <label for="formGustIdentityGender" class="col-form-label">Gender</label>
+            <select class="form-select" v-model="formGuest.gender" ref="gender" :class="{ 'input-error': validationMessages.gender }">
+              <option value="" disabled selected>Select Gender</option>
+              <option v-for="(gender, index) in getGenderTypes" :key="index" :value="index">
+                {{ gender }}
+              </option>
+            </select>
+                    </div>
+                  <div class="col-md-4 pe-0 ">
                     <div class="mb-3 ">
-                      <label for="formGustIdentityIdType" class="col-form-label">ID Type</label>
-                      <select class="form-select" id="formGustIdentityIdType" aria-label="select ID Type" v-model="formGuest.OtherInformation.idType">
-                        <option value="" disabled selected>
-                          Select
-                        </option>
-                        <option v-for="(nationalType, index) in getNationalTypes" :key="index" :value="index">
-                          {{ nationalType }}
-                        </option>
-                      </select>
+                      <label for="formGustInfoMobile" class="col-form-label">Mobile</label>
+                      <input class="form-control" type="text" value="Mobile" id="formGustInfoMobile" aria-label="input tel to Gust Mobile" v-model="formGuest.mobile" />
                     </div>
                   </div>
-                  <div class="col-md-6 pe-0">
+                  <div class="col-md-4 pe-0">
                     <div class="mb-3">
-                      <label for="flatpickr-date-08" class="col-form-label">Expiry Date</label>
-                      <input type="text" class="form-control" placeholder="YYYY-MM-D " id="flatpickr-date-08" ref="datePicker8" aria-label="input Text to Expiry Date" v-model="formGuest.OtherInformation.expiryDate" />
-                      <i class="fa-solid fa-calendar-days icon-date top"></i>
+                      <label for="formGustInfoEmail" class="col-form-label">Email
+              </label>
+              <input type="email" class="form-control" id="formGustInfoEmail" placeholder="Email" aria-label="input email to Gust Email" v-model="formGuest.email" r />
 
                     </div>
                   </div>
-                </div>
 
+                </div>
+            </div>
+            <div class="row ">
+              <div class="col-md-3 pe-0">
+                <label for="formGustInfoAddress" class="col-form-label">Address</label>
+                <input class="form-control" type="text" id="formGustInfoAddress" placeholder="Address" aria-label="input Text to Gust Address" v-model="formGuest.address" />
+              </div>
+              <div class="col-md-3 pe-0">
+                <!-- <label for="countryGuest" class="col-form-label">Country</label>
+                  <input class="form-control" type="text" id="countryGuest" placeholder="country" aria-label="input Text to Gust country" v-model="formGuest.country" /> -->
+                <label for="countryGuest" class="col-form-label">Country</label>
+                <select class="form-select" v-model="formGuest.country" id="countryGuest">
+                  <option disabled value="">Select Country</option>
+                  <option v-for="(country, index) in getCountries" :key="index" :value="index">
+                    {{ country }}
+                  </option>
+                </select>
+              </div>
+              <div class="col-md-3 pe-0">
+                <label for="formGustInfoState" class="col-form-label">State</label>
+                <input class="form-control" type="text" id="formGustInfoState" placeholder="state" aria-label="input Text to Gust state" v-model="formGuest.state" />
+              </div>
+              <div class="col-md-3 pe-0">
+                <label for="formGustInfoCity" class="col-form-label">City</label>
+                <input class="form-control" type="text" id="formGustInfoCity" placeholder="city" aria-label="input Text to Gust city" v-model="formGuest.city" />
               </div>
             </div>
 
@@ -146,15 +167,15 @@
               <div class="col-md-3 pe-0">
                 <label for="flatpickr-date-07" class="col-form-label">Birth Date</label>
                 <input type="text" class="form-control flatpickr-input" placeholder="Select Date" id="flatpickr-date-07" ref="datePicker7" aria-label="input Text to Birth Date" v-model="formGuest.OtherInformation.paymentMethod
-                  .birthDate
-                  " />
+    .birthDate
+    " />
                 <i class="fa-solid fa-calendar-days icon-date top"></i>
 
               </div>
               <div class="col-md-3 pe-0">
                 <label for="NationalityGuest" class="col-form-label">Nationality</label>
                 <select class="form-select" id="formGustNationality" aria-label="select Nationality" v-model="formGuest.OtherInformation.paymentMethod.nationality
-                  ">
+    ">
 
                   <option value="" disabled selected>
                     Select
@@ -169,7 +190,7 @@
               <div class="col-md-3 pe-0">
                 <label for="VIPGuest" class="col-form-label">VIP Status</label>
                 <select class="form-select" id="formGustVIP" aria-label="select VIP" v-model="formGuest.OtherInformation.paymentMethod.vipStatus
-                  ">
+    ">
                   <option value="" disabled selected>
                     Select
                   </option>
@@ -207,6 +228,8 @@ import flatpickrMixin from "../../Mixin/flatpickrMixin";
 import { PostUpdateGuest } from "../../../Api/userApi";
 import { mapGetters } from 'vuex';
 import { handleSubmissionError, showSuccessAlert } from "../../../Api/MassageValidation/alertUtilities";
+import { validationMixin } from 'vuelidate'
+import { required, email } from 'vuelidate/lib/validators'
 
 
 export default {
@@ -214,7 +237,7 @@ export default {
   components: {
     DropzoneComponent
   },
-  mixins: [flatpickrMixin],
+  mixins: [flatpickrMixin, validationMixin],
   data ()
   {
     return {
@@ -252,6 +275,17 @@ export default {
       },
     };
   },
+  validations: {
+  formGuest: {
+    name: { required },
+    phone: { required },
+    OtherInformation: {
+      idNumber: { required },
+      idType: { required },
+      expiryDate: { required }
+    }
+  }
+},
   methods: {
     resetValidationMessages ()
     {
@@ -311,34 +345,12 @@ export default {
     async submitFormUpdateGuest ()
     {
       try {
-        const formData = new FormData();
-        formData.append('image', this.formGuest.image ? this.formGuest.image.file : null);
-        formData.append('image', this.formGuest.OtherInformation.image ? this.formGuest.OtherInformation.image.file : null);
-
-        this.resetValidationMessages();
-        this.isSubmitting = true;
-
-        // Validate required fields
-        const requiredFields = ["name", "gender", "phone"];
-        let hasError = false;
-
-        requiredFields.forEach((field) =>
-        {
-          if (!this.formGuest[field]) {
-            hasError = true;
-            this.validationMessages[field] = `${field.charAt(0).toUpperCase() + field.slice(1)
-              } is required`;
-
-            const element = this.$refs[field];
-            if (element && element.classList) {
-              element.classList.add("input-error");
-            }
-          }
-        });
-
-        if (hasError) {
-          throw new Error("Please fill in all required fields");
+        this.$v.$touch()
+        if (this.$v.$invalid) {
+          return
         }
+        const formData = new FormData();
+
         const updateGuestData = {
           image: this.formGuest.image,
           name: this.formGuest.name,
