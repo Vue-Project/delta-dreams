@@ -18,9 +18,9 @@
                   <label for="flatpickr-date-01" class="form-label">Check-in</label>
                   <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" id="flatpickr-date-01" ref="datePicker1" v-model="formAddReservation.checkInDate" aria-label="input Text to Check-in Date" />
                   <i class="fa-solid fa-calendar-days icon-date"></i>
-                  <span class="error-message small" v-if="$v.formAddReservation.checkInDate.$error">
+                  <!-- <span class="error-message small" v-if="$v.formAddReservation.checkInDate.$error">
                     Check-in date is required
-                  </span>
+                  </span> -->
 
                 </div>
 
@@ -32,9 +32,9 @@
                     <i class="fa-regular fa-clock icon-time"></i>
                     <span class="input-group-text total-nights bg-primary waves-effect waves-light" id="basic-addon13">{{ totalNights }} Nights</span>
                   </div>
-                  <span class="error-message small" v-if="$v.formAddReservation.checkInTime.$error">
+                  <!-- <span class="error-message small" v-if="$v.formAddReservation.checkInTime.$error">
                     Check-in time is required
-                  </span>
+                  </span> -->
                 </div>
 
                 <!-- Check-out Date Picker-->
@@ -42,9 +42,9 @@
                   <label for="flatpickr-date-02" class="form-label ms-lg-3">Check-out</label>
                   <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" id="flatpickr-date-02" ref="datePicker2" v-model="formAddReservation.checkOutDate" aria-label="input Text to Check-out Date" />
                   <i class="fa-solid fa-calendar-days icon-date"></i>
-                  <span class="error-message small" v-if="$v.formAddReservation.checkOutDate.$error">
+                  <!-- <span class="error-message small" v-if="$v.formAddReservation.checkOutDate.$error">
                     Check-out date is required
-                  </span>
+                  </span> -->
                 </div>
 
 
@@ -52,9 +52,9 @@
                 <div class="col-lg-3 col-12 col-md-6 mt-4 px-0">
                   <input type="text" class="form-control flatpickr-input" placeholder="HH:MM" id="flatpickr-time-02" ref="timePicker2" v-model="formAddReservation.checkOutTime" aria-label="input Text to Check-out Time" />
                   <i class="fa-regular fa-clock icon-time right"></i>
-                  <span class="error-message small" v-if="$v.formAddReservation.checkOutTime.$error">
+                  <!-- <span class="error-message small" v-if="$v.formAddReservation.checkOutTime.$error">
                     Check-out time is required
-                  </span>
+                  </span> -->
                 </div>
               </div>
 
