@@ -9,9 +9,15 @@
         <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" id="flatpickr-date-01" ref="datePicker1" aria-label="input Text to Check-in Date" v-model="formAddPayment.date" />
         <i class="fa-solid fa-calendar-days icon-date right-24"></i>
       </div>
+      <span class="error-message small" v-if="$v.formAddPayment.date.$error">
+        date is required
+      </span>
       <div class=" col-12 mb-2">
         <label class="form-label" for="payment_Image">Payment Image</label>
-        <input type="file" class="form-control" id="payment_Image" ref="paymentImage" required="">
+        <input type="file" class="form-control" id="payment_Image" ref="paymentImage" @change="handleImageUpload">
+        <span class="error-message small" v-if="$v.formAddPayment.image.$error">
+          Payment image is required
+        </span>
       </div>
       <div class="col-12 mb-2">
         <div class="input-group">
@@ -24,6 +30,9 @@
             </option>
           </select>
         </div>
+        <span class="error-message small" v-if="$v.formAddPayment.type.$error">
+          payment type is required
+        </span>
       </div>
       <div class="col-12 mb-2">
         <div class="input-group">
@@ -36,12 +45,18 @@
             </option>
           </select>
         </div>
+        <span class="error-message small" v-if="$v.formAddPayment.method.$error">
+          payment method is required
+        </span>
       </div>
       <div class="col-12 mb-2">
         <div class="input-group">
           <span class="input-group-text">EGP</span>
           <input type="text" class="form-control" placeholder="Amount" aria-label="Amount (to the nearest dollar)" v-model="formAddPayment.amount">
         </div>
+        <span class="error-message small" v-if="$v.formAddPayment.amount.$error">
+          amount is required
+        </span>
       </div>
       <div class="col-12 mb-2">
         <div class="input-group">
@@ -54,12 +69,18 @@
             </option>
           </select>
         </div>
+        <span class="error-message small" v-if="$v.formAddPayment.account.$error">
+          account is required
+        </span>
       </div>
       <div class="col-12 mb-2 mb-2">
         <div class="input-group">
           <span class="input-group-text">Comment</span>
           <textarea class="form-control" aria-label="With textarea" placeholder="Comment" v-model="formAddPayment.comment"></textarea>
         </div>
+        <span class="error-message small" v-if="$v.formAddPayment.comment.$error">
+          comment is required
+        </span>
       </div>
 
     </div>
@@ -77,6 +98,8 @@ import { postAddPayment } from "../../Api/editResvertion";
 import { handleSubmissionError, showSuccessAlert } from "../../Api/MassageValidation/alertUtilities";
 import DropzoneComponent from "../layout/DropzoneComponent.vue";
 import flatpickrMixin from "../Mixin/flatpickrMixin";
+import { validationMixin } from 'vuelidate'
+import { required, email } from 'vuelidate/lib/validators'
 
 export default {
   name: "AddPayment",
@@ -96,10 +119,21 @@ export default {
         type: '',
         account: '',
         comment: '',
-        reservation_id: null
+        reservation_id: null,
+        amount: '',
+        image: null
       },
-
-
+    }
+  },
+  validations: {
+    formAddPayment: {
+      date: { required },
+      method: { required },
+      type: { required },
+      account: { required },
+      comment: { required },
+      amount: { required },
+      image: { required }  // Add validation for image
     }
   },
   components: {
@@ -110,15 +144,18 @@ export default {
       type: [String, Number],
       required: true,
     },
-
   },
   methods: {
     async addPaymentReservation ()
     {
       try {
         // Get the file from DropzoneComponent
-        const dropzoneElement = this.$refs.dropzone; // Add ref to DropzoneComponent
-        const files = dropzoneElement?.getFiles();
+        this.formAddPayment.image = this.$refs.paymentImage.files[0] || null;
+
+        this.$v.$touch()
+        if (this.$v.$invalid) {
+          return
+        }
 
         // Get the file from the file input
         const paymentImageFile = this.$refs.paymentImage.files[0];
@@ -186,6 +223,11 @@ export default {
         reservation_id: null
       }
     },
+    handleImageUpload (event)
+    {
+      const file = event.target.files[0];
+      this.formAddPayment.image = file || null;
+    },
   },
   async mounted ()
   {
@@ -210,7 +252,8 @@ export default {
 
   },
 
-  mixins: [flatpickrMixin],
+
+  mixins: [flatpickrMixin, validationMixin],
 };
 </script>
 

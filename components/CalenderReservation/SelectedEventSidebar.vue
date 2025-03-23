@@ -265,7 +265,7 @@
                     <label class="input-group-text" for="payment_method">Method</label>
                   </div>
                   <span class="error-message small" v-if="$v.formAddPayment.method.$error">
-                      payment type is required
+                      payment method is required
                     </span>
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
@@ -288,7 +288,7 @@
                     <label class="input-group-text" for="payment_accounts">Accounts</label>
                   </div>
                   <span class="error-message small" v-if="$v.formAddPayment.account.$error">
-                      account type is required
+                      account  is required
                     </span>
                 </div>
                 <div class="col-12 mb-2 mt-3">
@@ -473,17 +473,17 @@ export default {
       try {
         // Set the image value from the file input before validation
         this.formAddPayment.image = this.$refs.paymentImage.files[0] || null;
-        
+
         this.$v.$touch()
         if (this.$v.$invalid) {
           return
         }
         // Get the file from the file input
         const paymentImageFile = this.$refs.paymentImage.files[0];
-    
+
         // Create FormData to handle file upload
         const formData = new FormData();
-    
+
         // Add payment data
         const paymentData = {
           date_at: this.formAddPayment.date,
@@ -494,40 +494,40 @@ export default {
           reservation_id: this.selectedEvent.id,
           price: this.formAddPayment.amount,
         };
-    
+
         // Append payment data to FormData
         Object.keys(paymentData).forEach(key =>
         {
           formData.append(key, paymentData[key]);
         });
-    
+
         // Append image file if it exists
         if (paymentImageFile) {
           formData.append('image', paymentImageFile);
         }
-    
+
         // Log the payment data and image
         // console.log("Payment Data:", paymentData);
         // console.log("Image File:", paymentImageFile);
-    
+
         // Log FormData entries
         // for (let [key, value] of formData.entries()) {
         //   console.log(`${key}:`, value);
         // }
-    
+
         const response = await postAddPayment(formData);
         showSuccessAlert("Payment added successfully!");
         location.reload();
-    
+
         // Close the modal after saving
         const modalElement = document.getElementById('paymentModal');
         const modalInstance = bootstrap.Modal.getInstance(modalElement);
         modalInstance.hide();
-    
+
       } catch (error) {
         handleSubmissionError(error, "Failed to payment");
       }
-    
+
       // Reset the payment form
       this.cancelPayment();
     },
@@ -550,14 +550,14 @@ export default {
       try {
         const flatpickrInstance = this.$refs.rangePicker1._flatpickr;
         const selectedDates = flatpickrInstance.selectedDates;
-    
+
         if (selectedDates.length === 2) {
           const formatDate = (date) =>
           {
             const localDate = new Date(date.getTime() - (date.getTimezoneOffset() * 60000));
             return localDate.toISOString().split('T')[0];
           };
-    
+
           this.checkin_date = formatDate(selectedDates[0]);
           this.checkout_date = formatDate(selectedDates[1]);
           this.dateRange = `${this.checkin_date} to ${this.checkout_date}`;
@@ -573,7 +573,7 @@ export default {
         "change the date of this reservation",
         'confirm',
       );
-    
+
       if (result.isConfirmed && this.checkin_date && this.checkout_date) {
         try {
           const updateDataUnit = {
@@ -582,9 +582,9 @@ export default {
             unit_id: this.selectedEvent.unit_id,
             reservation_id: this.selectedEvent.id,
           };
-    
+
           const response = await postUpdateReservation(updateDataUnit.reservation_id, updateDataUnit);
-    
+
           if (response.data) {
             await showSuccessAlert("Reservation updated successfully!");
             location.reload();
@@ -605,20 +605,20 @@ export default {
       const [
         paymentMethodsResponse,
         accountsResponse,
-    
-    
+
+
       ] = await Promise.all([
         getPaymentMethods(),
         getGuestsInfo(),
       ]);
-    
+
       this.paymentMethods = paymentMethodsResponse.data.data;
       this.paymentTypes = paymentMethodsResponse.data.payment_type;
       this.accounts = accountsResponse.data.data
     } catch (error) {
       console.error("Error loading data:", error);
     }
-    
+
   },
   watch: {
     selectedEvent: {
@@ -635,14 +635,14 @@ export default {
             const day = String(d.getDate()).padStart(2, '0');
             return `${year}-${month}-${day}`;
           };
-    
+
           const checkinDate = formatDate(newEvent.checkin_date);
           const checkoutDate = formatDate(newEvent.checkout_date);
-    
+
           this.checkin_date = checkinDate;
           this.checkout_date = checkoutDate;
           this.dateRange = `${checkinDate} to ${checkoutDate}`;
-    
+
           // Update flatpickr instance with new dates
           if (this.$refs.rangePicker1?._flatpickr) {
             this.$refs.rangePicker1._flatpickr.setDate(
@@ -650,7 +650,7 @@ export default {
               true
             );
           }
-    
+
           if (newEvent.status_select) {
             this.statusOptions = newEvent.status_select;
           }
@@ -659,7 +659,7 @@ export default {
     }
   },
   mixins: [flatpickrMixin, validationMixin],
-    
+
 };
 </script>
 
