@@ -145,6 +145,9 @@
                               {{ unitType.name }}
                             </option>
                           </select>
+                          <span class="error-message small" v-if="$v.formAddReservation.units.$each[index].rateType.$error">
+                            Rate type is required
+                          </span>
                         </td>
                         <td data-label="Rate Type">
                           <select class="form-select" v-model="item.rateType" ref="rateType" :class="{ 'input-error': validationMessages.rateType }" :disabled="index > 0">
@@ -162,16 +165,23 @@
                               {{ unit.code }}
                             </option>
                           </select>
+                          <span class="error-message small" v-if="$v.formAddReservation.units.$each[index].unitId.$error">
+                            Unit is required
+                          </span>
                         </td>
                         <td data-label="Adult">
                           <input type="number" class="form-control rounded-2" v-model="item.adults" placeholder="1" aria-label="1" min="1" max="10" ref="adults" :class="{ 'input-error': validationMessages.adults }" :disabled="index > 0" />
 
-                          <span class="error-message" v-if="validationMessages.adults">{{ validationMessages.adults }}</span>
+                          <span class="error-message small" v-if="$v.formAddReservation.units.$each[index].adults.$error">
+                            Adults is required
+                          </span>
                         </td>
                         <td data-label="Child">
                           <input type="number" class="form-control rounded-2" v-model="item.children" placeholder="1" aria-label="1" value="1" min="1" max="10" ref="children" :class="{ 'input-error': validationMessages.children }" :disabled="index > 0" />
 
-                          <span class="error-message" v-if="validationMessages.children">{{ validationMessages.children }}</span>
+                          <span class="error-message small" v-if="$v.formAddReservation.units.$each[index].children.$error">
+                            children is required
+                          </span>
                         </td>
                         <td data-label="Rate(EGP)(Tax Inc.)">
                           <div class="row">
@@ -179,7 +189,9 @@
                               <div class="input-group">
                                 <input @change="(value) => $emit('change', value.target.value)" class="form-control" placeholder="0.00" id="rateAmount" v-model="item.rateAmount" aria-label="number of rateAmount" ref="rateAmount" :class="{ 'input-error': validationMessages.rateAmount }" :disabled="index > 0" /> <span class="input-group-text groupStyle">EGP</span>
                               </div>
-                              <span class="error-message" v-if="validationMessages.rateAmount">{{ validationMessages.rateAmount }}</span>
+                              <span class="error-message small" v-if="$v.formAddReservation.units.$each[index].rateAmount.$error">
+                                Rate amount is required
+                              </span>
                             </div>
                             <div class="col-md-3 p-0 d-flex">
                               <button class="btn btn-label-danger" type="button" v-if="index > 0" @click="cancelReservation(index)"> <i class="fa-solid fa-xmark"></i>
@@ -222,11 +234,11 @@
                   <div class="row">
                     <div class="col-md-6 col-xl-6 col-12 px-0">
                       <label for="flatpickr-date-03" class="form-label">Hold Release Date & Time</label>
-                      <input type="text" placeholder="YYYY-MM-DD" id="flatpickr-date-03" class="form-control rounded-2 flatpickr-input" ref="datePicker3" v-model="formAddReservation.releaseDate" />
+                      <input type="text" placeholder="YYYY-MM-DD" id="flatpickr-date-03" class="form-control  flatpickr-input" ref="datePicker3" v-model="formAddReservation.releaseDate" />
                       <i class="fa-solid fa-calendar-days icon-date"></i>
                     </div>
                     <div class="col-md-6 col-xl-6 col-12 px-0 mt">
-                      <input type="text" placeholder="HH:MM" id="flatpickr-time-03" class="form-control rounded-2 flatpickr-input" ref="timePicker3" aria-label="input Text to Time" v-model="formAddReservation.releaseTime" />
+                      <input type="text" placeholder="HH:MM" id="flatpickr-time-10" class="form-control flatpickr-input" ref="timePicker10" aria-label="input Text to Time" v-model="formAddReservation.releaseTime" />
                       <i class="fa-regular fa-clock icon-time right"></i>
                     </div>
                   </div>
@@ -239,7 +251,7 @@
                 <div class="col-md-6  col-12 px-0 px-md-3">
                   <label for="releaseTerm" class="form-label">Remind Guest before</label>
                   <div class="input-group">
-                    <input type="number" class="form-control rounded-2" placeholder="0" id="releaseTerm" v-model="formAddReservation.remindGuest" />
+                    <input type="number" class="form-control " placeholder="0" id="releaseTerm" v-model="formAddReservation.remindGuest" />
                     <span class="input-group-text groupStyle">Days</span>
                   </div>
                 </div>
@@ -264,39 +276,20 @@
             <div class="col-md-5 col-12 px-0">
               <label for="nameGuest" class="col-form-label">Guest Name</label>
               <div class="input-group">
-                <select class="form-select rounded-2" id="nameGuest">
+                <select class="form-select " id="nameGuest">
                   <option value="" disabled>MR.</option>
                   <option v-for="title in titles" :key="title" :value="title">
                     {{ title }}
                   </option>
                 </select>
                 <div class="position-relative flex-grow-1">
-                  <input
-                    type="text"
-                    class="form-control w-100 guestNameInput"
-                    v-model="formAddReservation.guestInformation.name"
-                    @input="handleSearch"
-                    @focus="showDropdown = true"
-                    @blur="handleBlur"
-                    ref="name"
-                    :class="{ 'input-error': validationMessages.name }"
-                  />
+                  <input type="text" class="form-control w-100 guestNameInput" v-model="formAddReservation.guestInformation.name" @input="handleSearch" @focus="showDropdown = true" @blur="handleBlur" ref="name" :class="{ 'input-error': validationMessages.name }" />
 
                   <!-- Suggestions Dropdown -->
-                  <div
-                    v-if="showDropdown"
-                    class="position-absolute w-100 mt-1 bg-white border rounded shadow z-5 cursor-pointer"
-                    style="max-height: 200px; overflow-y: auto; z-index: 1000;"
-                    @scroll.passive="handleScroll"
-                  >
+                  <div v-if="showDropdown" class="position-absolute w-100 mt-1 bg-white border rounded shadow z-5 cursor-pointer" style="max-height: 200px; overflow-y: auto; z-index: 1000;" @scroll.passive="handleScroll">
                     <div v-if="isLoading" class="p-2 text-muted">Loading...</div>
                     <div v-else>
-                      <div
-                        v-for="name in filteredNames"
-                        :key="name.id"
-                        class="p-2 cursor-pointer hover:bg-light"
-                        @mousedown="selectName(name)"
-                      >
+                      <div v-for="name in filteredNames" :key="name.id" class="p-2 cursor-pointer hover:bg-light" @mousedown="selectName(name)">
                         {{ name.name }}
                       </div>
                       <div v-if="!hasMore && filteredNames.length === 0" class="p-2 text-muted">
@@ -309,44 +302,49 @@
                   </div>
                 </div>
               </div>
-              <span class="error-message" v-if="validationMessages.name">{{ validationMessages.name }}</span>
-
+              <span class="error-message small" v-if="$v.formAddReservation.guestInformation.name.$error">
+                Guest name is required
+              </span>
 
             </div>
             <div class="col-md-7">
               <div class="row">
                 <div class="col-md-6 col-12 px-0 px-md-3">
-                  <label for="emailGuest" class="col-form-label">Email</label>
-                  <input class="form-control rounded-2" type="email" id="emailGuest" placeholder="Email" v-model="formAddReservation.guestInformation.email" />
+                  <label for="insurance " class="col-form-label">Insurance</label>
+                  <input class="form-control rounded-2" type="text" id="insurance" placeholder="insurance" v-model="formAddReservation.BillingSummary.insurance" />
+
                 </div>
                 <div class="col-md-6">
                   <div class="mb-3 row ">
-                    <label for="mobileGuest" class="col-form-label">Mobile</label>
-                    <input class="form-control rounded-2" type="tel" id="mobileGuest" placeholder="Mobile" v-model="formAddReservation.guestInformation.mobile" ref="mobile" :class="{ 'input-error': validationMessages.mobile }" />
-                    <span class="error-message" v-if="validationMessages.mobile">{{ validationMessages.mobile }}</span>
+                    <label for="insurance_by" class="col-form-label">Insurance By</label>
+                    <select class="form-select rounded-2" id="paymentInsuranceBy" v-model="formAddReservation.BillingSummary.insurance_by">
+                      <option disabled value="">Select</option>
+                      <option v-for="account in accounts" :key="account.id" :value="account.id">
+                        {{ account.name }}
+                      </option>
+                    </select>
+
 
                   </div>
                 </div>
               </div>
             </div>
-            <div class="col-md-12">
+            <!-- <div class="col-md-12">
               <div class="row">
                 <div class="col-md-4 col-12 px-0 pe-md-3">
                   <label for="addressGuest " class="col-form-label">Address</label>
                   <input class="form-control rounded-2" type="text" id="addressGuest" placeholder="Address" v-model="formAddReservation.guestInformation.address" />
                 </div>
                 <div class="col-md-4 col-12 px-0 pe-md-3">
-                  <label for="insurance " class="col-form-label">Insurance</label>
-                  <input class="form-control rounded-2" type="text" id="insurance" placeholder="insurance" v-model="formAddReservation.BillingSummary.insurance" />
+                  <label for="emailGuest" class="col-form-label">Email</label>
+                  <input class="form-control rounded-2" type="email" id="emailGuest" placeholder="Email" v-model="formAddReservation.guestInformation.email" />
+
                 </div>
                 <div class="col-md-4 col-12 px-0">
-                  <label for="insurance_by" class="col-form-label">Insurance By</label>
-                  <select class="form-select rounded-2" id="paymentInsuranceBy" v-model="formAddReservation.BillingSummary.insurance_by">
-                    <option disabled value="">Select</option>
-                    <option v-for="account in accounts" :key="account.id" :value="account.id">
-                      {{ account.name }}
-                    </option>
-                  </select>
+                  <label for="mobileGuest" class="col-form-label">Mobile</label>
+                    <input class="form-control rounded-2" type="tel" id="mobileGuest" placeholder="Mobile" v-model="formAddReservation.guestInformation.mobile" ref="mobile" :class="{ 'input-error': validationMessages.mobile }" />
+                    <span class="error-message" v-if="validationMessages.mobile">{{ validationMessages.mobile }}</span>
+
                 </div>
               </div>
 
@@ -361,15 +359,15 @@
                     {{ country }}
                   </option>
                 </select> -->
-                <label for="countryGuest" class="col-form-label">Country</label>
+            <!-- <label for="countryGuest" class="col-form-label">Country</label>
                 <select class="form-select" v-model="formAddReservation.guestInformation.country" :class="{ 'input-error': validationMessages.country }">
                   <option disabled value="">Select Country</option>
                   <option v-for="(country, index) in getCountries" :key="index" :value="index">
                     {{ country }}
                   </option>
-                </select>
+                </select> -->
 
-              </div>
+            <!-- </div>
               <div class="col-md-3 col-12 px-0 pe-md-3">
                 <label for="stateGuest" class="col-form-label">State</label>
                 <input class="form-control rounded-2" type="text" id="stateGuest" placeholder="state" v-model="formAddReservation.guestInformation.state" />
@@ -382,7 +380,7 @@
                 <label for="ZipGuest" class="col-form-label">Zip</label>
                 <input class="form-control rounded-2" type="text" id="ZipGuest" placeholder="Zip" v-model="formAddReservation.guestInformation.zip" />
               </div>
-            </div>
+            </div>  -->
           </div>
           <!-- *************************** -->
           <!-- BILLING SUMMARY SECTION -->
@@ -460,13 +458,15 @@ import { dateMixin } from '../../Mixin/DateMixin';
 import { showSuccessAlert, handleSubmissionError, showConfirmationAlert } from '../../../Api/MassageValidation/alertUtilities';
 import { mapState, mapGetters } from 'vuex';
 import { postCancelReservation } from "../../../Api/editResvertion";
+import { validationMixin } from 'vuelidate'
+import { required, email } from 'vuelidate/lib/validators'
 
 
 export default {
   name: "updateReservation",
   layout: "component",
   middleware: 'restrict-access', // Apply the middleware
-  mixins: [flatpickrMixin, dateMixin],
+  mixins: [flatpickrMixin, dateMixin, validationMixin],
   props: {
     reservationId: {
       type: [String, Number],
@@ -593,6 +593,30 @@ export default {
       searchQuery: '',
       availableUnitsByRoom: [], // Add this line to initialize the array
     };
+
+  },
+  validations: {
+    formAddReservation: {
+
+      reservationType: { required },
+      businessSource: { required },
+      bookingSource: { required },
+      units: {
+        $each: {
+          roomType: { required },
+          rateType: { required },
+          unitId: { required },
+          adults: { required },
+          children: { required },
+          rateAmount: { required },
+          unitTypeId: { required }
+        }
+      },
+      guestInformation: {
+        name: { required },
+
+      }
+    }
   },
 
 
@@ -666,41 +690,10 @@ export default {
     // Submit form and validate fields
     async FormUpdateReservation ()
     {
-      const requiredFields = [
-        { field: "businessSource", message: "Business Source is required" },
-        { field: "bookingSource", message: "Booking Source is required" },
-        { field: "reservationType", message: "Reservation Type is required" },
-        { field: "name", message: "Guest Name is required" },
-        { field: "mobile", message: "Guest Mobile is required" },
-        { field: "adults", message: "Adults count is required" },
-        { field: "children", message: "Children count is required" },
-        { field: "rateType", message: "Rate Type is required" },
-        { field: "rateAmount", message: "Rate Amount is required" },
-      ];
-
-      this.resetValidationMessages();
-      let hasError = false;
-
-      // Validate required fields
-      for (const { field, message } of requiredFields) {
-        let value;
-        if (["adults", "children", "rateType", "rateAmount"].includes(field)) {
-          value = this.formAddReservation.units[0]?.[field];
-        } else if (field === "name" || field === "mobile") {
-          value = this.formAddReservation.guestInformation[field];
-        } else {
-          value = this.formAddReservation[field];
-        }
-
-        if (!value) {
-          hasError = true;
-          this.$set(this.validationMessages, field, message);
-        } else {
-          this.$delete(this.validationMessages, field);
-        }
+      this.$v.$touch()
+      if (this.$v.$invalid) {
+        return
       }
-
-      if (hasError) return;
 
       // Prepare API payload
       const bookingData = {
@@ -864,7 +857,8 @@ export default {
     // ======================
     // Methods - Guest Information
     // ======================
-    async handleSearch() {
+    async handleSearch ()
+    {
       this.currentPage = 1;
       this.searchQuery = this.formAddReservation.guestInformation.name;
       this.showDropdown = true; // Make sure dropdown is shown when searching
@@ -878,14 +872,17 @@ export default {
       }
     },
 
-    handleBlur() {
+    handleBlur ()
+    {
       // Delay hiding the dropdown to allow click events to register
-      setTimeout(() => {
+      setTimeout(() =>
+      {
         this.showDropdown = false;
       }, 200);
     },
 
-    async selectName(name) {
+    async selectName (name)
+    {
       try {
         this.selectedNameId = name.id;
         // Immediately update the name in the input
@@ -914,7 +911,8 @@ export default {
       }
     },
 
-    async fetchNames() {
+    async fetchNames ()
+    {
       if (this.isLoading) return;
 
       this.isLoading = true;
@@ -1143,7 +1141,7 @@ export default {
           paid: reservationData.paid || "",
           remaining: reservationData.remaining || "",
           insurance: reservationData.insurance || "",
-          insurance_by: reservationData.insurance_by || "",
+          insurance_by: reservationData.insurance_by?.id || "",
           // billTo: reservationData.bill_to || "",
           // roomCharges: reservationData.room_charges || "",
           // taxes: reservationData.taxes || "",
