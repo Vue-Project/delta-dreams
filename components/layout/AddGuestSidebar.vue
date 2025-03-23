@@ -88,7 +88,6 @@
 
                 <div id="accordionOne" class="accordion-collapse collapse " data-bs-parent="#accordionExample" style="">
                   <div class="row accordion-body pe-0">
-                    <div class="col-12 mb-3">Identity Information</div>
 
                     <div class="row p-3 mb-2">
                       <div class="col-md-6">
