@@ -1,7 +1,6 @@
 <template>
   <div class="offcanvas offcanvas-end editSidebar" tabindex="-1" id="offcanvasEnd" aria-labelledby="offcanvasEndLabel">
     <!-- Offcanvas Header -->
-
     <div class="offcanvas-header editSideBarHeader">
       <h5 id="offcanvasEndLabel" class="offcanvas-title w-100">
 
@@ -322,7 +321,7 @@
 import flatpickrMixin from "../Mixin/flatpickrMixin";
 import { postAddPayment, postCancelReservation, postStatusChange } from "../../Api/editResvertion";
 import { showSuccessAlert, handleSubmissionError, showConfirmationAlert } from "../../Api/MassageValidation/alertUtilities";
-import { getGuestsInfo, getPaymentMethods } from "../../Api/addResvertionApi";
+import { getAccounts, getGuestsInfo, getPaymentMethods } from "../../Api/addResvertionApi";
 import { postUpdateReservation } from '../../Api/CalenderApi';
 import DropzoneComponent from "../layout/DropzoneComponent.vue";
 import { validationMixin } from 'vuelidate'
@@ -609,7 +608,7 @@ export default {
 
       ] = await Promise.all([
         getPaymentMethods(),
-        getGuestsInfo(),
+        getAccounts(),
       ]);
 
       this.paymentMethods = paymentMethodsResponse.data.data;
