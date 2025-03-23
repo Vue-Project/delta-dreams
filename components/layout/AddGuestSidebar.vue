@@ -91,14 +91,28 @@
 
                     <div class="row p-3 mb-2">
                       <div class="col-md-6">
+                        <label for="formGustIdentityGender" class="col-form-label">Gender</label>
+                          <select class="form-select" v-model="formGuest.gender" ref="gender" :class="{ 'input-error': validationMessages.gender }">
+                            <option value="" disabled selected>Select Gender</option>
+                            <option v-for="(gender, index) in getGenderTypes" :key="index" :value="index">
+                              {{ gender }}
+                            </option>
+                          </select>
+                      </div>
+                      <div class="col-md-6">
                         <div class="row">
-                          <!-- <div div class="col-md-4">
-                            <DropzoneComponent id="dropzone2" v-model="formGuest.identityImage" />
-                          </div> -->
-                          <div class="col-md-8 pe-0 ps-1">
-
+                          <div class="col-md-6">
+                            <label for="formGustInfoEmail" class="col-form-label">Email
+                      </label>
+                      <input type="email" class="form-control rounded-2" id="formGustInfoEmail" placeholder="email" aria-label="input email to Gust Email" v-model="formGuest.email"  />
 
                           </div>
+                          <div class="col-md-6">
+                            <label for="formGustInfoMobile" class="col-form-label">Mobile</label>
+                            <input class="form-control rounded-2" type="text" value="Mobile" placeholder="Mobile" id="formGustInfoMobile" aria-label="input tel to Gust Mobile" v-model="formGuest.mobile" />
+
+                          </div>
+
                         </div>
                       </div>
 
@@ -126,30 +140,7 @@
                         </div>
 
                       </div> -->
-                      <div class="row">
-                        <div class="col-lg-4 col-md-4 col-12">
-                          <label for="formGustIdentityGender" class="col-form-label">Gender</label>
-                          <select class="form-select" v-model="formGuest.gender" ref="gender" :class="{ 'input-error': validationMessages.gender }">
-                            <option value="" disabled selected>Select Gender</option>
-                            <option v-for="(gender, index) in getGenderTypes" :key="index" :value="index">
-                              {{ gender }}
-                            </option>
-                          </select>
 
-                        </div>
-                        <div class="col-lg-4 col-md-4s col-12">
-                          <label for="formGustInfoMobile" class="col-form-label">Mobile</label>
-                          <input class="form-control rounded-2" type="text" value="Mobile" placeholder="Mobile" id="formGustInfoMobile" aria-label="input tel to Gust Mobile" v-model="formGuest.mobile" />
-
-                        </div>
-                        <div class="col-lg-4 col-md-4 col-12">
-                          <label for="formGustInfoEmail" class="col-form-label">Email
-                      </label>
-                      <input type="email" class="form-control rounded-2" id="formGustInfoEmail" placeholder="email" aria-label="input email to Gust Email" v-model="formGuest.email" r />
-
-                        </div>
-
-                      </div>
                       <div data-v-a3b6683a="" class="row pe-0">
                         <div data-v-a3b6683a="" class="col-md-3 pe-0"><label data-v-a3b6683a="" for="formGustInfoAddress" class="col-form-label">Address</label> <input data-v-a3b6683a="" type="text" id="formGustInfoAddress" placeholder="Address" aria-label="input Text to Gust Address" class="form-control rounded-2"></div>
                         <div data-v-a3b6683a="" class="col-md-3 pe-0"><label data-v-a3b6683a="" for="countryGuest" class="col-form-label">Country</label> <select data-v-a3b6683a="" id="countryGuest" class="form-select">

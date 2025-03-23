@@ -23,8 +23,8 @@
               <label for="formIdentityInfoId" class="col-form-label">ID Number</label>
               <input class="form-control" type="text" id="formIdentityInfoId" placeholder="Enter ID Number" aria-label="Enter ID Number Guest" v-model="formGuest.OtherInformation.idNumber" />
               <span class="error-message small" v-if="$v.formGuest.OtherInformation.idNumber.$error">
-  ID Number is required
-</span>
+                ID Number is required
+              </span>
 
 
             </div>
@@ -39,8 +39,8 @@
               <label for="formGustInfoPhone" class="col-form-label">Phone</label>
               <input class="form-control rounded-2" type="text" value="Phone" id="formGustInfoPhone" placeholder="phone" aria-label="input tel to Gust Phone" v-model="formGuest.phone" ref="phone" :class="{ 'input-error': validationMessages.phone }" />
               <span class="error-message small" v-if="$v.formGuest.phone.$error">
-                        Phone is required
-                      </span>
+                Phone is required
+              </span>
             </div>
           </div>
           <div class="col-md-6 ps-0">
@@ -55,25 +55,25 @@
         <div class="row">
           <div class="col-md-6 col-12 ps-0">
             <label for="formGustIdentityIdType" class="col-form-label">ID Type</label>
-                      <select class="form-select" id="formGustIdentityIdType" aria-label="select ID Type" v-model="formGuest.OtherInformation.idType">
-                        <option value="" disabled selected>
-                          Select
-                        </option>
-                        <option v-for="(nationalType, index) in getNationalTypes" :key="index" :value="index">
-                          {{ nationalType }}
-                        </option>
-                      </select>
-                      <span class="error-message small" v-if="$v.formGuest.OtherInformation.idType.$error">
-  ID Type is required
-</span>
+            <select class="form-select" id="formGustIdentityIdType" aria-label="select ID Type" v-model="formGuest.OtherInformation.idType">
+              <option value="" disabled selected>
+                Select
+              </option>
+              <option v-for="(nationalType, index) in getNationalTypes" :key="index" :value="index">
+                {{ nationalType }}
+              </option>
+            </select>
+            <span class="error-message small" v-if="$v.formGuest.OtherInformation.idType.$error">
+              ID Type is required
+            </span>
 
           </div>
           <div class="col-md-6 col-12 ps-0">
             <label for="flatpickr-date-08" class="col-form-label">Expiry Date</label>
             <input type="text" class="form-control" placeholder="YYYY-MM-D " id="flatpickr-date-08" ref="datePicker8" aria-label="input Text to Expiry Date" v-model="formGuest.OtherInformation.expiryDate" />
             <span class="error-message small" v-if="$v.formGuest.OtherInformation.expiryDate.$error">
-  Expiry Date is required
-</span>
+              Expiry Date is required
+            </span>
             <i class="fa-solid fa-calendar-days icon-date top"></i>
           </div>
         </div>
@@ -108,31 +108,31 @@
 
               </div>
               <div class="row">
-                <div class="col-md-4 pe-0">
-                      <label for="formGustIdentityGender" class="col-form-label">Gender</label>
-            <select class="form-select" v-model="formGuest.gender" ref="gender" :class="{ 'input-error': validationMessages.gender }">
-              <option value="" disabled selected>Select Gender</option>
-              <option v-for="(gender, index) in getGenderTypes" :key="index" :value="index">
-                {{ gender }}
-              </option>
-            </select>
-                    </div>
-                  <div class="col-md-4 pe-0 ">
-                    <div class="mb-3 ">
-                      <label for="formGustInfoMobile" class="col-form-label">Mobile</label>
-                      <input class="form-control" type="text" value="Mobile" id="formGustInfoMobile" aria-label="input tel to Gust Mobile" v-model="formGuest.mobile" />
-                    </div>
-                  </div>
-                  <div class="col-md-4 pe-0">
-                    <div class="mb-3">
-                      <label for="formGustInfoEmail" class="col-form-label">Email
-              </label>
-              <input type="email" class="form-control" id="formGustInfoEmail" placeholder="Email" aria-label="input email to Gust Email" v-model="formGuest.email" r />
-
-                    </div>
-                  </div>
-
+                <div class="col-md-6 pe-0">
+                  <label for="formGustIdentityGender" class="col-form-label">Gender</label>
+                  <select class="form-select" v-model="formGuest.gender" ref="gender" :class="{ 'input-error': validationMessages.gender }">
+                    <option value="" disabled selected>Select Gender</option>
+                    <option v-for="(gender, index) in getGenderTypes" :key="index" :value="index">
+                      {{ gender }}
+                    </option>
+                  </select>
                 </div>
+                <div class="col-md-3 pe-0 ">
+                  <div class="mb-3 ">
+                    <label for="formGustInfoMobile" class="col-form-label">Mobile</label>
+                    <input class="form-control" type="text" value="Mobile" id="formGustInfoMobile" aria-label="input tel to Gust Mobile" v-model="formGuest.mobile" />
+                  </div>
+                </div>
+                <div class="col-md-3 pe-0">
+                  <div class="mb-3">
+                    <label for="formGustInfoEmail" class="col-form-label">Email
+                    </label>
+                    <input type="email" class="form-control" id="formGustInfoEmail" placeholder="Email" aria-label="input email to Gust Email" v-model="formGuest.email" r />
+
+                  </div>
+                </div>
+
+              </div>
             </div>
             <div class="row ">
               <div class="col-md-3 pe-0">
@@ -276,16 +276,16 @@ export default {
     };
   },
   validations: {
-  formGuest: {
-    name: { required },
-    phone: { required },
-    OtherInformation: {
-      idNumber: { required },
-      idType: { required },
-      expiryDate: { required }
+    formGuest: {
+      name: { required },
+      phone: { required },
+      OtherInformation: {
+        idNumber: { required },
+        idType: { required },
+        expiryDate: { required }
+      }
     }
-  }
-},
+  },
   methods: {
     resetValidationMessages ()
     {
