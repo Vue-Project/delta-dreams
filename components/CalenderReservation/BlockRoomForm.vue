@@ -121,9 +121,10 @@ export default {
       if (this.selectedResourceId) {
         const parts = this.selectedResourceId.split("-");
 
+
         if (parts.length >= 3) {
           // Show "UNIT-5480" in the input field
-          this.formBlock.roomType = `${parts[0]}-${parts[1]}`;
+          this.formBlock.roomType = `${parts[0]}`;
 
           // Get the last number from the last part (e.g., "7" from "21-7")
           const lastPart = parts[parts.length - 1].split("-");
@@ -173,6 +174,7 @@ export default {
           start_date: dateUtils.formatForApi(startDate),
           end_date: dateUtils.formatForApi(endDate),
         };
+        log(blockRoomData);
 
         const responseBlockRoom = await blockRoomService(blockRoomData);
         await showSuccessAlert("Room blocked successfully!");
