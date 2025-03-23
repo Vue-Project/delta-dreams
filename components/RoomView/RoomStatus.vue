@@ -85,6 +85,7 @@
 <script>
 import { getRooms } from '../../Api/roomViewApi';
 import Swal from 'sweetalert2'
+import flatpickrMixin from '../Mixin/flatpickrMixin';
 
 
 export default {
@@ -221,7 +222,9 @@ export default {
 
     this.fetchTabData(this.activeTab);
   },
+  mixins:[flatpickrMixin]
 };
+
 </script>
 
 <style scoped>
