@@ -74,13 +74,12 @@
 
                 <div class="col-lg-9 col-12 mb-4 col-md-9 ps-sm-2 p-0 pe-md-0">
                   <label for="reservationType" class="form-label">Reservation Type</label>
-                  <select class="form-select" id="reservationType" v-model="formAddReservation.reservationType" ref="reservationType" :class="{ 'input-error': validationMessages.reservationType }">
+                  <select class="form-select" id="reservationType" v-model="formAddReservation.reservationType" ref="reservationType" >
                     <option disabled value="">Select</option>
                     <option v-for="(type, index) in getReservationTypes" :key="index" :value="type">
                       {{ type }}
                     </option>
                   </select>
-                  <span v-if="validationMessages.reservationType" class="error-message">{{ validationMessages.reservationType }}</span>
 
                 </div>
               </div>
@@ -92,25 +91,23 @@
                 <div class="row">
                   <div class=" col-md-6 col-12">
                     <label for="bookingSource" class="form-label">Booking Source</label>
-                    <select class="form-select" id="bookingSource" v-model="formAddReservation.bookingSource" ref="bookingSource" :class="{ 'input-error': validationMessages.bookingSource }">
+                    <select class="form-select" id="bookingSource" v-model="formAddReservation.bookingSource" ref="bookingSource" >
                       <option disabled value="">Select</option>
                       <option v-for="source in bookingSources" :key="source.id" :value="source.id">
                         {{ source.name }}
                       </option>
                     </select>
-                    <span v-if="validationMessages.bookingSource" class="error-message">{{ validationMessages.bookingSource }}</span>
                   </div>
                   <!-- BUSINESS SOURCE SELECTION -->
 
                   <div class="col-md-6 col-12">
                     <label for="businessSource" class="form-label">Business Source</label>
-                    <select class="form-select" id="businessSource" v-model="formAddReservation.businessSource" ref="businessSource" :class="{ 'input-error': validationMessages.businessSource }">
+                    <select class="form-select" id="businessSource" v-model="formAddReservation.businessSource" ref="businessSource" >
                       <option disabled value="">Select</option>
                       <option v-for="source in businessSources" :key="source.id" :value="source.id">
                         {{ source.name }}
                       </option>
                     </select>
-                    <span class="error-message" v-if="validationMessages.businessSource">{{ validationMessages.businessSource }}</span>
                   </div>
                 </div>
               </div>
@@ -150,13 +147,12 @@
                           </span>
                         </td>
                         <td data-label="Rate Type">
-                          <select class="form-select" v-model="item.rateType" ref="rateType" :class="{ 'input-error': validationMessages.rateType }" :disabled="index > 0">
+                          <select class="form-select" v-model="item.rateType" ref="rateType" :disabled="index > 0">
                             <option disabled value="">select</option>
                             <option v-for="(type, index) in getRateTypes" :key="index" :value="index">
                               {{ type }}
                             </option>
                           </select>
-                          <span class="error-message" v-if="validationMessages.rateType">{{ validationMessages.rateType }}</span>
                         </td>
                         <td data-label="Room">
                           <select class="form-select" v-model="item.unitId" :disabled="!availableUnitsByRoom[index]?.length || index > 0">
@@ -170,14 +166,14 @@
                           </span>
                         </td>
                         <td data-label="Adult">
-                          <input type="number" class="form-control rounded-2" v-model="item.adults" placeholder="1" aria-label="1" min="1" max="10" ref="adults" :class="{ 'input-error': validationMessages.adults }" :disabled="index > 0" />
+                          <input type="number" class="form-control rounded-2" v-model="item.adults" placeholder="1" aria-label="1" min="1" max="10" ref="adults"  :disabled="index > 0" />
 
                           <span class="error-message small" v-if="$v.formAddReservation.units.$each[index].adults.$error">
                             Adults is required
                           </span>
                         </td>
                         <td data-label="Child">
-                          <input type="number" class="form-control rounded-2" v-model="item.children" placeholder="1" aria-label="1" value="1" min="1" max="10" ref="children" :class="{ 'input-error': validationMessages.children }" :disabled="index > 0" />
+                          <input type="number" class="form-control rounded-2" v-model="item.children" placeholder="1" aria-label="1" value="1" min="1" max="10" ref="children"  :disabled="index > 0" />
 
                           <span class="error-message small" v-if="$v.formAddReservation.units.$each[index].children.$error">
                             children is required
@@ -187,7 +183,7 @@
                           <div class="row">
                             <div class="col-lg-9 ">
                               <div class="input-group">
-                                <input @change="(value) => $emit('change', value.target.value)" class="form-control" placeholder="0.00" id="rateAmount" v-model="item.rateAmount" aria-label="number of rateAmount" ref="rateAmount" :class="{ 'input-error': validationMessages.rateAmount }" :disabled="index > 0" /> <span class="input-group-text groupStyle">EGP</span>
+                                <input @change="(value) => $emit('change', value.target.value)" class="form-control" placeholder="0.00" id="rateAmount" v-model="item.rateAmount" aria-label="number of rateAmount" ref="rateAmount"  :disabled="index > 0" /> <span class="input-group-text groupStyle">EGP</span>
                               </div>
                               <span class="error-message small" v-if="$v.formAddReservation.units.$each[index].rateAmount.$error">
                                 Rate amount is required
@@ -283,7 +279,7 @@
                   </option>
                 </select>
                 <div class="position-relative flex-grow-1">
-                  <input type="text" class="form-control w-100 guestNameInput" v-model="formAddReservation.guestInformation.name" @input="handleSearch" @focus="showDropdown = true" @blur="handleBlur" ref="name" :class="{ 'input-error': validationMessages.name }" />
+                  <input type="text" class="form-control w-100 guestNameInput" v-model="formAddReservation.guestInformation.name" @input="handleSearch" @focus="showDropdown = true" @blur="handleBlur" ref="name"  />
 
                   <!-- Suggestions Dropdown -->
                   <div v-if="showDropdown" class="position-absolute w-100 mt-1 bg-white border rounded shadow z-5 cursor-pointer" style="max-height: 200px; overflow-y: auto; z-index: 1000;" @scroll.passive="handleScroll">
@@ -572,15 +568,15 @@ export default {
       },
 
       // Validation Messages
-      validationMessages: {
-        businessSource: '',
-        reservationType: '',
-        name: '',
-        mobile: '',
-        adults: '',
-        children: '',
-        rateType: '',
-      },
+      // validationMessages: {
+      //   businessSource: '',
+      //   reservationType: '',
+      //   name: '',
+      //   mobile: '',
+      //   adults: '',
+      //   children: '',
+      //   rateType: '',
+      // },
 
       // Guest Information
       selectedNameId: null, // ID to send to the server
@@ -839,20 +835,20 @@ export default {
     },
 
     // Reset validation messages
-    resetValidationMessages ()
-    {
-      this.validationMessages = {
-        name: '',
-        mobile: '',
-        businessSource: '',
-        bookingSource: '',
-        reservationType: '',
-        adults: '',
-        children: '',
-        rateAmount: '',
-        rateType: '',
-      };
-    },
+    // resetValidationMessages ()
+    // {
+    //   this.validationMessages = {
+    //     name: '',
+    //     mobile: '',
+    //     businessSource: '',
+    //     bookingSource: '',
+    //     reservationType: '',
+    //     adults: '',
+    //     children: '',
+    //     rateAmount: '',
+    //     rateType: '',
+    //   };
+    // },
 
     // ======================
     // Methods - Guest Information
