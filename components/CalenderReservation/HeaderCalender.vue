@@ -16,6 +16,9 @@
           <div class="dropdown w-100">
             <button class="btn btn-primary dropdown-toggle w-100" type="button" id="buildingsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
               <i class="fa-solid fa-filter pe-2"></i>filter types
+              <span v-if="selectedBuildings.length" class="badge bg-light text-dark ms-1">
+                {{ selectedBuildings.length }}
+              </span>
             </button>
             <ul class="dropdown-menu w-100" aria-labelledby="buildingsDropdown">
               <li>
@@ -28,8 +31,13 @@
                 <hr class="dropdown-divider" />
               </li>
               <li v-for="building in buildingNames" :key="building">
-                <a class="dropdown-item" href="#" @click.prevent="toggleBuilding(building)">
-                  <input type="checkbox" v-model="selectedBuildings" :value="building" class="form-check-input me-2" />
+                <a class="dropdown-item" href="#" @click.stop.prevent="toggleBuilding(building, $event)">
+                  <input
+                    type="checkbox"
+                    :checked="selectedBuildings.includes(building)"
+                    class="form-check-input me-2"
+                    @click.stop
+                  />
                   <span>{{ building }}</span>
                 </a>
               </li>
@@ -157,6 +165,8 @@ import flatpickrMixin from "../Mixin/flatpickrMixin";
 import { mapState, mapGetters } from 'vuex';
 import { handleSubmissionError, showSuccessAlert } from "../../Api/MassageValidation/alertUtilities";
 import { getCalenderFilter, postCalenderFilter } from "../../Api/CalenderApi";
+import _ from 'lodash'; // Add this import for Lodash
+
 
 export default {
   name: "HeaderCalender",
@@ -250,45 +260,74 @@ export default {
       this.selectAllProjects = this.selectedProjects.length === this.getProjects.length;
       // await this.getFilterData();
     },
-    toggleSelectAllBuildings ()
-    {
+    toggleSelectAllBuildings() {
       this.selectAllBuildings = !this.selectAllBuildings;
       if (this.selectAllBuildings) {
         this.selectedBuildings = [];
         this.$emit("show-all-resources");
       } else {
+        // When unchecking "Show All", don't select any buildings by default
         this.$emit("show-building-resources", this.selectedBuildings);
       }
     },
 
-    async toggleBuilding (building)
-    {
-      if (this.selectedBuildings.includes(building)) {
-        this.selectedBuildings = this.selectedBuildings.filter((b) => b !== building);
-      } else {
-        this.selectedBuildings.push(building);
-      }
-      this.selectAllBuildings = this.selectedBuildings.length === 0;
-      this.$emit("show-building-resources", this.selectedBuildings);
-      await this.getFilterData();
-    },
-    async getFilterData ()
-    {
-      try {
-        const filterCalender = {
-          project_ids: this.selectedProjects,
-          rate_types: this.selectedRateTypes,
-        };
-        const response = await getCalenderFilter(filterCalender);
-        this.data = response.data;
-        // location.reload();
-        // Emit the updated data to BookingCalendar
-        this.$root.$emit('calendar-data-updated', response.data);
+    async toggleBuilding(building, event) {
+  // Prevent event bubbling
+  if (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
 
-      } catch (error) {
-        console.log(error);
-      }
-    },
+  // Manually handle the checkbox state
+  const index = this.selectedBuildings.indexOf(building);
+  let newSelectedBuildings = [...this.selectedBuildings];
+
+  if (index !== -1) {
+    // Remove if already selected
+    newSelectedBuildings.splice(index, 1);
+  } else {
+    // Add if not selected
+    newSelectedBuildings.push(building);
+    // Turn off "Show All" when selecting a specific building
+    this.selectAllBuildings = false;
+  }
+
+  // Update the array
+  this.selectedBuildings = newSelectedBuildings;
+
+  // Only set selectAllBuildings to true if no buildings are selected
+  if (this.selectedBuildings.length === 0) {
+    this.selectAllBuildings = true;
+    this.$emit("show-all-resources");
+  } else {
+    this.$emit("show-building-resources", this.selectedBuildings);
+  }
+
+  // IMPORTANT: Don't call getFilterData() here as it might be overriding your building selection
+  // Instead, let the parent component handle the building filter
+},
+async getFilterData() {
+  try {
+    const filterCalender = {
+      project_ids: this.selectedProjects,
+      rate_types: this.selectedRateTypes,
+      building_ids: this.selectedBuildings.length > 0 ? this.selectedBuildings : null
+    };
+
+    const response = await getCalenderFilter(filterCalender);
+    this.data = response.data;
+
+    // Emit the updated data to BookingCalendar
+    this.$root.$emit('calendar-data-updated', response.data);
+
+    // IMPORTANT: Make sure to preserve building filter after data is updated
+    if (this.selectedBuildings.length > 0) {
+      this.$emit("show-building-resources", this.selectedBuildings);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+},
     async applyFilters ()
     {
       await this.getFilterData();
@@ -345,33 +384,28 @@ export default {
       required: true,
     },
   },
-  // watch: {
-  //   selectedBuildings(newVal) {
-  //     if (newVal.length === 0) {
-  //       this.selectAllBuildings = true;
-  //     } else {
-  //       this.selectAllBuildings = false;
-  //     }
-  //   },
-  //   selectedRateTypes: {
-  //     handler: _.debounce(async function(newVal) {
-  //       await this.getFilterData();
-  //     }, 500),
-  //     deep: true
-  //   },
-  //   selectedProjects: {
-  //     handler: _.debounce(async function(newVal) {
-  //       await this.getFilterData();
-  //     }, 500),
-  //     deep: true
-  //   },
-  //   selectedBuildings: {
-  //     handler: _.debounce(async function(newVal) {
-  //       await this.getFilterData();
-  //     }, 500),
-  //     deep: true
-  //   }
-  // },
+  watch: {
+  selectedBuildings(newVal) {
+    if (newVal.length === 0) {
+      this.selectAllBuildings = true;
+    } else {
+      this.selectAllBuildings = false;
+    }
+    // Don't call getFilterData here for buildings - let the parent handle it
+  },
+  selectedRateTypes: {
+    handler: _.debounce(async function(newVal) {
+      await this.getFilterData();
+    }, 500),
+    deep: true
+  },
+  selectedProjects: {
+    handler: _.debounce(async function(newVal) {
+      await this.getFilterData();
+    }, 500),
+    deep: true
+  }
+}
 };
 </script>
 
