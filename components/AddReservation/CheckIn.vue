@@ -68,7 +68,7 @@
 
                 <div class="col-lg-9 col-12 mb-lg-4 ps-md-2 col-md-6 p-0 pe-md-0">
                   <label for="reservationType" class="form-label">Reservation Type</label>
-                  <select class="form-select" id="reservationType" v-model="formAddReservation.reservationType" ref="reservationType" :class="{ 'input-error': validationMessages.reservationType }">
+                  <select class="form-select" id="reservationType" v-model="formAddReservation.reservationType" ref="reservationType" >
                     <option disabled value="">Select</option>
                     <option v-for="(type, index) in getReservationTypes" :key="index" :value="index">
                       {{ type }}
@@ -87,7 +87,7 @@
                 <div class="row">
                   <div class="col-lg-6 col-md-6">
                     <label for="bookingSource" class="form-label">Booking Source</label>
-                    <select class="form-select" id="bookingSource" v-model="formAddReservation.bookingSource" ref="bookingSource" :class="{ 'input-error': validationMessages.bookingSource }">
+                    <select class="form-select" id="bookingSource" v-model="formAddReservation.bookingSource" ref="bookingSource">
                       <option value="" disabled>Select</option>
                       <option v-for="source in bookingSources" :key="source.id" :value="source.id">
                         {{ source.name }}
@@ -100,7 +100,7 @@
                   </div>
                   <div class="col-lg-6 col-md-6 buisnessSourceInput">
                     <label for="businessSource" class="form-label">Business Source</label>
-                    <select class="form-select" id="businessSource" v-model="formAddReservation.businessSource" ref="businessSource" :class="{ 'input-error': validationMessages.businessSource }">
+                    <select class="form-select" id="businessSource" v-model="formAddReservation.businessSource" ref="businessSource" >
                       <option disabled value="">Select</option>
                       <option v-for="source in businessSources" :key="source.id" :value="source.id">
                         {{ source.name }}
@@ -181,7 +181,7 @@
                           </span>
                         </td>
                         <td data-label="Rate Type">
-                          <select class="form-select" v-model="item.rateType" ref="rateType" :class="{ 'input-error': validationMessages.rateType }">
+                          <select class="form-select" v-model="item.rateType" ref="rateType" >
                             <option disabled value="">select</option>
                             <option v-for="(type, index) in getRateTypes" :key="index" :value="index">
                               {{ type }}
@@ -203,13 +203,13 @@
                           </span>
                         </td>
                         <td data-label="Adult">
-                          <input type="number" class="form-control rounded-2" v-model="item.adults" placeholder="1" aria-label="1" min="1" max="10" ref="adults" :class="{ 'input-error': validationMessages.adults }" />
+                          <input type="number" class="form-control rounded-2" v-model="item.adults" placeholder="1" aria-label="1" min="1" max="10" ref="adults" />
                           <span class="error-message small" v-if="$v.formAddReservation.units.$each[index].adults.$error">
                             Adults is required
                           </span>
                         </td>
                         <td data-label="Child">
-                          <input type="number" class="form-control rounded-2" v-model="item.children" placeholder="0" aria-label="0" min="0" max="10" ref="children" :class="{ 'input-error': validationMessages.children }" />
+                          <input type="number" class="form-control rounded-2" v-model="item.children" placeholder="0" aria-label="0" min="0" max="10" ref="children"  />
                           <span class="error-message small" v-if="$v.formAddReservation.units.$each[index].children.$error">
                             Children is required
                           </span>
@@ -218,7 +218,7 @@
                           <div class="row">
                             <div class="col-lg-10">
                               <div class="input-group">
-                                <input @change="(value) => $emit('change', value.target.value)" class="form-control" placeholder="0.00" id="rateAmount" v-model="item.rateAmount" aria-label="number of rateAmount" ref="rateAmount" :class="{ 'input-error': validationMessages.rateAmount }" />
+                                <input @change="(value) => $emit('change', value.target.value)" class="form-control" placeholder="0.00" id="rateAmount" v-model="item.rateAmount" aria-label="number of rateAmount" ref="rateAmount"/>
                                 <span class="input-group-text groupStyle">EGP</span>
                               </div>
                               <span class="error-message small" v-if="$v.formAddReservation.units.$each[index].rateAmount.$error">
@@ -310,7 +310,7 @@
                   </option>
                 </select>
                 <div class="position-relative flex-grow-1">
-                  <input type="text" class="form-control w-100 guestNameInput" v-model="formAddReservation.guestInformation.name" @input="handleSearch" @focus="showDropdown = true" @blur="handleBlur" ref="name" :class="{ 'input-error': validationMessages.name }" />
+                  <input type="text" class="form-control w-100 guestNameInput" v-model="formAddReservation.guestInformation.name" @input="handleSearch" @focus="showDropdown = true" @blur="handleBlur" ref="name" />
 
                   <!-- Suggestions Dropdown -->
                   <div v-if="showDropdown" class="position-absolute w-100 mt-1 bg-white border rounded shadow z-5 cursor-pointer" style="max-height: 200px; overflow-y: auto" @scroll.passive="handleScroll">
@@ -544,16 +544,16 @@ export default {
         },
         bookingSource: "",
       },
-      validationMessages: {
-        businessSource: '',
-        reservationType: '',
-        name: '',
-        mobile: '',
-        adults: '',
-        children: '',
-        rateType: '',
-        rateAmount: '',
-      },
+      // validationMessages: {
+      //   businessSource: '',
+      //   reservationType: '',
+      //   name: '',
+      //   mobile: '',
+      //   adults: '',
+      //   children: '',
+      //   rateType: '',
+      //   rateAmount: '',
+      // },
       selectedNameId: null,
       showDropdown: false,
       filteredNames: [],
@@ -697,10 +697,10 @@ export default {
     //   },
 
     // Reset validation messages
-    resetValidationMessages ()
-    {
-      this.validationMessages = {};
-    },
+    // resetValidationMessages ()
+    // {
+    //   this.validationMessages = {};
+    // },
 
     // Reset the form
     resetForm ()
@@ -762,6 +762,7 @@ export default {
       if (this.$v.$invalid) {
         return
       }
+
 
       // Stop submission if there are errors
       // if (hasError) return;
