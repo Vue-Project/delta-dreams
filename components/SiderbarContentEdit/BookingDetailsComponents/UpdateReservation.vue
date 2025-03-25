@@ -261,8 +261,7 @@
                           <span
                             class="error-message small"
                             v-if="
-                              $v.formAddReservation.units.$each[0].rateType
-                                .$error
+                              $v.formAddReservation.units[0].rateType.$error
                             "
                           >
                             Rate type is required
@@ -304,9 +303,7 @@
                           </select>
                           <span
                             class="error-message small"
-                            v-if="
-                              $v.formAddReservation.units.$each[0].unitId.$error
-                            "
+                            v-if="$v.formAddReservation.units[0].unitId.$error"
                           >
                             Unit is required
                           </span>
@@ -326,9 +323,7 @@
 
                           <span
                             class="error-message small"
-                            v-if="
-                              $v.formAddReservation.units.$each[0].adults.$error
-                            "
+                            v-if="$v.formAddReservation.units[0].adults.$error"
                           >
                             Adults is required
                           </span>
@@ -350,8 +345,7 @@
                           <span
                             class="error-message small"
                             v-if="
-                              $v.formAddReservation.units.$each[0].children
-                                .$error
+                              $v.formAddReservation.units[0].children.$error
                             "
                           >
                             children is required
@@ -381,8 +375,8 @@
                               <span
                                 class="error-message small"
                                 v-if="
-                                  $v.formAddReservation.units.$each[0]
-                                    .rateAmount.$error
+                                  $v.formAddReservation.units[0].rateAmount
+                                    .$error
                                 "
                               >
                                 Rate amount is required
@@ -904,14 +898,15 @@ export default {
       businessSource: { required },
       bookingSource: { required },
       units: {
-        $each: {
+        0: {
+          // Validate only the first unit (index 0)
           roomType: { required },
           rateType: { required },
           unitId: { required },
           adults: { required },
           children: { required },
           rateAmount: { required },
-          unitTypeId: { required },
+          // unitTypeId: { required },
         },
       },
       guestInformation: {
@@ -987,10 +982,10 @@ export default {
     },
     // Submit form and validate fields
     async FormUpdateReservation() {
-      // this.$v.$touch();
-      // if (this.$v.$invalid) {
-      //   return;
-      // }
+      this.$v.$touch();
+      if (this.$v.$invalid) {
+        return;
+      }
 
       // Prepare API payload
       const bookingData = {
@@ -1043,7 +1038,6 @@ export default {
         // payment_method_city: this.formAddReservation.BillingSummary.CityLedger,
         // selected_payment_method: this.formAddReservation.BillingSummary.payMentUser,
       };
-      console.log(bookingData);
 
       try {
         const response = await PutUpdateReservation(
