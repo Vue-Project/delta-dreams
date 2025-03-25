@@ -612,7 +612,6 @@ export default {
           national_expire_date: this.formGuest.expiryDate,
           national_type: this.formGuest.idType,
         };
-        console.log(addGuestData);
 
         // Append all text data to FormData
         Object.keys(addGuestData).forEach((key) => {
