@@ -6,7 +6,14 @@
         <!-- Date Picker -->
         <div class="col-lg-4 col-md-6 col-12">
           <div class="position-relative">
-            <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD" id="flatpickr-date-04" ref="datePicker4" aria-label="Select date" />
+            <input
+              type="text"
+              class="form-control flatpickr-input"
+              placeholder="YYYY-MM-DD"
+              id="flatpickr-date-04"
+              ref="datePicker4"
+              aria-label="Select date"
+            />
             <i class="fa-solid fa-calendar-days date-icon"></i>
           </div>
         </div>
@@ -14,16 +21,33 @@
         <!-- Building Filter - Always Visible -->
         <div class="col-lg-4 col-md-6 col-12">
           <div class="dropdown w-100">
-            <button class="btn btn-primary dropdown-toggle w-100" type="button" id="buildingsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <button
+              class="btn btn-primary dropdown-toggle w-100"
+              type="button"
+              id="buildingsDropdown"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
               <i class="fa-solid fa-filter pe-2"></i>filter types
-              <span v-if="selectedBuildings.length" class="badge bg-light text-dark ms-1">
+              <span
+                v-if="selectedBuildings.length"
+                class="badge bg-light text-dark ms-1"
+              >
                 {{ selectedBuildings.length }}
               </span>
             </button>
             <ul class="dropdown-menu w-100" aria-labelledby="buildingsDropdown">
               <li>
-                <a class="dropdown-item" href="#" @click.prevent="toggleSelectAllBuildings">
-                  <input type="checkbox" v-model="selectAllBuildings" class="form-check-input me-2" />
+                <a
+                  class="dropdown-item"
+                  href="#"
+                  @click.prevent="toggleSelectAllBuildings"
+                >
+                  <input
+                    type="checkbox"
+                    v-model="selectAllBuildings"
+                    class="form-check-input me-2"
+                  />
                   <span>Show All</span>
                 </a>
               </li>
@@ -31,7 +55,11 @@
                 <hr class="dropdown-divider" />
               </li>
               <li v-for="building in buildingNames" :key="building">
-                <a class="dropdown-item" href="#" @click.stop.prevent="toggleBuilding(building, $event)">
+                <a
+                  class="dropdown-item"
+                  href="#"
+                  @click.stop.prevent="toggleBuilding(building, $event)"
+                >
                   <input
                     type="checkbox"
                     :checked="selectedBuildings.includes(building)"
@@ -49,41 +77,59 @@
 
     <!-- Right Column - Filters and Info -->
     <div class="col-lg-6 col-md-12">
-      <div class="row g-2">
+      <div class="row g-2 justify-content-end">
         <!-- Quick Reservation - Always Visible -->
-        <div class="col-6 col-lg-4 order-1 quick-reservation">
+        <div class="col-6 col-lg-6 order-1 quick-reservation">
           <button class="btn btn-primary w-100" @click="quickReservation">
             Quick Reservation
           </button>
         </div>
 
         <!-- Mobile Filter Button -->
-        <div class="col-6 col-lg-4 order-2 d-lg-none">
+        <div class="col-6 col-lg-6 order-2 d-lg-none">
           <button class="btn btn-primary w-100" @click="toggleSidebar">
             <i class="fa-solid fa-filter pe-2"></i>More Filters
           </button>
         </div>
 
         <!-- Desktop Only Filters -->
-        <div class="d-none d-lg-block col-lg-4 order-2">
+        <!-- <div class="d-none d-lg-block col-lg-4 order-2">
           <button class="btn btn-primary w-100" @click="applyFilters">
             Apply Filters
           </button>
-        </div>
+        </div> -->
 
         <!-- Rate Types Filter - Desktop Only -->
         <div class="d-none d-lg-block col-lg-4 order-3">
           <div class="dropdown w-100">
-            <button class="btn btn-primary dropdown-toggle w-100" type="button" id="rateTypesDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <button
+              class="btn btn-primary dropdown-toggle w-100"
+              type="button"
+              id="rateTypesDropdown"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
               <i class="fa-solid fa-filter pe-2"></i>Filter Rate Types
-              <span v-if="selectedRateTypes.length" class="badge bg-light text-dark ms-1">
+              <span
+                v-if="selectedRateTypes.length"
+                class="badge bg-light text-dark ms-1"
+              >
                 {{ selectedRateTypes.length }}
               </span>
             </button>
             <ul class="dropdown-menu w-100" aria-labelledby="rateTypesDropdown">
               <li v-for="(type, index) in getRateTypes" :key="index">
-                <a class="dropdown-item" href="#" @click.prevent="toggleRateType(index)">
-                  <input type="checkbox" :value="index" v-model="selectedRateTypes" class="form-check-input me-2" />
+                <a
+                  class="dropdown-item"
+                  href="#"
+                  @click.prevent="toggleRateType(index)"
+                >
+                  <input
+                    type="checkbox"
+                    :value="index"
+                    v-model="selectedRateTypes"
+                    class="form-check-input me-2"
+                  />
                   <span>{{ type }}</span>
                 </a>
               </li>
@@ -94,16 +140,34 @@
         <!-- Projects Filter - Desktop Only -->
         <div class="d-none d-lg-block col-lg-4 order-4">
           <div class="dropdown w-100 ps-lg-2">
-            <button class="btn btn-primary dropdown-toggle w-100" type="button" id="projectsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <button
+              class="btn btn-primary dropdown-toggle w-100"
+              type="button"
+              id="projectsDropdown"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
               <i class="fa-solid fa-filter pe-2"></i>Filter Projects
-              <span v-if="selectedProjects.length" class="badge bg-light text-dark ms-1">
+              <span
+                v-if="selectedProjects.length"
+                class="badge bg-light text-dark ms-1"
+              >
                 {{ selectedProjects.length }}
               </span>
             </button>
             <ul class="dropdown-menu w-100" aria-labelledby="projectsDropdown">
               <li v-for="project in getProjects" :key="project.id">
-                <a class="dropdown-item" href="#" @click.prevent="toggleProject(project.id)">
-                  <input type="checkbox" :value="project.id" v-model="selectedProjects" class="form-check-input me-2" />
+                <a
+                  class="dropdown-item"
+                  href="#"
+                  @click.prevent="toggleProject(project.id)"
+                >
+                  <input
+                    type="checkbox"
+                    :value="project.id"
+                    v-model="selectedProjects"
+                    class="form-check-input me-2"
+                  />
                   <span>{{ project.name }}</span>
                 </a>
               </li>
@@ -114,10 +178,7 @@
     </div>
 
     <!-- Mobile Sidebar -->
-    <div
-      class="mobile-sidebar"
-      :class="{ 'show': isSidebarOpen }"
-    >
+    <div class="mobile-sidebar" :class="{ show: isSidebarOpen }">
       <div class="sidebar-header">
         <h5>Filters</h5>
         <button class="btn-close" @click="toggleSidebar"></button>
@@ -127,9 +188,21 @@
         <div class="mb-3">
           <label class="form-label">Rate Types</label>
           <div class="filter-list">
-            <div v-for="(type, index) in getRateTypes" :key="index" class="form-check">
-              <input type="checkbox" :value="index" v-model="selectedRateTypes" class="form-check-input" :id="'rate-'+index" />
-              <label class="form-check-label" :for="'rate-'+index">{{ type }}</label>
+            <div
+              v-for="(type, index) in getRateTypes"
+              :key="index"
+              class="form-check"
+            >
+              <input
+                type="checkbox"
+                :value="index"
+                v-model="selectedRateTypes"
+                class="form-check-input"
+                :id="'rate-' + index"
+              />
+              <label class="form-check-label" :for="'rate-' + index">{{
+                type
+              }}</label>
             </div>
           </div>
         </div>
@@ -138,16 +211,31 @@
         <div class="mb-3">
           <label class="form-label">Projects</label>
           <div class="filter-list">
-            <div v-for="project in getProjects" :key="project.id" class="form-check">
-              <input type="checkbox" :value="project.id" v-model="selectedProjects" class="form-check-input" :id="'project-'+project.id" />
-              <label class="form-check-label" :for="'project-'+project.id">{{ project.name }}</label>
+            <div
+              v-for="project in getProjects"
+              :key="project.id"
+              class="form-check"
+            >
+              <input
+                type="checkbox"
+                :value="project.id"
+                v-model="selectedProjects"
+                class="form-check-input"
+                :id="'project-' + project.id"
+              />
+              <label class="form-check-label" :for="'project-' + project.id">{{
+                project.name
+              }}</label>
             </div>
           </div>
         </div>
 
-        <button class="btn btn-primary w-100" @click="applyFiltersAndCloseSidebar">
+        <!-- <button
+          class="btn btn-primary w-100"
+          @click="applyFiltersAndCloseSidebar"
+        >
           Apply Filters
-        </button>
+        </button> -->
       </div>
     </div>
 
@@ -162,18 +250,19 @@
 
 <script>
 import flatpickrMixin from "../Mixin/flatpickrMixin";
-import { mapState, mapGetters } from 'vuex';
-import { handleSubmissionError, showSuccessAlert } from "../../Api/MassageValidation/alertUtilities";
+import { mapState, mapGetters } from "vuex";
+import {
+  handleSubmissionError,
+  showSuccessAlert,
+} from "../../Api/MassageValidation/alertUtilities";
 import { getCalenderFilter, postCalenderFilter } from "../../Api/CalenderApi";
-import _ from 'lodash'; // Add this import for Lodash
-
+import _ from "lodash"; // Add this import for Lodash
 
 export default {
   name: "HeaderCalender",
   layout: "Component",
 
-  data ()
-  {
+  data() {
     return {
       isHovered: false,
       sidebarVisible: false,
@@ -191,12 +280,10 @@ export default {
   },
 
   methods: {
-    filterCalenderByDate ()
-    {
+    filterCalenderByDate() {
       const flatpickrInstance = flatpickr(this.$refs.datePicker4, {
         dateFormat: "Y-m-d", // Format the date as YYYY-MM-DD
-        onChange: (selectedDates) =>
-        {
+        onChange: (selectedDates) => {
           if (selectedDates.length > 0) {
             const selectedDate = selectedDates[0];
             this.$emit("date-selected", selectedDate); // Emit the selected date
@@ -204,24 +291,20 @@ export default {
         },
       });
     },
-    updateFlatpickr (date)
-    {
+    updateFlatpickr(date) {
       if (this.$refs.datePicker4 && this.$refs.datePicker4._flatpickr) {
         this.$refs.datePicker4._flatpickr.setDate(date); // Update Flatpickr with the new date
       }
     },
-    toggleRateTypesDropdown ()
-    {
+    toggleRateTypesDropdown() {
       this.showRateTypesDropdown = !this.showRateTypesDropdown;
       this.showProjectsDropdown = false;
     },
-    toggleProjectsDropdown ()
-    {
+    toggleProjectsDropdown() {
       this.showProjectsDropdown = !this.showProjectsDropdown;
       this.showRateTypesDropdown = false;
     },
-    toggleSelectAllRateTypes ()
-    {
+    toggleSelectAllRateTypes() {
       this.selectAllRateTypes = !this.selectAllRateTypes;
       if (this.selectAllRateTypes) {
         this.selectedRateTypes = this.getRateTypes.map((_, index) => index);
@@ -229,35 +312,34 @@ export default {
         this.selectedRateTypes = [];
       }
     },
-    toggleSelectAllProjects ()
-    {
+    toggleSelectAllProjects() {
       this.selectAllProjects = !this.selectAllProjects;
       if (this.selectAllProjects) {
-        this.selectedProjects = this.getProjects.map(project => project.id);
+        this.selectedProjects = this.getProjects.map((project) => project.id);
       } else {
         this.selectedProjects = [];
       }
     },
-    async toggleRateType (index)
-    {
+    async toggleRateType(index) {
       const idx = this.selectedRateTypes.indexOf(index);
       if (idx === -1) {
         this.selectedRateTypes.push(index);
       } else {
         this.selectedRateTypes.splice(idx, 1);
       }
-      this.selectAllRateTypes = this.selectedRateTypes.length === this.getRateTypes.length;
+      this.selectAllRateTypes =
+        this.selectedRateTypes.length === this.getRateTypes.length;
       // await this.getFilterData();
     },
-    async toggleProject (projectId)
-    {
+    async toggleProject(projectId) {
       const idx = this.selectedProjects.indexOf(projectId);
       if (idx === -1) {
         this.selectedProjects.push(projectId);
       } else {
         this.selectedProjects.splice(idx, 1);
       }
-      this.selectAllProjects = this.selectedProjects.length === this.getProjects.length;
+      this.selectAllProjects =
+        this.selectedProjects.length === this.getProjects.length;
       // await this.getFilterData();
     },
     toggleSelectAllBuildings() {
@@ -272,86 +354,84 @@ export default {
     },
 
     async toggleBuilding(building, event) {
-  // Prevent event bubbling
-  if (event) {
-    event.preventDefault();
-    event.stopPropagation();
-  }
+      // Prevent event bubbling
+      if (event) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
 
-  // Manually handle the checkbox state
-  const index = this.selectedBuildings.indexOf(building);
-  let newSelectedBuildings = [...this.selectedBuildings];
+      // Manually handle the checkbox state
+      const index = this.selectedBuildings.indexOf(building);
+      let newSelectedBuildings = [...this.selectedBuildings];
 
-  if (index !== -1) {
-    // Remove if already selected
-    newSelectedBuildings.splice(index, 1);
-  } else {
-    // Add if not selected
-    newSelectedBuildings.push(building);
-    // Turn off "Show All" when selecting a specific building
-    this.selectAllBuildings = false;
-  }
+      if (index !== -1) {
+        // Remove if already selected
+        newSelectedBuildings.splice(index, 1);
+      } else {
+        // Add if not selected
+        newSelectedBuildings.push(building);
+        // Turn off "Show All" when selecting a specific building
+        this.selectAllBuildings = false;
+      }
 
-  // Update the array
-  this.selectedBuildings = newSelectedBuildings;
+      // Update the array
+      this.selectedBuildings = newSelectedBuildings;
 
-  // Only set selectAllBuildings to true if no buildings are selected
-  if (this.selectedBuildings.length === 0) {
-    this.selectAllBuildings = true;
-    this.$emit("show-all-resources");
-  } else {
-    this.$emit("show-building-resources", this.selectedBuildings);
-  }
+      // Only set selectAllBuildings to true if no buildings are selected
+      if (this.selectedBuildings.length === 0) {
+        this.selectAllBuildings = true;
+        this.$emit("show-all-resources");
+      } else {
+        this.$emit("show-building-resources", this.selectedBuildings);
+      }
 
-  // IMPORTANT: Don't call getFilterData() here as it might be overriding your building selection
-  // Instead, let the parent component handle the building filter
-},
-async getFilterData() {
-  try {
-    const filterCalender = {
-      project_ids: this.selectedProjects,
-      rate_types: this.selectedRateTypes,
-      building_ids: this.selectedBuildings.length > 0 ? this.selectedBuildings : null
-    };
-
-    const response = await getCalenderFilter(filterCalender);
-    this.data = response.data;
-
-    // Emit the updated data to BookingCalendar
-    this.$root.$emit('calendar-data-updated', response.data);
-
-    // IMPORTANT: Make sure to preserve building filter after data is updated
-    if (this.selectedBuildings.length > 0) {
-      this.$emit("show-building-resources", this.selectedBuildings);
-    }
-  } catch (error) {
-    console.log(error);
-  }
-},
-    async applyFilters ()
-    {
-      await this.getFilterData();
+      // IMPORTANT: Don't call getFilterData() here as it might be overriding your building selection
+      // Instead, let the parent component handle the building filter
     },
-    quickReservation ()
-    {
+    async getFilterData() {
+      try {
+        const filterCalender = {
+          project_ids: this.selectedProjects,
+          rate_types: this.selectedRateTypes,
+          building_ids:
+            this.selectedBuildings.length > 0 ? this.selectedBuildings : null,
+        };
+
+        const response = await getCalenderFilter(filterCalender);
+        this.data = response.data;
+
+        // Emit the updated data to BookingCalendar
+        this.$root.$emit("calendar-data-updated", response.data);
+
+        // IMPORTANT: Make sure to preserve building filter after data is updated
+        if (this.selectedBuildings.length > 0) {
+          this.$emit("show-building-resources", this.selectedBuildings);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    // async applyFilters() {
+    //   await this.getFilterData();
+    // },
+    quickReservation() {
       this.$router.push("/add-reservation");
     },
     toggleSidebar() {
       this.isSidebarOpen = !this.isSidebarOpen;
       if (this.isSidebarOpen) {
-        document.body.style.overflow = 'hidden';
+        document.body.style.overflow = "hidden";
       } else {
-        document.body.style.overflow = 'auto';
+        document.body.style.overflow = "auto";
       }
     },
     applyFiltersAndCloseSidebar() {
       this.getFilterData();
       this.toggleSidebar();
-    }
+    },
   },
 
-  mounted ()
-  {
+  mounted() {
     this.filterCalenderByDate();
 
     // Set the default date in Flatpickr (e.g., 2 days before today)
@@ -362,15 +442,7 @@ async getFilterData() {
     this.$emit("date-selected", defaultDate); // Emit the default date
   },
   computed: {
-
-    ...mapGetters([
-      'getRateTypes',
-      'getProjects',
-      'getProjects'
-    ]),
-
-
-
+    ...mapGetters(["getRateTypes", "getProjects", "getProjects"]),
   },
 
   mixins: [flatpickrMixin],
@@ -385,27 +457,27 @@ async getFilterData() {
     },
   },
   watch: {
-  selectedBuildings(newVal) {
-    if (newVal.length === 0) {
-      this.selectAllBuildings = true;
-    } else {
-      this.selectAllBuildings = false;
-    }
-    // Don't call getFilterData here for buildings - let the parent handle it
+    selectedBuildings(newVal) {
+      if (newVal.length === 0) {
+        this.selectAllBuildings = true;
+      } else {
+        this.selectAllBuildings = false;
+      }
+      // Don't call getFilterData here for buildings - let the parent handle it
+    },
+    selectedRateTypes: {
+      handler: _.debounce(async function (newVal) {
+        await this.getFilterData();
+      }, 500),
+      deep: true,
+    },
+    selectedProjects: {
+      handler: _.debounce(async function (newVal) {
+        await this.getFilterData();
+      }, 500),
+      deep: true,
+    },
   },
-  selectedRateTypes: {
-    handler: _.debounce(async function(newVal) {
-      await this.getFilterData();
-    }, 500),
-    deep: true
-  },
-  selectedProjects: {
-    handler: _.debounce(async function(newVal) {
-      await this.getFilterData();
-    }, 500),
-    deep: true
-  }
-}
 };
 </script>
 
