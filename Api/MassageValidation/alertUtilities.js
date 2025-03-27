@@ -67,6 +67,19 @@ export const showConfirmationDialog = (message = "Are you sure you want to proce
     confirmButtonText: 'Yes, proceed!'
   });
 }
+export const showUpdateConfirmationDialog = (startDate, endDate, unitId) => {
+  return Swal.fire({
+    title: "Confirm Update",
+    html: `<p>Are you sure you want to update this reservation to ${startDate} to ${endDate} for unit ${unitId}?</p>`,
+    input: "number",
+    inputPlaceholder: "New price",
+    showCancelButton: true,
+    confirmButtonText: "Yes, update it!",
+    cancelButtonText: "Cancel",
+    confirmButtonColor: "#7367f0",
+    cancelButtonColor: "#e2e1e5"
+  });
+};
 
 export const showAlert = ({
   title = 'Notification',

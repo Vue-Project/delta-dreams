@@ -104,6 +104,7 @@ import {
   handleSubmissionError,
   showSuccessAlert,
   showConfirmationDialog,
+  showUpdateConfirmationDialog,
   showAlert,
 } from "../../Api/MassageValidation/alertUtilities";
 import { mapActions } from "vuex";
@@ -886,9 +887,8 @@ export default {
             reservation_id: event.extendedProps?.reservation?.id,
           };
 
-          const result = await showConfirmationDialog(
-            "Are you sure you want to update this reservation?"
-          );
+          const result = await showUpdateConfirmationDialog(startDate, endDate, unitId);
+         
 
           if (result.isConfirmed) {
             const response = await postUpdateReservation(
