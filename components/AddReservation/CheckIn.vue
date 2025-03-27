@@ -253,10 +253,11 @@
               <!--  ! table Header -->
               <!-- change width delete border color  -->
               <div class="card mt-3 border-0">
-                <div class="card-datatable table-responsive">
-                  <table class="table overflow-hidden">
+                <div class="card-datatable table-responsive custom-table-wrapper">
+                  <table class="table overflow-hidden custom-table">
                     <thead>
                       <tr class="rounded-1">
+                        <th class="border-0">Project</th>
                         <th class="border-0">Room Type</th>
                         <th class="border-0">Rate Type</th>
                         <th class="border-0">Room</th>
@@ -271,6 +272,17 @@
                         :key="index"
                         class="mb-2 selectStyle"
                       >
+                        <td data-label="Project">
+                          <select
+                            class="form-select"
+                            :disabled="!datesSelected"
+                          >
+                            <option disabled value="">Select</option>
+                            <option>
+                              test
+                            </option>
+                          </select>
+                        </td>
                         <td data-label="Room Type">
                           <select
                             class="form-select"
@@ -279,6 +291,7 @@
                             @change="
                               () => handleUnitTypeChange(index, item.roomType)
                             "
+                            :disabled="!datesSelected"
                           >
                             <option disabled value="">Select</option>
                             <option
@@ -304,6 +317,7 @@
                             class="form-select"
                             v-model="item.rateType"
                             ref="rateType"
+                            :disabled="!datesSelected"
                           >
                             <option disabled value="">select</option>
                             <option
@@ -328,7 +342,7 @@
                           <select
                             class="form-select"
                             v-model="item.unitId"
-                            :disabled="!availableUnitsByRoom[index]?.length"
+                            :disabled="!datesSelected || !availableUnitsByRoom[index]?.length"
                           >
                             <option disabled value="">Select Unit</option>
                             <option
@@ -359,6 +373,7 @@
                             min="1"
                             max="10"
                             ref="adults"
+                            :disabled="!datesSelected"
                           />
                           <span
                             class="error-message small"
@@ -380,6 +395,7 @@
                             min="0"
                             max="10"
                             ref="children"
+                            :disabled="!datesSelected"
                           />
                           <span
                             class="error-message small"
@@ -406,6 +422,7 @@
                                   v-model="item.rateAmount"
                                   aria-label="number of rateAmount"
                                   ref="rateAmount"
+                                  :disabled="!datesSelected"
                                 />
                                 <span class="input-group-text groupStyle"
                                   >EGP</span
@@ -436,11 +453,11 @@
                       </tr>
                     </tbody>
                   </table>
-
                   <button
                     class="btn btn-primary waves-effect waves-light mt-3"
                     type="button"
                     @click="addItem"
+                    :disabled="!datesSelected"
                   >
                     Add Unit
                   </button>
@@ -1566,6 +1583,9 @@ export default {
       const diffTime = Math.abs(checkOut - checkIn);
       return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     },
+    datesSelected() {
+    return this.formAddReservation.checkInDate && this.formAddReservation.checkOutDate;
+    },
   },
   beforeDestroy() {
     this.datePicker1Instance?.destroy();
@@ -1630,4 +1650,19 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.custom-table-wrapper {
+  overflow-x: auto;
+}
+.custom-table th {
+  min-width: 150px; 
+  white-space: nowrap; 
+}
+.custom-table th{
+  min-width: 166px;
+}
+.custom-table th:nth-child(5),
+.custom-table th:nth-child(6){
+  min-width: 100px;
+}
+</style>
