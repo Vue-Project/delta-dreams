@@ -156,3 +156,54 @@
     width: 72px !important;
   }
 }
+/* ... existing styles ... */
+
+/* Mobile calendar scrolling styles */
+@media (max-width: 768px) {
+  /* Make timeline body scrollable */
+  .fc .fc-timeline-body {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+
+  /* Make timeline header scrollable and sync with body */
+  .fc .fc-timeline-header {
+    overflow-x: auto !important;
+  }
+
+  /* Ensure slots have minimum width */
+  .fc .fc-timeline-slot {
+    min-width: 120px !important;
+  }
+  .fc-direction-ltr {
+    height: 70vh;
+  }
+
+  /* Add visual indicator for scrolling */
+  .fc .fc-timeline-body:after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 20px;
+    background: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0),
+      rgba(0, 0, 0, 0.05)
+    );
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  /* Hide scrollbar for cleaner look */
+  .fc .fc-timeline-body::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .fc .fc-timeline-body::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+  }
+}

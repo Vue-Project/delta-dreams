@@ -277,9 +277,20 @@ export default {
         },
 
         resourceGroupLaneContent: this.resourceGroupLaneContent,
-        resourceAreaWidth: "15%",
+        resourceAreaWidth:
+          typeof window !== "undefined"
+            ? window.innerWidth <= 768
+              ? "30%"
+              : "10%"
+            : "10%", // Wider on mobile, narrower on desktop
+        slotMinWidth:
+          typeof window !== "undefined"
+            ? window.innerWidth <= 768
+              ? 150
+              : 70
+            : 70,
         resourceGroupField: "groupId",
-        // resourceAreaHeaderContent: this.customResourceHeader, // Customize header
+
         dateClick: this.handleDateClick,
         select: this.handleSelect,
 
@@ -1220,26 +1231,62 @@ export default {
     },
 
     getDuration() {
-      // Check if the code is running in a browser environment
+      // Safely check if window is defined (client-side only)
       if (typeof window !== "undefined") {
-        const isMobile = window.innerWidth <= 768; // You can adjust the width threshold as needed
-        return { days: isMobile ? 10 : 20 };
+        const isMobile = window.innerWidth <= 768; // Mobile breakpoint
+        return { days: 10 }; // Always load 10 days of data
       }
-      // Default duration if window is not available
+      // Default duration if window is not available (server-side)
       return { days: 20 };
     },
 
     updateDuration() {
+      // Only run this code on the client side
       if (typeof window !== "undefined") {
         this.calendarOptions.duration = this.getDuration();
+
+        // Update slot width based on screen size
+        const calendarApi = this.$refs.calendar?.getApi();
+        if (calendarApi) {
+          const isMobile = window.innerWidth <= 768;
+          calendarApi.setOption("slotMinWidth", isMobile ? 150 : 70);
+
+          // Force redraw
+          this.$nextTick(() => {
+            calendarApi.updateSize();
+          });
+        }
       }
     },
   },
   async mounted() {
+    // mounted hook only runs on client-side, so window is available
+    // Add an event listener to update duration on window resize
+    window.addEventListener("resize", this.updateDuration);
+
+    // Set initial slot width based on screen size
+    const isMobile = window.innerWidth <= 768;
+    this.calendarOptions.slotMinWidth = isMobile ? 150 : 70;
     if (typeof window !== "undefined") {
       // Add an event listener to update duration on window resize
       window.addEventListener("resize", this.updateDuration);
+
+      // Set initial slot width based on screen size
+      const isMobile = window.innerWidth <= 768;
+      this.calendarOptions.slotMinWidth = isMobile ? 150 : 70;
     }
+
+    // ... rest of existing mounted code ...
+
+    // Apply mobile-specific settings after calendar is initialized
+    this.$nextTick(() => {
+      if (typeof window !== "undefined" && window.innerWidth <= 768) {
+        const calendarEl = document.querySelector(".fc");
+        if (calendarEl) {
+          calendarEl.classList.add("mobile-calendar-view");
+        }
+      }
+    });
 
     try {
       const [CalenderDataResponse] = await Promise.all([getCalenderAllUnits()]);
@@ -1291,6 +1338,21 @@ export default {
 
     // Clean up the event listener when component is destroyed
     this.$root.$off("calendar-data-updated", this.updateCalendarData);
+  },
+  created() {
+    // Initialize with default values for SSR
+    this.calendarOptions = {
+      ...this.calendarOptions,
+      slotMinWidth: 70,
+      duration: { days: 20 },
+    };
+
+    // Update values on client-side only
+    if (typeof window !== "undefined") {
+      const isMobile = window.innerWidth <= 768;
+      this.calendarOptions.slotMinWidth = isMobile ? 150 : 70;
+      this.calendarOptions.duration = { days: isMobile ? 10 : 20 };
+    }
   },
 };
 </script>
