@@ -1,7 +1,6 @@
 <template>
   <div class="offcanvas offcanvas-end editSidebar" tabindex="-1" id="offcanvasEnd" aria-labelledby="offcanvasEndLabel">
     <!-- Offcanvas Header -->
-
     <div class="offcanvas-header editSideBarHeader">
       <h5 id="offcanvasEndLabel" class="offcanvas-title w-100">
 
@@ -38,7 +37,7 @@
               <label class="form-label fs-4 StatusSideBarTitle" for="status-reservation">Status</label>
             </div>
             <div class="col-8 pt-1">
-              <select class="badge w-100 bg-white text-dark StatusSideBarSelect" :value="selectedEvent.status" @change="handleStatusChange">
+              <select class="  form-select badge h-px-40 lh-lg text-dark StatusSideBarSelect" :value="selectedEvent.status" @change="handleStatusChange">
                 <option v-for="(label, value) in statusOptions" :key="value" :value="value">
                   {{ label }}
                 </option>
@@ -188,8 +187,8 @@
             </ul>
           </div>
           <div class="text-center">
-          <button @click="cancelReservation" type="button" title="Cancel Reservation" class="btn btn-danger waves-effect waves-light mt-3 w-100 px-0 cancelBtnSideBar">
-            Cancel Reservation</button>
+            <button @click="cancelReservation" type="button" title="Cancel Reservation" class="btn btn-danger waves-effect waves-light mt-3 w-100 px-0 cancelBtnSideBar">
+              Cancel Reservation</button>
           </div>
         </div>
 
@@ -220,15 +219,24 @@
             </div>
             <div class="modal-body">
               <div class="row">
-                <div class="col ">
+                <div class="col">
                   <label for="flatpickr-date-01" class="form-label">Date</label>
                   <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" id="flatpickr-date-01" ref="datePicker1" aria-label="input Text to Check-in Date" v-model="formAddPayment.date" />
                   <i class="fa-solid fa-calendar-days icon-date right-24"></i>
                 </div>
-                <div class="col-12 mb-3 ">
+                <span class="error-message small" v-if="$v.formAddPayment.date.$error">
+                      date is required
+                    </span>
+                <div class="col-12 mb-2 ">
                   <label class="form-label" for="payment_Image">Payment Image</label>
-                  <input type="file" class="form-control" id="payment_Image" ref="paymentImage" required="">
+                  <input type="file" class="form-control" id="payment_Image" ref="paymentImage" @change="handleImageUpload">
+                  <span class="error-message small" v-if="$v.formAddPayment.image.$error">
+                    Payment image is required
+                  </span>
                 </div>
+                <!-- <span class="error-message small" v-if="$v.formAddPayment.image.$error">
+                      payment image is required
+                    </span> -->
               </div>
               <div class="row g-2">
                 <div class="col-lg-6 col-md-6 col-12 mb-2">
@@ -241,8 +249,11 @@
                     </select>
                     <label class="input-group-text" for="payment_type">Type</label>
                   </div>
+                    <span class="error-message small" v-if="$v.formAddPayment.type.$error">
+                      payment type is required
+                    </span>
                 </div>
-                <div class="col-lg-6 col-md-6 col-12 mb-2">
+                <div class="col-lg-6 col-md-6 col-12">
                   <div class="input-group">
                     <select class="form-select" id="payment_method" v-model="formAddPayment.method">
                       <option disabled value="">Select Method</option>
@@ -252,12 +263,18 @@
                     </select>
                     <label class="input-group-text" for="payment_method">Method</label>
                   </div>
+                  <span class="error-message small" v-if="$v.formAddPayment.method.$error">
+                      payment method is required
+                    </span>
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                   <div class="input-group">
                     <span class="input-group-text">EGP</span>
                     <input type="text" class="form-control" placeholder="Amount" aria-label="Amount (to the nearest dollar)" v-model="formAddPayment.amount">
                   </div>
+                  <span class="error-message small" v-if="$v.formAddPayment.amount.$error">
+                     amount is required
+                    </span>
                 </div>
                 <div class="col-lg-6 col-md-6 col-12 mt-2">
                   <div class="input-group">
@@ -269,12 +286,18 @@
                     </select>
                     <label class="input-group-text" for="payment_accounts">Accounts</label>
                   </div>
+                  <span class="error-message small" v-if="$v.formAddPayment.account.$error">
+                      account  is required
+                    </span>
                 </div>
                 <div class="col-12 mb-2 mt-3">
                   <div class="input-group">
                     <span class="input-group-text">Comment</span>
                     <textarea class="form-control" aria-label="With textarea" placeholder="Comment" v-model="formAddPayment.comment"></textarea>
                   </div>
+                  <span class="error-message small" v-if="$v.formAddPayment.comment.$error">
+                     comment is required
+                    </span>
                 </div>
 
               </div>
@@ -298,9 +321,11 @@
 import flatpickrMixin from "../Mixin/flatpickrMixin";
 import { postAddPayment, postCancelReservation, postStatusChange } from "../../Api/editResvertion";
 import { showSuccessAlert, handleSubmissionError, showConfirmationAlert } from "../../Api/MassageValidation/alertUtilities";
-import { getGuestsInfo, getPaymentMethods } from "../../Api/addResvertionApi";
+import { getAccounts, getGuestsInfo, getPaymentMethods } from "../../Api/addResvertionApi";
 import { postUpdateReservation } from '../../Api/CalenderApi';
 import DropzoneComponent from "../layout/DropzoneComponent.vue";
+import { validationMixin } from 'vuelidate'
+import { required, email } from 'vuelidate/lib/validators'
 
 export default {
 
@@ -319,11 +344,23 @@ export default {
         type: '',
         account: '',
         comment: '',
+        image: null,  // Add this for the image
         reservation_id: null
       },
       statusOptions: [],
     }
   },
+  validations: {
+        formAddPayment: {
+          date:{required},
+          method: { required },
+          type: { required },
+          account: { required },
+          comment: { required },
+          amount: { required },
+          image: { required }  // Add validation for image
+        }
+      },
   components: {
     DropzoneComponent
   },
@@ -340,7 +377,7 @@ export default {
       const oldStatus = this.selectedEvent.status;
       const newStatus = event.target.value;
 
-    const result = await showConfirmationAlert('Are you sure you?', 'Do you want to change the status of this reservation?');
+      const result = await showConfirmationAlert('Are you sure you?', 'Do you want to change the status of this reservation?');
 
       if (result.isConfirmed) {
         const changeStatus = {
@@ -363,14 +400,15 @@ export default {
     },
 
 
-    async cancelReservation() {
-    // Show SweetAlert2 confirmation dialog
-    const result = await showConfirmationAlert(
-      'Are you sure?',
-      "You won't be able to restore it again",
-      'Yes, cancel it!',
+    async cancelReservation ()
+    {
+      // Show SweetAlert2 confirmation dialog
+      const result = await showConfirmationAlert(
+        'Are you sure?',
+        'Are you sure you want to cancel this reservation? ',
+        'Yes, cancel it!',
 
-    );
+      );
 
 
       // Proceed only if the user confirms
@@ -422,20 +460,25 @@ export default {
     statusBadgeClass (status)
     {
       return {
+        'bg-label-primary': status === 'pending',      // Blue for pending/waiting
+        'bg-label-success': status === 'approved',     // Green for approved
         'bg-label-danger': status === 'cancelled',     // Red for cancelled
-        'bg-label-warning': status === 'request',
-        'bg-label-warning': status === 'pending',      // Blue for pending/waiting
-        'bg-label-primary': status === 'approved',     // Green for approved
-        'bg-label-primary': status === 'check_in',        // Light blue for check in
-        'bg-label-success': status === 'check_out',    // Orange/yellow for check out
-        'bg-label-success': status === 'finished',    // Gray for finished
+        'bg-label-info': status === 'check_in',        // Light blue for check in
+        'bg-label-warning': status === 'check_out',    // Orange/yellow for check out
+        'bg-label-secondary': status === 'finished'    // Gray for finished
       };
     },
-    async submitPayment ()
-    {
+    async submitPayment() {
       try {
+        // Set the image value from the file input before validation
+        this.formAddPayment.image = this.$refs.paymentImage.files[0] || null;
+
+        this.$v.$touch()
+        if (this.$v.$invalid) {
+          return
+        }
         // Get the file from the file input
-        const paymentImageFile = this.$refs.paymentImage.files[0]; // Ensure you have a ref on your file input
+        const paymentImageFile = this.$refs.paymentImage.files[0];
 
         // Create FormData to handle file upload
         const formData = new FormData();
@@ -452,7 +495,8 @@ export default {
         };
 
         // Append payment data to FormData
-        Object.keys(paymentData).forEach(key => {
+        Object.keys(paymentData).forEach(key =>
+        {
           formData.append(key, paymentData[key]);
         });
 
@@ -472,7 +516,7 @@ export default {
 
         const response = await postAddPayment(formData);
         showSuccessAlert("Payment added successfully!");
-        // location.reload();
+        location.reload();
 
         // Close the modal after saving
         const modalElement = document.getElementById('paymentModal');
@@ -549,6 +593,10 @@ export default {
         }
       }
     },
+    handleImageUpload(event) {
+      const file = event.target.files[0];
+      this.formAddPayment.image = file || null;
+    },
   },
   async mounted ()
   {
@@ -560,7 +608,7 @@ export default {
 
       ] = await Promise.all([
         getPaymentMethods(),
-        getGuestsInfo(),
+        getAccounts(),
       ]);
 
       this.paymentMethods = paymentMethodsResponse.data.data;
@@ -569,7 +617,6 @@ export default {
     } catch (error) {
       console.error("Error loading data:", error);
     }
-
 
   },
   watch: {
@@ -610,8 +657,7 @@ export default {
       }
     }
   },
-  mixins: [flatpickrMixin],
-
+  mixins: [flatpickrMixin, validationMixin],
 
 };
 </script>

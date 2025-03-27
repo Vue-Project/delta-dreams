@@ -39,7 +39,7 @@
               type="number"
               id="taxes"
               name="taxes"
-              class="form-control rounded-2 fw-bold text-end"
+              class="form-control rounded-2  fw-normal text-end"
               v-model="paymentDetails.taxes"
               min="0"
               @input="paymentDetails.taxes = Math.max(Number($event.target.value), 0)"
@@ -52,7 +52,7 @@
               type="number"
               id="dueAmount"
               name="dueAmount"
-              class="form-control rounded-2 mt-1 fw-bold text-end"
+              class="form-control rounded-2 mt-1 fw-normal text-end"
               v-model="paymentDetails.dueAmount"
               min="0"
               @input="paymentDetails.dueAmount = Math.max(Number($event.target.value), 0)"
@@ -90,10 +90,10 @@
               </select>
             </div>
           </div>
-          <div class="col-md-6 mb-3 d-flex align-items-center">
+          <!-- <div class="col-md-6 mb-3 d-flex align-items-center">
             <div class="input-group mt-md-3">
               <label class="input-group-text" for="paymentInsurance">Insurance</label>
-              <input type="text" class="form-control" id="paymentInsurance" v-model="paymentDetails.insurance">
+              <input type="text" class="form-control" id="paymentInsurance" v-model="paymentDetails.insurance" placeholder="Insurance">
             </div>
           </div>
           <div class="col-md-6 d-flex align-items-center">
@@ -106,7 +106,7 @@
                 </option>
               </select>
             </div>
-          </div>
+          </div> -->
         </div>
         <p v-if="!value.paymentMode && validationMessage" class="validation-message">
           Payment Mode is required.
@@ -152,12 +152,24 @@
           <!-- Common fields for all payment types -->
           <div class="mb-3">
             <label class="form-label">Amount</label>
-            <input type="number" class="form-control" v-model="paymentDetails.amount">
+            <input type="number" class="form-control" v-model="paymentDetails.amount" aria-label="Amount">
           </div>
           <div class="mb-3">
             <label class="form-label">Date</label>
-            <input type="date" class="form-control" v-model="paymentDetails.date">
+            <div class="input-group">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="YYYY-MM-DD"
+                ref="datePicker1"
+                v-model="paymentDetails.date"
+              />
+              <span class="input-group-text">
+                <i class="fa-solid fa-calendar-days"></i>
+              </span>
+            </div>
           </div>
+
           <div class="mb-3">
             <label class="form-label">Comment</label>
             <textarea class="form-control" v-model="paymentDetails.comment" rows="3"></textarea>
@@ -207,9 +219,13 @@
 
 <script>
 import { getAccounts, getPaymentMethods } from '../../Api/addResvertionApi';
+import flatpickrMixin from '../Mixin/flatpickrMixin';
+import flatpickr from 'flatpickr';
+import "flatpickr/dist/flatpickr.min.css";
 
 export default {
   name: "BillingSummary",
+  mixins: [flatpickrMixin],
   props: {
     value: {
       type: Object,
@@ -227,10 +243,11 @@ export default {
       paymentTypes: [],
       accounts: [],
       selectedPaymentType: '',
+      datePicker1Instance: null, // Add this line to store the flatpickr instance
       paymentDetails: {
         roomCharges: 0.0,
-        taxes: 0.0,
-        dueAmount: 0.0,
+        taxes: "1",
+        dueAmount: "1",
         amount: null,
         bankName: '',
         accountNumber: '',
@@ -267,26 +284,14 @@ export default {
       return "--/--/----";
     },
   },
-  async mounted ()
-  {
-    try {
-      const [
-        paymentMethodsResponse,
-        accountsResponse,
+  mounted() {
+    // Call original API loading
+    this.loadApiData();
 
-      ] = await Promise.all([
-      getPaymentMethods(),
-      getAccounts(),
-      ]);
-
-      this.paymentMethods = paymentMethodsResponse.data.data;
-      this.paymentTypes = paymentMethodsResponse.data.payment_type;
-      this.accounts = accountsResponse.data.data;
-    } catch (error) {
-      console.error("Error loading data:", error);
-    }
-
-
+    // Initialize flatpickr
+    this.$nextTick(() => {
+      this.initializeDatePicker();
+    });
   },
   watch: {
     // "value.paymentMode": function (newVal) {
@@ -304,6 +309,11 @@ export default {
         ...this.value,
         selectedPaymentType: newVal
       });
+
+      // Initialize datepicker when payment type is selected
+      this.$nextTick(() => {
+        this.initializeDatePicker();
+      });
     },
     'paymentDetails': {
       deep: true,
@@ -316,6 +326,45 @@ export default {
     }
   },
   methods: {
+    formatDate(date) {
+      return date.toISOString().split('T')[0];
+    },
+
+    // Add a new method to initialize the datepicker
+    initializeDatePicker() {
+      if (this.$refs.datePicker1) {
+        // Destroy existing instance if it exists to prevent duplicates
+        if (this.datePicker1Instance) {
+          this.datePicker1Instance.destroy();
+        }
+
+        // Create new flatpickr instance
+        this.datePicker1Instance = flatpickr(this.$refs.datePicker1, {
+          dateFormat: "Y-m-d",
+          defaultDate: this.paymentDetails.date,
+          onChange: (selectedDates) => {
+            if (selectedDates[0]) {
+              this.paymentDetails.date = this.formatDate(selectedDates[0]);
+            }
+          }
+        });
+      }
+    },
+
+    async loadApiData() {
+      try {
+        const [paymentMethodsResponse, accountsResponse] = await Promise.all([
+          getPaymentMethods(),
+          getAccounts(),
+        ]);
+
+        this.paymentMethods = paymentMethodsResponse.data.data;
+        this.paymentTypes = paymentMethodsResponse.data.payment_type;
+        this.accounts = accountsResponse.data.data;
+      } catch (error) {
+        console.error("Error loading data:", error);
+      }
+    },
     // Add this new method to mask card numbers
     maskCardNumber(cardNumber) {
       if (!cardNumber) return 'Not specified';

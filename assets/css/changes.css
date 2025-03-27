@@ -301,7 +301,7 @@
 
 .calendarDate i {
   position: absolute;
-  top: 8px;
+  top: 16px;
   right: 23px;
   pointer-events: none;
 }
@@ -539,9 +539,9 @@ select {
 .mobileInput{
   width:317px !important;
 }
-.guestNameInput{
+/* .guestNameInput{
   padding-bottom:30px !important;
-}
+} */
 .GuestTitle{
   margin-left:-13px;
 }
@@ -1018,6 +1018,22 @@ body{
 .hoverable-event {
   position: relative;
 }
+.date-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.flatpickr-input {
+  padding-right: 35px;
+}
+
+.dropdown-menu {
+  max-height: 300px;
+  overflow-y: auto;
+}
 
 .hoverable-event:hover::after {
   content: attr(data-full-name);
@@ -1047,13 +1063,13 @@ body{
 .form-check-input {
   margin-right: 8px;
 }
-.dropdown {
+/* .dropdown {
   position: absolute;
   left: 0px;
   /* width: 280px; */
   /* max-width: 280px; */
   /* margin: 0 9px ; */
-}
+/* } */ */
 .layout-navbar .navbar-dropdown .badge-notifications{
   top: 17px;
 }
@@ -1064,3 +1080,100 @@ body{
 body{
   padding: 0 !important;
 }
+.date-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.flatpickr-input {
+  padding-right: 35px;
+}
+
+.dropdown-menu {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.z-3 {
+  z-index: 1000;
+}
+
+.list-unstyled li {
+  padding: 3px 0;
+}
+
+.quick-reservation{
+  display: none;
+}
+@media (max-width: 768px) {
+  /* .dropdown-menu {
+    position: fixed !important;
+    left: 50% !important;
+    transform: translateX(-50%);
+    min-width: 90vw;
+    max-width: 95vw;
+  } */
+
+  .btn {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+@media (max-width: 576px) {
+  .btn {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+
+  .badge {
+    font-size: 10px;
+    padding: 4px 6px;
+  }
+
+  .position-absolute {
+    position: fixed !important;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 5px;
+  }
+}
+
+.z-3 {
+  z-index: 1000;
+}
+
+.list-unstyled li {
+  padding: 3px 0;
+}
+.popover{
+  border-radius:5px ;
+}
+.popoverContent button {
+  /* font-size: 14px;
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.3s ease;
+  padding: 4px 10px;
+  border-radius: 5px;
+  transition: all 0.3s ease; */
+  font-weight: 500;
+  margin:auto;
+}
+
+.popoverContent button:hover {
+  transform: scale(1.05);
+
+
+}
+.popover {
+  transition: all 0.3s ease-in-out;
+  max-width: 280px;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+

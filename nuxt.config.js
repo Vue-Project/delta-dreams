@@ -36,10 +36,7 @@ export default {
       },
     ],
   },
-  router: {
-    base: '/', // If deploying to a subdirectory (e.g., /my-app/), set this to '/my-app/'
-    mode: 'history', // Remove the hash (#) from URLs
-  },
+
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
@@ -82,7 +79,10 @@ export default {
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: ["~/plugins/vue-wow-config"],
+  plugins: [
+    "~/plugins/vue-wow-config",
+    { src: '~/plugins/store-init.js', mode: 'client' },
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -92,7 +92,8 @@ export default {
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: [],
+  modules: [
+  ],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
@@ -121,20 +122,15 @@ export default {
   },
   ignoredPaths: [""],
 
-    // acces page in URl
+  // acces page in URl
   // router: {
   //   middleware: 'auth'
   // },
-  router: {
-    middleware: 'permissionQuery', // Apply the middleware to all routes
-  },
+  // router: {
+  //   middleware: 'permissionQuery', // Apply the middleware to all routes
+  // },
 
 
-
-  // generate: {
-  //   fallback: true, // Ensures SPA fallback
-  //   // subFolders: false,
-  //   exclude: [/admin/]
 
 
   // },

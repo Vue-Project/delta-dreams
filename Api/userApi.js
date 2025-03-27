@@ -1,8 +1,8 @@
 import apiClient from './apiClient';
 
-export const addGuest = async (addGuestData) => {
+export const addGuest = async (formData) => {
   try {
-    const response = await apiClient.post('/clients', addGuestData, {
+    const response = await apiClient.post('/clients', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }

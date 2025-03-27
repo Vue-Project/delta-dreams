@@ -4,23 +4,57 @@
     <!-- <momenalert></momenalert> -->
     <Loader :visible="isLoading" />
     <div :class="{ 'loading-overlay': isLoading }">
-      <FilterCalendar ref="filterComponent" :statistics="statistics" :buildingNames="buildingNames" @show-all-resources="showAllResources" @show-building-resources="showBuildingResources" @date-selected="SelectedDateFilterCalendar" />
-    <FullCalendar :options="calendarOptions" @select="handleSelect" ref="calendar" :selectedDate="selectedDate">
-      <template v-slot:eventContent="arg">
-        <b>{{ arg.event.title }}</b>
-      </template>
-    </FullCalendar>
-    <CalendarFooter :occupancyData="occupancyData" />
-    <div v-if="isOverlayVisible" class="overlay" @click="closePopover"></div>
-    <PopoverComponent v-if="isPopoverVisible" :isPopoverVisible="isPopoverVisible" :popoverStyle="popoverStyle" :popoverArrowLeft="popoverArrowLeft" :firstSelectedDate="firstSelectedDate" :lastSelectedDate="lastSelectedDate" @go-to-add-reservation="goToAddReservation" @toggle-sidebar="toggleSidebar" @close-popover="closePopover" />
-    <SidebarBlockRoom :is-sidebar-open="isSidebarOpen" title="Block Room" width="400px" @close-sidebar="toggleSidebar" height="auto">
-      <BlockRoomForm :selectedDates="selectedDates" :selectedResourceId="selectedResourceId"  @close-sidebar="toggleSidebar" />
-    </SidebarBlockRoom>
-    <SelectedEventSidebar :selectedEvent="selectedEvent" @navigate-to-edit-reservation="navigateToEditReservation" />
+      <FilterCalendar
+        ref="filterComponent"
+        :statistics="statistics"
+        :buildingNames="buildingNames"
+        @show-all-resources="showAllResources"
+        @show-building-resources="showBuildingResources"
+        @date-selected="SelectedDateFilterCalendar"
+      />
+      <FullCalendar
+        :options="calendarOptions"
+        @select="handleSelect"
+        ref="calendar"
+        :selectedDate="selectedDate"
+      >
+        <template v-slot:eventContent="arg">
+          <b>{{ arg.event.title }}</b>
+        </template>
+      </FullCalendar>
+      <!-- <CalendarFooter :occupancyData="occupancyData" /> -->
+      <div v-if="isOverlayVisible" class="overlay" @click="closePopover"></div>
+      <PopoverComponent
+        v-if="isPopoverVisible"
+        :isPopoverVisible="isPopoverVisible"
+        :popoverStyle="popoverStyle"
+        :popoverArrowLeft="popoverArrowLeft"
+        :firstSelectedDate="firstSelectedDate"
+        :lastSelectedDate="lastSelectedDate"
+        @go-to-add-reservation="goToAddReservation"
+        @toggle-sidebar="toggleSidebar"
+        @close-popover="closePopover"
+      />
+      <SidebarBlockRoom
+        :is-sidebar-open="isSidebarOpen"
+        title="Block Room"
+        width="400px"
+        @close-sidebar="toggleSidebar"
+        height="auto"
+      >
+        <BlockRoomForm
+          :selectedDates="selectedDates"
+          :selectedResourceId="selectedResourceId"
+          @close-sidebar="toggleSidebar"
+        />
+      </SidebarBlockRoom>
+      <SelectedEventSidebar
+        :selectedEvent="selectedEvent"
+        @navigate-to-edit-reservation="navigateToEditReservation"
+      />
     </div>
   </section>
 </template>
-
 
 <script>
 // import momenalert from "../../layouts/momenalert.vue";
@@ -58,10 +92,21 @@ import SelectedEventSidebar from "./SelectedEventSidebar.vue";
 import HeaderCalender from "./HeaderCalender.vue";
 
 // API service for fetching calendar data
-import { deleteBlock, getCalenderAllUnits, postUpdateBlock, postUpdateReservation, putUpdateBlock } from "../../Api/CalenderApi";
-import Swal from 'sweetalert2'
-import { handleSubmissionError, showSuccessAlert, showConfirmationDialog, showAlert } from "../../Api/MassageValidation/alertUtilities";
-import { mapActions } from 'vuex';
+import {
+  deleteBlock,
+  getCalenderAllUnits,
+  postUpdateBlock,
+  postUpdateReservation,
+  putUpdateBlock,
+} from "../../Api/CalenderApi";
+import Swal from "sweetalert2";
+import {
+  handleSubmissionError,
+  showSuccessAlert,
+  showConfirmationDialog,
+  showAlert,
+} from "../../Api/MassageValidation/alertUtilities";
+import { mapActions } from "vuex";
 
 export default {
   components: {
@@ -74,17 +119,16 @@ export default {
     BlockRoomForm,
     Loader,
     FilterCalendar,
-    HeaderCalender
+    HeaderCalender,
   },
-  data ()
-  {
+  data() {
     return {
-      linkToAddReservation: '/add-reservation',
+      linkToAddReservation: "/add-reservation",
       datesBuilding: [],
       buildingNames: [], // Store building names dynamically
       selectedDate: null,
-      selectedResourceId: '',
-      selectedResourceName: '',
+      selectedResourceId: "",
+      selectedResourceName: "",
       isLoading: true,
       data: [],
       selectedEvent: null, // Store the data for the selectedEvent
@@ -108,32 +152,36 @@ export default {
       calendarOptions: {
         customButtons: {
           prev: {
-            click: this.handlePrevClick
+            click: this.handlePrevClick,
           },
           next: {
-            click: this.handleNextClick
+            click: this.handleNextClick,
           },
           today: {
-            text: 'Today',
-            click: () => this.handleTodayClick()
-          }
+            text: "Today",
+            click: () => this.handleTodayClick(),
+          },
         },
-        resourceAreaHeaderContent: 'Units', // Change the header to "Units"
+        resourceAreaHeaderContent: "Units", // Change the header to "Units"
 
         plugins: [resourceTimelinePlugin, interactionPlugin],
         initialView: "resourceTimeline",
         eventClick: this.handleEventClick,
         duration: this.getDuration(),
         weekends: true,
-         editable: true, // Enable dragging and resizing
-         eventDrop: this.handleEventChange,
+        editable: true, // Enable dragging and resizing
+        eventDrop: this.handleEventChange,
         eventResize: this.handleEventChange,
         eventDidMount: (info) => {
           this.adjustHarnessPosition(info);
           if (info.event.extendedProps?.fullName) {
-            info.el.setAttribute('data-full-name', info.event.extendedProps.fullName);
+            info.el.setAttribute(
+              "data-full-name",
+              info.event.extendedProps.fullName
+            );
           }
-        },        resources: this.createResources(),
+        },
+        resources: this.createResources(),
         selectable: true, // Enable date selection
         selectMirror: true, // Make the selection draggable
         eventOverlap: false, // Disallow overlapping events
@@ -141,10 +189,8 @@ export default {
         datesSet: this.handleDatesSet, // Listen to date changes
         initialDate: this.getTwoDaysAgoDate(),
 
-
         // eventColor: 'red', // This will override individual event colors
-        slotLabelContent: (arg) =>
-        {
+        slotLabelContent: (arg) => {
           const date = new Date(arg.date);
           // For level 0 (Months), show only the month
           if (arg.level === 0) {
@@ -175,63 +221,76 @@ export default {
 
           return null; // For other levels, return null (if any)
         },
-        resourceLabelDidMount: function (info)
-        {
+        resourceLabelDidMount: function (info) {
           // Get the resource's extendedProps
           const { is_clean, is_smoking } = info.resource.extendedProps;
 
           // Create container for icons
-          const iconContainer = document.createElement('span');
-          iconContainer.style.float = 'right';
-          iconContainer.style.cursor = 'pointer';
+          const iconContainer = document.createElement("span");
+          iconContainer.style.float = "right";
+          iconContainer.style.cursor = "pointer";
 
           // Add icon for cleanliness status
-          const cleanIcon = document.createElement('i');
-          cleanIcon.style.paddingRight = '10px';
+          const cleanIcon = document.createElement("i");
+          cleanIcon.style.paddingRight = "10px";
 
           if (is_clean) {
-            cleanIcon.className = 'fa fa-broom '; // FontAwesome icon for clean
-            cleanIcon.style.color = '#28c76f';
-            cleanIcon.setAttribute('title', 'This unit is clean');
+            cleanIcon.className = "fa fa-broom "; // FontAwesome icon for clean
+            cleanIcon.style.color = "#28c76f";
+            cleanIcon.setAttribute("title", "This unit is clean");
           } else {
-            cleanIcon.className = 'fa fa-trash'; // FontAwesome icon for not clean
-            cleanIcon.style.color = '#ea5455';
-            cleanIcon.setAttribute('title', 'This unit is not clean');
+            cleanIcon.className = "fa fa-trash"; // FontAwesome icon for not clean
+            cleanIcon.style.color = "#ea5455";
+            cleanIcon.setAttribute("title", "This unit is not clean");
           }
-          cleanIcon.setAttribute('data-bs-toggle', 'tooltip');
-          cleanIcon.setAttribute('data-bs-placement', 'top');
+          cleanIcon.setAttribute("data-bs-toggle", "tooltip");
+          cleanIcon.setAttribute("data-bs-placement", "top");
           iconContainer.appendChild(cleanIcon);
 
           // Add icon for smoking status
-          const smokingIcon = document.createElement('i');
+          const smokingIcon = document.createElement("i");
           if (is_smoking) {
-            smokingIcon.className = 'fa fa-smoking'; // FontAwesome icon for smoking
-            smokingIcon.style.color = '#ea5455';
-            smokingIcon.setAttribute('title', 'Smoking is allowed ');
+            smokingIcon.className = "fa fa-smoking"; // FontAwesome icon for smoking
+            smokingIcon.style.color = "#ea5455";
+            smokingIcon.setAttribute("title", "Smoking is allowed ");
           } else {
-            smokingIcon.className = 'fa fa-smoking-ban'; // FontAwesome icon for no smoking
-            smokingIcon.style.color = '#ff9f43';
-            smokingIcon.setAttribute('title', 'Smoking is not allowed ');
+            smokingIcon.className = "fa fa-smoking-ban"; // FontAwesome icon for no smoking
+            smokingIcon.style.color = "#ff9f43";
+            smokingIcon.setAttribute("title", "Smoking is not allowed ");
           }
-          smokingIcon.setAttribute('data-bs-toggle', 'tooltip');
-          smokingIcon.setAttribute('data-bs-placement', 'top');
+          smokingIcon.setAttribute("data-bs-toggle", "tooltip");
+          smokingIcon.setAttribute("data-bs-placement", "top");
           iconContainer.appendChild(smokingIcon);
 
           // Append the icon container to the resource label
-          info.el.querySelector('.fc-datagrid-cell-main').appendChild(iconContainer);
+          info.el
+            .querySelector(".fc-datagrid-cell-main")
+            .appendChild(iconContainer);
 
           // Initialize Bootstrap tooltips
-          const tooltipTriggerList = [].slice.call(iconContainer.querySelectorAll('[data-bs-toggle="tooltip"]'));
-          tooltipTriggerList.forEach(function (tooltipTriggerEl)
-          {
+          const tooltipTriggerList = [].slice.call(
+            iconContainer.querySelectorAll('[data-bs-toggle="tooltip"]')
+          );
+          tooltipTriggerList.forEach(function (tooltipTriggerEl) {
             new bootstrap.Tooltip(tooltipTriggerEl); // Activate tooltip
           });
         },
 
         resourceGroupLaneContent: this.resourceGroupLaneContent,
-        resourceAreaWidth: '15%',
+        resourceAreaWidth:
+          typeof window !== "undefined"
+            ? window.innerWidth <= 768
+              ? "30%"
+              : "10%"
+            : "10%", // Wider on mobile, narrower on desktop
+        slotMinWidth:
+          typeof window !== "undefined"
+            ? window.innerWidth <= 768
+              ? 150
+              : 70
+            : 70,
         resourceGroupField: "groupId",
-        // resourceAreaHeaderContent: this.customResourceHeader, // Customize header
+
         dateClick: this.handleDateClick,
         select: this.handleSelect,
 
@@ -241,12 +300,10 @@ export default {
           right: "",
         },
       },
-
     };
   },
 
   methods: {
-
     // ==============================================
     // RESOURCE MANAGEMENT
     // ==============================================
@@ -255,25 +312,25 @@ export default {
      * @param {Array} selectedIds - Building IDs to filter
      * @param {Date} selectedDate - Date to filter units
      */
-    createResources (selectedIds = [], selectedDate = null)
-    {
+    createResources(selectedIds = [], selectedDate = null) {
       const resources = [];
 
       if (Array.isArray(this.data)) {
-        this.data.forEach((building) =>
-        {
+        this.data.forEach((building) => {
           // Only process if building is selected
           if (selectedIds.length === 0 || selectedIds.includes(building.name)) {
             // Add units under the building if they exist
             if (building.units) {
-              building.units.forEach((unit) =>
-              {
-                if (!selectedDate || (unit.date && unit.date === selectedDate)) {
+              building.units.forEach((unit) => {
+                if (
+                  !selectedDate ||
+                  (unit.date && unit.date === selectedDate)
+                ) {
                   resources.push({
                     id: `${building.id}-${unit.id}`,
                     resourceId: building.id,
-                    title: unit.code,  // This should display "UNIT-XXXX"
-                    groupId: building.name,  // Group by building name (e.g., "Studio")
+                    title: unit.code, // This should display "UNIT-XXXX"
+                    groupId: building.name, // Group by building name (e.g., "Studio")
                     classNames: ["unit"],
                     extendedProps: {
                       is_clean: unit.is_clean,
@@ -296,46 +353,42 @@ export default {
     // ==============================================
 
     /**
-    * Updates calendar resources based on selected building IDs
-    * @param {Array} selectedIds - Building IDs to show
-    */
-    updateCalendarResources (selectedIds = [])
-    {
+     * Updates calendar resources based on selected building IDs
+     * @param {Array} selectedIds - Building IDs to show
+     */
+    updateCalendarResources(selectedIds = []) {
       const resources = this.createResources(selectedIds); // Create resources based on selectedIds
       const calendar = this.$refs.calendar?.getApi();
       if (calendar) {
-        calendar.setOption('resources', resources); // Update the calendar resources
+        calendar.setOption("resources", resources); // Update the calendar resources
       } else {
-        console.error('FullCalendar API is not accessible.');
+        console.error("FullCalendar API is not accessible.");
       }
     },
-    showBuildingResources (buildingNames)
-    {
+    showBuildingResources(buildingNames) {
       this.updateCalendarResources(buildingNames); // Pass the selected building names
     },
-    showAllResources ()
-    {
+    showAllResources() {
       this.updateCalendarResources(); // No selectedIds means show all resources
     },
-
 
     // ==============================================
     // DATE & TIME MANAGEMENT
     // ==============================================
 
     /**
-    * Handles date range selection
-    * @param {Object} info - Contains start/end dates and resource
-    */
-    handleSelect (info)
-    {
+     * Handles date range selection
+     * @param {Object} info - Contains start/end dates and resource
+     */
+    handleSelect(info) {
       const { start, end, resource } = info;
 
       // Helper to get current Egypt time
-      const getCurrentEgyptTime = () =>
-      {
+      const getCurrentEgyptTime = () => {
         const now = new Date();
-        return new Date(now.toLocaleString('en-US', { timeZone: 'Africa/Cairo' }));
+        return new Date(
+          now.toLocaleString("en-US", { timeZone: "Africa/Cairo" })
+        );
       };
 
       // Get current Egypt time and initialize start/end dates
@@ -347,34 +400,42 @@ export default {
       endDate.setDate(endDate.getDate() - 1);
 
       // Align start and end dates to Egypt's current time
-      startDate.setHours(currentEgyptTime.getHours(), currentEgyptTime.getMinutes(), 0, 0);
-      endDate.setHours(currentEgyptTime.getHours(), currentEgyptTime.getMinutes(), 0, 0);
+      startDate.setHours(
+        currentEgyptTime.getHours(),
+        currentEgyptTime.getMinutes(),
+        0,
+        0
+      );
+      endDate.setHours(
+        currentEgyptTime.getHours(),
+        currentEgyptTime.getMinutes(),
+        0,
+        0
+      );
 
       this.selectedDates = [];
 
       // Helper to format date with time in Egypt timezone
-      const formatDateTimeEgypt = (date) =>
-      {
-        const formatter = new Intl.DateTimeFormat('en-GB', {
-          timeZone: 'Africa/Cairo',
-          day: '2-digit',
-          month: '2-digit',
-          year: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit',
+      const formatDateTimeEgypt = (date) => {
+        const formatter = new Intl.DateTimeFormat("en-GB", {
+          timeZone: "Africa/Cairo",
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
           hour12: false,
         });
         return formatter.format(date);
       };
 
       // Helper to format date only (no time) in Egypt timezone
-      const formatDateOnly = (date) =>
-      {
-        const formatter = new Intl.DateTimeFormat('en-GB', {
-          timeZone: 'Africa/Cairo',
-          day: '2-digit',
-          month: '2-digit',
-          year: 'numeric',
+      const formatDateOnly = (date) => {
+        const formatter = new Intl.DateTimeFormat("en-GB", {
+          timeZone: "Africa/Cairo",
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
         });
         return formatter.format(date);
       };
@@ -392,9 +453,9 @@ export default {
       this.firstSelectedDate = formatDateOnly(startDate);
       this.lastSelectedDate = formatDateOnly(endDate);
 
-
       // Calculate total days/nights (using adjusted endDate)
-      const totalDays = Math.ceil((endDate - startDate) / (1000 * 3600 * 24)) + 1;
+      const totalDays =
+        Math.ceil((endDate - startDate) / (1000 * 3600 * 24)) + 1;
       const nights = totalDays > 0 ? totalDays : 1; // Minimum of 1 night
 
       // Store nights count
@@ -402,51 +463,51 @@ export default {
 
       // Capture resource ID and name
       if (resource) {
-        const unitTitle = resource.title || 'Unknown Unit';
-        const buildingName = resource.extendedProps.groupId || 'Unknown Building';
-        const resourceId = resource.id || 'Unknown ID';  // Get the resource ID
-        this.selectedResourceName = `${unitTitle} - ${buildingName} - ID: ${resourceId}`;  // Include the ID in the name
+        const unitTitle = resource.title || "Unknown Unit";
+        const buildingName =
+          resource.extendedProps.groupId || "Unknown Building";
+        const resourceId = resource.id || "Unknown ID"; // Get the resource ID
+        this.selectedResourceName = `${unitTitle} - ${buildingName} - ID: ${resourceId}`; // Include the ID in the name
         this.selectedResourceId = `${resource.title}  - ID: ${resourceId}`;
       } else {
         this.selectedResourceId = null;
         this.selectedResourceName = null;
       }
 
-
-
       // Update highlighted text with formatted dates and nights
-      this.updateHighlightedText(this.firstSelectedDate, this.lastSelectedDate, nights);
+      this.updateHighlightedText(
+        this.firstSelectedDate,
+        this.lastSelectedDate,
+        nights
+      );
 
       // Show overlay if required
       this.showOverlay();
     },
-    getTwoDaysAgoDate ()
-    {
-      const today = new Date()
+    getTwoDaysAgoDate() {
+      const today = new Date();
       //   console.log(today);
 
-      const twoDaysAgo = new Date(today)
+      const twoDaysAgo = new Date(today);
       //   console.log(twoDaysAgo)
-      twoDaysAgo.setDate(today.getDate() - 2)
+      twoDaysAgo.setDate(today.getDate() - 2);
       //   console.log(twoDaysAgo)
 
-      return twoDaysAgo
+      return twoDaysAgo;
     },
 
     // ==============================================
     // UI ACTIONS
     // ==============================================
 
-    updateHighlightedText (start, end, nights)
-    {
+    updateHighlightedText(start, end, nights) {
       const calendarEl = document.querySelector(".fc");
       const highlightCells = calendarEl.querySelectorAll(".fc-highlight");
 
-      highlightCells.forEach((highlight) =>
-      {
+      highlightCells.forEach((highlight) => {
         const tooltip = document.createElement("div");
         tooltip.classList.add("selected-days-tooltip");
-        tooltip.textContent = `${nights} Night${nights > 1 ? 's' : ''}`;
+        tooltip.textContent = `${nights} Night${nights > 1 ? "s" : ""}`;
 
         highlight.appendChild(tooltip); // Add the total days count inside the highlighted area
       });
@@ -464,13 +525,11 @@ export default {
     //   }
     // },
 
-    showPopover ()
-    {
+    showPopover() {
       this.isPopoverVisible = true;
       this.isPopoverBodyVisible = true; // Ensure body is visible when popover shows
 
-      this.$nextTick(() =>
-      {
+      this.$nextTick(() => {
         const popoverElement = document.querySelector(".popover");
         this.popoverHeight = popoverElement ? popoverElement.offsetHeight : 0;
 
@@ -480,7 +539,9 @@ export default {
           const rect = lastHighlight.getBoundingClientRect();
 
           this.popoverStyle = {
-            left: `${rect.left + rect.width / 2 - popoverElement.offsetWidth / 2}px`,
+            left: `${
+              rect.left + rect.width / 2 - popoverElement.offsetWidth / 2
+            }px`,
             top: `${rect.top + window.scrollY - this.popoverHeight - 90}px`,
           };
 
@@ -490,18 +551,15 @@ export default {
         }
       });
     },
-    showOverlay ()
-    {
+    showOverlay() {
       this.isOverlayVisible = true; // Show the overlay
     },
 
-    closePopover ()
-    {
+    closePopover() {
       this.isPopoverVisible = false;
       this.isOverlayVisible = false;
     },
-    toggleSidebar ()
-    {
+    toggleSidebar() {
       this.isSidebarOpen = !this.isSidebarOpen;
       this.isPopoverVisible = false;
       this.isOverlayVisible = false;
@@ -510,17 +568,16 @@ export default {
     // ==============================================
     // EVENT HANDLING
     // ==============================================
-    handleEventClick (info)
-    {
+    handleEventClick(info) {
       if (info.event.extendedProps.is_blocked) {
         // Format dates for display
-        const startDate = info.event.start.toLocaleString('en-US', {
-          dateStyle: 'medium',
-          timeStyle: 'short'
+        const startDate = info.event.start.toLocaleString("en-US", {
+          dateStyle: "medium",
+          timeStyle: "short",
         });
-        const endDate = info.event.end.toLocaleString('en-US', {
-          dateStyle: 'medium',
-          timeStyle: 'short'
+        const endDate = info.event.end.toLocaleString("en-US", {
+          dateStyle: "medium",
+          timeStyle: "short",
         });
 
         // Store blocked event details
@@ -529,28 +586,26 @@ export default {
           start: info.event.start,
           end: info.event.end,
           title: info.event.title,
-          room: info.event.extendedProps.room || 'Not specified'
+          room: info.event.extendedProps.room || "Not specified",
         };
-
 
         // Show detailed confirmation dialog
         Swal.fire({
-          title: 'Blocked Room Details',
+          title: "Blocked Room Details",
           html: `
         <div class="text-left">
           <p><strong>Start:</strong> ${startDate}</p>
           <p><strong>End:</strong> ${endDate}</p>
-          <p><strong>Room:</strong> ${this.selectedBlockedEvent.title}</p>
+          <p><strong>Blocked Reason:</strong> ${this.selectedBlockedEvent.title}</p>
         </div>
       `,
-          icon: 'info',
+          icon: "info",
           showCancelButton: true,
-          confirmButtonColor: '#7367f0',
-          cancelButtonColor: '#e2e1e5',
-          confirmButtonText: 'Delete',
-          cancelButtonText: 'Close',
-        }).then((result) =>
-        {
+          confirmButtonColor: "#7367f0",
+          cancelButtonColor: "#e2e1e5",
+          confirmButtonText: "Delete",
+          cancelButtonText: "Close",
+        }).then((result) => {
           if (result.isConfirmed) {
             // Show delete confirmation
             this.deleteBlockedPeriod();
@@ -566,8 +621,7 @@ export default {
       }
     },
 
-    async deleteBlockedPeriod ()
-    {
+    async deleteBlockedPeriod() {
       try {
         // Make API call to delete the blocked period
         await deleteBlock(this.selectedBlockedEvent.id);
@@ -581,48 +635,101 @@ export default {
 
         // Show success message
         showAlert({
-          title: 'Deleted!',
-          text: 'The blocked period has been successfully removed.',
+          title: "Deleted!",
+          text: "The blocked period has been successfully removed.",
           timer: 1000,
           timerProgressBar: true,
-          showConfirmButton: false
+          showConfirmButton: false,
         });
       } catch (error) {
         // Handle error
         showAlert({
-          title: 'Error!',
-          text: 'Failed to delete the blocked period. Please try again.',
-          icon: 'error'
+          title: "Error!",
+          text: "Failed to delete the blocked period. Please try again.",
+          icon: "error",
         });
         // console.error('Error deleting blocked period:', error);
       }
     },
 
-    transformUnitToEvents (unitData)
-    {
+    transformUnitToEvents(unitData) {
       const events = [];
       const handledReservations = new Set();
 
       // Process reservations first
-      unitData.dates.forEach(dateInfo =>
-      {
-        if (dateInfo.is_reserved && dateInfo.reservation && !handledReservations.has(dateInfo.reservation.id)) {
+      unitData.dates.forEach((dateInfo) => {
+        if (
+          dateInfo.is_reserved &&
+          dateInfo.reservation &&
+          !handledReservations.has(dateInfo.reservation.id)
+        ) {
           const reservation = dateInfo.reservation;
-          const fullName = reservation.client?.name || reservation.user?.name || 'Unknown';
-          const shortName = fullName.substring(0, 2).toUpperCase(); // Get first 2 letters and capitalize
+
+          // Determine color based on reservation status
+          let eventColor = "#7367f0"; // Default color (purple)
+
+          // Check status and assign appropriate color
+          if (reservation.status) {
+            switch (reservation.status) {
+              case "approved":
+                eventColor = "#28A745"; // Green for confirmed
+                break;
+              case "pending":
+                eventColor = "#ff9f43"; // Orange for pending
+                break;
+              case "check_in":
+                eventColor = "#6F42C1"; // Light blue for checked in
+                break;
+              case "check_out":
+                eventColor = "#FD7E14"; // Dark gray for checked out
+                break;
+              case "cancelled":
+                eventColor = "#DC3545 "; // Red for cancelled
+                break;
+              case "finished":
+                eventColor = "#007BFF"; // Gray for no-show
+                break;
+              default:
+                eventColor = "#7367f0"; // Default purple
+            }
+          }
+
+          const fullName =
+            reservation.client?.name || reservation.user?.name || "Unknown";
+
+          // Get initials by taking first letter of each word
+          let shortName = "";
+          if (fullName) {
+            // Split the name by spaces and get first letter of each part
+            const nameParts = fullName.split(" ");
+            // Take up to 2 parts to avoid too many letters
+            const parts = nameParts.slice(0, 2);
+            shortName = parts
+              .map((part) => part.charAt(0))
+              .join("")
+              .toUpperCase();
+            // If we only got one letter, use first two letters of first name
+            if (shortName.length === 1) {
+              shortName = fullName.substring(0, 2).toUpperCase();
+            }
+          } else {
+            shortName = "UN"; // Default for unknown
+          }
 
           events.push({
             resourceId: unitData.code,
             title: shortName,
-            start: reservation.checkin_date.split('T')[0],
-            end: reservation.checkout_date.split('T')[0] + 'T23:59:59',
-            color: '#7367f0',
+
+            start: reservation.checkin_date.split("T")[0],
+            end: reservation.checkout_date.split("T")[0] + "T23:59:59",
+            color: eventColor,
             reservationId: reservation.id,
             extendedProps: {
               reservation: reservation,
+              status: reservation.status,
               fullName: fullName, // Store full name for tooltip
             },
-            classNames: ['custom-event', 'hoverable-event'], // Add hoverable class
+            classNames: ["custom-event", "hoverable-event"], // Add hoverable class
           });
 
           handledReservations.add(reservation.id);
@@ -633,24 +740,23 @@ export default {
       let currentBlock = null;
       const sortedDates = [...unitData.dates]
         .sort((a, b) => new Date(a.date) - new Date(b.date))
-        .forEach((dateInfo, index) =>
-        {
+        .forEach((dateInfo, index) => {
           if (dateInfo.is_blocked) {
             if (!currentBlock) {
               currentBlock = {
                 id: dateInfo.block.id,
                 resourceId: unitData.code,
-                title: `Blocked Reason: ${dateInfo.block.reason.name || 'No reason provided'}`,
+                title: ` ${dateInfo.block.reason.name || "No reason provided"}`,
                 start: dateInfo.date,
                 end: dateInfo.date,
-                color: '#4b4b4b',
+                color: "#4b4b4b",
                 extendedProps: {
                   is_blocked: true,
-                  block_reason: dateInfo.block_reason || 'No reason provided',
+                  block_reason: dateInfo.block_reason || "No reason provided",
                   block: dateInfo.block,
-                  reason_id: dateInfo.block.reason?.id
+                  reason_id: dateInfo.block.reason?.id,
                 },
-                classNames: ['custom-event'],
+                classNames: ["custom-event"],
               };
             }
 
@@ -670,9 +776,7 @@ export default {
 
       return events;
     },
-    transformEventToReservationData (event)
-    {
-
+    transformEventToReservationData(event) {
       return {
         client: event.extendedProps?.reservation?.client,
         unit_id: event.extendedProps?.reservation?.unit_id,
@@ -694,19 +798,16 @@ export default {
         status_select: event.extendedProps?.reservation?.status_select,
       };
     },
-    transformAllUnitsToEvents ()
-    {
+    transformAllUnitsToEvents() {
       let allEvents = [];
 
       if (Array.isArray(this.data)) {
-        this.data.forEach(building =>
-        {
+        this.data.forEach((building) => {
           if (building.units) {
-            building.units.forEach(unit =>
-            {
+            building.units.forEach((unit) => {
               const unitEvents = this.transformUnitToEvents({
                 ...unit,
-                code: `${building.id}-${unit.id}` // Match the resourceId format
+                code: `${building.id}-${unit.id}`, // Match the resourceId format
               });
               allEvents = [...allEvents, ...unitEvents];
             });
@@ -715,141 +816,158 @@ export default {
       }
 
       return allEvents;
-     },
+    },
 
-async handleEventChange(info) {
-    try {
-      const event = info.event;
-      console.log(event);
+    async handleEventChange(info) {
+      try {
+        const event = info.event;
+        const resourceId = event.getResources()[0]?.id;
+        const unitId = resourceId?.split("-")[1];
+
+        // Get the original reservation times from extendedProps
+        const originalCheckinTime =
+          event.extendedProps?.reservation?.checkin_time || "14:00:00";
+        const originalCheckoutTime =
+          event.extendedProps?.reservation?.checkout_time || "12:00:00";
+
+        // Adjust dates to handle timezone offset
+        const startDateObj = new Date(event.start);
+        const endDateObj = new Date(event.end);
+
+        // Format dates correctly with local timezone
+        const startDate = `${startDateObj.getFullYear()}-${String(
+          startDateObj.getMonth() + 1
+        ).padStart(2, "0")}-${String(startDateObj.getDate())}`;
+        const endDate = `${endDateObj.getFullYear()}-${String(
+          endDateObj.getMonth() + 1
+        ).padStart(2, "0")}-${String(endDateObj.getDate())}`;
+
+        // Check if this is a blocked event or reservation
+        if (event.extendedProps?.is_blocked) {
+          // Extract reason_id from the block event
+          const reasonId =
+            event.extendedProps?.block?.reason?.id ||
+            event.extendedProps?.reason_id;
+
+          // Handle blocked event update
+          const updateDataBlock = {
+            unit_id: unitId,
+            start_date: startDate,
+            end_date: endDate,
+            block_id: event.id,
+            reason_id: reasonId, // Add the reason_id here
+          };
+
+          const result = await showConfirmationDialog(
+            "Are you sure you want to update this blocked period?"
+          );
+
+          if (result.isConfirmed) {
+            // Make API call to update blocked period
+            const response = await putUpdateBlock(
+              updateDataBlock.block_id,
+              updateDataBlock
+            );
+
+            // Update the event in the calendar
+            event.setDates(startDate, endDate);
+            event.setResources([resourceId]);
+
+            await showSuccessAlert("Blocked period updated successfully!");
+          } else {
+            info.revert(); // Revert the change if not confirmed
+          }
+        } else {
+          // Handle reservation update
+          const updateDataUnit = {
+            unit_id: unitId,
+            checkin_date: startDate,
+            checkout_date: endDate,
+            reservation_id: event.extendedProps?.reservation?.id,
+          };
+
+          const result = await showConfirmationDialog(
+            "Are you sure you want to update this reservation?"
+          );
+
+          if (result.isConfirmed) {
+            const response = await postUpdateReservation(
+              updateDataUnit.reservation_id,
+              updateDataUnit
+            );
+
+            // Get the calendar API
+            const calendarApi = this.$refs.calendar.getApi();
+
+            // Remove the old event
+            event.remove();
+
+            // Create a new event with updated properties
+            calendarApi.addEvent({
+              resourceId: resourceId,
+              title: event.title,
+              start: startDate,
+              end: endDate,
+              color: event.backgroundColor,
+              extendedProps: {
+                ...event.extendedProps,
+                reservation: {
+                  ...event.extendedProps.reservation,
+                  checkin_date: startDate,
+                  checkout_date: endDate,
+                  checkin_time: originalCheckinTime,
+                  checkout_time: originalCheckoutTime,
+                  unit_id: unitId,
+                },
+              },
+              classNames: event.classNames,
+            });
+
+            await showSuccessAlert("Reservation updated successfully!");
+          } else {
+            info.revert(); // Revert the change if not confirmed
+          }
+        }
+      } catch (error) {
+        handleSubmissionError(error, "Failed to update event");
+        info.revert();
+      } finally {
+        this.isLoading = false;
+      }
+    },
+
+    // Add validation method
+    validateEventChange(event, newStart, newEnd) {
+      // Check if dates are valid
+      if (!newStart || !newEnd || newStart >= newEnd) {
+        return false;
+      }
+
+      // Check if the new dates overlap with other events
+      const calendar = this.$refs.calendar.getApi();
+      const events = calendar.getEvents();
       const resourceId = event.getResources()[0]?.id;
-      const unitId = resourceId?.split('-')[1];
 
-      // Get the original reservation times from extendedProps
-      const originalCheckinTime = event.extendedProps?.reservation?.checkin_time || '14:00:00';
-      const originalCheckoutTime = event.extendedProps?.reservation?.checkout_time || '12:00:00';
+      for (const existingEvent of events) {
+        if (existingEvent === event) continue;
 
-      // Adjust dates to handle timezone offset
-      const startDateObj = new Date(event.start);
-      const endDateObj = new Date(event.end);
-
-      // Format dates correctly with local timezone
-      const startDate = `${startDateObj.getFullYear()}-${String(startDateObj.getMonth() + 1).padStart(2, '0')}-${String(startDateObj.getDate())}`;
-      const endDate = `${endDateObj.getFullYear()}-${String(endDateObj.getMonth() + 1).padStart(2, '0')}-${String(endDateObj.getDate())}`;
-
-      // Check if this is a blocked event or reservation
-      if (event.extendedProps?.is_blocked) {
-        // Extract reason_id from the block event
-        const reasonId = event.extendedProps?.block?.reason?.id ||
-                        event.extendedProps?.reason_id;
-
-        // Handle blocked event update
-        const updateDataBlock = {
-          unit_id: unitId,
-          start_date: startDate,
-          end_date: endDate,
-          block_id: event.id,
-          reason_id: reasonId // Add the reason_id here
-        };
-
-        const result = await showConfirmationDialog("Are you sure you want to update this blocked period?");
-
-        if (result.isConfirmed) {
-          // Make API call to update blocked period
-          const response = await putUpdateBlock(updateDataBlock.block_id, updateDataBlock);
-
-          // Update the event in the calendar
-          event.setDates(startDate, endDate);
-          event.setResources([resourceId]);
-
-          await showSuccessAlert("Blocked period updated successfully!");
-        } else {
-          info.revert(); // Revert the change if not confirmed
-        }
-      } else {
-        // Handle reservation update
-        const updateDataUnit = {
-          unit_id: unitId,
-          checkin_date: startDate,
-          checkout_date: endDate,
-          reservation_id: event.extendedProps?.reservation?.id
-        };
-
-
-        const result = await showConfirmationDialog("Are you sure you want to update this reservation?");
-
-        if (result.isConfirmed) {
-          const response = await postUpdateReservation(updateDataUnit.reservation_id, updateDataUnit);
-
-          // Get the calendar API
-          const calendarApi = this.$refs.calendar.getApi();
-
-          // Remove the old event
-          event.remove();
-
-          // Create a new event with updated properties
-          calendarApi.addEvent({
-            resourceId: resourceId,
-            title: event.title,
-            start: startDate,
-            end: endDate,
-            color: event.backgroundColor,
-            extendedProps: {
-              ...event.extendedProps,
-              reservation: {
-                ...event.extendedProps.reservation,
-                checkin_date: startDate,
-                checkout_date: endDate,
-                checkin_time: originalCheckinTime,
-                checkout_time: originalCheckoutTime,
-                unit_id: unitId
-              }
-            },
-            classNames: event.classNames
-          });
-
-          await showSuccessAlert("Reservation updated successfully!");
-        } else {
-          info.revert(); // Revert the change if not confirmed
+        if (existingEvent.getResources()[0]?.id === resourceId) {
+          // Check for overlap
+          if (
+            !(newEnd <= existingEvent.start || newStart >= existingEvent.end)
+          ) {
+            return false;
+          }
         }
       }
-    } catch (error) {
-      handleSubmissionError(error, "Failed to update event");
-      info.revert();
-    } finally {
-      this.isLoading = false;
-    }
-},
 
-// Add validation method
-validateEventChange(event, newStart, newEnd) {
-    // Check if dates are valid
-    if (!newStart || !newEnd || newStart >= newEnd) {
-      return false;
-    }
+      return true;
+    },
+    adjustHarnessPosition(info) {
+      // Get the harness element parent
+      const harness = info.el.closest(".fc-timeline-event-harness");
 
-    // Check if the new dates overlap with other events
-    const calendar = this.$refs.calendar.getApi();
-    const events = calendar.getEvents();
-    const resourceId = event.getResources()[0]?.id;
-
-    for (const existingEvent of events) {
-      if (existingEvent === event) continue;
-
-      if (existingEvent.getResources()[0]?.id === resourceId) {
-        // Check for overlap
-        if (!(newEnd <= existingEvent.start || newStart >= existingEvent.end)) {
-          return false;
-        }
-      }
-    }
-
-    return true;
-  },
-  adjustHarnessPosition(info) {
-    // Get the harness element parent
-    const harness = info.el.closest('.fc-timeline-event-harness');
-
-    if (harness) {
+      if (harness) {
         // Get current left position (parse as number)
         const currentLeft = parseInt(harness.style.left) || 0;
         const currentRight = parseInt(harness.style.right) || 0;
@@ -863,17 +981,17 @@ validateEventChange(event, newStart, newEnd) {
 
         // Example breakpoints for different screen sizes
         if (screenWidth < 600) {
-            // Small screens (mobile)
-            leftOffset = 20;
-            rightOffset = 0;
+          // Small screens (mobile)
+          leftOffset = 20;
+          rightOffset = 0;
         } else if (screenWidth < 1200) {
-            // Medium screens (tablets)
-            leftOffset = 30;
-            rightOffset =0;
+          // Medium screens (tablets)
+          leftOffset = 30;
+          rightOffset = 0;
         } else {
-            // Large screens (desktops)
-            leftOffset = 50;
-            rightOffset = -6;
+          // Large screens (desktops)
+          leftOffset = 50;
+          rightOffset = -6;
         }
 
         // Adjust the left and right positions
@@ -881,38 +999,31 @@ validateEventChange(event, newStart, newEnd) {
         harness.style.right = `${currentRight + rightOffset}px`;
 
         // Adjust the width of the event element
-        const eventElement = harness.querySelector('.fc-timeline-event');
+        const eventElement = harness.querySelector(".fc-timeline-event");
         if (eventElement) {
-            const currentWidth = eventElement.offsetWidth;
+          const currentWidth = eventElement.offsetWidth;
 
-            // Calculate width adjustment based on the offsets
-            widthAdjustment = leftOffset + rightOffset;
-            eventElement.style.width = `${currentWidth - widthAdjustment}px`;
-
+          // Calculate width adjustment based on the offsets
+          widthAdjustment = leftOffset + rightOffset;
+          eventElement.style.width = `${currentWidth - widthAdjustment}px`;
         }
-    }
-}
-,
-
-
+      }
+    },
     // ==============================================
     // CALENDAR NAVIGATION
     // ==============================================
 
-    handlePrevClick ()
-    {
+    handlePrevClick() {
       this.$refs.calendar.getApi().prev(); // Navigate to the previous time period
-      this.handleNavigation('prev'); // Update calendar data and visuals
+      this.handleNavigation("prev"); // Update calendar data and visuals
     },
 
-    handleNextClick ()
-    {
+    handleNextClick() {
       this.$refs.calendar.getApi().next();
-      this.handleNavigation('next');
+      this.handleNavigation("next");
     },
 
-    async handleNavigation (direction)
-    {
+    async handleNavigation(direction) {
       try {
         this.isLoading = true;
         const calendarApi = this.$refs.calendar.getApi();
@@ -923,18 +1034,18 @@ validateEventChange(event, newStart, newEnd) {
         const end = view.activeEnd;
 
         // Format dates for server
-        let startDate = start.toISOString().split('T')[0];
-        const endDate = end.toISOString().split('T')[0];
+        let startDate = start.toISOString().split("T")[0];
+        const endDate = end.toISOString().split("T")[0];
 
         // Modify startDate by adding 1 day
         const startDateObj = new Date(startDate);
         startDateObj.setDate(startDateObj.getDate() + 1);
-        startDate = startDateObj.toISOString().split('T')[0];
+        startDate = startDateObj.toISOString().split("T")[0];
 
         // Fetch data for the new date range
         const response = await getCalenderAllUnits({
           start: startDate,
-          end: endDate
+          end: endDate,
         });
 
         // Update data sources
@@ -951,15 +1062,13 @@ validateEventChange(event, newStart, newEnd) {
         // const resources = this.createResources();
         // calendarApi.setOption('resources', resources);
         // calendarApi.refetchResources();
-
       } catch (error) {
-        console.error('Navigation error:', error);
+        console.error("Navigation error:", error);
       } finally {
         this.isLoading = false;
       }
     },
-    async handleTodayClick ()
-    {
+    async handleTodayClick() {
       try {
         this.isLoading = true;
         const calendarApi = this.$refs.calendar.getApi();
@@ -970,18 +1079,18 @@ validateEventChange(event, newStart, newEnd) {
 
         // Get the new date range
         const view = calendarApi.view;
-        let startDate = view.activeStart.toISOString().split('T')[0];
-        const endDate = view.activeEnd.toISOString().split('T')[0];
+        let startDate = view.activeStart.toISOString().split("T")[0];
+        const endDate = view.activeEnd.toISOString().split("T")[0];
 
         // Adjust start date
         const startDateObj = new Date(startDate);
         startDateObj.setDate(startDateObj.getDate() + 1);
-        startDate = startDateObj.toISOString().split('T')[0];
+        startDate = startDateObj.toISOString().split("T")[0];
 
         // Fetch new data
         const response = await getCalenderAllUnits({
           start: startDate,
-          end: endDate
+          end: endDate,
         });
 
         // Update data and events
@@ -989,26 +1098,21 @@ validateEventChange(event, newStart, newEnd) {
         const newEvents = this.transformAllUnitsToEvents();
         calendarApi.removeAllEvents();
         calendarApi.addEventSource(newEvents);
-
       } catch (error) {
-        console.error('Today navigation error:', error);
+        console.error("Today navigation error:", error);
       } finally {
         this.isLoading = false;
       }
-    }
-    ,
-
+    },
     // ==============================================
     // CALENDAR SETUP & CONFIG
     // ==============================================
 
-    handleDatesSet (dateInfo)
-    {
+    handleDatesSet(dateInfo) {
       const startDate = dateInfo.start; // The first visible date in the calendar
       this.updateFlatpickrDate(startDate); // Update Flatpickr with the start date
     },
-    updateFlatpickrDate (date)
-    {
+    updateFlatpickrDate(date) {
       // Emit the date to the FilterCalendar component
       if (this.$refs.filterComponent) {
         this.$refs.filterComponent.$refs.headerCalender.updateFlatpickr(date);
@@ -1017,13 +1121,10 @@ validateEventChange(event, newStart, newEnd) {
       }
     },
 
-
-    handleCalendarReady (info)
-    {
-      this.calendarApi = info.view.calendar
+    handleCalendarReady(info) {
+      this.calendarApi = info.view.calendar;
     },
-    SelectedDateFilterCalendar (selectedDate)
-    {
+    SelectedDateFilterCalendar(selectedDate) {
       // Update the selected date
       this.selectedDate = selectedDate;
 
@@ -1032,23 +1133,20 @@ validateEventChange(event, newStart, newEnd) {
       if (calendarApi) {
         calendarApi.gotoDate(selectedDate);
         // Trigger data update after navigation
-        this.$nextTick(() =>
-        {
-          this.handleNavigation('date-select');
+        this.$nextTick(() => {
+          this.handleNavigation("date-select");
         });
       } else {
-        console.error('FullCalendar API is not available.');
+        console.error("FullCalendar API is not available.");
       }
     },
 
     // ==============================================
     // DATA TRANSFORMATION
     // ==============================================
-    getBuildingNames ()
-    {
+    getBuildingNames() {
       const names = [];
-      this.data.forEach((building) =>
-      {
+      this.data.forEach((building) => {
         if (building.name && !names.includes(building.name)) {
           names.push(building.name);
         }
@@ -1059,54 +1157,49 @@ validateEventChange(event, newStart, newEnd) {
     // ==============================================
     // ROUTING & STATE MANAGEMENT
     // ==============================================
-    navigateToEditReservation (id)
-    {
+    navigateToEditReservation(id) {
       this.$router.push(`/edit-reservation/${id}`);
     },
-    goToAddReservation ()
-    {
-      this.$store.commit('setSelectedDates', this.selectedDates);
-      this.$store.commit('setSelectedResourceName', this.selectedResourceName);
-      this.$store.dispatch('allowAccess')
-      this.$router.push('/add-reservation')
+    goToAddReservation() {
+      this.$store.commit("setSelectedDates", this.selectedDates);
+      this.$store.commit("setSelectedResourceName", this.selectedResourceName);
+      this.$store.dispatch("allowAccess");
+      this.$router.push("/add-reservation");
       // this.$router.push('/secret')
 
       // Navigate to the add-reservation page
       // this.$router.push({ name: '' });
       // this.$router.push('/secret')
-
     },
     // ==============================================
     // SelectedEvent Sidebar Component Methods
     // ==============================================
-    openOffcanvas ()
-    {
-      this.$nextTick(() =>
-      {
-        const offcanvasElement = document.getElementById('offcanvasEnd');
+    openOffcanvas() {
+      this.$nextTick(() => {
+        const offcanvasElement = document.getElementById("offcanvasEnd");
         if (offcanvasElement) {
           const offcanvas = new bootstrap.Offcanvas(offcanvasElement);
           offcanvas.show();
         } else {
-          console.error('Offcanvas element not found.');
+          console.error("Offcanvas element not found.");
         }
       });
     },
 
     ...mapActions([
-      'updateReservationTypes',
-      'updateRateTypes',
-      'updateCountries',
-      'updateVipStatus',
-      'updateNationalTypes',
-      'updateGenderTypes',
-      'updateProjects',
-      'updateRemindGuestType',
+      "updateReservationTypes",
+      "updateRateTypes",
+      "updateCountries",
+      "updateVipStatus",
+      "updateNationalTypes",
+      "updateGenderTypes",
+      "updateProjects",
+      "updateRemindGuestType",
     ]),
 
-    refreshCalendarData () {
+    refreshCalendarData() {
       // Implement the logic to refresh the calendar data
-      this.handleNavigation('refresh');
+      this.handleNavigation("refresh");
     },
 
     // Add this new method to handle data updates
@@ -1129,38 +1222,71 @@ validateEventChange(event, newStart, newEnd) {
 
         // Update resources if needed
         const resources = this.createResources();
-        calendarApi.setOption('resources', resources);
-
+        calendarApi.setOption("resources", resources);
       } catch (error) {
-        console.error('Error updating calendar data:', error);
+        console.error("Error updating calendar data:", error);
       } finally {
         this.isLoading = false;
       }
     },
 
     getDuration() {
-      // Check if the code is running in a browser environment
-      if (typeof window !== 'undefined') {
-        const isMobile = window.innerWidth <= 768; // You can adjust the width threshold as needed
-        return { days: isMobile ? 10 : 20 };
+      // Safely check if window is defined (client-side only)
+      if (typeof window !== "undefined") {
+        const isMobile = window.innerWidth <= 768; // Mobile breakpoint
+        return { days: 10 }; // Always load 10 days of data
       }
-      // Default duration if window is not available
+      // Default duration if window is not available (server-side)
       return { days: 20 };
     },
 
     updateDuration() {
-      if (typeof window !== 'undefined') {
+      // Only run this code on the client side
+      if (typeof window !== "undefined") {
         this.calendarOptions.duration = this.getDuration();
+
+        // Update slot width based on screen size
+        const calendarApi = this.$refs.calendar?.getApi();
+        if (calendarApi) {
+          const isMobile = window.innerWidth <= 768;
+          calendarApi.setOption("slotMinWidth", isMobile ? 150 : 70);
+
+          // Force redraw
+          this.$nextTick(() => {
+            calendarApi.updateSize();
+          });
+        }
       }
     },
-
   },
-  async mounted ()
-  {
-    if (typeof window !== 'undefined') {
+  async mounted() {
+    // mounted hook only runs on client-side, so window is available
+    // Add an event listener to update duration on window resize
+    window.addEventListener("resize", this.updateDuration);
+
+    // Set initial slot width based on screen size
+    const isMobile = window.innerWidth <= 768;
+    this.calendarOptions.slotMinWidth = isMobile ? 150 : 70;
+    if (typeof window !== "undefined") {
       // Add an event listener to update duration on window resize
-      window.addEventListener('resize', this.updateDuration);
+      window.addEventListener("resize", this.updateDuration);
+
+      // Set initial slot width based on screen size
+      const isMobile = window.innerWidth <= 768;
+      this.calendarOptions.slotMinWidth = isMobile ? 150 : 70;
     }
+
+    // ... rest of existing mounted code ...
+
+    // Apply mobile-specific settings after calendar is initialized
+    this.$nextTick(() => {
+      if (typeof window !== "undefined" && window.innerWidth <= 768) {
+        const calendarEl = document.querySelector(".fc");
+        if (calendarEl) {
+          calendarEl.classList.add("mobile-calendar-view");
+        }
+      }
+    });
 
     try {
       const [CalenderDataResponse] = await Promise.all([getCalenderAllUnits()]);
@@ -1181,8 +1307,7 @@ validateEventChange(event, newStart, newEnd) {
       this.calendarOptions.resources = this.createResources();
 
       // Set up DOM elements after render
-      this.$nextTick(() =>
-      {
+      this.$nextTick(() => {
         const footerElement = document.querySelector("#calendar-footer");
         if (footerElement) footerElement.style.display = "block";
       });
@@ -1198,29 +1323,40 @@ validateEventChange(event, newStart, newEnd) {
       this.updateRemindGuestType(this.remindGuestType);
 
       // Listen for data updates from HeaderCalender
-      this.$root.$on('calendar-data-updated', this.updateCalendarData);
-
+      this.$root.$on("calendar-data-updated", this.updateCalendarData);
     } catch (error) {
       console.error("Error loading data:", error);
     } finally {
       this.isLoading = false;
     }
-
   },
   beforeDestroy() {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       // Clean up the event listener
-      window.removeEventListener('resize', this.updateDuration);
+      window.removeEventListener("resize", this.updateDuration);
     }
 
     // Clean up the event listener when component is destroyed
-    this.$root.$off('calendar-data-updated', this.updateCalendarData);
-  }
-}
+    this.$root.$off("calendar-data-updated", this.updateCalendarData);
+  },
+  created() {
+    // Initialize with default values for SSR
+    this.calendarOptions = {
+      ...this.calendarOptions,
+      slotMinWidth: 70,
+      duration: { days: 20 },
+    };
+
+    // Update values on client-side only
+    if (typeof window !== "undefined") {
+      const isMobile = window.innerWidth <= 768;
+      this.calendarOptions.slotMinWidth = isMobile ? 150 : 70;
+      this.calendarOptions.duration = { days: isMobile ? 10 : 20 };
+    }
+  },
+};
 </script>
 
 <style>
 /* ... existing styles ... */
-
-
 </style>

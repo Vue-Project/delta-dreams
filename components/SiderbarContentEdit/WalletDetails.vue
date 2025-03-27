@@ -1,58 +1,58 @@
 <template>
   <section class="summary position-sticky top-0">
     <div class="card">
-          <div class="offcanvas offcanvas-end event-sidebar" tabindex="-1" id="Sidebar" aria-labelledby="SidebarLabel" aria-modal="true">
-            <div class="offcanvas-header my-1">
-              <h5 class="offcanvas-title" id="SidebarLabel">{{ sidebarTitle }}</h5>
-              <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <hr class="mt-0">
-            <div class="offcanvas-body pt-0">
-              <EditPayment :selectedWallet="selectedWallet" />
-            </div>
-          </div>
-        <div class="card-body">
+      <div class="offcanvas offcanvas-end event-sidebar" tabindex="-1" id="Sidebar" aria-labelledby="SidebarLabel" aria-modal="true">
+        <div class="offcanvas-header my-1">
+          <h5 class="offcanvas-title" id="SidebarLabel">{{ sidebarTitle }}</h5>
+          <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <hr class="mt-0">
+        <div class="offcanvas-body pt-0">
+          <EditPayment :selectedWallet="selectedWallet" />
+        </div>
+      </div>
+      <div class="card-body">
 
-          <div class="table-responsive text-nowrap">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>Payment image</th>
-                  <th>Payment Method</th>
-                  <th>Payment Type</th>
-                  <th>Amount</th>
-                  <th>Date</th>
-                  <th>Comment</th>
-                  <th>Accounts</th>
-                  <th>status</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="wallet in reservationData.wallets" :key="wallet.id">
-                  <td><img :src="wallet.image" alt="Payment Image" style="width: 50px; height: 50px;"></td>
-                  <td>{{ 'Cash' }}</td>
-                  <td>{{ wallet.type || 'Not selected' }}</td>
-                  <td>{{ wallet.price || 'Not specified' }}</td>
-                  <td>{{ wallet.date_at || 'Not specified' }}</td>
-                  <td>
-                    <template v-if="wallet.note">
-                      <div>{{ wallet.note }}</div>
-                    </template>
-                  </td>
-                  <td>{{ wallet.assigned.name || 'Not specified' }}</td>
-                  <td>
-                    <span :class="wallet.active === 1 ? 'badge bg-label-success' : 'badge bg-label-danger'">
-                      {{ wallet.status || 'Not specified' }}
-                    </span>
-                  </td>
-                  <td>
-                    <div class="dropdown">
-                      <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fa-solid fa-ellipsis-vertical"></i>
-                      </button>
-                      <div class="dropdown-menu" v-if="wallet.active !== 0">
-                        <!-- <a
+        <div class="table-responsive text-nowrap">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Payment image</th>
+                <th>Payment Method</th>
+                <th>Payment Type</th>
+                <th>Amount</th>
+                <th>Date</th>
+                <th>Comment</th>
+                <th>Accounts</th>
+                <th>status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="wallet in reservationData.wallets" :key="wallet.id">
+                <td><img :src='`https://deltadream.swevey.com/${wallet.image}`' alt="Payment Image" style="width: 50px; height: 50px;"></td>
+                <td>{{ 'Cash' }}</td>
+                <td>{{ wallet.type || 'Not selected' }}</td>
+                <td>{{ wallet.price || 'Not specified' }}</td>
+                <td>{{ wallet.date_at || 'Not specified' }}</td>
+                <td>
+                  <template v-if="wallet.note">
+                    <div>{{ wallet.note }}</div>
+                  </template>
+                </td>
+                <td>{{ wallet.assigned.name || 'Not specified' }}</td>
+                <td>
+                  <span :class="wallet.active === 1 ? 'badge bg-label-success' : 'badge bg-label-danger'">
+                    {{ wallet.status || 'Not specified' }}
+                  </span>
+                </td>
+                <td>
+                  <div class="dropdown">
+                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown" aria-expanded="false">
+                      <i class="fa-solid fa-ellipsis-vertical"></i>
+                    </button>
+                    <div class="dropdown-menu" v-if="wallet.active !== 0">
+                      <!-- <a
                            class="dropdown-item"
                            data-bs-toggle="offcanvas"
                            data-bs-target="#Sidebar"
@@ -61,18 +61,18 @@
                         >
                           <i class="fa-regular fa-pen-to-square me-1"></i> Edit
                         </a> -->
-                        <a class="dropdown-item" @click="deletedWallet(wallet.id)" >
-                          <i class="fa-regular fa-trash-can me-1"></i> cancel
-                        </a>
-                      </div>
+                      <a class="dropdown-item" @click="deletedWallet(wallet.id)">
+                        <i class="fa-regular fa-trash-can me-1"></i> cancel
+                      </a>
                     </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
+
+      </div>
     </div>
   </section>
 </template>
@@ -134,15 +134,12 @@ export default {
   methods: {
     async deletedWallet (id)
     {
-
-      // Show confirmation dialog using SweetAlert
       const result = await showConfirmationAlert(
         'Are you sure?',
-        "You won't be able to restore it again",
+        "cancel this payment reservation",
+        'Yes, cancel it!'
       );
 
-
-      // Proceed only if user confirmed
       if (result.isConfirmed) {
         try {
           const walletStatus = {
@@ -150,21 +147,19 @@ export default {
             wallet_id: id,
           }
 
-          const response = await putDeleteWallet( walletStatus.wallet_id, walletStatus);
-          console.log('after response');
+          const response = await putDeleteWallet(walletStatus.wallet_id, walletStatus);
 
           await showSuccessAlert(
-            "Payment Details Is Cancelled Successfully!",
-
+            "Payment Details Is Cancelled Successfully!"
           );
-          console.log('after success alert');
 
-          location.reload()
+          // Emit event to parent component instead of reloading
+          this.$emit('wallet-updated');
 
         } catch (error) {
           handleSubmissionError(
             error,
-            "Failed to delete wallet" // Updated error message
+            "Failed to delete wallet"
           );
         }
       }
@@ -201,17 +196,20 @@ export default {
         }
       }
     },
-    submitPayment() {
+    submitPayment ()
+    {
       this.$emit('add-payment', {
         ...this.formAddPayment,
         reservation_id: this.selectedEvent.id
       });
       this.cancelPayment();
     },
-    cancelPayment() {
+    cancelPayment ()
+    {
       this.resetPaymentForm();
     },
-    resetPaymentForm() {
+    resetPaymentForm ()
+    {
       this.formAddPayment = {
         date: '',
         method: '',
@@ -220,7 +218,8 @@ export default {
         reservation_id: null
       }
     },
-    async FormUpdateWallet() {
+    async FormUpdateWallet ()
+    {
       try {
         const walletData = {
           wallet_id: this.reservationData.wallets[0]?.id, // Get wallet ID from the first wallet
@@ -278,8 +277,8 @@ export default {
     } catch (error) {
       console.error("Error loading data:", error);
     }
-      // Listen for offcanvas show event
-      const offcanvas = document.getElementById('Sidebar');
+    // Listen for offcanvas show event
+    const offcanvas = document.getElementById('Sidebar');
     offcanvas.addEventListener('show.bs.offcanvas', (event) =>
     {
       // Get the clicked trigger element
@@ -302,7 +301,8 @@ export default {
     }
   },
 
-  provide() {
+  provide ()
+  {
     return {
       selectedWallet: () => this.selectedWallet
     };

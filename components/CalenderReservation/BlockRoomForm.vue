@@ -5,19 +5,28 @@
         <div class="col-12">
           <label for="flatpickr-date-01" class="form-label">Date Range</label>
           <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD to YYYY-MM-DD" id="flatpickr-range-01" ref="rangePicker5" v-model="formBlock.dateStartAndEnd" aria-label="input Text to Date" disabled />
+          <div class="text-danger small" v-if="$v.formBlock.dateStartAndEnd.$error">
+            Date range is required
+          </div>
         </div>
         <div class="col-12">
           <label for="formBlockRoomRoom" class="form-label">Room</label>
           <input type="text" class="form-control" id="formBlockRoomRoom" v-model="formBlock.roomType" placeholder="Room ID" disabled />
+          <div class="text-danger small" v-if="$v.formBlock.roomType.$error">
+            Room is required
+          </div>
         </div>
         <div class="col-12">
           <label for="formBlockRoomReason" class="form-label">Reason</label>
-          <select class="form-select" id="formBlockRoomReason" v-model="formBlock.reason">
+          <select class="form-select" id="formBlockRoomReason" v-model="formBlock.reason" @blur="$v.formBlock.reason.$touch()">
             <option disabled value="">Select</option>
             <option v-for="reason in reasonsSources" :key="reason.id" :value="reason.id">
               {{ reason.name }}
             </option>
           </select>
+          <div class="text-danger small" v-if="$v.formBlock.reason.$error">
+            Please select a reason
+          </div>
         </div>
       </div>
       <div class="gap-2 d-flex justify-content-end position-absolute" style="right: 15px; bottom: 10px;">
@@ -38,6 +47,8 @@ import { blockRoomService, getReasonsSources } from '../../Api/CalenderApi';
 import { dateUtils } from '../../Api/utils/data';
 import { formUtils } from '../../Api/utils/form';
 import { showSuccessAlert, handleSubmissionError } from '../../Api/MassageValidation/alertUtilities';
+import { validationMixin } from 'vuelidate'
+import { required } from 'vuelidate/lib/validators'
 
 export default {
   name: "BlockRoomForm",
@@ -67,6 +78,14 @@ export default {
         reason: "",
       },
     };
+  },
+
+  validations: {
+    formBlock: {
+      dateStartAndEnd: { required },
+      roomType: { required },
+      reason: { required }
+    }
   },
 
   methods: {
@@ -102,9 +121,10 @@ export default {
       if (this.selectedResourceId) {
         const parts = this.selectedResourceId.split("-");
 
+
         if (parts.length >= 3) {
           // Show "UNIT-5480" in the input field
-          this.formBlock.roomType = `${parts[0]}-${parts[1]}`;
+          this.formBlock.roomType = `${parts[0]}`;
 
           // Get the last number from the last part (e.g., "7" from "21-7")
           const lastPart = parts[parts.length - 1].split("-");
@@ -141,39 +161,27 @@ export default {
 
     async submitFormBlockRoom ()
     {
+      this.$v.$touch()
+      if (this.$v.$invalid) {
+        return
+      }
+
       try {
-        formUtils.validateBlockRoomForm(this.formBlock);
-
         const [startDate, endDate] = this.formBlock.dateStartAndEnd.split(' to ');
-
         const blockRoomData = {
-          unit_id: this.formBlock.room, // Will now send only the last number
+          unit_id: this.formBlock.room,
           reason_id: this.formBlock.reason,
           start_date: dateUtils.formatForApi(startDate),
           end_date: dateUtils.formatForApi(endDate),
         };
-        // console.log(blockRoomData);
+        log(blockRoomData);
 
         const responseBlockRoom = await blockRoomService(blockRoomData);
-        await showSuccessAlert(
-          "Room blocked successfully!", // Custom message
-
-          this.$emit('close-sidebar')
-        );
+        await showSuccessAlert("Room blocked successfully!");
+        this.$emit('close-sidebar');
         location.reload();
-
-
-        // if (responseBlockRoom?.status === 'success') {
-        //   await formUtils.showSuccess(responseBlockRoom.message || 'Room blocked successfully!');
-        // } else {
-        //   const errorMessage = responseBlockRoom?.message || 'Failed to block room';
-        //   await formUtils.showError(errorMessage);
-        // }
       } catch (error) {
-        handleSubmissionError(
-          error,
-          "Please fill in all required fields" // Custom default error
-        );
+        handleSubmissionError(error, "Please fill in all required fields");
       }
     },
 
@@ -187,7 +195,7 @@ export default {
   {
     try {
       const reasonsResponse = await getReasonsSources();
-      this.reasonsSources = reasonsResponse.data.data.data;
+      this.reasonsSources = reasonsResponse.data.data;
     } catch (error) {
       console.error("Error loading data:", error);
     }
@@ -203,6 +211,13 @@ export default {
     }
   },
 
-  mixins: [flatpickrMixin],
+  mixins: [flatpickrMixin, validationMixin],
 };
 </script>
+
+<style scoped>
+.text-danger {
+  margin-top: 5px;
+  font-size: 15px;
+}
+</style>
