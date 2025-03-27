@@ -155,6 +155,10 @@
             <input type="number" class="form-control" v-model="paymentDetails.amount" aria-label="Amount">
           </div>
           <div class="mb-3">
+              <label class="form-label" for="payment_Image">Payment Image</label>
+              <input type="file" class="form-control" id="payment_Image">
+          </div>
+          <div class="mb-3">
             <label class="form-label">Date</label>
             <div class="input-group">
               <input
