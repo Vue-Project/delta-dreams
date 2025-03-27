@@ -33,6 +33,7 @@ export default {
         paymentMethod: "",
         selectedPaymentMethod: "",
       },
+      redirectTimeout: null,
     }
   },
   methods:{
@@ -52,7 +53,16 @@ export default {
   // beforeMount() {
   //   this.$store.dispatch('resetAccess')
   // }
-
+  mounted() {
+    this.redirectTimeout = setTimeout(() => {
+      this.$router.go(-1);
+    }, 300000);
+  },
+  beforeDestroy() {
+    if (this.redirectTimeout) {
+      clearTimeout(this.redirectTimeout);
+    }
+  },
 };
 </script>
 
