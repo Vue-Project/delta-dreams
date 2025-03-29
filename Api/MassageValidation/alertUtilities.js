@@ -1,18 +1,28 @@
 // alertUtilities.js
-import Swal from 'sweetalert2'
-export async function showConfirmationAlert(title, text, confirmText = "Yes", cancelText = "No",router,routeName) {
+import Swal from "sweetalert2";
+export async function showConfirmationAlert(
+  title,
+  text,
+  confirmText = "Yes",
+  cancelText = "No",
+  router,
+  routeName
+) {
   return await Swal.fire({
     title: title,
     text: text,
-    icon: 'warning',
+    icon: "warning",
     showCancelButton: true,
     confirmButtonText: confirmText,
     cancelButtonText: cancelText,
-    
   });
 }
 
-export const showSuccessAlert = (successMessage = "Operation completed successfully!", router, routeName) => {
+export const showSuccessAlert = (
+  successMessage = "Operation completed successfully!",
+  router,
+  routeName
+) => {
   return Swal.fire({
     icon: "success",
     title: "Success!",
@@ -23,24 +33,24 @@ export const showSuccessAlert = (successMessage = "Operation completed successfu
       router.push({ name: routeName });
     }
   });
-}
+};
 
-export const handleSubmissionError = (error, defaultMessage = "There was an issue submitting the form.") => {
+export const handleSubmissionError = (
+  error,
+  defaultMessage = "There was an issue submitting the form."
+) => {
   let errorMessage = defaultMessage;
 
   if (error.response?.data?.errors) {
     const validationErrors = error.response.data.errors;
-    if (typeof validationErrors === 'object') {
-      errorMessage = Object.values(validationErrors)
-        .flat()
-        .join('\n');
+    if (typeof validationErrors === "object") {
+      errorMessage = Object.values(validationErrors).flat().join("\n");
     }
   }
   // If no errors found, check for message in response
   else if (error.response?.data?.message) {
     errorMessage = error.response.data.message;
-  }
-  else if (error.response?.data?.error) {
+  } else if (error.response?.data?.error) {
     errorMessage = error.response.data.error;
   }
   // If no response data at all, use the error message
@@ -54,56 +64,61 @@ export const handleSubmissionError = (error, defaultMessage = "There was an issu
     text: errorMessage,
     confirmButtonText: "OK",
   });
-}
+};
 
-export const showConfirmationDialog = (message = "Are you sure you want to proceed?") => {
+export const showConfirmationDialog = (
+  message = "Are you sure you want to proceed?"
+) => {
   return Swal.fire({
-    title: 'Confirm Changes',
+    title: "Confirm Changes",
     text: message,
-    icon: 'warning',
+    icon: "warning",
     showCancelButton: true,
-    confirmButtonColor: '#7367f0',
-    cancelButtonColor: '#e2e1e5',
-    confirmButtonText: 'Yes, proceed!'
+    confirmButtonColor: "#7367f0",
+    cancelButtonColor: "#e2e1e5",
+    confirmButtonText: "Yes, proceed!",
   });
-}
-export const showUpdateConfirmationDialog = (startDate, endDate, unitId) => {
+};
+export const showUpdateConfirmationDialog = (
+  startDate,
+  endDate,
+  unitName,
+  currentPrice
+) => {
   return Swal.fire({
     title: "Confirm Update",
-    html: `<p>Are you sure you want to update this reservation to ${startDate} to ${endDate} for unit ${unitId}?</p>`,
+    html: `<p>Are you sure you want to update this reservation to ${startDate} to ${endDate} for unit ${unitName} and  unit price ${currentPrice}?</p>`,
     input: "number",
     inputPlaceholder: "New price",
     showCancelButton: true,
     confirmButtonText: "Yes, update it!",
     cancelButtonText: "Cancel",
     confirmButtonColor: "#7367f0",
-    cancelButtonColor: "#e2e1e5"
+    cancelButtonColor: "#e2e1e5",
   });
 };
 
 export const showAlert = ({
-  title = 'Notification',
-  text = '',
-  icon = 'success',
+  title = "Notification",
+  text = "",
+  icon = "success",
   timer,
   timerProgressBar = false,
   showConfirmButton = true,
-  confirmButtonText = 'OK',
-  confirmButtonColor = '#7367f0',
+  confirmButtonText = "OK",
+  confirmButtonColor = "#7367f0",
   showCancelButton = false,
-  cancelButtonColor = '#e2e1e5',
-  error = null
+  cancelButtonColor = "#e2e1e5",
+  error = null,
 } = {}) => {
   // Handle server error if provided
   if (error) {
-    let errorMessage = '';
+    let errorMessage = "";
 
     if (error.response?.data?.errors) {
       const validationErrors = error.response.data.errors;
-      if (typeof validationErrors === 'object') {
-        errorMessage = Object.values(validationErrors)
-          .flat()
-          .join('\n');
+      if (typeof validationErrors === "object") {
+        errorMessage = Object.values(validationErrors).flat().join("\n");
       }
     } else if (error.response?.data?.message) {
       errorMessage = error.response.data.message;
@@ -112,15 +127,15 @@ export const showAlert = ({
     } else if (error.message) {
       errorMessage = error.message;
     } else {
-      errorMessage = 'An unexpected error occurred';
+      errorMessage = "An unexpected error occurred";
     }
 
     return Swal.fire({
-      title: 'Error',
+      title: "Error",
       text: errorMessage,
-      icon: 'error',
-      confirmButtonColor: '#7367f0',
-      confirmButtonText: 'OK'
+      icon: "error",
+      confirmButtonColor: "#7367f0",
+      confirmButtonText: "OK",
     });
   }
 
@@ -137,5 +152,4 @@ export const showAlert = ({
     showCancelButton,
     cancelButtonColor,
   });
-}
-
+};

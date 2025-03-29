@@ -667,32 +667,15 @@ export default {
           const reservation = dateInfo.reservation;
 
           // Determine color based on reservation status
-          let eventColor = "#7367f0"; // Default color (purple)
+          let eventColor;
 
-          // Check status and assign appropriate color
-          if (reservation.status) {
-            switch (reservation.status) {
-              case "approved":
-                eventColor = "#28A745"; // Green for confirmed
-                break;
-              case "pending":
-                eventColor = "#ff9f43"; // Orange for pending
-                break;
-              case "check_in":
-                eventColor = "#6F42C1"; // Light blue for checked in
-                break;
-              case "check_out":
-                eventColor = "#FD7E14"; // Dark gray for checked out
-                break;
-              case "cancelled":
-                eventColor = "#DC3545 "; // Red for cancelled
-                break;
-              case "finished":
-                eventColor = "#007BFF"; // Gray for no-show
-                break;
-              default:
-                eventColor = "#7367f0"; // Default purple
-            }
+          // Use status_color from the reservation or dateInfo if available
+          if (reservation.status_color) {
+            eventColor = reservation.status_color;
+          } else if (dateInfo.status_color) {
+            eventColor = dateInfo.status_color;
+          } else {
+            eventColor = "#6c757d"; // Default gray if no status color is provided
           }
 
           const fullName =
@@ -720,10 +703,9 @@ export default {
           events.push({
             resourceId: unitData.code,
             title: shortName,
-
             start: reservation.checkin_date.split("T")[0],
             end: reservation.checkout_date.split("T")[0] + "T23:59:59",
-            color: eventColor,
+            color: eventColor, // Using status-based color from server
             reservationId: reservation.id,
             extendedProps: {
               reservation: reservation,
@@ -824,6 +806,7 @@ export default {
         const event = info.event;
         const resourceId = event.getResources()[0]?.id;
         const unitId = resourceId?.split("-")[1];
+        const unitName = this.getUnitNameById(unitId);
 
         // Get the original reservation times from extendedProps
         const originalCheckinTime =
@@ -882,15 +865,28 @@ export default {
           // Handle reservation update
           const updateDataUnit = {
             unit_id: unitId,
+            unit_name: unitName || `Unit ID: ${unitId}`,
             checkin_date: startDate,
             checkout_date: endDate,
             reservation_id: event.extendedProps?.reservation?.id,
           };
+          console.log(updateDataUnit);
+          // Get the current price from the reservation
+          const currentPrice =
+            event.extendedProps?.reservation?.unit_price || "";
+          console.log(currentPrice);
 
-          const result = await showUpdateConfirmationDialog(startDate, endDate, unitId);
-         
+          const result = await showUpdateConfirmationDialog(
+            startDate,
+            endDate,
+            unitName || `Unit ID: ${unitId}`,
+            currentPrice
+          );
 
           if (result.isConfirmed) {
+            if (result.value) {
+              updateDataUnit.price = result.value;
+            }
             const response = await postUpdateReservation(
               updateDataUnit.reservation_id,
               updateDataUnit
@@ -934,6 +930,24 @@ export default {
       } finally {
         this.isLoading = false;
       }
+    },
+    // Helper method to get unit name by ID
+    getUnitNameById(unitId) {
+      if (!Array.isArray(this.data)) return null;
+
+      for (const building of this.data) {
+        if (!building.units) continue;
+
+        const unit = building.units.find(
+          (u) => u.id.toString() === unitId.toString()
+        );
+        if (unit) {
+          // return `${unit.code} (${building.name})`;
+          return `${unit.code} `;
+        }
+      }
+
+      return null;
     },
 
     // Add validation method
