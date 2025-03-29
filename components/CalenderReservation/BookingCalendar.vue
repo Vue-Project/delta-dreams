@@ -921,6 +921,7 @@ export default {
             });
 
             await showSuccessAlert("Reservation updated successfully!");
+            location.reload();
           } else {
             info.revert(); // Revert the change if not confirmed
           }
