@@ -2,67 +2,104 @@
   <div class="row mx-auto my-3">
     <div class="col-md-12">
       <div class="card mb-3 p-3">
-
-        <div class="row align-items-center" v-for="reservationDataById in reservationsDataById" :key="reservationDataById.id">
-          <div class="col-12 col-md-4 col-xl-2 mb-3 mb-md-0 ">
+        <div
+          class="row align-items-center"
+          v-for="reservationDataById in reservationsDataById"
+          :key="reservationDataById.id"
+        >
+          <div class="col-12 col-md-4 col-xl-2 mb-3 mb-md-0">
             <div class="me-2 py-2 d-flex">
-              <a href="#" @click="goBack"><i class=" fa-solid fa-angle-left pr-2" style="color: #6f6b7d; float: left; font-size: 20px"></i>
+              <a href="#" @click="goBack"
+                ><i
+                  class="fa-solid fa-angle-left pr-2"
+                  style="color: #6f6b7d; float: left; font-size: 20px"
+                ></i>
               </a>
               <i class="ps-3 pr-2 text-primary fs-3 fa-solid fa-user"></i>
 
-
-              {{ reservationDataById.client?.name || reservationDataById.user?.name }}
+              {{
+                reservationDataById.client?.name ||
+                reservationDataById.user?.name
+              }}
               <!-- {{ reservationDataById.id }} -->
               <small class="text-muted ml-3 text-primary">
-                <i class="fa-solid fa-person pr-2 text-primary"></i>{{ reservationDataById.adults }}
-                <i class="fa-solid fa-child pr-2 text-primary"></i>{{ reservationDataById.children }}</small>
+                <i class="fa-solid fa-person pr-2 text-primary"></i
+                >{{ reservationDataById.adults }}
+                <i class="fa-solid fa-child pr-2 text-primary"></i
+                >{{ reservationDataById.children }}</small
+              >
             </div>
           </div>
           <div class="col-6 col-md-4 col-xl-2 mb-3 mb-md-0">
             <div class="me-2">
               <h6>Arrival Date</h6>
-              <small class="text-muted">{{ formatDate(reservationDataById.checkin_date) }} {{ reservationDataById.checkin_time }}</small>
+              <small class="text-muted"
+                >{{ formatDate(reservationDataById.checkin_date) }}
+                {{ reservationDataById.checkin_time }}</small
+              >
             </div>
           </div>
 
           <div class="col-6 col-md-4 col-xl-2 mb-3 mb-md-0">
             <div class="me-2">
               <h6>Booking Date</h6>
-              <small class="text-muted">{{ formatDate(reservationDataById.checkout_date) }} {{ reservationDataById.checkout_time }} </small>
+              <small class="text-muted"
+                >{{ formatDate(reservationDataById.checkout_date) }}
+                {{ reservationDataById.checkout_time }}
+              </small>
             </div>
           </div>
           <div class="col-6 col-md-4 col-xl-2 mb-3 mb-md-0">
             <div class="me-2">
               <h6>Room Number/Room Type</h6>
-              <small class="text-muted">{{ reservationDataById.unit.rooms }}/{{ reservationDataById.rate_type || "Suite الفندق غرفتين وصاله" }}</small>
+              <small class="text-muted"
+                >{{ reservationDataById.unit.rooms }}/{{
+                  reservationDataById.rate_type || "Suite الفندق غرفتين وصاله"
+                }}</small
+              >
             </div>
           </div>
           <div class="col-6 col-md-4 col-xl-1 mb-3 mb-md-0">
             <div class="me-2">
               <h6>Nights</h6>
               <small class="text-muted">
-
-                {{ (new Date(reservationDataById.checkout_date) - new Date(reservationDataById.checkin_date)) / (1000 * 3600 * 24) }}
+                {{
+                  (new Date(reservationDataById.checkout_date) -
+                    new Date(reservationDataById.checkin_date)) /
+                  (1000 * 3600 * 24)
+                }}
               </small>
             </div>
           </div>
           <div class="col-6 col-md-4 col-xl-1 mb-3 mb-md-0">
             <div class="me-2">
               <h6>Reservation Number</h6>
-              <small class="text-muted">{{ reservationDataById.id || "14541" }}</small>
+              <small class="text-muted">{{
+                reservationDataById.id || "14541"
+              }}</small>
             </div>
           </div>
           <div class="col-6 col-md-6 col-xl-1 mb-3 mb-md-0">
             <div class="me-2">
               <h6>Status</h6>
-              <small class="badge" :class="statusBadgeClass(reservationDataById.status)">
+              <small
+                class="badge"
+                :style="{ backgroundColor: reservationDataById.status_color }"
+              >
                 {{ reservationDataById.status_name }}
               </small>
             </div>
           </div>
-          <div class="col-6 col-md-5 col-xl-1  text-cente text-md-center ">
+          <div class="col-6 col-md-5 col-xl-1 text-cente text-md-center">
             <div class="me-">
-              <button type="button" class="btn btn-label-danger waves-effect mt-3 " title="Cancel Reservation" @click="cancelReservation">Cancel</button>
+              <button
+                type="button"
+                class="btn btn-label-danger waves-effect mt-3"
+                title="Cancel Reservation"
+                @click="cancelReservation"
+              >
+                Cancel
+              </button>
             </div>
           </div>
         </div>
@@ -78,17 +115,36 @@
           </button>
         </li> -->
         <li class="nav-item col-12 col-md" role="presentation">
-          <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#form-tabs-BookingDetails" role="tab" aria-selected="false" tabindex="-1">
+          <button
+            class="nav-link active"
+            data-bs-toggle="tab"
+            data-bs-target="#form-tabs-BookingDetails"
+            role="tab"
+            aria-selected="false"
+            tabindex="-1"
+          >
             Booking Details
           </button>
         </li>
         <li class="nav-item col-12 col-md" role="presentation">
-          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-GuestDetails" role="tab" aria-selected="true">
+          <button
+            class="nav-link"
+            data-bs-toggle="tab"
+            data-bs-target="#form-tabs-GuestDetails"
+            role="tab"
+            aria-selected="true"
+          >
             Guest Details
           </button>
         </li>
         <li class="nav-item col-12 col-md" role="presentation">
-          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-RoomCharges" role="tab" aria-selected="true">
+          <button
+            class="nav-link"
+            data-bs-toggle="tab"
+            data-bs-target="#form-tabs-RoomCharges"
+            role="tab"
+            aria-selected="true"
+          >
             Room Charges
           </button>
         </li>
@@ -98,12 +154,24 @@
           </button>
         </li> -->
         <li class="nav-item col-12 col-md" role="presentation">
-          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-AuditTrail" role="tab" aria-selected="true">
+          <button
+            class="nav-link"
+            data-bs-toggle="tab"
+            data-bs-target="#form-tabs-AuditTrail"
+            role="tab"
+            aria-selected="true"
+          >
             Audit Trail
           </button>
         </li>
         <li class="nav-item col-12 col-md" role="presentation">
-          <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-Wallet" role="tab" aria-selected="true">
+          <button
+            class="nav-link"
+            data-bs-toggle="tab"
+            data-bs-target="#form-tabs-Wallet"
+            role="tab"
+            aria-selected="true"
+          >
             Wallet
           </button>
         </li>
@@ -139,12 +207,24 @@
 
           <!--  Start  offcanvas Menu -->
 
-          <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEnd" aria-labelledby="offcanvasEndLabel" :style="{ width: sidebarWidth }" ref="offcanvas">
+          <div
+            class="offcanvas offcanvas-end"
+            tabindex="-1"
+            id="offcanvasEnd"
+            aria-labelledby="offcanvasEndLabel"
+            :style="{ width: sidebarWidth }"
+            ref="offcanvas"
+          >
             <div class="offcanvas-header">
               <h5 id="offcanvasEndLabel" class="offcanvas-title">
                 {{ offcanvasTitle }}
               </h5>
-              <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+              <button
+                type="button"
+                class="btn-close text-reset"
+                data-bs-dismiss="offcanvas"
+                aria-label="Close"
+              ></button>
             </div>
             <hr />
             <div class="offcanvas-body mx-0 flex-grow-0 pt-0">
@@ -154,7 +234,11 @@
               </div>
 
               <div v-if="currentContent === 'addpayment'">
-                <AddPayment :reservationId="selectedReservationId" @payment-added="refreshReservationData" @close-offcanvas="hideOffcanvas" />
+                <AddPayment
+                  :reservationId="selectedReservationId"
+                  @payment-added="refreshReservationData"
+                  @close-offcanvas="hideOffcanvas"
+                />
               </div>
               <div v-if="currentContent === 'addcharges'">
                 <AddCharges />
@@ -176,7 +260,12 @@
 
               <!--  start sidebar content for tap Room Charges -->
               <div v-if="currentContent === 'updatedetails'">
-                <UpdateDetails :reservationId="selectedReservationId" :reservationData="reservationsDataById[0]" @update-success="refreshReservationData" @close-offcanvas="hideOffcanvas" />
+                <UpdateDetails
+                  :reservationId="selectedReservationId"
+                  :reservationData="reservationsDataById[0]"
+                  @update-success="refreshReservationData"
+                  @close-offcanvas="hideOffcanvas"
+                />
               </div>
               <div v-if="currentContent === 'applydiscount'">
                 <ApplyDiscount />
@@ -328,7 +417,11 @@
         <!-- End Folio Operation Tab   -->
 
         <!-- Start Booking Details Tab -->
-        <div class="tab-pane fade active show" id="form-tabs-BookingDetails" role="tabpanel">
+        <div
+          class="tab-pane fade active show"
+          id="form-tabs-BookingDetails"
+          role="tabpanel"
+        >
           <div class="row">
             <!-- inside tabs  -->
             <!-- header  -->
@@ -381,7 +474,11 @@
                 <component :is="activeComponent" @goBack="goBack" />
               </div> -->
             <div class="col-12">
-              <UpdateReservation :reservationData="reservationsDataById[0]" :reservationId="selectedReservationId" @reservation-updated="refreshReservationData" />
+              <UpdateReservation
+                :reservationData="reservationsDataById[0]"
+                :reservationId="selectedReservationId"
+                @reservation-updated="refreshReservationData"
+              />
             </div>
             <!-- content  -->
             <!-- <div class="tab-content">
@@ -397,7 +494,6 @@
         <!-- Start Guest Details Tab -->
         <div class="tab-pane fade" id="form-tabs-GuestDetails" role="tabpanel">
           <div class="row">
-
             <!-- Sidebar -->
             <!-- <div class="col-3 px-0" style="border-right: 1px solid #e1e0e3">
               <div class="d-flex justify-content-between">
@@ -456,7 +552,13 @@
             <!-- Main Content -->
             <!-- <div class="col-9"> -->
             <div v-if="selectedReservationId">
-              <component :is="activeComponent" @goBack="goBack" :reservationId="selectedReservationId" :reservationData="reservationsDataById[0]" @guest-updated="refreshReservationData" />
+              <component
+                :is="activeComponent"
+                @goBack="goBack"
+                :reservationId="selectedReservationId"
+                :reservationData="reservationsDataById[0]"
+                @guest-updated="refreshReservationData"
+              />
             </div>
           </div>
         </div>
@@ -486,9 +588,7 @@
             <table class="table">
               <thead class="table-light">
                 <tr>
-                  <th>
-                    bookingDate
-                  </th>
+                  <th>bookingDate</th>
                   <th>Room</th>
                   <th>Rate Type</th>
                   <th>Pax(A/C)</th>
@@ -500,32 +600,89 @@
                 </tr>
               </thead>
               <tbody class="table-border-bottom-0">
-                <tr v-for="roomChargeData in roomChargesData" :key="roomChargeData.id">
-                  <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('updatedetails', 'Updatedetails')">
+                <tr
+                  v-for="roomChargeData in roomChargesData"
+                  :key="roomChargeData.id"
+                >
+                  <td
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasEnd"
+                    @click="
+                      setOffcanvasContent('updatedetails', 'Updatedetails')
+                    "
+                  >
                     {{ formatDate(roomChargeData.booking_date) }}
                   </td>
-                  <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('updatedetails', 'Updatedetails')">
+                  <td
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasEnd"
+                    @click="
+                      setOffcanvasContent('updatedetails', 'Updatedetails')
+                    "
+                  >
                     {{ roomChargeData.unit.code }}
                   </td>
-                  <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('updatedetails', 'Updatedetails')">
+                  <td
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasEnd"
+                    @click="
+                      setOffcanvasContent('updatedetails', 'Updatedetails')
+                    "
+                  >
                     {{ roomChargeData.rate_type }}
                   </td>
-                  <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('updatedetails', 'Updatedetails')">
+                  <td
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasEnd"
+                    @click="
+                      setOffcanvasContent('updatedetails', 'Updatedetails')
+                    "
+                  >
                     {{ roomChargeData.adults }}/{{ roomChargeData.children }}
                   </td>
-                  <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('updatedetails', 'Updatedetails')">
+                  <td
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasEnd"
+                    @click="
+                      setOffcanvasContent('updatedetails', 'Updatedetails')
+                    "
+                  >
                     {{ roomChargeData.rate_amount }}
                   </td>
-                  <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('updatedetails', 'Updatedetails')">
+                  <td
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasEnd"
+                    @click="
+                      setOffcanvasContent('updatedetails', 'Updatedetails')
+                    "
+                  >
                     {{ roomChargeData.rate_amount }}
                   </td>
-                  <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('updatedetails', 'Updatedetails')">
+                  <td
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasEnd"
+                    @click="
+                      setOffcanvasContent('updatedetails', 'Updatedetails')
+                    "
+                  >
                     {{ roomChargeData.rate_amount }}
                   </td>
-                  <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('updatedetails', 'Updatedetails')">
+                  <td
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasEnd"
+                    @click="
+                      setOffcanvasContent('updatedetails', 'Updatedetails')
+                    "
+                  >
                     {{ roomChargeData.rate_amount }}
                   </td>
-                  <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('updatedetails', 'Updatedetails')">
+                  <td
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasEnd"
+                    @click="
+                      setOffcanvasContent('updatedetails', 'Updatedetails')
+                    "
+                  >
                     {{ roomChargeData.rate_amount }}
                   </td>
                 </tr>
@@ -537,7 +694,12 @@
 
         <!-- Start Credit Card  tab -->
         <div class="tab-pane fade" id="form-tabs-CreditCard" role="tabpanel">
-          <button class="btn btn-outline-secondary waves-effect me-1" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('addcard', 'Merchant')">
+          <button
+            class="btn btn-outline-secondary waves-effect me-1"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasEnd"
+            @click="setOffcanvasContent('addcard', 'Merchant')"
+          >
             Add Card
           </button>
           <div class="table-responsive text-nowrap">
@@ -636,20 +798,33 @@
         </div>
         <!--  End Audit Trail tab  -->
         <div class="tab-pane fade" id="form-tabs-Wallet" role="tabpanel">
-          <button class="btn btn-outline-secondary waves-effect mb-2" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('addpayment', 'Add Payment')">
+          <button
+            class="btn btn-outline-secondary waves-effect mb-2"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasEnd"
+            @click="setOffcanvasContent('addpayment', 'Add Payment')"
+          >
             Add payment
           </button>
-          <WalletDetails :reservation-id="selectedReservationId" :reservation-data="reservationsDataById[0]" @switch-content="currentContent = $event" @wallet-updated="refreshReservationData" />
+          <WalletDetails
+            :reservation-id="selectedReservationId"
+            :reservation-data="reservationsDataById[0]"
+            @switch-content="currentContent = $event"
+            @wallet-updated="refreshReservationData"
+          />
         </div>
       </template>
     </HeaderReservation>
-    <div v-if="isRefreshing" class="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center" style="background: rgba(0,0,0,0.3); z-index: 1050;">
+    <div
+      v-if="isRefreshing"
+      class="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center"
+      style="background: rgba(0, 0, 0, 0.3); z-index: 1050"
+    >
       <div class="spinner-border text-primary" role="status">
         <span class="visually-hidden">Loading...</span>
       </div>
     </div>
   </div>
-
 </template>
 
 <script>
@@ -675,17 +850,25 @@ import AddPayment from "../../components/SiderbarContentEdit/AddPayment.vue";
 import AddCharges from "../../components/SiderbarContentEdit/AddCharges.vue";
 import AddDiscount from "../../components/SiderbarContentEdit/AddDiscount.vue";
 import AddOperation from "../../components/SiderbarContentEdit/AddOperation.vue";
-import { cancelReservation, getReservationDataById } from "../../Api/editResvertion";
+import {
+  cancelReservation,
+  getReservationDataById,
+} from "../../Api/editResvertion";
 import moment from "moment";
 import { dateMixin } from "../../components/Mixin/DateMixin";
 import UpdateReservation from "../../components/SiderbarContentEdit/BookingDetailsComponents/UpdateReservation.vue";
 import { GetReservationItems } from "../../Api/addResvertionApi";
-import { showSuccessAlert, handleSubmissionError } from '../../Api/MassageValidation/alertUtilities';
-import { showConfirmationAlert } from '../../Api/MassageValidation/alertUtilities';
+import {
+  showSuccessAlert,
+  handleSubmissionError,
+} from "../../Api/MassageValidation/alertUtilities";
+import { showConfirmationAlert } from "../../Api/MassageValidation/alertUtilities";
 import WalletDetails from "../../components/SiderbarContentEdit/WalletDetails.vue";
-import Swal from 'sweetalert2';
-import { postCancelReservation, postStatusChange } from "../../Api/editResvertion";
-
+import Swal from "sweetalert2";
+import {
+  postCancelReservation,
+  postStatusChange,
+} from "../../Api/editResvertion";
 
 export default {
   name: "EditsPage",
@@ -714,10 +897,10 @@ export default {
     AddCharges,
     AddOperation,
     AddDiscount,
-    UpdateReservation, WalletDetails
+    UpdateReservation,
+    WalletDetails,
   },
-  data ()
-  {
+  data() {
     return {
       currentContent: null,
       roomChargesData: [],
@@ -747,35 +930,29 @@ export default {
           selected: false, // Tracks if this row is selected
         },
       ],
-
     };
   },
   methods: {
-    handleCellClick (rowData)
-    {
+    handleCellClick(rowData) {
       console.log("Clicked row data:", rowData); // Debugging: Log the row data
-      this.$emit('show-update-details', rowData); // Emit the event
+      this.$emit("show-update-details", rowData); // Emit the event
     },
-    setActiveTab (tab)
-    {
+    setActiveTab(tab) {
       this.activeTab = tab;
     },
-    setOffcanvasContent (content, title, buttonText = "Save", width = "400px")
-    {
+    setOffcanvasContent(content, title, buttonText = "Save", width = "400px") {
       this.currentContent = content; // Set the content type
       this.offcanvasTitle = title; // Set the title for the offcanvas
       this.sidebarWidth = width; // Set the sidebar width
       this.dynamicButtonText = buttonText; // Set the button text dynamically
     },
-    clearOffcanvasContent ()
-    {
+    clearOffcanvasContent() {
       this.currentContent = null; // Reset the content
       this.offcanvasTitle = ""; // Reset the title
       this.sidebarWidth = "400px"; // Reset the sidebar width
     },
     // Load a new active component (specific for guest or another area)
-    loadComponent (componentName, target = "activeComponent")
-    {
+    loadComponent(componentName, target = "activeComponent") {
       if (target === "activeComponent") {
         this.activeComponent = componentName;
       } else if (target === "bookingDetailsComponent") {
@@ -783,8 +960,7 @@ export default {
       }
     },
     // Reset each component independently
-    goBack (target = "activeComponent")
-    {
+    goBack(target = "activeComponent") {
       if (target === "activeComponent") {
         this.activeComponent = "DefaultComponentGuest"; // Reset for activeComponent
       } else if (target === "bookingDetailsComponent") {
@@ -794,47 +970,41 @@ export default {
         console.warn(`Invalid target: ${target}`);
       }
     },
-    toggleAll ()
-    {
+    toggleAll() {
       // Toggle all row checkboxes based on the master checkbox
-      this.rows.forEach((row) =>
-      {
+      this.rows.forEach((row) => {
         row.selected = this.selectAll;
       });
     },
-    updateSelectAll ()
-    {
+    updateSelectAll() {
       // Update master checkbox based on row checkboxes
       this.selectAll = this.rows.every((row) => row.selected);
     },
-    goBack ()
-    {
+    goBack() {
       this.$router.go(-1);
     },
-    statusBadgeClass (status)
-    {
+    statusBadgeClass(status) {
       return {
-        'bg-label-primary': status === 'pending',      // Blue for pending/waiting
-        'bg-label-success': status === 'approved',     // Green for approved
-        'bg-label-danger': status === 'cancelled',     // Red for cancelled
-        'bg-label-info': status === 'check_in',        // Light blue for check in
-        'bg-label-warning': status === 'check_out',    // Orange/yellow for check out
-        'bg-label-secondary': status === 'finished'    // Gray for finished
+        "bg-label-primary": status === "pending", // Blue for pending/waiting
+        "bg-label-success": status === "approved", // Green for approved
+        "bg-label-danger": status === "cancelled", // Red for cancelled
+        "bg-label-info": status === "check_in", // Light blue for check in
+        "bg-label-warning": status === "check_out", // Orange/yellow for check out
+        "bg-label-secondary": status === "finished", // Gray for finished
       };
     },
-    handleShowUpdateDetails (rowData)
-    {
+    handleShowUpdateDetails(rowData) {
       console.log("Received row data in parent:", rowData); // Debugging: Log the row data
 
       // Set the current content to 'updatedetails'
-      this.currentContent = 'updatedetails';
+      this.currentContent = "updatedetails";
 
       // Set the selected reservation ID and data
       this.selectedReservationId = rowData.reservation_id;
       this.reservationsDataById = [rowData]; // Wrap the row data in an array
 
       // Update the offcanvas title
-      this.offcanvasTitle = 'Update Reservation Details';
+      this.offcanvasTitle = "Update Reservation Details";
 
       // Show the offcanvas
       const offcanvasElement = this.$refs.offcanvas;
@@ -846,8 +1016,7 @@ export default {
         console.error("Offcanvas element not found"); // Debugging: Log an error if the element is missing
       }
     },
-    hideOffcanvas ()
-    {
+    hideOffcanvas() {
       // Use Bootstrap's Offcanvas API to hide the offcanvas
       const offcanvasElement = this.$refs.offcanvas;
       if (offcanvasElement) {
@@ -861,29 +1030,27 @@ export default {
         console.error("Offcanvas element not found.");
       }
     },
-    async cancelReservation ()
-    {
+    async cancelReservation() {
       // Show SweetAlert2 confirmation dialog
       const result = await showConfirmationAlert(
-        'Are you sure?',
+        "Are you sure?",
         "This Reservation will be cancelled",
-        'Yes, cancel it!',
-
+        "Yes, cancel it!"
       );
-
 
       // Proceed only if the user confirms
       if (result.isConfirmed) {
         try {
-          const response = await postCancelReservation(this.selectedReservationId);
+          const response = await postCancelReservation(
+            this.selectedReservationId
+          );
 
           // Show success alert
           await showSuccessAlert(
             "Reservation cancelled successfully!", // Custom message
             this.$router,
-            'index' // Route name
+            "index" // Route name
           );
-
         } catch (error) {
           handleSubmissionError(
             error,
@@ -892,8 +1059,7 @@ export default {
         }
       }
     },
-    async refreshReservationData ()
-    {
+    async refreshReservationData() {
       this.isRefreshing = true;
       try {
         const id = this.$route.params.id;
@@ -902,32 +1068,24 @@ export default {
         this.roomChargesData = response.data.data.items;
 
         // Optional: Show success toast/notification
-        this.$toast?.success('Data refreshed successfully');
+        this.$toast?.success("Data refreshed successfully");
       } catch (error) {
         console.error("Error refreshing reservation data:", error);
-        this.$toast?.error('Failed to refresh data');
+        this.$toast?.error("Failed to refresh data");
       } finally {
         this.isRefreshing = false;
       }
-    }
-
-
+    },
   },
-
 
   mixins: [flatpickrMixin, dateMixin],
 
-  async mounted ()
-  {
+  async mounted() {
     const id = this.$route.params.id; // Get the dynamic ID from the route
 
     try {
-      const [
-        ReservationDataByIdResponse,
-
-      ] = await Promise.all([
+      const [ReservationDataByIdResponse] = await Promise.all([
         getReservationDataById(id),
-
       ]);
 
       this.reservationsDataById = [ReservationDataByIdResponse.data.data];
@@ -935,14 +1093,12 @@ export default {
       if (this.reservationsDataById.length > 0) {
         this.selectedReservationId = this.reservationsDataById[0].id; // Set to the first reservation's ID
       }
-
     } catch (error) {
       console.error("Error loading data:", error);
     }
     const offcanvas = document.getElementById("offcanvasEnd");
     offcanvas.addEventListener("hidden.bs.offcanvas", this.resetSelections);
-    this.$nextTick(() =>
-    {
+    this.$nextTick(() => {
       const offcanvasElement = this.$refs.offcanvas;
       if (offcanvasElement) {
         offcanvasElement.addEventListener(
@@ -955,8 +1111,7 @@ export default {
     });
   },
 
-  beforeDestroy ()
-  {
+  beforeDestroy() {
     const offcanvasElement = this.$refs.offcanvas;
     if (offcanvasElement) {
       offcanvasElement.removeEventListener(
@@ -967,7 +1122,6 @@ export default {
       console.warn("Offcanvas ref not found during beforeDestroy.");
     }
   },
-
 };
 </script>
 
