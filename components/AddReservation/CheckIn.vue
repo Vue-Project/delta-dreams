@@ -253,7 +253,9 @@
               <!--  ! table Header -->
               <!-- change width delete border color  -->
               <div class="card mt-3 border-0">
-                <div class="card-datatable table-responsive custom-table-wrapper">
+                <div
+                  class="card-datatable table-responsive custom-table-wrapper"
+                >
                   <table class="table overflow-hidden custom-table">
                     <thead>
                       <tr class="rounded-1">
@@ -276,10 +278,15 @@
                           <select
                             class="form-select"
                             :disabled="!datesSelected"
+                            v-model="item.projectId"
                           >
                             <option disabled value="">Select</option>
-                            <option>
-                              test
+                            <option
+                              v-for="project in getProjects"
+                              :key="project.id"
+                              :value="project.id"
+                            >
+                              {{ project.name }}
                             </option>
                           </select>
                         </td>
@@ -342,7 +349,10 @@
                           <select
                             class="form-select"
                             v-model="item.unitId"
-                            :disabled="!datesSelected || !availableUnitsByRoom[index]?.length"
+                            :disabled="
+                              !datesSelected ||
+                              !availableUnitsByRoom[index]?.length
+                            "
                           >
                             <option disabled value="">Select Unit</option>
                             <option
@@ -410,24 +420,15 @@
                         <td data-label="Rate(EGP)(Tax Inc.)">
                           <div class="row">
                             <div class="col-lg-10">
-                              <div class="input-group">
-                                <input
-                                  @change="
-                                    (value) =>
-                                      $emit('change', value.target.value)
-                                  "
-                                  class="form-control"
-                                  placeholder="0.00"
-                                  id="rateAmount"
-                                  v-model="item.rateAmount"
-                                  aria-label="number of rateAmount"
-                                  ref="rateAmount"
-                                  :disabled="!datesSelected"
-                                />
-                                <span class="input-group-text groupStyle"
-                                  >EGP</span
-                                >
-                              </div>
+                              <input
+                                @change="handleRateChange($event, index)"
+                                class="form-control"
+                                placeholder="0"
+                                id="rateAmount"
+                                v-model="item.rateAmount"
+                                aria-label="number of rateAmount"
+                                ref="rateAmount"
+                              />
                               <span
                                 class="error-message small"
                                 v-if="
@@ -818,6 +819,7 @@ export default {
         },
         units: [
           {
+            projectId: "",
             roomType: "",
             rateType: "",
             unitId: "",
@@ -971,6 +973,18 @@ export default {
       // Fetch or filter names based on the input
       this.fetchNames(this.formAddReservation.guestInformation.name);
     },
+    calculateTotalRate(index, value) {
+      if (value && this.totalNights > 0) {
+        // Convert to number and multiply by total nights
+        const baseRate = parseFloat(value);
+        if (!isNaN(baseRate)) {
+          const totalRate = baseRate * this.totalNights;
+          // Update the rate amount with the total
+          this.formAddReservation.units[index].rateAmount =
+            totalRate.toFixed(2);
+        }
+      }
+    },
     //  handleBlur ()
     //   {
     //     // Hide dropdown after a small delay to allow selection
@@ -1075,6 +1089,7 @@ export default {
         business_source_id: this.formAddReservation.businessSource,
         reservation_type: this.formAddReservation.reservationType,
         units: this.formAddReservation.units.map((unit) => ({
+          project_id: unit.projectId,
           unit_id: unit.unitId,
           unit_type_id: unit.unitTypeId, // Include for all units
           rate_type: unit.rateType,
@@ -1110,6 +1125,7 @@ export default {
         insurance: this.paymentData.insurance,
         insurance_by: this.paymentData.insurance_by,
       };
+      // console.log(bookingData);
 
       // If no errors, send the data to the server
       try {
@@ -1353,6 +1369,40 @@ export default {
         this.isLoading = false;
       }
     },
+    // Modified handleRateChange function
+    // Modified handleRateChange function
+    handleRateChange(event, index) {
+      // Get the value from the input field
+      const baseRate = parseFloat(
+        event.target.value.replace(".", "").replace(",", ".")
+      );
+
+      if (!isNaN(baseRate)) {
+        // Format with dot as thousands separator but no decimal places
+        const formattedValue = baseRate.toLocaleString("de-DE", {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0,
+        });
+
+        // Update this specific item's rate amount with proper formatting
+        this.formAddReservation.units[index].rateAmount = formattedValue;
+
+        // Only perform calculations and emit event if it's the first item
+        if (index === 0) {
+          // Calculate total internally but don't display it
+          const totalRate = baseRate * this.totalNights;
+
+          // Emit the total for other components if needed
+          this.$emit(
+            "change",
+            totalRate.toLocaleString("de-DE", {
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 0,
+            })
+          );
+        }
+      }
+    },
   },
 
   async mounted() {
@@ -1533,6 +1583,7 @@ export default {
       "getRateTypes",
       "getCountries",
       "getRemindGuestType",
+      "getProjects",
     ]),
     // formattedRateAmount: {
     //   get ()
@@ -1584,7 +1635,10 @@ export default {
       return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     },
     datesSelected() {
-    return this.formAddReservation.checkInDate && this.formAddReservation.checkOutDate;
+      return (
+        this.formAddReservation.checkInDate &&
+        this.formAddReservation.checkOutDate
+      );
     },
   },
   beforeDestroy() {
@@ -1655,14 +1709,14 @@ export default {
   overflow-x: auto;
 }
 .custom-table th {
-  min-width: 150px; 
-  white-space: nowrap; 
+  min-width: 150px;
+  white-space: nowrap;
 }
-.custom-table th{
+.custom-table th {
   min-width: 166px;
 }
 .custom-table th:nth-child(5),
-.custom-table th:nth-child(6){
+.custom-table th:nth-child(6) {
   min-width: 100px;
 }
 </style>

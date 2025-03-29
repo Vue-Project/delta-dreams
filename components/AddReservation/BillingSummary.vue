@@ -15,7 +15,9 @@
               <span class="badge bg-label-info p-1 rounded"></span>
               <p class="mb-0">Check-in</p>
             </div>
-            <h5 class="mb-0 pt-1 text-nowrap fw-bold">{{ formatCheckInDate }}</h5>
+            <h5 class="mb-0 pt-1 text-nowrap fw-bold">
+              {{ formatCheckInDate }}
+            </h5>
           </div>
           <div class="col-4">
             <div class="divider">
@@ -23,30 +25,42 @@
             </div>
           </div>
           <div class="col-4 text-end">
-            <div class="d-flex gap-2 justify-content-end align-items-center mb-2">
+            <div
+              class="d-flex gap-2 justify-content-end align-items-center mb-2"
+            >
               <p class="mb-0">Check-out</p>
             </div>
-            <h5 class="mb-0 pt-1 text-nowrap ms-lg-n3 ms-xl-0 fw-bold">{{ formatCheckOutDate }}</h5>
+            <h5 class="mb-0 pt-1 text-nowrap ms-lg-n3 ms-xl-0 fw-bold">
+              {{ formatCheckOutDate }}
+            </h5>
           </div>
         </div>
         <dl class="row mb-2 billingMoney rounded p-2">
           <dt class="col-6 fw-normal text-heading">Room Charges</dt>
           <dd class="col-6 text-end">{{ paymentDetails.roomCharges }}</dd>
 
-          <label for="taxes" class="col-sm-9 col-4 col-form-label fw-normal">Taxes</label>
+          <label for="taxes" class="col-sm-9 col-4 col-form-label fw-normal"
+            >Taxes</label
+          >
           <div class="col-sm-3 col-8">
             <input
               type="number"
               id="taxes"
               name="taxes"
-              class="form-control rounded-2  fw-normal text-end"
+              class="form-control rounded-2 fw-normal text-end"
               v-model="paymentDetails.taxes"
               min="0"
-              @input="paymentDetails.taxes = Math.max(Number($event.target.value), 0)"
-            >
+              @input="
+                paymentDetails.taxes = Math.max(Number($event.target.value), 0)
+              "
+            />
           </div>
 
-          <label for="dueAmount" class="col-sm-9 col-4 col-form-label fw-normal text-heading">Charge Extra</label>
+          <label
+            for="dueAmount"
+            class="col-sm-9 col-4 col-form-label fw-normal text-heading"
+            >Charge Extra</label
+          >
           <div class="col-sm-3 col-8">
             <input
               type="number"
@@ -55,25 +69,45 @@
               class="form-control rounded-2 mt-1 fw-normal text-end"
               v-model="paymentDetails.dueAmount"
               min="0"
-              @input="paymentDetails.dueAmount = Math.max(Number($event.target.value), 0)"
-            >
+              @input="
+                paymentDetails.dueAmount = Math.max(
+                  Number($event.target.value),
+                  0
+                )
+              "
+            />
           </div>
         </dl>
 
         <div class="input-group">
           <div class="input-group-text border-0 px-2 ml-3">
             <label class="pl-1 mb-0" for="inputCheckBox02">Payment Mode</label>
-            <input id="inputCheckBox02" class="form-check-input mt-0" type="checkbox" v-model="value.paymentMode" />
+            <input
+              id="inputCheckBox02"
+              class="form-check-input mt-0"
+              type="checkbox"
+              v-model="value.paymentMode"
+            />
           </div>
         </div>
 
         <div class="row" v-if="value.paymentMode">
           <div class="col-md-6 mb-3">
             <div class="input-group">
-              <label class="input-group-text" for="paymentMethod">Methods</label>
-              <select class="form-select" id="paymentMethod" v-model="value.paymentMethod">
+              <label class="input-group-text" for="paymentMethod"
+                >Methods</label
+              >
+              <select
+                class="form-select"
+                id="paymentMethod"
+                v-model="value.paymentMethod"
+              >
                 <option disabled value="">Select</option>
-                <option v-for="paymentMethod in paymentMethods" :key="paymentMethod.id" :value="paymentMethod.id">
+                <option
+                  v-for="paymentMethod in paymentMethods"
+                  :key="paymentMethod.id"
+                  :value="paymentMethod.id"
+                >
                   {{ paymentMethod.content }}
                 </option>
               </select>
@@ -82,9 +116,17 @@
           <div class="col-md-6 mb-3">
             <div class="input-group">
               <label class="input-group-text" for="paymentType">Types</label>
-              <select class="form-select" id="paymentType" v-model="selectedPaymentType">
+              <select
+                class="form-select"
+                id="paymentType"
+                v-model="selectedPaymentType"
+              >
                 <option disabled value="">Select</option>
-                <option v-for="(label, value) in paymentTypes" :key="value" :value="value">
+                <option
+                  v-for="(label, value) in paymentTypes"
+                  :key="value"
+                  :value="value"
+                >
                   {{ label }}
                 </option>
               </select>
@@ -108,7 +150,10 @@
             </div>
           </div> -->
         </div>
-        <p v-if="!value.paymentMode && validationMessage" class="validation-message">
+        <p
+          v-if="!value.paymentMode && validationMessage"
+          class="validation-message"
+        >
           Payment Mode is required.
         </p>
 
@@ -117,17 +162,19 @@
           <h6 class="mb-3">Payment Details</h6>
           <dl class="row">
             <dt class="col-6">Payment Method:</dt>
-            <dd class="col-6">{{ 'Cash' }}</dd>
+            <dd class="col-6">{{ "Cash" }}</dd>
 
             <dt class="col-6">Payment Type:</dt>
-            <dd class="col-6">{{ selectedPaymentType || 'Not selected' }}</dd>
+            <dd class="col-6">{{ selectedPaymentType || "Not selected" }}</dd>
 
             <!-- Common fields for all payment types -->
             <dt class="col-6">Amount:</dt>
-            <dd class="col-6">{{ paymentDetails.amount || 'Not specified' }}</dd>
+            <dd class="col-6">
+              {{ paymentDetails.amount || "Not specified" }}
+            </dd>
 
             <dt class="col-6">Date:</dt>
-            <dd class="col-6">{{ paymentDetails.date || 'Not specified' }}</dd>
+            <dd class="col-6">{{ paymentDetails.date || "Not specified" }}</dd>
 
             <template v-if="paymentDetails.comment">
               <dt class="col-6">Comment:</dt>
@@ -142,7 +189,13 @@
 
             <template v-if="paymentDetails.insurance_by">
               <dt class="col-6">Insurance By:</dt>
-              <dd class="col-6">{{ accounts.find(account => account.id === paymentDetails.insurance_by)?.name || 'Not specified' }}</dd>
+              <dd class="col-6">
+                {{
+                  accounts.find(
+                    (account) => account.id === paymentDetails.insurance_by
+                  )?.name || "Not specified"
+                }}
+              </dd>
             </template>
           </dl>
         </div>
@@ -152,11 +205,16 @@
           <!-- Common fields for all payment types -->
           <div class="mb-3">
             <label class="form-label">Amount</label>
-            <input type="number" class="form-control" v-model="paymentDetails.amount" aria-label="Amount">
+            <input
+              type="number"
+              class="form-control"
+              v-model="paymentDetails.amount"
+              aria-label="Amount"
+            />
           </div>
           <div class="mb-3">
-              <label class="form-label" for="payment_Image">Payment Image</label>
-              <input type="file" class="form-control" id="payment_Image">
+            <label class="form-label" for="payment_Image">Payment Image</label>
+            <input type="file" class="form-control" id="payment_Image" />
           </div>
           <div class="mb-3">
             <label class="form-label">Date</label>
@@ -176,7 +234,11 @@
 
           <div class="mb-3">
             <label class="form-label">Comment</label>
-            <textarea class="form-control" v-model="paymentDetails.comment" rows="3"></textarea>
+            <textarea
+              class="form-control"
+              v-model="paymentDetails.comment"
+              rows="3"
+            ></textarea>
           </div>
 
           <!-- Payment specific fields -->
@@ -222,9 +284,9 @@
 </template>
 
 <script>
-import { getAccounts, getPaymentMethods } from '../../Api/addResvertionApi';
-import flatpickrMixin from '../Mixin/flatpickrMixin';
-import flatpickr from 'flatpickr';
+import { getAccounts, getPaymentMethods } from "../../Api/addResvertionApi";
+import flatpickrMixin from "../Mixin/flatpickrMixin";
+import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 
 export default {
@@ -246,28 +308,25 @@ export default {
       paymentMethods: [],
       paymentTypes: [],
       accounts: [],
-      selectedPaymentType: '',
+      selectedPaymentType: "",
       datePicker1Instance: null, // Add this line to store the flatpickr instance
       paymentDetails: {
         roomCharges: 0.0,
         taxes: "1",
         dueAmount: "1",
         amount: null,
-        bankName: '',
-        accountNumber: '',
-        transferDate: '',
-        phoneNumber: '',
-        transactionId: '',
-        cardNumber: '',
-        date: new Date().toISOString().split('T')[0],
-        cvv: '',
-        comment: '',
-        insurance: '',
-        insurance_by: '',
-
-
-
-      }
+        bankName: "",
+        accountNumber: "",
+        transferDate: "",
+        phoneNumber: "",
+        transactionId: "",
+        cardNumber: "",
+        date: new Date().toISOString().split("T")[0],
+        cvv: "",
+        comment: "",
+        insurance: "",
+        insurance_by: "",
+      },
     };
   },
   computed: {
@@ -281,7 +340,8 @@ export default {
     },
     formatCheckOutDate() {
       if (this.selectedDates && this.selectedDates.length > 0) {
-        const lastDate = this.selectedDates[this.selectedDates.length - 1].dateTime;
+        const lastDate =
+          this.selectedDates[this.selectedDates.length - 1].dateTime;
         const [datePart] = lastDate.split(", ");
         return datePart;
       }
@@ -305,13 +365,13 @@ export default {
     //     this.validationMessage = "";
     //   }
     // },
-    "value.roomCharges" : function(value){
-      this.paymentDetails.roomCharges = value
+    "value.roomCharges": function (value) {
+      this.paymentDetails.roomCharges = value;
     },
     selectedPaymentType(newVal) {
-      this.$emit('input', {
+      this.$emit("input", {
         ...this.value,
-        selectedPaymentType: newVal
+        selectedPaymentType: newVal,
       });
 
       // Initialize datepicker when payment type is selected
@@ -319,19 +379,19 @@ export default {
         this.initializeDatePicker();
       });
     },
-    'paymentDetails': {
+    paymentDetails: {
       deep: true,
       handler(newVal) {
-        this.$emit('input', {
+        this.$emit("input", {
           ...this.value,
-          ...newVal
+          ...newVal,
         });
-      }
-    }
+      },
+    },
   },
   methods: {
     formatDate(date) {
-      return date.toISOString().split('T')[0];
+      return date.toISOString().split("T")[0];
     },
 
     // Add a new method to initialize the datepicker
@@ -350,7 +410,7 @@ export default {
             if (selectedDates[0]) {
               this.paymentDetails.date = this.formatDate(selectedDates[0]);
             }
-          }
+          },
         });
       }
     },
@@ -371,7 +431,7 @@ export default {
     },
     // Add this new method to mask card numbers
     maskCardNumber(cardNumber) {
-      if (!cardNumber) return 'Not specified';
+      if (!cardNumber) return "Not specified";
       return `****-****-****-${cardNumber.slice(-4)}`;
     },
   },
