@@ -1,9 +1,13 @@
 <template>
-  <div class="offcanvas offcanvas-end editSidebar" tabindex="-1" id="offcanvasEnd" aria-labelledby="offcanvasEndLabel">
+  <div
+    class="offcanvas offcanvas-end editSidebar"
+    tabindex="-1"
+    id="offcanvasEnd"
+    aria-labelledby="offcanvasEndLabel"
+  >
     <!-- Offcanvas Header -->
     <div class="offcanvas-header editSideBarHeader">
       <h5 id="offcanvasEndLabel" class="offcanvas-title w-100">
-
         <template v-if="selectedEvent">
           <h6>
             <i class="fa-solid fa-user pr-2 text-primary fs-3 mb-2"></i>
@@ -21,24 +25,45 @@
           </div>
           <div class="row mt-4">
             <div class="col-6">
-              <button type="button" class="btn btn-primary waves-effect waves-light btn-block EditBtnSideBar" @click="navigateToEditReservation(selectedEvent.id)">
+              <button
+                type="button"
+                class="btn btn-primary waves-effect waves-light btn-block EditBtnSideBar"
+                @click="navigateToEditReservation(selectedEvent.id)"
+              >
                 Edit
               </button>
             </div>
             <div class="col-6">
-              <button type="button" class="btn btn-primary waves-effect waves-light btn-block AddPaymentBtnSideBar" data-bs-toggle="modal" data-bs-target="#paymentModal">
+              <button
+                type="button"
+                class="btn btn-primary waves-effect waves-light btn-block AddPaymentBtnSideBar"
+                data-bs-toggle="modal"
+                data-bs-target="#paymentModal"
+              >
                 Add Payment
               </button>
             </div>
           </div>
 
-          <div class="row mt-4  StatusSideBar">
+          <div class="row mt-4 StatusSideBar">
             <div class="col-4 pt-1">
-              <label class="form-label fs-4 StatusSideBarTitle" for="status-reservation">Status</label>
+              <label
+                class="form-label fs-4 StatusSideBarTitle"
+                for="status-reservation"
+                >Status</label
+              >
             </div>
             <div class="col-8 pt-1">
-              <select class="  form-select badge h-px-40 lh-lg text-dark StatusSideBarSelect" :value="selectedEvent.status" @change="handleStatusChange">
-                <option v-for="(label, value) in statusOptions" :key="value" :value="value">
+              <select
+                class="form-select badge h-px-40 lh-lg text-dark StatusSideBarSelect"
+                :value="selectedEvent.status"
+                @change="handleStatusChange"
+              >
+                <option
+                  v-for="(label, value) in statusOptions"
+                  :key="value"
+                  :value="value"
+                >
                   {{ label }}
                 </option>
               </select>
@@ -55,11 +80,15 @@
                 </button>
               </div>
             </div> -->
-
         </template>
       </h5>
 
-      <button type="button" class="btn-close text-reset CloseSidebarEdit" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      <button
+        type="button"
+        class="btn-close text-reset CloseSidebarEdit"
+        data-bs-dismiss="offcanvas"
+        aria-label="Close"
+      ></button>
     </div>
 
     <!-- Offcanvas Body -->
@@ -67,11 +96,23 @@
     <div class="offcanvas-body mx-0 flex-grow-0 pt-0">
       <div class="row mb-4">
         <div class="col-9">
-          <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD to YYYY-MM-DD" id="flatpickr-range" ref="rangePicker1" v-model="dateRange" @change='parseDateRange' aria-label="input Text to Date" />
-
+          <input
+            type="text"
+            class="form-control flatpickr-input"
+            placeholder="YYYY-MM-DD to YYYY-MM-DD"
+            id="flatpickr-range"
+            ref="rangePicker1"
+            v-model="dateRange"
+            @change="parseDateRange"
+            aria-label="input Text to Date"
+          />
         </div>
         <div class="col-3">
-          <button type="button" class="btn btn-primary waves-effect waves-light btn-block confirmButton" @click="changeDateReservation">
+          <button
+            type="button"
+            class="btn btn-primary waves-effect waves-light btn-block confirmButton"
+            @click="changeDateReservation"
+          >
             Confirm
           </button>
         </div>
@@ -95,48 +136,70 @@
 
               <li class="mb-3 pb-1">
                 <div class="d-flex align-items-start">
-                  <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                  <div
+                    class="d-flex justify-content-between w-100 flex-wrap gap-2"
+                  >
                     <div class="me-2">
                       <h6 class="mb-0">Arrival Date</h6>
-                      <small class="text-muted">{{ formatDate(selectedEvent.checkin_date || "2024-10-21") }}
-                        {{ selectedEvent.checkin_time || "12:00 PM" }}</small>
+                      <small class="text-muted"
+                        >{{
+                          formatDate(selectedEvent.checkin_date || "2024-10-21")
+                        }}
+                        {{ selectedEvent.checkin_time || "12:00 PM" }}</small
+                      >
                     </div>
                   </div>
                 </div>
               </li>
               <li class="mb-3 pb-1">
                 <div class="d-flex align-items-start">
-                  <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                  <div
+                    class="d-flex justify-content-between w-100 flex-wrap gap-2"
+                  >
                     <div class="me-2">
                       <h6 class="mb-0">Booking Date</h6>
-                      <small class="text-muted">{{ formatDate(selectedEvent.checkout_date || "2024-10-21") }}
-                        {{ selectedEvent.checkout_time || "12:00 PM" }}</small>
+                      <small class="text-muted"
+                        >{{
+                          formatDate(
+                            selectedEvent.checkout_date || "2024-10-21"
+                          )
+                        }}
+                        {{ selectedEvent.checkout_time || "12:00 PM" }}</small
+                      >
                     </div>
                   </div>
                 </div>
               </li>
               <li class="mb-3 pb-1">
                 <div class="d-flex align-items-start">
-                  <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                  <div
+                    class="d-flex justify-content-between w-100 flex-wrap gap-2"
+                  >
                     <div class="me-2">
                       <h6 class="mb-0">Room Number</h6>
+
                       <small class="text-muted">
-                        {{ selectedEvent.rooms || 5 }}</small>
+                        {{ selectedEvent.rooms || 5 }}</small
+                      >
                     </div>
                   </div>
                 </div>
               </li>
-
             </ul>
           </div>
           <div class="col-6">
             <ul class="list-unstyled mb-0">
               <li class="mb-3 pb-1">
                 <div class="d-flex align-items-start">
-                  <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                  <div
+                    class="d-flex justify-content-between w-100 flex-wrap gap-2"
+                  >
                     <div class="me-2">
                       <h6 class="mb-0">Status</h6>
-                      <small class="badge" :class="statusBadgeClass(selectedEvent.status)">
+                      <small
+                        class="badge"
+                        :style="{ backgroundColor: selectedEvent.status_color }"
+                      >
                         {{ selectedEvent.status_name }}
                       </small>
                     </div>
@@ -145,10 +208,13 @@
               </li>
               <li class="mb-3 pb-1">
                 <div class="d-flex align-items-start">
-                  <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                  <div
+                    class="d-flex justify-content-between w-100 flex-wrap gap-2"
+                  >
                     <div class="me-2">
                       <h6 class="mb-0">Room Type</h6>
-                      <small class="text-muted">{{ selectedEvent.rate_type }}
+                      <small class="text-muted"
+                        >{{ selectedEvent.rate_type }}
                       </small>
                     </div>
                   </div>
@@ -156,17 +222,23 @@
               </li>
               <li class="mb-3 pb-1">
                 <div class="d-flex align-items-start">
-                  <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                  <div
+                    class="d-flex justify-content-between w-100 flex-wrap gap-2"
+                  >
                     <div class="d-flex align-items-start">
-                      <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                      <div
+                        class="d-flex justify-content-between w-100 flex-wrap gap-2"
+                      >
                         <div class="me-2">
                           <h6 class="mb-0">
                             <i class="fa-solid fa-person"></i>
                             -
                             <i class="fa-solid fa-child"></i>
                           </h6>
-                          <small class="text-muted m-1">{{ selectedEvent.adults }}-
-                            {{ selectedEvent.children }}</small>
+                          <small class="text-muted m-1"
+                            >{{ selectedEvent.adults }}-
+                            {{ selectedEvent.children }}</small
+                          >
                         </div>
                       </div>
                     </div>
@@ -175,10 +247,13 @@
               </li>
               <li class="mb-3 pb-1">
                 <div class="d-flex align-items-start">
-                  <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                  <div
+                    class="d-flex justify-content-between w-100 flex-wrap gap-2"
+                  >
                     <div class="me-2">
                       <h6 class="mb-0">Avg. Daily Rate</h6>
-                      <small class="text-muted">{{ selectedEvent.unit_price || '0' }}
+                      <small class="text-muted"
+                        >{{ selectedEvent.unit_price || "0" }}
                       </small>
                     </div>
                   </div>
@@ -187,15 +262,23 @@
             </ul>
           </div>
           <div class="text-center">
-            <button @click="cancelReservation" type="button" title="Cancel Reservation" class="btn btn-danger waves-effect waves-light mt-3 w-100 px-0 cancelBtnSideBar">
-              Cancel Reservation</button>
+            <button
+              @click="cancelReservation"
+              type="button"
+              title="Cancel Reservation"
+              class="btn btn-danger waves-effect waves-light mt-3 w-100 px-0 cancelBtnSideBar"
+            >
+              Cancel Reservation
+            </button>
           </div>
         </div>
 
         <div class="new-div mt-lg-5 mt-md-5 mt-2 w-100 TotalPayment">
-          <dl class=" row mb-0">
+          <dl class="row mb-0">
             <dt class="col-6 fw-normal text-heading">Total</dt>
-            <dd class="col-6 text-end">{{ selectedEvent.total || "0 " }} EGP</dd>
+            <dd class="col-6 text-end">
+              {{ selectedEvent.total || "0 " }} EGP
+            </dd>
 
             <dt class="col-6 fw-normal">Paid</dt>
             <dd class="col-6 text-end">{{ selectedEvent.paid || "0 " }} EGP</dd>
@@ -203,34 +286,67 @@
             <dt class="col-6 fw-normal text-danger">Balance</dt>
             <dd class="col-6 text-end text-danger">
               {{ selectedEvent.balance || "0.0 " }} EGP
-
             </dd>
           </dl>
         </div>
-
       </template>
       <!-- Modal Payment -->
-      <div class="modal fade" id="paymentModal" data-bs-backdrop="static" tabindex="-1" style="display: none;" aria-hidden="true">
+      <div
+        class="modal fade"
+        id="paymentModal"
+        data-bs-backdrop="static"
+        tabindex="-1"
+        style="display: none"
+        aria-hidden="true"
+      >
         <div class="modal-dialog">
           <form class="modal-content" @submit.prevent="submitPayment">
             <div class="modal-header">
               <h5 class="modal-title" id="paymentModalTitle">Add Payment</h5>
-              <button @click="cancelPayment" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <button
+                @click="cancelPayment"
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
             </div>
             <div class="modal-body">
               <div class="row">
                 <div class="col">
                   <label for="flatpickr-date-01" class="form-label">Date</label>
-                  <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" id="flatpickr-date-01" ref="datePicker1" aria-label="input Text to Check-in Date" v-model="formAddPayment.date" />
+                  <input
+                    type="text"
+                    class="form-control flatpickr-input"
+                    placeholder="DD/MM/YYYY"
+                    id="flatpickr-date-01"
+                    ref="datePicker1"
+                    aria-label="input Text to Check-in Date"
+                    v-model="formAddPayment.date"
+                  />
                   <i class="fa-solid fa-calendar-days icon-date right-24"></i>
                 </div>
-                <span class="error-message small" v-if="$v.formAddPayment.date.$error">
-                      date is required
-                    </span>
-                <div class="col-12 mb-2 ">
-                  <label class="form-label" for="payment_Image">Payment Image</label>
-                  <input type="file" class="form-control" id="payment_Image" ref="paymentImage" @change="handleImageUpload">
-                  <span class="error-message small" v-if="$v.formAddPayment.image.$error">
+                <span
+                  class="error-message small"
+                  v-if="$v.formAddPayment.date.$error"
+                >
+                  date is required
+                </span>
+                <div class="col-12 mb-2">
+                  <label class="form-label" for="payment_Image"
+                    >Payment Image</label
+                  >
+                  <input
+                    type="file"
+                    class="form-control"
+                    id="payment_Image"
+                    ref="paymentImage"
+                    @change="handleImageUpload"
+                  />
+                  <span
+                    class="error-message small"
+                    v-if="$v.formAddPayment.image.$error"
+                  >
                     Payment image is required
                   </span>
                 </div>
@@ -241,128 +357,201 @@
               <div class="row g-2">
                 <div class="col-lg-6 col-md-6 col-12 mb-2">
                   <div class="input-group">
-                    <select class="form-select" id="payment_type" v-model="formAddPayment.type">
+                    <select
+                      class="form-select"
+                      id="payment_type"
+                      v-model="formAddPayment.type"
+                    >
                       <option disabled value="">Select Type</option>
-                      <option v-for="(label, value) in paymentTypes" :key="value" :value="value">
+                      <option
+                        v-for="(label, value) in paymentTypes"
+                        :key="value"
+                        :value="value"
+                      >
                         {{ label }}
                       </option>
                     </select>
-                    <label class="input-group-text" for="payment_type">Type</label>
+                    <label class="input-group-text" for="payment_type"
+                      >Type</label
+                    >
                   </div>
-                    <span class="error-message small" v-if="$v.formAddPayment.type.$error">
-                      payment type is required
-                    </span>
+                  <span
+                    class="error-message small"
+                    v-if="$v.formAddPayment.type.$error"
+                  >
+                    payment type is required
+                  </span>
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                   <div class="input-group">
-                    <select class="form-select" id="payment_method" v-model="formAddPayment.method">
+                    <select
+                      class="form-select"
+                      id="payment_method"
+                      v-model="formAddPayment.method"
+                    >
                       <option disabled value="">Select Method</option>
-                      <option v-for="paymentMethod in paymentMethods" :key="paymentMethod.id" :value="paymentMethod.id">
+                      <option
+                        v-for="paymentMethod in paymentMethods"
+                        :key="paymentMethod.id"
+                        :value="paymentMethod.id"
+                      >
                         {{ paymentMethod.content }}
                       </option>
                     </select>
-                    <label class="input-group-text" for="payment_method">Method</label>
+                    <label class="input-group-text" for="payment_method"
+                      >Method</label
+                    >
                   </div>
-                  <span class="error-message small" v-if="$v.formAddPayment.method.$error">
-                      payment method is required
-                    </span>
+                  <span
+                    class="error-message small"
+                    v-if="$v.formAddPayment.method.$error"
+                  >
+                    payment method is required
+                  </span>
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                   <div class="input-group">
                     <span class="input-group-text">EGP</span>
-                    <input type="text" class="form-control" placeholder="Amount" aria-label="Amount (to the nearest dollar)" v-model="formAddPayment.amount">
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Amount"
+                      aria-label="Amount (to the nearest dollar)"
+                      v-model="formAddPayment.amount"
+                    />
                   </div>
-                  <span class="error-message small" v-if="$v.formAddPayment.amount.$error">
-                     amount is required
-                    </span>
+                  <span
+                    class="error-message small"
+                    v-if="$v.formAddPayment.amount.$error"
+                  >
+                    amount is required
+                  </span>
                 </div>
                 <div class="col-lg-6 col-md-6 col-12 mt-2">
                   <div class="input-group">
-                    <select class="form-select" id="payment_accounts" v-model="formAddPayment.account">
+                    <select
+                      class="form-select"
+                      id="payment_accounts"
+                      v-model="formAddPayment.account"
+                    >
                       <option disabled value="">Select Accounts</option>
-                      <option v-for="account in accounts" :key="account.id" :value="account.id">
+                      <option
+                        v-for="account in accounts"
+                        :key="account.id"
+                        :value="account.id"
+                      >
                         {{ account.name }}
                       </option>
                     </select>
-                    <label class="input-group-text" for="payment_accounts">Accounts</label>
+                    <label class="input-group-text" for="payment_accounts"
+                      >Accounts</label
+                    >
                   </div>
-                  <span class="error-message small" v-if="$v.formAddPayment.account.$error">
-                      account  is required
-                    </span>
+                  <span
+                    class="error-message small"
+                    v-if="$v.formAddPayment.account.$error"
+                  >
+                    account is required
+                  </span>
                 </div>
                 <div class="col-12 mb-2 mt-3">
                   <div class="input-group">
                     <span class="input-group-text">Comment</span>
-                    <textarea class="form-control" aria-label="With textarea" placeholder="Comment" v-model="formAddPayment.comment"></textarea>
+                    <textarea
+                      class="form-control"
+                      aria-label="With textarea"
+                      placeholder="Comment"
+                      v-model="formAddPayment.comment"
+                    ></textarea>
                   </div>
-                  <span class="error-message small" v-if="$v.formAddPayment.comment.$error">
-                     comment is required
-                    </span>
+                  <span
+                    class="error-message small"
+                    v-if="$v.formAddPayment.comment.$error"
+                  >
+                    comment is required
+                  </span>
                 </div>
-
               </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-label-secondary waves-effect" data-bs-dismiss="modal" @click="cancelPayment">
+              <button
+                type="button"
+                class="btn btn-label-secondary waves-effect"
+                data-bs-dismiss="modal"
+                @click="cancelPayment"
+              >
                 Close
               </button>
-              <button type="submit" class="btn btn-primary waves-effect waves-light">Save</button>
+              <button
+                type="submit"
+                class="btn btn-primary waves-effect waves-light"
+              >
+                Save
+              </button>
             </div>
           </form>
         </div>
       </div>
     </div>
-
   </div>
-
 </template>
 
 <script>
 import flatpickrMixin from "../Mixin/flatpickrMixin";
-import { postAddPayment, postCancelReservation, postStatusChange } from "../../Api/editResvertion";
-import { showSuccessAlert, handleSubmissionError, showConfirmationAlert } from "../../Api/MassageValidation/alertUtilities";
-import { getAccounts, getGuestsInfo, getPaymentMethods } from "../../Api/addResvertionApi";
-import { postUpdateReservation } from '../../Api/CalenderApi';
+import {
+  postAddPayment,
+  postCancelReservation,
+  postStatusChange,
+} from "../../Api/editResvertion";
+import {
+  showSuccessAlert,
+  handleSubmissionError,
+  showConfirmationAlert,
+} from "../../Api/MassageValidation/alertUtilities";
+import {
+  getAccounts,
+  getGuestsInfo,
+  getPaymentMethods,
+} from "../../Api/addResvertionApi";
+import { postUpdateReservation } from "../../Api/CalenderApi";
 import DropzoneComponent from "../layout/DropzoneComponent.vue";
-import { validationMixin } from 'vuelidate'
-import { required, email } from 'vuelidate/lib/validators'
+import { validationMixin } from "vuelidate";
+import { required, email } from "vuelidate/lib/validators";
 
 export default {
-
-  data ()
-  {
+  data() {
     return {
       paymentMethods: [],
       paymentTypes: [],
       accounts: [],
-      dateRange: '',
-      checkin_date: '',
-      checkout_date: '',
+      dateRange: "",
+      checkin_date: "",
+      checkout_date: "",
       formAddPayment: {
-        date: new Date().toISOString().split('T')[0],
-        method: '',
-        type: '',
-        account: '',
-        comment: '',
-        image: null,  // Add this for the image
-        reservation_id: null
+        date: new Date().toISOString().split("T")[0],
+        method: "",
+        type: "",
+        account: "",
+        comment: "",
+        image: null, // Add this for the image
+        reservation_id: null,
       },
       statusOptions: [],
-    }
+    };
   },
   validations: {
-        formAddPayment: {
-          date:{required},
-          method: { required },
-          type: { required },
-          account: { required },
-          comment: { required },
-          amount: { required },
-          image: { required }  // Add validation for image
-        }
-      },
+    formAddPayment: {
+      date: { required },
+      method: { required },
+      type: { required },
+      account: { required },
+      comment: { required },
+      amount: { required },
+      image: { required }, // Add validation for image
+    },
+  },
   components: {
-    DropzoneComponent
+    DropzoneComponent,
   },
   props: {
     selectedEvent: {
@@ -372,23 +561,28 @@ export default {
   },
 
   methods: {
-    async handleStatusChange (event)
-    {
+    async handleStatusChange(event) {
       const oldStatus = this.selectedEvent.status;
       const newStatus = event.target.value;
 
-      const result = await showConfirmationAlert('Are you sure you?', 'Do you want to change the status of this reservation?');
+      const result = await showConfirmationAlert(
+        "Are you sure you?",
+        "Do you want to change the status of this reservation?"
+      );
 
       if (result.isConfirmed) {
         const changeStatus = {
-          status: newStatus
-        }
+          status: newStatus,
+        };
         // Send the new status to the server
         try {
-          const response = await postStatusChange(this.selectedEvent.id, changeStatus);
+          const response = await postStatusChange(
+            this.selectedEvent.id,
+            changeStatus
+          );
           this.selectedEvent.status = newStatus;
           showSuccessAlert("Status updated successfully!");
-          location.reload()
+          location.reload();
         } catch (error) {
           handleSubmissionError(error, "Failed to update status");
           // Revert to previous value if the server update fails
@@ -399,17 +593,13 @@ export default {
       }
     },
 
-
-    async cancelReservation ()
-    {
+    async cancelReservation() {
       // Show SweetAlert2 confirmation dialog
       const result = await showConfirmationAlert(
-        'Are you sure?',
-        'Are you sure you want to cancel this reservation? ',
-        'Yes, cancel it!',
-
+        "Are you sure?",
+        "Are you sure you want to cancel this reservation? ",
+        "Yes, cancel it!"
       );
-
 
       // Proceed only if the user confirms
       if (result.isConfirmed) {
@@ -418,12 +608,9 @@ export default {
 
           // Show success alert
           await showSuccessAlert(
-            "Reservation cancelled successfully!", // Custom message
-
+            "Reservation cancelled successfully!" // Custom message
           );
-          location.reload()
-
-
+          location.reload();
         } catch (error) {
           handleSubmissionError(
             error,
@@ -432,13 +619,11 @@ export default {
         }
       }
     },
-    navigateToEditReservation (id)
-    {
+    navigateToEditReservation(id) {
       this.$emit("navigate-to-edit-reservation", id);
     },
-    formatDate (isoString)
-    {
-      return new Date(isoString).toLocaleDateString('en-GB');
+    formatDate(isoString) {
+      return new Date(isoString).toLocaleDateString("en-GB");
     },
     // formatDateTime (isoString)
     // {
@@ -457,25 +642,24 @@ export default {
     //     currency: 'USD',
     //   }).format(amount);
     // },
-    statusBadgeClass (status)
-    {
-      return {
-        'bg-label-primary': status === 'pending',      // Blue for pending/waiting
-        'bg-label-success': status === 'approved',     // Green for approved
-        'bg-label-danger': status === 'cancelled',     // Red for cancelled
-        'bg-label-info': status === 'check_in',        // Light blue for check in
-        'bg-label-warning': status === 'check_out',    // Orange/yellow for check out
-        'bg-label-secondary': status === 'finished'    // Gray for finished
-      };
-    },
+    // statusBadgeClass(status) {
+    //   return {
+    //     "bg-label-primary": status === "pending", // Blue for pending/waiting
+    //     "bg-label-success": status === "approved", // Green for approved
+    //     "bg-label-danger": status === "cancelled", // Red for cancelled
+    //     "bg-label-info": status === "check_in", // Light blue for check in
+    //     "bg-label-warning": status === "check_out", // Orange/yellow for check out
+    //     "bg-label-secondary": status === "finished", // Gray for finished
+    //   };
+    // },
     async submitPayment() {
       try {
         // Set the image value from the file input before validation
         this.formAddPayment.image = this.$refs.paymentImage.files[0] || null;
 
-        this.$v.$touch()
+        this.$v.$touch();
         if (this.$v.$invalid) {
-          return
+          return;
         }
         // Get the file from the file input
         const paymentImageFile = this.$refs.paymentImage.files[0];
@@ -495,14 +679,13 @@ export default {
         };
 
         // Append payment data to FormData
-        Object.keys(paymentData).forEach(key =>
-        {
+        Object.keys(paymentData).forEach((key) => {
           formData.append(key, paymentData[key]);
         });
 
         // Append image file if it exists
         if (paymentImageFile) {
-          formData.append('image', paymentImageFile);
+          formData.append("image", paymentImageFile);
         }
 
         // Log the payment data and image
@@ -519,10 +702,9 @@ export default {
         location.reload();
 
         // Close the modal after saving
-        const modalElement = document.getElementById('paymentModal');
+        const modalElement = document.getElementById("paymentModal");
         const modalInstance = bootstrap.Modal.getInstance(modalElement);
         modalInstance.hide();
-
       } catch (error) {
         handleSubmissionError(error, "Failed to payment");
       }
@@ -530,31 +712,29 @@ export default {
       // Reset the payment form
       this.cancelPayment();
     },
-    cancelPayment ()
-    {
+    cancelPayment() {
       this.resetPaymentForm();
     },
-    resetPaymentForm ()
-    {
+    resetPaymentForm() {
       this.formAddPayment = {
-        date: '',
-        method: '',
-        type: '',
-        comment: '',
-        reservation_id: null
-      }
+        date: "",
+        method: "",
+        type: "",
+        comment: "",
+        reservation_id: null,
+      };
     },
-    parseDateRange ()
-    {
+    parseDateRange() {
       try {
         const flatpickrInstance = this.$refs.rangePicker1._flatpickr;
         const selectedDates = flatpickrInstance.selectedDates;
 
         if (selectedDates.length === 2) {
-          const formatDate = (date) =>
-          {
-            const localDate = new Date(date.getTime() - (date.getTimezoneOffset() * 60000));
-            return localDate.toISOString().split('T')[0];
+          const formatDate = (date) => {
+            const localDate = new Date(
+              date.getTime() - date.getTimezoneOffset() * 60000
+            );
+            return localDate.toISOString().split("T")[0];
           };
 
           this.checkin_date = formatDate(selectedDates[0]);
@@ -565,12 +745,11 @@ export default {
         console.error("Error parsing date range:", error);
       }
     },
-    async changeDateReservation ()
-    {
+    async changeDateReservation() {
       const result = await showConfirmationAlert(
-        'Are you sure?',
+        "Are you sure?",
         "change the date of this reservation",
-        'confirm',
+        "confirm"
       );
 
       if (result.isConfirmed && this.checkin_date && this.checkout_date) {
@@ -582,7 +761,10 @@ export default {
             reservation_id: this.selectedEvent.id,
           };
 
-          const response = await postUpdateReservation(updateDataUnit.reservation_id, updateDataUnit);
+          const response = await postUpdateReservation(
+            updateDataUnit.reservation_id,
+            updateDataUnit
+          );
 
           if (response.data) {
             await showSuccessAlert("Reservation updated successfully!");
@@ -598,40 +780,31 @@ export default {
       this.formAddPayment.image = file || null;
     },
   },
-  async mounted ()
-  {
+  async mounted() {
     try {
-      const [
-        paymentMethodsResponse,
-        accountsResponse,
-
-
-      ] = await Promise.all([
+      const [paymentMethodsResponse, accountsResponse] = await Promise.all([
         getPaymentMethods(),
         getAccounts(),
       ]);
 
       this.paymentMethods = paymentMethodsResponse.data.data;
       this.paymentTypes = paymentMethodsResponse.data.payment_type;
-      this.accounts = accountsResponse.data.data
+      this.accounts = accountsResponse.data.data;
     } catch (error) {
       console.error("Error loading data:", error);
     }
-
   },
   watch: {
     selectedEvent: {
       immediate: true,
-      handler (newEvent)
-      {
+      handler(newEvent) {
         if (newEvent) {
           // Format dates to YYYY-MM-DD while preserving local timezone
-          const formatDate = (date) =>
-          {
+          const formatDate = (date) => {
             const d = new Date(date);
             const year = d.getFullYear();
-            const month = String(d.getMonth() + 1).padStart(2, '0');
-            const day = String(d.getDate()).padStart(2, '0');
+            const month = String(d.getMonth() + 1).padStart(2, "0");
+            const day = String(d.getDate()).padStart(2, "0");
             return `${year}-${month}-${day}`;
           };
 
@@ -654,11 +827,10 @@ export default {
             this.statusOptions = newEvent.status_select;
           }
         }
-      }
-    }
+      },
+    },
   },
   mixins: [flatpickrMixin, validationMixin],
-
 };
 </script>
 

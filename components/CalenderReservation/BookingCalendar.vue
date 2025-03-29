@@ -779,6 +779,7 @@ export default {
         paid: event.extendedProps?.reservation?.paid,
         balance: event.extendedProps?.reservation?.remaining,
         status_select: event.extendedProps?.reservation?.status_select,
+        status_color: event.extendedProps?.reservation?.status_color,
       };
     },
     transformAllUnitsToEvents() {
