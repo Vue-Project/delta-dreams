@@ -214,7 +214,13 @@
           </div>
           <div class="mb-3">
             <label class="form-label" for="payment_Image">Payment Image</label>
-            <input type="file" class="form-control" id="payment_Image" />
+            <input
+              type="file"
+              class="form-control"
+              id="payment_Image"
+              ref="paymentImage"
+              @change="handleImageUpload"
+            />
           </div>
           <div class="mb-3">
             <label class="form-label">Date</label>
@@ -321,6 +327,7 @@ export default {
         phoneNumber: "",
         transactionId: "",
         cardNumber: "",
+        image: null,
         date: new Date().toISOString().split("T")[0],
         cvv: "",
         comment: "",
@@ -433,6 +440,23 @@ export default {
     maskCardNumber(cardNumber) {
       if (!cardNumber) return "Not specified";
       return `****-****-****-${cardNumber.slice(-4)}`;
+    },
+    handleImageUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        // Validate file type
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'];
+        if (!allowedTypes.includes(file.type)) {
+          alert('The image must be a file of type: jpeg, png, jpg, gif.');
+          // Reset the file input
+          this.$refs.paymentImage.value = '';
+          return;
+        }
+        
+        this.paymentDetails.image = file;
+        // Emit the payment image to the parent component
+        this.$emit('payment-image-upload', file);
+      }
     },
   },
 };

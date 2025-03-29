@@ -854,6 +854,7 @@ export default {
           suppressRateOnRegistrationCard: false,
         },
         bookingSource: "",
+        paymentImage: null,
       },
       // validationMessages: {
       //   businessSource: '',
@@ -1074,7 +1075,27 @@ export default {
       if (this.$v.$invalid) {
         return;
       }
+      const formData = new FormData();
 
+      if (this.paymentImage) {
+        const allowedTypes = [
+          "image/jpeg",
+          "image/png",
+          "image/jpg",
+          "image/gif",
+        ];
+        if (!allowedTypes.includes(this.paymentImage.type)) {
+          handleSubmissionError(
+            new Error("The image must be a file of type: jpeg, png, jpg, gif."),
+            "Invalid file type"
+          );
+          return;
+        }
+      }
+
+      if (this.paymentImage) {
+        formData.append("payment_image", this.paymentImage);
+      }
       // Stop submission if there are errors
       // if (hasError) return;
 
@@ -1114,6 +1135,7 @@ export default {
         city: this.formAddReservation.guestInformation.city,
         zip_code: this.formAddReservation.guestInformation.zip,
         room_charges: this.paymentData.roomCharges,
+        image: this.paymentData.image,
         tax: this.paymentData.taxes,
         charge_extra: this.paymentData.dueAmount,
         payment_id: this.paymentData.paymentMethod,
@@ -1125,7 +1147,7 @@ export default {
         insurance: this.paymentData.insurance,
         insurance_by: this.paymentData.insurance_by,
       };
-      // console.log(bookingData);
+      console.log(bookingData);
 
       // If no errors, send the data to the server
       try {
@@ -1402,6 +1424,9 @@ export default {
           );
         }
       }
+    },
+    handlePaymentImageUpload(file) {
+      this.paymentImage = file;
     },
   },
 
