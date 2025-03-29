@@ -871,11 +871,9 @@ export default {
             checkout_date: endDate,
             reservation_id: event.extendedProps?.reservation?.id,
           };
-          console.log(updateDataUnit);
           // Get the current price from the reservation
           const currentPrice =
             event.extendedProps?.reservation?.unit_price || "";
-          console.log(currentPrice);
 
           const result = await showUpdateConfirmationDialog(
             startDate,
