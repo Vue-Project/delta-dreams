@@ -298,7 +298,13 @@
                             id="unitsTypes"
                             v-model="item.roomType"
                             @change="
-                              () => handleUnitTypeChange(index, item.roomType)
+                              () =>
+                                handleUnitTypeChange(
+                                  index,
+                                  item.roomType,
+                                  formAddReservation.checkInDate,
+                                  formAddReservation.checkOutDate
+                                )
                             "
                             :disabled="!datesSelected"
                           >
@@ -1295,9 +1301,16 @@ export default {
         // First set the room type
         this.formAddReservation.units[0].roomType = unitTypeId;
         this.formAddReservation.units[0].unitTypeId = unitTypeId;
+        const checkInDate = this.formAddReservation.checkInDate;
+        const checkOutDate = this.formAddReservation.checkOutDate;
 
         // Wait for units to be fetched
-        await this.handleUnitTypeChange(0, unitTypeId);
+        await this.handleUnitTypeChange(
+          0,
+          unitTypeId,
+          checkInDate,
+          checkOutDate
+        );
 
         // After units are loaded, set the unit ID
         this.$nextTick(() => {
@@ -1326,7 +1339,12 @@ export default {
           parseFloat(value).toFixed(2);
       }
     },
-    async handleUnitTypeChange(roomIndex, unitTypeId) {
+    async handleUnitTypeChange(
+      roomIndex,
+      unitTypeId,
+      checkInDate,
+      checkOutDate
+    ) {
       try {
         if (unitTypeId) {
           // Reset selected unit for this room
@@ -1334,8 +1352,11 @@ export default {
           // Set the unitTypeId for this specific unit
           this.formAddReservation.units[roomIndex].unitTypeId = unitTypeId;
 
-          // Fetch units for selected type
-          const response = await getUnits(unitTypeId);
+          // Fetch units for selected type with date parameters
+          const response = await getUnits(unitTypeId, {
+            start_date: checkInDate,
+            end_date: checkOutDate,
+          });
           this.$set(this.availableUnitsByRoom, roomIndex, response.data.data);
         } else {
           this.$set(this.availableUnitsByRoom, roomIndex, []);
@@ -1547,7 +1568,6 @@ export default {
         getBookingSources(),
         getGuestsInfo(),
         getUnitTypes(),
-        // getUnits(),
         getServices(),
       ]);
       console.log("this is response for sre", servicesResponse.data.data);

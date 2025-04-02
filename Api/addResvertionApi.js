@@ -30,11 +30,16 @@ export const getUnitTypes = async () => {
     throw error;
   }
 };
-export const getUnits = async (unitTypeId) => {
+export const getUnits = async (unitTypeId, dateParams = {}) => {
   try {
-    const response = await apiClient.get(`/units?unit_type_id=${unitTypeId}`);
-    // console.log(response.data);
+    const params = { ...dateParams };
+    const response = await apiClient.get(`/units?unit_type_id=${unitTypeId}`, {
+      params,
+    });
     return response.data;
+    // const response = await apiClient.get(`/units?unit_type_id=${unitTypeId}`);
+    // // console.log(response.data);
+    // return response.data;
   } catch (error) {
     console.error("Error fetching rooms:", error);
     throw error;
