@@ -1,35 +1,62 @@
 <template>
-  <nav class="layout-navbar navbar navbar-expand-xl align-items-center bg-navbar-theme" id="layout-navbar">
+  <nav
+    class="layout-navbar navbar navbar-expand-xl align-items-center bg-navbar-theme"
+    id="layout-navbar"
+  >
     <div class="container-fluid">
       <div class="navbar-brand app-brand demo d-none d-xl-flex py-0 me-4">
-        <a href="https://deltadream.swevey.com/admin" class="app-brand-link gap-2">
-          <span class="app-brand-logo demo"> <img src="../../assets/images/logo.png" alt="logo" class="img-fluid "> </span>
+        <a
+          href="https://deltadream.swevey.com/admin"
+          class="app-brand-link gap-2"
+        >
+          <span class="app-brand-logo demo">
+            <img
+              src="../../assets/images/logo.png"
+              alt="logo"
+              class="img-fluid"
+            />
+          </span>
         </a>
         <a href="/" class="app-brand-link gap-2">
           <span class="app-brand-text demo menu-text fw-bold">Delta Dream</span>
         </a>
 
-        <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-xl-none">
+        <a
+          href="javascript:void(0);"
+          class="layout-menu-toggle menu-link text-large ms-auto d-xl-none"
+        >
           <i class="fa-solid fa-xmark fa-sm align-middle"></i>
         </a>
       </div>
 
       <div class="navbar-brand app-brand demo d-xl-none d-xl-flex py-0 me-4">
-         <a href="https://deltadream.swevey.com/admin" class="app-brand-link gap-2">
-          <span class="app-brand-logo demo"> <img src="../../assets/images/logo.png" alt="logo" class="img-fluid "> </span>
+        <a
+          href="https://deltadream.swevey.com/admin"
+          class="app-brand-link gap-2"
+        >
+          <span class="app-brand-logo demo">
+            <img
+              src="../../assets/images/logo.png"
+              alt="logo"
+              class="img-fluid"
+            />
+          </span>
         </a>
         <a href="/" class="app-brand-link gap-2">
           <span class="app-brand-text demo menu-text fw-bold">Delta Dream</span>
         </a>
       </div>
 
-      <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+      <div
+        class="navbar-nav-right d-flex align-items-center"
+        id="navbar-collapse"
+      >
         <ul class="navbar-nav flex-row align-items-center ms-auto">
           <!-- Language -->
-          <li class="nav-item dropdown-language  me-2 me-xl-0">
-            <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+          <!-- <li class="nav-item dropdown-language me-2 me-xl-0"> -->
+            <!-- <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
               <i class="fa-solid fa-language"></i>
-            </a>
+            </a> -->
             <!-- <ul class="dropdown-menu dropdown-menu-end">
               <li>
                 <a class="dropdown-item active" href="javascript:void(0);" data-language="en" data-text-direction="ltr">
@@ -52,22 +79,26 @@
                 </a>
               </li>
             </ul> -->
-          </li>
+          <!-- </li> -->
           <!--/ Language -->
 
           <!-- Search -->
-          <li class="nav-item navbar-search-wrapper me-2 me-xl-0">
+          <!-- <li class="nav-item navbar-search-wrapper me-2 me-xl-0">
             <a class="nav-link search-toggler" href="javascript:void(0);">
               <i class="fa-solid fa-magnifying-glass"></i>
             </a>
-          </li>
+          </li> -->
           <!-- /Search -->
 
           <!-- Style Switcher -->
-          <li class="nav-item dropdown-style-switcher  me-2 me-xl-0">
-            <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+          <!-- <li class="nav-item dropdown-style-switcher me-2 me-xl-0">
+            <a
+              class="nav-link dropdown-toggle hide-arrow"
+              href="javascript:void(0);"
+              data-bs-toggle="dropdown"
+            >
               <i class="fa-solid fa-sun"></i>
-            </a>
+            </a> -->
             <!-- <ul class="dropdown-menu dropdown-menu-end dropdown-styles">
               <li>
                 <a class="dropdown-item" href="javascript:void(0);" data-theme="light">
@@ -88,14 +119,20 @@
                 </a>
               </li>
             </ul> -->
-          </li>
+          <!-- </li> -->
           <!-- / Style Switcher-->
 
           <!-- Quick links  -->
-          <li class="nav-item dropdown-shortcuts navbar-dropdown  me-2 me-xl-0">
-            <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+          <!-- <li class="nav-item dropdown-shortcuts navbar-dropdown me-2 me-xl-0"> -->
+            <!-- <a
+              class="nav-link dropdown-toggle hide-arrow"
+              href="javascript:void(0);"
+              data-bs-toggle="dropdown"
+              data-bs-auto-close="outside"
+              aria-expanded="false"
+            >
               <i class="fa-solid fa-border-all fa-md"></i>
-            </a>
+            </a> -->
             <!-- <div class="dropdown-menu dropdown-menu-end py-0">
               <div class="dropdown-menu-header border-bottom">
                 <div class="dropdown-header d-flex align-items-center py-3">
@@ -171,15 +208,25 @@
                 </div>
               <div class="ps__rail-x" style="left: 0px; bottom: 0px;"><div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div></div><div class="ps__rail-y" style="top: 0px; right: 0px;"><div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div></div></div>
             </div> -->
-          </li>
+          <!-- </li> -->
           <!-- Quick links -->
 
           <!-- Notification -->
-          <li class="nav-item dropdown-notifications navbar-dropdown  me-3 me-xl-1">
-            <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+          <!-- <li
+            class="nav-item dropdown-notifications navbar-dropdown me-3 me-xl-1"
+          > -->
+            <!-- <a
+              class="nav-link dropdown-toggle hide-arrow"
+              href="javascript:void(0);"
+              data-bs-toggle="dropdown"
+              data-bs-auto-close="outside"
+              aria-expanded="false"
+            >
               <i class="fa-solid fa-bell fa-md"></i>
-              <span class="badge bg-danger rounded-pill badge-notifications">5</span>
-            </a>
+              <span class="badge bg-danger rounded-pill badge-notifications"
+                >5</span
+              >
+            </a> -->
             <!-- <ul class="dropdown-menu dropdown-menu-end py-0">
               <li class="dropdown-menu-header border-bottom">
                 <div class="dropdown-header d-flex align-items-center py-3">
@@ -368,11 +415,17 @@
       </div>
 
       <!-- Search Small Screens -->
-      <div class="navbar-search-wrapper search-input-wrapper container-xxl d-none">
-        <input type="text" class="form-control search-input border-0 container-xxl" placeholder="Search..." aria-label="Search...">
+      <div
+        class="navbar-search-wrapper search-input-wrapper container-xxl d-none"
+      >
+        <input
+          type="text"
+          class="form-control search-input border-0 container-xxl"
+          placeholder="Search..."
+          aria-label="Search..."
+        />
         <i class="fa-solid fa-xmark fa-sm search-toggler cursor-pointer"></i>
       </div>
     </div>
   </nav>
 </template>
-
