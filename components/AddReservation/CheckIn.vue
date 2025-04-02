@@ -253,6 +253,8 @@
               <!--  ! table Header -->
               <!-- change width delete border color  -->
               <div class="card mt-3 border-0">
+                <h5 class="card-header p-2">Units Information</h5>
+
                 <div
                   class="card-datatable table-responsive custom-table-wrapper"
                 >
@@ -444,7 +446,7 @@
                                 class="btn btn-label-danger"
                                 type="button"
                                 v-if="index > 0"
-                                @click="removeItem(index)"
+                                @click="removeUnit(index)"
                               >
                                 <i class="fa-solid fa-xmark"></i>
                               </button>
@@ -457,10 +459,83 @@
                   <button
                     class="btn btn-primary waves-effect waves-light mt-3"
                     type="button"
-                    @click="addItem"
+                    @click="addUnit"
                     :disabled="!datesSelected"
                   >
                     Add Unit
+                  </button>
+                </div>
+              </div>
+              <!-- Services Repeater -->
+              <div class="card mt-3 border-0">
+                <h5 class="card-header p-2">Units Services</h5>
+                <div
+                  class="card-datatable table-responsive custom-table-wrapper"
+                >
+                  <table class="table overflow-hidden custom-table">
+                    <thead>
+                      <tr class="rounded-1">
+                        <th class="border-0">Service</th>
+                        <th class="border-0">Price(EGP)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        v-for="(service, index) in formAddReservation.services"
+                        :key="index"
+                        class="mb-2 selectStyle"
+                      >
+                        <td data-label="Service">
+                          <select
+                            class="form-select"
+                            v-model="service.serviceId"
+                            :disabled="!datesSelected"
+                          >
+                            <option disabled value="">Select Service</option>
+                            <option
+                              v-for="service in servicesList"
+                              :key="service.id"
+                              :value="service.id"
+                            >
+                              {{ service.name }}
+                            </option>
+                          </select>
+                        </td>
+
+                        <td data-label="Price(EGP)">
+                          <div class="row">
+                            <div class="col-lg-10">
+                              <input
+                                type="number"
+                                class="form-control rounded-2"
+                                :disabled="!datesSelected"
+                                v-model="service.price"
+                                placeholder="0"
+                              />
+                            </div>
+                            <div class="col-md-2 p-0">
+                              <button
+                                class="btn btn-label-danger"
+                                type="button"
+                                v-if="index > 0"
+                                :disabled="!datesSelected"
+                                @click="removeService(index)"
+                              >
+                                <i class="fa-solid fa-xmark"></i>
+                              </button>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <button
+                    class="btn btn-primary waves-effect waves-light mt-3"
+                    type="button"
+                    :disabled="!datesSelected"
+                    @click="addService"
+                  >
+                    Add Service
                   </button>
                 </div>
               </div>
@@ -770,6 +845,7 @@ import {
   getUnitTypes,
   getUnits,
   getGuestDetails,
+  getServices,
 } from "../../Api/addResvertionApi";
 import flatpickrMixin from "../Mixin/flatpickrMixin";
 import SidebarAddGuest from "../layout/AddGuestSidebar.vue";
@@ -802,6 +878,7 @@ export default {
       bookingSources: [],
       unitsTypes: [],
       availableUnits: [],
+      servicesList: [],
       selectedUnit: "",
       formAddReservation: {
         checkInDate: "",
@@ -827,6 +904,12 @@ export default {
             children: "1",
             rateAmount: "",
             unitTypeId: "",
+          },
+        ],
+        services: [
+          {
+            serviceId: "",
+            price: 0,
           },
         ],
         releaseDate: "",
@@ -933,7 +1016,7 @@ export default {
         this.availableUnitsByRoom.splice(targetCount);
       }
     },
-    addItem() {
+    addUnit() {
       const firstUnitTypeId = this.formAddReservation.units[0]?.unitTypeId;
 
       const newRoom = {
@@ -953,7 +1036,7 @@ export default {
       this.formAddReservation.numberRooms =
         this.formAddReservation.units.length.toString();
     },
-    removeItem(index) {
+    removeUnit(index) {
       if (this.formAddReservation.units.length > 1) {
         this.formAddReservation.units.splice(index, 1);
         // Remove available units for this room
@@ -962,6 +1045,23 @@ export default {
           this.formAddReservation.units.length.toString();
       }
     },
+    addService() {
+      this.formAddReservation.services.push({
+        serviceId: "",
+        quantity: 1,
+        price: 0,
+        total: 0,
+      });
+    },
+
+    // Remove a service row
+    removeService(index) {
+      this.formAddReservation.services.splice(index, 1);
+    },
+
+    // Update price when service is selected
+
+    // Calculate total price for a service
 
     isNewItem(index) {
       return index >= this.existingItemsCount;
@@ -1118,6 +1218,10 @@ export default {
           children: unit.children,
           rate_amount: unit.rateAmount,
         })),
+        services: this.formAddReservation.services.map((service) => ({
+          service_id: service.serviceId,
+          service_Price: service.price,
+        })),
         // is_quick_group_booking: this.formAddReservation.rateOffered.quickGroup,
         is_free: this.formAddReservation.rateOffered.complimentaryRoom,
         // book_all_available: this.formAddReservation.rateOffered.bookAll,
@@ -1147,7 +1251,6 @@ export default {
         insurance: this.paymentData.insurance,
         insurance_by: this.paymentData.insurance_by,
       };
-      console.log(bookingData);
 
       // If no errors, send the data to the server
       try {
@@ -1437,18 +1540,23 @@ export default {
         bookingSourcesResponse,
         usersResponse,
         unitTypesResponse,
+        // servicesResponses,
+        servicesResponse,
       ] = await Promise.all([
         getBusinessSources(),
         getBookingSources(),
         getGuestsInfo(),
         getUnitTypes(),
-        getUnits(),
+        // getUnits(),
+        getServices(),
       ]);
+      console.log("this is response for sre", servicesResponse.data.data);
 
       this.businessSources = businessSourcesResponse.data.data;
       this.bookingSources = bookingSourcesResponse.data.data;
       this.filteredNames = usersResponse.data.data;
       this.unitsTypes = unitTypesResponse.data.data;
+      this.servicesList = servicesResponse.data.data;
     } catch (error) {
       console.error("Error loading data:", error);
     }
