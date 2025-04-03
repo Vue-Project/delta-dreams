@@ -1249,7 +1249,7 @@ export default {
         tax: this.paymentData.taxes,
         charge_extra: this.paymentData.dueAmount,
         payment_id: this.paymentData.paymentMethod,
-        payment_type: this.paymentData.selectedPaymentType,
+        payment_type_id: this.paymentData.selectedPaymentType,
         payment_price: this.paymentData.amount,
         date_at: this.paymentData.date,
         note: this.paymentData.comment,

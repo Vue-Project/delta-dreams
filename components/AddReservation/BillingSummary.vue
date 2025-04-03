@@ -108,7 +108,7 @@
                   :key="paymentMethod.id"
                   :value="paymentMethod.id"
                 >
-                  {{ paymentMethod.content }}
+                  {{ paymentMethod.type }}
                 </option>
               </select>
             </div>
@@ -123,11 +123,11 @@
               >
                 <option disabled value="">Select</option>
                 <option
-                  v-for="(label, value) in paymentTypes"
-                  :key="value"
-                  :value="value"
+                  v-for="paymentType in paymentTypes"
+                  :key="paymentType.id"
+                  :value="paymentType.id"
                 >
-                  {{ label }}
+                  {{ paymentType.name }}
                 </option>
               </select>
             </div>
@@ -290,7 +290,11 @@
 </template>
 
 <script>
-import { getAccounts, getPaymentMethods } from "../../Api/addResvertionApi";
+import {
+  getAccounts,
+  getPaymentMethods,
+  getPaymentTypes,
+} from "../../Api/addResvertionApi";
 import flatpickrMixin from "../Mixin/flatpickrMixin";
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
@@ -424,13 +428,15 @@ export default {
 
     async loadApiData() {
       try {
-        const [paymentMethodsResponse, accountsResponse] = await Promise.all([
-          getPaymentMethods(),
-          getAccounts(),
-        ]);
+        const [paymentMethodsResponse, accountsResponse, paymentTypesResponse] =
+          await Promise.all([
+            getPaymentMethods(),
+            getAccounts(),
+            getPaymentTypes(),
+          ]);
 
         this.paymentMethods = paymentMethodsResponse.data.data;
-        this.paymentTypes = paymentMethodsResponse.data.payment_type;
+        this.paymentTypes = paymentTypesResponse.data.data;
         this.accounts = accountsResponse.data.data;
       } catch (error) {
         console.error("Error loading data:", error);
@@ -445,17 +451,22 @@ export default {
       const file = event.target.files[0];
       if (file) {
         // Validate file type
-        const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'];
+        const allowedTypes = [
+          "image/jpeg",
+          "image/png",
+          "image/jpg",
+          "image/gif",
+        ];
         if (!allowedTypes.includes(file.type)) {
-          alert('The image must be a file of type: jpeg, png, jpg, gif.');
+          alert("The image must be a file of type: jpeg, png, jpg, gif.");
           // Reset the file input
-          this.$refs.paymentImage.value = '';
+          this.$refs.paymentImage.value = "";
           return;
         }
-        
+
         this.paymentDetails.image = file;
         // Emit the payment image to the parent component
-        this.$emit('payment-image-upload', file);
+        this.$emit("payment-image-upload", file);
       }
     },
   },
