@@ -364,11 +364,11 @@
                     >
                       <option disabled value="">Select Type</option>
                       <option
-                        v-for="(label, value) in paymentTypes"
-                        :key="value"
-                        :value="value"
+                        v-for="paymentType in paymentTypes"
+                        :key="paymentType.id"
+                        :value="paymentType.id"
                       >
-                        {{ label }}
+                        {{ paymentType.name }}
                       </option>
                     </select>
                     <label class="input-group-text" for="payment_type"
@@ -395,7 +395,7 @@
                         :key="paymentMethod.id"
                         :value="paymentMethod.id"
                       >
-                        {{ paymentMethod.content }}
+                        {{ paymentMethod.type }}
                       </option>
                     </select>
                     <label class="input-group-text" for="payment_method"
@@ -512,6 +512,7 @@ import {
   getAccounts,
   getGuestsInfo,
   getPaymentMethods,
+  getPaymentTypes,
 } from "../../Api/addResvertionApi";
 import { postUpdateReservation } from "../../Api/CalenderApi";
 import DropzoneComponent from "../layout/DropzoneComponent.vue";
@@ -671,13 +672,12 @@ export default {
         const paymentData = {
           date_at: this.formAddPayment.date,
           payment_id: this.formAddPayment.method,
-          type: this.formAddPayment.type,
+          payment_type_id: this.formAddPayment.type,
           assigned_to: this.formAddPayment.account,
           note: this.formAddPayment.comment,
           reservation_id: this.selectedEvent.id,
           price: this.formAddPayment.amount,
         };
-        console.log(paymentData);
 
         // Append payment data to FormData
         Object.keys(paymentData).forEach((key) => {
@@ -783,13 +783,15 @@ export default {
   },
   async mounted() {
     try {
-      const [paymentMethodsResponse, accountsResponse] = await Promise.all([
-        getPaymentMethods(),
-        getAccounts(),
-      ]);
+      const [paymentMethodsResponse, accountsResponse, paymentTypesResponse] =
+        await Promise.all([
+          getPaymentMethods(),
+          getAccounts(),
+          getPaymentTypes(),
+        ]);
 
       this.paymentMethods = paymentMethodsResponse.data.data;
-      this.paymentTypes = paymentMethodsResponse.data.payment_type;
+      this.paymentTypes = paymentTypesResponse.data.data;
       this.accounts = accountsResponse.data.data;
     } catch (error) {
       console.error("Error loading data:", error);
