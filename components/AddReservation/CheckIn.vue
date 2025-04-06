@@ -1570,7 +1570,6 @@ export default {
         getUnitTypes(),
         getServices(),
       ]);
-      console.log("this is response for sre", servicesResponse.data.data);
 
       this.businessSources = businessSourcesResponse.data.data;
       this.bookingSources = bookingSourcesResponse.data.data;

@@ -174,7 +174,6 @@ export default {
           start_date: dateUtils.formatForApi(startDate),
           end_date: dateUtils.formatForApi(endDate),
         };
-        log(blockRoomData);
 
         const responseBlockRoom = await blockRoomService(blockRoomData);
         await showSuccessAlert("Room blocked successfully!");
