@@ -1,6 +1,5 @@
 <template>
   <section class="update-reservations">
-    <!-- {{reservationData}} -->
 
     <!-- MAIN CARD CONTAINER -->
 
@@ -227,6 +226,7 @@
                   <table class="table overflow-hidden">
                     <thead>
                       <tr class="rounded-1">
+                        <th class="border-0 roomHeader">Project</th>
                         <th class="border-0 roomHeader">Room Type</th>
                         <th class="border-0 roomHeader">Rate Type</th>
                         <th class="border-0 roomHeader">Room</th>
@@ -243,6 +243,21 @@
                         :key="index"
                         class="mb-2 selectStyle"
                       >
+                      <td data-label="Project">
+                          <select
+                            class="form-select"
+                            v-model="item.projectId"
+                          >
+                            <option disabled value="">Select</option>
+                            <option
+                              v-for="project in getProjects"
+                              :key="project.id"
+                              :value="project.id"
+                            >
+                              {{ project.name }}
+                            </option>
+                          </select>
+                        </td>
                         <td data-label="Room Type">
                           <select
                             class="form-select"
@@ -1099,6 +1114,7 @@ export default {
         reservation_type: this.formAddReservation.reservationType,
         units: [
           {
+            project_id: this.formAddReservation.units[0].projectId,
             unit_id: this.formAddReservation.units[0].unitId,
             unit_type_id: this.formAddReservation.units[0].roomType,
             rate_type: this.formAddReservation.units[0].rateType,
@@ -1107,6 +1123,10 @@ export default {
             rate_amount: this.formAddReservation.units[0].rateAmount,
           },
         ],
+        services: this.formAddReservation.services.map((service) => ({
+          service_id: service.serviceId,
+          service_price: service.price,
+        })),
 
         is_quick_group_booking: this.formAddReservation.rateOffered.quickGroup,
         is_complimentary: this.formAddReservation.rateOffered.complimentaryRoom,
@@ -1474,6 +1494,7 @@ export default {
         units: [
           // First unit with direct reservation data
           {
+            projectId: reservationData.project_id || "",
             rateType: reservationData.rate_type || "",
             adults: reservationData.adults || "",
             children: reservationData.children || "",
@@ -1695,6 +1716,7 @@ export default {
       "getRateTypes",
       "getCountries",
       "getRemindGuestType",
+      "getProjects",
     ]),
 
     // Calculate total nights between check-in and check-out
