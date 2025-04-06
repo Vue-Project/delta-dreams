@@ -456,6 +456,7 @@
                             v-model="service.serviceId"
                           >
                             <option disabled value="">Select Service</option>
+                            <option  value="">No Service</option>
                             <option
                               v-for="service in servicesList"
                               :key="service.id"
