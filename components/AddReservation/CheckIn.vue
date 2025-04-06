@@ -1553,6 +1553,14 @@ export default {
     handlePaymentImageUpload(file) {
       this.paymentImage = file;
     },
+    resetRoomSelections() {
+      // Reset only room type and room selections for each unit
+      this.formAddReservation.units.forEach((unit, index) => {
+        unit.roomType = "";
+        unit.unitId = "";
+        this.$set(this.availableUnitsByRoom, index, []);
+      });
+    },
   },
 
   async mounted() {
@@ -1654,33 +1662,37 @@ export default {
         // Initialize date pickers with correct format
         this.datePicker1Instance = flatpickr(this.$refs.datePicker1, {
           enableTime: false,
-          dateFormat: "Y-m-d", // Ensure the format is YYYY-MM-DD
+          dateFormat: "Y-m-d",
           defaultDate: this.firstDate,
           disableMobile: true,
           onChange: (selectedDates) => {
             if (selectedDates[0]) {
-              this.formAddReservation.checkInDate = this.formatDate(
-                selectedDates[0]
-              );
+              const newDate = this.formatDate(selectedDates[0]);
+              if (newDate !== this.formAddReservation.checkInDate) {
+                this.formAddReservation.checkInDate = newDate;
+                this.resetRoomSelections();
+              }
             }
           },
         });
 
         this.datePicker2Instance = flatpickr(this.$refs.datePicker2, {
           enableTime: false,
-          dateFormat: "Y-m-d", // Ensure the format is YYYY-MM-DD
+          dateFormat: "Y-m-d",
           defaultDate: this.lastDate,
           disableMobile: true,
           onChange: (selectedDates) => {
             if (selectedDates[0]) {
-              this.formAddReservation.checkOutDate = this.formatDate(
-                selectedDates[0]
-              );
+              const newDate = this.formatDate(selectedDates[0]);
+              if (newDate !== this.formAddReservation.checkOutDate) {
+                this.formAddReservation.checkOutDate = newDate;
+                this.resetRoomSelections();
+              }
             }
           },
         });
 
-        // Set initial values for dates
+        // Set initial values without triggering reset
         this.formAddReservation.checkInDate = this.formatDate(this.firstDate);
         this.formAddReservation.checkOutDate = this.formatDate(this.lastDate);
 
