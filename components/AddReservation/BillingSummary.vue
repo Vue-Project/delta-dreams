@@ -136,19 +136,19 @@
             <div class="input-group mt-md-3">
               <label class="input-group-text" for="paymentInsurance">Insurance</label>
               <input type="text" class="form-control" id="paymentInsurance" v-model="paymentDetails.insurance" placeholder="Insurance">
-            </div>
-          </div>
+            </div> -->
+          <!-- </div> -->
           <div class="col-md-6 d-flex align-items-center">
             <div class="input-group">
-              <label class="input-group-text" for="paymentInsuranceBy">Insurance By</label>
-              <select class="form-select" id="paymentInsuranceBy" v-model="paymentDetails.insurance_by">
+              <label class="input-group-text" for="paymentInsuranceBy">Assigned By</label>
+              <select class="form-select" id="paymentInsuranceBy" v-model="paymentDetails.assigned_to">
                 <option disabled value="">Select</option>
                 <option v-for="account in accounts" :key="account.id" :value="account.id">
                   {{ account.name }}
                 </option>
               </select>
             </div>
-          </div> -->
+          </div>
         </div>
         <p
           v-if="!value.paymentMode && validationMessage"
@@ -182,17 +182,17 @@
             </template>
 
             <!-- New fields for insurance details -->
-            <template v-if="paymentDetails.insurance">
+            <!-- <template v-if="paymentDetails.insurance">
               <dt class="col-6">Insurance:</dt>
               <dd class="col-6">{{ paymentDetails.insurance }}</dd>
-            </template>
+            </template> -->
 
-            <template v-if="paymentDetails.insurance_by">
-              <dt class="col-6">Insurance By:</dt>
+            <template v-if="paymentDetails.assigned_to">
+              <dt class="col-6">Assigned By:</dt>
               <dd class="col-6">
                 {{
                   accounts.find(
-                    (account) => account.id === paymentDetails.insurance_by
+                    (account) => account.id === paymentDetails.assigned_to
                   )?.name || "Not specified"
                 }}
               </dd>
@@ -336,7 +336,7 @@ export default {
         cvv: "",
         comment: "",
         insurance: "",
-        insurance_by: "",
+        assigned_to: "",
       },
     };
   },

@@ -1220,8 +1220,10 @@ export default {
     note: this.paymentData.comment,
     payment_mode: this.paymentData.paymentMode,
     insurance: this.paymentData.insurance,
-    insurance_by: this.paymentData.insurance_by,
+    assigned_to: this.paymentData.assigned_to,
   };
+  // console.log(bookingData);
+
 
   // Append simple fields to FormData
   Object.keys(bookingData).forEach((key) => {
