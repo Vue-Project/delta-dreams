@@ -1356,6 +1356,7 @@ export default {
           const response = await getUnits(unitTypeId, {
             start_date: checkInDate,
             end_date: checkOutDate,
+            reservation_id: 0
           });
           this.$set(this.availableUnitsByRoom, roomIndex, response.data.data);
         } else {

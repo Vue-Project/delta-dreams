@@ -1,5 +1,7 @@
 <template>
   <section class="update-reservations">
+    <!-- {{reservationData}} -->
+
     <!-- MAIN CARD CONTAINER -->
 
     <div class="card">
@@ -219,6 +221,8 @@
           <div class="mb-3">
             <div class="row">
               <div class="card mt-3 border-0">
+                <h5 class="card-header p-2">Units Information</h5>
+
                 <div class="card-datatable table-responsive">
                   <table class="table overflow-hidden">
                     <thead>
@@ -245,7 +249,7 @@
                             id="unitsTypes"
                             v-model="item.roomType"
                             @change="
-                              () => handleUnitTypeChange(index, item.roomType)
+                              () => handleUnitTypeChange(index, item.roomType , formAddReservation.checkInDate, formAddReservation.checkOutDate)
                             "
                             :disabled="index > 0"
                           >
@@ -411,6 +415,74 @@
                   <!-- <button class="btn btn-primary waves-effect waves-light mt-3" type="button" @click="addItem">
                     Add Unit
                   </button> -->
+                </div>
+              </div>
+              <div class="card mt-3 border-0">
+                <h5 class="card-header p-2">Units Services</h5>
+                <div
+                  class="card-datatable table-responsive custom-table-wrapper"
+                >
+                  <table class="table overflow-hidden custom-table">
+                    <thead>
+                      <tr class="rounded-1">
+                        <th class="border-0">Service</th>
+                        <th class="border-0">Price(EGP)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        v-for="(service, index) in formAddReservation.services"
+                        :key="index"
+                        class="mb-2 selectStyle"
+                      >
+                        <td data-label="Service">
+                          <select
+                            class="form-select"
+                            v-model="service.serviceId"
+                          >
+                            <option disabled value="">Select Service</option>
+                            <option
+                              v-for="service in servicesList"
+                              :key="service.id"
+                              :value="service.id"
+                            >
+                              {{ service.name }}
+                            </option>
+                          </select>
+                        </td>
+
+                        <td data-label="Price(EGP)">
+                          <div class="row">
+                            <div class="col-lg-10">
+                              <input
+                                type="number"
+                                class="form-control rounded-2"
+                                v-model="service.price"
+                                placeholder="0"
+                              />
+                            </div>
+                            <div class="col-md-2 p-0">
+                              <button
+                                class="btn btn-label-danger"
+                                type="button"
+                                v-if="index > 0"
+                                @click="removeService(index)"
+                              >
+                                <i class="fa-solid fa-xmark"></i>
+                              </button>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <button
+                    class="btn btn-primary waves-effect waves-light mt-3"
+                    type="button"
+                    @click="addService"
+                  >
+                    Add Service
+                  </button>
                 </div>
               </div>
             </div>
@@ -746,6 +818,7 @@ import {
   getUnitTypes,
   getAccounts,
   getGuestDetails,
+  getServices,
 } from "../../../Api/addResvertionApi";
 import flatpickrMixin from "../../Mixin/flatpickrMixin";
 import { dateMixin } from "../../Mixin/DateMixin";
@@ -830,6 +903,12 @@ export default {
             unitId: "",
           },
         ],
+        services: [
+          {
+            serviceId: "",
+            price: 0,
+          },
+        ],
         releaseDate: "",
         releaseTime: "",
         releaseTerm: "",
@@ -868,6 +947,7 @@ export default {
           // payMentUser: ""
         },
       },
+      servicesList:[],
 
       // Validation Messages
       // validationMessages: {
@@ -942,7 +1022,7 @@ export default {
           this.$set(this.availableUnitsByRoom, i, []);
 
           if (newRoom.roomType) {
-            this.handleUnitTypeChange(i, newRoom.roomType);
+            this.handleUnitTypeChange(i, newRoom.roomType, this.formAddReservation.checkInDate, this.formAddReservation.checkOutDate);
           }
         }
       } else if (currentCount > targetCount) {
@@ -980,6 +1060,26 @@ export default {
           this.formAddReservation.units.length.toString();
       }
     },
+    removeUnit(index) {
+      if (this.formAddReservation.units.length > 1) {
+        this.formAddReservation.units.splice(index, 1);
+        // Remove available units for this room
+        this.$delete(this.availableUnitsByRoom, index);
+        this.formAddReservation.numberRooms =
+          this.formAddReservation.units.length.toString();
+      }
+    },
+    addService() {
+      this.formAddReservation.services.push({
+        serviceId: "",
+        quantity: 1,
+        price: 0,
+        total: 0,
+      });
+    },
+    removeService(index) {
+      this.formAddReservation.services.splice(index, 1);
+    },
     // Submit form and validate fields
     async FormUpdateReservation() {
       this.$v.$touch();
@@ -1007,6 +1107,7 @@ export default {
             rate_amount: this.formAddReservation.units[0].rateAmount,
           },
         ],
+
         is_quick_group_booking: this.formAddReservation.rateOffered.quickGroup,
         is_complimentary: this.formAddReservation.rateOffered.complimentaryRoom,
         book_all_available: this.formAddReservation.rateOffered.bookAll,
@@ -1392,6 +1493,20 @@ export default {
             reservationId: unit.id || "",
           })),
         ],
+        services: [
+          // First unit with direct reservation data
+          // {
+          //   serviceId: reservationData.service_id || "",
+          //   price: reservationData.service_price || "",
+
+          // },
+          // Additional units from children array
+          ...(reservationData.reservationServices || []).map((service) => ({
+            serviceId: service.service_id || "",
+            price: service.service_price || "",
+
+          })),
+        ],
         rateOffered: {
           contract: Boolean(reservationData.is_contract),
           bookAll: Boolean(reservationData.book_all_available),
@@ -1439,18 +1554,24 @@ export default {
       // Initialize availableUnitsByRoom for each unit
       this.formAddReservation.units.forEach((unit, index) => {
         if (unit.roomType) {
-          this.handleUnitTypeChange(index, unit.roomType);
+          this.handleUnitTypeChange(index, unit.roomType, this.formAddReservation.checkInDate, this.formAddReservation.checkOutDate);
         }
       });
     },
-    async handleUnitTypeChange(index, unitTypeId) {
+    async handleUnitTypeChange(index, unitTypeId, checkInDate,
+    checkOutDate) {
       try {
         if (!unitTypeId) {
           this.$set(this.availableUnitsByRoom, index, []);
           return;
         }
+        const response = await getUnits(unitTypeId, {
+            start_date: checkInDate,
+            end_date: checkOutDate,
+            reservation_id: this.reservationData.id,
+          });
 
-        const response = await getUnits(unitTypeId);
+        // const response = await getUnits(unitTypeId);
         const units = response.data.data;
 
         this.$set(this.availableUnitsByRoom, index, units);
@@ -1482,7 +1603,9 @@ export default {
         usersResponse,
         unitTypesResponse,
         unitsResponse,
-        accountsResponse, // Add this line to fetch units
+        accountsResponse,
+        servicesResponse
+        // Add this line to fetch units
       ] = await Promise.all([
         getBusinessSources(),
         getBookingSources(),
@@ -1490,6 +1613,9 @@ export default {
         getUnitTypes(),
         getUnits(),
         getAccounts(),
+        getServices(),
+
+
       ]);
 
       this.businessSources = businessSourcesResponse.data.data;
@@ -1498,6 +1624,8 @@ export default {
       this.unitsTypes = unitTypesResponse.data.data;
       this.availableUnits = unitsResponse.data.data;
       this.accounts = accountsResponse.data.data;
+      this.servicesList = servicesResponse.data.data;
+
       // Populate availableUnits with fetched data
 
       if (this.reservationData) {
