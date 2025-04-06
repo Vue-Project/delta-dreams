@@ -1226,7 +1226,7 @@ export default {
         })),
         services: this.formAddReservation.services.map((service) => ({
           service_id: service.serviceId,
-          service_Price: service.price,
+          service_price: service.price,
         })),
         // is_quick_group_booking: this.formAddReservation.rateOffered.quickGroup,
         is_free: this.formAddReservation.rateOffered.complimentaryRoom,
