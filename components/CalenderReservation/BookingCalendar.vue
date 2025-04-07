@@ -173,6 +173,7 @@ export default {
         editable: true, // Enable dragging and resizing
         eventDrop: this.handleEventChange,
         eventResize: this.handleEventChange,
+        resourceOrder: "original",
         eventDidMount: (info) => {
           this.adjustHarnessPosition(info);
           if (info.event.extendedProps?.fullName) {
@@ -317,9 +318,17 @@ export default {
       const resources = [];
 
       if (Array.isArray(this.data)) {
+        // First, organize units by building/group
+        const resourcesByGroup = {};
+
         this.data.forEach((building) => {
           // Only process if building is selected
           if (selectedIds.length === 0 || selectedIds.includes(building.name)) {
+            // Create an array for this building if it doesn't exist
+            if (!resourcesByGroup[building.name]) {
+              resourcesByGroup[building.name] = [];
+            }
+
             // Add units under the building if they exist
             if (building.units) {
               building.units.forEach((unit) => {
@@ -327,12 +336,13 @@ export default {
                   !selectedDate ||
                   (unit.date && unit.date === selectedDate)
                 ) {
-                  resources.push({
+                  resourcesByGroup[building.name].push({
                     id: `${building.id}-${unit.id}`,
                     resourceId: building.id,
-                    title: `${unit.code} - ${unit.name}`, // Display both unit code and name
-                    groupId: building.name, // Group by building name (e.g., "Studio")
+                    title: `${unit.code} - ${unit.name}`,
+                    groupId: building.name,
                     classNames: ["unit"],
+                    codeForSorting: parseInt(unit.code) || unit.code, // Store for sorting
                     extendedProps: {
                       is_clean: unit.is_clean,
                       is_smoking: unit.is_smoking,
@@ -344,6 +354,29 @@ export default {
               });
             }
           }
+        });
+
+        // Sort each group by code
+        Object.keys(resourcesByGroup).forEach((groupName) => {
+          resourcesByGroup[groupName].sort((a, b) => {
+            // If we have valid numbers, sort numerically
+            if (
+              typeof a.codeForSorting === "number" &&
+              typeof b.codeForSorting === "number"
+            ) {
+              return a.codeForSorting - b.codeForSorting;
+            }
+            // Otherwise fall back to string comparison
+            return String(a.codeForSorting).localeCompare(
+              String(b.codeForSorting)
+            );
+          });
+
+          // Remove the sorting property as it's not needed anymore
+          resourcesByGroup[groupName].forEach((resource) => {
+            delete resource.codeForSorting;
+            resources.push(resource);
+          });
         });
       }
 
