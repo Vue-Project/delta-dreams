@@ -282,9 +282,9 @@ export default {
         resourceAreaWidth:
           typeof window !== "undefined"
             ? window.innerWidth <= 768
-              ? "30%"
-              : "10%"
-            : "10%", // Wider on mobile, narrower on desktop
+              ? "40%"
+              : "13%"
+            : "32%", // Wider on mobile, narrower on desktop
         slotMinWidth:
           typeof window !== "undefined"
             ? window.innerWidth <= 768
@@ -339,7 +339,7 @@ export default {
                   resourcesByGroup[building.name].push({
                     id: `${building.id}-${unit.id}`,
                     resourceId: building.id,
-                    title: `${unit.code} - ${unit.name}`,
+                    title: `${unit.building.name} - ${unit.name}`,
                     groupId: building.name,
                     classNames: ["unit"],
                     codeForSorting: parseInt(unit.code) || unit.code, // Store for sorting
