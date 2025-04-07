@@ -142,6 +142,15 @@ export const getPaymentMethods = async () => {
     throw error;
   }
 };
+export const getPaymentTypes = async () => {
+  try {
+    const response = await apiClient.get("/payment_types");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching payment types:", error);
+    throw error;
+  }
+};
 export const getAccounts = async () => {
   try {
     const response = await apiClient.get("/accounts");

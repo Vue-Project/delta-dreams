@@ -1177,105 +1177,99 @@ export default {
     },
 
     async submitAddReservation() {
-      this.$v.$touch();
-      if (this.$v.$invalid) {
-        return;
-      }
-      const formData = new FormData();
+  this.$v.$touch();
+  if (this.$v.$invalid) {
+    return;
+  }
 
-      if (this.paymentImage) {
-        const allowedTypes = [
-          "image/jpeg",
-          "image/png",
-          "image/jpg",
-          "image/gif",
-        ];
-        if (!allowedTypes.includes(this.paymentImage.type)) {
-          handleSubmissionError(
-            new Error("The image must be a file of type: jpeg, png, jpg, gif."),
-            "Invalid file type"
-          );
-          return;
-        }
-      }
+  // Create FormData to handle file upload
+  const formData = new FormData();
 
-      if (this.paymentImage) {
-        formData.append("payment_image", this.paymentImage);
-      }
-      // Stop submission if there are errors
-      // if (hasError) return;
+  // Get the image file (if exists)
+  const imageFile = this.paymentData.image;
 
-      // Prepare the data to send to the server
-      const bookingData = {
-        checkin_date: this.formAddReservation.checkInDate,
-        checkin_time: this.formAddReservation.checkInTime,
-        checkout_date: this.formAddReservation.checkOutDate,
-        checkout_time: this.formAddReservation.checkOutTime,
-        rooms: this.formAddReservation.numberRooms,
-        booking_source_id: this.formAddReservation.bookingSource,
-        business_source_id: this.formAddReservation.businessSource,
-        reservation_type: this.formAddReservation.reservationType,
-        units: this.formAddReservation.units.map((unit) => ({
-          project_id: unit.projectId,
-          unit_id: unit.unitId,
-          unit_type_id: unit.unitTypeId, // Include for all units
-          rate_type: unit.rateType,
-          adults: unit.adults,
-          children: unit.children,
-          rate_amount: unit.rateAmount,
-        })),
-        services: this.formAddReservation.services.map((service) => ({
-          service_id: service.serviceId,
-          service_Price: service.price,
-        })),
-        // is_quick_group_booking: this.formAddReservation.rateOffered.quickGroup,
-        is_free: this.formAddReservation.rateOffered.complimentaryRoom,
-        // book_all_available: this.formAddReservation.rateOffered.bookAll,
-        hold_release_date: this.formAddReservation.releaseDate,
-        hold_release_time: this.formAddReservation.releaseTime,
-        // release_term_value: this.formAddReservation.releaseTermValue,
-        // release_term_type: this.formAddReservation.releaseTerm || "24 hours",
-        remind_before_days: this.formAddReservation.remindGuest,
-        remind_before_type: this.formAddReservation.remindGuestType,
-        client_id: this.selectedNameId,
-        mobile: this.formAddReservation.guestInformation.mobile,
-        address: this.formAddReservation.guestInformation.address,
-        country: this.formAddReservation.guestInformation.country,
-        state: this.formAddReservation.guestInformation.state,
-        city: this.formAddReservation.guestInformation.city,
-        zip_code: this.formAddReservation.guestInformation.zip,
-        room_charges: this.paymentData.roomCharges,
-        image: this.paymentData.image,
-        tax: this.paymentData.taxes,
-        charge_extra: this.paymentData.dueAmount,
-        payment_id: this.paymentData.paymentMethod,
-        payment_type: this.paymentData.selectedPaymentType,
-        payment_price: this.paymentData.amount,
-        date_at: this.paymentData.date,
-        note: this.paymentData.comment,
-        payment_mode: this.paymentData.paymentMode,
-        insurance: this.paymentData.insurance,
-        insurance_by: this.paymentData.insurance_by,
-      };
+  // Prepare the data to send to the server
+  const bookingData = {
+    checkin_date: this.formAddReservation.checkInDate,
+    checkin_time: this.formAddReservation.checkInTime,
+    checkout_date: this.formAddReservation.checkOutDate,
+    checkout_time: this.formAddReservation.checkOutTime,
+    rooms: this.formAddReservation.numberRooms,
+    booking_source_id: this.formAddReservation.bookingSource,
+    business_source_id: this.formAddReservation.businessSource,
+    reservation_type: this.formAddReservation.reservationType,
+    is_free: this.formAddReservation.rateOffered.complimentaryRoom,
+    hold_release_date: this.formAddReservation.releaseDate,
+    hold_release_time: this.formAddReservation.releaseTime,
+    remind_before_days: this.formAddReservation.remindGuest,
+    remind_before_type: this.formAddReservation.remindGuestType,
+    client_id: this.selectedNameId,
+    mobile: this.formAddReservation.guestInformation.mobile,
+    address: this.formAddReservation.guestInformation.address,
+    country: this.formAddReservation.guestInformation.country,
+    state: this.formAddReservation.guestInformation.state,
+    city: this.formAddReservation.guestInformation.city,
+    zip_code: this.formAddReservation.guestInformation.zip,
+    room_charges: this.paymentData.roomCharges,
+    tax: this.paymentData.taxes,
+    charge_extra: this.paymentData.dueAmount,
+    payment_id: this.paymentData.paymentMethod,
+    payment_type_id: this.paymentData.selectedPaymentType,
+    payment_price: this.paymentData.amount,
+    date_at: this.paymentData.date,
+    note: this.paymentData.comment,
+    payment_mode: this.paymentData.paymentMode,
+    insurance: this.paymentData.insurance,
+    assigned_to: this.paymentData.assigned_to,
+  };
+  // console.log(bookingData);
 
-      // If no errors, send the data to the server
-      try {
-        const response = await postAddReservationData(bookingData);
 
-        await showSuccessAlert(
-          "Reservation submitted successfully!", // Custom message
-          this.$router,
-          "index" // Route name
-        );
-      } catch (error) {
-        // Handle the error response from the server
-        // Check if there are validation errors from the server in the response
-        handleSubmissionError(
-          error,
-          "There was an issue with your reservation." // Custom default error
-        );
-      }
-    },
+  // Append simple fields to FormData
+  Object.keys(bookingData).forEach((key) => {
+    formData.append(key, bookingData[key]);
+  });
+
+  // Append the units array (as individual entries)
+  this.formAddReservation.units.forEach((unit, index) => {
+    formData.append(`units[${index}][project_id]`, unit.projectId);
+    formData.append(`units[${index}][unit_id]`, unit.unitId);
+    formData.append(`units[${index}][unit_type_id]`, unit.unitTypeId);
+    formData.append(`units[${index}][rate_type]`, unit.rateType);
+    formData.append(`units[${index}][adults]`, unit.adults);
+    formData.append(`units[${index}][children]`, unit.children);
+    formData.append(`units[${index}][rate_amount]`, unit.rateAmount);
+  });
+
+  // Append the services array (as individual entries)
+  this.formAddReservation.services.forEach((service, index) => {
+    formData.append(`services[${index}][service_id]`, service.serviceId);
+    formData.append(`services[${index}][service_price]`, service.price);
+  });
+
+  // Append image file if it exists
+  if (imageFile) {
+    formData.append("image", imageFile);
+  }
+
+
+  try {
+    const response = await postAddReservationData(formData);
+
+    await showSuccessAlert(
+      "Reservation submitted successfully!", // Custom message
+      this.$router,
+      "index" // Route name
+    );
+  } catch (error) {
+    handleSubmissionError(
+      error,
+      "There was an issue with your reservation." // Custom default error
+    );
+  }
+}
+
+,
 
     formatDate(date) {
       const day = String(date.getDate()).padStart(2, "0");
@@ -1356,6 +1350,7 @@ export default {
           const response = await getUnits(unitTypeId, {
             start_date: checkInDate,
             end_date: checkOutDate,
+            reservation_id: 0
           });
           this.$set(this.availableUnitsByRoom, roomIndex, response.data.data);
         } else {
@@ -1552,6 +1547,14 @@ export default {
     handlePaymentImageUpload(file) {
       this.paymentImage = file;
     },
+    resetRoomSelections() {
+      // Reset only room type and room selections for each unit
+      this.formAddReservation.units.forEach((unit, index) => {
+        unit.roomType = "";
+        unit.unitId = "";
+        this.$set(this.availableUnitsByRoom, index, []);
+      });
+    },
   },
 
   async mounted() {
@@ -1653,33 +1656,37 @@ export default {
         // Initialize date pickers with correct format
         this.datePicker1Instance = flatpickr(this.$refs.datePicker1, {
           enableTime: false,
-          dateFormat: "Y-m-d", // Ensure the format is YYYY-MM-DD
+          dateFormat: "Y-m-d",
           defaultDate: this.firstDate,
           disableMobile: true,
           onChange: (selectedDates) => {
             if (selectedDates[0]) {
-              this.formAddReservation.checkInDate = this.formatDate(
-                selectedDates[0]
-              );
+              const newDate = this.formatDate(selectedDates[0]);
+              if (newDate !== this.formAddReservation.checkInDate) {
+                this.formAddReservation.checkInDate = newDate;
+                this.resetRoomSelections();
+              }
             }
           },
         });
 
         this.datePicker2Instance = flatpickr(this.$refs.datePicker2, {
           enableTime: false,
-          dateFormat: "Y-m-d", // Ensure the format is YYYY-MM-DD
+          dateFormat: "Y-m-d",
           defaultDate: this.lastDate,
           disableMobile: true,
           onChange: (selectedDates) => {
             if (selectedDates[0]) {
-              this.formAddReservation.checkOutDate = this.formatDate(
-                selectedDates[0]
-              );
+              const newDate = this.formatDate(selectedDates[0]);
+              if (newDate !== this.formAddReservation.checkOutDate) {
+                this.formAddReservation.checkOutDate = newDate;
+                this.resetRoomSelections();
+              }
             }
           },
         });
 
-        // Set initial values for dates
+        // Set initial values without triggering reset
         this.formAddReservation.checkInDate = this.formatDate(this.firstDate);
         this.formAddReservation.checkOutDate = this.formatDate(this.lastDate);
 
