@@ -330,7 +330,7 @@ export default {
                   resources.push({
                     id: `${building.id}-${unit.id}`,
                     resourceId: building.id,
-                    title: unit.code, // This should display "UNIT-XXXX"
+                    title: `${unit.code} - ${unit.name}`, // Display both unit code and name
                     groupId: building.name, // Group by building name (e.g., "Studio")
                     classNames: ["unit"],
                     extendedProps: {
