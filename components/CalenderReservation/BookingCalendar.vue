@@ -339,7 +339,7 @@ export default {
                   resourcesByGroup[building.name].push({
                     id: `${building.id}-${unit.id}`,
                     resourceId: building.id,
-                    title: `${unit.building.name} - ${unit.name}`,
+                    title: `${unit.building?.name} - ${unit.name}`,
                     groupId: building.name,
                     classNames: ["unit"],
                     codeForSorting: parseInt(unit.code) || unit.code, // Store for sorting
