@@ -1,6 +1,5 @@
 <template>
   <section class="update-reservations">
-
     <!-- MAIN CARD CONTAINER -->
 
     <div class="card">
@@ -243,11 +242,8 @@
                         :key="index"
                         class="mb-2 selectStyle"
                       >
-                      <td data-label="Project">
-                          <select
-                            class="form-select"
-                            v-model="item.projectId"
-                          >
+                        <td data-label="Project">
+                          <select class="form-select" v-model="item.projectId">
                             <option disabled value="">Select</option>
                             <option
                               v-for="project in getProjects"
@@ -264,7 +260,13 @@
                             id="unitsTypes"
                             v-model="item.roomType"
                             @change="
-                              () => handleUnitTypeChange(index, item.roomType , formAddReservation.checkInDate, formAddReservation.checkOutDate)
+                              () =>
+                                handleUnitTypeChange(
+                                  index,
+                                  item.roomType,
+                                  formAddReservation.checkInDate,
+                                  formAddReservation.checkOutDate
+                                )
                             "
                             :disabled="index > 0"
                           >
@@ -317,7 +319,7 @@
                               :key="unit.id"
                               :value="unit.id"
                             >
-                              {{ unit.code }}
+                              {{ unit.building?.name }} / {{ unit.code }}
                             </option>
                           </select>
                           <span
@@ -456,7 +458,7 @@
                             v-model="service.serviceId"
                           >
                             <option disabled value="">Select Service</option>
-                            <option  value="">No Service</option>
+                            <option value="">No Service</option>
                             <option
                               v-for="service in servicesList"
                               :key="service.id"
@@ -963,7 +965,7 @@ export default {
           // payMentUser: ""
         },
       },
-      servicesList:[],
+      servicesList: [],
 
       // Validation Messages
       // validationMessages: {
@@ -1038,7 +1040,12 @@ export default {
           this.$set(this.availableUnitsByRoom, i, []);
 
           if (newRoom.roomType) {
-            this.handleUnitTypeChange(i, newRoom.roomType, this.formAddReservation.checkInDate, this.formAddReservation.checkOutDate);
+            this.handleUnitTypeChange(
+              i,
+              newRoom.roomType,
+              this.formAddReservation.checkInDate,
+              this.formAddReservation.checkOutDate
+            );
           }
         }
       } else if (currentCount > targetCount) {
@@ -1526,7 +1533,6 @@ export default {
           ...(reservationData.reservationServices || []).map((service) => ({
             serviceId: service.service_id || "",
             price: service.service_price || "",
-
           })),
         ],
         rateOffered: {
@@ -1576,22 +1582,26 @@ export default {
       // Initialize availableUnitsByRoom for each unit
       this.formAddReservation.units.forEach((unit, index) => {
         if (unit.roomType) {
-          this.handleUnitTypeChange(index, unit.roomType, this.formAddReservation.checkInDate, this.formAddReservation.checkOutDate);
+          this.handleUnitTypeChange(
+            index,
+            unit.roomType,
+            this.formAddReservation.checkInDate,
+            this.formAddReservation.checkOutDate
+          );
         }
       });
     },
-    async handleUnitTypeChange(index, unitTypeId, checkInDate,
-    checkOutDate) {
+    async handleUnitTypeChange(index, unitTypeId, checkInDate, checkOutDate) {
       try {
         if (!unitTypeId) {
           this.$set(this.availableUnitsByRoom, index, []);
           return;
         }
         const response = await getUnits(unitTypeId, {
-            start_date: checkInDate,
-            end_date: checkOutDate,
-            reservation_id: this.reservationData.id,
-          });
+          start_date: checkInDate,
+          end_date: checkOutDate,
+          reservation_id: this.reservationData.id,
+        });
 
         // const response = await getUnits(unitTypeId);
         const units = response.data.data;
@@ -1626,7 +1636,7 @@ export default {
         unitTypesResponse,
         unitsResponse,
         accountsResponse,
-        servicesResponse
+        servicesResponse,
         // Add this line to fetch units
       ] = await Promise.all([
         getBusinessSources(),
@@ -1636,8 +1646,6 @@ export default {
         getUnits(),
         getAccounts(),
         getServices(),
-
-
       ]);
 
       this.businessSources = businessSourcesResponse.data.data;

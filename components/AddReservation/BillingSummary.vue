@@ -140,10 +140,20 @@
           <!-- </div> -->
           <div class="col-md-6 d-flex align-items-center">
             <div class="input-group">
-              <label class="input-group-text" for="paymentInsuranceBy">Assigned By</label>
-              <select class="form-select" id="paymentInsuranceBy" v-model="paymentDetails.assigned_to">
+              <label class="input-group-text" for="paymentInsuranceBy"
+                >Assigned By</label
+              >
+              <select
+                class="form-select"
+                id="paymentInsuranceBy"
+                v-model="paymentDetails.assigned_to"
+              >
                 <option disabled value="">Select</option>
-                <option v-for="account in accounts" :key="account.id" :value="account.id">
+                <option
+                  v-for="account in accounts"
+                  :key="account.id"
+                  :value="account.id"
+                >
                   {{ account.name }}
                 </option>
               </select>
@@ -162,10 +172,12 @@
           <h6 class="mb-3">Payment Details</h6>
           <dl class="row">
             <dt class="col-6">Payment Method:</dt>
-            <dd class="col-6">{{ "Cash" }}</dd>
+            <dd class="col-6">
+              {{ getSelectedPaymentMethodName() || "Not selected" }}
+            </dd>
 
             <dt class="col-6">Payment Type:</dt>
-            <dd class="col-6">{{ selectedPaymentType || "Not selected" }}</dd>
+            <dd class="col-6">{{ getSelectedPaymentTypeName() || "Not selected" }}</dd>
 
             <!-- Common fields for all payment types -->
             <dt class="col-6">Amount:</dt>
@@ -468,6 +480,18 @@ export default {
         // Emit the payment image to the parent component
         this.$emit("payment-image-upload", file);
       }
+    },
+    // Add these methods to get the selected payment method and type names
+    getSelectedPaymentMethodName() {
+      if (!this.value.paymentMethod) return null;
+      const method = this.paymentMethods.find(m => m.id === this.value.paymentMethod);
+      return method ? method.type : null;
+    },
+    
+    getSelectedPaymentTypeName() {
+      if (!this.selectedPaymentType) return null;
+      const type = this.paymentTypes.find(t => t.id === this.selectedPaymentType);
+      return type ? type.name : null;
     },
   },
 };

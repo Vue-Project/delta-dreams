@@ -368,7 +368,7 @@
                               :key="unit.id"
                               :value="unit.id"
                             >
-                              {{ unit.unit_type?.name }} / {{ unit.code }}
+                              {{ unit.building?.name }} / {{ unit.code }}
                             </option>
                           </select>
                           <span
@@ -1222,7 +1222,6 @@ export default {
         insurance: this.paymentData.insurance,
         assigned_to: this.paymentData.assigned_to,
       };
-      // console.log(bookingData);
 
       // Append simple fields to FormData
       Object.keys(bookingData).forEach((key) => {
