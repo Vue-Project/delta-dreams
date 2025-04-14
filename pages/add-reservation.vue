@@ -77,7 +77,7 @@ export default {
   mounted() {
     this.redirectTimeout = setTimeout(() => {
       this.$router.go(-1);
-    }, 300000);
+    }, 1800000); // 30 minutes in milliseconds
   },
   beforeDestroy() {
     if (this.redirectTimeout) {
