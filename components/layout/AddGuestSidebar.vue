@@ -156,12 +156,12 @@
                           'input-error': validationMessages.expiryDate,
                         }"
                       />
-                      <span
+                      <!-- <span
                         class="error-message small"
                         v-if="$v.formGuest.expiryDate.$error"
                       >
                         Expiry Date is required
-                      </span>
+                      </span> -->
                       <i class="fa-solid fa-calendar-days icon-date top"></i>
                     </div>
                   </div>
@@ -520,7 +520,7 @@ export default {
       phone: { required },
       idNumber: { required },
       idType: { required },
-      expiryDate: { required },
+      // expiryDate: { required },
     },
   },
 
