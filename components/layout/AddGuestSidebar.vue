@@ -5,7 +5,7 @@
       :class="['sidebar', { 'sidebar-open': isSidebarOpen }]"
       :style="{ width: width }"
     >
-      <div class="sidebar-content" :style="{ height: height }">
+      <div class="sidebar-content">
         <h3>{{ title }}</h3>
         <hr class="my-2" />
         <slot>
@@ -464,6 +464,7 @@ export default {
     isSidebarOpen: {
       type: Boolean,
       required: true,
+      default: false,
     },
     title: {
       type: String,
