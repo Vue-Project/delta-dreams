@@ -1212,7 +1212,7 @@ export default {
         zip_code: this.formAddReservation.guestInformation.zip,
         room_charges: this.paymentData.roomCharges,
         tax: this.paymentData.taxes,
-        charge_extra: this.paymentData.dueAmount,
+        room_charges: this.formatValueForServer(this.paymentData.roomCharges),
         payment_id: this.paymentData.paymentMethod,
         payment_type_id: this.paymentData.selectedPaymentType,
         payment_price: this.paymentData.amount,
@@ -1236,13 +1236,13 @@ export default {
         formData.append(`units[${index}][rate_type]`, unit.rateType);
         formData.append(`units[${index}][adults]`, unit.adults);
         formData.append(`units[${index}][children]`, unit.children);
-        formData.append(`units[${index}][rate_amount]`, unit.rateAmount);
+        formData.append(`units[${index}][rate_amount]`, this.formatValueForServer(unit.rateAmount));
       });
 
       // Append the services array (as individual entries)
       this.formAddReservation.services.forEach((service, index) => {
         formData.append(`services[${index}][service_id]`, service.serviceId);
-        formData.append(`services[${index}][service_price]`, service.price);
+        formData.append(`services[${index}][service_price]`, this.formatValueForServer(service.price));
       });
 
       // Append image file if it exists
@@ -1250,13 +1250,16 @@ export default {
         formData.append("image", imageFile);
       }
 
+      // Log FormData contents
+
+
       try {
         const response = await postAddReservationData(formData);
 
         await showSuccessAlert(
           "Reservation submitted successfully!", // Custom message
-          this.$router,
-          "index" // Route name
+          // this.$router,
+          // "index" // Route name
         );
       } catch (error) {
         handleSubmissionError(
@@ -1506,18 +1509,15 @@ export default {
       }
     },
     // Modified handleRateChange function
-    // Modified handleRateChange function
     handleRateChange(event, index) {
-      // Get the value from the input field
-      const baseRate = parseFloat(
-        event.target.value.replace(".", "").replace(",", ".")
-      );
+      // Get the value from the input field and remove any dots or commas
+      const baseRate = parseFloat(event.target.value.replace(/[.,]/g, ''));
 
       if (!isNaN(baseRate)) {
-        // Format with dot as thousands separator but no decimal places
-        const formattedValue = baseRate.toLocaleString("de-DE", {
+        // Format with dot as thousands separator for display
+        const formattedValue = baseRate.toLocaleString('de-DE', {
           minimumFractionDigits: 0,
-          maximumFractionDigits: 0,
+          maximumFractionDigits: 0
         });
 
         // Update this specific item's rate amount with proper formatting
@@ -1529,13 +1529,10 @@ export default {
           const totalRate = baseRate * this.totalNights;
 
           // Emit the total for other components if needed
-          this.$emit(
-            "change",
-            totalRate.toLocaleString("de-DE", {
-              minimumFractionDigits: 0,
-              maximumFractionDigits: 0,
-            })
-          );
+          this.$emit("change", totalRate.toLocaleString('de-DE', {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+          }));
         }
       }
     },
@@ -1549,6 +1546,10 @@ export default {
         unit.unitId = "";
         this.$set(this.availableUnitsByRoom, index, []);
       });
+    },
+    // Add this new method to format the value before sending to server
+    formatValueForServer(value) {
+      return value ? value.toString().replace(/\./g, '') : '0';
     },
   },
 
