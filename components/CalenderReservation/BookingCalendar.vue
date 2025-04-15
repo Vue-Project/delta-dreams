@@ -903,6 +903,7 @@ export default {
             checkin_date: startDate,
             checkout_date: endDate,
             reservation_id: event.extendedProps?.reservation?.id,
+            is_price:1
           };
           // Get the current price from the reservation
           const currentPrice =

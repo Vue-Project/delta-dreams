@@ -760,7 +760,9 @@ export default {
             checkout_date: this.checkout_date,
             unit_id: this.selectedEvent.unit_id,
             reservation_id: this.selectedEvent.id,
+            is_price:0
           };
+
 
           const response = await postUpdateReservation(
             updateDataUnit.reservation_id,
