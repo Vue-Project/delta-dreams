@@ -765,7 +765,7 @@
                   <h6 class="mb-0 ms-3">Total</h6>
                   <div class="d-flex">
                     <p class="mb-0 fw-medium">
-                      {{ formAddReservation.BillingSummary.total || 0 }}
+                      {{ formAddReservation.BillingSummary.total || '0' }}
                     </p>
                     <!-- <p class="ms-3 text-success mb-0">0.3%</p> -->
                   </div>
@@ -783,7 +783,7 @@
                   <h6 class="mb-0 ms-3">Paid</h6>
                   <div class="d-flex">
                     <p class="mb-0 fw-medium">
-                      {{ formAddReservation.BillingSummary.paid || 0 }}
+                      {{ formAddReservation.BillingSummary.paid || '0' }}
                     </p>
                     <!-- <p class="ms-3 text-success mb-0">0.3%</p> -->
                   </div>
@@ -801,7 +801,41 @@
                   <h6 class="mb-0 ms-3">Remaining</h6>
                   <div class="d-flex">
                     <p class="mb-0 fw-medium">
-                      {{ formAddReservation.BillingSummary.remaining || 0 }}
+                      {{ formAddReservation.BillingSummary.remaining || '0' }}
+                    </p>
+                    <!-- <p class="ms-3 text-success mb-0">0.3%</p> -->
+                  </div>
+                </div>
+              </li>
+            </div>
+            <div class="col-md-4">
+              <li
+                class="mb-4 pb-1 d-flex justify-content-between align-items-center"
+              >
+                <div class="badge bg-label-warning rounded p-2">
+                  <i class="fas fa-user-cog"></i>                </div>
+                <div class="d-flex justify-content-between w-100 flex-wrap">
+                  <h6 class="mb-0 ms-3">Service Price</h6>
+                  <div class="d-flex">
+                    <p class="mb-0 fw-medium">
+                      {{ formAddReservation.BillingSummary.service_price || '089498489498' }}
+                    </p>
+                    <!-- <p class="ms-3 text-success mb-0">0.3%</p> -->
+                  </div>
+                </div>
+              </li>
+            </div>
+            <div class="col-md-4">
+              <li
+                class="mb-4 pb-1 d-flex justify-content-between align-items-center"
+              >
+                <div class="badge bg-label-info rounded p-2">
+                  <i class="fas fa-concierge-bell"></i>                </div>
+                <div class="d-flex justify-content-between w-100 flex-wrap">
+                  <h6 class="mb-0 ms-3">Rate Type</h6>
+                  <div class="d-flex">
+                    <p class="mb-0 fw-medium">
+                      {{ formAddReservation.BillingSummary.rate_type_name || 'N/A' }} - {{ formAddReservation.BillingSummary.rate_type_price || '0' }}
                     </p>
                     <!-- <p class="ms-3 text-success mb-0">0.3%</p> -->
                   </div>
@@ -955,6 +989,9 @@ export default {
           paid: "",
           remaining: "",
           insurance: "",
+          service_price: "",
+          rate_type_name: "",
+          rate_type_price: "",
           insurance_by: "",
           // billTo: "",
           // roomCharges: "",
@@ -1486,6 +1523,7 @@ export default {
         return;
       }
 
+
       // Use spread operator to safely merge data
       this.formAddReservation = {
         ...this.formAddReservation,
@@ -1561,11 +1599,14 @@ export default {
           zip: reservationData.client?.zip_code || "",
         },
         BillingSummary: {
-          total: reservationData.total || "",
-          paid: reservationData.paid || "",
-          remaining: reservationData.remaining || "",
+          total: reservationData.total || "0",
+          paid: reservationData.paid || "0",
+          remaining: reservationData.remaining || "0",
           insurance: reservationData.insurance || "",
           insurance_by: reservationData.insurance_by?.id || "",
+          service_price: reservationData.service_price || "0",
+          rate_type_name: reservationData.rate_type_name || "",
+          rate_type_price: reservationData.rate_type_price || "0",
           // billTo: reservationData.bill_to || "",
           // roomCharges: reservationData.room_charges || "",
           // taxes: reservationData.taxes || "",
@@ -1575,6 +1616,8 @@ export default {
           // payMentUser: reservationData.selected_payment_method || "",
         },
       };
+
+      // Debug the populated form data
 
       this.selectedNameId =
         reservationData.client?.id || reservationData.user?.id;
