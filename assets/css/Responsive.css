@@ -37,6 +37,9 @@
     font-size: 13px;
     margin-top: 3px;
   }
+  .quick-guest{
+    margin-top: 20px;
+  }
 }
 
 @media (max-width: 767px) {
