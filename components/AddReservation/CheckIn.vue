@@ -430,7 +430,7 @@
                             <div class="col-lg-10">
                               <input
                                 @change="handleRateChange($event, index)"
-                                class="form-control"
+                                class="form-control rounded-2"
                                 placeholder="0"
                                 id="rateAmount"
                                 v-model="item.rateAmount"
@@ -638,9 +638,9 @@
           <!--  ! Guest Information -->
           <h6 class="mb-2 GuestTitle">Guest Information</h6>
           <div class="row">
+            <label for="nameGuest" class="col-form-label">Guest Name</label>
             <div class="col-lg-5 px-md-0 GuestNameReservation">
-              <label for="nameGuest" class="col-form-label">Guest Name</label>
-              <div class="input-group">
+              <div class="input-group GuestNameInputGroup">
                 <select class="form-select" id="nameGuest">
                   <option value="" disabled>MR.</option>
                   <option v-for="title in titles" :key="title" :value="title">
@@ -713,6 +713,16 @@
                 @guest-added="handleGuestAdded"
               />
             </div>
+            <div class="col-lg-2 quick-guest">
+              <button type="button" class="btn btn-primary waves-effect waves-light" @click="toggleQuickGuestSidebar"
+              >Quick Guest</button>
+              <QuickAddGuestSidebar
+                :is-sidebar-open="isQuickGuestSidebarOpen"
+                @close-sidebar="toggleQuickGuestSidebar"
+                @guest-added="handleGuestAdded"
+              />
+            </div>
+            
             <!-- <div class="offset-md-7">
             </div>
             <div class="col-lg-3 col-md-6  ps-2 ps-md-0 EmailReservation">
@@ -855,6 +865,7 @@ import {
 } from "../../Api/addResvertionApi";
 import flatpickrMixin from "../Mixin/flatpickrMixin";
 import SidebarAddGuest from "../layout/AddGuestSidebar.vue";
+import QuickAddGuestSidebar from "../layout/QuickAddGuestSidebar.vue";
 import { mapState, mapGetters } from "vuex";
 import { validationMixin } from "vuelidate";
 import { required, email } from "vuelidate/lib/validators";
@@ -862,13 +873,14 @@ import { required, email } from "vuelidate/lib/validators";
 export default {
   name: "CheckIn",
   layout: "component",
-  components: { SidebarAddGuest },
+  components: { SidebarAddGuest , QuickAddGuestSidebar },
 
   data() {
     return {
       showSelect: false,
       showInput: false,
       isSidebarOpen: false,
+      isQuickGuestSidebarOpen: false,
       roomCount: 1,
       selectedTitle: "MR.",
       showDropdown: false,
@@ -1078,6 +1090,9 @@ export default {
     },
     toggleSidebar() {
       this.isSidebarOpen = !this.isSidebarOpen;
+    },
+    toggleQuickGuestSidebar() {
+    this.isQuickGuestSidebarOpen = !this.isQuickGuestSidebarOpen;
     },
 
     handleInput() {

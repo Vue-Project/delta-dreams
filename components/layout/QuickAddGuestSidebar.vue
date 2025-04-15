@@ -1,13 +1,10 @@
 <template>
   <div class="add-guest-sidebar">
-    <!-- Overlay -->
     <div
-      v-if="localSidebarOpen"
-      class="overlay"
-      @click.stop="handleClose"
-    ></div>
-
-    <div v-if="localSidebarOpen" class="sidebar" :style="{ width: width }">
+      v-if="isSidebarOpen"
+      :class="['sidebar', { 'sidebar-open': isSidebarOpen }]"
+      :style="{ width: width }"
+    >
       <div class="sidebar-content">
         <h3>{{ title }}</h3>
         <hr class="my-2" />
@@ -28,7 +25,6 @@
                       <label for="formGustInfoName" class="col-form-label"
                         >Name
                       </label>
-
                       <input
                         type="text"
                         class="form-control rounded-2"
@@ -47,34 +43,12 @@
                       </span>
                     </div>
 
-                    <div class="mb-lg-3">
-                      <label for="formIdentityInfoId" class="col-form-label"
-                        >ID Number</label
-                      >
-                      <input
-                        class="form-control rounded-2"
-                        type="text"
-                        id="formIdentityInfoId"
-                        placeholder="Enter ID Number"
-                        aria-label="Enter ID Number Guest"
-                        ref="idNumber"
-                        v-model="formGuest.idNumber"
-                        :class="{ 'input-error': validationMessages.idNumber }"
-                      />
-                      <span
-                        class="error-message small"
-                        v-if="$v.formGuest.idNumber.$error"
-                      >
-                        ID Number is required
-                      </span>
-                    </div>
                   </div>
+                  
                 </div>
               </div>
 
-              <div class="col-md-6">
-                <div class="row">
-                  <div class="col-md-6">
+                  <div class="col-md-3">
                     <div class="mb-lg-3">
                       <label for="formGustInfoPhone" class="col-form-label"
                         >Phone</label
@@ -97,36 +71,8 @@
                         Phone is required
                       </span>
                     </div>
-                    <div class="mb-lg-3">
-                      <label for="formGustIdentityIdType" class="col-form-label"
-                        >ID Type</label
-                      >
-                      <select
-                        class="form-select rounded-2"
-                        id="formGustIdentityIdType"
-                        aria-label="select ID Type"
-                        ref="idType"
-                        v-model="formGuest.idType"
-                        :class="{ 'input-error': validationMessages.idType }"
-                      >
-                        <option value="" disabled selected>Select</option>
-                        <option
-                          v-for="(nationalType, index) in getNationalTypes"
-                          :key="index"
-                          :value="index"
-                        >
-                          {{ nationalType }}
-                        </option>
-                      </select>
-                      <span
-                        class="error-message small"
-                        v-if="$v.formGuest.idType.$error"
-                      >
-                        ID Type is required
-                      </span>
-                    </div>
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-3">
                     <div class="mb-lg-3">
                       <label
                         for="formGustInformInternationalNumber"
@@ -143,33 +89,9 @@
                         v-model="formGuest.internationalNumber"
                       />
                     </div>
-                    <div class="mb-lg-3 position-relative">
-                      <label for="flatpickr-date-04" class="col-form-label"
-                        >Expiry Date</label
-                      >
-                      <input
-                        type="text"
-                        class="form-control rounded-2"
-                        placeholder="YYYY-MM-D "
-                        id="flatpickr-date-09"
-                        ref="datePicker9"
-                        aria-label="input Text to Expiry Date"
-                        v-model="formGuest.expiryDate"
-                        :class="{
-                          'input-error': validationMessages.expiryDate,
-                        }"
-                      />
-                      <!-- <span
-                        class="error-message small"
-                        v-if="$v.formGuest.expiryDate.$error"
-                      >
-                        Expiry Date is required
-                      </span> -->
-                      <i class="fa-solid fa-calendar-days icon-date top"></i>
-                    </div>
+                   
                   </div>
-                </div>
-              </div>
+                
             </div>
             <div class="accordion px-0 mt-3 mb-5" id="accordionExample">
               <div class="card accordion-item active">
@@ -422,7 +344,7 @@
 
             <div class="scbuttons gap-2 d-flex justify-content-end">
               <button
-                @click="handleClose"
+                @click="$emit('close-sidebar')"
                 class="btn btn-secondary waves-effect waves-light"
               >
                 Close
@@ -438,24 +360,30 @@
         </slot>
       </div>
     </div>
+
+    <!-- Overlay -->
+    <div
+      v-if="isSidebarOpen"
+      class="overlay"
+      @click="$emit('close-sidebar')"
+    ></div>
   </div>
 </template>
-
-<script>
-import flatpickrMixin from "../Mixin/flatpickrMixin";
-import DropzoneComponent from "./DropzoneComponent.vue";
-import { addGuest } from "../../Api/userApi";
-import { mapGetters } from "vuex";
-import {
-  showSuccessAlert,
-  handleSubmissionError,
-} from "../../Api/MassageValidation/alertUtilities";
-import { validationMixin } from "vuelidate";
-import { required, email } from "vuelidate/lib/validators";
-
-export default {
-  name: "AddGuestSidebar",
-  layout: "component",
+  
+  <script>
+  import flatpickrMixin from "../Mixin/flatpickrMixin";
+  import DropzoneComponent from "./DropzoneComponent.vue";
+  import { addGuest } from "../../Api/userApi";
+  import { mapGetters } from "vuex";
+  import {
+    showSuccessAlert,
+    handleSubmissionError,
+  } from "../../Api/MassageValidation/alertUtilities";
+  import { validationMixin } from "vuelidate";
+  import { required, email } from "vuelidate/lib/validators";
+  export default {
+    name: "QuickAddGuestSidebar",
+    layout: "component",
   props: {
     isSidebarOpen: {
       type: Boolean,
@@ -474,11 +402,9 @@ export default {
       type: String,
       default: "1300px",
     },
-  },
-  data() {
+    },
+    data() {
     return {
-      isSubmitting: false,
-      localSidebarOpen: this.isSidebarOpen,
       formGuest: {
         profileImage: null,
         name: "",
@@ -567,6 +493,7 @@ export default {
         idNumber: "",
         idType: "",
         expiryDate: "",
+
         birthDate: "",
         birthCountry: "",
         nationality: "",
@@ -578,14 +505,6 @@ export default {
     handleDropzoneError(error) {
       // Handle the error appropriately
       this.handleSubmissionError(error, "Error uploading image");
-    },
-
-    handleClose() {
-      console.log("Closing sidebar");
-      this.localSidebarOpen = false;
-      this.$emit("close-sidebar");
-      this.$v.$reset();
-      this.resetForm();
     },
 
     async submitFormGuest() {
@@ -617,7 +536,7 @@ export default {
           national_id: this.formGuest.idNumber,
           national_expire_date: this.formGuest.expiryDate,
           national_type: this.formGuest.idType,
-          is_fast: 0,
+          is_fast:1,
         };
 
         // Append all text data to FormData
@@ -649,7 +568,7 @@ export default {
 
         // Reset form and close sidebar
         this.resetForm();
-        this.handleClose();
+        this.$emit("close-sidebar");
       } catch (error) {
         handleSubmissionError(error, "Please fill in all required fields");
       } finally {
@@ -668,72 +587,12 @@ export default {
   },
   mixins: [flatpickrMixin, validationMixin],
   watch: {
-    isSidebarOpen: {
-      immediate: true,
-      handler(newVal) {
-        // console.log('isSidebarOpen changed:', newVal);
-        this.localSidebarOpen = newVal;
-        if (newVal) {
-          this.initFlatpickers();
-        } else {
-          this.$v.$reset();
-          this.resetForm();
-        }
-      },
+    isSidebarOpen(newVal) {
+      if (newVal) {
+        this.initFlatpickers();
+      }
     },
   },
 };
 </script>
 
-<style scoped>
-.add-guest-sidebar {
-  position: relative;
-}
-
-.sidebar {
-  position: fixed;
-  top: 0;
-  right: 0;
-  height: 100vh;
-  background: white;
-  z-index: 1051;
-  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
-}
-
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 1050;
-  cursor: pointer;
-}
-
-.sidebar-content {
-  padding: 1rem;
-  overflow-y: auto;
-  height: 100%;
-}
-
-.sidebar-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-right: 1rem;
-}
-
-.btn-close {
-  background: transparent;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  padding: 0.5rem;
-  color: #666;
-}
-
-.btn-close:hover {
-  color: #333;
-}
-</style>

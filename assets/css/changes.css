@@ -539,9 +539,9 @@ select {
 .mobileInput{
   width:317px !important;
 }
-/* .guestNameInput{
+.guestNameInput{
   padding-bottom:30px !important;
-} */
+}
 .GuestTitle{
   margin-left:-13px;
 }
@@ -1176,4 +1176,10 @@ body{
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
+.countdownButton{
+  position: fixed;
+  top: 48px;
+  right: 0;
+  z-index: 9999;
 
+}
