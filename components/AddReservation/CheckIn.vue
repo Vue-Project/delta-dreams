@@ -886,6 +886,10 @@ export default {
       availableUnits: [],
       servicesList: [],
       selectedUnit: "",
+      paymentType: {
+        payment_id: "",
+        name: ""
+      },
       formAddReservation: {
         checkInDate: "",
         checkInTime: "12:00",
@@ -1223,6 +1227,7 @@ export default {
         assigned_to: this.paymentData.assigned_to,
       };
 
+
       // Append simple fields to FormData
       Object.keys(bookingData).forEach((key) => {
         formData.append(key, bookingData[key]);
@@ -1258,8 +1263,8 @@ export default {
 
         await showSuccessAlert(
           "Reservation submitted successfully!", // Custom message
-          // this.$router,
-          // "index" // Route name
+          this.$router,
+          "index" // Route name
         );
       } catch (error) {
         handleSubmissionError(

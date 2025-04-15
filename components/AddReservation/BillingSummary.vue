@@ -1,7 +1,6 @@
 <template>
   <section class="summary position-sticky top-0">
     <div class="card">
-      <!-- <p>{{ paymentDetails }}</p> -->
       <h5 class="card-header">
         Billing Summary
 
@@ -125,7 +124,7 @@
                 <option
                   v-for="paymentType in paymentTypes"
                   :key="paymentType.id"
-                  :value="paymentType.id"
+                  :value="paymentType.payment_id"
                 >
                   {{ paymentType.name }}
                 </option>
@@ -487,10 +486,10 @@ export default {
       const method = this.paymentMethods.find(m => m.id === this.value.paymentMethod);
       return method ? method.type : null;
     },
-    
+
     getSelectedPaymentTypeName() {
       if (!this.selectedPaymentType) return null;
-      const type = this.paymentTypes.find(t => t.id === this.selectedPaymentType);
+      const type = this.paymentTypes.find(t => t.payment_id === this.selectedPaymentType);
       return type ? type.name : null;
     },
   },
