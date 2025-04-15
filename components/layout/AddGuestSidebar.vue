@@ -1,12 +1,27 @@
 <template>
   <div class="add-guest-sidebar">
+    <!-- Overlay -->
     <div
-      v-if="isSidebarOpen"
-      :class="['sidebar', { 'sidebar-open': isSidebarOpen }]"
+      v-if="localSidebarOpen"
+      class="overlay"
+      @click.stop="handleClose"
+    ></div>
+
+    <div
+      v-if="localSidebarOpen"
+      class="sidebar"
       :style="{ width: width }"
     >
       <div class="sidebar-content" :style="{ height: height }">
-        <h3>{{ title }}</h3>
+        <div class="sidebar-header">
+          <h3>{{ title }}</h3>
+          <button
+            type="button"
+            class="btn-close"
+            @click.stop="handleClose"
+            aria-label="Close"
+          ></button>
+        </div>
         <hr class="my-2" />
         <slot>
           <form
@@ -419,7 +434,7 @@
 
             <div class="scbuttons gap-2 d-flex justify-content-end">
               <button
-                @click="$emit('close-sidebar')"
+                @click="handleClose"
                 class="btn btn-secondary waves-effect waves-light"
               >
                 Close
@@ -435,13 +450,6 @@
         </slot>
       </div>
     </div>
-
-    <!-- Overlay -->
-    <div
-      v-if="isSidebarOpen"
-      class="overlay"
-      @click="$emit('close-sidebar')"
-    ></div>
   </div>
 </template>
 
@@ -480,6 +488,8 @@ export default {
   },
   data() {
     return {
+      isSubmitting: false,
+      localSidebarOpen: this.isSidebarOpen,
       formGuest: {
         profileImage: null,
         name: "",
@@ -568,7 +578,6 @@ export default {
         idNumber: "",
         idType: "",
         expiryDate: "",
-
         birthDate: "",
         birthCountry: "",
         nationality: "",
@@ -580,6 +589,14 @@ export default {
     handleDropzoneError(error) {
       // Handle the error appropriately
       this.handleSubmissionError(error, "Error uploading image");
+    },
+
+    handleClose() {
+      console.log('Closing sidebar');
+      this.localSidebarOpen = false;
+      this.$emit('close-sidebar');
+      this.$v.$reset();
+      this.resetForm();
     },
 
     async submitFormGuest() {
@@ -611,6 +628,7 @@ export default {
           national_id: this.formGuest.idNumber,
           national_expire_date: this.formGuest.expiryDate,
           national_type: this.formGuest.idType,
+          is_fast:0
         };
 
         // Append all text data to FormData
@@ -642,7 +660,7 @@ export default {
 
         // Reset form and close sidebar
         this.resetForm();
-        this.$emit("close-sidebar");
+        this.handleClose();
       } catch (error) {
         handleSubmissionError(error, "Please fill in all required fields");
       } finally {
@@ -661,13 +679,72 @@ export default {
   },
   mixins: [flatpickrMixin, validationMixin],
   watch: {
-    isSidebarOpen(newVal) {
-      if (newVal) {
-        this.initFlatpickers();
+    isSidebarOpen: {
+      immediate: true,
+      handler(newVal) {
+        console.log('isSidebarOpen changed:', newVal);
+        this.localSidebarOpen = newVal;
+        if (newVal) {
+          this.initFlatpickers();
+        } else {
+          this.$v.$reset();
+          this.resetForm();
+        }
       }
-    },
+    }
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.add-guest-sidebar {
+  position: relative;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  background: white;
+  z-index: 1051;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1050;
+  cursor: pointer;
+}
+
+.sidebar-content {
+  padding: 1rem;
+  overflow-y: auto;
+  height: 100%;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 1rem;
+}
+
+.btn-close {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  color: #666;
+}
+
+.btn-close:hover {
+  color: #333;
+}
+</style>

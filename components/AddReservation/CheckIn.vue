@@ -1479,10 +1479,27 @@ export default {
       // Add the new guest to the beginning of filteredNames
       this.filteredNames = [newGuest, ...this.filteredNames];
 
+      // Set the guest name directly in the input field
+      this.formAddReservation.guestInformation.name = newGuest.name;
+
+      // Store the guest ID
+      this.selectedNameId = newGuest.id;
+
+      // Force close the sidebar by directly setting isSidebarOpen to false
+      this.isSidebarOpen = false;
+
+      // Make sure dropdown is closed
+      this.showDropdown = false;
+
       // If you have a search input, update filtered results
       if (this.searchQuery) {
         this.filterNames(this.searchQuery);
       }
+    },
+
+    // Toggle sidebar open/closed
+    toggleSidebar() {
+      this.isSidebarOpen = !this.isSidebarOpen;
     },
 
     // If you have a search/filter function
