@@ -118,7 +118,7 @@
               <select
                 class="form-select"
                 id="paymentType"
-                v-model="selectedPaymentType"
+                v-model="value.selectedPaymentType"
               >
                 <option disabled value="">Select</option>
                 <option
@@ -212,7 +212,7 @@
         </div>
 
         <!-- Dynamic form fields based on payment type -->
-        <div class="mt-3" v-if="selectedPaymentType">
+        <div class="mt-3" v-if="value.selectedPaymentType">
           <!-- Common fields for all payment types -->
           <div class="mb-3">
             <label class="form-label">Amount</label>
@@ -329,8 +329,7 @@ export default {
       paymentMethods: [],
       paymentTypes: [],
       accounts: [],
-      selectedPaymentType: "",
-      datePicker1Instance: null, // Add this line to store the flatpickr instance
+      datePicker1Instance: null,
       paymentDetails: {
         roomCharges: 0.0,
         taxes: "1",
@@ -390,7 +389,7 @@ export default {
     "value.roomCharges": function (value) {
       this.paymentDetails.roomCharges = value;
     },
-    selectedPaymentType(newVal) {
+    "value.selectedPaymentType": function (newVal) {
       this.$emit("input", {
         ...this.value,
         selectedPaymentType: newVal,
@@ -449,6 +448,9 @@ export default {
         this.paymentMethods = paymentMethodsResponse.data.data;
         this.paymentTypes = paymentTypesResponse.data.data;
         this.accounts = accountsResponse.data.data;
+
+        // Add console log to check payment types
+        console.log('Loaded payment types:', this.paymentTypes);
       } catch (error) {
         console.error("Error loading data:", error);
       }
@@ -488,8 +490,8 @@ export default {
     },
 
     getSelectedPaymentTypeName() {
-      if (!this.selectedPaymentType) return null;
-      const type = this.paymentTypes.find(t => t.payment_id === this.selectedPaymentType);
+      if (!this.value.selectedPaymentType) return null;
+      const type = this.paymentTypes.find(t => t.payment_id === this.value.selectedPaymentType);
       return type ? type.name : null;
     },
   },
