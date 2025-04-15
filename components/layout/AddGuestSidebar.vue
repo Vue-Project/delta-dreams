@@ -682,7 +682,7 @@ export default {
     isSidebarOpen: {
       immediate: true,
       handler(newVal) {
-        console.log('isSidebarOpen changed:', newVal);
+        // console.log('isSidebarOpen changed:', newVal);
         this.localSidebarOpen = newVal;
         if (newVal) {
           this.initFlatpickers();
