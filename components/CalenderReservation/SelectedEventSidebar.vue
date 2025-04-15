@@ -355,7 +355,7 @@
                     </span> -->
               </div>
               <div class="row g-2">
-                <div class="col-lg-6 col-md-6 col-12 mb-2">
+                <div class="col-lg-6 col-md-6 col-12">
                   <div class="input-group">
                     <select
                       class="form-select"
@@ -454,7 +454,7 @@
                     account is required
                   </span>
                 </div>
-                <div class="col-12 mb-2 mt-3">
+                <div class="col-12">
                   <div class="input-group">
                     <span class="input-group-text">Comment</span>
                     <textarea
