@@ -252,7 +252,7 @@
               </div> -->
               <!--  ! table Header -->
               <!-- change width delete border color  -->
-              <div class="card mt-3 border-0">
+              <div class="card mt-3 border-0 px-0">
                 <h5 class="card-header p-2">Units Information</h5>
 
                 <div
@@ -463,7 +463,7 @@
                     </tbody>
                   </table>
                   <button
-                    class="btn btn-primary waves-effect waves-light mt-3"
+                    class="btn btn-primary waves-effect waves-light mt-3 ml-4"
                     type="button"
                     @click="addUnit"
                     :disabled="!datesSelected"
@@ -473,7 +473,7 @@
                 </div>
               </div>
               <!-- Services Repeater -->
-              <div class="card mt-3 border-0">
+              <div class="card mt-3 border-0 px-0">
                 <h5 class="card-header p-2">Units Services</h5>
                 <div
                   class="card-datatable table-responsive custom-table-wrapper"
@@ -536,7 +536,7 @@
                     </tbody>
                   </table>
                   <button
-                    class="btn btn-primary waves-effect waves-light mt-3"
+                    class="btn btn-primary waves-effect waves-light mt-3  ml-4"
                     type="button"
                     :disabled="!datesSelected"
                     @click="addService"
@@ -722,7 +722,7 @@
                 @guest-added="handleGuestAdded"
               />
             </div>
-            
+
             <!-- <div class="offset-md-7">
             </div>
             <div class="col-lg-3 col-md-6  ps-2 ps-md-0 EmailReservation">
