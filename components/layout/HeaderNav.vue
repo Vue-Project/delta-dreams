@@ -6,7 +6,7 @@
     <div class="container-fluid">
       <div class="navbar-brand app-brand demo d-none d-xl-flex py-0 me-4">
         <a
-          href="https://deltadream.swevey.com/admin"
+          href="https://testdeltadream.swevey.com/admin"
           class="app-brand-link gap-2"
         >
           <span class="app-brand-logo demo">
