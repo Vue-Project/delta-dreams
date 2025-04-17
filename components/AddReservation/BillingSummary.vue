@@ -137,7 +137,7 @@
               <input type="text" class="form-control" id="paymentInsurance" v-model="paymentDetails.insurance" placeholder="Insurance">
             </div> -->
           <!-- </div> -->
-          <div class="col-md-6 d-flex align-items-center">
+          <!-- <div class="col-md-6 d-flex align-items-center">
             <div class="input-group">
               <label class="input-group-text" for="paymentInsuranceBy"
                 >Assigned By</label
@@ -157,7 +157,7 @@
                 </option>
               </select>
             </div>
-          </div>
+          </div> -->
         </div>
         <p
           v-if="!value.paymentMode && validationMessage"
@@ -198,7 +198,7 @@
               <dd class="col-6">{{ paymentDetails.insurance }}</dd>
             </template> -->
 
-            <template v-if="paymentDetails.assigned_to">
+            <!-- <template v-if="paymentDetails.assigned_to">
               <dt class="col-6">Assigned By:</dt>
               <dd class="col-6">
                 {{
@@ -207,7 +207,7 @@
                   )?.name || "Not specified"
                 }}
               </dd>
-            </template>
+            </template> -->
           </dl>
           <div class="mt-3" v-if="value.selectedPaymentType">
           <!-- Common fields for all payment types -->

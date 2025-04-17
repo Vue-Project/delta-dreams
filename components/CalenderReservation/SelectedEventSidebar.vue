@@ -409,7 +409,7 @@
                     payment method is required
                   </span>
                 </div>
-                <div class="col-lg-6 col-md-6 col-12">
+                <!-- <div class="col-lg-6 col-md-6 col-12">
                   <div class="input-group">
                     <span class="input-group-text">EGP</span>
                     <input
@@ -426,7 +426,7 @@
                   >
                     amount is required
                   </span>
-                </div>
+                </div> -->
                 <div class="col-lg-6 col-md-6 col-12 mt-2">
                   <div class="input-group">
                     <select
@@ -571,7 +571,7 @@ export default {
       method: { required },
       paymentType: { required },
       type: { required },
-      account: { required },
+      // account: { required },
       comment: { required },
       amount: { required },
       image: { required }, // Add validation for image
@@ -699,7 +699,7 @@ export default {
           date_at: this.formAddPayment.date,
           payment_id: this.formAddPayment.method,
           payment_type_id: this.formAddPayment.paymentType,
-          assigned_to: this.formAddPayment.account,
+          // assigned_to: this.formAddPayment.account,
           note: this.formAddPayment.comment,
           reservation_id: this.selectedEvent.id,
           type: this.formAddPayment.type,

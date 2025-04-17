@@ -97,7 +97,7 @@
           amount is required
         </span>
       </div>
-      <div class="col-12 mb-2">
+      <!-- <div class="col-12 mb-2">
         <div class="input-group">
           <label class="input-group-text" for="payment_accounts"
             >Accounts</label
@@ -124,7 +124,7 @@
         >
           account is required
         </span>
-      </div>
+      </div> -->
       <div class=" col-12 mb-2">
                   <div class="input-group">
                     <select
@@ -221,7 +221,7 @@ export default {
       date: { required },
       method: { required },
       type: { required },
-      account: { required },
+      // account: { required },
       comment: { required },
       amount: { required },
       image: { required }, // Add validation for image

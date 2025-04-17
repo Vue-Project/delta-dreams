@@ -24,7 +24,7 @@
                 <th>Amount</th>
                 <th>Date</th>
                 <th>Comment</th>
-                <th>Accounts</th>
+                <!-- <th>Accounts</th> -->
                 <th>status</th>
                 <th>Action</th>
               </tr>
@@ -42,7 +42,7 @@
                     <div>{{ wallet.note }}</div>
                   </template>
                 </td>
-                <td>{{ wallet.assigned.name || 'Not specified' }}</td>
+                <!-- <td>{{ wallet.assigned.name || 'Not specified' }}</td> -->
                 <td>
                   <span :class="wallet.active === 1 ? 'badge bg-label-success' : 'badge bg-label-danger'">
                     {{ wallet.status || 'Not specified' }}
