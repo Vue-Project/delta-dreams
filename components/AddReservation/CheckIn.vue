@@ -1179,7 +1179,7 @@ export default {
       setTimeout(() =>
       {
         this.showDropdown = false;
-      }, 200000);
+      }, 200);
     },
 
     initializeFromStore ()
