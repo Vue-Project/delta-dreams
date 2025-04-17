@@ -1135,12 +1135,12 @@ body{
     padding: 4px 6px;
   }
 
-  .position-absolute {
+  /* .position-absolute {
     position: fixed !important;
     left: 50%;
     transform: translateX(-50%);
     margin-top: 5px;
-  }
+  } */
 }
 
 .z-3 {
