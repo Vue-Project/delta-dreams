@@ -44,7 +44,7 @@
                     </div>
 
                   </div>
-                  
+
                 </div>
               </div>
 
@@ -89,9 +89,9 @@
                         v-model="formGuest.internationalNumber"
                       />
                     </div>
-                   
+
                   </div>
-                
+
             </div>
             <div class="accordion px-0 mt-3 mb-5" id="accordionExample">
               <div class="card accordion-item active">
@@ -369,7 +369,7 @@
     ></div>
   </div>
 </template>
-  
+
   <script>
   import flatpickrMixin from "../Mixin/flatpickrMixin";
   import DropzoneComponent from "./DropzoneComponent.vue";
@@ -443,8 +443,8 @@
     formGuest: {
       name: { required },
       phone: { required },
-      idNumber: { required },
-      idType: { required },
+      // idNumber: { required },
+      // idType: { required },
       // expiryDate: { required },
     },
   },
@@ -508,6 +508,7 @@
     },
 
     async submitFormGuest() {
+      alert("submitFormGuest");
       try {
         this.$v.$touch();
         if (this.$v.$invalid) {
@@ -538,6 +539,8 @@
           national_type: this.formGuest.idType,
           is_fast:1,
         };
+        console.log(addGuestData);
+
 
         // Append all text data to FormData
         Object.keys(addGuestData).forEach((key) => {

@@ -539,9 +539,9 @@ select {
 .mobileInput{
   width:317px !important;
 }
-.guestNameInput{
+/* .guestNameInput{
   padding-bottom:30px !important;
-}
+} */
 .GuestTitle{
   margin-left:-13px;
 }
