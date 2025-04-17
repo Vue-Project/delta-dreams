@@ -32,12 +32,12 @@
       </div>
       <div class="col-12 mb-2">
         <div class="input-group">
-          <label class="input-group-text" for="payment_type">Type</label>
+          <label class="input-group-text" for="payment_type">paymentType</label>
 
           <select
             class="form-select"
             id="payment_type"
-            v-model="formAddPayment.type"
+            v-model="formAddPayment.paymentType"
           >
             <option disabled value="">Select Type</option>
             <option
@@ -125,6 +125,30 @@
           account is required
         </span>
       </div>
+      <div class=" col-12 mb-2">
+                  <div class="input-group">
+                    <select
+                      class="form-select"
+                      id="payment_type"
+                      v-model="formAddPayment.type"
+                      value="value"
+                    >
+                      <option disabled value="">Select Type</option>
+                      <option  value="installment">Installment</option>
+                      <option  value="down_payment">Down Payment</option>
+
+                    </select>
+                    <label class="input-group-text" for="payment_type"
+                      >Types</label
+                    >
+                  </div>
+                  <span
+                    class="error-message small"
+                    v-if="$v.formAddPayment.type.$error"
+                  >
+                    type is required
+                  </span>
+                </div>
       <div class="col-12 mb-2 mb-2">
         <div class="input-group">
           <span class="input-group-text">Comment</span>
@@ -188,6 +212,7 @@ export default {
         reservation_id: null,
         amount: "",
         image: null,
+        paymentType: "",
       },
     };
   },
@@ -200,6 +225,7 @@ export default {
       comment: { required },
       amount: { required },
       image: { required }, // Add validation for image
+      type: { required },
     },
   },
   components: {
@@ -230,12 +256,14 @@ export default {
         const paymentData = {
           date_at: this.formAddPayment.date,
           payment_id: this.formAddPayment.method,
-          payment_type_id: this.formAddPayment.type,
+          payment_type_id: this.formAddPayment.paymentType,
           assigned_to: this.formAddPayment.account,
           note: this.formAddPayment.comment,
           reservation_id: this.reservationId,
           price: this.formAddPayment.amount,
+          type: this.formAddPayment.type,
         };
+
 
         // Append payment data to FormData
         Object.keys(paymentData).forEach((key) => {

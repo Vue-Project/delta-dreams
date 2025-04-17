@@ -360,7 +360,7 @@
                     <select
                       class="form-select"
                       id="payment_type"
-                      v-model="formAddPayment.type"
+                      v-model="formAddPayment.paymentType"
                     >
                       <option disabled value="">Select Type</option>
                       <option
@@ -372,12 +372,12 @@
                       </option>
                     </select>
                     <label class="input-group-text" for="payment_type"
-                      >Type</label
+                      > Payment Type</label
                     >
                   </div>
                   <span
                     class="error-message small"
-                    v-if="$v.formAddPayment.type.$error"
+                    v-if="$v.formAddPayment.paymentType.$error"
                   >
                     payment type is required
                   </span>
@@ -452,6 +452,30 @@
                     v-if="$v.formAddPayment.account.$error"
                   >
                     account is required
+                  </span>
+                </div>
+                <div class="col-lg-12 col-md-12 col-12 mt-2">
+                  <div class="input-group">
+                    <select
+                      class="form-select"
+                      id="payment_type"
+                      v-model="formAddPayment.type"
+                      value="value"
+                    >
+                      <option disabled value="">Select Type</option>
+                      <option  value="installment">Installment</option>
+                      <option  value="down_payment">Down Payment</option>
+
+                    </select>
+                    <label class="input-group-text" for="payment_type"
+                      >Types</label
+                    >
+                  </div>
+                  <span
+                    class="error-message small"
+                    v-if="$v.formAddPayment.type.$error"
+                  >
+                    type is required
                   </span>
                 </div>
                 <div class="col-12">
@@ -531,11 +555,12 @@ export default {
       formAddPayment: {
         date: new Date().toISOString().split("T")[0],
         method: "",
-        type: "",
+        paymentType: "",
         account: "",
         comment: "",
         image: null, // Add this for the image
         reservation_id: null,
+        type: "",
       },
       statusOptions: [],
     };
@@ -544,6 +569,7 @@ export default {
     formAddPayment: {
       date: { required },
       method: { required },
+      paymentType: { required },
       type: { required },
       account: { required },
       comment: { required },
@@ -672,12 +698,14 @@ export default {
         const paymentData = {
           date_at: this.formAddPayment.date,
           payment_id: this.formAddPayment.method,
-          payment_type_id: this.formAddPayment.type,
+          payment_type_id: this.formAddPayment.paymentType,
           assigned_to: this.formAddPayment.account,
           note: this.formAddPayment.comment,
           reservation_id: this.selectedEvent.id,
+          type: this.formAddPayment.type,
           price: this.formAddPayment.amount,
         };
+
 
         // Append payment data to FormData
         Object.keys(paymentData).forEach((key) => {

@@ -20,6 +20,7 @@
                 <th>Payment image</th>
                 <th>Payment Method</th>
                 <th>Payment Type</th>
+                <th> Type</th>
                 <th>Amount</th>
                 <th>Date</th>
                 <th>Comment</th>
@@ -32,7 +33,8 @@
               <tr v-for="wallet in reservationData.wallets" :key="wallet.id">
                 <td><img :src='`https://deltadream.swevey.com/${wallet.image}`' alt="Payment Image" style="width: 50px; height: 50px;"></td>
                 <td>{{ wallet.payment.name || 'Not selected'}}</td>
-                <td>{{ wallet.type || 'Not selected' }}</td>
+                <td>{{ wallet.paymentType.name || 'Not selected' }}</td>
+                <td>{{ wallet.type_name     || 'Not selected' }}</td>
                 <td>{{ wallet.price || 'Not specified' }}</td>
                 <td>{{ wallet.date_at || 'Not specified' }}</td>
                 <td>
