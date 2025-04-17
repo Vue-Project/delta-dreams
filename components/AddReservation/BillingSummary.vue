@@ -450,7 +450,6 @@ export default {
         this.accounts = accountsResponse.data.data;
 
         // Add console log to check payment types
-        console.log('Loaded payment types:', this.paymentTypes);
       } catch (error) {
         console.error("Error loading data:", error);
       }

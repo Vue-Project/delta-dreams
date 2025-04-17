@@ -508,7 +508,6 @@
     },
 
     async submitFormGuest() {
-      alert("submitFormGuest");
       try {
         this.$v.$touch();
         if (this.$v.$invalid) {
@@ -539,7 +538,6 @@
           national_type: this.formGuest.idType,
           is_fast:1,
         };
-        console.log(addGuestData);
 
 
         // Append all text data to FormData
