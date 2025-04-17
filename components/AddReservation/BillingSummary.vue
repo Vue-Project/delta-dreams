@@ -167,9 +167,9 @@
         </p>
 
         <!-- Payment Details Summary -->
-        <div v-if="value.paymentMode" class="payment-summary mt-3">
+        <div v-if="value.paymentMode" class=" mt-3">
           <h6 class="mb-3">Payment Details</h6>
-          <dl class="row">
+          <dl class="row payment-summary">
             <dt class="col-6">Payment Method:</dt>
             <dd class="col-6">
               {{ getSelectedPaymentMethodName() || "Not selected" }}
@@ -209,10 +209,7 @@
               </dd>
             </template>
           </dl>
-        </div>
-
-        <!-- Dynamic form fields based on payment type -->
-        <div class="mt-3" v-if="value.selectedPaymentType">
+          <div class="mt-3" v-if="value.selectedPaymentType">
           <!-- Common fields for all payment types -->
           <div class="mb-3">
             <label class="form-label">Amount</label>
@@ -295,6 +292,10 @@
             </div>
           </template> -->
         </div>
+        </div>
+
+        <!-- Dynamic form fields based on payment type -->
+
       </div>
     </div>
   </section>
