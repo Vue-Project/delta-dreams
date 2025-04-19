@@ -90,8 +90,8 @@
               </small>
             </div>
           </div>
-          <div class="col-6 col-md-5 col-xl-1 text-cente text-md-center">
-            <div class="me-">
+          <div class="col-6 col-md-5 col-xl-1 text-cente text-md-center" v-if="reservationDataById?.is_cancel">
+            <div class="me">
               <button
                 type="button"
                 class="btn btn-label-danger waves-effect mt-3"

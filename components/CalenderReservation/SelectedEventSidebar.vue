@@ -1,5 +1,5 @@
 <template>
-    <div class="offcanvas offcanvas-end editSidebar" tabindex="-1" id="offcanvasEnd" aria-labelledby="offcanvasEndLabel">
+    <div class="offcanvas offcanvas-end editSidebar" tabindex="-1" id="offcanvasEnd" aria-labelledby="offcanvasEndLabel" v-if="selectedEvent?.is_show">
         <!-- Offcanvas Header -->
         <div class="offcanvas-header editSideBarHeader">
             <h5 id="offcanvasEndLabel" class="offcanvas-title w-100">
@@ -7,6 +7,9 @@
                     <h6>
                         <i class="fa-solid fa-user pr-2 text-primary fs-3 mb-2"></i>
                         {{ selectedEvent.client?.name }}
+                        <!-- {{ selectedEvent?.is_edit || 0 }}
+                        {{ selectedEvent?.is_show || 0 }}
+                        {{ selectedEvent?.is_cancel || 0 }} -->
                     </h6>
                     <div class="CityPhoneHeader">
                         <span class="mr-3">
@@ -19,15 +22,15 @@
                         </span>
                     </div>
                     <div class="row mt-4">
-                        <div class="col-6">
+                        <div class="col-6" v-if="selectedEvent?.is_edit">
                             <button type="button" class="btn btn-primary waves-effect waves-light btn-block EditBtnSideBar" @click="navigateToEditReservation(selectedEvent.id)">Edit</button>
                         </div>
                         <div class="col-6">
-                            <button type="button" class="btn btn-primary waves-effect waves-light btn-block AddPaymentBtnSideBar" data-bs-toggle="modal" data-bs-target="#paymentModal">Add Payment</button>
+                            <button type="button" class="btn btn-primary waves-effect waves-light btn-block AddPaymentBtnSideBar" data-bs-toggle="modal" data-bs-target="#paymentModal" v-if="selectedEvent?.is_edit">Add Payment</button>
                         </div>
                     </div>
 
-                    <div class="row mt-4 StatusSideBar">
+                    <div class="row mt-4 StatusSideBar"  v-if="selectedEvent?.is_edit">
                         <div class="col-4 pt-1">
                             <label class="form-label fs-4 StatusSideBarTitle" for="status-reservation">Status</label>
                         </div>
@@ -58,8 +61,8 @@
 
         <!-- Offcanvas Body -->
         <hr />
-        <div class="offcanvas-body mx-0 flex-grow-0 pt-0">
-            <div class="row mb-4">
+        <div class="offcanvas-body mx-0 flex-grow-0 pt-0" >
+            <div class="row mb-4" v-if="selectedEvent?.is_edit">
                 <div class="col-9">
                     <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD to YYYY-MM-DD" id="flatpickr-range" ref="rangePicker1" v-model="dateRange" @change="parseDateRange" aria-label="input Text to Date" />
                 </div>
@@ -173,7 +176,7 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="text-center">
+                    <div class="text-center" v-if="selectedEvent?.is_cancel">
                         <button @click="cancelReservation" type="button" title="Cancel Reservation" class="btn btn-danger waves-effect waves-light mt-3 w-100 px-0 cancelBtnSideBar">Cancel Reservation</button>
                     </div>
                 </div>
