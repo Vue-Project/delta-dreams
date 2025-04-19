@@ -64,12 +64,12 @@
                         ref="phone"
                         :class="{ 'input-error': validationMessages.phone }"
                       />
-                      <span
+                      <!-- <span
                         class="error-message small"
                         v-if="$v.formGuest.phone.$error"
                       >
                         Phone is required
-                      </span>
+                      </span> -->
                     </div>
                   </div>
                   <div class="col-md-3">
@@ -442,7 +442,7 @@
   validations: {
     formGuest: {
       name: { required },
-      phone: { required },
+      // phone: { required },
       // idNumber: { required },
       // idType: { required },
       // expiryDate: { required },
