@@ -16,6 +16,20 @@
             </span>
           </button>
         </li>
+        <div class="ms-auto me-3">
+            <button class="btn" :class="{
+              'btn-primary': viewMode === 'card',
+              'btn-secondary': viewMode !== 'card',
+            }" @click="setViewMode('card')">
+              <i class="fa-solid fa-grip"></i>
+            </button>
+            <button class="btn" :class="{
+              'btn-primary': viewMode === 'list',
+              'btn-secondary': viewMode !== 'list',
+            }" @click="setViewMode('list')">
+              <i class="fa-solid fa-list"></i>
+            </button>
+          </div>
       </ul>
     </div>
 
