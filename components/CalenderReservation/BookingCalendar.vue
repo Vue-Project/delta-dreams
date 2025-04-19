@@ -7,7 +7,10 @@
       <FilterCalendar ref="filterComponent" :statistics="statistics" :buildingNames="buildingNames" @show-all-resources="showAllResources" @show-building-resources="showBuildingResources" @date-selected="SelectedDateFilterCalendar" />
       <FullCalendar :options="calendarOptions" @select="handleSelect" ref="calendar" :selectedDate="selectedDate">
         <template v-slot:eventContent="arg">
-          <b>{{ arg.event.title }}</b>
+          <div class="event-content">
+            <span class="event-title">{{ arg.event.title }}</span>
+            <span class="event-shortname">{{ shortName }}</span>
+          </div>
         </template>
       </FullCalendar>
       <!-- <CalendarFooter :occupancyData="occupancyData" /> -->
@@ -754,7 +757,7 @@ export default {
 
           events.push({
             resourceId: unitData.code,
-            title: shortName,
+            title: fullName,
             start: reservation.checkin_date.split("T")[0],
             end: reservation.checkout_date.split("T")[0] + "T23:59:59",
             color: eventColor, // Using status-based color from server
@@ -1472,6 +1475,29 @@ export default {
 };
 </script>
 
-<style>
-/* ... existing styles ... */
+<style scoped>
+.event-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.event-title {
+  font-weight: bold;
+}
+
+.event-shortname {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .event-title {
+    display: none;
+  }
+
+  .event-shortname {
+    display: block;
+    font-weight: bold;
+  }
+}
 </style>
