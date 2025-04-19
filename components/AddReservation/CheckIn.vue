@@ -156,8 +156,10 @@
                         <th class="border-0">Room Type</th>
                         <th class="border-0">Rate Type</th>
                         <th class="border-0">Room</th>
-                        <th class="border-0">Adult</th>
-                        <th class="border-0">Child</th>
+                        <th class="border-0">Adult <i class="fa-solid fa-person fs-1"></i>
+                        </th>
+                        <th class="border-0">Child <i class="fa-solid fa-child fs-1"></i>
+                        </th>
                         <th class="border-0 w-20">Rate(EGP)(Tax Inc.)</th>
                       </tr>
                     </thead>
@@ -312,9 +314,9 @@
               <!--   ! check inputs and repeater -->
             </div>
           </div>
-          <hr class="my-4" />
+          <!-- <hr class="my-4" /> -->
           <!--  ! Hold Release Date & Time -->
-          <div class="row">
+          <!-- <div class="row">
             <div class="col-lg-5">
               <div class="row">
                 <div class="col-lg-12">
@@ -330,13 +332,13 @@
                     </div>
                   </div>
                 </div>
-                <!-- <div class="col-lg-4 px-0  px-md-0 px-lg-3 col-12">
+                <div class="col-lg-4 px-0  px-md-0 px-lg-3 col-12">
                   <label for="releaseTerm" class="form-label">Release Term</label>
                   <div class="input-group">
                     <input type="text" class="form-control" placeholder="Value" id="releaseTerm" v-model="formAddReservation.releaseTerm" />
                     <span class="input-group-text groupStyle">%</span>
                   </div>
-                </div> -->
+                </div>
               </div>
             </div>
             <div class="col-lg-7">
@@ -359,7 +361,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
 
           <!--  ! Hold Release Date & Time -->
           <hr class="my-4" />
@@ -531,21 +533,21 @@
 </template>
 <script>
 import
-  {
-    showSuccessAlert,
-    handleSubmissionError,
-  } from "../../Api/MassageValidation/alertUtilities";
+{
+  showSuccessAlert,
+  handleSubmissionError,
+} from "../../Api/MassageValidation/alertUtilities";
 import
-  {
-    getBookingSources,
-    getBusinessSources,
-    getGuestsInfo,
-    postAddReservationData,
-    getUnitTypes,
-    getUnits,
-    getGuestDetails,
-    getServices,
-  } from "../../Api/addResvertionApi";
+{
+  getBookingSources,
+  getBusinessSources,
+  getGuestsInfo,
+  postAddReservationData,
+  getUnitTypes,
+  getUnits,
+  getGuestDetails,
+  getServices,
+} from "../../Api/addResvertionApi";
 import flatpickrMixin from "../Mixin/flatpickrMixin";
 import SidebarAddGuest from "../layout/AddGuestSidebar.vue";
 import QuickAddGuestSidebar from "../layout/QuickAddGuestSidebar.vue";
