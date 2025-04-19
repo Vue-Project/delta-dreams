@@ -13,7 +13,7 @@
       <!-- <CalendarFooter :occupancyData="occupancyData" /> -->
       <div v-if="isOverlayVisible" class="overlay" @click="closePopover"></div>
       <PopoverComponent v-if="isPopoverVisible" :isPopoverVisible="isPopoverVisible" :popoverStyle="popoverStyle" :popoverArrowLeft="popoverArrowLeft" :firstSelectedDate="firstSelectedDate" :lastSelectedDate="lastSelectedDate" @go-to-add-reservation="goToAddReservation" @toggle-sidebar="toggleSidebar" @close-popover="closePopover" />
-      <SidebarBlockRoom :is-sidebar-open="isSidebarOpen" title="Block Room" width="400px" @close-sidebar="toggleSidebar" height="auto">
+      <SidebarBlockRoom v-if="BlockedPermission !== 0" :is-sidebar-open="isSidebarOpen" title="Block Room" width="400px" @close-sidebar="toggleSidebar" height="auto">
         <BlockRoomForm :selectedDates="selectedDates" :selectedResourceId="selectedResourceId" @close-sidebar="toggleSidebar" />
       </SidebarBlockRoom>
       <SelectedEventSidebar :selectedEvent="selectedEvent" @navigate-to-edit-reservation="navigateToEditReservation" />
@@ -107,6 +107,7 @@ export default {
       nationalTypes: [],
       genderTypes: [],
       projects: [],
+      BlockedPermission: '',
       remindGuestType: [],
       isSidebarOpen: false,
       isPopoverBodyVisible: true, // Body visibility
@@ -586,6 +587,15 @@ export default {
     },
     toggleSidebar ()
     {
+      // Check permission before toggling sidebar
+      if (this.BlockedPermission === 0) {
+        showAlert({
+          title: "Access Denied",
+          text: "You don't have permission to block rooms.",
+          icon: "error",
+        });
+        return;
+      }
       this.isSidebarOpen = !this.isSidebarOpen;
       this.isPopoverVisible = false;
       this.isOverlayVisible = false;
@@ -616,16 +626,28 @@ export default {
           room: info.event.extendedProps.room || "Not specified",
         };
 
+        // Show detailed confirmation dialog only if user has permission
+        if (this.BlockedPermission === 0) {
+          Swal.fire({
+            title: "Access Denied",
+            text: "You don't have permission to manage blocked periods.",
+            icon: "error",
+            showConfirmButton: false,
+            timer: 2000
+          });
+          return;
+        }
+
         // Show detailed confirmation dialog
         Swal.fire({
           title: "Blocked Room Details",
           html: `
-        <div class="text-left">
-          <p><strong>Start:</strong> ${startDate}</p>
-          <p><strong>End:</strong> ${endDate}</p>
-          <p><strong>Blocked Reason:</strong> ${this.selectedBlockedEvent.title}</p>
-        </div>
-      `,
+            <div class="text-left">
+              <p><strong>Start:</strong> ${startDate}</p>
+              <p><strong>End:</strong> ${endDate}</p>
+              <p><strong>Blocked Reason:</strong> ${this.selectedBlockedEvent.title}</p>
+            </div>
+          `,
           icon: "info",
           showCancelButton: true,
           confirmButtonColor: "#7367f0",
@@ -1336,6 +1358,7 @@ export default {
       }
     },
   },
+
   async mounted ()
   {
     // mounted hook only runs on client-side, so window is available
@@ -1378,6 +1401,7 @@ export default {
       this.genderTypes = CalenderDataResponse.gender_type;
       this.projects = CalenderDataResponse.projects;
       this.remindGuestType = CalenderDataResponse.release_type;
+      this.BlockedPermission = CalenderDataResponse.is_block;
       this.buildingNames = this.getBuildingNames();
       const events = this.transformAllUnitsToEvents();
       this.calendarOptions = { ...this.calendarOptions, events };
@@ -1436,6 +1460,15 @@ export default {
       this.calendarOptions.duration = { days: isMobile ? 10 : 20 };
     }
   },
+  computed: {
+    calendarOptions() {
+      return {
+        ...this.calendarOptions,
+        editable: this.BlockedPermission !== 0, // Disable drag and drop if no permission
+        selectable: this.BlockedPermission !== 0, // Disable date selection if no permission
+      };
+    }
+  }
 };
 </script>
 
