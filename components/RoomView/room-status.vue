@@ -16,28 +16,37 @@
                         </span>
                     </button>
                 </li>
-        <div class="ms-auto me-3">
-            <button class="btn" :class="{
-              'btn-primary': viewMode === 'card',
-              'btn-secondary': viewMode !== 'card',
-            }" @click="setViewMode('card')">
-              <i class="fa-solid fa-grip"></i>
-            </button>
-            <button class="btn" :class="{
-              'btn-primary': viewMode === 'list',
-              'btn-secondary': viewMode !== 'list',
-            }" @click="setViewMode('list')">
-              <i class="fa-solid fa-list"></i>
-            </button>
-          </div>
+                <div class="ms-auto me-3">
+                    <button
+                        class="btn"
+                        :class="{
+                            'btn-primary': viewMode === 'card',
+                            'btn-secondary': viewMode !== 'card',
+                        }"
+                        @click="setViewMode('card')"
+                    >
+                        <i class="fa-solid fa-grip"></i>
+                    </button>
+                    <button
+                        class="btn"
+                        :class="{
+                            'btn-primary': viewMode === 'list',
+                            'btn-secondary': viewMode !== 'list',
+                        }"
+                        @click="setViewMode('list')"
+                    >
+                        <i class="fa-solid fa-list"></i>
+                    </button>
+                </div>
             </ul>
         </div>
 
         <!-- Tab Content -->
         <div class="tab-content">
             <div v-for="tab in tabs" :key="tab" class="tab-pane fade" :class="{ 'active show': activeTab === tab }">
-                <div class="row">
-                    <div class="col-12 col-md-6 col-lg-4 mb-4 order-1 order-xl-0 cursor-pointer" v-for="room in tabData[tab].data" :key="room.id" @click="handleRoomClick(room)">
+                <!-- عرض البطاقات -->
+                <div v-if="viewMode === 'card'" class="row">
+                    <div class="col-12 col-md-6 col-lg-4 mb-4 cursor-pointer" v-for="room in tabData[tab].data" :key="room.id" @click="handleRoomClick(room)">
                         <div class="card h-100">
                             <div class="card-header d-flex align-items-center justify-content-between">
                                 <div class="card-title mb-0 d-flex">
@@ -120,6 +129,10 @@
                         </div>
                     </div>
                 </div>
+                <!-- عرض القائمة -->
+                <div v-else class="list-group">
+                    
+                </div>
             </div>
         </div>
 
@@ -135,132 +148,135 @@
 </template>
 
 <script>
-import { getRooms } from '../../Api/roomViewApi';
-import Swal from 'sweetalert2';
-import flatpickrMixin from '../Mixin/flatpickrMixin';
+    import { getRooms } from '../../Api/roomViewApi';
+    import Swal from 'sweetalert2';
+    import flatpickrMixin from '../Mixin/flatpickrMixin';
 
-export default {
-    name: 'reservations',
-    layout: 'component',
+    export default {
+        name: 'reservations',
+        layout: 'component',
 
-    data() {
-        return {
-            activeTab: 'all',
-            hoveredMenu: {},
-            selectedDate: null,
-            statisticsHeaderRoomView: {},
-            hoveredIcon: null,
-            tabs: ['all', 'vacant', 'occupied', 'reserved', 'blocked', 'dueout', 'dirty'],
-            tabData: {
-                all: { data: [], loading: false, error: null },
-                vacant: { data: [], loading: false, error: null },
-                occupied: { data: [], loading: false, error: null },
-                reserved: { data: [], loading: false, error: null },
-                blocked: { data: [], loading: false, error: null },
-                dueout: { data: [], loading: false, error: null },
-                dirty: { data: [], loading: false, error: null },
+        data() {
+            return {
+                activeTab: 'all',
+                hoveredMenu: {},
+                selectedDate: null,
+                statisticsHeaderRoomView: {},
+                hoveredIcon: null,
+                tabs: ['all', 'vacant', 'occupied', 'reserved', 'blocked', 'dueout', 'dirty'],
+                tabData: {
+                    all: { data: [], loading: false, error: null },
+                    vacant: { data: [], loading: false, error: null },
+                    occupied: { data: [], loading: false, error: null },
+                    reserved: { data: [], loading: false, error: null },
+                    blocked: { data: [], loading: false, error: null },
+                    dueout: { data: [], loading: false, error: null },
+                    dirty: { data: [], loading: false, error: null },
+                },
+                selectedRoom: null,
+                viewMode: 'card',
+            };
+        },
+        methods: {
+            setActiveTab(tab) {
+                this.activeTab = tab;
+                this.fetchTabData(tab);
             },
-            selectedRoom: null,
-        };
-    },
-    methods: {
-        setActiveTab(tab) {
-            this.activeTab = tab;
-            this.fetchTabData(tab);
-        },
-        toggleMenu(roomId, state) {
-            this.$set(this.hoveredMenu, roomId, state);
-        },
-        formatDate(dateStr) {
-            const date = new Date(dateStr);
-            if (isNaN(date)) return 'Invalid date';
-            return date.toLocaleDateString();
-        },
-        async fetchTabData(tab) {
-            try {
-                const responseData = await getRooms(tab, this.selectedDate);
-                if (responseData?.data) {
-                    const filteredData = this.filterDataByTab(responseData.data, tab);
-                    this.tabData[tab].data = filteredData;
+            setViewMode(mode) {
+                this.viewMode = mode;
+            },
+            toggleMenu(roomId, state) {
+                this.$set(this.hoveredMenu, roomId, state);
+            },
+            formatDate(dateStr) {
+                const date = new Date(dateStr);
+                if (isNaN(date)) return 'Invalid date';
+                return date.toLocaleDateString();
+            },
+            async fetchTabData(tab) {
+                try {
+                    const responseData = await getRooms(tab, this.selectedDate);
+                    if (responseData?.data) {
+                        const filteredData = this.filterDataByTab(responseData.data, tab);
+                        this.tabData[tab].data = filteredData;
 
-                    if (responseData.statistics) {
-                        this.statisticsHeaderRoomView = responseData.statistics;
+                        if (responseData.statistics) {
+                            this.statisticsHeaderRoomView = responseData.statistics;
+                        }
+                    } else {
+                        this.tabData[tab].error = 'Invalid response data';
                     }
-                } else {
-                    this.tabData[tab].error = 'Invalid response data';
+                } catch (error) {
+                    this.tabData[tab].error = error;
+                    this.tabData[tab].data = [];
+                    this.statisticsHeaderRoomView[tab] = 0;
+                } finally {
+                    this.tabData[tab].loading = false;
                 }
-            } catch (error) {
-                this.tabData[tab].error = error;
-                this.tabData[tab].data = [];
-                this.statisticsHeaderRoomView[tab] = 0;
-            } finally {
-                this.tabData[tab].loading = false;
-            }
-        },
-        filterDataByTab(data, tab) {
-            if (tab === 'all') {
-                return data;
-            }
-            return data.filter(room => room.status === tab);
-        },
-        handleRoomClick(room) {
-            if (room.status === 'blocked') {
-                Swal.fire({
-                    title: 'Room is Blocked',
-                    html: `
+            },
+            filterDataByTab(data, tab) {
+                if (tab === 'all') {
+                    return data;
+                }
+                return data.filter(room => room.status === tab);
+            },
+            handleRoomClick(room) {
+                if (room.status === 'blocked') {
+                    Swal.fire({
+                        title: 'Room is Blocked',
+                        html: `
                         <div class="text-left">
                           <p><strong>From:</strong> ${room.block?.start_date || 'N/A'}</p>
                           <p><strong>To:</strong> ${room.block?.end_date || 'N/A'}</p>
                           <p><strong>Reason:</strong> ${room.block?.reason.name || 'No reason specified'}</p>
                         </div>
                       `,
-                    icon: 'info',
-                    confirmButtonText: 'Close',
-                    showClass: {
-                        popup: 'animate__animated animate__bounceIn',
-                    },
-                    hideClass: {
-                        popup: 'animate__animated animate__bounceOut',
-                    },
-                });
-            } else if (room.reservation?.id) {
-                this.$router.push(`/edit-reservation/${room.reservation.id}`);
-            } else {
-                Swal.fire({
-                    title: 'No Reservation',
-                    text: 'No reservation data available for this room',
-                    icon: 'info',
-                    confirmButtonText: 'OK',
-                    showClass: {
-                        popup: 'animate__animated animate__bounceIn',
-                    },
-                    hideClass: {
-                        popup: 'animate__animated animate__bounceOut',
-                    },
-                });
-            }
+                        icon: 'info',
+                        confirmButtonText: 'Close',
+                        showClass: {
+                            popup: 'animate__animated animate__bounceIn',
+                        },
+                        hideClass: {
+                            popup: 'animate__animated animate__bounceOut',
+                        },
+                    });
+                } else if (room.reservation?.id) {
+                    this.$router.push(`/edit-reservation/${room.reservation.id}`);
+                } else {
+                    Swal.fire({
+                        title: 'No Reservation',
+                        text: 'No reservation data available for this room',
+                        icon: 'info',
+                        confirmButtonText: 'OK',
+                        showClass: {
+                            popup: 'animate__animated animate__bounceIn',
+                        },
+                        hideClass: {
+                            popup: 'animate__animated animate__bounceOut',
+                        },
+                    });
+                }
+            },
         },
-    },
-    watch: {
-        selectedDate(newDate) {
+        watch: {
+            selectedDate(newDate) {
+                this.fetchTabData(this.activeTab);
+            },
+        },
+        mounted() {
+            this.selectedDate = new Date().toISOString().split('T')[0];
+            flatpickr(this.$refs.datePicker4, {
+                dateFormat: 'Y-m-d',
+                defaultDate: this.selectedDate,
+                onChange: (selectedDates, dateStr) => {
+                    this.selectedDate = dateStr;
+                },
+            });
             this.fetchTabData(this.activeTab);
         },
-    },
-    mounted() {
-        this.selectedDate = new Date().toISOString().split('T')[0];
-        flatpickr(this.$refs.datePicker4, {
-            dateFormat: 'Y-m-d',
-            defaultDate: this.selectedDate,
-            onChange: (selectedDates, dateStr) => {
-                this.selectedDate = dateStr;
-            },
-        });
-        this.fetchTabData(this.activeTab);
-    },
-    mixins: [flatpickrMixin],
-};
+        mixins: [flatpickrMixin],
+    };
 </script>
-
 
 <style scoped>
     .cursor-pointer {
