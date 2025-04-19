@@ -4,25 +4,29 @@
     <div class="col-md-12">
       <HeaderReservation>
         <template #button>
-          <li class="nav-item" role="presentation">
+          <div class="col-md-2 col-12 calendarDate mt-2">
+            <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD" id="flatpickr-date-04" ref="datePicker4" aria-label="input for date" v-model="selectedDate" />
+            <i class="fa-solid fa-calendar-days date-icon"></i>
+          </div>
+          <li class="nav-item col-md" role="presentation">
             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-Reservations" role="tab" aria-selected="false" tabindex="-1" :class="{ active: activeTab === 'reservations' }" @click.prevent="selectTab('reservations')">
               Reservations
               <span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-label-danger ms-1">{{ reservationsCount.reservations }}</span>
             </button>
           </li>
-          <li class="nav-item" role="presentation">
+          <li class="nav-item col-md" role="presentation">
             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-Arrivals" role="tab" aria-selected="false" tabindex="-1" :class="{ active: activeTab === 'arrivals' }" @click="setActiveTab('arrivals')">
               Arrivals
               <span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-label-danger ms-1">{{ reservationsCount.arrivals }}</span>
             </button>
           </li>
-          <li class="nav-item" role="presentation">
+          <li class="nav-item col-md" role="presentation">
             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-Departures" role="tab" aria-selected="true" :class="{ active: activeTab === 'departures' }" @click="setActiveTab('departures')">
               Departures
               <span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-label-danger ms-1">{{ reservationsCount.departures }}</span>
             </button>
           </li>
-          <li class="nav-item" role="presentation">
+          <li class="nav-item col-md" role="presentation">
             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-In-house" role="tab" aria-selected="true" :class="{ active: activeTab === 'inHouse' }" @click="setActiveTab('inHouse')">
               In-house
               <span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-label-danger ms-1">{{ reservationsCount.in_house }}</span>
@@ -1631,6 +1635,7 @@
 import HeaderReservation from "../components/AllReservation/HeaderReservation.vue";
 import { getReservationData } from "../Api/resvertionData";
 import ThePagination from "../components/layout/ThePagination.vue";
+
 import flatpickrMixin from "../components/Mixin/flatpickrMixin";
 import { dateMixin } from "../components/Mixin/DateMixin";
 
@@ -1754,36 +1759,36 @@ export default {
     {
       this.$router.push(`/edit-reservation/${id}`);
     },
-    async GetTabData (tab)
-    {
-      // console.log('Fetching data for tab:', tab);
+    // async GetTabData (tab)
+    // {
+    //   // console.log('Fetching data for tab:', tab);
 
-      const type = this.tabsMap[tab];
-      const { current_page, per_page } = this.tabData[tab].meta;
-      try {
-        const responseData = await getReservationData(tab, current_page, per_page);
-        // console.log('Server Response:', responseData); // Debugging
+    //   const type = this.tabsMap[tab];
+    //   const { current_page, per_page } = this.tabData[tab].meta;
+    //   try {
+    //     const responseData = await getReservationData(tab, current_page, per_page);
+    //     // console.log('Server Response:', responseData); // Debugging
 
-        this.tabData[tab].data = responseData;
-        this.reservations = responseData.data.data;
-        this.tabData[tab].meta = responseData.data.meta || {
-        total: 0,
-        count: 0,
-        per_page: 10,
-        current_page: 1,
-        total_pages: 0,
-        from: 0,
-        last_page: 0,
-        path: '',
-        to: 0
-      };
-        this.reservationsCount = responseData.data.reservations_count;
-      } catch (error) {
-        this.tabData[tab].error = error;
-      } finally {
-        this.tabData[tab].loading = false;
-      }
-    },
+    //     this.tabData[tab].data = responseData;
+    //     this.reservations = responseData.data.data;
+    //     this.tabData[tab].meta = responseData.data.meta || {
+    //     total: 0,
+    //     count: 0,
+    //     per_page: 10,
+    //     current_page: 1,
+    //     total_pages: 0,
+    //     from: 0,
+    //     last_page: 0,
+    //     path: '',
+    //     to: 0
+    //   };
+    //     this.reservationsCount = responseData.data.reservations_count;
+    //   } catch (error) {
+    //     this.tabData[tab].error = error;
+    //   } finally {
+    //     this.tabData[tab].loading = false;
+    //   }
+    // },
     selectTab (tab)
     {
       // console.log('selectTab', tab);
@@ -1794,7 +1799,7 @@ export default {
     {
       if (page < 1 || page > this.tabData[tab].meta.last_page) return; // Prevent invalid page numbers
       this.tabData[tab].meta.current_page = page; // Update current page
-      this.GetTabData(tab); // Fetch data for the new page
+      // this.GetTabData(tab); // Fetch data for the new page
     },
 
   },
@@ -1804,7 +1809,7 @@ export default {
 
     const offcanvas = document.getElementById("offcanvasEnd");
     offcanvas.addEventListener("hidden.bs.offcanvas", this.resetSelections);
-    this.GetTabData(this.activeTab);
+    // this.GetTabData(this.activeTab);
 
   },
   beforeDestroy ()
@@ -1813,12 +1818,12 @@ export default {
     const offcanvas = document.getElementById("offcanvasEnd");
     offcanvas.removeEventListener("hidden.bs.offcanvas", this.resetSelections);
   },
-  watch: {
-    activeTab: function (newTab)
-    {
-      this.GetTabData(newTab);
-    }
-  },
+  // watch: {
+  //   activeTab: function (newTab)
+  //   {
+  //     this.GetTabData(newTab);
+  //   }
+  // },
   computed: {
     totalPages ()
     {
