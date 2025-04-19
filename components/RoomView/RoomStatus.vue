@@ -43,11 +43,32 @@
                   </span>
                 </div>
               </div>
-              {{ room.code }}
+              <p class="fs-5"> Room Code: {{ room.code }}</p>
             </div>
             <div class="card-body p-1 position-relative">
-              <p class="fs-5">
-                {{ room.reservation?.rate_type || "No Data" }} </p>
+              <div class="d-flex justify-content-between align-items-start">
+                <!-- Reservation details on the left -->
+                <div class="reservation-details">
+                  <!-- Show reservation details only if reservation exists -->
+                  <template v-if="room.reservation">
+                    <p class="fs-5"> Reservation Number:
+                      {{ room.reservation.id }} </p>
+                    <p class="fs-5"> Checkin Date:
+                      {{ room.reservation.checkin_date }} </p>
+                    <p class="fs-5"> Checkout Date:
+                      {{ room.reservation.checkout_date }} </p>
+                    <p class="fs-5"> Rate Type :
+                      {{ room.reservation.rate_type_name }} </p>
+                  </template>
+                </div>
+
+                <!-- Availability Status Indicator on the right -->
+                <div v-if="!room.reservation" class="availability-status p-2 text-center bg-success text-white rounded h-25">
+                  <i class="fa-solid fa-check-circle me-1"></i>
+                  <span>Room Available</span>
+                </div>
+              </div>
+
               <div class="icon-wrapper" @mouseenter="hoveredIcon = { type: 'clean', id: room.id }" @mouseleave="hoveredIcon = null">
                 <i class="fa-solid" :class="room.is_clean === 1 ? 'fa-broom' : 'fa-dust'" style="color: #9f9ca8"></i>
 
@@ -222,7 +243,7 @@ export default {
 
     this.fetchTabData(this.activeTab);
   },
-  mixins:[flatpickrMixin]
+  mixins: [flatpickrMixin]
 };
 
 </script>
