@@ -16,14 +16,37 @@
                         </span>
                     </button>
                 </li>
+                <div class="ms-auto me-3">
+                    <button
+                        class="btn"
+                        :class="{
+                            'btn-primary': viewMode === 'card',
+                            'btn-secondary': viewMode !== 'card',
+                        }"
+                        @click="setViewMode('card')"
+                    >
+                        <i class="fa-solid fa-grip"></i>
+                    </button>
+                    <button
+                        class="btn"
+                        :class="{
+                            'btn-primary': viewMode === 'list',
+                            'btn-secondary': viewMode !== 'list',
+                        }"
+                        @click="setViewMode('list')"
+                    >
+                        <i class="fa-solid fa-list"></i>
+                    </button>
+                </div>
             </ul>
         </div>
 
         <!-- Tab Content -->
         <div class="tab-content">
             <div v-for="tab in tabs" :key="tab" class="tab-pane fade" :class="{ 'active show': activeTab === tab }">
-                <div class="row">
-                    <div class="col-12 col-md-6 col-lg-4 mb-4 order-1 order-xl-0 cursor-pointer" v-for="room in tabData[tab].data" :key="room.id" @click="handleRoomClick(room)">
+                <!-- عرض البطاقات -->
+                <div v-if="viewMode === 'card'" class="row">
+                    <div class="col-12 col-md-6 col-lg-4 mb-4 cursor-pointer" v-for="room in tabData[tab].data" :key="room.id" @click="handleRoomClick(room)">
                         <div class="card h-100">
                             <div class="card-header d-flex align-items-center justify-content-between">
                                 <div class="card-title mb-0 d-flex">
@@ -110,6 +133,14 @@
                         </div>
                     </div>
                 </div>
+                <!-- عرض القائمة -->
+                <div v-else class="list-group">
+
+                </div>
+                <!-- عرض القائمة -->
+                <div v-else class="list-group">
+
+                </div>
             </div>
         </div>
 
@@ -151,12 +182,16 @@
                     dirty: { data: [], loading: false, error: null },
                 },
                 selectedRoom: null,
+                viewMode: 'card',
             };
         },
         methods: {
             setActiveTab(tab) {
                 this.activeTab = tab;
                 this.fetchTabData(tab);
+            },
+            setViewMode(mode) {
+                this.viewMode = mode;
             },
             toggleMenu(roomId, state) {
                 this.$set(this.hoveredMenu, roomId, state);
@@ -171,7 +206,6 @@
                     const responseData = await getRooms(tab, this.selectedDate);
                     if (responseData?.data) {
                         const filteredData = this.filterDataByTab(responseData.data, tab);
-                        console.log(filteredData);
                         this.tabData[tab].data = filteredData;
 
                         if (responseData.statistics) {
