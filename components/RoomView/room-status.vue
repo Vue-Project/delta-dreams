@@ -100,7 +100,7 @@
 
                                 <div class="row mb-5">
                                     <div class="col-md-10">
-                                        <div>reservation type </div>
+                                        <div>reservation type</div>
                                         <div>{{ room.reservation?.reservation_type_name || 'No Reservation' }}</div>
                                     </div>
                                     <div class="col-md-10">
@@ -117,7 +117,7 @@
                                     </div>
                                     <div class="col-md-12">
                                         <div>building / unit / rooms</div>
-                                        <div>{{ room.building?.name || 'No name' }} / {{ room.code || 'No code' }} / {{room.rooms }}</div>
+                                        <div>{{ room.building?.name || 'No name' }} / {{ room.code || 'No code' }} / {{ room.rooms }}</div>
                                     </div>
                                 </div>
 
@@ -135,11 +135,84 @@
                 </div>
                 <!-- عرض القائمة -->
                 <div v-else class="list-group">
-
-                </div>
-                <!-- عرض القائمة -->
-                <div v-else class="list-group">
-
+                    <div class="table-responsive">
+                        <table class="table ">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Guest Name</th>
+                                    <th>Res. Type</th>
+                                    <th>Arrival</th>
+                                    <th>Departure</th>
+                                    <th>Booking Info</th>
+                                    <th>Total ($)</th>
+                                    <th>Paid ($)</th>
+                                    <th>Balance ($)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-border-bottom-0 cursor-pointer">
+                                <tr @click="handleRoomClick(room)" v-for="room in tabData[tab].data" :key="room.id">
+                                    <td>
+                                        <h5 class="m-0 me-2">{{ room.reservation?.reserved_by?.name || 'No Guest' }}</h5>
+                                        <div>
+                                            <i class="fa-solid fa-person"></i>
+                                            {{ room.reservation?.children || '0' }}
+                                            <i class="fa-solid fa-child"></i>
+                                            {{ room.reservation?.adults || '0' }}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <p class="m-0 me-2">{{ room.reservation?.reservation_type_name || 'No Reservation' }}</p>
+                                    </td>
+                                    <td>
+                                        <p class="m-0 me-2">{{ formatDate(room.reservation?.checkin_date) }}</p>
+                                        <p class="m-0 me-2">{{ room.reservation?.checkin_time || '00:00:00' }}</p>
+                                    </td>
+                                    <td>
+                                        <p class="m-0 me-2">{{ formatDate(room.reservation?.checkout_date) }}</p>
+                                        <p class="m-0 me-2">{{ room.reservation?.checkout_time || '15:00:00' }}</p>
+                                    </td>
+                                    <td>
+                                        <p class="m-0 me-2">{{ room.building?.name || 'No name' }} / {{ room.code || 'No code' }} / {{ room.rooms }}</p>
+                                        <p class="m-0 me-2">Booking Date: {{ formatDate(room.reservation?.booking_source?.created_at) }}</p>
+                                    </td>
+                                    <td>
+                                        <p class="m-0 me-2">${{ room.reservation?.unit?.price || '0.00' }}</p>
+                                    </td>
+                                    <td>
+                                        <p class="m-0 me-2">${{ room.reservation?.unit?.paid || '0.00' }}</p>
+                                    </td>
+                                    <td class="d-flex justify-content-between border-bottom-0">
+                                        <p class="m-0 me-2 text-danger">${{ (room.reservation?.unit?.price || 0) - (room.reservation?.unit?.paid || 0) }}</p>
+                                        <div class="btn-group" id="hover-dropdown-demo" @mouseenter="toggleMenu(room.id, true)" @mouseleave="toggleMenu(room.id, false)">
+                                            <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none">
+                                                <i class="fa-solid fa-ellipsis-vertical"></i>
+                                            </button>
+                                            <ul v-show="hoveredMenu[room.id]" class="dropdown-menu show right-0" data-popper-placement="bottom-end">
+                                                <li>
+                                                    <a class="dropdown-item" href="#">
+                                                        <i class="fa-solid fa-file-circle-plus mr-2"></i>
+                                                        Print Invoice
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item" href="#">
+                                                        <i class="fa-solid fa-calendar-plus mr-2"></i>
+                                                        Add New Booking
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item" href="#">
+                                                        <i class="fa-solid fa-list-check mr-2"></i>
+                                                        Audit Trail
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
