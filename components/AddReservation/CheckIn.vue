@@ -364,9 +364,14 @@
 
                             <SidebarAddGuest :is-sidebar-open="isSidebarOpen" @close-sidebar="toggleSidebar" @guest-added="handleGuestAdded" />
                         </div>
+
                         <div class="col-lg-2 quick-guest">
-                            <button type="button" class="btn btn-primary waves-effect waves-light" @click="toggleQuickGuestSidebar">Quick Guest</button>
+                            <button type="button" class="btn btn-primary waves-effect waves-light btn-block" @click="toggleQuickGuestSidebar">Quick Guest</button>
                             <QuickAddGuestSidebar :is-sidebar-open="isQuickGuestSidebarOpen" @close-sidebar="toggleQuickGuestSidebar" @guest-added="handleGuestAdded" />
+                        </div>
+                        <div class="col-lg-2 quick-guest">
+                            <button type="button" class="btn btn-primary waves-effect waves-light btn-block" @click="toggleHospitalitySidebar">ضيافه</button>
+                            <HospitalitySideBar :is-sidebar-open="isHospitalitySidebarOpen" @close-sidebar="toggleHospitalitySidebar" @guest-added="handleGuestAdded" />
                         </div>
 
                         <!-- <div class="offset-md-7">
@@ -492,11 +497,12 @@
     import { mapState, mapGetters } from 'vuex';
     import { validationMixin } from 'vuelidate';
     import { required, email } from 'vuelidate/lib/validators';
+    import HospitalitySideBar from '../layout/HospitalitySideBar.vue';
 
     export default {
         name: 'CheckIn',
         layout: 'component',
-        components: { SidebarAddGuest, QuickAddGuestSidebar },
+        components: { SidebarAddGuest, QuickAddGuestSidebar, HospitalitySideBar },
 
         data() {
             return {
@@ -504,6 +510,7 @@
                 showInput: false,
                 isSidebarOpen: false,
                 isQuickGuestSidebarOpen: false,
+                isHospitalitySidebarOpen: false,
                 roomCount: 1,
                 selectedTitle: 'MR.',
                 showDropdown: false,
@@ -716,6 +723,9 @@
             },
             toggleQuickGuestSidebar() {
                 this.isQuickGuestSidebarOpen = !this.isQuickGuestSidebarOpen;
+            },
+            toggleHospitalitySidebar() {
+                this.isHospitalitySidebarOpen = !this.isHospitalitySidebarOpen;
             },
 
             handleInput() {
