@@ -1,6 +1,10 @@
 @media (max-width: 1200px) {
   .checkIn-reservations {
     margin-bottom: 15px;
+
+  }
+  .date-response{
+    font-size:12px !important;
   }
 }
 

@@ -81,7 +81,7 @@
                             <div class="card-body">
                                 <div class="row d-flex align-items-center justify-content-center text-center mb-3">
                                     <div class="bg-light col-md-4">
-                                        <div class="text-dark">{{ formatDate(room.reservation?.checkin_date) }}</div>
+                                        <div class="text-dark date-response">{{ formatDate(room.reservation?.checkin_date) }}</div>
                                         <div>{{ room.reservation?.checkin_time || '00:00:00' }}</div>
                                     </div>
                                     <div class="bg-secondary col-md-4">
@@ -91,7 +91,7 @@
                                         <div>Nights</div>
                                     </div>
                                     <div class="bg-light col-md-4">
-                                        <div class="text-dark">{{ formatDate(room.reservation?.checkout_date) }}</div>
+                                        <div class="text-dark date-response">{{ formatDate(room.reservation?.checkout_date) }}</div>
                                         <div>{{ room.reservation?.checkout_time || '15:00:00' }}</div>
                                     </div>
                                 </div>
