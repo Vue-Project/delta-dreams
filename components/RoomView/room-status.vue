@@ -121,11 +121,11 @@
 
                                 <div class="row">
                                     <div class="col-md-6">Total</div>
-                                    <div class="col-md-6 text-end">${{ room.reservation?.unit?.price || '0.00' }}</div>
+                                    <div class="col-md-6 text-end">${{  room.reservation?.total || '0.00' }} EGP</div>
                                     <div class="col-md-6">Paid</div>
-                                    <div class="col-md-6 text-end">${{ room.reservation?.unit?.paid || '0.00' }}</div>
+                                    <div class="col-md-6 text-end">${{ room.reservation?.paid || '0.00' }} EGP</div>
                                     <div class="col-md-6 text-danger">Balance</div>
-                                    <div class="col-md-6 text-end text-danger">${{ (room.reservation?.unit?.price || 0) - (room.reservation?.unit?.paid || 0) }}</div>
+                                    <div class="col-md-6 text-end text-danger">${{ (room.reservation?.remaining || 0) }} EGP</div>
                                 </div>
                             </div>
                         </div>
@@ -180,13 +180,13 @@
                                         <p class="m-0 me-2">Booking Date: {{ formatDate(room.reservation?.booking_source?.created_at) }}</p>
                                     </td>
                                     <td>
-                                        <p class="m-0 me-2">${{ room.reservation?.unit?.price || '0.00' }}</p>
+                                        <p class="m-0 me-2">${{ room.reservation?.total || '0.00' }} EGP</p>
                                     </td>
                                     <td>
-                                        <p class="m-0 me-2">${{ room.reservation?.unit?.paid || '0.00' }}</p>
+                                        <p class="m-0 me-2">${{ room.reservation?.paid || '0.00' }} EGP</p>
                                     </td>
                                     <td class="d-flex justify-content-between border-bottom-0">
-                                        <p class="m-0 me-2 text-danger">${{ (room.reservation?.unit?.price || 0) - (room.reservation?.unit?.paid || 0) }}</p>
+                                        <p class="m-0 me-2 text-danger">${{ (room.reservation?.remaining || 0) }} EGP</p>
                                     </td>
                                 </tr>
                             </tbody>
