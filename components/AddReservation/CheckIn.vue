@@ -10,6 +10,7 @@
                 <form id="formReservation" class="g-3" @submit.prevent="submitAddReservation" ref="emptyForm">
                     <!--  ! Reservation  Details -->
                     <!-- change in size and icons -->
+                    <!-- {{ selectedResourceName }} -->
 
                     <div class="row">
                         <div class="col-lg-8">
@@ -175,7 +176,7 @@
                                         <tbody>
                                             <tr v-for="(item, index) in formAddReservation.units" :key="index" class="mb-2 selectStyle">
                                                 <td data-label="Project">
-                                                    <select class="form-select" :disabled="!datesSelected" v-model="item.projectId">
+                                                    <select class="form-select" :disabled="!datesSelected" v-model="item.projectId" @change="() => handleProjectChange(index, item.projectId)">
                                                         <option disabled value="">Select</option>
                                                         <option v-for="project in getProjects" :key="project.id" :value="project.id">
                                                             {{ project.name }}
@@ -183,9 +184,9 @@
                                                     </select>
                                                 </td>
                                                 <td data-label="Room Type">
-                                                    <select class="form-select" id="unitsTypes" v-model="item.roomType" @change="() => handleUnitTypeChange(index, item.roomType, formAddReservation.checkInDate, formAddReservation.checkOutDate)" :disabled="!datesSelected">
+                                                    <select class="form-select" id="unitsTypes" v-model="item.roomType" @change="() => handleUnitTypeChange(index, item.roomType, formAddReservation.checkInDate, formAddReservation.checkOutDate)" :disabled="!datesSelected || !filteredUnitTypesByRoom[index]?.length">
                                                         <option disabled value="">Select</option>
-                                                        <option v-for="unitType in unitsTypes" :key="unitType.id" :value="unitType.id">
+                                                        <option v-for="unitType in filteredUnitTypesByRoom[index] || []" :key="unitType.id" :value="unitType.id">
                                                             {{ unitType.name }}
                                                         </option>
                                                     </select>
@@ -602,6 +603,8 @@
                 isLoading: false,
                 searchQuery: '',
                 availableUnitsByRoom: [],
+                allUnitTypes: [], // Store all unit types
+                filteredUnitTypesByRoom: [],
             };
         },
         mixins: [validationMixin, flatpickrMixin],
@@ -925,16 +928,24 @@
                     const displayUnit = parts[0];
                     const displayType = parts[1];
                     const idPart = parts[2];
+
+                    // Extract project ID if it exists in the format
+                    const projectPart = parts.find(part => part.includes('Project:'));
+                    const projectId = projectPart ? projectPart.replace('Project:', '').trim() : '';
+
                     const [unitTypeId, unitId] = idPart.replace('ID: ', '').split('-');
 
                     // First set the room type
                     this.formAddReservation.units[0].roomType = unitTypeId;
                     this.formAddReservation.units[0].unitTypeId = unitTypeId;
+                    // Set the project ID for the unit
+                    this.formAddReservation.units[0].projectId = projectId;
+
                     const checkInDate = this.formAddReservation.checkInDate;
                     const checkOutDate = this.formAddReservation.checkOutDate;
 
-                    // Wait for units to be fetched
-                    await this.handleUnitTypeChange(0, unitTypeId, checkInDate, checkOutDate);
+                    // Wait for units to be fetched with project ID filter
+                    await this.handleUnitTypeChange(0, unitTypeId, checkInDate, checkOutDate, projectId);
 
                     // After units are loaded, set the unit ID
                     this.$nextTick(() => {
@@ -949,7 +960,6 @@
                     });
                 }
             },
-
             formatRateAmount() {
                 const value = this.formAddReservation.units[0].rateAmount;
                 if (isNaN(value) || value < 0) {
@@ -961,7 +971,67 @@
                     this.formAddReservation.units[0].rateAmount = parseFloat(value).toFixed(2);
                 }
             },
-            async handleUnitTypeChange(roomIndex, unitTypeId, checkInDate, checkOutDate) {
+            // async handleUnitTypeChange(roomIndex, unitTypeId, checkInDate, checkOutDate, projectId) {
+            //     try {
+            //         if (unitTypeId) {
+            //             // Reset selected unit for this room
+            //             this.formAddReservation.units[roomIndex].unitId = '';
+            //             // Set the unitTypeId for this specific unit
+            //             this.formAddReservation.units[roomIndex].unitTypeId = unitTypeId;
+
+            //             // Get project ID from parameter or from the form data
+            //             const project_id = projectId || this.formAddReservation.units[roomIndex].projectId || '';
+
+            //             // Fetch units for selected type with date parameters
+            //             const response = await getUnits(unitTypeId, {
+            //                 start_date: checkInDate,
+            //                 end_date: checkOutDate,
+            //                 reservation_id: 0,
+            //                 project_id: project_id, // Include project ID in the API request
+            //             });
+            //             this.$set(this.availableUnitsByRoom, roomIndex, response.data.data);
+            //         } else {
+            //             this.$set(this.availableUnitsByRoom, roomIndex, []);
+            //         }
+            //     } catch (error) {
+            //         console.error('Error fetching units:', error);
+            //         this.$set(this.availableUnitsByRoom, roomIndex, []);
+            //     }
+            // },
+            async handleProjectChange(roomIndex, projectId) {
+                try {
+                    // Reset room type and unit selections
+                    this.formAddReservation.units[roomIndex].roomType = '';
+                    this.formAddReservation.units[roomIndex].unitId = '';
+
+                    // Store the project ID
+                    this.formAddReservation.units[roomIndex].projectId = projectId;
+
+                    // Filter unit types by project ID
+                    if (projectId) {
+                        // If we haven't loaded all unit types yet, fetch them
+                        if (this.allUnitTypes.length === 0) {
+                            const response = await getUnitTypes();
+                            this.allUnitTypes = response.data.data || [];
+                        }
+
+                        // Filter unit types by project ID
+                        const filteredTypes = this.allUnitTypes.filter(type => type.project_id == projectId || type.project_id == null);
+
+                        // Set filtered unit types for this room
+                        this.$set(this.filteredUnitTypesByRoom, roomIndex, filteredTypes);
+                    } else {
+                        // If no project selected, clear filtered unit types
+                        this.$set(this.filteredUnitTypesByRoom, roomIndex, []);
+                    }
+                } catch (error) {
+                    console.error('Error filtering unit types:', error);
+                    this.$set(this.filteredUnitTypesByRoom, roomIndex, []);
+                }
+            },
+
+            // Update the existing handleUnitTypeChange to use the project ID from the unit
+            async handleUnitTypeChange(roomIndex, unitTypeId, checkInDate, checkOutDate, projectId) {
                 try {
                     if (unitTypeId) {
                         // Reset selected unit for this room
@@ -969,11 +1039,15 @@
                         // Set the unitTypeId for this specific unit
                         this.formAddReservation.units[roomIndex].unitTypeId = unitTypeId;
 
+                        // Get project ID from the unit itself
+                        const project_id = this.formAddReservation.units[roomIndex].projectId || '';
+
                         // Fetch units for selected type with date parameters
                         const response = await getUnits(unitTypeId, {
                             start_date: checkInDate,
                             end_date: checkOutDate,
                             reservation_id: 0,
+                            project_id: project_id, // Include project ID in the API request
                         });
                         this.$set(this.availableUnitsByRoom, roomIndex, response.data.data);
                     } else {
@@ -984,7 +1058,6 @@
                     this.$set(this.availableUnitsByRoom, roomIndex, []);
                 }
             },
-
             async handleSearch() {
                 this.currentPage = 1;
                 this.searchQuery = this.formAddReservation.guestInformation.name;

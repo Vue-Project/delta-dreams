@@ -276,6 +276,7 @@
                                         resourcesByGroup[building.name].push({
                                             id: `${building.id}-${unit.id}`,
                                             resourceId: building.id,
+                                            projectId: building?.project_id,
                                             title: `${unit.building?.name}/${unit.name}`,
                                             groupId: building.name,
                                             classNames: ['unit'],
@@ -414,13 +415,16 @@
                 // Store nights count
                 this.selectedNights = nights;
 
-                // Capture resource ID and name
+                // Capture resource ID, name and project ID
                 if (resource) {
                     const unitTitle = resource.title || 'Unknown Unit';
                     const buildingName = resource.extendedProps.groupId || 'Unknown Building';
-                    const resourceId = resource.id || 'Unknown ID'; // Get the resource ID
-                    this.selectedResourceName = `${unitTitle} - ${buildingName} - ID: ${resourceId}`; // Include the ID in the name
-                    this.selectedResourceId = `${resource.title}  - ID: ${resourceId}`;
+                    const resourceId = resource.id || 'Unknown ID';
+                    const projectId = resource.extendedProps.projectId || 'No Project'; // Get project ID from extendedProps
+
+                    // Include project ID in the resource name
+                    this.selectedResourceName = `${unitTitle} - ${buildingName} - ID: ${resourceId} - Project: ${projectId}`;
+                    this.selectedResourceId = `${resource.title} - ID: ${resourceId} - Project: ${projectId}`;
                 } else {
                     this.selectedResourceId = null;
                     this.selectedResourceName = null;
@@ -627,7 +631,7 @@
                 unitData.dates.forEach(dateInfo => {
                     if (dateInfo.is_reserved && dateInfo.reservation && !handledReservations.has(dateInfo.reservation.id)) {
                         const reservation = dateInfo.reservation;
-                        console.log('thisis mae data', reservation);
+                        // console.log('thisis mae data', reservation);
 
                         // Determine color based on reservation status
                         let eventColor;
