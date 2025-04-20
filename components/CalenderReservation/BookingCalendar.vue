@@ -751,6 +751,7 @@
                     is_cancel: event.extendedProps?.reservation?.is_cancel,
                     unit_code: event.extendedProps?.reservation?.unit?.code,
                     reservation_id: event.extendedProps?.reservation?.id,
+                    building_name: event.extendedProps?.reservation?.unit?.building?.name,
                 };
             },
             transformAllUnitsToEvents() {

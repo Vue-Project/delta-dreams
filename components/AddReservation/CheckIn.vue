@@ -75,21 +75,12 @@
 
                                     <span class="error-message small" v-if="$v.formAddReservation.reservationType.$error">Reservation type is required</span>
                                 </div> -->
-                                <div class="col-lg-9 col-12 mb-lg-4 ps-md-2 col-md-6 p-0 pe-md-0">
-                                    <label for="bookingSource" class="form-label">Booking Source</label>
-                                    <select class="form-select" id="bookingSource" v-model="formAddReservation.bookingSource" ref="bookingSource">
-                                        <option value="" disabled>Select</option>
-                                        <option v-for="source in bookingSources" :key="source.id" :value="source.id">
-                                            {{ source.name }}
-                                        </option>
-                                    </select>
-                                </div>
                             </div>
                         </div>
                         <div class="p-0">
                             <div class="col-lg-6 col-12 mb-4 p-0">
                                 <div class="row">
-                                    <!-- <div class="col-lg-6 col-md-6">
+                                    <div class="col-lg-6 col-md-6">
                                         <label for="bookingSource" class="form-label">Booking Source</label>
                                         <select class="form-select" id="bookingSource" v-model="formAddReservation.bookingSource" ref="bookingSource">
                                             <option value="" disabled>Select</option>
@@ -97,7 +88,7 @@
                                                 {{ source.name }}
                                             </option>
                                         </select>
-                                    </div> -->
+                                    </div>
                                     <div class="col-lg-6 col-md-6 buisnessSourceInput">
                                         <label for="businessSource" class="form-label">Business Source</label>
                                         <select class="form-select" id="businessSource" v-model="formAddReservation.businessSource" ref="businessSource">
@@ -184,7 +175,7 @@
                                                     </select>
                                                 </td>
                                                 <td data-label="Room Type">
-                                                    <select class="form-select" id="unitsTypes" v-model="item.roomType" @change="() => handleUnitTypeChange(index, item.roomType, formAddReservation.checkInDate, formAddReservation.checkOutDate)" :disabled="!datesSelected || !filteredUnitTypesByRoom[index]?.length">
+                                                    <select class="form-select" id="unitsTypes" ref="unitsTypes" v-model="item.roomType" @change="() => handleUnitTypeChange(index, item.roomType, formAddReservation.checkInDate, formAddReservation.checkOutDate)" :disabled="!datesSelected || !filteredUnitTypesByRoom[index]?.length">
                                                         <option disabled value="">Select</option>
                                                         <option v-for="unitType in filteredUnitTypesByRoom[index] || []" :key="unitType.id" :value="unitType.id">
                                                             {{ unitType.name }}
@@ -202,7 +193,7 @@
                                                     <span class="error-message small" v-if="$v.formAddReservation.units.$each[index].rateType.$error">Rate type is required</span>
                                                 </td>
                                                 <td data-label="Room">
-                                                    <select class="form-select" v-model="item.unitId" :disabled="!datesSelected || !availableUnitsByRoom[index]?.length">
+                                                    <select class="form-select" ref="unitSelect" v-model="item.unitId" :disabled="!datesSelected || !availableUnitsByRoom[index]?.length">
                                                         <option disabled value="">Select Unit</option>
                                                         <option v-for="unit in availableUnitsByRoom[index] || []" :key="unit.id" :value="unit.id">{{ unit.building?.name }} / {{ unit.code }}</option>
                                                     </select>
@@ -934,22 +925,50 @@
             },
             async spliceSelectedResourceName() {
                 if (this.selectedResourceName) {
+                    // console.log('Selected Resource Name:', this.selectedResourceName);
                     const parts = this.selectedResourceName.split(' - ');
                     const displayUnit = parts[0];
                     const displayType = parts[1];
                     const idPart = parts[2];
 
+                    // console.log('Parsed parts:', { displayUnit, displayType, idPart });
+
                     // Extract project ID if it exists in the format
                     const projectPart = parts.find(part => part.includes('Project:'));
                     const projectId = projectPart ? projectPart.replace('Project:', '').trim() : '';
 
-                    const [unitTypeId, unitId] = idPart.replace('ID: ', '').split('-');
+                    // Fix the ID parsing to handle different formats
+                    let unitTypeId, unitId;
+                    if (idPart && idPart.includes('ID:')) {
+                        const idString = idPart.replace('ID:', '').trim();
+                        [unitTypeId, unitId] = idString.split('-').map(id => id.trim());
+                    }
 
-                    // First set the room type
+                    // console.log('Extracted IDs:', { unitTypeId, unitId, projectId });
+
+                    if (!unitTypeId) {
+                        console.error('Failed to extract unitTypeId from selectedResourceName');
+                        return;
+                    }
+
+                    // First set the project ID for the unit
+                    if (projectId) {
+                        this.formAddReservation.units[0].projectId = projectId;
+                        // Trigger project change to load unit types
+                        await this.handleProjectChange(0, projectId);
+
+                        // Wait for the project change to complete
+                        await this.$nextTick();
+                    }
+
+                    // Now set the room type and unit type ID
                     this.formAddReservation.units[0].roomType = unitTypeId;
                     this.formAddReservation.units[0].unitTypeId = unitTypeId;
-                    // Set the project ID for the unit
-                    this.formAddReservation.units[0].projectId = projectId;
+
+                    // Force the select element to update
+                    if (this.$refs.unitsTypes && this.$refs.unitsTypes[0]) {
+                        this.$refs.unitsTypes[0].value = unitTypeId;
+                    }
 
                     const checkInDate = this.formAddReservation.checkInDate;
                     const checkOutDate = this.formAddReservation.checkOutDate;
@@ -958,7 +977,8 @@
                     await this.handleUnitTypeChange(0, unitTypeId, checkInDate, checkOutDate, projectId);
 
                     // After units are loaded, set the unit ID
-                    this.$nextTick(() => {
+                    await this.$nextTick();
+                    if (unitId) {
                         // Convert unitId to number if needed (since select values are often strings)
                         const numericUnitId = Number(unitId);
                         this.formAddReservation.units[0].unitId = numericUnitId;
@@ -967,7 +987,7 @@
                         if (this.$refs.unitSelect && this.$refs.unitSelect[0]) {
                             this.$refs.unitSelect[0].value = numericUnitId;
                         }
-                    });
+                    }
                 }
             },
             formatRateAmount() {

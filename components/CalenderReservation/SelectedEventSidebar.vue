@@ -152,7 +152,7 @@
                                     <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                         <div class="me-2">
                                             <h6 class="mb-0">Unit Code</h6>
-                                            <small class="text-muted">{{ selectedEvent.unit_code }}</small>
+                                            <small class="text-muted">{{ selectedEvent.building_name }}/{{ selectedEvent.unit_code }}</small>
                                         </div>
                                     </div>
                                 </div>
