@@ -80,17 +80,17 @@
 
                             <div class="card-body">
                                 <div class="row d-flex align-items-center justify-content-center text-center mb-3">
-                                    <div class="bg-light col-md-5">
+                                    <div class="bg-light col-md-4">
                                         <div class="text-dark">{{ formatDate(room.reservation?.checkin_date) }}</div>
                                         <div>{{ room.reservation?.checkin_time || '00:00:00' }}</div>
                                     </div>
-                                    <div class="bg-secondary col-md-2">
+                                    <div class="bg-secondary col-md-4">
                                         <div class="text-dark">
                                             {{ (new Date(room.reservation?.checkout_date) - new Date(room.reservation?.checkin_date)) / (1000 * 3600 * 24) || 0 }}
                                         </div>
                                         <div>Nights</div>
                                     </div>
-                                    <div class="bg-light col-md-5">
+                                    <div class="bg-light col-md-4">
                                         <div class="text-dark">{{ formatDate(room.reservation?.checkout_date) }}</div>
                                         <div>{{ room.reservation?.checkout_time || '15:00:00' }}</div>
                                     </div>
@@ -120,12 +120,12 @@
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-md-10">Total</div>
-                                    <div class="col-md-2">${{ room.reservation?.unit?.price || '0.00' }}</div>
-                                    <div class="col-md-10">Paid</div>
-                                    <div class="col-md-2">${{ room.reservation?.unit?.paid || '0.00' }}</div>
-                                    <div class="col-md-10 text-danger">Balance</div>
-                                    <div class="col-md-2 text-danger">${{ (room.reservation?.unit?.price || 0) - (room.reservation?.unit?.paid || 0) }}</div>
+                                    <div class="col-md-6">Total</div>
+                                    <div class="col-md-6 text-end">${{ room.reservation?.unit?.price || '0.00' }}</div>
+                                    <div class="col-md-6">Paid</div>
+                                    <div class="col-md-6 text-end">${{ room.reservation?.unit?.paid || '0.00' }}</div>
+                                    <div class="col-md-6 text-danger">Balance</div>
+                                    <div class="col-md-6 text-end text-danger">${{ (room.reservation?.unit?.price || 0) - (room.reservation?.unit?.paid || 0) }}</div>
                                 </div>
                             </div>
                         </div>
@@ -139,6 +139,7 @@
                                 <tr>
                                     <th>Guest Name</th>
                                     <th>Res. Type</th>
+                                    <th>Nights</th>
                                     <th>Arrival</th>
                                     <th>Departure</th>
                                     <th>Booking Info</th>
@@ -160,6 +161,11 @@
                                     </td>
                                     <td>
                                         <p class="m-0 me-2">{{ room.reservation?.reservation_type_name || 'No Reservation' }}</p>
+                                    </td>
+                                    <td>
+                                      <div class="text-dark">
+                                        {{ (new Date(room.reservation?.checkout_date) - new Date(room.reservation?.checkin_date)) / (1000 * 3600 * 24) || 0 }}
+                                    </div>
                                     </td>
                                     <td>
                                         <p class="m-0 me-2">{{ formatDate(room.reservation?.checkin_date) }}</p>
