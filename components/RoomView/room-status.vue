@@ -4,9 +4,31 @@
 
         <div class="card-header">
             <ul class="nav nav-tabs" role="tablist">
-                <div class="col-md-2 col-12 calendarDate mt-2">
+                <div class="col-md-3 col-lg-2 col-8 calendarDate mt-2">
                     <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD" id="flatpickr-date-04" ref="datePicker4" aria-label="input for date" v-model="selectedDate" />
                     <i class="fa-solid fa-calendar-days date-icon"></i>
+                </div>
+                <div class="col-4 mt-2 d-block d-md-none">
+                    <button
+                        class="btn"
+                        :class="{
+                            'btn-primary': viewMode === 'card',
+                            'btn-secondary': viewMode !== 'card',
+                        }"
+                        @click="setViewMode('card')"
+                    >
+                        <i class="fa-solid fa-grip"></i>
+                    </button>
+                    <button
+                        class="btn"
+                        :class="{
+                            'btn-primary': viewMode === 'list',
+                            'btn-secondary': viewMode !== 'list',
+                        }"
+                        @click="setViewMode('list')"
+                    >
+                        <i class="fa-solid fa-list"></i>
+                    </button>
                 </div>
                 <li class="nav-item col-6 col-md" role="presentation" v-for="tab in tabs" :key="tab">
                     <button class="nav-link" :class="{ active: activeTab === tab }" @click="setActiveTab(tab)">
@@ -16,7 +38,7 @@
                         </span>
                     </button>
                 </li>
-                <div class="ms-auto me-3">
+                <div class="ms-auto me-3 d-none d-md-block">
                     <button
                         class="btn"
                         :class="{
@@ -57,26 +79,6 @@
                                     <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none">
                                         <i class="fa-solid fa-ellipsis-vertical"></i>
                                     </button>
-                                    <ul v-show="hoveredMenu[room.id]" class="dropdown-menu show" data-popper-placement="bottom-end">
-                                        <li>
-                                            <a class="dropdown-item" href="#">
-                                                <i class="fa-solid fa-file-circle-plus mr-2"></i>
-                                                Print Invoice
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" href="#">
-                                                <i class="fa-solid fa-calendar-plus mr-2"></i>
-                                                Add New Booking
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" href="#">
-                                                <i class="fa-solid fa-list-check mr-2"></i>
-                                                Audit Trail
-                                            </a>
-                                        </li>
-                                    </ul>
                                 </div>
                             </div>
 
@@ -136,7 +138,7 @@
                 <!-- عرض القائمة -->
                 <div v-else class="list-group">
                     <div class="table-responsive">
-                        <table class="table ">
+                        <table class="table">
                             <thead class="table-light">
                                 <tr>
                                     <th>Guest Name</th>
@@ -187,26 +189,6 @@
                                             <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none">
                                                 <i class="fa-solid fa-ellipsis-vertical"></i>
                                             </button>
-                                            <ul v-show="hoveredMenu[room.id]" class="dropdown-menu show right-0" data-popper-placement="bottom-end">
-                                                <li>
-                                                    <a class="dropdown-item" href="#">
-                                                        <i class="fa-solid fa-file-circle-plus mr-2"></i>
-                                                        Print Invoice
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item" href="#">
-                                                        <i class="fa-solid fa-calendar-plus mr-2"></i>
-                                                        Add New Booking
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item" href="#">
-                                                        <i class="fa-solid fa-list-check mr-2"></i>
-                                                        Audit Trail
-                                                    </a>
-                                                </li>
-                                            </ul>
                                         </div>
                                     </td>
                                 </tr>
