@@ -4,54 +4,22 @@
     <!-- <momenalert></momenalert> -->
     <Loader :visible="isLoading" />
     <div :class="{ 'loading-overlay': isLoading }">
-      <FilterCalendar
-        ref="filterComponent"
-        :statistics="statistics"
-        :buildingNames="buildingNames"
-        @show-all-resources="showAllResources"
-        @show-building-resources="showBuildingResources"
-        @date-selected="SelectedDateFilterCalendar"
-      />
-      <FullCalendar
-        :options="calendarOptions"
-        @select="handleSelect"
-        ref="calendar"
-        :selectedDate="selectedDate"
-      >
+      <FilterCalendar ref="filterComponent" :statistics="statistics" :buildingNames="buildingNames" @show-all-resources="showAllResources" @show-building-resources="showBuildingResources" @date-selected="SelectedDateFilterCalendar" />
+      <FullCalendar :options="calendarOptions" @select="handleSelect" ref="calendar" :selectedDate="selectedDate">
         <template v-slot:eventContent="arg">
-          <b>{{ arg.event.title }}</b>
+          <div class="event-content">
+            <span class="event-title">{{ arg.event.title }}</span>
+            <span class="event-shortname">{{ shortName }}</span>
+          </div>
         </template>
       </FullCalendar>
       <!-- <CalendarFooter :occupancyData="occupancyData" /> -->
       <div v-if="isOverlayVisible" class="overlay" @click="closePopover"></div>
-      <PopoverComponent
-        v-if="isPopoverVisible"
-        :isPopoverVisible="isPopoverVisible"
-        :popoverStyle="popoverStyle"
-        :popoverArrowLeft="popoverArrowLeft"
-        :firstSelectedDate="firstSelectedDate"
-        :lastSelectedDate="lastSelectedDate"
-        @go-to-add-reservation="goToAddReservation"
-        @toggle-sidebar="toggleSidebar"
-        @close-popover="closePopover"
-      />
-      <SidebarBlockRoom
-        :is-sidebar-open="isSidebarOpen"
-        title="Block Room"
-        width="400px"
-        @close-sidebar="toggleSidebar"
-        height="auto"
-      >
-        <BlockRoomForm
-          :selectedDates="selectedDates"
-          :selectedResourceId="selectedResourceId"
-          @close-sidebar="toggleSidebar"
-        />
+      <PopoverComponent v-if="isPopoverVisible" :isPopoverVisible="isPopoverVisible" :popoverStyle="popoverStyle" :popoverArrowLeft="popoverArrowLeft" :firstSelectedDate="firstSelectedDate" :lastSelectedDate="lastSelectedDate" @go-to-add-reservation="goToAddReservation" @toggle-sidebar="toggleSidebar" @close-popover="closePopover" />
+      <SidebarBlockRoom v-if="BlockedPermission !== 0" :is-sidebar-open="isSidebarOpen" title="Block Room" width="400px" @close-sidebar="toggleSidebar" height="auto">
+        <BlockRoomForm :selectedDates="selectedDates" :selectedResourceId="selectedResourceId" @close-sidebar="toggleSidebar" />
       </SidebarBlockRoom>
-      <SelectedEventSidebar
-        :selectedEvent="selectedEvent"
-        @navigate-to-edit-reservation="navigateToEditReservation"
-      />
+      <SelectedEventSidebar :selectedEvent="selectedEvent" @navigate-to-edit-reservation="navigateToEditReservation" />
     </div>
   </section>
 </template>
@@ -92,21 +60,23 @@ import SelectedEventSidebar from "./SelectedEventSidebar.vue";
 import HeaderCalender from "./HeaderCalender.vue";
 
 // API service for fetching calendar data
-import {
-  deleteBlock,
-  getCalenderAllUnits,
-  postUpdateBlock,
-  postUpdateReservation,
-  putUpdateBlock,
-} from "../../Api/CalenderApi";
+import
+  {
+    deleteBlock,
+    getCalenderAllUnits,
+    postUpdateBlock,
+    postUpdateReservation,
+    putUpdateBlock,
+  } from "../../Api/CalenderApi";
 import Swal from "sweetalert2";
-import {
-  handleSubmissionError,
-  showSuccessAlert,
-  showConfirmationDialog,
-  showUpdateConfirmationDialog,
-  showAlert,
-} from "../../Api/MassageValidation/alertUtilities";
+import
+  {
+    handleSubmissionError,
+    showSuccessAlert,
+    showConfirmationDialog,
+    showUpdateConfirmationDialog,
+    showAlert,
+  } from "../../Api/MassageValidation/alertUtilities";
 import { mapActions } from "vuex";
 
 export default {
@@ -122,7 +92,8 @@ export default {
     FilterCalendar,
     HeaderCalender,
   },
-  data() {
+  data ()
+  {
     return {
       linkToAddReservation: "/add-reservation",
       datesBuilding: [],
@@ -139,6 +110,7 @@ export default {
       nationalTypes: [],
       genderTypes: [],
       projects: [],
+      BlockedPermission: '',
       remindGuestType: [],
       isSidebarOpen: false,
       isPopoverBodyVisible: true, // Body visibility
@@ -174,7 +146,8 @@ export default {
         eventDrop: this.handleEventChange,
         eventResize: this.handleEventChange,
         resourceOrder: "original",
-        eventDidMount: (info) => {
+        eventDidMount: (info) =>
+        {
           this.adjustHarnessPosition(info);
           if (info.event.extendedProps?.fullName) {
             info.el.setAttribute(
@@ -192,7 +165,8 @@ export default {
         initialDate: this.getTwoDaysAgoDate(),
 
         // eventColor: 'red', // This will override individual event colors
-        slotLabelContent: (arg) => {
+        slotLabelContent: (arg) =>
+        {
           const date = new Date(arg.date);
           // For level 0 (Months), show only the month
           if (arg.level === 0) {
@@ -223,7 +197,8 @@ export default {
 
           return null; // For other levels, return null (if any)
         },
-        resourceLabelDidMount: function (info) {
+        resourceLabelDidMount: function (info)
+        {
           // Get the resource's extendedProps
           const { is_clean, is_smoking } = info.resource.extendedProps;
 
@@ -273,7 +248,8 @@ export default {
           const tooltipTriggerList = [].slice.call(
             iconContainer.querySelectorAll('[data-bs-toggle="tooltip"]')
           );
-          tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+          tooltipTriggerList.forEach(function (tooltipTriggerEl)
+          {
             new bootstrap.Tooltip(tooltipTriggerEl); // Activate tooltip
           });
         },
@@ -314,14 +290,16 @@ export default {
      * @param {Array} selectedIds - Building IDs to filter
      * @param {Date} selectedDate - Date to filter units
      */
-    createResources(selectedIds = [], selectedDate = null) {
+    createResources (selectedIds = [], selectedDate = null)
+    {
       const resources = [];
 
       if (Array.isArray(this.data)) {
         // First, organize units by building/group
         const resourcesByGroup = {};
 
-        this.data.forEach((building) => {
+        this.data.forEach((building) =>
+        {
           // Only process if building is selected
           if (selectedIds.length === 0 || selectedIds.includes(building.name)) {
             // Create an array for this building if it doesn't exist
@@ -331,7 +309,8 @@ export default {
 
             // Add units under the building if they exist
             if (building.units) {
-              building.units.forEach((unit) => {
+              building.units.forEach((unit) =>
+              {
                 if (
                   !selectedDate ||
                   (unit.date && unit.date === selectedDate)
@@ -357,8 +336,10 @@ export default {
         });
 
         // Sort each group by code
-        Object.keys(resourcesByGroup).forEach((groupName) => {
-          resourcesByGroup[groupName].sort((a, b) => {
+        Object.keys(resourcesByGroup).forEach((groupName) =>
+        {
+          resourcesByGroup[groupName].sort((a, b) =>
+          {
             // If we have valid numbers, sort numerically
             if (
               typeof a.codeForSorting === "number" &&
@@ -373,7 +354,8 @@ export default {
           });
 
           // Remove the sorting property as it's not needed anymore
-          resourcesByGroup[groupName].forEach((resource) => {
+          resourcesByGroup[groupName].forEach((resource) =>
+          {
             delete resource.codeForSorting;
             resources.push(resource);
           });
@@ -390,7 +372,8 @@ export default {
      * Updates calendar resources based on selected building IDs
      * @param {Array} selectedIds - Building IDs to show
      */
-    updateCalendarResources(selectedIds = []) {
+    updateCalendarResources (selectedIds = [])
+    {
       const resources = this.createResources(selectedIds); // Create resources based on selectedIds
       const calendar = this.$refs.calendar?.getApi();
       if (calendar) {
@@ -399,10 +382,12 @@ export default {
         console.error("FullCalendar API is not accessible.");
       }
     },
-    showBuildingResources(buildingNames) {
+    showBuildingResources (buildingNames)
+    {
       this.updateCalendarResources(buildingNames); // Pass the selected building names
     },
-    showAllResources() {
+    showAllResources ()
+    {
       this.updateCalendarResources(); // No selectedIds means show all resources
     },
 
@@ -414,11 +399,13 @@ export default {
      * Handles date range selection
      * @param {Object} info - Contains start/end dates and resource
      */
-    handleSelect(info) {
+    handleSelect (info)
+    {
       const { start, end, resource } = info;
 
       // Helper to get current Egypt time
-      const getCurrentEgyptTime = () => {
+      const getCurrentEgyptTime = () =>
+      {
         const now = new Date();
         return new Date(
           now.toLocaleString("en-US", { timeZone: "Africa/Cairo" })
@@ -450,7 +437,8 @@ export default {
       this.selectedDates = [];
 
       // Helper to format date with time in Egypt timezone
-      const formatDateTimeEgypt = (date) => {
+      const formatDateTimeEgypt = (date) =>
+      {
         const formatter = new Intl.DateTimeFormat("en-GB", {
           timeZone: "Africa/Cairo",
           day: "2-digit",
@@ -464,7 +452,8 @@ export default {
       };
 
       // Helper to format date only (no time) in Egypt timezone
-      const formatDateOnly = (date) => {
+      const formatDateOnly = (date) =>
+      {
         const formatter = new Intl.DateTimeFormat("en-GB", {
           timeZone: "Africa/Cairo",
           day: "2-digit",
@@ -518,7 +507,8 @@ export default {
       // Show overlay if required
       this.showOverlay();
     },
-    getTwoDaysAgoDate() {
+    getTwoDaysAgoDate ()
+    {
       const today = new Date();
       //   console.log(today);
 
@@ -534,11 +524,13 @@ export default {
     // UI ACTIONS
     // ==============================================
 
-    updateHighlightedText(start, end, nights) {
+    updateHighlightedText (start, end, nights)
+    {
       const calendarEl = document.querySelector(".fc");
       const highlightCells = calendarEl.querySelectorAll(".fc-highlight");
 
-      highlightCells.forEach((highlight) => {
+      highlightCells.forEach((highlight) =>
+      {
         const tooltip = document.createElement("div");
         tooltip.classList.add("selected-days-tooltip");
         tooltip.textContent = `${nights} Night${nights > 1 ? "s" : ""}`;
@@ -559,11 +551,13 @@ export default {
     //   }
     // },
 
-    showPopover() {
+    showPopover ()
+    {
       this.isPopoverVisible = true;
       this.isPopoverBodyVisible = true; // Ensure body is visible when popover shows
 
-      this.$nextTick(() => {
+      this.$nextTick(() =>
+      {
         const popoverElement = document.querySelector(".popover");
         this.popoverHeight = popoverElement ? popoverElement.offsetHeight : 0;
 
@@ -573,9 +567,8 @@ export default {
           const rect = lastHighlight.getBoundingClientRect();
 
           this.popoverStyle = {
-            left: `${
-              rect.left + rect.width / 2 - popoverElement.offsetWidth / 2
-            }px`,
+            left: `${rect.left + rect.width / 2 - popoverElement.offsetWidth / 2
+              }px`,
             top: `${rect.top + window.scrollY - this.popoverHeight - 90}px`,
           };
 
@@ -585,15 +578,27 @@ export default {
         }
       });
     },
-    showOverlay() {
+    showOverlay ()
+    {
       this.isOverlayVisible = true; // Show the overlay
     },
 
-    closePopover() {
+    closePopover ()
+    {
       this.isPopoverVisible = false;
       this.isOverlayVisible = false;
     },
-    toggleSidebar() {
+    toggleSidebar ()
+    {
+      // Check permission before toggling sidebar
+      if (this.BlockedPermission === 0) {
+        showAlert({
+          title: "Access Denied",
+          text: "You don't have permission to block rooms.",
+          icon: "error",
+        });
+        return;
+      }
       this.isSidebarOpen = !this.isSidebarOpen;
       this.isPopoverVisible = false;
       this.isOverlayVisible = false;
@@ -602,7 +607,8 @@ export default {
     // ==============================================
     // EVENT HANDLING
     // ==============================================
-    handleEventClick(info) {
+    handleEventClick (info)
+    {
       if (info.event.extendedProps.is_blocked) {
         // Format dates for display
         const startDate = info.event.start.toLocaleString("en-US", {
@@ -623,23 +629,36 @@ export default {
           room: info.event.extendedProps.room || "Not specified",
         };
 
+        // Show detailed confirmation dialog only if user has permission
+        if (this.BlockedPermission === 0) {
+          Swal.fire({
+            title: "Access Denied",
+            text: "You don't have permission to manage blocked periods.",
+            icon: "error",
+            showConfirmButton: false,
+            timer: 2000
+          });
+          return;
+        }
+
         // Show detailed confirmation dialog
         Swal.fire({
           title: "Blocked Room Details",
           html: `
-        <div class="text-left">
-          <p><strong>Start:</strong> ${startDate}</p>
-          <p><strong>End:</strong> ${endDate}</p>
-          <p><strong>Blocked Reason:</strong> ${this.selectedBlockedEvent.title}</p>
-        </div>
-      `,
+            <div class="text-left">
+              <p><strong>Start:</strong> ${startDate}</p>
+              <p><strong>End:</strong> ${endDate}</p>
+              <p><strong>Blocked Reason:</strong> ${this.selectedBlockedEvent.title}</p>
+            </div>
+          `,
           icon: "info",
           showCancelButton: true,
           confirmButtonColor: "#7367f0",
           cancelButtonColor: "#e2e1e5",
           confirmButtonText: "Delete",
           cancelButtonText: "Close",
-        }).then((result) => {
+        }).then((result) =>
+        {
           if (result.isConfirmed) {
             // Show delete confirmation
             this.deleteBlockedPeriod();
@@ -655,7 +674,8 @@ export default {
       }
     },
 
-    async deleteBlockedPeriod() {
+    async deleteBlockedPeriod ()
+    {
       try {
         // Make API call to delete the blocked period
         await deleteBlock(this.selectedBlockedEvent.id);
@@ -686,12 +706,14 @@ export default {
       }
     },
 
-    transformUnitToEvents(unitData) {
+    transformUnitToEvents (unitData)
+    {
       const events = [];
       const handledReservations = new Set();
 
       // Process reservations first
-      unitData.dates.forEach((dateInfo) => {
+      unitData.dates.forEach((dateInfo) =>
+      {
         if (
           dateInfo.is_reserved &&
           dateInfo.reservation &&
@@ -735,7 +757,7 @@ export default {
 
           events.push({
             resourceId: unitData.code,
-            title: shortName,
+            title: fullName,
             start: reservation.checkin_date.split("T")[0],
             end: reservation.checkout_date.split("T")[0] + "T23:59:59",
             color: eventColor, // Using status-based color from server
@@ -756,7 +778,8 @@ export default {
       let currentBlock = null;
       const sortedDates = [...unitData.dates]
         .sort((a, b) => new Date(a.date) - new Date(b.date))
-        .forEach((dateInfo, index) => {
+        .forEach((dateInfo, index) =>
+        {
           if (dateInfo.is_blocked) {
             if (!currentBlock) {
               currentBlock = {
@@ -792,7 +815,8 @@ export default {
 
       return events;
     },
-    transformEventToReservationData(event) {
+    transformEventToReservationData (event)
+    {
       return {
         client: event.extendedProps?.reservation?.client,
         unit_id: event.extendedProps?.reservation?.unit_id,
@@ -813,15 +837,21 @@ export default {
         balance: event.extendedProps?.reservation?.remaining,
         status_select: event.extendedProps?.reservation?.status_select,
         status_color: event.extendedProps?.reservation?.status_color,
+        is_edit: event.extendedProps?.reservation?.is_edit,
+        is_show: event.extendedProps?.reservation?.is_show,
+        is_cancel: event.extendedProps?.reservation?.is_cancel,
       };
     },
-    transformAllUnitsToEvents() {
+    transformAllUnitsToEvents ()
+    {
       let allEvents = [];
 
       if (Array.isArray(this.data)) {
-        this.data.forEach((building) => {
+        this.data.forEach((building) =>
+        {
           if (building.units) {
-            building.units.forEach((unit) => {
+            building.units.forEach((unit) =>
+            {
               const unitEvents = this.transformUnitToEvents({
                 ...unit,
                 code: `${building.id}-${unit.id}`, // Match the resourceId format
@@ -835,7 +865,8 @@ export default {
       return allEvents;
     },
 
-    async handleEventChange(info) {
+    async handleEventChange (info)
+    {
       try {
         const event = info.event;
         const resourceId = event.getResources()[0]?.id;
@@ -903,7 +934,7 @@ export default {
             checkin_date: startDate,
             checkout_date: endDate,
             reservation_id: event.extendedProps?.reservation?.id,
-            is_price:1
+            is_price: 1
           };
           // Get the current price from the reservation
           const currentPrice =
@@ -966,7 +997,8 @@ export default {
       }
     },
     // Helper method to get unit name by ID
-    getUnitNameById(unitId) {
+    getUnitNameById (unitId)
+    {
       if (!Array.isArray(this.data)) return null;
 
       for (const building of this.data) {
@@ -985,7 +1017,8 @@ export default {
     },
 
     // Add validation method
-    validateEventChange(event, newStart, newEnd) {
+    validateEventChange (event, newStart, newEnd)
+    {
       // Check if dates are valid
       if (!newStart || !newEnd || newStart >= newEnd) {
         return false;
@@ -1011,7 +1044,8 @@ export default {
 
       return true;
     },
-    adjustHarnessPosition(info) {
+    adjustHarnessPosition (info)
+    {
       // Get the harness element parent
       const harness = info.el.closest(".fc-timeline-event-harness");
 
@@ -1061,17 +1095,20 @@ export default {
     // CALENDAR NAVIGATION
     // ==============================================
 
-    handlePrevClick() {
+    handlePrevClick ()
+    {
       this.$refs.calendar.getApi().prev(); // Navigate to the previous time period
       this.handleNavigation("prev"); // Update calendar data and visuals
     },
 
-    handleNextClick() {
+    handleNextClick ()
+    {
       this.$refs.calendar.getApi().next();
       this.handleNavigation("next");
     },
 
-    async handleNavigation(direction) {
+    async handleNavigation (direction)
+    {
       try {
         this.isLoading = true;
         const calendarApi = this.$refs.calendar.getApi();
@@ -1116,7 +1153,8 @@ export default {
         this.isLoading = false;
       }
     },
-    async handleTodayClick() {
+    async handleTodayClick ()
+    {
       try {
         this.isLoading = true;
         const calendarApi = this.$refs.calendar.getApi();
@@ -1156,11 +1194,13 @@ export default {
     // CALENDAR SETUP & CONFIG
     // ==============================================
 
-    handleDatesSet(dateInfo) {
+    handleDatesSet (dateInfo)
+    {
       const startDate = dateInfo.start; // The first visible date in the calendar
       this.updateFlatpickrDate(startDate); // Update Flatpickr with the start date
     },
-    updateFlatpickrDate(date) {
+    updateFlatpickrDate (date)
+    {
       // Emit the date to the FilterCalendar component
       if (this.$refs.filterComponent) {
         this.$refs.filterComponent.$refs.headerCalender.updateFlatpickr(date);
@@ -1169,10 +1209,12 @@ export default {
       }
     },
 
-    handleCalendarReady(info) {
+    handleCalendarReady (info)
+    {
       this.calendarApi = info.view.calendar;
     },
-    SelectedDateFilterCalendar(selectedDate) {
+    SelectedDateFilterCalendar (selectedDate)
+    {
       // Update the selected date
       this.selectedDate = selectedDate;
 
@@ -1181,7 +1223,8 @@ export default {
       if (calendarApi) {
         calendarApi.gotoDate(selectedDate);
         // Trigger data update after navigation
-        this.$nextTick(() => {
+        this.$nextTick(() =>
+        {
           this.handleNavigation("date-select");
         });
       } else {
@@ -1192,9 +1235,11 @@ export default {
     // ==============================================
     // DATA TRANSFORMATION
     // ==============================================
-    getBuildingNames() {
+    getBuildingNames ()
+    {
       const names = [];
-      this.data.forEach((building) => {
+      this.data.forEach((building) =>
+      {
         if (building.name && !names.includes(building.name)) {
           names.push(building.name);
         }
@@ -1205,10 +1250,12 @@ export default {
     // ==============================================
     // ROUTING & STATE MANAGEMENT
     // ==============================================
-    navigateToEditReservation(id) {
+    navigateToEditReservation (id)
+    {
       this.$router.push(`/edit-reservation/${id}`);
     },
-    goToAddReservation() {
+    goToAddReservation ()
+    {
       this.$store.commit("setSelectedDates", this.selectedDates);
       this.$store.commit("setSelectedResourceName", this.selectedResourceName);
       this.$store.dispatch("allowAccess");
@@ -1222,8 +1269,10 @@ export default {
     // ==============================================
     // SelectedEvent Sidebar Component Methods
     // ==============================================
-    openOffcanvas() {
-      this.$nextTick(() => {
+    openOffcanvas ()
+    {
+      this.$nextTick(() =>
+      {
         const offcanvasElement = document.getElementById("offcanvasEnd");
         if (offcanvasElement) {
           const offcanvas = new bootstrap.Offcanvas(offcanvasElement);
@@ -1245,13 +1294,15 @@ export default {
       "updateRemindGuestType",
     ]),
 
-    refreshCalendarData() {
+    refreshCalendarData ()
+    {
       // Implement the logic to refresh the calendar data
       this.handleNavigation("refresh");
     },
 
     // Add this new method to handle data updates
-    async updateCalendarData(filterData) {
+    async updateCalendarData (filterData)
+    {
       try {
         this.isLoading = true;
 
@@ -1278,7 +1329,8 @@ export default {
       }
     },
 
-    getDuration() {
+    getDuration ()
+    {
       // Safely check if window is defined (client-side only)
       if (typeof window !== "undefined") {
         const isMobile = window.innerWidth <= 768; // Mobile breakpoint
@@ -1288,7 +1340,8 @@ export default {
       return { days: 20 };
     },
 
-    updateDuration() {
+    updateDuration ()
+    {
       // Only run this code on the client side
       if (typeof window !== "undefined") {
         this.calendarOptions.duration = this.getDuration();
@@ -1300,14 +1353,17 @@ export default {
           calendarApi.setOption("slotMinWidth", isMobile ? 150 : 70);
 
           // Force redraw
-          this.$nextTick(() => {
+          this.$nextTick(() =>
+          {
             calendarApi.updateSize();
           });
         }
       }
     },
   },
-  async mounted() {
+
+  async mounted ()
+  {
     // mounted hook only runs on client-side, so window is available
     // Add an event listener to update duration on window resize
     window.addEventListener("resize", this.updateDuration);
@@ -1327,7 +1383,8 @@ export default {
     // ... rest of existing mounted code ...
 
     // Apply mobile-specific settings after calendar is initialized
-    this.$nextTick(() => {
+    this.$nextTick(() =>
+    {
       if (typeof window !== "undefined" && window.innerWidth <= 768) {
         const calendarEl = document.querySelector(".fc");
         if (calendarEl) {
@@ -1347,6 +1404,7 @@ export default {
       this.genderTypes = CalenderDataResponse.gender_type;
       this.projects = CalenderDataResponse.projects;
       this.remindGuestType = CalenderDataResponse.release_type;
+      this.BlockedPermission = CalenderDataResponse.is_block;
       this.buildingNames = this.getBuildingNames();
       const events = this.transformAllUnitsToEvents();
       this.calendarOptions = { ...this.calendarOptions, events };
@@ -1355,7 +1413,8 @@ export default {
       this.calendarOptions.resources = this.createResources();
 
       // Set up DOM elements after render
-      this.$nextTick(() => {
+      this.$nextTick(() =>
+      {
         const footerElement = document.querySelector("#calendar-footer");
         if (footerElement) footerElement.style.display = "block";
       });
@@ -1378,7 +1437,8 @@ export default {
       this.isLoading = false;
     }
   },
-  beforeDestroy() {
+  beforeDestroy ()
+  {
     if (typeof window !== "undefined") {
       // Clean up the event listener
       window.removeEventListener("resize", this.updateDuration);
@@ -1387,7 +1447,8 @@ export default {
     // Clean up the event listener when component is destroyed
     this.$root.$off("calendar-data-updated", this.updateCalendarData);
   },
-  created() {
+  created ()
+  {
     // Initialize with default values for SSR
     this.calendarOptions = {
       ...this.calendarOptions,
@@ -1402,9 +1463,41 @@ export default {
       this.calendarOptions.duration = { days: isMobile ? 10 : 20 };
     }
   },
+  computed: {
+    calendarOptions() {
+      return {
+        ...this.calendarOptions,
+        editable: this.BlockedPermission !== 0, // Disable drag and drop if no permission
+        selectable: this.BlockedPermission !== 0, // Disable date selection if no permission
+      };
+    }
+  }
 };
 </script>
 
-<style>
-/* ... existing styles ... */
+<style scoped>
+.event-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.event-title {
+  font-weight: bold;
+}
+
+.event-shortname {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .event-title {
+    display: none;
+  }
+
+  .event-shortname {
+    display: block;
+    font-weight: bold;
+  }
+}
 </style>
