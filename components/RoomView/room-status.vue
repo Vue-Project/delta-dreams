@@ -66,7 +66,7 @@
         <!-- Tab Content -->
         <div class="tab-content">
             <div v-for="tab in tabs" :key="tab" class="tab-pane fade" :class="{ 'active show': activeTab === tab }">
-                <!-- عرض البطاقات -->
+                <!-- Card View -->
                 <div v-if="viewMode === 'card'" class="row">
                     <div class="col-12 col-md-6 col-lg-4 mb-4 cursor-pointer" v-for="room in tabData[tab].data" :key="room.id" @click="handleRoomClick(room)">
                         <div class="card h-100">
@@ -98,11 +98,11 @@
 
                                 <div class="row mb-5">
                                     <div class="col-md-10">
-                                        <div>reservation type</div>
+                                        <div>reservation type :</div>
                                         <div>{{ room.reservation?.reservation_type_name || 'No Reservation' }}</div>
                                     </div>
                                     <div class="col-md-10">
-                                        <div>Booking Date</div>
+                                        <div>Booking Date :</div>
                                         <div>{{ formatDate(room.reservation?.booking_source?.created_at) }}</div>
                                     </div>
                                     <div class="col-md-2">
@@ -114,7 +114,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-12">
-                                        <div>building / unit / rooms</div>
+                                        <div>building / unit / rooms :</div>
                                         <div>{{ room.building?.name || 'No name' }} / {{ room.code || 'No code' }} / {{ room.rooms || "No room" }}</div>
                                     </div>
                                 </div>
@@ -131,7 +131,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- عرض القائمة -->
+               <!-- List View -->
                 <div v-else class="list-group">
                     <div class="table-responsive">
                         <table class="table">
