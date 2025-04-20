@@ -8,8 +8,8 @@
             <FullCalendar :options="calendarOptions" @select="handleSelect" ref="calendar" :selectedDate="selectedDate">
                 <template v-slot:eventContent="arg">
                     <div class="event-content">
-                        <span class="event-title">{{ arg.event.title }}</span>
-                        <span class="event-shortname">{{ shortName }}</span>
+                        <span class="event-title-full">{{ arg.event.title }}</span>
+                        <span class="event-title-short">{{ arg.event.extendedProps.shortName }}</span>
                     </div>
                 </template>
             </FullCalendar>
@@ -1324,28 +1324,7 @@
 </script>
 
 <style scoped>
-    .event-content {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+    /* Existing styles... */
 
-    .event-title {
-        font-weight: bold;
-    }
-
-    .event-shortname {
-        display: none;
-    }
-
-    @media (max-width: 768px) {
-        .event-title {
-            display: none;
-        }
-
-        .event-shortname {
-            display: block;
-            font-weight: bold;
-        }
-    }
+    /* Responsive styles for event names */
 </style>
