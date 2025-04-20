@@ -75,11 +75,7 @@
                                     <i class="text-primary fa-solid fa-hotel fs-3 mr-2 mb-2"></i>
                                     <h5 class="m-0 me-2">{{ room.reservation?.reserved_by?.name || 'No Guest' }}</h5>
                                 </div>
-                                <div class="btn-group" id="hover-dropdown-demo" @mouseenter="toggleMenu(room.id, true)" @mouseleave="toggleMenu(room.id, false)">
-                                    <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none">
-                                        <i class="fa-solid fa-ellipsis-vertical"></i>
-                                    </button>
-                                </div>
+
                             </div>
 
                             <div class="card-body">
@@ -119,7 +115,7 @@
                                     </div>
                                     <div class="col-md-12">
                                         <div>building / unit / rooms</div>
-                                        <div>{{ room.building?.name || 'No name' }} / {{ room.code || 'No code' }} / {{ room.rooms }}</div>
+                                        <div>{{ room.building?.name || 'No name' }} / {{ room.code || 'No code' }} / {{ room.rooms || "No room" }}</div>
                                     </div>
                                 </div>
 
@@ -174,7 +170,7 @@
                                         <p class="m-0 me-2">{{ room.reservation?.checkout_time || '15:00:00' }}</p>
                                     </td>
                                     <td>
-                                        <p class="m-0 me-2">{{ room.building?.name || 'No name' }} / {{ room.code || 'No code' }} / {{ room.rooms }}</p>
+                                        <p class="m-0 me-2">{{ room.building?.name || 'No name' }} / {{ room.code || 'No code' }} / {{ room.rooms || "No room"}}</p>
                                         <p class="m-0 me-2">Booking Date: {{ formatDate(room.reservation?.booking_source?.created_at) }}</p>
                                     </td>
                                     <td>
@@ -185,11 +181,6 @@
                                     </td>
                                     <td class="d-flex justify-content-between border-bottom-0">
                                         <p class="m-0 me-2 text-danger">${{ (room.reservation?.unit?.price || 0) - (room.reservation?.unit?.paid || 0) }}</p>
-                                        <div class="btn-group" id="hover-dropdown-demo" @mouseenter="toggleMenu(room.id, true)" @mouseleave="toggleMenu(room.id, false)">
-                                            <button type="button" class="btn btn-primary waves-effect waves-light show" style="border: 0; box-shadow: none">
-                                                <i class="fa-solid fa-ellipsis-vertical"></i>
-                                            </button>
-                                        </div>
                                     </td>
                                 </tr>
                             </tbody>
