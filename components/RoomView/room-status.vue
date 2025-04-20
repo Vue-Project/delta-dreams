@@ -101,11 +101,11 @@
                                         <div>reservation type :</div>
                                         <div>{{ room.reservation?.reservation_type_name || 'No Reservation' }}</div>
                                     </div>
-                                    <div class="col-md-10">
+                                    <div class="col-md-6">
                                         <div>Booking Date :</div>
                                         <div>{{ formatDate(room.reservation?.booking_source?.created_at) }}</div>
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-md-6 text-end">
                                         <div>
                                             <i class="fa-solid fa-person"></i>
                                             {{ room.reservation?.children || '0' }}
