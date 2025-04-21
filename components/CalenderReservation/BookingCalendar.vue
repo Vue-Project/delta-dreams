@@ -496,8 +496,6 @@
                         };
 
                         this.popoverArrowLeft = `${popoverElement.offsetWidth / 2 - 10}px`;
-                    } else {
-                        alert('No highlighted elements found.');
                     }
                 });
             },

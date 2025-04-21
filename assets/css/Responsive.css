@@ -44,9 +44,9 @@
         margin-left: -13px;
         margin-right: -13px;
     }
-    editSidebar .table-responsive {
+    /* editSidebar .table-responsive {
         overflow-x: auto;
-    }
+    } */
 
     .table th {
         min-width: 177px;
@@ -186,17 +186,17 @@
 
 /* Mobile calendar scrolling styles */
 @media (max-width: 768px) {
+    .fc .fc-scrollgrid {
+        overflow: auto !important;
+    }
     /* Make timeline body scrollable */
-    .fc .fc-timeline-body {
+    /* .fc .fc-timeline-body {
         overflow-x: auto !important;
         -webkit-overflow-scrolling: touch;
         scrollbar-width: thin;
-    }
+    } */
 
     /* Make timeline header scrollable and sync with body */
-    .fc .fc-timeline-header {
-        overflow-x: auto !important;
-    }
 
     /* Ensure slots have minimum width */
     .fc .fc-timeline-slot {
