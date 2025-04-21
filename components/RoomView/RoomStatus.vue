@@ -23,7 +23,7 @@
         <div class="tab-content">
             <div v-for="tab in tabs" :key="tab" class="tab-pane fade" :class="{ 'active show': activeTab === tab }">
                 <div class="room-grid">
-                    <div class="card mb-3 text-left cursor-pointer" v-for="room in tabData[tab].data" :key="room.id" :class="['room', room.s]" @click="handleRoomClick(room)" :style="{ 'background-color': room.reservation?.status_color || '#ffffff' }">
+                    <div class="card mb-3 text-left cursor-pointer" v-for="room in tabData[tab].data" :key="room.id" :class="['room', room.status]" @click="handleRoomClick(room)">
                         <div class="card-header cursor-move p-1">
                             <div class="icon-wrapper float-end" @mouseenter="hoveredIcon = { type: 'smoking', id: room.id }" @mouseleave="hoveredIcon = null">
                                 <i class="fa-solid" :class="room.is_smooking === 1 ? 'fa-smoking' : 'fa-ban-smoking'" style="color: #9f9ca8"></i>
