@@ -19,7 +19,7 @@
             <SidebarBlockRoom v-if="BlockedPermission !== 0" :is-sidebar-open="isSidebarOpen" title="Block Room" width="400px" @close-sidebar="toggleSidebar" height="auto">
                 <BlockRoomForm :selectedDates="selectedDates" :selectedResourceId="selectedResourceId" @close-sidebar="toggleSidebar" />
             </SidebarBlockRoom>
-            <SelectedEventSidebar :selectedEvent="selectedEvent" @navigate-to-edit-reservation="navigateToEditReservation" />
+            <SelectedEventSidebar :selectedEvent="selectedEvent" @navigate-to-edit-reservation="navigateToEditReservation" @refresh-calendar="refreshCalendarData" />
         </div>
     </section>
 </template>
@@ -1244,6 +1244,58 @@
                             calendarApi.updateSize();
                         });
                     }
+                }
+            },
+            async refreshCalendarData() {
+                try {
+                    // this.isLoading = true;
+                    const calendarApi = this.$refs.calendar.getApi();
+                    const view = calendarApi.view;
+
+                    // Get current view dates
+                    const start = view.activeStart;
+                    const end = view.activeEnd;
+
+                    // Format dates for server
+                    let startDate = start.toISOString().split('T')[0];
+                    const endDate = end.toISOString().split('T')[0];
+
+                    // Modify startDate by adding 1 day
+                    const startDateObj = new Date(startDate);
+                    startDateObj.setDate(startDateObj.getDate() + 1);
+                    startDate = startDateObj.toISOString().split('T')[0];
+
+                    // Fetch data for the current date range
+                    const response = await getCalenderAllUnits({
+                        start: startDate,
+                        end: endDate,
+                    });
+
+                    // Update data sources
+                    this.data = response.data;
+
+                    // Transform the new data into events
+                    const newEvents = this.transformAllUnitsToEvents();
+
+                    // Update the calendar with new events
+                    calendarApi.removeAllEvents(); // Clear existing events
+                    calendarApi.addEventSource(newEvents); // Add new events
+
+                    // Close the offcanvas if it's open
+                    const offcanvasElement = document.getElementById('offcanvasEnd');
+                    if (offcanvasElement) {
+                        const bsOffcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement);
+                        if (bsOffcanvas) {
+                            bsOffcanvas.hide();
+                        }
+                    }
+
+                    // Reset selected event
+                    this.selectedEvent = null;
+                } catch (error) {
+                    console.error('Error refreshing calendar data:', error);
+                } finally {
+                    this.isLoading = false;
                 }
             },
         },
