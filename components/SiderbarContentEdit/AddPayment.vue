@@ -14,6 +14,18 @@
             </div>
             <div class="col-12 mb-2">
                 <div class="input-group">
+                    <select class="form-select" id="payment_method" v-model="formAddPayment.method" @change="fetchPaymentTypeByMethod">
+                        <option disabled value="">Select Method</option>
+                        <option v-for="paymentMethod in paymentMethods" :key="paymentMethod.id" :value="paymentMethod.id">
+                            {{ paymentMethod.name }}
+                        </option>
+                    </select>
+                    <label class="input-group-text" for="payment_method">Method</label>
+                </div>
+                <span class="error-message small" v-if="$v.formAddPayment.method.$error">payment method is required</span>
+            </div>
+            <div class="col-12 mb-2">
+                <div class="input-group">
                     <label class="input-group-text" for="payment_type">paymentType</label>
 
                     <select class="form-select" id="payment_type" v-model="formAddPayment.paymentType">
@@ -25,19 +37,7 @@
                 </div>
                 <span class="error-message small" v-if="$v.formAddPayment.type.$error">payment type is required</span>
             </div>
-            <div class="col-12 mb-2">
-                <div class="input-group">
-                    <label class="input-group-text" for="payment_method">Method</label>
 
-                    <select class="form-select" id="payment_method" v-model="formAddPayment.method">
-                        <option disabled value="">Select Method</option>
-                        <option v-for="paymentMethod in paymentMethods" :key="paymentMethod.id" :value="paymentMethod.id">
-                            {{ paymentMethod.type }}
-                        </option>
-                    </select>
-                </div>
-                <span class="error-message small" v-if="$v.formAddPayment.method.$error">payment method is required</span>
-            </div>
             <div class="col-12 mb-2">
                 <div class="input-group">
                     <span class="input-group-text">EGP</span>
@@ -100,7 +100,7 @@
 </template>
 
 <script>
-    import { getAccounts, getPaymentMethods, getPaymentTypes } from '../../Api/addResvertionApi';
+    import { getAccounts, getPaymentMethods, getPaymentTypeByPaymentId, getPaymentTypes } from '../../Api/addResvertionApi';
     import { postAddPayment } from '../../Api/editResvertion';
     import { handleSubmissionError, showSuccessAlert } from '../../Api/MassageValidation/alertUtilities';
     import DropzoneComponent from '../layout/DropzoneComponent.vue';
@@ -218,14 +218,30 @@
                 const file = event.target.files[0];
                 this.formAddPayment.image = file || null;
             },
+            async fetchPaymentTypeByMethod() {
+                if (this.formAddPayment.method) {
+                    try {
+                        const response = await getPaymentTypeByPaymentId(this.formAddPayment.method);
+                        if (response && response.data) {
+                            // Set the payment types based on the response
+                            this.paymentTypes = response.data.data;
+                        }
+                    } catch (error) {
+                        console.error('Error fetching payment type:', error);
+                    }
+                } else {
+                    // Reset payment types when no method is selected
+                    this.paymentTypes = [];
+                    this.formAddPayment.paymentType = '';
+                }
+            },
         },
         async mounted() {
             try {
-                const [paymentMethodsResponse, accountsResponse, paymentTypesResponse] = await Promise.all([getPaymentMethods(), getAccounts(), getPaymentTypes()]);
+                const [paymentMethodsResponse, accountsResponse] = await Promise.all([getPaymentMethods(), getAccounts()]);
 
                 this.paymentMethods = paymentMethodsResponse.data.data;
                 this.walletsTypes = paymentMethodsResponse.data.wallet_type;
-                this.paymentTypes = paymentTypesResponse.data.data;
                 this.accounts = accountsResponse.data.data;
             } catch (error) {
                 console.error('Error loading data:', error);

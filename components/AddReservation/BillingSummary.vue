@@ -57,13 +57,13 @@
                 <div class="row" v-if="value.paymentMode">
                     <div class="col-md-6 mb-3">
                         <div class="input-group">
-                            <label class="input-group-text" for="paymentMethod">Methods</label>
-                            <select class="form-select" id="paymentMethod" v-model="value.paymentMethod">
-                                <option disabled value="">Select</option>
+                            <select class="form-select" id="payment_method" v-model="value.paymentMethod" @change="fetchPaymentTypeByMethod">
+                                <option disabled value="">Select Method</option>
                                 <option v-for="paymentMethod in paymentMethods" :key="paymentMethod.id" :value="paymentMethod.id">
-                                    {{ paymentMethod.type }}
+                                    {{ paymentMethod.name }}
                                 </option>
                             </select>
+                            <label class="input-group-text" for="payment_method">Method</label>
                         </div>
                     </div>
                     <div class="col-md-6 mb-3">
@@ -221,7 +221,7 @@
 </template>
 
 <script>
-    import { getAccounts, getPaymentMethods, getPaymentTypes } from '../../Api/addResvertionApi';
+    import { getAccounts, getPaymentMethods, getPaymentTypeByPaymentId, getPaymentTypes } from '../../Api/addResvertionApi';
     import flatpickrMixin from '../Mixin/flatpickrMixin';
     import flatpickr from 'flatpickr';
     import 'flatpickr/dist/flatpickr.min.css';
@@ -353,10 +353,9 @@
 
             async loadApiData() {
                 try {
-                    const [paymentMethodsResponse, accountsResponse, paymentTypesResponse] = await Promise.all([getPaymentMethods(), getAccounts(), getPaymentTypes()]);
+                    const [paymentMethodsResponse, accountsResponse] = await Promise.all([getPaymentMethods(), getAccounts()]);
 
                     this.paymentMethods = paymentMethodsResponse.data.data;
-                    this.paymentTypes = paymentTypesResponse.data.data;
                     this.accounts = accountsResponse.data.data;
 
                     // Add console log to check payment types
@@ -390,13 +389,30 @@
             getSelectedPaymentMethodName() {
                 if (!this.value.paymentMethod) return null;
                 const method = this.paymentMethods.find(m => m.id === this.value.paymentMethod);
-                return method ? method.type : null;
+                return method ? method.name : null;
             },
 
             getSelectedPaymentTypeName() {
                 if (!this.value.selectedPaymentType) return null;
                 const type = this.paymentTypes.find(t => t.payment_id === this.value.selectedPaymentType);
                 return type ? type.name : null;
+            },
+            async fetchPaymentTypeByMethod() {
+                if (this.value.paymentMethod) {
+                    try {
+                        const response = await getPaymentTypeByPaymentId(this.value.paymentMethod);
+                        if (response && response.data) {
+                            // Set the payment types based on the response
+                            this.paymentTypes = response.data.data;
+                        }
+                    } catch (error) {
+                        console.error('Error fetching payment type:', error);
+                    }
+                } else {
+                    // Reset payment types when no method is selected
+                    this.paymentTypes = [];
+                    this.value.selectedPaymentType = '';
+                }
             },
         },
     };
