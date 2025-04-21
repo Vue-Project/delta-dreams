@@ -508,7 +508,6 @@
                         type: this.formAddPayment.type,
                         price: this.formAddPayment.amount,
                     };
-                    console.log(paymentData);
 
                     // Append payment data to FormData
                     Object.keys(paymentData).forEach(key => {

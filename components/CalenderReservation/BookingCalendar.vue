@@ -726,7 +726,7 @@
                 return events;
             },
             transformEventToReservationData(event) {
-                console.log('this is the event', event);
+                // console.log('this is the event', event);
 
                 // Get the unit data directly from this.data
                 let buildingName = '';
