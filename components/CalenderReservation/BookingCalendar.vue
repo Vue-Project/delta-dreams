@@ -631,7 +631,7 @@
                 unitData.dates.forEach(dateInfo => {
                     if (dateInfo.is_reserved && dateInfo.reservation && !handledReservations.has(dateInfo.reservation.id)) {
                         const reservation = dateInfo.reservation;
-                        // console.log('thisis mae data', reservation);
+                        // console.log('this is mae data', reservation);
 
                         // Determine color based on reservation status
                         let eventColor;
@@ -726,6 +726,37 @@
                 return events;
             },
             transformEventToReservationData(event) {
+                console.log('this is the event', event);
+
+                // Get the unit data directly from this.data
+                let buildingName = '';
+                let unitCode = '';
+                let unitData = null;
+
+                // Get the resource ID from the event
+                const resourceId = event.getResources()[0]?.id;
+
+                if (resourceId) {
+                    // Parse the resourceId to get building and unit IDs
+                    const [buildingId, unitId] = resourceId.split('-');
+
+                    // Find the building and unit in the data
+                    if (Array.isArray(this.data)) {
+                        const building = this.data.find(b => b.id.toString() === buildingId);
+                        if (building) {
+                            buildingName = building.name;
+
+                            // Find the unit within the building
+                            const unit = building.units?.find(u => u.id.toString() === unitId);
+                            if (unit) {
+                                unitCode = unit.code;
+                                unitData = unit; // Store the entire unit data
+                            }
+                        }
+                    }
+                }
+
+                // Use the unit data directly from this.data
                 return {
                     client: event.extendedProps?.reservation?.client,
                     unit_id: event.extendedProps?.reservation?.unit_id,
@@ -740,7 +771,7 @@
                     children: event.extendedProps?.reservation?.children,
                     status: event.extendedProps?.reservation?.status,
                     status_name: event.extendedProps?.reservation?.status_name,
-                    unit_price: event.extendedProps?.reservation?.unit_price,
+                    unit_price: unitData?.price || event.extendedProps?.reservation?.unit_price,
                     total: event.extendedProps?.reservation?.total,
                     paid: event.extendedProps?.reservation?.paid,
                     balance: event.extendedProps?.reservation?.remaining,
@@ -749,9 +780,12 @@
                     is_edit: event.extendedProps?.reservation?.is_edit,
                     is_show: event.extendedProps?.reservation?.is_show,
                     is_cancel: event.extendedProps?.reservation?.is_cancel,
-                    unit_code: event.extendedProps?.reservation?.unit?.code,
+                    unit_code: unitCode || event.extendedProps?.reservation?.code,
                     reservation_id: event.extendedProps?.reservation?.id,
-                    building_name: event.extendedProps?.reservation?.unit?.building?.name,
+                    building_name: buildingName || event.extendedProps?.reservation?.unit?.building?.name,
+                    booking_source_name: event.extendedProps?.reservation?.booking_source?.name,
+                    business_source_name: event.extendedProps?.reservation?.business_source?.name,
+                    unit_data: unitData, // Include the entire unit data object
                 };
             },
             transformAllUnitsToEvents() {

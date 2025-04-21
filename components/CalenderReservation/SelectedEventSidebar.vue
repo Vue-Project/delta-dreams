@@ -131,6 +131,19 @@
                                     </div>
                                 </div>
                             </li>
+                            <li class="mb-3 pb-1">
+                                <div class="d-flex align-items-start">
+                                    <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                        <div class="me-2">
+                                            <h6 class="mb-0">Booking source</h6>
+
+                                            <small class="text-muted">
+                                                {{ selectedEvent.booking_source_name }}
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
                         </ul>
                     </div>
                     <div class="col-6">
@@ -152,7 +165,7 @@
                                     <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                         <div class="me-2">
                                             <h6 class="mb-0">Unit Code</h6>
-                                            <small class="text-muted">{{ selectedEvent.building_name }}/{{ selectedEvent.unit_code }}</small>
+                                            <small class="text-muted">{{ selectedEvent.unit_data?.building?.name }} / {{ selectedEvent.unit_data?.code }}</small>
                                         </div>
                                     </div>
                                 </div>
@@ -181,6 +194,16 @@
                                         <div class="me-2">
                                             <h6 class="mb-0">Avg. Daily Rate</h6>
                                             <small class="text-muted">{{ selectedEvent.unit_price || '0' }}</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="mb-3 pb-1">
+                                <div class="d-flex align-items-start">
+                                    <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                        <div class="me-2">
+                                            <h6 class="mb-0">Business Source</h6>
+                                            <small class="text-muted">{{ selectedEvent.business_source_name }}</small>
                                         </div>
                                     </div>
                                 </div>
