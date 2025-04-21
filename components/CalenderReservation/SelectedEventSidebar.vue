@@ -415,8 +415,10 @@
                     try {
                         const response = await postStatusChange(this.selectedEvent.id, changeStatus);
                         this.selectedEvent.status = newStatus;
+                        this.$emit('refresh-calendar');
+
                         showSuccessAlert('Status updated successfully!');
-                        location.reload();
+                        // Emit event to parent to refresh calendar
                     } catch (error) {
                         handleSubmissionError(error, 'Failed to update status');
                         // Revert to previous value if the server update fails
@@ -435,12 +437,12 @@
                 if (result.isConfirmed) {
                     try {
                         const response = await postCancelReservation(this.selectedEvent.id);
-
+                        // Emit event to parent to refresh calendar
+                        this.$emit('refresh-calendar');
                         // Show success alert
                         await showSuccessAlert(
                             'Reservation cancelled successfully!', // Custom message
                         );
-                        location.reload();
                     } catch (error) {
                         handleSubmissionError(
                             error,
@@ -519,18 +521,10 @@
                         formData.append('image', paymentImageFile);
                     }
 
-                    // Log the payment data and image
-                    // console.log("Payment Data:", paymentData);
-                    // console.log("Image File:", paymentImageFile);
-
-                    // Log FormData entries
-                    // for (let [key, value] of formData.entries()) {
-                    //   console.log(`${key}:`, value);
-                    // }
-
                     const response = await postAddPayment(formData);
+                    // Emit event to parent to refresh calendar
+                    this.$emit('refresh-calendar');
                     showSuccessAlert('Payment added successfully!');
-                    location.reload();
 
                     // Close the modal after saving
                     const modalElement = document.getElementById('paymentModal');
@@ -590,8 +584,9 @@
                         const response = await postUpdateReservation(updateDataUnit.reservation_id, updateDataUnit);
 
                         if (response.data) {
+                            this.$emit('refresh-calendar');
                             await showSuccessAlert('Reservation updated successfully!');
-                            location.reload();
+                            // Emit event to parent to refresh calendar
                         }
                     } catch (error) {
                         handleSubmissionError(error);
