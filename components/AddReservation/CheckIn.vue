@@ -251,7 +251,7 @@
                                                 <td data-label="Price(EGP)">
                                                     <div class="row">
                                                         <div class="col-lg-10">
-                                                            <input type="number" class="form-control rounded-2" :disabled="!datesSelected" v-model="service.price" placeholder="0" />
+                                                            <input @change="handleServicePriceChange($event, index)" type="number" class="form-control rounded-2" :disabled="!datesSelected" v-model="service.price" placeholder="0" />
                                                         </div>
                                                         <div class="col-md-2 p-0">
                                                             <button class="btn btn-label-danger" type="button" v-if="index > 0" :disabled="!datesSelected" @click="removeService(index)">
@@ -1247,34 +1247,104 @@
                 }
             },
             // Modified handleRateChange function
+            // Add this method to handle service price changes
+            handleServicePriceChange(event, index) {
+                // Get the value from the input field and remove any dots or commas
+                const servicePrice = parseFloat(event.target.value.replace(/[.,]/g, ''));
+
+                if (!isNaN(servicePrice)) {
+                    // Format with comma as thousands separator for display
+                    const formattedValue = servicePrice
+                        .toLocaleString('de-DE', {
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0,
+                            useGrouping: true,
+                        })
+                        .replace(/\./g, ',');
+
+                    // Update this specific service's price with proper formatting
+                    this.formAddReservation.services[index].price = formattedValue;
+
+                    // Recalculate total including all room rates and service prices
+                    this.calculateAndEmitTotal();
+                }
+            },
+
+            // Method to calculate and emit the total
+            calculateAndEmitTotal() {
+                // Calculate total room rate for all units
+                const totalRoomRate = this.formAddReservation.units.reduce((total, unit) => {
+                    const unitRate = parseFloat(unit.rateAmount ? unit.rateAmount.toString().replace(/[.,]/g, '') : 0);
+                    return total + (isNaN(unitRate) ? 0 : unitRate * this.totalNights);
+                }, 0);
+
+                // Calculate total services price
+                const totalServicesPrice = this.formAddReservation.services.reduce((total, service) => {
+                    const servicePrice = parseFloat(service.price ? service.price.toString().replace(/[.,]/g, '') : 0);
+                    return total + (isNaN(servicePrice) ? 0 : servicePrice);
+                }, 0);
+
+                // Add room rate and services price for grand total
+                const grandTotal = totalRoomRate + totalServicesPrice;
+
+                // Emit the total for other components if needed with comma as separator
+                this.$emit(
+                    'change',
+                    grandTotal
+                        .toLocaleString('de-DE', {
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0,
+                            useGrouping: true,
+                        })
+                        .replace(/\./g, ','),
+                );
+            },
+
+            // Modified handleRateChange function to use the common calculation method
             handleRateChange(event, index) {
                 // Get the value from the input field and remove any dots or commas
                 const baseRate = parseFloat(event.target.value.replace(/[.,]/g, ''));
 
                 if (!isNaN(baseRate)) {
-                    // Format with dot as thousands separator for display
-                    const formattedValue = baseRate.toLocaleString('de-DE', {
-                        minimumFractionDigits: 0,
-                        maximumFractionDigits: 0,
-                    });
+                    // Format with comma as thousands separator for display
+                    const formattedValue = baseRate
+                        .toLocaleString('de-DE', {
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0,
+                            useGrouping: true,
+                        })
+                        .replace(/\./g, ',');
 
-                    // Update this specific item's rate amount with proper formatting
-                    this.formAddReservation.units[index].rateAmount = formattedValue;
-
-                    // Only perform calculations and emit event if it's the first item
-                    if (index === 0) {
-                        // Calculate total internally but don't display it
-                        const totalRate = baseRate * this.totalNights;
-
-                        // Emit the total for other components if needed
-                        this.$emit(
-                            'change',
-                            totalRate.toLocaleString('de-DE', {
-                                minimumFractionDigits: 0,
-                                maximumFractionDigits: 0,
-                            }),
-                        );
+                    // Update only unit rate amounts, not service prices
+                    if (event.target.id === 'rateAmount') {
+                        this.formAddReservation.units[index].rateAmount = formattedValue;
                     }
+
+                    // Calculate and emit the total
+                    this.calculateAndEmitTotal();
+                }
+            },
+
+            // Add a separate handler for service price changes
+            handleServicePriceChange(event, index) {
+                // Get the value from the input field and remove any dots or commas
+                const servicePrice = parseFloat(event.target.value.replace(/[.,]/g, ''));
+
+                if (!isNaN(servicePrice)) {
+                    // Format with comma as thousands separator for display
+                    const formattedValue = servicePrice
+                        .toLocaleString('de-DE', {
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0,
+                            useGrouping: true,
+                        })
+                        .replace(/\./g, ',');
+
+                    // Update only service prices
+                    this.formAddReservation.services[index].price = formattedValue;
+
+                    // Calculate and emit the total
+                    this.calculateAndEmitTotal();
                 }
             },
             handlePaymentImageUpload(file) {
