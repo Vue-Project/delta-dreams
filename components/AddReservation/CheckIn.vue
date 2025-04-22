@@ -323,6 +323,12 @@
                     <!--  ! Guest Information -->
                     <h6 class="mb-2 GuestTitle">Guest Information</h6>
                     <div class="row">
+                        <div class="col-lg-5 px-md-0 ">
+                            <div class="input-group">
+                                <input type="text" class="form-control searchInput" id="searchInput" placeholder="Enter phone number or national ID" />
+                                <button class="btn btn-primary" type="button">Search</button>
+                            </div>
+                        </div>
                         <label for="nameGuest" class="col-form-label">Guest Name</label>
                         <div class="col-lg-5 px-md-0 GuestNameReservation">
                             <div class="input-group GuestNameInputGroup">

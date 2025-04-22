@@ -529,6 +529,12 @@ select {
 .GuestTitle {
     margin-left: -13px;
 }
+.searchInput{
+    padding: 20px 13px;
+    border-bottom-left-radius: 6px;
+    border-top-left-radius: 6px;
+}
+
 #paymentInsurance {
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
