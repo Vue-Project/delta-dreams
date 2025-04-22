@@ -144,7 +144,7 @@
                                                     </option>
                                                 </select>
                                             </div>
-                                            <div class="col-md-3">
+                                            <!-- <div class="col-md-3">
                                                 <label for="VIPGuest" class="col-form-label">VIP Status</label>
                                                 <select class="form-select rounded-2" id="formGustVIP" aria-label="select VIP" v-model="formGuest.vipStatus">
                                                     <option value="" disabled selected>Select</option>
@@ -152,7 +152,7 @@
                                                         {{ vipStatus }}
                                                     </option>
                                                 </select>
-                                            </div>
+                                            </div> -->
                                             <div class="col-md-3 h_respons">
                                                 <label for="formGustInfoZip" class="col-form-label">Zip</label>
                                                 <input class="form-control rounded-2" type="text" id="formGustInfoZip" placeholder="Zip" aria-label="input Text to Gust Zip" v-model="formGuest.zip" />
@@ -186,7 +186,7 @@
     import { validationMixin } from 'vuelidate';
     import { required, email } from 'vuelidate/lib/validators';
     export default {
-        name: 'QuickAddGuestSidebar',
+        name: 'HospitalitySideBar',
         layout: 'component',
         props: {
             isSidebarOpen: {
@@ -196,7 +196,7 @@
             },
             title: {
                 type: String,
-                default: ' Add Quick Guest',
+                default: ' Add Hospitality Guest',
             },
             width: {
                 type: String,
@@ -333,12 +333,13 @@
                         zip_code: this.formGuest.zip,
                         international_phone: this.formGuest.internationalNumber,
                         birth_date: this.formGuest.birthDate,
-                        vip_status: this.formGuest.vipStatus,
+                        // vip_status: this.formGuest.vipStatus,
                         nationality: this.formGuest.nationality,
                         national_id: this.formGuest.idNumber,
                         national_expire_date: this.formGuest.expiryDate,
                         national_type: this.formGuest.idType,
                         is_fast: 1,
+                        vip_status: platinum,
                     };
 
                     // Append all text data to FormData

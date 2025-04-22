@@ -8,8 +8,8 @@
             <FullCalendar :options="calendarOptions" @select="handleSelect" ref="calendar" :selectedDate="selectedDate">
                 <template v-slot:eventContent="arg">
                     <div class="event-content">
-                        <span class="event-title">{{ arg.event.title }}</span>
-                        <span class="event-shortname">{{ shortName }}</span>
+                        <span class="event-title-full">{{ arg.event.title }}</span>
+                        <span class="event-title-short">{{ arg.event.extendedProps.shortName }}</span>
                     </div>
                 </template>
             </FullCalendar>
@@ -19,7 +19,7 @@
             <SidebarBlockRoom v-if="BlockedPermission !== 0" :is-sidebar-open="isSidebarOpen" title="Block Room" width="400px" @close-sidebar="toggleSidebar" height="auto">
                 <BlockRoomForm :selectedDates="selectedDates" :selectedResourceId="selectedResourceId" @close-sidebar="toggleSidebar" />
             </SidebarBlockRoom>
-            <SelectedEventSidebar :selectedEvent="selectedEvent" @navigate-to-edit-reservation="navigateToEditReservation" />
+            <SelectedEventSidebar :selectedEvent="selectedEvent" @navigate-to-edit-reservation="navigateToEditReservation" @refresh-calendar="refreshCalendarData" />
         </div>
     </section>
 </template>
@@ -276,6 +276,7 @@
                                         resourcesByGroup[building.name].push({
                                             id: `${building.id}-${unit.id}`,
                                             resourceId: building.id,
+                                            projectId: building?.project_id,
                                             title: `${unit.building?.name}/${unit.name}`,
                                             groupId: building.name,
                                             classNames: ['unit'],
@@ -414,13 +415,16 @@
                 // Store nights count
                 this.selectedNights = nights;
 
-                // Capture resource ID and name
+                // Capture resource ID, name and project ID
                 if (resource) {
                     const unitTitle = resource.title || 'Unknown Unit';
                     const buildingName = resource.extendedProps.groupId || 'Unknown Building';
-                    const resourceId = resource.id || 'Unknown ID'; // Get the resource ID
-                    this.selectedResourceName = `${unitTitle} - ${buildingName} - ID: ${resourceId}`; // Include the ID in the name
-                    this.selectedResourceId = `${resource.title}  - ID: ${resourceId}`;
+                    const resourceId = resource.id || 'Unknown ID';
+                    const projectId = resource.extendedProps.projectId || 'No Project'; // Get project ID from extendedProps
+
+                    // Include project ID in the resource name
+                    this.selectedResourceName = `${unitTitle} - ${buildingName} - ID: ${resourceId} - Project: ${projectId}`;
+                    this.selectedResourceId = `${resource.title} - ID: ${resourceId} - Project: ${projectId}`;
                 } else {
                     this.selectedResourceId = null;
                     this.selectedResourceName = null;
@@ -492,8 +496,6 @@
                         };
 
                         this.popoverArrowLeft = `${popoverElement.offsetWidth / 2 - 10}px`;
-                    } else {
-                        alert('No highlighted elements found.');
                     }
                 });
             },
@@ -627,7 +629,7 @@
                 unitData.dates.forEach(dateInfo => {
                     if (dateInfo.is_reserved && dateInfo.reservation && !handledReservations.has(dateInfo.reservation.id)) {
                         const reservation = dateInfo.reservation;
-                        console.log('thisis mae data', reservation);
+                        // console.log('this is mae data', reservation);
 
                         // Determine color based on reservation status
                         let eventColor;
@@ -722,6 +724,37 @@
                 return events;
             },
             transformEventToReservationData(event) {
+                // console.log('this is the event', event);
+
+                // Get the unit data directly from this.data
+                let buildingName = '';
+                let unitCode = '';
+                let unitData = null;
+
+                // Get the resource ID from the event
+                const resourceId = event.getResources()[0]?.id;
+
+                if (resourceId) {
+                    // Parse the resourceId to get building and unit IDs
+                    const [buildingId, unitId] = resourceId.split('-');
+
+                    // Find the building and unit in the data
+                    if (Array.isArray(this.data)) {
+                        const building = this.data.find(b => b.id.toString() === buildingId);
+                        if (building) {
+                            buildingName = building.name;
+
+                            // Find the unit within the building
+                            const unit = building.units?.find(u => u.id.toString() === unitId);
+                            if (unit) {
+                                unitCode = unit.code;
+                                unitData = unit; // Store the entire unit data
+                            }
+                        }
+                    }
+                }
+
+                // Use the unit data directly from this.data
                 return {
                     client: event.extendedProps?.reservation?.client,
                     unit_id: event.extendedProps?.reservation?.unit_id,
@@ -736,7 +769,7 @@
                     children: event.extendedProps?.reservation?.children,
                     status: event.extendedProps?.reservation?.status,
                     status_name: event.extendedProps?.reservation?.status_name,
-                    unit_price: event.extendedProps?.reservation?.unit_price,
+                    unit_price: unitData?.price || event.extendedProps?.reservation?.unit_price,
                     total: event.extendedProps?.reservation?.total,
                     paid: event.extendedProps?.reservation?.paid,
                     balance: event.extendedProps?.reservation?.remaining,
@@ -745,8 +778,12 @@
                     is_edit: event.extendedProps?.reservation?.is_edit,
                     is_show: event.extendedProps?.reservation?.is_show,
                     is_cancel: event.extendedProps?.reservation?.is_cancel,
-                    unit_code: event.extendedProps?.reservation?.unit?.code,
+                    unit_code: unitCode || event.extendedProps?.reservation?.code,
                     reservation_id: event.extendedProps?.reservation?.id,
+                    building_name: buildingName || event.extendedProps?.reservation?.unit?.building?.name,
+                    booking_source_name: event.extendedProps?.reservation?.booking_source?.name,
+                    business_source_name: event.extendedProps?.reservation?.business_source?.name,
+                    unit_data: unitData, // Include the entire unit data object
                 };
             },
             transformAllUnitsToEvents() {
@@ -1209,6 +1246,58 @@
                     }
                 }
             },
+            async refreshCalendarData() {
+                try {
+                    // this.isLoading = true;
+                    const calendarApi = this.$refs.calendar.getApi();
+                    const view = calendarApi.view;
+
+                    // Get current view dates
+                    const start = view.activeStart;
+                    const end = view.activeEnd;
+
+                    // Format dates for server
+                    let startDate = start.toISOString().split('T')[0];
+                    const endDate = end.toISOString().split('T')[0];
+
+                    // Modify startDate by adding 1 day
+                    const startDateObj = new Date(startDate);
+                    startDateObj.setDate(startDateObj.getDate() + 1);
+                    startDate = startDateObj.toISOString().split('T')[0];
+
+                    // Fetch data for the current date range
+                    const response = await getCalenderAllUnits({
+                        start: startDate,
+                        end: endDate,
+                    });
+
+                    // Update data sources
+                    this.data = response.data;
+
+                    // Transform the new data into events
+                    const newEvents = this.transformAllUnitsToEvents();
+
+                    // Update the calendar with new events
+                    calendarApi.removeAllEvents(); // Clear existing events
+                    calendarApi.addEventSource(newEvents); // Add new events
+
+                    // Close the offcanvas if it's open
+                    const offcanvasElement = document.getElementById('offcanvasEnd');
+                    if (offcanvasElement) {
+                        const bsOffcanvas = bootstrap.Offcanvas.getInstance(offcanvasElement);
+                        if (bsOffcanvas) {
+                            bsOffcanvas.hide();
+                        }
+                    }
+
+                    // Reset selected event
+                    this.selectedEvent = null;
+                } catch (error) {
+                    console.error('Error refreshing calendar data:', error);
+                } finally {
+                    this.isLoading = false;
+                }
+            },
         },
 
         async mounted() {
@@ -1320,28 +1409,7 @@
 </script>
 
 <style scoped>
-    .event-content {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+    /* Existing styles... */
 
-    .event-title {
-        font-weight: bold;
-    }
-
-    .event-shortname {
-        display: none;
-    }
-
-    @media (max-width: 768px) {
-        .event-title {
-            display: none;
-        }
-
-        .event-shortname {
-            display: block;
-            font-weight: bold;
-        }
-    }
+    /* Responsive styles for event names */
 </style>

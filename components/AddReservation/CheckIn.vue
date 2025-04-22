@@ -10,6 +10,7 @@
                 <form id="formReservation" class="g-3" @submit.prevent="submitAddReservation" ref="emptyForm">
                     <!--  ! Reservation  Details -->
                     <!-- change in size and icons -->
+                    <!-- {{ selectedResourceName }} -->
 
                     <div class="row">
                         <div class="col-lg-8">
@@ -74,21 +75,12 @@
 
                                     <span class="error-message small" v-if="$v.formAddReservation.reservationType.$error">Reservation type is required</span>
                                 </div> -->
-                                <div class="col-lg-9 col-12 mb-lg-4 ps-md-2 col-md-6 p-0 pe-md-0">
-                                    <label for="bookingSource" class="form-label">Booking Source</label>
-                                    <select class="form-select" id="bookingSource" v-model="formAddReservation.bookingSource" ref="bookingSource">
-                                        <option value="" disabled>Select</option>
-                                        <option v-for="source in bookingSources" :key="source.id" :value="source.id">
-                                            {{ source.name }}
-                                        </option>
-                                    </select>
-                                </div>
                             </div>
                         </div>
                         <div class="p-0">
                             <div class="col-lg-6 col-12 mb-4 p-0">
                                 <div class="row">
-                                    <!-- <div class="col-lg-6 col-md-6">
+                                    <div class="col-lg-6 col-md-6">
                                         <label for="bookingSource" class="form-label">Booking Source</label>
                                         <select class="form-select" id="bookingSource" v-model="formAddReservation.bookingSource" ref="bookingSource">
                                             <option value="" disabled>Select</option>
@@ -96,7 +88,7 @@
                                                 {{ source.name }}
                                             </option>
                                         </select>
-                                    </div> -->
+                                    </div>
                                     <div class="col-lg-6 col-md-6 buisnessSourceInput">
                                         <label for="businessSource" class="form-label">Business Source</label>
                                         <select class="form-select" id="businessSource" v-model="formAddReservation.businessSource" ref="businessSource">
@@ -175,7 +167,7 @@
                                         <tbody>
                                             <tr v-for="(item, index) in formAddReservation.units" :key="index" class="mb-2 selectStyle">
                                                 <td data-label="Project">
-                                                    <select class="form-select" :disabled="!datesSelected" v-model="item.projectId">
+                                                    <select class="form-select" :disabled="!datesSelected" v-model="item.projectId" @change="() => handleProjectChange(index, item.projectId)">
                                                         <option disabled value="">Select</option>
                                                         <option v-for="project in getProjects" :key="project.id" :value="project.id">
                                                             {{ project.name }}
@@ -183,9 +175,9 @@
                                                     </select>
                                                 </td>
                                                 <td data-label="Room Type">
-                                                    <select class="form-select" id="unitsTypes" v-model="item.roomType" @change="() => handleUnitTypeChange(index, item.roomType, formAddReservation.checkInDate, formAddReservation.checkOutDate)" :disabled="!datesSelected">
+                                                    <select class="form-select" id="unitsTypes" ref="unitsTypes" v-model="item.roomType" @change="() => handleUnitTypeChange(index, item.roomType, formAddReservation.checkInDate, formAddReservation.checkOutDate)" :disabled="!datesSelected || !filteredUnitTypesByRoom[index]?.length">
                                                         <option disabled value="">Select</option>
-                                                        <option v-for="unitType in unitsTypes" :key="unitType.id" :value="unitType.id">
+                                                        <option v-for="unitType in filteredUnitTypesByRoom[index] || []" :key="unitType.id" :value="unitType.id">
                                                             {{ unitType.name }}
                                                         </option>
                                                     </select>
@@ -201,7 +193,7 @@
                                                     <span class="error-message small" v-if="$v.formAddReservation.units.$each[index].rateType.$error">Rate type is required</span>
                                                 </td>
                                                 <td data-label="Room">
-                                                    <select class="form-select" v-model="item.unitId" :disabled="!datesSelected || !availableUnitsByRoom[index]?.length">
+                                                    <select class="form-select" ref="unitSelect" v-model="item.unitId" :disabled="!datesSelected || !availableUnitsByRoom[index]?.length">
                                                         <option disabled value="">Select Unit</option>
                                                         <option v-for="unit in availableUnitsByRoom[index] || []" :key="unit.id" :value="unit.id">{{ unit.building?.name }} / {{ unit.code }}</option>
                                                     </select>
@@ -259,7 +251,7 @@
                                                 <td data-label="Price(EGP)">
                                                     <div class="row">
                                                         <div class="col-lg-10">
-                                                            <input type="number" class="form-control rounded-2" :disabled="!datesSelected" v-model="service.price" placeholder="0" />
+                                                            <input @change="handleServicePriceChange($event, index)" type="number" class="form-control rounded-2" :disabled="!datesSelected" v-model="service.price" placeholder="0" />
                                                         </div>
                                                         <div class="col-md-2 p-0">
                                                             <button class="btn btn-label-danger" type="button" v-if="index > 0" :disabled="!datesSelected" @click="removeService(index)">
@@ -363,9 +355,14 @@
 
                             <SidebarAddGuest :is-sidebar-open="isSidebarOpen" @close-sidebar="toggleSidebar" @guest-added="handleGuestAdded" />
                         </div>
+
                         <div class="col-lg-2 quick-guest">
-                            <button type="button" class="btn btn-primary waves-effect waves-light" @click="toggleQuickGuestSidebar">Quick Guest</button>
+                            <button type="button" class="btn btn-primary waves-effect waves-light btn-block" @click="toggleQuickGuestSidebar">Quick Guest</button>
                             <QuickAddGuestSidebar :is-sidebar-open="isQuickGuestSidebarOpen" @close-sidebar="toggleQuickGuestSidebar" @guest-added="handleGuestAdded" />
+                        </div>
+                        <div class="col-lg-2 quick-guest">
+                            <button type="button" class="btn btn-primary waves-effect waves-light btn-block" @click="toggleHospitalitySidebar">ضيافه</button>
+                            <HospitalitySideBar :is-sidebar-open="isHospitalitySidebarOpen" @close-sidebar="toggleHospitalitySidebar" @guest-added="handleGuestAdded" />
                         </div>
 
                         <!-- <div class="offset-md-7">
@@ -491,11 +488,12 @@
     import { mapState, mapGetters } from 'vuex';
     import { validationMixin } from 'vuelidate';
     import { required, email } from 'vuelidate/lib/validators';
+    import HospitalitySideBar from '../layout/HospitalitySideBar.vue';
 
     export default {
         name: 'CheckIn',
         layout: 'component',
-        components: { SidebarAddGuest, QuickAddGuestSidebar },
+        components: { SidebarAddGuest, QuickAddGuestSidebar, HospitalitySideBar },
 
         data() {
             return {
@@ -503,6 +501,7 @@
                 showInput: false,
                 isSidebarOpen: false,
                 isQuickGuestSidebarOpen: false,
+                isHospitalitySidebarOpen: false,
                 roomCount: 1,
                 selectedTitle: 'MR.',
                 showDropdown: false,
@@ -602,6 +601,8 @@
                 isLoading: false,
                 searchQuery: '',
                 availableUnitsByRoom: [],
+                allUnitTypes: [], // Store all unit types
+                filteredUnitTypesByRoom: [],
             };
         },
         mixins: [validationMixin, flatpickrMixin],
@@ -713,6 +714,9 @@
             },
             toggleQuickGuestSidebar() {
                 this.isQuickGuestSidebarOpen = !this.isQuickGuestSidebarOpen;
+            },
+            toggleHospitalitySidebar() {
+                this.isHospitalitySidebarOpen = !this.isHospitalitySidebarOpen;
             },
 
             handleInput() {
@@ -921,23 +925,60 @@
             },
             async spliceSelectedResourceName() {
                 if (this.selectedResourceName) {
+                    // console.log('Selected Resource Name:', this.selectedResourceName);
                     const parts = this.selectedResourceName.split(' - ');
                     const displayUnit = parts[0];
                     const displayType = parts[1];
                     const idPart = parts[2];
-                    const [unitTypeId, unitId] = idPart.replace('ID: ', '').split('-');
 
-                    // First set the room type
+                    // console.log('Parsed parts:', { displayUnit, displayType, idPart });
+
+                    // Extract project ID if it exists in the format
+                    const projectPart = parts.find(part => part.includes('Project:'));
+                    const projectId = projectPart ? projectPart.replace('Project:', '').trim() : '';
+
+                    // Fix the ID parsing to handle different formats
+                    let unitTypeId, unitId;
+                    if (idPart && idPart.includes('ID:')) {
+                        const idString = idPart.replace('ID:', '').trim();
+                        [unitTypeId, unitId] = idString.split('-').map(id => id.trim());
+                    }
+
+                    // console.log('Extracted IDs:', { unitTypeId, unitId, projectId });
+
+                    if (!unitTypeId) {
+                        console.error('Failed to extract unitTypeId from selectedResourceName');
+                        return;
+                    }
+
+                    // First set the project ID for the unit
+                    if (projectId) {
+                        this.formAddReservation.units[0].projectId = projectId;
+                        // Trigger project change to load unit types
+                        await this.handleProjectChange(0, projectId);
+
+                        // Wait for the project change to complete
+                        await this.$nextTick();
+                    }
+
+                    // Now set the room type and unit type ID
                     this.formAddReservation.units[0].roomType = unitTypeId;
                     this.formAddReservation.units[0].unitTypeId = unitTypeId;
+
+                    // Force the select element to update
+                    if (this.$refs.unitsTypes && this.$refs.unitsTypes[0]) {
+                        this.$refs.unitsTypes[0].value = unitTypeId;
+                    }
+
                     const checkInDate = this.formAddReservation.checkInDate;
                     const checkOutDate = this.formAddReservation.checkOutDate;
 
-                    // Wait for units to be fetched
-                    await this.handleUnitTypeChange(0, unitTypeId, checkInDate, checkOutDate);
+                    // Wait for units to be fetched with project ID filter
+                    await this.handleUnitTypeChange(0, unitTypeId, checkInDate, checkOutDate, projectId);
 
                     // After units are loaded, set the unit ID
-                    this.$nextTick(() => {
+                    await this.$nextTick();
+                    if (unitId) {
                         // Convert unitId to number if needed (since select values are often strings)
                         const numericUnitId = Number(unitId);
                         this.formAddReservation.units[0].unitId = numericUnitId;
@@ -946,10 +987,9 @@
                         if (this.$refs.unitSelect && this.$refs.unitSelect[0]) {
                             this.$refs.unitSelect[0].value = numericUnitId;
                         }
-                    });
+                    }
                 }
             },
-
             formatRateAmount() {
                 const value = this.formAddReservation.units[0].rateAmount;
                 if (isNaN(value) || value < 0) {
@@ -961,7 +1001,67 @@
                     this.formAddReservation.units[0].rateAmount = parseFloat(value).toFixed(2);
                 }
             },
-            async handleUnitTypeChange(roomIndex, unitTypeId, checkInDate, checkOutDate) {
+            // async handleUnitTypeChange(roomIndex, unitTypeId, checkInDate, checkOutDate, projectId) {
+            //     try {
+            //         if (unitTypeId) {
+            //             // Reset selected unit for this room
+            //             this.formAddReservation.units[roomIndex].unitId = '';
+            //             // Set the unitTypeId for this specific unit
+            //             this.formAddReservation.units[roomIndex].unitTypeId = unitTypeId;
+
+            //             // Get project ID from parameter or from the form data
+            //             const project_id = projectId || this.formAddReservation.units[roomIndex].projectId || '';
+
+            //             // Fetch units for selected type with date parameters
+            //             const response = await getUnits(unitTypeId, {
+            //                 start_date: checkInDate,
+            //                 end_date: checkOutDate,
+            //                 reservation_id: 0,
+            //                 project_id: project_id, // Include project ID in the API request
+            //             });
+            //             this.$set(this.availableUnitsByRoom, roomIndex, response.data.data);
+            //         } else {
+            //             this.$set(this.availableUnitsByRoom, roomIndex, []);
+            //         }
+            //     } catch (error) {
+            //         console.error('Error fetching units:', error);
+            //         this.$set(this.availableUnitsByRoom, roomIndex, []);
+            //     }
+            // },
+            async handleProjectChange(roomIndex, projectId) {
+                try {
+                    // Reset room type and unit selections
+                    this.formAddReservation.units[roomIndex].roomType = '';
+                    this.formAddReservation.units[roomIndex].unitId = '';
+
+                    // Store the project ID
+                    this.formAddReservation.units[roomIndex].projectId = projectId;
+
+                    // Filter unit types by project ID
+                    if (projectId) {
+                        // If we haven't loaded all unit types yet, fetch them
+                        if (this.allUnitTypes.length === 0) {
+                            const response = await getUnitTypes();
+                            this.allUnitTypes = response.data.data || [];
+                        }
+
+                        // Filter unit types by project ID
+                        const filteredTypes = this.allUnitTypes.filter(type => type.project_id == projectId || type.project_id == null);
+
+                        // Set filtered unit types for this room
+                        this.$set(this.filteredUnitTypesByRoom, roomIndex, filteredTypes);
+                    } else {
+                        // If no project selected, clear filtered unit types
+                        this.$set(this.filteredUnitTypesByRoom, roomIndex, []);
+                    }
+                } catch (error) {
+                    console.error('Error filtering unit types:', error);
+                    this.$set(this.filteredUnitTypesByRoom, roomIndex, []);
+                }
+            },
+
+            // Update the existing handleUnitTypeChange to use the project ID from the unit
+            async handleUnitTypeChange(roomIndex, unitTypeId, checkInDate, checkOutDate, projectId) {
                 try {
                     if (unitTypeId) {
                         // Reset selected unit for this room
@@ -969,11 +1069,15 @@
                         // Set the unitTypeId for this specific unit
                         this.formAddReservation.units[roomIndex].unitTypeId = unitTypeId;
 
+                        // Get project ID from the unit itself
+                        const project_id = this.formAddReservation.units[roomIndex].projectId || '';
+
                         // Fetch units for selected type with date parameters
                         const response = await getUnits(unitTypeId, {
                             start_date: checkInDate,
                             end_date: checkOutDate,
                             reservation_id: 0,
+                            project_id: project_id, // Include project ID in the API request
                         });
                         this.$set(this.availableUnitsByRoom, roomIndex, response.data.data);
                     } else {
@@ -984,7 +1088,6 @@
                     this.$set(this.availableUnitsByRoom, roomIndex, []);
                 }
             },
-
             async handleSearch() {
                 this.currentPage = 1;
                 this.searchQuery = this.formAddReservation.guestInformation.name;
@@ -1144,34 +1247,104 @@
                 }
             },
             // Modified handleRateChange function
+            // Add this method to handle service price changes
+            handleServicePriceChange(event, index) {
+                // Get the value from the input field and remove any dots or commas
+                const servicePrice = parseFloat(event.target.value.replace(/[.,]/g, ''));
+
+                if (!isNaN(servicePrice)) {
+                    // Format with comma as thousands separator for display
+                    const formattedValue = servicePrice
+                        .toLocaleString('de-DE', {
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0,
+                            useGrouping: true,
+                        })
+                        .replace(/\./g, ',');
+
+                    // Update this specific service's price with proper formatting
+                    this.formAddReservation.services[index].price = formattedValue;
+
+                    // Recalculate total including all room rates and service prices
+                    this.calculateAndEmitTotal();
+                }
+            },
+
+            // Method to calculate and emit the total
+            calculateAndEmitTotal() {
+                // Calculate total room rate for all units
+                const totalRoomRate = this.formAddReservation.units.reduce((total, unit) => {
+                    const unitRate = parseFloat(unit.rateAmount ? unit.rateAmount.toString().replace(/[.,]/g, '') : 0);
+                    return total + (isNaN(unitRate) ? 0 : unitRate * this.totalNights);
+                }, 0);
+
+                // Calculate total services price
+                const totalServicesPrice = this.formAddReservation.services.reduce((total, service) => {
+                    const servicePrice = parseFloat(service.price ? service.price.toString().replace(/[.,]/g, '') : 0);
+                    return total + (isNaN(servicePrice) ? 0 : servicePrice);
+                }, 0);
+
+                // Add room rate and services price for grand total
+                const grandTotal = totalRoomRate + totalServicesPrice;
+
+                // Emit the total for other components if needed with comma as separator
+                this.$emit(
+                    'change',
+                    grandTotal
+                        .toLocaleString('de-DE', {
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0,
+                            useGrouping: true,
+                        })
+                        .replace(/\./g, ','),
+                );
+            },
+
+            // Modified handleRateChange function to use the common calculation method
             handleRateChange(event, index) {
                 // Get the value from the input field and remove any dots or commas
                 const baseRate = parseFloat(event.target.value.replace(/[.,]/g, ''));
 
                 if (!isNaN(baseRate)) {
-                    // Format with dot as thousands separator for display
-                    const formattedValue = baseRate.toLocaleString('de-DE', {
-                        minimumFractionDigits: 0,
-                        maximumFractionDigits: 0,
-                    });
+                    // Format with comma as thousands separator for display
+                    const formattedValue = baseRate
+                        .toLocaleString('de-DE', {
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0,
+                            useGrouping: true,
+                        })
+                        .replace(/\./g, ',');
 
-                    // Update this specific item's rate amount with proper formatting
-                    this.formAddReservation.units[index].rateAmount = formattedValue;
-
-                    // Only perform calculations and emit event if it's the first item
-                    if (index === 0) {
-                        // Calculate total internally but don't display it
-                        const totalRate = baseRate * this.totalNights;
-
-                        // Emit the total for other components if needed
-                        this.$emit(
-                            'change',
-                            totalRate.toLocaleString('de-DE', {
-                                minimumFractionDigits: 0,
-                                maximumFractionDigits: 0,
-                            }),
-                        );
+                    // Update only unit rate amounts, not service prices
+                    if (event.target.id === 'rateAmount') {
+                        this.formAddReservation.units[index].rateAmount = formattedValue;
                     }
+
+                    // Calculate and emit the total
+                    this.calculateAndEmitTotal();
+                }
+            },
+
+            // Add a separate handler for service price changes
+            handleServicePriceChange(event, index) {
+                // Get the value from the input field and remove any dots or commas
+                const servicePrice = parseFloat(event.target.value.replace(/[.,]/g, ''));
+
+                if (!isNaN(servicePrice)) {
+                    // Format with comma as thousands separator for display
+                    const formattedValue = servicePrice
+                        .toLocaleString('de-DE', {
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0,
+                            useGrouping: true,
+                        })
+                        .replace(/\./g, ',');
+
+                    // Update only service prices
+                    this.formAddReservation.services[index].price = formattedValue;
+
+                    // Calculate and emit the total
+                    this.calculateAndEmitTotal();
                 }
             },
             handlePaymentImageUpload(file) {

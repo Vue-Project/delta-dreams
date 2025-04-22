@@ -1,216 +1,235 @@
 @media (max-width: 1200px) {
-  .checkIn-reservations {
-    margin-bottom: 15px;
-
+    .checkIn-reservations {
+        margin-bottom: 15px;
+  
   }
   .date-response{
     font-size:12px !important;
   }
 }
+@media (max-width: 768px) {
+    .event-title-full {
+        display: none;
+    }
+
+    .event-title-short {
+        display: block;
+        font-weight: bold;
+    }
+}
+
+/* Additional styles for better mobile display */
+@media (max-width: 576px) {
+    .fc-timeline-event {
+        padding: 8px !important;
+    }
+
+    .event-content {
+        display: flex;
+        justify-content: start;
+        align-items: start;
+    }
+}
 
 @media (max-width: 991px) {
-  .sidebar {
-    width: 80% !important;
-  }
-  .scbuttons {
-    width: 80% !important;
-  }
-  .buisnessSourceInput {
-    padding-left: 9px;
-  }
-  .mobileInput {
-    width: 100% !important;
-  }
-  .reservationMobile {
-    margin-left: -13px;
-    margin-right: -13px;
-  }
-  editSidebar .table-responsive {
-    overflow-x: auto;
-  }
+    .sidebar {
+        width: 80% !important;
+    }
+    .scbuttons {
+        width: 80% !important;
+    }
+    .buisnessSourceInput {
+        padding-left: 9px;
+    }
+    .mobileInput {
+        width: 100% !important;
+    }
+    .reservationMobile {
+        margin-left: -13px;
+        margin-right: -13px;
+    }
+    /* editSidebar .table-responsive {
+        overflow-x: auto;
+    } */
 
-  .table th {
-    min-width: 177px;
-    white-space: nowrap;
-  }
+    .table th {
+        min-width: 177px;
+        white-space: nowrap;
+    }
 
-  .table {
-    min-width: 800px;
-  }
-  .internationalNumber {
-    font-size: 13px;
-    margin-top: 3px;
-  }
-  .quick-guest{
-    margin-top: 20px;
-  }
+    .table {
+        min-width: 800px;
+    }
+    .internationalNumber {
+        font-size: 13px;
+        margin-top: 3px;
+    }
+    .quick-guest {
+        margin-top: 20px;
+    }
 }
 
 @media (max-width: 767px) {
-  #flatpickr-date-04 {
-    margin-bottom: 15px;
-  }
-  .quick-reservation {
-    display: block;
-  }
-  .sidebar {
-    width: 75% !important;
-  }
-  .scbuttons {
-    width: 75% !important;
-  }
-  .GuestNameReservation {
-    padding-right: 2px !important;
-    padding-left: 0px;
-  }
-  .reservationRoom {
-    padding-left: 0px;
-    padding-right: 0px;
-  }
-  .remindTypeReservation,
-  .EmailReservation,
-  .reservationMobile,
-  .AddressReservation,
-  .StateReservation,
-  .CityReservation,
-  .CountryReservation,
-  .ZipReservation {
-    padding-left: 0px !important;
-    padding-right: 0px !important;
-  }
-  .buisnessSourceInput {
-    padding-left: 12px;
-  }
-  .table-responsive {
-    overflow-x: auto;
-  }
-  .table th {
-    min-width: 177px;
-    white-space: nowrap;
-  }
+    #flatpickr-date-04 {
+        margin-bottom: 15px;
+    }
+    .quick-reservation {
+        display: block;
+    }
+    .sidebar {
+        width: 75% !important;
+    }
+    .scbuttons {
+        width: 75% !important;
+    }
+    .GuestNameReservation {
+        padding-right: 2px !important;
+        padding-left: 0px;
+    }
+    .reservationRoom {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+    .remindTypeReservation,
+    .EmailReservation,
+    .reservationMobile,
+    .AddressReservation,
+    .StateReservation,
+    .CityReservation,
+    .CountryReservation,
+    .ZipReservation {
+        padding-left: 0px !important;
+        padding-right: 0px !important;
+    }
+    .buisnessSourceInput {
+        padding-left: 12px;
+    }
+    .table-responsive {
+        overflow-x: auto;
+    }
+    .table th {
+        min-width: 177px;
+        white-space: nowrap;
+    }
 
-  .table {
-    min-width: 800px;
-  }
-  .internationalNumber {
-    font-size: 16px;
-    margin-top: 0px;
-  }
-  .editSidebar {
-    width: 80% !important;
-  }
-  .confirmButton {
-    width: 72px;
-    margin-left: -16px;
-  }
+    .table {
+        min-width: 800px;
+    }
+    .internationalNumber {
+        font-size: 16px;
+        margin-top: 0px;
+    }
+    .editSidebar {
+        width: 80% !important;
+    }
+    .confirmButton {
+        width: 72px;
+        margin-left: -16px;
+    }
 }
 @media (max-width: 480px) {
-  .fc .fc-toolbar-title {
-    font-size: 15px;
-    justify-content: center;
-  }
-  .editSidebar {
-    width: 80% !important;
-    z-index: 10;
-  }
-  .confirmButton {
-    width: 62px;
-    margin-left: -16px;
-  }
-  .guestNameInput {
-    padding-right: 0px;
-  }
-  .CityPhoneHeader {
-    font-size: 14px;
-    display: flex;
-    gap: 30px;
-    margin-top: -8px;
-    margin-bottom: -4px;
-  }
-  .editSideBarHeader {
-    margin-bottom: -19px;
-  }
-  .EditBtnSideBar,
-  .AddPaymentBtnSideBar {
-    height: 70% !important;
-  }
-  .cancelBtnSideBar {
-    display: none;
-    height: 30px !important;
-  }
-  .StatusSideBar {
-    margin-top: 7px !important;
-  }
-  .StatusSideBarTitle {
-    font-size: 19px !important;
-  }
-  .StatusSideBarSelect {
-    margin-top: -8px;
-  }
-  .offcanvas-backdrop.show {
-    height: 100%;
-  }
-  .editSidebarDetails {
-    margin-top: -9px !important;
-  }
-  .CloseSidebarEdit {
-    margin-top: -22px !important;
-    margin-right: 10px !important;
-  }
+    .fc .fc-toolbar-title {
+        font-size: 15px;
+        justify-content: center;
+    }
+    .editSidebar {
+        width: 80% !important;
+        z-index: 10;
+    }
+    .confirmButton {
+        width: 62px;
+        margin-left: -16px;
+    }
+    .guestNameInput {
+        padding-right: 0px;
+    }
+    .CityPhoneHeader {
+        font-size: 14px;
+        display: flex;
+        gap: 30px;
+        margin-top: -8px;
+        margin-bottom: -4px;
+    }
+    .editSideBarHeader {
+        margin-bottom: -19px;
+    }
+    .EditBtnSideBar,
+    .AddPaymentBtnSideBar {
+        height: 70% !important;
+    }
+    .cancelBtnSideBar {
+        display: none;
+        height: 30px !important;
+    }
+    .StatusSideBar {
+        margin-top: 7px !important;
+    }
+    .StatusSideBarTitle {
+        font-size: 19px !important;
+    }
+    .StatusSideBarSelect {
+        margin-top: -8px;
+    }
+    .offcanvas-backdrop.show {
+        height: 100%;
+    }
+    .editSidebarDetails {
+        margin-top: -9px !important;
+    }
+    .CloseSidebarEdit {
+        margin-top: -22px !important;
+        margin-right: 10px !important;
+    }
 }
 @media (min-width: 390px) and (max-width: 480px) {
-  .confirmButton {
-    width: 72px !important;
-  }
+    .confirmButton {
+        width: 72px !important;
+    }
 }
 /* ... existing styles ... */
 
 /* Mobile calendar scrolling styles */
 @media (max-width: 768px) {
-  /* Make timeline body scrollable */
-  .fc .fc-timeline-body {
-    overflow-x: auto !important;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-  }
+    .fc .fc-scrollgrid {
+        overflow: auto !important;
+    }
+    /* Make timeline body scrollable */
+    /* .fc .fc-timeline-body {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+    } */
 
-  /* Make timeline header scrollable and sync with body */
-  .fc .fc-timeline-header {
-    overflow-x: auto !important;
-  }
+    /* Make timeline header scrollable and sync with body */
 
-  /* Ensure slots have minimum width */
-  .fc .fc-timeline-slot {
-    min-width: 120px !important;
-  }
-  .fc-direction-ltr {
-    height: 70vh;
-  }
+    /* Ensure slots have minimum width */
+    .fc .fc-timeline-slot {
+        min-width: 120px !important;
+    }
+    .fc-direction-ltr {
+        height: 70vh;
+    }
 
-  /* Add visual indicator for scrolling */
-  .fc .fc-timeline-body:after {
-    content: "";
-    position: absolute;
-    right: 0;
-    top: 0;
-    height: 100%;
-    width: 20px;
-    background: linear-gradient(
-      to right,
-      rgba(255, 255, 255, 0),
-      rgba(0, 0, 0, 0.05)
-    );
-    pointer-events: none;
-    z-index: 10;
-  }
+    /* Add visual indicator for scrolling */
+    .fc .fc-timeline-body:after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 0;
+        height: 100%;
+        width: 20px;
+        background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.05));
+        pointer-events: none;
+        z-index: 10;
+    }
 
-  /* Hide scrollbar for cleaner look */
-  .fc .fc-timeline-body::-webkit-scrollbar {
-    height: 4px;
-  }
+    /* Hide scrollbar for cleaner look */
+    .fc .fc-timeline-body::-webkit-scrollbar {
+        height: 4px;
+    }
 
-  .fc .fc-timeline-body::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
-  }
+    .fc .fc-timeline-body::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 4px;
+    }
 }
