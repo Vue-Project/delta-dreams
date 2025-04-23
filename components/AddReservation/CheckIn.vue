@@ -323,10 +323,10 @@
                     <!--  ! Guest Information -->
                     <h6 class="mb-2 GuestTitle">Guest Information</h6>
                     <div class="row">
-                        <div class="col-lg-5 px-md-0 ">
+                        <div class="col-lg-5 px-md-0">
                             <div class="input-group">
-                                <input type="text" class="form-control searchInput" id="searchInput" placeholder="Enter phone number or national ID" />
-                                <button class="btn btn-primary" type="button">Search</button>
+                                <input type="text" class="form-control searchInput" id="searchInput" v-model="searchQuery" placeholder="Enter phone number or national ID" />
+                                <button class="btn btn-primary" type="button" @click="searchByPhoneOrID">Search</button>
                             </div>
                         </div>
                         <label for="nameGuest" class="col-form-label">Guest Name</label>
@@ -487,7 +487,7 @@
 </template>
 <script>
     import { showSuccessAlert, handleSubmissionError } from '../../Api/MassageValidation/alertUtilities';
-    import { getBookingSources, getBusinessSources, getGuestsInfo, postAddReservationData, getUnitTypes, getUnits, getGuestDetails, getServices } from '../../Api/addResvertionApi';
+    import { getBookingSources, getBusinessSources, getGuestsInfo,getGuestsInfoSearch, postAddReservationData, getUnitTypes, getUnits, getGuestDetails, getServices } from '../../Api/addResvertionApi';
     import flatpickrMixin from '../Mixin/flatpickrMixin';
     import SidebarAddGuest from '../layout/AddGuestSidebar.vue';
     import QuickAddGuestSidebar from '../layout/QuickAddGuestSidebar.vue';
@@ -503,6 +503,18 @@
 
         data() {
             return {
+                searchQuery: '',
+                formAddReservation: {
+                    guestInformation: {
+                        name: '',
+                    },
+                },
+                titles: ['Mr.', 'Ms.', 'Mrs.'],
+                filteredNames: [],
+                showDropdown: false,
+                isLoading: false,
+                hasMore: false,
+                // ######
                 showSelect: false,
                 showInput: false,
                 isSidebarOpen: false,
@@ -635,6 +647,37 @@
         },
 
         methods: {
+            // Component or Vue Method
+            // Method to fetch guests by phone or national ID
+            async searchByPhoneOrID() {
+                if (!this.searchQuery) return; // إذا كان الـ searchQuery فارغ
+
+                this.isLoading = true;
+
+                try {
+                    // استدعاء الـ API مع إرسال الـ searchQuery
+                    const response = await getGuestsInfoSearch(this.searchQuery);
+
+                    // استخراج الداتا من الـ API response
+                    const guests = response?.data?.data || [];
+
+                    if (guests.length > 0) {
+                        this.filteredNames = guests; // عرض الضيوف في الـ dropdown
+                        this.showDropdown = true;
+                        this.hasMore = false;
+                    } else {
+                        // إذا مفيش نتائج، عرض الرسالة دي
+                        this.filteredNames = [];
+                        this.showDropdown = true;
+                        console.log('No results found for: ' + this.searchQuery); // للتحقق
+                    }
+                } catch (error) {
+                    handleSubmissionError(error, 'There was an issue retrieving the guest information.');
+                } finally {
+                    this.isLoading = false;
+                }
+            },
+
             updateRepeater() {
                 const currentCount = this.formAddReservation.units.length;
                 const targetCount = parseInt(this.formAddReservation.numberRooms);
