@@ -408,6 +408,7 @@
 
         methods: {
             initFlatpickr() {
+<<<<<<< HEAD
                 if (this.$refs.rangePicker1 && !this.$refs.rangePicker1._flatpickr) {
                     flatpickr(this.$refs.rangePicker1, {
                         mode: 'range',
@@ -419,6 +420,19 @@
                     });
                 }
             },
+=======
+            if (this.$refs.rangePicker1 && !this.$refs.rangePicker1._flatpickr) {
+                flatpickr(this.$refs.rangePicker1, {
+                    mode: 'range',
+                    dateFormat: 'Y-m-d',
+                    defaultDate: [this.checkin_date, this.checkout_date],
+                    onChange: (selectedDates) => {
+                        this.parseDateRange();
+                    }
+                });
+            }
+        },
+>>>>>>> BitBuckt/test
             async handleStatusChange(event) {
                 const oldStatus = this.selectedEvent.status;
                 const newStatus = event.target.value;
@@ -648,6 +662,7 @@
         },
         watch: {
             selectedEvent: {
+<<<<<<< HEAD
                 immediate: true,
                 async handler(newEvent) {
                     if (newEvent) {
@@ -656,14 +671,22 @@
                         const formatDate = date => {
                             return new Date(date).toLocaleDateString('en-CA');
                         };
+=======
+            immediate: true,
+            async handler(newEvent) {
+                if (newEvent) {
+                    
+                    await this.$nextTick();
+>>>>>>> BitBuckt/test
 
-                        const checkinDate = formatDate(newEvent.checkin_date);
-                        const checkoutDate = formatDate(newEvent.checkout_date);
+                    const formatDate = date => {
+                        return new Date(date).toLocaleDateString('en-CA');
+                    };
 
-                        this.checkin_date = checkinDate;
-                        this.checkout_date = checkoutDate;
-                        this.dateRange = `${checkinDate} to ${checkoutDate}`;
+                    const checkinDate = formatDate(newEvent.checkin_date);
+                    const checkoutDate = formatDate(newEvent.checkout_date);
 
+<<<<<<< HEAD
                         if (this.$refs.rangePicker1 && !this.$refs.rangePicker1._flatpickr) {
                             this.initFlatpickr();
                         }
@@ -673,9 +696,24 @@
                                 this.$refs.rangePicker1._flatpickr.setDate([checkinDate, checkoutDate]);
                             }
                         }, 100);
+=======
+                    this.checkin_date = checkinDate;
+                    this.checkout_date = checkoutDate;
+                    this.dateRange = `${checkinDate} to ${checkoutDate}`;
+
+                    if (this.$refs.rangePicker1 && !this.$refs.rangePicker1._flatpickr) {
+                        this.initFlatpickr(); 
+>>>>>>> BitBuckt/test
                     }
-                },
+
+                    setTimeout(() => {
+                        if (this.$refs.rangePicker1?._flatpickr) {
+                            this.$refs.rangePicker1._flatpickr.setDate([checkinDate, checkoutDate]);
+                        }
+                    }, 100);
+                }
             },
+        },
         },
         mixins: [flatpickrMixin, validationMixin],
     };

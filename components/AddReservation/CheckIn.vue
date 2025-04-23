@@ -487,7 +487,11 @@
 </template>
 <script>
     import { showSuccessAlert, handleSubmissionError } from '../../Api/MassageValidation/alertUtilities';
+<<<<<<< HEAD
     import { getBookingSources, getBusinessSources, getGuestsInfo, getGuestsInfoSearch, postAddReservationData, getUnitTypes, getUnits, getGuestDetails, getServices } from '../../Api/addResvertionApi';
+=======
+    import { getBookingSources, getBusinessSources, getGuestsInfo,getGuestsInfoSearch, postAddReservationData, getUnitTypes, getUnits, getGuestDetails, getServices } from '../../Api/addResvertionApi';
+>>>>>>> BitBuckt/test
     import flatpickrMixin from '../Mixin/flatpickrMixin';
     import SidebarAddGuest from '../layout/AddGuestSidebar.vue';
     import QuickAddGuestSidebar from '../layout/QuickAddGuestSidebar.vue';
