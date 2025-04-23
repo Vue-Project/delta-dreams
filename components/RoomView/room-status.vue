@@ -73,120 +73,119 @@
                             <div class="card-header d-flex align-items-center justify-content-between">
                                 <div class="card-title mb-0 d-flex">
                                     <i class="text-primary fa-solid fa-hotel fs-3 mr-2 mb-2"></i>
-                                    <h5 class="m-0 me-2">{{ room.reservation?.reserved_by?.name || 'No Guest' }}</h5>
+                                    <h5 class="m-0 me-2">{{ room.reservation?.client?.name }}</h5>
                                 </div>
-
                             </div>
 
                             <div class="card-body">
                                 <div class="row d-flex align-items-center justify-content-center text-center mb-3">
                                     <div class="bg-light col-md-4">
                                         <div class="text-dark date-response">{{ formatDate(room.reservation?.checkin_date) }}</div>
-                                        <div>{{ room.reservation?.checkin_time || '00:00:00' }}</div>
+                                        <div>{{ room.reservation?.checkin_time  }}</div>
                                     </div>
                                     <div class="bg-secondary col-md-4">
                                         <div class="text-dark">
-                                            {{ (new Date(room.reservation?.checkout_date) - new Date(room.reservation?.checkin_date)) / (1000 * 3600 * 24) || 0 }}
+                                            {{ (new Date(room.reservation?.checkout_date) - new Date(room.reservation?.checkin_date)) / (1000 * 3600 * 24)  }}
                                         </div>
                                         <div>Nights</div>
                                     </div>
                                     <div class="bg-light col-md-4">
                                         <div class="text-dark date-response">{{ formatDate(room.reservation?.checkout_date) }}</div>
-                                        <div>{{ room.reservation?.checkout_time || '15:00:00' }}</div>
+                                        <div>{{ room.reservation?.checkout_time  }}</div>
                                     </div>
                                 </div>
 
                                 <div class="row mb-5">
                                     <div class="col-md-10">
-                                        <div>reservation type :</div>
-                                        <div>{{ room.reservation?.reservation_type_name || 'No Reservation' }}</div>
+                                        <div>Status</div>
+                                        <div>{{ room.status_name  }}</div>
                                     </div>
                                     <div class="col-md-6">
                                         <div>Booking Date :</div>
-                                        <div>{{ formatDate(room.reservation?.booking_source?.created_at) }}</div>
+                                        <div>{{ formatDate(room.reservation?.created_at) }}</div>
                                     </div>
                                     <div class="col-md-6 text-end">
                                         <div>
                                             <i class="fa-solid fa-person"></i>
-                                            {{ room.reservation?.children || '0' }}
+                                            {{ room.reservation?.children  }}
                                             <i class="fa-solid fa-child"></i>
-                                            {{ room.reservation?.adults || '0' }}
+                                            {{ room.reservation?.adults  }}
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div>building / unit / rooms :</div>
-                                        <div>{{ room.building?.name || 'No name' }} / {{ room.code || 'No code' }} / {{ room.rooms || "No room" }}</div>
+                                        <div>{{ room.building?.name  }} / {{ room.code  }} / {{ room.rooms  }}</div>
                                     </div>
                                 </div>
 
                                 <div class="row">
                                     <div class="col-md-6">Total</div>
-                                    <div class="col-md-6 text-end">${{  room.reservation?.total || '0.00' }} EGP</div>
+                                    <div class="col-md-6 text-end">{{ room.reservation?.total  }} EGP</div>
                                     <div class="col-md-6">Paid</div>
-                                    <div class="col-md-6 text-end">${{ room.reservation?.paid || '0.00' }} EGP</div>
+                                    <div class="col-md-6 text-end">{{ room.reservation?.paid  }} EGP</div>
                                     <div class="col-md-6 text-danger">Balance</div>
-                                    <div class="col-md-6 text-end text-danger">${{ (room.reservation?.remaining || 0) }} EGP</div>
+                                    <div class="col-md-6 text-end text-danger">{{ room.reservation?.remaining  }} EGP</div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-               <!-- List View -->
+                <!-- List View -->
                 <div v-else class="list-group">
                     <div class="table-responsive">
                         <table class="table">
                             <thead class="table-light">
                                 <tr>
                                     <th>Guest Name</th>
-                                    <th>Res. Type</th>
+                                    <th>Status</th>
                                     <th>Nights</th>
                                     <th>Arrival</th>
                                     <th>Departure</th>
                                     <th>Booking Info</th>
-                                    <th>Total ($)</th>
-                                    <th>Paid ($)</th>
-                                    <th>Balance ($)</th>
+                                    <th>Total ()</th>
+                                    <th>Paid ()</th>
+                                    <th>Balance ()</th>
                                 </tr>
                             </thead>
                             <tbody class="table-border-bottom-0 cursor-pointer">
                                 <tr @click="handleRoomClick(room)" v-for="room in tabData[tab].data" :key="room.id">
                                     <td>
-                                        <h5 class="m-0 me-2">{{ room.reservation?.reserved_by?.name || 'No Guest' }}</h5>
+                                        <h5 class="m-0 me-2">{{ room.reservation?.client?.name  }}</h5>
                                         <div>
                                             <i class="fa-solid fa-person"></i>
-                                            {{ room.reservation?.children || '0' }}
+                                            {{ room.reservation?.children  }}
                                             <i class="fa-solid fa-child"></i>
-                                            {{ room.reservation?.adults || '0' }}
+                                            {{ room.reservation?.adults  }}
                                         </div>
                                     </td>
                                     <td>
-                                        <p class="m-0 me-2">{{ room.reservation?.reservation_type_name || 'No Reservation' }}</p>
+                                        <p class="m-0 me-2">{{ room.status_name }}</p>
                                     </td>
                                     <td>
-                                      <div class="text-dark">
-                                        {{ (new Date(room.reservation?.checkout_date) - new Date(room.reservation?.checkin_date)) / (1000 * 3600 * 24) || 0 }}
-                                    </div>
+                                        <div class="text-dark">
+                                            {{ (new Date(room.reservation?.checkout_date) - new Date(room.reservation?.checkin_date)) / (1000 * 3600 * 24)  }}
+                                        </div>
                                     </td>
                                     <td>
                                         <p class="m-0 me-2">{{ formatDate(room.reservation?.checkin_date) }}</p>
-                                        <p class="m-0 me-2">{{ room.reservation?.checkin_time || '00:00:00' }}</p>
+                                        <p class="m-0 me-2">{{ room.reservation?.checkin_time  }}</p>
                                     </td>
                                     <td>
                                         <p class="m-0 me-2">{{ formatDate(room.reservation?.checkout_date) }}</p>
-                                        <p class="m-0 me-2">{{ room.reservation?.checkout_time || '15:00:00' }}</p>
+                                        <p class="m-0 me-2">{{ room.reservation?.checkout_time  }}</p>
                                     </td>
                                     <td>
-                                        <p class="m-0 me-2">{{ room.building?.name || 'No name' }} / {{ room.code || 'No code' }} / {{ room.rooms || "No room"}}</p>
-                                        <p class="m-0 me-2">Booking Date: {{ formatDate(room.reservation?.booking_source?.created_at) }}</p>
+                                        <p class="m-0 me-2">{{ room.building?.name  }} / {{ room.code  }} / {{ room.rooms  }}</p>
+                                        <p class="m-0 me-2">Booking Date: {{ formatDate(room.reservation?.created_at) }}</p>
                                     </td>
                                     <td>
-                                        <p class="m-0 me-2">${{ room.reservation?.total || '0.00' }} EGP</p>
+                                        <p class="m-0 me-2">{{ room.reservation?.total  }} EGP</p>
                                     </td>
                                     <td>
-                                        <p class="m-0 me-2">${{ room.reservation?.paid || '0.00' }} EGP</p>
+                                        <p class="m-0 me-2">{{ room.reservation?.paid  }} EGP</p>
                                     </td>
                                     <td class="d-flex justify-content-between border-bottom-0">
-                                        <p class="m-0 me-2 text-danger">${{ (room.reservation?.remaining || 0) }} EGP</p>
+                                        <p class="m-0 me-2 text-danger">{{ room.reservation?.remaining  }} EGP</p>
                                     </td>
                                 </tr>
                             </tbody>
