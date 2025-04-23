@@ -339,7 +339,7 @@
                         national_expire_date: this.formGuest.expiryDate,
                         national_type: this.formGuest.idType,
                         is_fast: 1,
-                        vip_status: platinum,
+                        vip_status: 'platinum',
                     };
 
                     // Append all text data to FormData
