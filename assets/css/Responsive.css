@@ -1,11 +1,13 @@
 @media (max-width: 1200px) {
+    .fc .fc-scrollgrid {
+        overflow: auto !important;
+    }
     .checkIn-reservations {
         margin-bottom: 15px;
-  
-  }
-  .date-response{
-    font-size:12px !important;
-  }
+    }
+    .date-response {
+        font-size: 12px !important;
+    }
 }
 @media (max-width: 768px) {
     .event-title-full {
@@ -190,9 +192,6 @@
 
 /* Mobile calendar scrolling styles */
 @media (max-width: 768px) {
-    .fc .fc-scrollgrid {
-        overflow: auto !important;
-    }
     /* Make timeline body scrollable */
     /* .fc .fc-timeline-body {
         overflow-x: auto !important;
@@ -211,7 +210,7 @@
     }
 
     /* Add visual indicator for scrolling */
-    .fc .fc-timeline-body:after {
+    /* .fc .fc-timeline-body:after {
         content: '';
         position: absolute;
         right: 0;
@@ -221,15 +220,15 @@
         background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.05));
         pointer-events: none;
         z-index: 10;
-    }
+    } */
 
     /* Hide scrollbar for cleaner look */
-    .fc .fc-timeline-body::-webkit-scrollbar {
+    /* .fc .fc-timeline-body::-webkit-scrollbar {
         height: 4px;
     }
 
     .fc .fc-timeline-body::-webkit-scrollbar-thumb {
         background: rgba(0, 0, 0, 0.2);
         border-radius: 4px;
-    }
+    } */
 }
