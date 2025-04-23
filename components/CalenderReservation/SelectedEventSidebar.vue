@@ -401,6 +401,18 @@
         },
 
         methods: {
+            initFlatpickr() {
+            if (this.$refs.rangePicker1 && !this.$refs.rangePicker1._flatpickr) {
+                flatpickr(this.$refs.rangePicker1, {
+                    mode: 'range',
+                    dateFormat: 'Y-m-d',
+                    defaultDate: [this.checkin_date, this.checkout_date],
+                    onChange: (selectedDates) => {
+                        this.parseDateRange();
+                    }
+                });
+            }
+        },
             async handleStatusChange(event) {
                 const oldStatus = this.selectedEvent.status;
                 const newStatus = event.target.value;
@@ -551,13 +563,15 @@
             },
             parseDateRange() {
                 try {
-                    const flatpickrInstance = this.$refs.rangePicker1._flatpickr;
+                    const flatpickrInstance = this.$refs.rangePicker1?._flatpickr;
+                    if (!flatpickrInstance) {
+                        return;
+                    }
                     const selectedDates = flatpickrInstance.selectedDates;
 
                     if (selectedDates.length === 2) {
                         const formatDate = date => {
-                            const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
-                            return localDate.toISOString().split('T')[0];
+                            return new Date(date).toLocaleDateString('en-CA'); // YYYY-MM-DD
                         };
 
                         this.checkin_date = formatDate(selectedDates[0]);
@@ -628,36 +642,35 @@
         },
         watch: {
             selectedEvent: {
-                immediate: true,
-                handler(newEvent) {
-                    if (newEvent) {
-                        // Format dates to YYYY-MM-DD while preserving local timezone
-                        const formatDate = date => {
-                            const d = new Date(date);
-                            const year = d.getFullYear();
-                            const month = String(d.getMonth() + 1).padStart(2, '0');
-                            const day = String(d.getDate()).padStart(2, '0');
-                            return `${year}-${month}-${day}`;
-                        };
+            immediate: true,
+            async handler(newEvent) {
+                if (newEvent) {
+                    
+                    await this.$nextTick();
 
-                        const checkinDate = formatDate(newEvent.checkin_date);
-                        const checkoutDate = formatDate(newEvent.checkout_date);
+                    const formatDate = date => {
+                        return new Date(date).toLocaleDateString('en-CA');
+                    };
 
-                        this.checkin_date = checkinDate;
-                        this.checkout_date = checkoutDate;
-                        this.dateRange = `${checkinDate} to ${checkoutDate}`;
+                    const checkinDate = formatDate(newEvent.checkin_date);
+                    const checkoutDate = formatDate(newEvent.checkout_date);
 
-                        // Update flatpickr instance with new dates
-                        if (this.$refs.rangePicker1?._flatpickr) {
-                            this.$refs.rangePicker1._flatpickr.setDate([new Date(checkinDate), new Date(checkoutDate)], true);
-                        }
+                    this.checkin_date = checkinDate;
+                    this.checkout_date = checkoutDate;
+                    this.dateRange = `${checkinDate} to ${checkoutDate}`;
 
-                        if (newEvent.status_select) {
-                            this.statusOptions = newEvent.status_select;
-                        }
+                    if (this.$refs.rangePicker1 && !this.$refs.rangePicker1._flatpickr) {
+                        this.initFlatpickr(); 
                     }
-                },
+
+                    setTimeout(() => {
+                        if (this.$refs.rangePicker1?._flatpickr) {
+                            this.$refs.rangePicker1._flatpickr.setDate([checkinDate, checkoutDate]);
+                        }
+                    }, 100);
+                }
             },
+        },
         },
         mixins: [flatpickrMixin, validationMixin],
     };

@@ -1,3 +1,4 @@
+import { queue } from 'jquery';
 import apiClient from './apiClient';
 
 export const getBusinessSources = async () => {
@@ -78,6 +79,22 @@ export const getGuestsInfo = async () => {
         throw error;
     }
 };
+
+export const getGuestsInfoSearch = async (query) => {
+  try {
+      const response = await apiClient.get('/clients', {
+          params: {
+              name: query,
+          },
+      });
+      return response.data;
+  } catch (error) {
+      console.error('Error fetching guests:', error);
+      throw error;
+  }
+};
+
+
 export const getGuestDetails = async guestId => {
     try {
         const response = await apiClient.get(`/clients/${guestId}`);
