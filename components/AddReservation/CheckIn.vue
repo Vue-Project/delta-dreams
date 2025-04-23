@@ -487,7 +487,7 @@
 </template>
 <script>
     import { showSuccessAlert, handleSubmissionError } from '../../Api/MassageValidation/alertUtilities';
-    import { getBookingSources, getBusinessSources, getGuestsInfo,getGuestsInfoSearch, postAddReservationData, getUnitTypes, getUnits, getGuestDetails, getServices } from '../../Api/addResvertionApi';
+    import { getBookingSources, getBusinessSources, getGuestsInfo, getGuestsInfoSearch, postAddReservationData, getUnitTypes, getUnits, getGuestDetails, getServices } from '../../Api/addResvertionApi';
     import flatpickrMixin from '../Mixin/flatpickrMixin';
     import SidebarAddGuest from '../layout/AddGuestSidebar.vue';
     import QuickAddGuestSidebar from '../layout/QuickAddGuestSidebar.vue';
@@ -1192,6 +1192,7 @@
                 try {
                     // console.log('Selected name:', name);
                     this.selectedNameId = name.id; // Add this line
+                    this.showDropdown = false; // Close dropdown immediately after selection
 
                     const response = await getGuestDetails(name.id);
 
