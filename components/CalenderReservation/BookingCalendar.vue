@@ -784,6 +784,8 @@
                     booking_source_name: event.extendedProps?.reservation?.booking_source?.name,
                     business_source_name: event.extendedProps?.reservation?.business_source?.name,
                     unit_data: unitData, // Include the entire unit data object
+                    price: event.extendedProps?.reservation?.price,
+                    total_service: event.extendedProps?.reservation?.service_price,
                 };
             },
             transformAllUnitsToEvents() {

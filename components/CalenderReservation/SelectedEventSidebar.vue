@@ -221,7 +221,7 @@
                         <dd class="col-6 text-end mb-0">{{ selectedEvent.price || '0 ' }} EGP</dd>
 
                         <dt class="col-6 fw-normal text-heading">Total Services</dt>
-                        <dd class="col-6 text-end mb-0">{{ selectedEvent.service_price || '0 ' }} EGP</dd>
+                        <dd class="col-6 text-end mb-0">{{ selectedEvent.total_service || '0 ' }} EGP</dd>
 
                         <dt class="col-6 fw-normal text-heading">Total</dt>
                         <dd class="col-6 text-end mb-0">{{ selectedEvent.total || '0 ' }} EGP</dd>
