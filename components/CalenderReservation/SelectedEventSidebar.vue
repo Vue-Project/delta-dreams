@@ -217,14 +217,20 @@
 
                 <div class="new-div mt-lg-5 mt-md-5 mt-2 w-100 TotalPayment">
                     <dl class="row mb-0">
+                        <dt class="col-6 fw-normal text-heading">Price</dt>
+                        <dd class="col-6 text-end mb-0">{{ selectedEvent.price || '0 ' }} EGP</dd>
+
+                        <dt class="col-6 fw-normal text-heading">Total Services</dt>
+                        <dd class="col-6 text-end mb-0">{{ selectedEvent.service_price || '0 ' }} EGP</dd>
+
                         <dt class="col-6 fw-normal text-heading">Total</dt>
-                        <dd class="col-6 text-end">{{ selectedEvent.total || '0 ' }} EGP</dd>
+                        <dd class="col-6 text-end mb-0">{{ selectedEvent.total || '0 ' }} EGP</dd>
 
                         <dt class="col-6 fw-normal">Paid</dt>
-                        <dd class="col-6 text-end">{{ selectedEvent.paid || '0 ' }} EGP</dd>
+                        <dd class="col-6 text-end mb-0">{{ selectedEvent.paid || '0 ' }} EGP</dd>
 
                         <dt class="col-6 fw-normal text-danger">Balance</dt>
-                        <dd class="col-6 text-end text-danger">{{ selectedEvent.balance || '0.0 ' }} EGP</dd>
+                        <dd class="col-6 text-end mb-0 text-danger">{{ selectedEvent.balance || '0.0 ' }} EGP</dd>
                     </dl>
                 </div>
             </template>
@@ -402,17 +408,17 @@
 
         methods: {
             initFlatpickr() {
-            if (this.$refs.rangePicker1 && !this.$refs.rangePicker1._flatpickr) {
-                flatpickr(this.$refs.rangePicker1, {
-                    mode: 'range',
-                    dateFormat: 'Y-m-d',
-                    defaultDate: [this.checkin_date, this.checkout_date],
-                    onChange: (selectedDates) => {
-                        this.parseDateRange();
-                    }
-                });
-            }
-        },
+                if (this.$refs.rangePicker1 && !this.$refs.rangePicker1._flatpickr) {
+                    flatpickr(this.$refs.rangePicker1, {
+                        mode: 'range',
+                        dateFormat: 'Y-m-d',
+                        defaultDate: [this.checkin_date, this.checkout_date],
+                        onChange: selectedDates => {
+                            this.parseDateRange();
+                        },
+                    });
+                }
+            },
             async handleStatusChange(event) {
                 const oldStatus = this.selectedEvent.status;
                 const newStatus = event.target.value;
@@ -642,35 +648,34 @@
         },
         watch: {
             selectedEvent: {
-            immediate: true,
-            async handler(newEvent) {
-                if (newEvent) {
-                    
-                    await this.$nextTick();
+                immediate: true,
+                async handler(newEvent) {
+                    if (newEvent) {
+                        await this.$nextTick();
 
-                    const formatDate = date => {
-                        return new Date(date).toLocaleDateString('en-CA');
-                    };
+                        const formatDate = date => {
+                            return new Date(date).toLocaleDateString('en-CA');
+                        };
 
-                    const checkinDate = formatDate(newEvent.checkin_date);
-                    const checkoutDate = formatDate(newEvent.checkout_date);
+                        const checkinDate = formatDate(newEvent.checkin_date);
+                        const checkoutDate = formatDate(newEvent.checkout_date);
 
-                    this.checkin_date = checkinDate;
-                    this.checkout_date = checkoutDate;
-                    this.dateRange = `${checkinDate} to ${checkoutDate}`;
+                        this.checkin_date = checkinDate;
+                        this.checkout_date = checkoutDate;
+                        this.dateRange = `${checkinDate} to ${checkoutDate}`;
 
-                    if (this.$refs.rangePicker1 && !this.$refs.rangePicker1._flatpickr) {
-                        this.initFlatpickr(); 
-                    }
-
-                    setTimeout(() => {
-                        if (this.$refs.rangePicker1?._flatpickr) {
-                            this.$refs.rangePicker1._flatpickr.setDate([checkinDate, checkoutDate]);
+                        if (this.$refs.rangePicker1 && !this.$refs.rangePicker1._flatpickr) {
+                            this.initFlatpickr();
                         }
-                    }, 100);
-                }
+
+                        setTimeout(() => {
+                            if (this.$refs.rangePicker1?._flatpickr) {
+                                this.$refs.rangePicker1._flatpickr.setDate([checkinDate, checkoutDate]);
+                            }
+                        }, 100);
+                    }
+                },
             },
-        },
         },
         mixins: [flatpickrMixin, validationMixin],
     };
