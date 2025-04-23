@@ -1360,7 +1360,7 @@
             },
             // Add this new method to format the value before sending to server
             formatValueForServer(value) {
-                return value ? value.toString().replace(/\./g, '') : '0';
+                return value ? value.toString().replace(/[.,]/g, '') : '0';
             },
         },
 
