@@ -412,7 +412,19 @@
                     }
                 });
             }
+            if (this.$refs.datePicker1 && !this.$refs.datePicker1._flatpickr) {
+            flatpickr(this.$refs.datePicker1, {
+                mode: 'single',
+                dateFormat: 'd/m/Y',
+                defaultDate: this.formAddPayment.date,
+                onChange: (selectedDates) => {
+                    this.handleDateChange(selectedDates);
+                }
+            });
+        }
         },
+        
+
             async handleStatusChange(event) {
                 const oldStatus = this.selectedEvent.status;
                 const newStatus = event.target.value;
@@ -662,12 +674,14 @@
                     if (this.$refs.rangePicker1 && !this.$refs.rangePicker1._flatpickr) {
                         this.initFlatpickr(); 
                     }
-
                     setTimeout(() => {
                         if (this.$refs.rangePicker1?._flatpickr) {
                             this.$refs.rangePicker1._flatpickr.setDate([checkinDate, checkoutDate]);
                         }
                     }, 100);
+                    if (newEvent.status_select) {
+                        this.statusOptions = newEvent.status_select;
+                    } 
                 }
             },
         },
