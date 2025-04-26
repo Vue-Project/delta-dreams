@@ -133,8 +133,39 @@
                     resourceOrder: 'original',
                     eventDidMount: info => {
                         this.adjustHarnessPosition(info);
+                        // Add full name as data attribute for hover tooltip
                         if (info.event.extendedProps?.fullName) {
                             info.el.setAttribute('data-full-name', info.event.extendedProps.fullName);
+                        }
+                        // Check if the event spans multiple days
+                        const eventStart = new Date(info.event.start);
+                        const eventEnd = new Date(info.event.end);
+                        const daysDifference = Math.ceil((eventEnd - eventStart) / (1000 * 60 * 60 * 24));
+
+                        // Get the current view's visible range
+                        const calendarApi = this.$refs.calendar?.getApi();
+                        if (calendarApi) {
+                            const viewStart = calendarApi.view.activeStart;
+                            const viewEnd = calendarApi.view.activeEnd;
+
+                            // Check if the event is partially visible (starts before view or ends after view)
+                            const startsBeforeView = eventStart < viewStart;
+                            const endsAfterView = eventEnd > viewEnd;
+
+                            // If event is partially visible or only one day is visible, use short name
+                            if (startsBeforeView || endsAfterView || daysDifference <= 2) {
+                                // Find the title elements and update them
+                                const titleElements = info.el.querySelectorAll('.event-title-full');
+                                titleElements.forEach(el => {
+                                    el.style.display = 'none';
+                                });
+
+                                const shortNameElements = info.el.querySelectorAll('.event-title-short');
+                                shortNameElements.forEach(el => {
+                                    el.style.display = 'block';
+                                    el.textContent = info.event.extendedProps.shortName || '';
+                                });
+                            }
                         }
                     },
                     resources: this.createResources(),
@@ -643,6 +674,9 @@
                             eventColor = '#6c757d'; // Default gray if no status color is provided
                         }
 
+                        // const fullName = reservation.client?.name || reservation.user?.name || 'Unknown';
+
+                        // Get initials by taking first letter of each word
                         const fullName = reservation.client?.name || reservation.user?.name || 'Unknown';
 
                         // Get initials by taking first letter of each word
@@ -675,6 +709,7 @@
                                 reservation: reservation,
                                 status: reservation.status,
                                 fullName: fullName, // Store full name for tooltip
+                                shortName: shortName, // Add shortName to extendedProps
                             },
                             classNames: ['custom-event', 'hoverable-event'], // Add hoverable class
                         });
@@ -1411,7 +1446,42 @@
 </script>
 
 <style scoped>
-    /* Existing styles... */
+    .event-title-full,
+    .event-title-short {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 
-    /* Responsive styles for event names */
+    /* Add tooltip-like behavior for hovering */
+    .fc-timeline-event {
+        position: relative;
+    }
+
+    .fc-timeline-event:hover::after {
+        content: attr(data-full-name);
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        white-space: nowrap;
+        z-index: 1000;
+        pointer-events: none;
+    }
+
+    /* By default, show full name and hide short name */
+    /* .event-title-short {
+        display: none;
+    } */
+
+    /* For very small events, always show short name */
+    .fc-timeline-event.fc-event-mirror .event-title-full,
+    .fc-timeline-event.fc-event-mirror .event-title-short {
+        font-size: 0.85em;
+    }
 </style>
