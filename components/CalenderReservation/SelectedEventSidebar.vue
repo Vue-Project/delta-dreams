@@ -7,6 +7,7 @@
                     <h6>
                         <i class="fa-solid fa-user pr-2 text-primary fs-3 mb-2"></i>
                         {{ selectedEvent.client?.name }}
+                        {{ selectedEvent.status_color }}
 
                         <!-- {{ selectedEvent?.is_edit || 0 }}
                         {{ selectedEvent?.is_show || 0 }}
@@ -37,7 +38,7 @@
                         </div>
                         <div class="col-8 pt-1">
                             <select class="form-select badge h-px-40 lh-lg text-dark StatusSideBarSelect" :value="selectedEvent.status" @change="handleStatusChange">
-                                <option v-for="(label, value) in statusOptions" :key="value" :value="value">
+                                <option v-for="(label, value) in selectedEvent.status_select" :key="value" :value="value">
                                     {{ label }}
                                 </option>
                             </select>
@@ -408,23 +409,13 @@
 
         methods: {
             initFlatpickr() {
-                if (this.$refs.rangePicker1 && !this.$refs.rangePicker1._flatpickr) {
-                    flatpickr(this.$refs.rangePicker1, {
-                        mode: 'range',
-                        dateFormat: 'Y-m-d',
-                        defaultDate: [this.checkin_date, this.checkout_date],
+                if (this.$refs.datePicker1 && !this.$refs.datePicker1._flatpickr) {
+                    flatpickr(this.$refs.datePicker1, {
+                        mode: 'single',
+                        dateFormat: 'd/m/Y',
+                        defaultDate: this.formAddPayment.date,
                         onChange: selectedDates => {
-                            this.parseDateRange();
-                        },
-                    });
-                }
-                if (this.$refs.rangePicker1 && !this.$refs.rangePicker1._flatpickr) {
-                    flatpickr(this.$refs.rangePicker1, {
-                        mode: 'range',
-                        dateFormat: 'Y-m-d',
-                        defaultDate: [this.checkin_date, this.checkout_date],
-                        onChange: selectedDates => {
-                            this.parseDateRange();
+                            this.handleDateChange(selectedDates);
                         },
                     });
                 }
@@ -694,6 +685,9 @@
                             }
                         }, 100);
                     }
+                    // if (newEvent.status_select) {
+                    //     this.statusOptions = newEvent.status_select;
+                    // }
                 },
             },
         },
