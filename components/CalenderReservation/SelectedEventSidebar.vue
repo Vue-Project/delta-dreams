@@ -15,11 +15,11 @@
                     <div class="CityPhoneHeader">
                         <span class="mr-3">
                             <i class="text-secondary fa-solid fa-location-dot"></i>
-                            {{ selectedEvent.user?.country || 'Egypt' }}
+                            {{ selectedEvent.client?.country }}
                         </span>
                         <span>
                             <i class="text-success fa-solid fa-phone"></i>
-                            {{ selectedEvent.user?.phone || '0123456789' }}
+                            {{ selectedEvent.client?.phone }}
                         </span>
                     </div>
                     <div class="row mt-4">
@@ -103,7 +103,7 @@
                                     <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                         <div class="me-2">
                                             <h6 class="mb-0">Arrival Date</h6>
-                                            <small class="text-muted">{{ formatDate(selectedEvent.checkin_date || '2024-10-21') }} {{ selectedEvent.checkin_time || '12:00 PM' }}</small>
+                                            <small class="text-muted">{{ formatDate(selectedEvent.checkin_date) }} {{ selectedEvent.checkin_time }}</small>
                                         </div>
                                     </div>
                                 </div>
@@ -113,7 +113,7 @@
                                     <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                         <div class="me-2">
                                             <h6 class="mb-0">Booking Date</h6>
-                                            <small class="text-muted">{{ formatDate(selectedEvent.checkout_date || '2024-10-21') }} {{ selectedEvent.checkout_time || '12:00 PM' }}</small>
+                                            <small class="text-muted">{{ formatDate(selectedEvent.checkout_date) }} {{ selectedEvent.checkout_time }}</small>
                                         </div>
                                     </div>
                                 </div>
@@ -125,7 +125,7 @@
                                             <h6 class="mb-0">Room Number</h6>
 
                                             <small class="text-muted">
-                                                {{ selectedEvent.rooms || 5 }}
+                                                {{ selectedEvent.rooms }}
                                             </small>
                                         </div>
                                     </div>
@@ -193,7 +193,7 @@
                                     <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                         <div class="me-2">
                                             <h6 class="mb-0">Avg. Daily Rate</h6>
-                                            <small class="text-muted">{{ selectedEvent.unit_price || '0' }}</small>
+                                            <small class="text-muted">{{ selectedEvent.unit_price }}</small>
                                         </div>
                                     </div>
                                 </div>
@@ -218,19 +218,19 @@
                 <div class="new-div mt-lg-5 mt-md-5 mt-2 w-100 TotalPayment">
                     <dl class="row mb-0">
                         <dt class="col-6 fw-normal text-heading">Price</dt>
-                        <dd class="col-6 text-end mb-0">{{ selectedEvent.price || '0 ' }} EGP</dd>
+                        <dd class="col-6 text-end mb-0">{{ selectedEvent.price }} EGP</dd>
 
                         <dt class="col-6 fw-normal text-heading">Total Services</dt>
-                        <dd class="col-6 text-end mb-0">{{ selectedEvent.total_service || '0 ' }} EGP</dd>
+                        <dd class="col-6 text-end mb-0">{{ selectedEvent.total_service }} EGP</dd>
 
                         <dt class="col-6 fw-normal text-heading">Total</dt>
-                        <dd class="col-6 text-end mb-0">{{ selectedEvent.total || '0 ' }} EGP</dd>
+                        <dd class="col-6 text-end mb-0">{{ selectedEvent.total }} EGP</dd>
 
                         <dt class="col-6 fw-normal">Paid</dt>
-                        <dd class="col-6 text-end mb-0">{{ selectedEvent.paid || '0 ' }} EGP</dd>
+                        <dd class="col-6 text-end mb-0">{{ selectedEvent.paid }} EGP</dd>
 
                         <dt class="col-6 fw-normal text-danger">Balance</dt>
-                        <dd class="col-6 text-end mb-0 text-danger">{{ selectedEvent.balance || '0.0 ' }} EGP</dd>
+                        <dd class="col-6 text-end mb-0 text-danger">{{ selectedEvent.balance }} EGP</dd>
                     </dl>
                 </div>
             </template>

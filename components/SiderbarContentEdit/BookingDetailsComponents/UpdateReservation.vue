@@ -765,7 +765,7 @@
                   <h6 class="mb-0 ms-3">Total</h6>
                   <div class="d-flex">
                     <p class="mb-0 fw-medium">
-                      {{ formAddReservation.BillingSummary.total || '0' }}
+                      {{ formAddReservation.BillingSummary.total }}
                     </p>
                     <!-- <p class="ms-3 text-success mb-0">0.3%</p> -->
                   </div>
@@ -783,7 +783,7 @@
                   <h6 class="mb-0 ms-3">Paid</h6>
                   <div class="d-flex">
                     <p class="mb-0 fw-medium">
-                      {{ formAddReservation.BillingSummary.paid || '0' }}
+                      {{ formAddReservation.BillingSummary.paid  }}
                     </p>
                     <!-- <p class="ms-3 text-success mb-0">0.3%</p> -->
                   </div>
@@ -801,7 +801,7 @@
                   <h6 class="mb-0 ms-3">Remaining</h6>
                   <div class="d-flex">
                     <p class="mb-0 fw-medium">
-                      {{ formAddReservation.BillingSummary.remaining || '0' }}
+                      {{ formAddReservation.BillingSummary.remaining  }}
                     </p>
                     <!-- <p class="ms-3 text-success mb-0">0.3%</p> -->
                   </div>
@@ -818,7 +818,7 @@
                   <h6 class="mb-0 ms-3">Service Price</h6>
                   <div class="d-flex">
                     <p class="mb-0 fw-medium">
-                      {{ formAddReservation.BillingSummary.service_price || '089498489498' }}
+                      {{ formAddReservation.BillingSummary.service_price  }}
                     </p>
                     <!-- <p class="ms-3 text-success mb-0">0.3%</p> -->
                   </div>
@@ -835,7 +835,7 @@
                   <h6 class="mb-0 ms-3">Rate Type</h6>
                   <div class="d-flex">
                     <p class="mb-0 fw-medium">
-                      {{ formAddReservation.BillingSummary.rate_type_name || 'N/A' }} - {{ formAddReservation.BillingSummary.rate_type_price || '0' }}
+                      {{ formAddReservation.BillingSummary.rate_type_name   }} - {{ formAddReservation.BillingSummary.rate_type_price  }}
                     </p>
                     <!-- <p class="ms-3 text-success mb-0">0.3%</p> -->
                   </div>
@@ -1178,8 +1178,8 @@ export default {
         book_all_available: this.formAddReservation.rateOffered.bookAll,
         hold_release_date: this.formAddReservation.releaseDate,
         hold_release_time: this.formAddReservation.releaseTime,
-        release_term_value: this.formAddReservation.releaseTermValue || 24,
-        release_term_type: this.formAddReservation.releaseTerm || "24 hours",
+        release_term_value: this.formAddReservation.releaseTermValue  ,
+        release_term_type: this.formAddReservation.releaseTerm ,
         remind_before_days: this.formAddReservation.remindGuest,
         client_id: this.selectedNameId,
         mobile: this.formAddReservation.guestInformation.mobile,
