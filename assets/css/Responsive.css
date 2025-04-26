@@ -72,6 +72,9 @@
 }
 
 @media (max-width: 767px) {
+    .offcanvas-body {
+        overflow: auto;
+    }
     #flatpickr-date-04 {
         margin-bottom: 15px;
     }
