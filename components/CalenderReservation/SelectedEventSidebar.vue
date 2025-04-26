@@ -15,7 +15,7 @@
                     <div class="CityPhoneHeader">
                         <span class="mr-3">
                             <i class="text-secondary fa-solid fa-location-dot"></i>
-                            {{ selectedEvent.client?.country }}
+                            {{ selectedEvent.client?.country_name }}
                         </span>
                         <span>
                             <i class="text-success fa-solid fa-phone"></i>
