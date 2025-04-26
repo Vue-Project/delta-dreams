@@ -4,18 +4,10 @@
     }
     .checkIn-reservations {
         margin-bottom: 15px;
-<<<<<<< HEAD
     }
     .date-response {
         font-size: 12px !important;
     }
-=======
-  
-  }
-  .date-response{
-    font-size:12px !important;
-  }
->>>>>>> BitBuckt/test
 }
 @media (max-width: 768px) {
     .event-title-full {
