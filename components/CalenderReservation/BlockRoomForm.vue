@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-12">
                     <label for="flatpickr-date-01" class="form-label">Date Range</label>
-                    <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD to YYYY-MM-DD" id="flatpickr-range-01" ref="rangePicker5" v-model="formBlock.dateStartAndEnd" aria-label="input Text to Date" disabled />
+                    <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD to YYYY-MM-DD" id="flatpickr-range-01" ref="rangePicker5" v-model="formBlock.dateStartAndEnd" aria-label="input Text to Date"/>
                     <div class="text-danger small" v-if="$v.formBlock.dateStartAndEnd.$error">Date range is required</div>
                 </div>
                 <div class="col-12">
