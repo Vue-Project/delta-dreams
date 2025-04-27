@@ -534,7 +534,9 @@ select {
     border-bottom-left-radius: 6px;
     border-top-left-radius: 6px;
 }
-
+.scroll-hidden::-webkit-scrollbar {
+    display: none; 
+}
 #paymentInsurance {
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
