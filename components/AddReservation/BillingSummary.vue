@@ -113,20 +113,20 @@
                     <dl class="row payment-summary">
                         <dt class="col-6">Payment Method:</dt>
                         <dd class="col-6">
-                            {{ getSelectedPaymentMethodName() || 'Not selected' }}
+                            {{ getSelectedPaymentMethodName() }}
                         </dd>
 
                         <dt class="col-6">Payment Type:</dt>
-                        <dd class="col-6">{{ getSelectedPaymentTypeName() || 'Not selected' }}</dd>
+                        <dd class="col-6">{{ getSelectedPaymentTypeName() }}</dd>
 
                         <!-- Common fields for all payment types -->
                         <dt class="col-6">Amount:</dt>
                         <dd class="col-6">
-                            {{ paymentDetails.amount || 'Not specified' }}
+                            {{ paymentDetails.amount }}
                         </dd>
 
                         <dt class="col-6">Date:</dt>
-                        <dd class="col-6">{{ paymentDetails.date || 'Not specified' }}</dd>
+                        <dd class="col-6">{{ paymentDetails.date }}</dd>
 
                         <template v-if="paymentDetails.comment">
                             <dt class="col-6">Comment:</dt>

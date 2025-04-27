@@ -12,7 +12,7 @@
                     <button class="nav-link" :class="{ active: activeTab === tab }" @click="setActiveTab(tab)">
                         {{ tab }}
                         <span class="badge rounded-pill badge-center h-px-30 w-px-30 bg-label-danger ms-1 p-2">
-                            {{ statisticsHeaderRoomView[tab] || 0 }}
+                            {{ statisticsHeaderRoomView[tab] }}
                         </span>
                     </button>
                 </li>
