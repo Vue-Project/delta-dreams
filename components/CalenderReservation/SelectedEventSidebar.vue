@@ -7,7 +7,6 @@
                     <h6>
                         <i class="fa-solid fa-user pr-2 text-primary fs-3 mb-2"></i>
                         {{ selectedEvent.client?.name }}
-                        {{ selectedEvent.status_color }}
 
                         <!-- {{ selectedEvent?.is_edit || 0 }}
                         {{ selectedEvent?.is_show || 0 }}
@@ -166,7 +165,8 @@
                                     <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                         <div class="me-2">
                                             <h6 class="mb-0">Unit Code</h6>
-                                            <small class="text-muted">{{ selectedEvent.unit_data?.building?.name }} / {{ selectedEvent.unit_data?.code }}</small>
+                                            <!-- <small class="text-muted">{{ selectedEvent.unit_data?.building?.name }} / {{ selectedEvent.unit_data?.code }}</small> -->
+                                            <small class="text-muted">{{ selectedEvent.unit_data?.code }}</small>
                                         </div>
                                     </div>
                                 </div>
@@ -409,28 +409,27 @@
 
         methods: {
             initFlatpickr() {
-            if (this.$refs.rangePicker1 && !this.$refs.rangePicker1._flatpickr) {
-                flatpickr(this.$refs.rangePicker1, {
-                    mode: 'range',
-                    dateFormat: 'Y-m-d',
-                    defaultDate: [this.checkin_date, this.checkout_date],
-                    onChange: (selectedDates) => {
-                        this.parseDateRange();
-                    }
-                });
-            }
-            if (this.$refs.datePicker1 && !this.$refs.datePicker1._flatpickr) {
-            flatpickr(this.$refs.datePicker1, {
-                mode: 'single',
-                dateFormat: 'd/m/Y',
-                defaultDate: this.formAddPayment.date,
-                onChange: (selectedDates) => {
-                    this.handleDateChange(selectedDates);
+                if (this.$refs.rangePicker1 && !this.$refs.rangePicker1._flatpickr) {
+                    flatpickr(this.$refs.rangePicker1, {
+                        mode: 'range',
+                        dateFormat: 'Y-m-d',
+                        defaultDate: [this.checkin_date, this.checkout_date],
+                        onChange: selectedDates => {
+                            this.parseDateRange();
+                        },
+                    });
                 }
-            });
-        }
-        },
-        
+                if (this.$refs.datePicker1 && !this.$refs.datePicker1._flatpickr) {
+                    flatpickr(this.$refs.datePicker1, {
+                        mode: 'single',
+                        dateFormat: 'd/m/Y',
+                        defaultDate: this.formAddPayment.date,
+                        onChange: selectedDates => {
+                            this.handleDateChange(selectedDates);
+                        },
+                    });
+                }
+            },
 
             async handleStatusChange(event) {
                 const oldStatus = this.selectedEvent.status;
@@ -686,20 +685,20 @@
                         this.checkout_date = checkoutDate;
                         this.dateRange = `${checkinDate} to ${checkoutDate}`;
 
-                    if (this.$refs.rangePicker1 && !this.$refs.rangePicker1._flatpickr) {
-                        this.initFlatpickr(); 
-                    }
-                    setTimeout(() => {
-                        if (this.$refs.rangePicker1?._flatpickr) {
-                            this.$refs.rangePicker1._flatpickr.setDate([checkinDate, checkoutDate]);
+                        if (this.$refs.rangePicker1 && !this.$refs.rangePicker1._flatpickr) {
+                            this.initFlatpickr();
                         }
-                    }, 100);
-                    if (newEvent.status_select) {
-                        this.statusOptions = newEvent.status_select;
-                    } 
-                }
+                        setTimeout(() => {
+                            if (this.$refs.rangePicker1?._flatpickr) {
+                                this.$refs.rangePicker1._flatpickr.setDate([checkinDate, checkoutDate]);
+                            }
+                        }, 100);
+                        if (newEvent.status_select) {
+                            this.statusOptions = newEvent.status_select;
+                        }
+                    }
+                },
             },
-        },
         },
         mixins: [flatpickrMixin, validationMixin],
     };
