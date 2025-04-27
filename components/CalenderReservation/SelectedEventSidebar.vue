@@ -63,7 +63,7 @@
 
         <!-- Offcanvas Body -->
         <hr />
-        <div class="offcanvas-body mx-0 flex-grow-0 pt-0">
+        <div class="offcanvas-body mx-0 flex-grow-0 pt-0 overflow-auto scroll-hidden">
             <div class="row mb-4" v-if="selectedEvent?.is_edit">
                 <div class="col-9">
                     <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD to YYYY-MM-DD" id="flatpickr-range" ref="rangePicker1" v-model="dateRange" @change="parseDateRange" aria-label="input Text to Date" />
