@@ -529,7 +529,7 @@ select {
 .GuestTitle {
     margin-left: -13px;
 }
-.searchInput{
+.searchInput {
     padding: 20px 13px;
     border-bottom-left-radius: 6px;
     border-top-left-radius: 6px;
@@ -542,7 +542,7 @@ select {
 /* start sidebar  */
 .sidebar-open {
     overflow-y: auto;
-    overflow-x: hidden;
+    overflow-x: auto;
 }
 
 /* .sidebar-open::-webkit-scrollbar {
@@ -576,13 +576,13 @@ div:where(.swal2-container) div:where(.swal2-html-container) {
 /* end reservation style */
 
 /* full calendar  */
-.fc-scrollgrid-sync-table .fc-timeline-header-row th:nth-child(7n + 5) {
+/* .fc-scrollgrid-sync-table .fc-timeline-header-row th:nth-child(7n + 5) {
     background-color: rgb(255, 248, 225);
 }
 
 .fc-scrollgrid-sync-table .fc-timeline-header-row th:nth-child(7n + 6) {
     background-color: rgb(255, 248, 225);
-}
+} */
 
 .selected-days-tooltip {
     background-color: rgb(27, 21, 46);
@@ -650,7 +650,7 @@ select.form-select option {
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease-in-out;
     position: relative;
-    overflow: hidden;
+    overflow: auto;
 }
 
 .room:hover {
@@ -870,9 +870,12 @@ select.form-select option {
 .me-2 h6 {
     margin-bottom: 5px;
 }
+.fc-datagrid-cell-frame {
+    justify-content: center !important;
+}
 
 /* .fc .fc-datagrid-cell-cushion,
-.fc .fc-scroller-harness,
+/* .fc .fc-scroller-harness,
 .fc-scroller {
   overflow: visible !important;
 } */
@@ -885,18 +888,18 @@ select.form-select option {
   display: none !important;
 } */
 
-.fc .fc-view-harness-active > .fc-view {
+/* .fc .fc-view-harness-active > .fc-view {
     -ms-overflow-style: none;
     scrollbar-width: none;
-}
+} */
 
 /* .fc .fc-scrollgrid-section-liquid>td {
   height: 4690px;
 } */
 
-.fc-scrollgrid-sync-inner {
+/* .fc-scrollgrid-sync-inner {
     width: 100%;
-}
+} */
 
 .fc-datagrid-expander-placeholder {
     display: none !important;
@@ -987,9 +990,9 @@ body {
 .modal-backdrop.show.fade {
     display: none !important;
 }
-.fc-scroller::-webkit-scrollbar {
+/* .fc-scroller::-webkit-scrollbar {
     width: 0px;
-}
+} */
 .layout-navbar {
     z-index: 0;
 }
@@ -1087,6 +1090,9 @@ body {
 
 .list-unstyled li {
     padding: 3px 0;
+}
+.offcanvas-body {
+    overflow: hidden;
 }
 
 .quick-reservation {

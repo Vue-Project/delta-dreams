@@ -34,7 +34,7 @@
                     <button class="nav-link" :class="{ active: activeTab === tab }" @click="setActiveTab(tab)">
                         {{ tab }}
                         <span class="badge rounded-pill badge-center h-px-30 w-px-30 bg-label-danger ms-1 p-2">
-                            {{ statisticsHeaderRoomView[tab] || 0 }}
+                            {{ statisticsHeaderRoomView[tab] }}
                         </span>
                     </button>
                 </li>
@@ -81,24 +81,24 @@
                                 <div class="row d-flex align-items-center justify-content-center text-center mb-3">
                                     <div class="bg-light col-md-4">
                                         <div class="text-dark date-response">{{ formatDate(room.reservation?.checkin_date) }}</div>
-                                        <div>{{ room.reservation?.checkin_time  }}</div>
+                                        <div>{{ room.reservation?.checkin_time }}</div>
                                     </div>
                                     <div class="bg-secondary col-md-4">
                                         <div class="text-dark">
-                                            {{ (new Date(room.reservation?.checkout_date) - new Date(room.reservation?.checkin_date)) / (1000 * 3600 * 24)  }}
+                                            {{ (new Date(room.reservation?.checkout_date) - new Date(room.reservation?.checkin_date)) / (1000 * 3600 * 24) }}
                                         </div>
                                         <div>Nights</div>
                                     </div>
                                     <div class="bg-light col-md-4">
                                         <div class="text-dark date-response">{{ formatDate(room.reservation?.checkout_date) }}</div>
-                                        <div>{{ room.reservation?.checkout_time  }}</div>
+                                        <div>{{ room.reservation?.checkout_time }}</div>
                                     </div>
                                 </div>
 
                                 <div class="row mb-5">
                                     <div class="col-md-10">
                                         <div>Status</div>
-                                        <div>{{ room.status_name  }}</div>
+                                        <div>{{ room.status_name }}</div>
                                     </div>
                                     <div class="col-md-6">
                                         <div>Booking Date :</div>
@@ -107,24 +107,24 @@
                                     <div class="col-md-6 text-end">
                                         <div>
                                             <i class="fa-solid fa-person"></i>
-                                            {{ room.reservation?.children  }}
+                                            {{ room.reservation?.children }}
                                             <i class="fa-solid fa-child"></i>
-                                            {{ room.reservation?.adults  }}
+                                            {{ room.reservation?.adults }}
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div>building / unit / rooms :</div>
-                                        <div>{{ room.building?.name  }} / {{ room.code  }} / {{ room.rooms  }}</div>
+                                        <div>{{ room.building?.name }} / {{ room.code }} / {{ room.rooms }}</div>
                                     </div>
                                 </div>
 
                                 <div class="row">
                                     <div class="col-md-6">Total</div>
-                                    <div class="col-md-6 text-end">{{ room.reservation?.total  }} EGP</div>
+                                    <div class="col-md-6 text-end">{{ room.reservation?.total }} EGP</div>
                                     <div class="col-md-6">Paid</div>
-                                    <div class="col-md-6 text-end">{{ room.reservation?.paid  }} EGP</div>
+                                    <div class="col-md-6 text-end">{{ room.reservation?.paid }} EGP</div>
                                     <div class="col-md-6 text-danger">Balance</div>
-                                    <div class="col-md-6 text-end text-danger">{{ room.reservation?.remaining  }} EGP</div>
+                                    <div class="col-md-6 text-end text-danger">{{ room.reservation?.remaining }} EGP</div>
                                 </div>
                             </div>
                         </div>
@@ -150,12 +150,12 @@
                             <tbody class="table-border-bottom-0 cursor-pointer">
                                 <tr @click="handleRoomClick(room)" v-for="room in tabData[tab].data" :key="room.id">
                                     <td>
-                                        <h5 class="m-0 me-2">{{ room.reservation?.client?.name  }}</h5>
+                                        <h5 class="m-0 me-2">{{ room.reservation?.client?.name }}</h5>
                                         <div>
                                             <i class="fa-solid fa-person"></i>
-                                            {{ room.reservation?.children  }}
+                                            {{ room.reservation?.children }}
                                             <i class="fa-solid fa-child"></i>
-                                            {{ room.reservation?.adults  }}
+                                            {{ room.reservation?.adults }}
                                         </div>
                                     </td>
                                     <td>
@@ -163,29 +163,29 @@
                                     </td>
                                     <td>
                                         <div class="text-dark">
-                                            {{ (new Date(room.reservation?.checkout_date) - new Date(room.reservation?.checkin_date)) / (1000 * 3600 * 24)  }}
+                                            {{ (new Date(room.reservation?.checkout_date) - new Date(room.reservation?.checkin_date)) / (1000 * 3600 * 24) }}
                                         </div>
                                     </td>
                                     <td>
                                         <p class="m-0 me-2">{{ formatDate(room.reservation?.checkin_date) }}</p>
-                                        <p class="m-0 me-2">{{ room.reservation?.checkin_time  }}</p>
+                                        <p class="m-0 me-2">{{ room.reservation?.checkin_time }}</p>
                                     </td>
                                     <td>
                                         <p class="m-0 me-2">{{ formatDate(room.reservation?.checkout_date) }}</p>
-                                        <p class="m-0 me-2">{{ room.reservation?.checkout_time  }}</p>
+                                        <p class="m-0 me-2">{{ room.reservation?.checkout_time }}</p>
                                     </td>
                                     <td>
-                                        <p class="m-0 me-2">{{ room.building?.name  }} / {{ room.code  }} / {{ room.rooms  }}</p>
+                                        <p class="m-0 me-2">{{ room.building?.name }} / {{ room.code }} / {{ room.rooms }}</p>
                                         <p class="m-0 me-2">Booking Date: {{ formatDate(room.reservation?.created_at) }}</p>
                                     </td>
                                     <td>
-                                        <p class="m-0 me-2">{{ room.reservation?.total  }} EGP</p>
+                                        <p class="m-0 me-2">{{ room.reservation?.total }} EGP</p>
                                     </td>
                                     <td>
-                                        <p class="m-0 me-2">{{ room.reservation?.paid  }} EGP</p>
+                                        <p class="m-0 me-2">{{ room.reservation?.paid }} EGP</p>
                                     </td>
                                     <td class="d-flex justify-content-between border-bottom-0">
-                                        <p class="m-0 me-2 text-danger">{{ room.reservation?.remaining  }} EGP</p>
+                                        <p class="m-0 me-2 text-danger">{{ room.reservation?.remaining }} EGP</p>
                                     </td>
                                 </tr>
                             </tbody>

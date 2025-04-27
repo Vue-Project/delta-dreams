@@ -7,6 +7,7 @@
                     <h6>
                         <i class="fa-solid fa-user pr-2 text-primary fs-3 mb-2"></i>
                         {{ selectedEvent.client?.name }}
+                        {{ selectedEvent.status_color }}
 
                         <!-- {{ selectedEvent?.is_edit || 0 }}
                         {{ selectedEvent?.is_show || 0 }}
@@ -15,11 +16,11 @@
                     <div class="CityPhoneHeader">
                         <span class="mr-3">
                             <i class="text-secondary fa-solid fa-location-dot"></i>
-                            {{ selectedEvent.user?.country || 'Egypt' }}
+                            {{ selectedEvent.client?.country_name }}
                         </span>
                         <span>
                             <i class="text-success fa-solid fa-phone"></i>
-                            {{ selectedEvent.user?.phone || '0123456789' }}
+                            {{ selectedEvent.client?.phone }}
                         </span>
                     </div>
                     <div class="row mt-4">
@@ -37,7 +38,7 @@
                         </div>
                         <div class="col-8 pt-1">
                             <select class="form-select badge h-px-40 lh-lg text-dark StatusSideBarSelect" :value="selectedEvent.status" @change="handleStatusChange">
-                                <option v-for="(label, value) in statusOptions" :key="value" :value="value">
+                                <option v-for="(label, value) in selectedEvent.status_select" :key="value" :value="value">
                                     {{ label }}
                                 </option>
                             </select>
@@ -103,7 +104,7 @@
                                     <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                         <div class="me-2">
                                             <h6 class="mb-0">Arrival Date</h6>
-                                            <small class="text-muted">{{ formatDate(selectedEvent.checkin_date || '2024-10-21') }} {{ selectedEvent.checkin_time || '12:00 PM' }}</small>
+                                            <small class="text-muted">{{ formatDate(selectedEvent.checkin_date) }} {{ selectedEvent.checkin_time }}</small>
                                         </div>
                                     </div>
                                 </div>
@@ -113,7 +114,7 @@
                                     <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                         <div class="me-2">
                                             <h6 class="mb-0">Booking Date</h6>
-                                            <small class="text-muted">{{ formatDate(selectedEvent.checkout_date || '2024-10-21') }} {{ selectedEvent.checkout_time || '12:00 PM' }}</small>
+                                            <small class="text-muted">{{ formatDate(selectedEvent.checkout_date) }} {{ selectedEvent.checkout_time }}</small>
                                         </div>
                                     </div>
                                 </div>
@@ -125,7 +126,7 @@
                                             <h6 class="mb-0">Room Number</h6>
 
                                             <small class="text-muted">
-                                                {{ selectedEvent.rooms || 5 }}
+                                                {{ selectedEvent.rooms }}
                                             </small>
                                         </div>
                                     </div>
@@ -193,7 +194,7 @@
                                     <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                         <div class="me-2">
                                             <h6 class="mb-0">Avg. Daily Rate</h6>
-                                            <small class="text-muted">{{ selectedEvent.unit_price || '0' }}</small>
+                                            <small class="text-muted">{{ selectedEvent.unit_price }}</small>
                                         </div>
                                     </div>
                                 </div>
@@ -217,14 +218,20 @@
 
                 <div class="new-div mt-lg-5 mt-md-5 mt-2 w-100 TotalPayment">
                     <dl class="row mb-0">
+                        <dt class="col-6 fw-normal text-heading">Price</dt>
+                        <dd class="col-6 text-end mb-0">{{ selectedEvent.price }} EGP</dd>
+
+                        <dt class="col-6 fw-normal text-heading">Total Services</dt>
+                        <dd class="col-6 text-end mb-0">{{ selectedEvent.total_service }} EGP</dd>
+
                         <dt class="col-6 fw-normal text-heading">Total</dt>
-                        <dd class="col-6 text-end">{{ selectedEvent.total || '0 ' }} EGP</dd>
+                        <dd class="col-6 text-end mb-0">{{ selectedEvent.total }} EGP</dd>
 
                         <dt class="col-6 fw-normal">Paid</dt>
-                        <dd class="col-6 text-end">{{ selectedEvent.paid || '0 ' }} EGP</dd>
+                        <dd class="col-6 text-end mb-0">{{ selectedEvent.paid }} EGP</dd>
 
                         <dt class="col-6 fw-normal text-danger">Balance</dt>
-                        <dd class="col-6 text-end text-danger">{{ selectedEvent.balance || '0.0 ' }} EGP</dd>
+                        <dd class="col-6 text-end mb-0 text-danger">{{ selectedEvent.balance }} EGP</dd>
                     </dl>
                 </div>
             </template>
@@ -654,22 +661,30 @@
         },
         watch: {
             selectedEvent: {
-            immediate: true,
-            async handler(newEvent) {
-                if (newEvent) {
-                    
-                    await this.$nextTick();
+                immediate: true,
+                async handler(newEvent) {
+                    if (newEvent) {
+                        await this.$nextTick();
 
-                    const formatDate = date => {
-                        return new Date(date).toLocaleDateString('en-CA');
-                    };
+                        const formatDate = date => {
+                            return new Date(date).toLocaleDateString('en-CA');
+                        };
 
-                    const checkinDate = formatDate(newEvent.checkin_date);
-                    const checkoutDate = formatDate(newEvent.checkout_date);
+                        const checkinDate = formatDate(newEvent.checkin_date);
+                        const checkoutDate = formatDate(newEvent.checkout_date);
 
-                    this.checkin_date = checkinDate;
-                    this.checkout_date = checkoutDate;
-                    this.dateRange = `${checkinDate} to ${checkoutDate}`;
+                        if (this.$refs.rangePicker1 && !this.$refs.rangePicker1._flatpickr) {
+                            this.initFlatpickr();
+                        }
+
+                        setTimeout(() => {
+                            if (this.$refs.rangePicker1?._flatpickr) {
+                                this.$refs.rangePicker1._flatpickr.setDate([checkinDate, checkoutDate]);
+                            }
+                        }, 100);
+                        this.checkin_date = checkinDate;
+                        this.checkout_date = checkoutDate;
+                        this.dateRange = `${checkinDate} to ${checkoutDate}`;
 
                     if (this.$refs.rangePicker1 && !this.$refs.rangePicker1._flatpickr) {
                         this.initFlatpickr(); 
