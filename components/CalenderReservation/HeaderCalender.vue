@@ -1,7 +1,7 @@
 <template>
     <div class="row justify-content-between p-2 position-relative">
         <!-- Left Column - Date and Building Filter -->
-        <div class="col-lg-6 col-md-8 col-md-12 mb-2">
+        <div class="col-lg-6 col-md-8 col-md-12">
             <div class="row">
                 <!-- Date Picker -->
                 <div class="col-lg-4 col-md-6 col-12">
@@ -21,35 +21,6 @@
                     </div>
                 </div>
 
-                <!-- Building Filter - Always Visible -->
-                <div class="col-lg-4 col-md-6 col-12">
-                    <div class="dropdown w-100">
-                        <button class="btn btn-primary dropdown-toggle w-100" type="button" id="buildingsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa-solid fa-filter pe-2"></i>
-                            filter types
-                            <span v-if="selectedBuildings.length" class="badge bg-light text-dark ms-1">
-                                {{ selectedBuildings.length }}
-                            </span>
-                        </button>
-                        <ul class="dropdown-menu w-100" aria-labelledby="buildingsDropdown">
-                            <li>
-                                <a class="dropdown-item" href="#" @click.prevent="toggleSelectAllBuildings">
-                                    <input type="checkbox" v-model="selectAllBuildings" class="form-check-input me-2" />
-                                    <span>Show All</span>
-                                </a>
-                            </li>
-                            <li>
-                                <hr class="dropdown-divider" />
-                            </li>
-                            <li v-for="building in buildingNames" :key="building">
-                                <a class="dropdown-item" href="#" @click.prevent="toggleBuilding(building, $event)">
-                                    <input type="checkbox" v-model="selectedBuildings" :value="building" class="form-check-input me-2" @click.stop />
-                                    <span>{{ building }}</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
             </div>
         </div>
 
@@ -57,9 +28,9 @@
         <div class="col-lg-6 col-md-12">
             <div class="row g-2 justify-content-end">
                 <!-- Quick Reservation - Always Visible -->
-                <div class="col-6 col-lg-6 order-1 quick-reservation">
-                    <button class="btn btn-primary w-100" @click="quickReservation">Quick Reservation</button>
-                </div>
+                    <div class="col-6 col-lg-6 order-1 quick-reservation d-block d-lg-none">
+                        <button class="btn btn-primary w-100" @click="quickReservation">Quick Reservation</button>
+                    </div>
 
                 <!-- Mobile Filter Button -->
                 <div class="col-6 col-lg-6 order-2 d-lg-none">
@@ -72,12 +43,41 @@
                 <!-- Desktop Only Filters -->
                 <!-- <div class="d-none d-lg-block col-lg-4 order-2">
           <button class="btn btn-primary w-100" @click="applyFilters">
-            Apply Filters
-          </button>
+              Apply Filters
+            </button>
         </div> -->
-
-                <!-- Rate Types Filter - Desktop Only -->
-                <div class="d-none d-lg-block col-lg-4 order-3">
+        
+        <!-- Rate Types Filter - Desktop Only -->
+        <!-- Building Filter - Always Visible -->
+        <div class="col-lg-4 col-12">
+            <div class="dropdown w-100">
+                <button class="btn btn-primary dropdown-toggle w-100 filter-types" type="button" id="buildingsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fa-solid fa-filter pe-2"></i>
+                    filter types
+                    <span v-if="selectedBuildings.length" class="badge bg-light text-dark ms-1">
+                        {{ selectedBuildings.length }}
+                    </span>
+                </button>
+                <ul class="dropdown-menu w-100" aria-labelledby="buildingsDropdown">
+                    <li>
+                        <a class="dropdown-item" href="#" @click.prevent="toggleSelectAllBuildings">
+                            <input type="checkbox" v-model="selectAllBuildings" class="form-check-input me-2" />
+                            <span>Show All</span>
+                        </a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider" />
+                    </li>
+                    <li v-for="building in buildingNames" :key="building">
+                        <a class="dropdown-item" href="#" @click.prevent="toggleBuilding(building, $event)">
+                            <input type="checkbox" v-model="selectedBuildings" :value="building" class="form-check-input me-2" @click.stop />
+                            <span>{{ building }}</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="d-none d-lg-block col-lg-4 order-3">
                     <div class="dropdown w-100">
                         <button class="btn btn-primary dropdown-toggle w-100" type="button" id="rateTypesDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fa-solid fa-filter pe-2"></i>
@@ -99,7 +99,7 @@
 
                 <!-- Projects Filter - Desktop Only -->
                 <div class="d-none d-lg-block col-lg-4 order-4">
-                    <div class="dropdown w-100 ps-lg-2">
+                    <div class="dropdown w-100">
                         <button class="btn btn-primary dropdown-toggle w-100" type="button" id="projectsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fa-solid fa-filter pe-2"></i>
                             Filter Projects
@@ -118,6 +118,10 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <!-- Quick Reservation - Always Visible -->
+        <div class="col-6 col-lg-2 order-1 quick-reservation d-none d-lg-block mt-2">
+            <button class="btn btn-primary w-100" @click="quickReservation">Quick Reservation</button>
         </div>
 
         <!-- Mobile Sidebar -->
