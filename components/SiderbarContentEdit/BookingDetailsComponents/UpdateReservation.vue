@@ -319,7 +319,7 @@
                               :key="unit.id"
                               :value="unit.id"
                             >
-                              {{ unit.building?.name }} / {{ unit.code }}
+                               {{ unit.code }}
                             </option>
                           </select>
                           <span
@@ -717,7 +717,7 @@
             <div class="px-0 row m-auto">
               <div class="col-md-3 col-12 px-0 pe-md-3">
 
-                <!-- <label for="countryGuest" class="col-form-label">Country</label>
+                <label for="countryGuest" class="col-form-label">Country</label>
                 <select class="form-select" v-model="formAddReservation.guestInformation.country" :class="{ 'input-error': validationMessages.country }">
                   <option disabled value="">Select Country</option>
                   <option v-for="(country, index) in getCountries" :key="index" :value="index">
