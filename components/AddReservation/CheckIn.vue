@@ -195,7 +195,7 @@
                                                 <td data-label="Room">
                                                     <select class="form-select" ref="unitSelect" v-model="item.unitId" :disabled="!datesSelected || !availableUnitsByRoom[index]?.length">
                                                         <option disabled value="">Select Unit</option>
-                                                        <option v-for="unit in availableUnitsByRoom[index] || []" :key="unit.id" :value="unit.id">{{ unit.building?.name }} / {{ unit.code }}</option>
+                                                        <option v-for="unit in availableUnitsByRoom[index] || []" :key="unit.id" :value="unit.id">{{ unit.code }}</option>
                                                     </select>
                                                     <span class="error-message small" v-if="$v.formAddReservation.units.$each[index].unitId.$error">Unit is required</span>
                                                 </td>

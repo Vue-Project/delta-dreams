@@ -174,7 +174,7 @@
                     eventOverlap: false, // Disallow overlapping events
                     slotDuration: '24:00', // Slot duration of one day
                     datesSet: this.handleDatesSet, // Listen to date changes
-                    initialDate: this.getTwoDaysAgoDate(),
+                    // initialDate: this.getTwoDaysAgoDate(),
 
                     // eventColor: 'red', // This will override individual event colors
                     slotLabelContent: arg => {
@@ -308,7 +308,8 @@
                                             id: `${building.id}-${unit.id}`,
                                             resourceId: building.id,
                                             projectId: building?.project_id,
-                                            title: `${unit.building?.name}/${unit.name}`,
+                                            // title: `${unit.building?.name}/${unit.name}`,
+                                            title: `${unit.code}`,
                                             groupId: building.name,
                                             classNames: ['unit'],
                                             codeForSorting: parseInt(unit.code) || unit.code, // Store for sorting
@@ -849,6 +850,7 @@
                     const resourceId = event.getResources()[0]?.id;
                     const unitId = resourceId?.split('-')[1];
                     const unitName = this.getUnitNameById(unitId);
+                    console.log('ewf3f3f3', unitName);
 
                     // Get the original reservation times from extendedProps
                     const originalCheckinTime = event.extendedProps?.reservation?.checkin_time || '14:00:00';
@@ -903,11 +905,13 @@
                         // Get the current price from the reservation
                         const currentPrice = event.extendedProps?.reservation?.unit_price || '';
                         const buildingName = event.extendedProps?.reservation?.unit?.building?.name;
-                        const unitName = event.extendedProps?.reservation?.unit?.name;
+                        // const unitName = event.extendedProps?.reservation?.name;
+                        console.log('unitName', event);
+
                         const buildingInfo = ` ${buildingName} /${unitName} `;
                         // console.log('tesating', buildingInfo);
 
-                        const result = await showUpdateConfirmationDialog(startDate, endDate, currentPrice, buildingInfo);
+                        const result = await showUpdateConfirmationDialog(startDate, endDate, currentPrice, unitName);
 
                         if (result.isConfirmed) {
                             if (result.value) {

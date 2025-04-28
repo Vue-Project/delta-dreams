@@ -1097,9 +1097,9 @@ body {
     overflow: hidden;
 }
 
-.quick-reservation {
+/* .quick-reservation {
     display: none;
-}
+} */
 @media (max-width: 768px) {
     /* .dropdown-menu {
     position: fixed !important;
