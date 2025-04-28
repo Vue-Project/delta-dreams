@@ -63,10 +63,10 @@ export const showConfirmationDialog = (message = 'Are you sure you want to proce
         confirmButtonText: 'Yes, proceed!',
     });
 };
-export const showUpdateConfirmationDialog = (startDate, endDate, currentPrice, buildingInfo) => {
+export const showUpdateConfirmationDialog = (startDate, endDate, currentPrice, unitName) => {
     return Swal.fire({
         title: 'Confirm Update',
-        html: `<p>Are you sure you want to update this reservation to ${startDate} to ${endDate} for Unit ${buildingInfo} ?</p>
+        html: `<p>Are you sure you want to update this reservation to ${startDate} to ${endDate} for Unit ${unitName} ?</p>
         <div class="mt-3">
                 <label  class="form-label  text-start d-block " style="font-size: 20px;">Unit Price:</label>
             </div>`,

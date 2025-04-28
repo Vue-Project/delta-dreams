@@ -42,8 +42,8 @@
                                 <hr class="dropdown-divider" />
                             </li>
                             <li v-for="building in buildingNames" :key="building">
-                                <a class="dropdown-item" href="#" @click.stop.prevent="toggleBuilding(building, $event)">
-                                    <input type="checkbox" :checked="selectedBuildings.includes(building)" class="form-check-input me-2" @click.stop />
+                                <a class="dropdown-item" href="#" @click.prevent="toggleBuilding(building, $event)">
+                                    <input type="checkbox" v-model="selectedBuildings" :value="building" class="form-check-input me-2" @click.stop />
                                     <span>{{ building }}</span>
                                 </a>
                             </li>

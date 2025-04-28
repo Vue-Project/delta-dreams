@@ -34,7 +34,8 @@
                                     </span>
                                 </div>
                             </div>
-                            <p class="fs-5">unit Code: {{ room?.building.name }} / {{ room.code }}</p>
+                            <!-- <p class="fs-5">unit Code: {{ room?.building.name }} / {{ room.code }}</p> -->
+                            <p class="fs-5">unit Code: {{ room.code }}</p>
                         </div>
                         <div class="card-body p-1 position-relative">
                             <div class="d-flex justify-content-start align-items-start">
