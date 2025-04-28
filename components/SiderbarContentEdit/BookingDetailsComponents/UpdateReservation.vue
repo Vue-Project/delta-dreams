@@ -102,10 +102,10 @@
                 </div> -->
                 <!-- ROOM & RESERVATION TYPE -->
 
-                <div class="col-md-3 col-12 px-0 ps-lg-2">
+                <div class="col-md-2 col-12 px-0 ps-lg-2 ">
                   <label for="roomCount" class="form-label">Room(s)</label>
                   <input
-                    class="form-control"
+                    class="form-control rounded-2"
                     type="number"
                     id="roomCount"
                     v-model="formAddReservation.numberRooms"
@@ -120,7 +120,7 @@
 
                 <!-- RESERVATION TYPE DROPDOWN -->
 
-                <div class="col-lg-9 col-12 mb-4 col-md-9 ps-sm-2 p-0 pe-md-0">
+                <!-- <div class="col-lg-9 col-12 mb-4 col-md-9 ps-sm-2 p-0 pe-md-0">
                   <label for="reservationType" class="form-label"
                     >Reservation Type</label
                   >
@@ -145,14 +145,14 @@
                   >
                     Reservation type is required
                   </span>
-                </div>
+                </div> -->
               </div>
             </div>
             <div class="###### px-0">
               <!-- BOOKING SOURCE SELECTION -->
 
               <div class="col-md-6 mb-4 px-0">
-                <div class="row">
+                <div class="row mt-3">
                   <div class="col-md-6 col-12">
                     <label for="bookingSource" class="form-label"
                       >Booking Source</label
