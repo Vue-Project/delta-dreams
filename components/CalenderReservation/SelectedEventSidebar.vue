@@ -218,7 +218,7 @@
                                     <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                         <div class="me-2">
                                             <h6 class="mb-0">Permit Image</h6>
-                                            <img :src="`https://testdeltadream.swevey.com/${selectedEvent.permit_image}`" alt="permit_image" class="w-75" />
+                                            <img :src="`https://testdeltadream.swevey.com/${selectedEvent.permit_image}`" style="width: 50px; height: 50px; cursor: pointer" @click="showImg(`https://testdeltadream.swevey.com/${selectedEvent.permit_image}`)" />
                                         </div>
                                     </div>
                                 </div>
@@ -248,6 +248,7 @@
                         <dd class="col-6 text-end mb-0 text-danger">{{ selectedEvent.balance }} EGP</dd>
                     </dl>
                 </div>
+                <vue-easy-lightbox :visible="visible" :imgs="imgs" :index="index" @hide="handleHide" />
             </template>
             <!-- Modal Payment -->
             <div class="modal fade" id="paymentModal" data-bs-backdrop="static" tabindex="-1" style="display: none" aria-hidden="true">
@@ -397,6 +398,9 @@
                     type: '',
                 },
                 statusOptions: [],
+                visible: false,
+                index: 0,
+                imgs: [],
             };
         },
         validations: {
@@ -659,6 +663,14 @@
                     this.paymentTypes = [];
                     this.formAddPayment.paymentType = '';
                 }
+            },
+            showImg(img) {
+                this.imgs = [img];
+                this.index = 0;
+                this.visible = true;
+            },
+            handleHide() {
+                this.visible = false;
             },
         },
         async mounted() {

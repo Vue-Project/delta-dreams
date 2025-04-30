@@ -292,9 +292,10 @@
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-12 px-0 px-md-3" v-if="reservationData?.permit">
                                     <p class="mb-0">Permit Image</p>
-                                    <img :src="`https://testdeltadream.swevey.com/${reservationData.permit_image}`" alt="permit_image" style="width: 50px; height: 50px" class="w-75" />
+                                    <img :src="`https://testdeltadream.swevey.com/${reservationData.permit_image}`" style="width: 50px; height: 50px; cursor: pointer" @click="showImg(`https://testdeltadream.swevey.com/${reservationData.permit_image}`)" class="w-75" />
                                 </div>
                             </div>
+                            <vue-easy-lightbox :visible="visible" :imgs="imgs" :index="index" @hide="handleHide" />
                         </div>
                     </div>
                     <hr class="my-4" />
@@ -629,6 +630,9 @@
                     },
                 },
                 servicesList: [],
+                visible: false,
+                index: 0,
+                imgs: [],
 
                 // Validation Messages
                 // validationMessages: {
@@ -1248,6 +1252,14 @@
                     console.error('Error fetching units:', error);
                     this.$set(this.availableUnitsByRoom, index, []);
                 }
+            },
+            showImg(img) {
+                this.imgs = [img];
+                this.index = 0;
+                this.visible = true;
+            },
+            handleHide() {
+                this.visible = false;
             },
         },
         // ======================
