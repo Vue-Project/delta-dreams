@@ -135,10 +135,10 @@
                                 <div class="d-flex align-items-start">
                                     <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                         <div class="me-2">
-                                            <h6 class="mb-0">Booking source</h6>
+                                            <h6 class="mb-0">Travel Agent</h6>
 
                                             <small class="text-muted">
-                                                {{ selectedEvent.booking_source_name }}
+                                                {{ selectedEvent.travel_agent_name }}
                                             </small>
                                         </div>
                                     </div>
@@ -205,6 +205,20 @@
                                         <div class="me-2">
                                             <h6 class="mb-0">Business Source</h6>
                                             <small class="text-muted">{{ selectedEvent.business_source_name }}</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-12">
+                        <ul class="list-unstyled mb-0" v-if="selectedEvent?.permit">
+                            <li class="mb-3 pb-1">
+                                <div class="d-flex align-items-start">
+                                    <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                        <div class="me-2">
+                                            <h6 class="mb-0">Permit Image</h6>
+                                            <img :src="`https://testdeltadream.swevey.com/${selectedEvent.permit_image}`" alt="permit_image" class="w-75" />
                                         </div>
                                     </div>
                                 </div>

@@ -817,11 +817,13 @@
                     unit_code: unitCode || event.extendedProps?.reservation?.code,
                     reservation_id: event.extendedProps?.reservation?.id,
                     building_name: buildingName || event.extendedProps?.reservation?.unit?.building?.name,
-                    booking_source_name: event.extendedProps?.reservation?.booking_source?.name,
+                    travel_agent_name: event.extendedProps?.reservation?.travel_agent?.name,
                     business_source_name: event.extendedProps?.reservation?.business_source?.name,
                     unit_data: unitData, // Include the entire unit data object
                     price: event.extendedProps?.reservation?.price,
                     total_service: event.extendedProps?.reservation?.service_price,
+                    permit: event.extendedProps?.reservation?.permit,
+                    permit_image: event.extendedProps?.reservation?.permit_image,
                 };
             },
             transformAllUnitsToEvents() {
