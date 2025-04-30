@@ -10,7 +10,6 @@
                 <form id="formReservation" class="g-3" @submit.prevent="submitAddReservation" ref="emptyForm">
                     <!--  ! Reservation  Details -->
                     <!-- change in size and icons -->
-                    <!-- {{ selectedResourceName }} -->
 
                     <div class="row">
                         <div class="col-lg-8">
@@ -1422,16 +1421,16 @@
             try {
                 const [
                     businessSourcesResponse,
-                    bookingSourcesResponse,
+                    // bookingSourcesResponse,
                     usersResponse,
                     unitTypesResponse,
-                    travelAgentsResponse,
                     // servicesResponses,
                     servicesResponse,
-                ] = await Promise.all([getBusinessSources(), getBookingSources(), getGuestsInfo(), getUnitTypes(), getServices(), getTravelAgents()]);
+                    travelAgentsResponse,
+                ] = await Promise.all([getBusinessSources(), getGuestsInfo(), getUnitTypes(), getServices(), getTravelAgents()]);
 
                 this.businessSources = businessSourcesResponse.data.data;
-                this.bookingSources = bookingSourcesResponse.data.data;
+                // this.bookingSources = bookingSourcesResponse.data.data;
                 this.filteredNames = usersResponse.data.data;
                 this.unitsTypes = unitTypesResponse.data.data;
                 this.servicesList = servicesResponse.data.data;
