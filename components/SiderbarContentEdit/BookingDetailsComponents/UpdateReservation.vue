@@ -515,10 +515,13 @@
           <!-- HOLD RELEASE SECTION -->
           <!-- *************************** -->
           <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12">
               <!-- HOLD RELEASE DATE/TIME -->
-
-              <div class="row">
+              <label for=""></label>
+              <input type="text">
+              <label for=""></label>
+              <input type="text">
+              <!-- <div class="row">
                 <div class="col-md-12">
                   <div class="row">
                     <div class="col-md-6 col-xl-6 col-12 px-0">
@@ -549,9 +552,9 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> -->
             </div>
-            <div class="col-md-6">
+            <!-- <div class="col-md-6">
               <div class="row">
                 <div class="col-md-6 col-12 px-0 px-md-3">
                   <label for="releaseTerm" class="form-label"
@@ -587,7 +590,7 @@
                   </select>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
           <hr class="my-4" />
           <!-- *************************** -->

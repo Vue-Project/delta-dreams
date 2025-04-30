@@ -66,9 +66,39 @@
                                                 <i class="fa-regular fa-trash-can me-1"></i>
                                                 cancel
                                             </a>
+                                            <a class="dropdown-item" @click="selectedWallet = wallet" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">
+                                                <i class="fa-solid fa-coins me-1"></i>
+                                                transfer
+                                            </a>
+                                            <!-- modal -->
                                         </div>
                                     </div>
                                 </td>
+                                <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content rounded-4">
+                                            <div class="modal-header">
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <h4 class="modal-title mt-2 d-flex m-auto" id="loginModalLabel">transfer</h4>
+                                            <div class="modal-body">
+                                                <div class="mb-4">
+                                                    <h6>Reservation Number: {{ reservationData.id }}</h6>
+                                                    <small class="text-muted"></small>
+                                                </div>
+                                                <div class="mb-4 password-field">
+                                                    amount
+                                                    {{ selectedWallet?.price}}
+                                                </div>
+                                                <div>
+                                                    <label for="">payment</label>
+                                                    <input type="text">
+                                                </div>
+                                                <button type="submit" class="btn-primary btn m-auto">save</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </tr>
                         </tbody>
                     </table>
