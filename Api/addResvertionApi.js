@@ -21,6 +21,16 @@ export const getBookingSources = async () => {
         throw error;
     }
 };
+export const getTravelAgents = async () => {
+    try {
+        const response = await apiClient.get('/travel_agents');
+        // console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching rooms:', error);
+        throw error;
+    }
+};
 export const getUnitTypes = async () => {
     try {
         const response = await apiClient.get('/unit_types');
@@ -80,20 +90,19 @@ export const getGuestsInfo = async () => {
     }
 };
 
-export const getGuestsInfoSearch = async (query) => {
-  try {
-      const response = await apiClient.get('/clients', {
-          params: {
-              name: query,
-          },
-      });
-      return response.data;
-  } catch (error) {
-      console.error('Error fetching guests:', error);
-      throw error;
-  }
+export const getGuestsInfoSearch = async query => {
+    try {
+        const response = await apiClient.get('/clients', {
+            params: {
+                name: query,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching guests:', error);
+        throw error;
+    }
 };
-
 
 export const getGuestDetails = async guestId => {
     try {

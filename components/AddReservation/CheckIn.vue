@@ -81,11 +81,11 @@
                             <div class="col-lg-6 col-12 mb-4 p-0">
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6">
-                                        <label for="bookingSource" class="form-label">Booking Source</label>
-                                        <select class="form-select" id="bookingSource" v-model="formAddReservation.bookingSource" ref="bookingSource">
+                                        <label for="travelAgent" class="form-label">Travel Agents</label>
+                                        <select class="form-select" id="travelAgent" v-model="formAddReservation.travelAgent" ref="travelAgent">
                                             <option value="" disabled>Select</option>
-                                            <option v-for="source in bookingSources" :key="source.id" :value="source.id">
-                                                {{ source.name }}
+                                            <option v-for="travel in travelAgents" :key="travel.id" :value="travel.id">
+                                                {{ travel.name }}
                                             </option>
                                         </select>
                                     </div>
@@ -487,7 +487,7 @@
 </template>
 <script>
     import { showSuccessAlert, handleSubmissionError } from '../../Api/MassageValidation/alertUtilities';
-    import { getBookingSources, getBusinessSources, getGuestsInfo, getGuestsInfoSearch, postAddReservationData, getUnitTypes, getUnits, getGuestDetails, getServices } from '../../Api/addResvertionApi';
+    import { getBookingSources, getBusinessSources, getGuestsInfo, getGuestsInfoSearch, postAddReservationData, getUnitTypes, getUnits, getGuestDetails, getServices, getTravelAgents } from '../../Api/addResvertionApi';
     import flatpickrMixin from '../Mixin/flatpickrMixin';
     import SidebarAddGuest from '../layout/AddGuestSidebar.vue';
     import QuickAddGuestSidebar from '../layout/QuickAddGuestSidebar.vue';
@@ -533,6 +533,7 @@
                 timePicker2Instance: null,
                 businessSources: [],
                 bookingSources: [],
+                travelAgents: [],
                 unitsTypes: [],
                 availableUnits: [],
                 servicesList: [],
@@ -549,6 +550,7 @@
                     numberRooms: '1',
                     reservationType: '',
                     businessSource: '',
+                    travelAgent: '',
                     rateOffered: {
                         rateOfferedContract: false,
                         bookAll: false,
@@ -888,6 +890,7 @@
                     rooms: this.formAddReservation.numberRooms,
                     booking_source_id: this.formAddReservation.bookingSource,
                     business_source_id: this.formAddReservation.businessSource,
+                    travel_agent_id: this.formAddReservation.travelAgent,
                     reservation_type: this.formAddReservation.reservationType,
                     is_free: this.formAddReservation.rateOffered.complimentaryRoom,
                     hold_release_date: this.formAddReservation.releaseDate,
@@ -913,6 +916,7 @@
                     insurance: this.paymentData.insurance,
                     assigned_to: this.paymentData.assigned_to,
                 };
+                console.log(bookingData);
 
                 // Append simple fields to FormData
                 Object.keys(bookingData).forEach(key => {
@@ -1421,15 +1425,17 @@
                     bookingSourcesResponse,
                     usersResponse,
                     unitTypesResponse,
+                    travelAgentsResponse,
                     // servicesResponses,
                     servicesResponse,
-                ] = await Promise.all([getBusinessSources(), getBookingSources(), getGuestsInfo(), getUnitTypes(), getServices()]);
+                ] = await Promise.all([getBusinessSources(), getBookingSources(), getGuestsInfo(), getUnitTypes(), getServices(), getTravelAgents()]);
 
                 this.businessSources = businessSourcesResponse.data.data;
                 this.bookingSources = bookingSourcesResponse.data.data;
                 this.filteredNames = usersResponse.data.data;
                 this.unitsTypes = unitTypesResponse.data.data;
                 this.servicesList = servicesResponse.data.data;
+                this.travelAgents = travelAgentsResponse.data.data;
             } catch (error) {
                 console.error('Error loading data:', error);
             }
