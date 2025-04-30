@@ -82,6 +82,7 @@ export default {
   plugins: [
     "~/plugins/vue-wow-config",
     { src: '~/plugins/store-init.js', mode: 'client' },
+    { src: '~/plugins/vue-easy-lightbox.js', mode: 'client' },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

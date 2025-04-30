@@ -473,10 +473,17 @@
             </button> -->
                     </div>
 
+                    <button  type="button" class="btn btn-outline-secondary waves-effect mb-2 ">Multiple Edit</button>
                     <div class="table-responsive text-nowrap">
                         <table class="table">
                             <thead class="table-light">
                                 <tr>
+                                  <th>
+                                    <div class="form-check text-left">
+
+                                      <input class="form-check-input" type="checkbox" @change="toggleAllCheckboxes" v-model="selectAll">
+                                    </div>
+                                  </th>
                                     <th>bookingDate</th>
                                     <th>Room</th>
                                     <th>Rate Type</th>
@@ -486,10 +493,21 @@
                                     <th>Tax</th>
                                     <th>Adjustment</th>
                                     <th>Net Amount</th>
+                                    <th>Setting</th>
                                 </tr>
                             </thead>
                             <tbody class="table-border-bottom-0">
                                 <tr v-for="roomChargeData in roomChargesData" :key="roomChargeData.id">
+                                  <td>
+                                    <div class="form-check text-left">
+                                      <input
+                                          class="form-check-input"
+                                          type="checkbox"
+                                          v-model="roomChargeData.selected"
+                                      >
+                                    </div>
+                                      
+                                  </td>
                                     <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('updatedetails', 'Updatedetails')">
                                         {{ formatDate(roomChargeData.booking_date) }}
                                     </td>
@@ -515,6 +533,7 @@
                                     <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('updatedetails', 'Updatedetails')">
                                         {{ roomChargeData.rate_amount }}
                                     </td>
+                                    <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('updatedetails', 'Updatedetails')"><button type="button" class="btn btn-outline-secondary waves-effect">Edit</button></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -693,6 +712,7 @@
             return {
                 currentContent: null,
                 roomChargesData: [],
+                selectAll: false,
                 offcanvasTitle: '',
                 sidebarWidth: '400px',
                 dynamicButtonText: 'Save',
@@ -721,7 +741,18 @@
                 ],
             };
         },
+        mounted() {
+          this.roomChargesData = this.roomChargesData.map(item => ({
+            ...item,
+            selected: false
+          }));
+        },
         methods: {
+          toggleAllCheckboxes() {
+            this.roomChargesData.forEach(item => {
+              item.selected = this.selectAll;
+            });
+          },
             handleCellClick(rowData) {
                 // console.log("Clicked row data:", rowData); // Debugging: Log the row data
                 this.$emit('show-update-details', rowData); // Emit the event
