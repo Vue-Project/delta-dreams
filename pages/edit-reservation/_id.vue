@@ -50,8 +50,8 @@
                     </div>
                     <div class="col-6 col-md-4 col-xl-1 mb-3 mb-md-0">
                         <div class="me-2">
-                            <h6>Reservation Number</h6>
-                            <small class="text-muted">{{ reservationDataById.id || '14541' }}</small>
+                            <h6>Reservation Name</h6>
+                            <small class="text-muted">{{ reservationDataById.name || '14541' }}</small>
                         </div>
                     </div>
                     <div class="col-6 col-md-6 col-xl-1 mb-3 mb-md-0">
