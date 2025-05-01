@@ -65,7 +65,7 @@
 
                                 <!-- RESERVATION TYPE DROPDOWN -->
 
-                                <div class="col-lg-9 col-12 mb-4 col-md-9 ps-sm-2 p-0 pe-md-0">
+                                <!-- <div class="col-lg-9 col-12 mb-4 col-md-9 ps-sm-2 p-0 pe-md-0">
                                     <label for="reservationType" class="form-label">Reservation Type</label>
                                     <select class="form-select" id="reservationType" v-model="formAddReservation.reservationType" ref="reservationType">
                                         <option disabled value="">Select</option>
@@ -74,7 +74,7 @@
                                         </option>
                                     </select>
                                     <span class="error-message small" v-if="$v.formAddReservation.reservationType.$error">Reservation type is required</span>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                         <div class="###### px-0">
@@ -161,7 +161,7 @@
                                                 <td data-label="Room">
                                                     <select class="form-select" v-model="item.unitId" :disabled="!availableUnitsByRoom[0]?.length || index > 0">
                                                         <option disabled value="">Select Unit</option>
-                                                        <option v-for="unit in availableUnitsByRoom[0] || []" :key="unit.id" :value="unit.id">{{ unit.building?.name }} / {{ unit.code }}</option>
+                                                        <option v-for="unit in availableUnitsByRoom[0] || []" :key="unit.id" :value="unit.id">{{ unit.code }}</option>
                                                     </select>
                                                     <span class="error-message small" v-if="$v.formAddReservation.units[0].unitId.$error">Unit is required</span>
                                                 </td>
