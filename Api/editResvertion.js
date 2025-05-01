@@ -20,6 +20,17 @@ import apiClient from './apiClient';
         throw error;
       }
     };
+    export const postTransferWallet = async (id,amount,reservation_name) => {
+
+      try {
+        const response = await apiClient.post(`/wallets/transfer/${id}`,amount,reservation_name);
+        return response.data;
+
+      } catch (error) {
+        console.error(`Error Updating Wallet with ID "${id}":`, error);
+        throw error;
+      }
+    };
     export const putDeleteWallet = async (id,walletStatus) => {
 
       try {

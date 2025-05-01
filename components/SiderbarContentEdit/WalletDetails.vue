@@ -66,35 +66,55 @@
                                                 <i class="fa-regular fa-trash-can me-1"></i>
                                                 cancel
                                             </a>
-                                            <a class="dropdown-item" @click="selectedWallet = wallet" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">
+                                            <a class="dropdown-item" @click="openTransferModal(wallet.id, wallet.price)">
                                                 <i class="fa-solid fa-coins me-1"></i>
                                                 transfer
                                             </a>
+
                                             <!-- modal -->
                                         </div>
                                     </div>
                                 </td>
-                                <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+                                <div class="modal fade" id="exampleModalToggle" aria-hidden="true" tabindex="-1">
                                     <div class="modal-dialog modal-dialog-centered">
-                                        <div class="modal-content rounded-4">
-                                            <div class="modal-header">
+                                        <div class="modal-content rounded-4 shadow-lg border-0">
+                                            <div class="modal-header border-0">
+                                                <h5 class="modal-title mx-auto" id="loginModalLabel">Transfer</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
-                                            <h4 class="modal-title mt-2 d-flex m-auto" id="loginModalLabel">transfer</h4>
-                                            <div class="modal-body">
+                                            <div class="modal-body px-4 py-3">
                                                 <div class="mb-4">
-                                                    <h6>Reservation Number: {{ reservationData.id }}</h6>
-                                                    <small class="text-muted"></small>
+                                                    <h6 class="fw-semibold">Reservation Number:</h6>
+                                                    <p class="mb-0 text-muted">{{ reservationData?.id }}</p>
                                                 </div>
-                                                <div class="mb-4 password-field">
-                                                    amount
-                                                    {{ selectedWallet?.price}}
+                                                <!-- <div class="mb-4">
+                                                    <h6 class="fw-semibold">Wallet Number:</h6>
+                                                    <p class="mb-0 text-muted">{{ walletId || 'N/A' }}</p>
+                                                </div> -->
+                                                <div class="mb-4">
+                                                    <h6 class="fw-semibold">Amount:</h6>
+                                                    <p class="mb-0 text-success fw-bold">{{ walletPrice || '0.00' }}</p>
                                                 </div>
-                                                <div>
-                                                    <label for="">payment</label>
-                                                    <input type="text">
+                                                <div class="mb-4">
+                                                    <h6 class="fw-semibold">Transfer:</h6>
+                                                    <p class="mb-0 text-success fw-bold">{{ walletTransfer || '0.00' }}</p>
                                                 </div>
-                                                <button type="submit" class="btn-primary btn m-auto">save</button>
+                                                <div class="mb-4">
+                                                    <h6 class="fw-semibold">Total:</h6>
+                                                    <p class="mb-0 text-success fw-bold">{{ walletTotal || '0.00' }}</p>
+                                                </div>
+                                                <div class="mb-4">
+                                                    <label for="paymentInput" class="form-label fw-semibold">Payment</label>
+                                                    <input type="text" id="paymentInput" class="form-control rounded-3" placeholder="Enter payment amount" v-model="paymentAmount" />
+                                                </div>
+                                                <div class="mb-4">
+                                                    <label for="reservationinput" class="form-label fw-semibold">Reservation Id</label>
+                                                    <input type="text" id="reservationinput" class="form-control rounded-3" placeholder="Enter Reservation Id" v-model="reservationsId" />
+                                                </div>
+                                                <div class="text-center">
+                                                    <!-- Call transferWallet when clicked -->
+                                                    <button type="button" class="btn btn-primary px-4 rounded-pill" @click="transferWallet(walletId)">Save</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -159,6 +179,12 @@
                 },
                 sidebarTitle: '',
                 selectedWallet: null,
+                walletId: null,
+                walletPrice: null,
+                walletTransfer: null,
+                walletTotal: null,
+                paymentAmount: '',
+                reservationsId: null,
             };
         },
         methods: {
@@ -180,6 +206,40 @@
                         this.$emit('wallet-updated');
                     } catch (error) {
                         handleSubmissionError(error, 'Failed to delete wallet');
+                    }
+                }
+            },
+            async transferWallet(id) {
+                // Validate the entered payment amount
+                const payment = parseFloat(this.paymentAmount);
+                if (isNaN(payment)) {
+                    await showErrorAlert('Please enter a valid numeric payment.');
+                    return;
+                }
+                // Allow payment if it's less than or equal to the wallet amount
+                if (payment > this.walletPrice) {
+                    await showErrorAlert('Payment amount must not be greater than the wallet amount.');
+                    return;
+                }
+
+                // Show confirmation alert (just like in deletedWallet)
+                const result = await showConfirmationAlert('Are you sure?', 'transfer this payment reservation', 'Yes, transfer it!');
+
+                if (result.isConfirmed) {
+                    try {
+                        const walletStatus = {
+                            price: payment, // using the validated payment amount
+                            wallet_id: id,
+                        };
+
+                        // Call your transfer API using the wallet id and payment amount
+                        const response = await postTransferWallet(walletStatus.wallet_id, walletStatus.price);
+
+                        await showSuccessAlert('Payment Details Are Cancelled Successfully!');
+                        // Emit event to parent component instead of reloading
+                        this.$emit('wallet-updated');
+                    } catch (error) {
+                        handleSubmissionError(error, 'Failed to transfer wallet');
                     }
                 }
             },
@@ -258,6 +318,17 @@
                         'There was an issue with your update.', // Custom default error
                     );
                 }
+            },
+            openTransferModal(id, price, transfer, total) {
+                this.walletId = id;
+                this.walletPrice = price;
+                this.walletTransfer = transfer;
+                this.walletTotal = total;
+                this.paymentAmount = ''; // Clear any previous input
+                this.reservationsId = ''; // Set the reservation ID
+
+                const modal = new bootstrap.Modal(document.getElementById('exampleModalToggle'));
+                modal.show();
             },
         },
         watch: {
