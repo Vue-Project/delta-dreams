@@ -949,8 +949,11 @@
                 try {
                     const response = await postAddReservationData(formData);
 
+                    // reservation ID from the response
+                    const reservationName = response?.data?.reservation?.name;
+
                     await showSuccessAlert(
-                        'Reservation submitted successfully!', // Custom message
+                        `Reservation #${reservationName} submitted successfully!`, // Include ID in message
                         this.$router,
                         'index', // Route name
                     );
