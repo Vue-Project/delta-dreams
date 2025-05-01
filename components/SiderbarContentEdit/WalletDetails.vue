@@ -34,7 +34,7 @@
                                 <td>{{ wallet.payment.name }}</td>
                                 <td>{{ wallet.paymentType.name }}</td>
                                 <td>{{ wallet.type_name }}</td>
-                                <td>{{ wallet.price }}</td>
+                                <td>{{ wallet.total }}</td>
                                 <td>{{ wallet.date_at }}</td>
                                 <td>
                                     <template v-if="wallet.note">
@@ -130,7 +130,7 @@
 
 <script>
     import { getPaymentMethods } from '../../Api/addResvertionApi';
-    import { putDeleteWallet } from '../../Api/editResvertion';
+    import { postTransferWallet, putDeleteWallet } from '../../Api/editResvertion';
     import { showSuccessAlert, handleSubmissionError, showConfirmationAlert, showAlert } from '../../Api/MassageValidation/alertUtilities';
     import EditPayment from './EditPayment.vue';
 
@@ -235,15 +235,15 @@
 
                 if (result.isConfirmed) {
                     try {
-                        const walletStatus = {
-                            price: payment, // using the validated payment amount
+                        const transfersWalletData = {
+                            price: payment || 50, // using the validated payment amount
+                            reservation_id: this.reservationsId,
                             wallet_id: id,
                         };
-
                         // Call your transfer API using the wallet id and payment amount
-                        const response = await postTransferWallet(walletStatus.wallet_id, walletStatus.price);
+                        const response = await postTransferWallet(transfersWalletData.wallet_id, transfersWalletData);
 
-                        await showSuccessAlert('Payment Details Are Cancelled Successfully!');
+                        await showSuccessAlert('Payment Transferred Successfully!');
                         // Emit event to parent component instead of reloading
                         this.$emit('wallet-updated');
                     } catch (error) {
