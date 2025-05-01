@@ -4,6 +4,9 @@
     id="formGustInfo"
     @submit.prevent="submitFormUpdateGuest"
   >
+  <fieldset :disabled="!isClientEditable">
+    <p>{{ isClientEditable }}</p>
+    
     <div class="row pe-0 p-3 mb-5">
       <div class="col-md-6">
         <div class="row">
@@ -379,6 +382,7 @@
         </button>
       </div>
     </div>
+  </fieldset>
   </form>
 </template>
 
@@ -626,6 +630,10 @@ export default {
     },
   },
   computed: {
+    isClientEditable() {
+      return this.reservationData.is_client_edit;
+
+      },
     ...mapGetters([
       "getCountries",
       "getVipStatus",
