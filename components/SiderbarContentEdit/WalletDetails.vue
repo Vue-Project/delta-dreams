@@ -30,15 +30,7 @@
                         </thead>
                         <tbody>
                             <tr v-for="wallet in reservationData.wallets" :key="wallet.id">
-                                <td>
-                                    <img
-                                        :src="`https://testdeltadream.swevey.com/${wallet.image}`"
-                                        style="width: 50px; height: 50px; cursor: pointer"
-                                        @click="showImg(`https://testdeltadream.swevey.com/${wallet.image}`)"
-                                        />
-
-
-                                </td>
+                                <td><img :src="`https://testdeltadream.swevey.com/${wallet.image}`" alt="Payment Image" style="width: 50px; height: 50px" /></td>
                                 <td>{{ wallet.payment.name }}</td>
                                 <td>{{ wallet.paymentType.name }}</td>
                                 <td>{{ wallet.type_name }}</td>
@@ -128,12 +120,6 @@
                                     </div>
                                 </div>
                             </tr>
-                            <vue-easy-lightbox
-                                    :visible="visible"
-                                    :imgs="imgs"
-                                    :index="index"
-                                    @hide="handleHide"
-                                />
                         </tbody>
                     </table>
                 </div>
@@ -145,7 +131,7 @@
 <script>
     import { getPaymentMethods } from '../../Api/addResvertionApi';
     import { putDeleteWallet } from '../../Api/editResvertion';
-    import { showSuccessAlert, handleSubmissionError, showConfirmationAlert } from '../../Api/MassageValidation/alertUtilities';
+    import { showSuccessAlert, handleSubmissionError, showConfirmationAlert, showAlert } from '../../Api/MassageValidation/alertUtilities';
     import EditPayment from './EditPayment.vue';
 
     export default {
@@ -199,20 +185,9 @@
                 walletTotal: null,
                 paymentAmount: '',
                 reservationsId: null,
-                visible: false,
-                index: 0,
-                imgs: [],
             };
         },
         methods: {
-            showImg(img) {
-                this.imgs = [img];
-                this.index = 0;
-                this.visible = true;
-            },
-            handleHide() {
-                this.visible = false;
-            },
             async deletedWallet(id) {
                 const result = await showConfirmationAlert('Are you sure?', 'cancel this payment reservation', 'Yes, cancel it!');
 
@@ -238,12 +213,20 @@
                 // Validate the entered payment amount
                 const payment = parseFloat(this.paymentAmount);
                 if (isNaN(payment)) {
-                    await showErrorAlert('Please enter a valid numeric payment.');
+                    await showAlert({
+                        title: 'Invalid Input',
+                        text: 'Please enter a valid numeric payment.',
+                        icon: 'error',
+                    });
                     return;
                 }
                 // Allow payment if it's less than or equal to the wallet amount
                 if (payment > this.walletPrice) {
-                    await showErrorAlert('Payment amount must not be greater than the wallet amount.');
+                    await showAlert({
+                        title: 'Exceeded Amount',
+                        text: 'Payment amount must not be greater than the wallet amount.',
+                        icon: 'error',
+                    });
                     return;
                 }
 
