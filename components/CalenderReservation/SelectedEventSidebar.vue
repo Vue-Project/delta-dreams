@@ -93,7 +93,7 @@
                                     <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                         <div class="me-2">
                                             <h6 class="mb-0">Reservation Number</h6>
-                                            <small class="text-muted">{{ selectedEvent.reservation_id }}</small>
+                                            <small class="text-muted">#{{ selectedEvent.reservation_name }}</small>
                                         </div>
                                     </div>
                                 </div>
@@ -217,8 +217,8 @@
                                 <div class="d-flex align-items-start">
                                     <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                         <div class="me-2">
-                                            <h6 class="mb-0">Permit Image</h6>
-                                            <img :src="`https://testdeltadream.swevey.com/${selectedEvent.permit_image}`" style="width: 50px; height: 50px; cursor: pointer" @click="showImg(`https://testdeltadream.swevey.com/${selectedEvent.permit_image}`)" />
+                                            <h6>Permit Image</h6>
+                                            <img :src="`https://testdeltadream.swevey.com/${selectedEvent.permit_image}`" style="width: 100%; height: 50px; cursor: pointer" @click="showImg(`https://testdeltadream.swevey.com/${selectedEvent.permit_image}`)" />
                                         </div>
                                     </div>
                                 </div>

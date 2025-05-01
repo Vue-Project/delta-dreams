@@ -824,6 +824,7 @@
                     total_service: event.extendedProps?.reservation?.service_price,
                     permit: event.extendedProps?.reservation?.permit,
                     permit_image: event.extendedProps?.reservation?.permit_image,
+                    reservation_name: event.extendedProps?.reservation?.name,
                 };
             },
             transformAllUnitsToEvents() {
