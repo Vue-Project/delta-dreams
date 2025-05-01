@@ -83,14 +83,13 @@
                             <div class="col-md-6 mb-4 px-0">
                                 <div class="row">
                                     <div class="col-md-6 col-12">
-                                        <label for="bookingSource" class="form-label">Booking Source</label>
-                                        <select class="form-select" id="bookingSource" v-model="formAddReservation.bookingSource" ref="bookingSource">
-                                            <option disabled value="">Select</option>
-                                            <option v-for="source in bookingSources" :key="source.id" :value="source.id">
-                                                {{ source.name }}
+                                        <label for="travelAgent" class="form-label">Travel Agents</label>
+                                        <select class="form-select" id="travelAgent" v-model="formAddReservation.travelAgent" ref="travelAgent">
+                                            <option value="" disabled>Select</option>
+                                            <option v-for="travel in travelAgents" :key="travel.id" :value="travel.id">
+                                                {{ travel.name }}
                                             </option>
                                         </select>
-                                        <span class="error-message small" v-if="$v.formAddReservation.bookingSource.$error">Booking source is required</span>
                                     </div>
                                     <!-- BUSINESS SOURCE SELECTION -->
 
@@ -502,7 +501,7 @@
     </section>
 </template>
 <script>
-    import { getBookingSources, getBusinessSources, getGuestsInfo, PutUpdateReservation, getUnits, getUnitTypes, getAccounts, getGuestDetails, getServices } from '../../../Api/addResvertionApi';
+    import { getBookingSources, getBusinessSources, getGuestsInfo, PutUpdateReservation, getUnits, getUnitTypes, getAccounts, getGuestDetails, getServices, getTravelAgents } from '../../../Api/addResvertionApi';
     import flatpickrMixin from '../../Mixin/flatpickrMixin';
     import { dateMixin } from '../../Mixin/DateMixin';
     import { showSuccessAlert, handleSubmissionError, showConfirmationAlert } from '../../../Api/MassageValidation/alertUtilities';
@@ -549,6 +548,7 @@
                 // API Data
                 businessSources: [],
                 bookingSources: [],
+                travelAgents: [],
                 reservationTypes: [],
                 filteredNames: [],
                 unitsTypes: [],
@@ -565,6 +565,8 @@
                     numberRooms: '1',
                     reservationType: '',
                     businessSource: '',
+                    travelAgent: '',
+
                     rateOffered: {
                         rateOfferedContract: false,
                         bookAll: false,
@@ -1134,6 +1136,7 @@
                     numberRooms: reservationData.rooms || 1,
                     reservationType: reservationData.reservation_type_name || '',
                     bookingSource: reservationData.booking_source?.id || '',
+                    travelAgent: reservationData.travel_agent?.id || '',
                     businessSource: reservationData.business_source?.id || '',
                     units: [
                         // First unit with direct reservation data
@@ -1276,16 +1279,18 @@
                     unitsResponse,
                     accountsResponse,
                     servicesResponse,
+                    travelAgentsResponse,
                     // Add this line to fetch units
-                ] = await Promise.all([getBusinessSources(), getBookingSources(), getGuestsInfo(), getUnitTypes(), getUnits(), getAccounts(), getServices()]);
+                ] = await Promise.all([getBusinessSources(), getBookingSources(), getGuestsInfo(), getUnitTypes(), getUnits(), getAccounts(), getServices(), getTravelAgents()]);
 
                 this.businessSources = businessSourcesResponse.data.data;
-                this.bookingSources = bookingSourcesResponse.data.data;
+                // this.bookingSources = bookingSourcesResponse.data.data;
                 this.filteredNames = usersResponse.data.data;
                 this.unitsTypes = unitTypesResponse.data.data;
                 this.availableUnits = unitsResponse.data.data;
                 this.accounts = accountsResponse.data.data;
                 this.servicesList = servicesResponse.data.data;
+                this.travelAgents = travelAgentsResponse.data.data;
 
                 // Populate availableUnits with fetched data
 

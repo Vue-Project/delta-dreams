@@ -245,6 +245,8 @@
 
                         await showSuccessAlert('Payment Transferred Successfully!');
                         // Emit event to parent component instead of reloading
+                        this.$emit('close-offcanvas');
+
                         this.$emit('wallet-updated');
                     } catch (error) {
                         handleSubmissionError(error, 'Failed to transfer wallet');
