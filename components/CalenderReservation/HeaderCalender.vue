@@ -12,7 +12,7 @@
                 </div>
 
                 <!-- Search Input - New Addition -->
-                <div class="col-lg-4 col-md-6 col-12">
+                <div class="col-lg-4 col-md-6 col-12 mb-2">
                     <div class="position-relative d-flex">
                         <input type="text" class="form-control" placeholder="Search..." v-model="searchQuery" @keyup.enter="performSearch" aria-label="Search" />
                         <button class="btn btn-primary search-btn ms-1" @click="performSearch" title="Search">
@@ -57,12 +57,12 @@
         <div class="col-lg-6 col-md-12">
             <div class="row g-2 justify-content-end">
                 <!-- Quick Reservation - Always Visible -->
-                <div class="col-6 col-lg-6 order-1 quick-reservation">
+                <div class="col-6 col-lg-2 order-1">
                     <button class="btn btn-primary w-100" @click="quickReservation">Quick Reservation</button>
                 </div>
 
                 <!-- Mobile Filter Button -->
-                <div class="col-6 col-lg-6 order-2 d-lg-none">
+                <div class="col-6 col-lg-4 order-2 d-lg-none">
                     <button class="btn btn-primary w-100" @click="toggleSidebar">
                         <i class="fa-solid fa-filter pe-2"></i>
                         More Filters
