@@ -291,7 +291,7 @@
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-12 px-0 px-md-3" v-if="reservationData?.permit">
                                     <p class="mb-0">Permit Image</p>
-                                    <img :src="`https://testdeltadream.swevey.com/${reservationData.permit_image}`" style="width: 50px; height: 50px; cursor: pointer" @click="showImg(`https://testdeltadream.swevey.com/${reservationData.permit_image}`)" class="w-75" />
+                                    <img :src="`${$nuxt.$config.baseURL}/${reservationData.permit_image}`" style="width: 50px; height: 50px; cursor: pointer" @click="showImg(`${$nuxt.$config.baseURL}/${reservationData.permit_image}`)" class="w-75" />
                                 </div>
                             </div>
                             <vue-easy-lightbox :visible="visible" :imgs="imgs" :index="index" @hide="handleHide" />
