@@ -168,7 +168,7 @@
 
                             <!--  start sidebar content for tap Room Charges -->
                             <div v-if="currentContent === 'updatedetails'">
-                                <UpdateDetails :reservationId="selectedReservationId" :reservationData="reservationsDataById[0]" @update-success="refreshReservationData" @close-offcanvas="hideOffcanvas" />
+                                <UpdateDetails :reservationData="reservationsDataById[0]" :roomChargeId="selectedRoomChargeId" @update-success="refreshReservationData" @close-offcanvas="hideOffcanvas" />
                             </div>
                             <div v-if="currentContent === 'applydiscount'">
                                 <ApplyDiscount />
@@ -502,32 +502,36 @@
                                             <input class="form-check-input" type="checkbox" v-model="roomChargeData.selected" />
                                         </div>
                                     </td>
-                                    <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('updatedetails', 'Updatedetails')">
+                                    <!-- Update these cell click handlers to pass the specific ID -->
+                                    <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setSelectedRoomCharge(roomChargeData.id)">
                                         {{ formatDate(roomChargeData.booking_date) }}
                                     </td>
-                                    <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('updatedetails', 'Updatedetails')">
+                                    <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setSelectedRoomCharge(roomChargeData.id)">
                                         {{ roomChargeData.unit.code }}
                                     </td>
-                                    <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('updatedetails', 'Updatedetails')">
+                                    <!-- Add the same pattern to all other cells -->
+                                    <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setSelectedRoomCharge(roomChargeData.id)">
                                         {{ roomChargeData.rate_type }}
                                     </td>
-                                    <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('updatedetails', 'Updatedetails')">{{ roomChargeData.adults }}/{{ roomChargeData.children }}</td>
-                                    <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('updatedetails', 'Updatedetails')">
+                                    <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setSelectedRoomCharge(roomChargeData.id)">{{ roomChargeData.adults }}/{{ roomChargeData.children }}</td>
+                                    <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setSelectedRoomCharge(roomChargeData.id)">
                                         {{ roomChargeData.rate_amount }}
                                     </td>
-                                    <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('updatedetails', 'Updatedetails')">
+                                    <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setSelectedRoomCharge(roomChargeData.id)">
                                         {{ roomChargeData.rate_amount }}
                                     </td>
-                                    <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('updatedetails', 'Updatedetails')">
+                                    <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setSelectedRoomCharge(roomChargeData.id)">
                                         {{ roomChargeData.rate_amount }}
                                     </td>
-                                    <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('updatedetails', 'Updatedetails')">
+                                    <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setSelectedRoomCharge(roomChargeData.id)">
                                         {{ roomChargeData.rate_amount }}
                                     </td>
-                                    <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('updatedetails', 'Updatedetails')">
+                                    <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setSelectedRoomCharge(roomChargeData.id)">
                                         {{ roomChargeData.rate_amount }}
                                     </td>
-                                    <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('updatedetails', 'Updatedetails')"><button type="button" class="btn btn-outline-secondary waves-effect">Edit</button></td>
+                                    <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setSelectedRoomCharge(roomChargeData.id)">
+                                        <button type="button" class="btn btn-outline-secondary waves-effect">Edit</button>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -754,12 +758,17 @@
             setActiveTab(tab) {
                 this.activeTab = tab;
             },
-            setOffcanvasContent(content, title, buttonText = 'Save', width = '400px') {
-                this.currentContent = content; // Set the content type
-                this.offcanvasTitle = title; // Set the title for the offcanvas
-                this.sidebarWidth = width; // Set the sidebar width
-                this.dynamicButtonText = buttonText; // Set the button text dynamically
+            setSelectedRoomCharge(roomChargeId) {
+                this.selectedRoomChargeId = roomChargeId;
+                this.setOffcanvasContent('updatedetails', 'Update Details');
             },
+            setOffcanvasContent(content, title, buttonText = 'Save', width = '400px') {
+                this.currentContent = content;
+                this.offcanvasTitle = title;
+                this.sidebarWidth = width;
+                this.dynamicButtonText = buttonText;
+            },
+
             clearOffcanvasContent() {
                 this.currentContent = null; // Reset the content
                 this.offcanvasTitle = ''; // Reset the title
