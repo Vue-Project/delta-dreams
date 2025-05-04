@@ -122,11 +122,11 @@
                                         </div>
                                     </div>
                                 </div>
-                                <vue-easy-lightbox :visible="visible" :imgs="imgs" :index="index" @hide="handleHide" />
                             </tr>
                         </tbody>
                     </table>
                 </div>
+                <vue-easy-lightbox :visible="visible" :imgs="imgs" :index="index" @hide="handleHide" />
             </div>
         </div>
     </section>
@@ -195,14 +195,6 @@
             };
         },
         methods: {
-            showImg(img) {
-                this.imgs = [img];
-                this.index = 0;
-                this.visible = true;
-            },
-            handleHide() {
-                this.visible = false;
-            },
             async deletedWallet(id) {
                 const result = await showConfirmationAlert('Are you sure?', 'cancel this payment reservation', 'Yes, cancel it!');
 
@@ -354,6 +346,14 @@
 
                 const modal = new bootstrap.Modal(document.getElementById('exampleModalToggle'));
                 modal.show();
+            },
+            showImg(img) {
+                this.imgs = [img];
+                this.index = 0;
+                this.visible = true;
+            },
+            handleHide() {
+                this.visible = false;
             },
         },
 
