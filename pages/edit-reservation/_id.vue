@@ -473,7 +473,7 @@
             </button> -->
                     </div>
 
-                    <button type="button" class="btn btn-outline-secondary waves-effect mb-2">Multiple Edit</button>
+                    <button type="button" class="btn btn-outline-secondary waves-effect mb-2" @click="handleMultipleEdit">Multiple Edit</button>
                     <div class="table-responsive text-nowrap">
                         <table class="table">
                             <thead class="table-light">
@@ -710,6 +710,7 @@
             return {
                 currentContent: null,
                 roomChargesData: [],
+                selectedRoomChargeIds: [], // Array to store multiple selected IDs
                 selectAll: false,
                 offcanvasTitle: '',
                 sidebarWidth: '400px',
@@ -746,6 +747,37 @@
             }));
         },
         methods: {
+            async handleMultipleEdit() {
+                // Get all selected room charge IDs
+                const selectedIds = this.roomChargesData.filter(item => item.selected).map(item => item.id);
+
+                // Check if any items are selected
+                if (selectedIds.length === 0) {
+                    // Show an alert if no items are selected
+                    this.$toast?.error('Please select at least one room charge to edit');
+                    return;
+                }
+
+                try {
+                    // You can either:
+                    // 1. Send the IDs to the server directly
+                    // const response = await axios.post('/api/room-charges/bulk-edit', { ids: selectedIds });
+
+                    // 2. Or open an offcanvas with the selected IDs for further editing
+                    this.selectedRoomChargeIds = selectedIds;
+                    this.setOffcanvasContent('updatedetails', 'Update Multiple Room Charges');
+
+                    // Show the offcanvas
+                    const offcanvasElement = document.getElementById('offcanvasEnd');
+                    if (offcanvasElement) {
+                        const offcanvas = new bootstrap.Offcanvas(offcanvasElement);
+                        offcanvas.show();
+                    }
+                } catch (error) {
+                    console.error('Error processing multiple edit:', error);
+                    this.$toast?.error('Failed to process multiple edit request');
+                }
+            },
             toggleAllCheckboxes() {
                 this.roomChargesData.forEach(item => {
                     item.selected = this.selectAll;
