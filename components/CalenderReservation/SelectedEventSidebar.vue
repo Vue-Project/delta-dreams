@@ -590,12 +590,20 @@
             },
             resetPaymentForm() {
                 this.formAddPayment = {
-                    date: '',
-                    method: '',
-                    type: '',
+                    date: new Date().toISOString().split('T')[0],
+                    method: null,
+                    paymentType: null,
                     comment: '',
-                    reservation_id: null,
+                    type: null,
+                    amount: null,
+                    image: null,
                 };
+                // Reset file input manually if needed
+                if (this.$refs.paymentImage) {
+                    this.$refs.paymentImage.value = null;
+                }
+                // Reset validation state
+                this.$v.$reset();
             },
             parseDateRange() {
                 try {
