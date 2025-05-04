@@ -1,7 +1,7 @@
 <template>
     <div class="row justify-content-between p-2 position-relative">
         <!-- Left Column - Date and Building Filter -->
-        <div class="col-lg-6 col-md-8 col-md-12 mb-2">
+        <div class="col-lg-6 col-md-8 col-md-12">
             <div class="row">
                 <!-- Date Picker -->
                 <div class="col-lg-4 col-md-6 col-12">
@@ -12,7 +12,7 @@
                 </div>
 
                 <!-- Search Input - New Addition -->
-                <div class="col-lg-4 col-md-6 col-12 mb-2">
+                <div class="col-lg-4 col-md-6 col-12">
                     <div class="position-relative d-flex">
                         <input type="text" class="form-control" placeholder="Search..." v-model="searchQuery" @keyup.enter="performSearch" aria-label="Search" />
                         <button class="btn btn-primary search-btn ms-1" @click="performSearch" title="Search">
@@ -20,11 +20,37 @@
                         </button>
                     </div>
                 </div>
+            </div>
+        </div>
 
+        <!-- Right Column - Filters and Info -->
+        <div class="col-lg-6 col-md-12">
+            <div class="row g-2 justify-content-end">
+                <!-- Quick Reservation - Always Visible -->
+                <div class="col-6 col-lg-6 order-1 quick-reservation d-block d-lg-none">
+                    <button class="btn btn-primary w-100" @click="quickReservation">Quick Reservation</button>
+                </div>
+
+                <!-- Mobile Filter Button -->
+                <div class="col-6 col-lg-6 order-2 d-lg-none">
+                    <button class="btn btn-primary w-100" @click="toggleSidebar">
+                        <i class="fa-solid fa-filter pe-2"></i>
+                        More Filters
+                    </button>
+                </div>
+
+                <!-- Desktop Only Filters -->
+                <!-- <div class="d-none d-lg-block col-lg-4 order-2">
+          <button class="btn btn-primary w-100" @click="applyFilters">
+              Apply Filters
+            </button>
+        </div> -->
+
+                <!-- Rate Types Filter - Desktop Only -->
                 <!-- Building Filter - Always Visible -->
-                <div class="col-lg-4 col-md-6 col-12">
+                <div class="col-lg-4 col-12">
                     <div class="dropdown w-100">
-                        <button class="btn btn-primary dropdown-toggle w-100" type="button" id="buildingsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <button class="btn btn-primary dropdown-toggle w-100 filter-types" type="button" id="buildingsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fa-solid fa-filter pe-2"></i>
                             filter types
                             <span v-if="selectedBuildings.length" class="badge bg-light text-dark ms-1">
@@ -42,41 +68,14 @@
                                 <hr class="dropdown-divider" />
                             </li>
                             <li v-for="building in buildingNames" :key="building">
-                                <a class="dropdown-item" href="#" @click.prevent="toggleBuilding(building, $event)">
-                                    <input type="checkbox" v-model="selectedBuildings" :value="building" class="form-check-input me-2" @click.stop />
+                                <a class="dropdown-item" href="#" @click.prevent="handleItemClick(building, $event)">
+                                    <input type="checkbox" :checked="selectedBuildings.includes(building)" class="form-check-input me-2" @click.stop="handleCheckboxClick(building, $event)" />
                                     <span>{{ building }}</span>
                                 </a>
                             </li>
                         </ul>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <!-- Right Column - Filters and Info -->
-        <div class="col-lg-6 col-md-12">
-            <div class="row g-2 justify-content-end">
-                <!-- Quick Reservation - Always Visible -->
-                <div class="col-6 col-lg-2 order-1">
-                    <button class="btn btn-primary w-100" @click="quickReservation">Quick Reservation</button>
-                </div>
-
-                <!-- Mobile Filter Button -->
-                <div class="col-6 col-lg-4 order-2 d-lg-none">
-                    <button class="btn btn-primary w-100" @click="toggleSidebar">
-                        <i class="fa-solid fa-filter pe-2"></i>
-                        More Filters
-                    </button>
-                </div>
-
-                <!-- Desktop Only Filters -->
-                <!-- <div class="d-none d-lg-block col-lg-4 order-2">
-          <button class="btn btn-primary w-100" @click="applyFilters">
-            Apply Filters
-          </button>
-        </div> -->
-
-                <!-- Rate Types Filter - Desktop Only -->
                 <div class="d-none d-lg-block col-lg-4 order-3">
                     <div class="dropdown w-100">
                         <button class="btn btn-primary dropdown-toggle w-100" type="button" id="rateTypesDropdown" data-bs-toggle="dropdown" aria-expanded="false">
@@ -87,11 +86,11 @@
                             </span>
                         </button>
                         <ul class="dropdown-menu w-100" aria-labelledby="rateTypesDropdown">
-                            <li v-for="(type, index) in getRateTypes" :key="index">
-                                <a class="dropdown-item" href="#" @click.prevent="toggleRateType(index)">
+                            <li v-for="(type, index) in getRateTypes" :key="index" class="px-2">
+                                <label class="dropdown-item d-flex align-items-center">
                                     <input type="checkbox" :value="index" v-model="selectedRateTypes" class="form-check-input me-2" />
                                     <span>{{ type }}</span>
-                                </a>
+                                </label>
                             </li>
                         </ul>
                     </div>
@@ -99,7 +98,7 @@
 
                 <!-- Projects Filter - Desktop Only -->
                 <div class="d-none d-lg-block col-lg-4 order-4">
-                    <div class="dropdown w-100 ps-lg-2">
+                    <div class="dropdown w-100">
                         <button class="btn btn-primary dropdown-toggle w-100" type="button" id="projectsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fa-solid fa-filter pe-2"></i>
                             Filter Projects
@@ -108,16 +107,20 @@
                             </span>
                         </button>
                         <ul class="dropdown-menu w-100" aria-labelledby="projectsDropdown">
-                            <li v-for="project in getProjects" :key="project.id">
-                                <a class="dropdown-item" href="#" @click.prevent="toggleProject(project.id)">
+                            <li v-for="project in getProjects" :key="project.id" class="px-2">
+                                <label class="dropdown-item d-flex align-items-center">
                                     <input type="checkbox" :value="project.id" v-model="selectedProjects" class="form-check-input me-2" />
                                     <span>{{ project.name }}</span>
-                                </a>
+                                </label>
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
+        </div>
+        <!-- Quick Reservation - Always Visible -->
+        <div class="col-6 col-lg-2 order-1 quick-reservation d-none d-lg-block mt-2">
+            <button class="btn btn-primary w-100" @click="quickReservation">Quick Reservation</button>
         </div>
 
         <!-- Mobile Sidebar -->
@@ -286,40 +289,66 @@
                 }
             },
 
-            async toggleBuilding(building, event) {
-                // Prevent event bubbling
-                if (event) {
-                    event.preventDefault();
-                    event.stopPropagation();
+            handleItemClick(building, event) {
+                // Only handle clicks on the text (not checkbox)
+                if (event.target.tagName !== 'INPUT') {
+                    this.toggleBuildingSelection(building);
                 }
+            },
 
-                // Manually handle the checkbox state
+            handleCheckboxClick(building, event) {
+                // Manually toggle the selection for checkbox clicks
+                this.toggleBuildingSelection(building);
+            },
+
+            toggleBuildingSelection(building) {
                 const index = this.selectedBuildings.indexOf(building);
-                let newSelectedBuildings = [...this.selectedBuildings];
 
-                if (index !== -1) {
-                    // Remove if already selected
-                    newSelectedBuildings.splice(index, 1);
-                } else {
-                    // Add if not selected
-                    newSelectedBuildings.push(building);
-                    // Turn off "Show All" when selecting a specific building
+                if (index === -1) {
+                    // Add to selection
+                    this.selectedBuildings.push(building);
                     this.selectAllBuildings = false;
+                } else {
+                    // Remove from selection
+                    this.selectedBuildings.splice(index, 1);
                 }
 
-                // Update the array
-                this.selectedBuildings = newSelectedBuildings;
-
-                // Only set selectAllBuildings to true if no buildings are selected
+                // Emit events based on current selection
                 if (this.selectedBuildings.length === 0) {
                     this.selectAllBuildings = true;
                     this.$emit('show-all-resources');
                 } else {
                     this.$emit('show-building-resources', this.selectedBuildings);
                 }
+            },
 
-                // IMPORTANT: Don't call getFilterData() here as it might be overriding your building selection
-                // Instead, let the parent component handle the building filter
+            async toggleBuilding(building, event) {
+                // Skip if the click was on the checkbox (v-model handles it)
+                if (event && event.target.tagName === 'INPUT') {
+                    return;
+                }
+
+                // Manually handle the toggle logic for text clicks
+                const index = this.selectedBuildings.indexOf(building);
+                let newSelectedBuildings = [...this.selectedBuildings];
+
+                if (index !== -1) {
+                    newSelectedBuildings.splice(index, 1); // Remove if already selected
+                } else {
+                    newSelectedBuildings.push(building); // Add if not selected
+                    this.selectAllBuildings = false; // Turn off "Show All" when selecting a building
+                }
+
+                // Update the selectedBuildings array
+                this.selectedBuildings = newSelectedBuildings;
+
+                // Emit events based on selection
+                if (this.selectedBuildings.length === 0) {
+                    this.selectAllBuildings = true;
+                    this.$emit('show-all-resources');
+                } else {
+                    this.$emit('show-building-resources', this.selectedBuildings);
+                }
             },
             async getFilterData() {
                 try {
