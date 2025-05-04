@@ -122,7 +122,7 @@ export default {
     // },
     // Add or update the publicRuntimeConfig section
     publicRuntimeConfig: {
-        baseURL: process.env.BASE_URL || 'https://testdeltadream.swevey.com',
+        baseURL: process.env.BASE_URL,
     },
     env: {
         API_BASE_URL: process.env.API_BASE_URL,

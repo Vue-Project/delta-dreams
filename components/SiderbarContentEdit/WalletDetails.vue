@@ -30,7 +30,9 @@
                         </thead>
                         <tbody>
                             <tr v-for="wallet in reservationData.wallets" :key="wallet.id">
-                                <td><img :src="`https://testdeltadream.swevey.com/${wallet.image}`" alt="Payment Image" style="width: 50px; height: 50px" /></td>
+                                <td>
+                                    <img :src="`${$nuxt.$config.baseURL}/${wallet.image}`" style="width: 50px; height: 50px; cursor: pointer" @click="showImg(`${$nuxt.$config.baseURL}/${wallet.image}`)" />
+                                </td>
                                 <td>{{ wallet.payment.name }}</td>
                                 <td>{{ wallet.paymentType.name }}</td>
                                 <td>{{ wallet.type_name }}</td>
@@ -75,6 +77,7 @@
                                         </div>
                                     </div>
                                 </td>
+
                                 <div class="modal fade" id="exampleModalToggle" aria-hidden="true" tabindex="-1">
                                     <div class="modal-dialog modal-dialog-centered">
                                         <div class="modal-content rounded-4 shadow-lg border-0">
@@ -119,6 +122,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                <vue-easy-lightbox :visible="visible" :imgs="imgs" :index="index" @hide="handleHide" />
                             </tr>
                         </tbody>
                     </table>
@@ -185,9 +189,20 @@
                 walletTotal: null,
                 paymentAmount: '',
                 reservationsId: null,
+                visible: false,
+                index: 0,
+                imgs: [],
             };
         },
         methods: {
+            showImg(img) {
+                this.imgs = [img];
+                this.index = 0;
+                this.visible = true;
+            },
+            handleHide() {
+                this.visible = false;
+            },
             async deletedWallet(id) {
                 const result = await showConfirmationAlert('Are you sure?', 'cancel this payment reservation', 'Yes, cancel it!');
 
@@ -341,6 +356,7 @@
                 modal.show();
             },
         },
+
         watch: {
             reservationData: {
                 immediate: true,
