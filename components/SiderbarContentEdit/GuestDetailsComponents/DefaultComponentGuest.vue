@@ -22,9 +22,24 @@
                                 <input class="form-control" type="text" id="formIdentityInfoId" placeholder="Enter ID Number" aria-label="Enter ID Number Guest" v-model="formGuest.OtherInformation.idNumber" />
                                 <span class="error-message small" v-if="$v.formGuest.OtherInformation.idNumber.$error">ID Number is required</span>
                             </div>
+                            <div class="mb-2">
+                                <label class="form-label" for="payment_Image">Id Number Image</label>
+                                <input type="file" class="form-control" id="payment_Image" multiple @change="handleIdImagesUpload" accept="image/*" />
+                                <div class="mt-2" v-if="IdImagesPreview.length > 0">
+                                    <div class="d-flex flex-wrap gap-2 mt-2">
+                                        <div v-for="(preview, index) in IdImagesPreview" :key="index" class="position-relative" style="width: 80px; height: 80px">
+                                            <img :src="preview.url" class="img-thumbnail" style="width: 100%; height: 100%; object-fit: cover; cursor: pointer" :alt="preview.name" @click="showImg(preview.url)" />
+                                            <button type="button" class="btn btn-sm btn-danger position-absolute" style="top: -10px; right: -10px; border-radius: 50%; padding: 0.2rem 0.5rem" @click="removeImage(index)">
+                                                <i class="fa-solid fa-times"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <vue-easy-lightbox :visible="visible" :imgs="imgs" :index="index" @hide="handleHide" />
 
                 <div class="col-md-6">
                     <div class="row">
@@ -56,7 +71,7 @@
                         <div class="col-md-6 col-12 ps-0">
                             <label for="flatpickr-date-08" class="col-form-label">Expiry Date</label>
                             <input type="text" class="form-control" placeholder="YYYY-MM-D " id="flatpickr-date-08" ref="datePicker8" aria-label="input Text to Expiry Date" v-model="formGuest.OtherInformation.expiryDate" />
-                            <span class="error-message small" v-if="$v.formGuest.OtherInformation.expiryDate.$error">Expiry Date is required</span>
+                            <!-- <span class="error-message small" v-if="$v.formGuest.OtherInformation.expiryDate.$error">Expiry Date is required</span> -->
                             <i class="fa-solid fa-calendar-days icon-date top"></i>
                         </div>
                     </div>
@@ -223,6 +238,11 @@
                     phone: '',
                     gender: '',
                 },
+                IdImages: [],
+                IdImagesPreview: [],
+                visible: false,
+                index: 0,
+                imgs: [],
             };
         },
         validations: {
@@ -232,11 +252,52 @@
                 OtherInformation: {
                     idNumber: { required },
                     idType: { required },
-                    expiryDate: { required },
+                    // expiryDate: { required },
                 },
             },
         },
         methods: {
+            // New method to handle payment image uploads
+            handleIdImagesUpload(event) {
+                // Get selected files from event
+                const files = event.target.files;
+
+                if (!files.length) return;
+
+                // Add to existing selections rather than replacing them
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    // Only add if it's an image
+                    if (file.type.startsWith('image/')) {
+                        // Create URL for preview
+                        const fileURL = URL.createObjectURL(file);
+
+                        // Add to storage arrays
+                        this.IdImages.push(file);
+                        this.IdImagesPreview.push({
+                            name: file.name,
+                            size: (file.size / 1024).toFixed(2) + ' KB',
+                            url: fileURL,
+                        });
+                    }
+                }
+
+                // Reset the file input so the same files can be selected again if needed
+                event.target.value = '';
+            },
+
+            // Method to remove an image from the selection
+            removeImage(index) {
+                // Remove the URL to prevent memory leaks
+                if (this.IdImagesPreview[index] && this.IdImagesPreview[index].url) {
+                    URL.revokeObjectURL(this.IdImagesPreview[index].url);
+                }
+
+                // Remove from arrays
+                this.IdImages.splice(index, 1);
+                this.IdImagesPreview.splice(index, 1);
+            },
+
             resetValidationMessages() {
                 this.validationMessages = {
                     name: '',
@@ -286,6 +347,15 @@
                         },
                     },
                 };
+                // Reset payment images as well
+                // Clean up any created object URLs to prevent memory leaks
+                this.IdImagesPreview.forEach(preview => {
+                    if (preview.url) {
+                        URL.revokeObjectURL(preview.url);
+                    }
+                });
+                this.IdImages = [];
+                this.IdImagesPreview = [];
                 this.resetValidationMessages();
             },
 
@@ -297,6 +367,7 @@
                     }
                     const formData = new FormData();
 
+                    // Create basic guest data object
                     const updateGuestData = {
                         image: this.formGuest.image,
                         name: this.formGuest.name,
@@ -317,44 +388,23 @@
                         national_expire_date: this.formGuest.OtherInformation.expiryDate,
                         national_type: this.formGuest.OtherInformation.idType,
                     };
-                    // const updateGuestData = {
-                    //   reservationId: this.reservationId,
-                    //   image: this.formGuest.image,
-                    //   name: this.formGuest.name,
-                    //   email: this.formGuest.email,
-                    //   mobile: this.formGuest.mobile,
-                    //   phone: this.formGuest.phone,
-                    //   gender: this.formGuest.gender,
-                    //   address: this.formGuest.address,
-                    //   country: this.formGuest.country,
-                    //   state: this.formGuest.state,
-                    //   city: this.formGuest.city,
-                    //   zip: this.formGuest.zip,
-                    //   OtherInformation: {
-                    //     image: this.formGuest.OtherInformation.image,
-                    //     idNumber: this.formGuest.OtherInformation.idNumber,
-                    //     idType: this.formGuest.OtherInformation.idType,
-                    //     issuingCountry: this.formGuest.OtherInformation.issuingCountry,
-                    //     issuingCity: this.formGuest.OtherInformation.issuingCity,
-                    //     expiryDate: this.formGuest.OtherInformation.expiryDate,
-                    //     paymentMethod: {
-                    //       paymentMethod: this.formGuest.OtherInformation.paymentMethod.paymentMethod,
-                    //       directBilling: this.formGuest.OtherInformation.paymentMethod.directBilling,
-                    //       birthDate: this.formGuest.OtherInformation.paymentMethod.birthDate,
-                    //       birthCountry: this.formGuest.OtherInformation.paymentMethod.birthCountry,
-                    //       nationality: this.formGuest.OtherInformation.paymentMethod.nationality,
-                    //       vipStatus: this.formGuest.OtherInformation.paymentMethod.vipStatus,
-                    //       spouseBirthDate: this.formGuest.OtherInformation.paymentMethod.spouseBirthDate,
-                    //       weddingAnniversary: this.formGuest.OtherInformation.paymentMethod.weddingAnniversary,
-                    //       registrationNo: this.formGuest.OtherInformation.paymentMethod.registrationNo,
-                    //     },
 
-                    //   },
+                    // Convert object to FormData for sending files
+                    Object.keys(updateGuestData).forEach(key => {
+                        if (updateGuestData[key] !== null && updateGuestData[key] !== undefined) {
+                            formData.append(key, updateGuestData[key]);
+                        }
+                    });
 
-                    // };
+                    // Append payment images if available
+                    if (this.IdImages.length > 0) {
+                        this.IdImages.forEach((file, index) => {
+                            formData.append(`all_images[${index}]`, file);
+                        });
+                    }
 
-                    // Make API call
-                    const response = await PostUpdateGuest(this.reservationData.client.id, updateGuestData);
+                    // Make API call with FormData which includes both text data and files
+                    const response = await PostUpdateGuest(this.reservationData.client.id, formData);
 
                     // Show success message
                     await showSuccessAlert('Guest updated successfully.');
@@ -408,7 +458,23 @@
                     },
                 };
 
-                // Debug log to see the final form data
+                // Reset payment images when loading new data
+                // Clean up any created object URLs first
+                this.IdImagesPreview.forEach(preview => {
+                    if (preview.url) {
+                        URL.revokeObjectURL(preview.url);
+                    }
+                });
+                this.IdImages = [];
+                this.IdImagesPreview = [];
+            },
+            showImg(img) {
+                this.imgs = [img];
+                this.index = 0;
+                this.visible = true;
+            },
+            handleHide() {
+                this.visible = false;
             },
         },
         computed: {
