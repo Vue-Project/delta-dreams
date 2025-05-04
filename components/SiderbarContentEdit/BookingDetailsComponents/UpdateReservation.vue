@@ -101,7 +101,7 @@
                                                 {{ source.name }}
                                             </option>
                                         </select>
-                                        <span class="error-message small" v-if="$v.formAddReservation.businessSource.$error">Business source is required</span>
+                                        <!-- <span class="error-message small" v-if="$v.formAddReservation.businessSource.$error">Business source is required</span> -->
                                     </div>
                                 </div>
                             </div>
@@ -661,9 +661,9 @@
         },
         validations: {
             formAddReservation: {
-                reservationType: { required },
-                businessSource: { required },
-                bookingSource: { required },
+                // reservationType: { required },
+                // businessSource: { required },
+                // bookingSource: { required },
                 units: {
                     0: {
                         // Validate only the first unit (index 0)
@@ -778,6 +778,7 @@
                     checkout_date: this.formAddReservation.checkOutDate,
                     checkout_time: this.formAddReservation.checkOutTime,
                     rooms: this.formAddReservation.numberRooms,
+                    travel_agent_id: this.formAddReservation.travelAgent,
                     booking_source_id: this.formAddReservation.bookingSource,
                     business_source_id: this.formAddReservation.businessSource,
                     reservation_type: this.formAddReservation.reservationType,
