@@ -70,7 +70,7 @@
                         <div class="input-group">
                             <label class="input-group-text" for="paymentType">Types</label>
                             <select class="form-select" id="paymentType" v-model="value.selectedPaymentType">
-                                <option disabled value="">Select</option>
+                                <option disabled value="">Select type</option>
                                 <option v-for="paymentType in paymentTypes" :key="paymentType.id" :value="paymentType.payment_id">
                                     {{ paymentType.name }}
                                 </option>
