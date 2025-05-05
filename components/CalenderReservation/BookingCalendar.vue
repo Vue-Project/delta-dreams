@@ -144,29 +144,29 @@
 
                         // Get the current view's visible range
                         const calendarApi = this.$refs.calendar?.getApi();
-                        if (calendarApi) {
-                            const viewStart = calendarApi.view.activeStart;
-                            const viewEnd = calendarApi.view.activeEnd;
+                        // if (calendarApi) {
+                        //     const viewStart = calendarApi.view.activeStart;
+                        //     const viewEnd = calendarApi.view.activeEnd;
 
-                            // Check if the event is partially visible (starts before view or ends after view)
-                            const startsBeforeView = eventStart < viewStart;
-                            const endsAfterView = eventEnd > viewEnd;
+                        //     // Check if the event is partially visible (starts before view or ends after view)
+                        //     const startsBeforeView = eventStart < viewStart;
+                        //     const endsAfterView = eventEnd > viewEnd;
 
-                            // If event is partially visible or only one day is visible, use short name
-                            if (startsBeforeView || endsAfterView || daysDifference <= 2) {
-                                // Find the title elements and update them
-                                const titleElements = info.el.querySelectorAll('.event-title-full');
-                                titleElements.forEach(el => {
-                                    el.style.display = 'none';
-                                });
+                        //     // If event is partially visible or only one day is visible, use short name
+                        //     if (startsBeforeView || endsAfterView || daysDifference <= 2) {
+                        //         // Find the title elements and update them
+                        //         const titleElements = info.el.querySelectorAll('.event-title-full');
+                        //         titleElements.forEach(el => {
+                        //             el.style.display = 'none';
+                        //         });
 
-                                const shortNameElements = info.el.querySelectorAll('.event-title-short');
-                                shortNameElements.forEach(el => {
-                                    el.style.display = 'block';
-                                    el.textContent = info.event.extendedProps.shortName || '';
-                                });
-                            }
-                        }
+                        //         const shortNameElements = info.el.querySelectorAll('.event-title-short');
+                        //         shortNameElements.forEach(el => {
+                        //             el.style.display = 'block';
+                        //             el.textContent = info.event.extendedProps.shortName || '';
+                        //         });
+                        //     }
+                        // }
                     },
                     resources: this.createResources(),
                     selectable: true, // Enable date selection
