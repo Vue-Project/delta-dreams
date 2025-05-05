@@ -6,7 +6,7 @@
     <div class="container-fluid">
       <div class="navbar-brand app-brand demo d-none d-xl-flex py-0 me-4">
         <a
-          :href="`${$nuxt.$config.baseURL}/admin`"
+          :href="`${$nuxt.$config.baseURL}admin`"
           class="app-brand-link gap-2"
         >
           <span class="app-brand-logo demo">
