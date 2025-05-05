@@ -171,7 +171,7 @@
                                 <UpdateDetails :reservationData="reservationsDataById[0]" :roomChargeId="selectedRoomChargeId" @update-success="refreshReservationData" @close-offcanvas="hideOffcanvas" />
                             </div>
                             <div v-if="currentContent === 'updatedetailsall'">
-                                <UpdateDetailsAllo :reservationData="reservationsDataById[0]" :roomChargeId="selectedRoomChargeId" :selectedIds=selectedRoomChargeIds @update-success="refreshReservationData" @close-offcanvas="hideOffcanvas" />
+                                <UpdateDetailsAll :reservationData="reservationsDataById[0]" :roomChargeId="selectedRoomChargeId" :selectedIds=selectedRoomChargeIds @update-success="refreshReservationData" @close-offcanvas="hideOffcanvas" />
                             </div>
                             <div v-if="currentContent === 'applydiscount'">
                                 <ApplyDiscount />
