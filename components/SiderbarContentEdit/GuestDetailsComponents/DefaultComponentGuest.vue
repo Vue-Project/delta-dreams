@@ -399,12 +399,14 @@
                     // Append payment images if available
                     if (this.IdImages.length > 0) {
                         this.IdImages.forEach((file, index) => {
-                            formData.append(`all_images[${index}]`, file);
+                            formData.append(`all_image[${index}]`, file);
                         });
                     }
+                    console.log('IdImages=' ,this.IdImages);
+
 
                     // Make API call with FormData which includes both text data and files
-                    const response = await PostUpdateGuest(this.reservationData.client.id, formData);
+                    // const response = await PostUpdateGuest(this.reservationData.client.id, formData);
 
                     // Show success message
                     await showSuccessAlert('Guest updated successfully.');
@@ -420,54 +422,85 @@
                 }
             },
             fillFormGuest(reservationData) {
-                if (!reservationData || typeof reservationData !== 'object') {
-                    console.warn('Invalid reservation data received');
-                    return;
-                }
+    if (!reservationData || typeof reservationData !== 'object') {
+        console.warn('Invalid reservation data received');
+        return;
+    }
 
-                // Debug log to see what data we're receiving
+    const client = reservationData.client || reservationData.user || {};
 
-                const client = reservationData.client || reservationData.user || {};
-
-                this.formGuest = {
-                    ...this.formGuest,
-                    image: client.image || null,
-                    name: client.name || '',
-                    email: client.email || '',
-                    phone: client.phone || '',
-                    mobile: client.mobile || '',
-                    gender: client.gender || '',
-                    address: client.address || '',
-                    country: client.country || '',
-                    state: client.state || '',
-                    city: client.city || '',
-                    zip: client.zip_code || '',
-                    internationalNumber: client.international_phone || '',
-                    OtherInformation: {
-                        ...this.formGuest.OtherInformation,
-                        image: client.national_id_image || null,
-                        idNumber: client.national_id || '',
-                        idType: client.national_type || '',
-                        expiryDate: client.national_expire_date || '',
-                        paymentMethod: {
-                            ...this.formGuest.OtherInformation.paymentMethod,
-                            birthDate: client.birth_date || '',
-                            nationality: client.nationality || '',
-                            vipStatus: client.vip_status || '',
-                        },
-                    },
-                };
-
-                // Reset payment images when loading new data
-                // Clean up any created object URLs first
-                this.IdImagesPreview.forEach(preview => {
-                    if (preview.url) {
-                        URL.revokeObjectURL(preview.url);
-                    }
-                });
-                this.IdImages = [];
-                this.IdImagesPreview = [];
+    this.formGuest = {
+        ...this.formGuest,
+        image: client.image || null,
+        name: client.name || '',
+        email: client.email || '',
+        phone: client.phone || '',
+        mobile: client.mobile || '',
+        gender: client.gender || '',
+        address: client.address || '',
+        country: client.country || '',
+        state: client.state || '',
+        city: client.city || '',
+        zip: client.zip_code || '',
+        internationalNumber: client.international_phone || '',
+        OtherInformation: {
+            ...this.formGuest.OtherInformation,
+            image: client.national_id_image || null,
+            idNumber: client.national_id || '',
+            idType: client.national_type || '',
+            expiryDate: client.national_expire_date || '',
+            paymentMethod: {
+                ...this.formGuest.OtherInformation.paymentMethod,
+                birthDate: client.birth_date || '',
+                nationality: client.nationality || '',
+                vipStatus: client.vip_status || '',
             },
+        },
+    };
+
+    // Reset existing images
+    this.IdImagesPreview.forEach(preview => {
+        if (preview.url && preview.url.startsWith('blob:')) {
+            URL.revokeObjectURL(preview.url);
+        }
+    });
+    this.IdImages = [];
+    this.IdImagesPreview = [];
+
+    // Handle array of server image URLs
+    if (client.userGalleries?.data && Array.isArray(client.userGalleries.data)) {
+        const baseUrl = this.$nuxt?.$config?.baseURL ;
+
+        this.IdImagesPreview = client.userGalleries.data.map((item, index) => {
+            // Construct full image URL
+            const imageUrl = item.image.startsWith('http')
+                ? item.image
+                : `${baseUrl}${item.image.startsWith('/') ? '' : '/'}${item.image}`;
+
+            return {
+                url: imageUrl,
+                name: `ServerImage-${index}`,
+                isServerImage: true,
+                serverId: item.id // Store server ID for reference
+            };
+        });
+    }
+
+    // Handle single national_id_image if it exists
+    if (client.national_id_image) {
+        const baseUrl = this.$nuxt?.$config?.baseURL || window.location.origin;
+        const nationalIdUrl = client.national_id_image.startsWith('http')
+            ? client.national_id_image
+            : `${baseUrl}${client.national_id_image.startsWith('/') ? '' : '/'}${client.national_id_image}`;
+
+        this.IdImagesPreview.push({
+            url: nationalIdUrl,
+            name: 'national-id-image',
+            isServerImage: true
+        });
+    }
+
+},
             showImg(img) {
                 this.imgs = [img];
                 this.index = 0;
