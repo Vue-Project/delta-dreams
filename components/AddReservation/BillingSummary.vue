@@ -69,9 +69,9 @@
                     <div class="col-md-6 mb-3">
                         <div class="input-group">
                             <label class="input-group-text" for="paymentType">Types</label>
-                            <select class="form-select" id="paymentType" v-model="value.selectedPaymentType">
+                            <select class="form-select" id="paymentType" v-model="value.selectedPaymentType" @change="updateSelectedPaymentType">
                                 <option disabled value="">Select type</option>
-                                <option v-for="paymentType in paymentTypes" :key="paymentType.id" :value="paymentType.payment_id">
+                                <option v-for="paymentType in paymentTypes" :key="paymentType.id" :value="paymentType.id">
                                     {{ paymentType.name }}
                                 </option>
                             </select>
@@ -394,8 +394,13 @@
 
             getSelectedPaymentTypeName() {
                 if (!this.value.selectedPaymentType) return null;
-                const type = this.paymentTypes.find(t => t.payment_id === this.value.selectedPaymentType);
+                const type = this.paymentTypes.find(t => t.id == this.value.selectedPaymentType);
                 return type ? type.name : null;
+            },
+
+            updateSelectedPaymentType() {
+                // Force a refresh of the component
+                this.$forceUpdate();
             },
             async fetchPaymentTypeByMethod() {
                 if (this.value.paymentMethod) {
