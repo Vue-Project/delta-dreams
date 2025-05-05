@@ -486,11 +486,8 @@
                                     <th>bookingDate</th>
                                     <th>Room</th>
                                     <th>Rate Type</th>
-                                    <th>Pax(A/C)</th>
-                                    <th>Charge</th>
-                                    <th>Discount</th>
-                                    <th>Tax</th>
-                                    <th>Adjustment</th>
+                                    <th>Adults</th>
+                                    <th>children</th>
                                     <th>Net Amount</th>
                                     <th>Setting</th>
                                 </tr>
@@ -513,22 +510,15 @@
                                     <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setSelectedRoomCharge(roomChargeData.id)">
                                         {{ roomChargeData.rate_type }}
                                     </td>
-                                    <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setSelectedRoomCharge(roomChargeData.id)">{{ roomChargeData.adults }}/{{ roomChargeData.children }}</td>
+                                    <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setSelectedRoomCharge(roomChargeData.id)">{{ roomChargeData.adults }}</td>
                                     <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setSelectedRoomCharge(roomChargeData.id)">
-                                        {{ roomChargeData.rate_amount }}
+                                      {{ roomChargeData.children }}
                                     </td>
                                     <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setSelectedRoomCharge(roomChargeData.id)">
-                                        {{ roomChargeData.rate_amount }}
+                                        {{ roomChargeData.price }}
                                     </td>
-                                    <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setSelectedRoomCharge(roomChargeData.id)">
-                                        {{ roomChargeData.rate_amount }}
-                                    </td>
-                                    <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setSelectedRoomCharge(roomChargeData.id)">
-                                        {{ roomChargeData.rate_amount }}
-                                    </td>
-                                    <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setSelectedRoomCharge(roomChargeData.id)">
-                                        {{ roomChargeData.rate_amount }}
-                                    </td>
+
+
                                     <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setSelectedRoomCharge(roomChargeData.id)">
                                         <button type="button" class="btn btn-outline-secondary waves-effect">Edit</button>
                                     </td>
