@@ -136,6 +136,19 @@ export const PostReservationItems = async (reservationId, updateReservationItems
         throw error;
     }
 };
+export const PostReservationItemsAll = async (updateReservationItems) => {
+    try {
+        const response = await apiClient.post(`/reservation_items/all`, updateReservationItems, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching rooms:', error);
+        throw error;
+    }
+};
 
 export const PutUpdateReservation = async (reservationId, bookingData) => {
     try {

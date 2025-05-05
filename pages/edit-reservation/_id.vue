@@ -170,6 +170,9 @@
                             <div v-if="currentContent === 'updatedetails'">
                                 <UpdateDetails :reservationData="reservationsDataById[0]" :roomChargeId="selectedRoomChargeId" @update-success="refreshReservationData" @close-offcanvas="hideOffcanvas" />
                             </div>
+                            <div v-if="currentContent === 'updatedetailsall'">
+                                <UpdateDetailsAllo :reservationData="reservationsDataById[0]" :roomChargeId="selectedRoomChargeId" :selectedIds=selectedRoomChargeIds @update-success="refreshReservationData" @close-offcanvas="hideOffcanvas" />
+                            </div>
                             <div v-if="currentContent === 'applydiscount'">
                                 <ApplyDiscount />
                             </div>
@@ -665,6 +668,9 @@
     import WalletDetails from '../../components/SiderbarContentEdit/WalletDetails.vue';
     import Swal from 'sweetalert2';
     import { postCancelReservation, postStatusChange } from '../../Api/editResvertion';
+import UpdateDetailsAll  from '../../components/SiderbarContentEdit/UpdateDetailsAll.vue';
+    // import UpdateDetailsAll from '../../components/SiderbarContentEdit/UpdateDetailsAll.vue';
+
 
     export default {
         name: 'EditsPage',
@@ -695,6 +701,7 @@
             AddDiscount,
             UpdateReservation,
             WalletDetails,
+            UpdateDetailsAll
         },
         data() {
             return {
@@ -750,12 +757,9 @@
 
                 try {
                     // You can either:
-                    // 1. Send the IDs to the server directly
-                    // const response = await axios.post('/api/room-charges/bulk-edit', { ids: selectedIds });
-
                     // 2. Or open an offcanvas with the selected IDs for further editing
                     this.selectedRoomChargeIds = selectedIds;
-                    this.setOffcanvasContent('updatedetails', 'Update Multiple Room Charges');
+                    this.setOffcanvasContent('updatedetailsall', 'Update Multiple  Room Charges');
 
                     // Show the offcanvas
                     const offcanvasElement = document.getElementById('offcanvasEnd');
