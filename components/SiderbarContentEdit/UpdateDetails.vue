@@ -85,7 +85,7 @@
                                 startDate: item.start_date || '',
                                 adults: item.adults || '',
                                 children: item.children || '',
-                                rateAmount: item.rate_amount || '',
+                                rateAmount: item.price || '',
                                 rateType: item.rate_type || '',
                             };
                         }
@@ -120,9 +120,11 @@
                         rate_type: this.formUpdateReservationItems.rateType,
                         rate_amount: this.formUpdateReservationItems.rateAmount,
                     };
+                    console.log(updateReservationItems);
+
 
                     // Submit the data
-                    const response = await PostReservationItems(this.reservationId, updateReservationItems);
+                    const response = await PostReservationItems( updateReservationItems.reservation_id, updateReservationItems);
 
                     // Show success message and close the form
                     await showSuccessAlert('Reservation Items updated successfully.');
