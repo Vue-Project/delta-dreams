@@ -535,7 +535,7 @@ select {
     border-top-left-radius: 6px;
 }
 .scroll-hidden::-webkit-scrollbar {
-    display: none; 
+    display: none;
 }
 #paymentInsurance {
     border-top-right-radius: 5px;
@@ -1179,6 +1179,16 @@ body {
 
 .event-title-short {
     display: none;
+}
+.hide-scrollbar {
+  overflow: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  overflow-y: hidden !important;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
 /* Mobile styles - show short name instead of full name */

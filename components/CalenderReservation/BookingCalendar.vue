@@ -1347,6 +1347,8 @@
         async mounted() {
             // mounted hook only runs on client-side, so window is available
             // Add an event listener to update duration on window resize
+            document.body.classList.add('hide-scrollbar');
+
             window.addEventListener('resize', this.updateDuration);
 
             // Set initial slot width based on screen size
@@ -1424,6 +1426,8 @@
 
             // Clean up the event listener when component is destroyed
             this.$root.$off('calendar-data-updated', this.updateCalendarData);
+            document.body.classList.remove('hide-scrollbar');
+
         },
         created() {
             // Initialize with default values for SSR
@@ -1491,4 +1495,6 @@
     .fc-timeline-event.fc-event-mirror .event-title-short {
         font-size: 0.85em;
     }
+
+
 </style>
