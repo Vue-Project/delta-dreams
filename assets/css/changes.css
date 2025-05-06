@@ -1189,4 +1189,9 @@ body {
     overflow-y: auto;
     overflow-x: hidden;
 }
+.units-count {
+    position: relative;
+    left: 10px;
+    bottom: -38px;
+}
 /* Mobile styles - show short name instead of full name */

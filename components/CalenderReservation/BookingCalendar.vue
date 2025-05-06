@@ -1,10 +1,9 @@
 <template>
     <section class="card">
-        <!-- {{ data }} -->
         <!-- <momenalert></momenalert> -->
         <Loader :visible="isLoading" />
         <div :class="{ 'loading-overlay': isLoading }">
-            <FilterCalendar ref="filterComponent" :statistics="statistics" :buildingNames="buildingNames" @show-all-resources="showAllResources" @show-building-resources="showBuildingResources" @date-selected="SelectedDateFilterCalendar" />
+            <FilterCalendar ref="filterComponent" :statistics="statistics" :allUnits="unitsCounts" :buildingNames="buildingNames" @show-all-resources="showAllResources" @show-building-resources="showBuildingResources" @date-selected="SelectedDateFilterCalendar" />
             <FullCalendar :options="calendarOptions" @select="handleSelect" ref="calendar" :selectedDate="selectedDate">
                 <template v-slot:eventContent="arg">
                     <div class="event-content">
@@ -96,6 +95,7 @@
                 genderTypes: [],
                 projects: [],
                 BlockedPermission: '',
+                unitsCounts: '',
                 remindGuestType: [],
                 isSidebarOpen: false,
                 isPopoverBodyVisible: true, // Body visibility
@@ -1360,7 +1360,8 @@
                 this.genderTypes = CalenderDataResponse.gender_type;
                 this.projects = CalenderDataResponse.projects;
                 this.remindGuestType = CalenderDataResponse.release_type;
-                // this.BlockedPermission = CalenderDataResponse.is_block;
+                this.BlockedPermission = CalenderDataResponse.is_block;
+                this.unitsCounts = CalenderDataResponse.units_count;
                 this.buildingNames = this.getBuildingNames();
                 const events = this.transformAllUnitsToEvents();
                 this.calendarOptions = { ...this.calendarOptions, events };
