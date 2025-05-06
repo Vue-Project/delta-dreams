@@ -210,7 +210,7 @@
                     },
                     resourceLabelDidMount: function (info) {
                         // Get the resource's extendedProps
-                        const { is_clean, is_smoking } = info.resource.extendedProps;
+                        const { is_clean, is_smoking, price, content } = info.resource.extendedProps;
 
                         // Create container for icons
                         const iconContainer = document.createElement('span');
@@ -220,7 +220,16 @@
                         // Add icon for cleanliness status
                         const cleanIcon = document.createElement('i');
                         cleanIcon.style.paddingRight = '10px';
+                        // Add info icon to show additional content from server
+                        const infoIcon = document.createElement('i');
+                        infoIcon.className = 'fa fa-info-circle';
+                        infoIcon.style.paddingRight = '10px';
+                        infoIcon.style.color = '#00cfe8';
+                        infoIcon.setAttribute('title', content || 'No additional information available');
+                        infoIcon.setAttribute('data-bs-toggle', 'tooltip');
+                        infoIcon.setAttribute('data-bs-placement', 'top');
 
+                        iconContainer.appendChild(infoIcon);
                         if (is_clean) {
                             cleanIcon.className = 'fa fa-broom '; // FontAwesome icon for clean
                             cleanIcon.style.color = '#28c76f';
@@ -239,6 +248,8 @@
                         if (is_smoking) {
                             smokingIcon.className = 'fa fa-smoking'; // FontAwesome icon for smoking
                             smokingIcon.style.color = '#ea5455';
+                            cleanIcon.style.paddingRight = '10px';
+
                             smokingIcon.setAttribute('title', 'Smoking is allowed ');
                         } else {
                             smokingIcon.className = 'fa fa-smoking-ban'; // FontAwesome icon for no smoking
@@ -252,7 +263,35 @@
                         // Append the icon container to the resource label
                         info.el.querySelector('.fc-datagrid-cell-main').appendChild(iconContainer);
 
-                        // Initialize Bootstrap tooltips
+                        // Add tooltip to the unit code text
+                        const unitCodeElement = info.el.querySelector('.fc-datagrid-cell-main-text');
+                        if (unitCodeElement) {
+                            // Create tooltip content with unit information
+                            const tooltipContent = `
+                                <div>
+                                    <p><strong>Unit:</strong> ${info.resource.title}</p>
+                                    <p><strong>Smoking:</strong> ${is_smoking ? 'Allowed' : 'Not allowed'}</p>
+                                    <p><strong>Status:</strong> ${is_clean ? 'Clean' : 'Needs cleaning'}</p>
+                                    ${price ? `<p><strong>Price:</strong> ${price}</p>` : ''}
+                                    ${content ? `<p><strong>Info:</strong> ${content}</p>` : ''}
+                                </div>
+                            `;
+
+                            // Apply tooltip to unit code
+                            unitCodeElement.setAttribute('data-bs-toggle', 'tooltip');
+                            unitCodeElement.setAttribute('data-bs-placement', 'right');
+                            unitCodeElement.setAttribute('data-bs-html', 'true');
+                            unitCodeElement.setAttribute('title', tooltipContent);
+                            unitCodeElement.style.cursor = 'pointer';
+
+                            // Initialize tooltip for unit code
+                            new bootstrap.Tooltip(unitCodeElement, {
+                                html: true,
+                                container: 'body',
+                            });
+                        }
+
+                        // Initialize Bootstrap tooltips for icons
                         const tooltipTriggerList = [].slice.call(iconContainer.querySelectorAll('[data-bs-toggle="tooltip"]'));
                         tooltipTriggerList.forEach(function (tooltipTriggerEl) {
                             new bootstrap.Tooltip(tooltipTriggerEl); // Activate tooltip
@@ -308,6 +347,7 @@
                                             extendedProps: {
                                                 is_clean: unit.is_clean,
                                                 is_smoking: unit.is_smoking,
+                                                content: unit.content,
                                                 price: unit.price,
                                                 date: unit.date,
                                             },
