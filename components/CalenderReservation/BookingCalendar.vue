@@ -289,30 +289,22 @@
                 const resources = [];
 
                 if (Array.isArray(this.data)) {
-                    // First, organize units by building/group
-                    const resourcesByGroup = {};
-
+                    // Process buildings and units preserving the original order
                     this.data.forEach(building => {
-                        // Only process if building is selected
+                        // Only process if building is selected or no selection is made
                         if (selectedIds.length === 0 || selectedIds.includes(building.name)) {
-                            // Create an array for this building if it doesn't exist
-                            if (!resourcesByGroup[building.name]) {
-                                resourcesByGroup[building.name] = [];
-                            }
-
-                            // Add units under the building if they exist
+                            // Process units under the building if they exist
                             if (building.units) {
                                 building.units.forEach(unit => {
+                                    // Check if unit matches date filter if one is provided
                                     if (!selectedDate || (unit.date && unit.date === selectedDate)) {
-                                        resourcesByGroup[building.name].push({
+                                        resources.push({
                                             id: `${building.id}-${unit.id}`,
                                             resourceId: building.id,
                                             projectId: building?.project_id,
-                                            // title: `${unit.building?.name}/${unit.name}`,
                                             title: `${unit.code}`,
                                             groupId: building.name,
                                             classNames: ['unit'],
-                                            codeForSorting: parseInt(unit.code) || unit.code, // Store for sorting
                                             extendedProps: {
                                                 is_clean: unit.is_clean,
                                                 is_smoking: unit.is_smoking,
@@ -324,24 +316,6 @@
                                 });
                             }
                         }
-                    });
-
-                    // Sort each group by code
-                    Object.keys(resourcesByGroup).forEach(groupName => {
-                        resourcesByGroup[groupName].sort((a, b) => {
-                            // If we have valid numbers, sort numerically
-                            if (typeof a.codeForSorting === 'number' && typeof b.codeForSorting === 'number') {
-                                return a.codeForSorting - b.codeForSorting;
-                            }
-                            // Otherwise fall back to string comparison
-                            return String(a.codeForSorting).localeCompare(String(b.codeForSorting));
-                        });
-
-                        // Remove the sorting property as it's not needed anymore
-                        resourcesByGroup[groupName].forEach(resource => {
-                            delete resource.codeForSorting;
-                            resources.push(resource);
-                        });
                     });
                 }
 
@@ -1427,7 +1401,6 @@
             // Clean up the event listener when component is destroyed
             this.$root.$off('calendar-data-updated', this.updateCalendarData);
             document.body.classList.remove('hide-scrollbar');
-
         },
         created() {
             // Initialize with default values for SSR
@@ -1495,6 +1468,4 @@
     .fc-timeline-event.fc-event-mirror .event-title-short {
         font-size: 0.85em;
     }
-
-
 </style>
