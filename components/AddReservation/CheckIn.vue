@@ -913,9 +913,11 @@
                     note: this.paymentData.comment,
                     payment_mode: this.paymentData.paymentMode,
                     insurance: this.paymentData.insurance,
-                    assigned_to: this.paymentData.assigned_to,
+                    payment_assigned_to: this.paymentData.assigned_to,
+                    payment_travel_agent_id: this.paymentData.selectedTravelAgent,
+                    payment_business_source_id: this.paymentData.selectedBusinessSource,
                 };
-                console.log(bookingData);
+                // console.log(bookingData);
 
                 // Append simple fields to FormData
                 Object.keys(bookingData).forEach(key => {

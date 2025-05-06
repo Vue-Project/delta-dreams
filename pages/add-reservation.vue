@@ -39,7 +39,8 @@
                     paymentMethod: '',
                     selectedPaymentMethod: '',
                     selectedPaymentType: '',
-
+                    selectedTravelAgent: '',
+                    selectedBusinessSource: '',
                     Image: null,
                 },
                 redirectTimeout: null,
