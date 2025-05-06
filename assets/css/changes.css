@@ -1180,17 +1180,10 @@ body {
 .event-title-short {
     display: none;
 }
-.hide-scrollbar {
-    overflow: hidden;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    height: 5px;
-    /* overflow-y: hidden !important; */
-}
 
-.hide-scrollbar::-webkit-scrollbar {
+/* .hide-scrollbar::-webkit-scrollbar {
     display: none;
-}
+} */
 .fc-direction-ltr {
     height: calc(100vh - 100px); /* Adjust 100px based on your header/filter height */
     overflow-y: auto;
