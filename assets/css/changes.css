@@ -1181,14 +1181,19 @@ body {
     display: none;
 }
 .hide-scrollbar {
-  overflow: hidden;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  overflow-y: hidden !important;
+    overflow: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    height: 5px;
+    /* overflow-y: hidden !important; */
 }
 
 .hide-scrollbar::-webkit-scrollbar {
-  display: none;
+    display: none;
 }
-
+.fc-direction-ltr {
+    height: calc(100vh - 100px); /* Adjust 100px based on your header/filter height */
+    overflow-y: auto;
+    overflow-x: hidden;
+}
 /* Mobile styles - show short name instead of full name */
