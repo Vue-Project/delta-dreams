@@ -108,7 +108,7 @@
                                         <div>
                                             <i class="fa-solid fa-person"></i>
                                             {{ room.reservation?.children }}
-                                            <i class="fa-solid fa-child"></i>
+                                            <i class="fa-solid fa-baby"></i>
                                             {{ room.reservation?.adults }}
                                         </div>
                                     </div>

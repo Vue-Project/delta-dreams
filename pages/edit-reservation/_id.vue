@@ -13,7 +13,7 @@
                             <small class="text-muted ml-3 text-primary">
                                 <i class="fa-solid fa-person pr-2 text-primary"></i>
                                 {{ reservationDataById.adults }}
-                                <i class="fa-solid fa-child pr-2 text-primary"></i>
+                                <i class="fa-solid fa-baby pr-2 text-primary"></i>
                                 {{ reservationDataById.children }}
                             </small>
                         </div>
@@ -171,7 +171,7 @@
                                 <UpdateDetails :reservationData="reservationsDataById[0]" :roomChargeId="selectedRoomChargeId" @update-success="refreshReservationData" @close-offcanvas="hideOffcanvas" />
                             </div>
                             <div v-if="currentContent === 'updatedetailsall'">
-                                <UpdateDetailsAll :reservationData="reservationsDataById[0]" :roomChargeId="selectedRoomChargeId" :selectedIds=selectedRoomChargeIds @update-success="refreshReservationData" @close-offcanvas="hideOffcanvas" />
+                                <UpdateDetailsAll :reservationData="reservationsDataById[0]" :roomChargeId="selectedRoomChargeId" :selectedIds="selectedRoomChargeIds" @update-success="refreshReservationData" @close-offcanvas="hideOffcanvas" />
                             </div>
                             <div v-if="currentContent === 'applydiscount'">
                                 <ApplyDiscount />
@@ -515,12 +515,11 @@
                                     </td>
                                     <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setSelectedRoomCharge(roomChargeData.id)">{{ roomChargeData.adults }}</td>
                                     <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setSelectedRoomCharge(roomChargeData.id)">
-                                      {{ roomChargeData.children }}
+                                        {{ roomChargeData.children }}
                                     </td>
                                     <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setSelectedRoomCharge(roomChargeData.id)">
                                         {{ roomChargeData.price }}
                                     </td>
-
 
                                     <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setSelectedRoomCharge(roomChargeData.id)">
                                         <button type="button" class="btn btn-outline-secondary waves-effect">Edit</button>
@@ -668,9 +667,8 @@
     import WalletDetails from '../../components/SiderbarContentEdit/WalletDetails.vue';
     import Swal from 'sweetalert2';
     import { postCancelReservation, postStatusChange } from '../../Api/editResvertion';
-import UpdateDetailsAll  from '../../components/SiderbarContentEdit/UpdateDetailsAll.vue';
+    import UpdateDetailsAll from '../../components/SiderbarContentEdit/UpdateDetailsAll.vue';
     // import UpdateDetailsAll from '../../components/SiderbarContentEdit/UpdateDetailsAll.vue';
-
 
     export default {
         name: 'EditsPage',
@@ -701,7 +699,7 @@ import UpdateDetailsAll  from '../../components/SiderbarContentEdit/UpdateDetail
             AddDiscount,
             UpdateReservation,
             WalletDetails,
-            UpdateDetailsAll
+            UpdateDetailsAll,
         },
         data() {
             return {

@@ -158,7 +158,7 @@
                                                 </th>
                                                 <th class="border-0">
                                                     Child
-                                                    <i class="fa-solid fa-child"></i>
+                                                    <i class="fa-solid fa-baby"></i>
                                                 </th>
                                                 <th class="border-0 w-20">Rate(EGP)(Tax Inc.)</th>
                                             </tr>

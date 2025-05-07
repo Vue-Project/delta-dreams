@@ -1194,4 +1194,8 @@ body {
     left: 10px;
     bottom: -38px;
 }
+.fa-solid.fa-person,
+.fa-solid.fa-baby {
+    font-size: 25px;
+}
 /* Mobile styles - show short name instead of full name */

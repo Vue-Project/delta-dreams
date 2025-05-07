@@ -180,7 +180,7 @@
                                                     <h6 class="mb-0">
                                                         <i class="fa-solid fa-person"></i>
                                                         -
-                                                        <i class="fa-solid fa-child"></i>
+                                                        <i class="fa-solid fa-baby"></i>
                                                     </h6>
                                                     <small class="text-muted m-1">{{ selectedEvent.adults }}- {{ selectedEvent.children }}</small>
                                                 </div>
