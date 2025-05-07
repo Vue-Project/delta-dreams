@@ -77,7 +77,7 @@
                             <label class="input-group-text" for="paymentType">Types</label>
                         </div>
                     </div>
-                    <div class="col-md-6 mb-3">
+                    <!-- <div class="col-md-6 mb-3">
                         <div class="input-group">
                             <select class="form-select" id="travelAgent" v-model="value.selectedTravelAgent">
                                 <option disabled value="">Select</option>
@@ -87,8 +87,8 @@
                             </select>
                             <label class="input-group-text" for="travelAgent">Travel Agents</label>
                         </div>
-                    </div>
-                    <div class="col-md-6 mb-3">
+                    </div> -->
+                    <!-- <div class="col-md-6 mb-3">
                         <div class="input-group">
                             <select class="form-select" id="businessSource" v-model="value.selectedBusinessSource">
                                 <option disabled value="">Select</option>
@@ -98,14 +98,14 @@
                             </select>
                             <label class="input-group-text" for="businessSource">Business Source</label>
                         </div>
-                    </div>
+                    </div> -->
                     <!-- <div class="col-md-6 mb-3 d-flex align-items-center">
                         <div class="input-group mt-md-3">
                             <label class="input-group-text" for="paymentInsurance">Insurance</label>
                             <input type="text" class="form-control" id="paymentInsurance" v-model="paymentDetails.insurance" placeholder="Insurance" />
                         </div>
                     </div> -->
-                    <div class="col-md-6 d-flex align-items-center">
+                    <!-- <div class="col-md-6 d-flex align-items-center">
                         <div class="input-group">
                             <select class="form-select" id="paymentInsuranceBy" v-model="paymentDetails.assigned_to">
                                 <option disabled value="">Select</option>
@@ -115,7 +115,7 @@
                             </select>
                             <label class="input-group-text" for="paymentInsuranceBy">Assigned By</label>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 <p v-if="!value.paymentMode && validationMessage" class="validation-message">Payment Mode is required.</p>
 
@@ -145,16 +145,16 @@
                             <dd class="col-6">{{ paymentDetails.comment }}</dd>
                         </template>
 
-                        <template v-if="value.selectedTravelAgent">
+                        <!-- <template v-if="value.selectedTravelAgent">
                             <dt class="col-6">Travel Agent By:</dt>
                             <dd class="col-6">{{ getSelectedTravelAgentName() }}</dd>
-                        </template>
+                        </template> -->
 
                         <!-- Display selected business source if available -->
-                        <template v-if="value.selectedBusinessSource">
+                        <!-- <template v-if="value.selectedBusinessSource">
                             <dt class="col-6">Business Source By:</dt>
                             <dd class="col-6">{{ getSelectedBusinessSourceName() }}</dd>
-                        </template>
+                        </template> -->
 
                         <!-- New fields for insurance details -->
                         <!-- <template v-if="paymentDetails.insurance">
@@ -162,12 +162,12 @@
               <dd class="col-6">{{ paymentDetails.insurance }}</dd>
             </template>  -->
 
-                        <template v-if="paymentDetails.assigned_to">
+                        <!-- <template v-if="paymentDetails.assigned_to">
                             <dt class="col-6">Assigned By:</dt>
                             <dd class="col-6">
                                 {{ accounts.find(account => account.id === paymentDetails.assigned_to)?.name || 'Not specified' }}
                             </dd>
-                        </template>
+                        </template> -->
                     </dl>
                     <div class="mt-3" v-if="value.selectedPaymentType">
                         <!-- Common fields for all payment types -->
@@ -429,17 +429,17 @@
                 const type = this.paymentTypes.find(t => t.id == this.value.selectedPaymentType);
                 return type ? type.name : null;
             },
-            getSelectedTravelAgentName() {
-                if (!this.value.selectedTravelAgent) return null;
-                const agent = this.travelAgents.find(a => a.id === this.value.selectedTravelAgent);
-                return agent ? agent.name : null;
-            },
+            // getSelectedTravelAgentName() {
+            //     if (!this.value.selectedTravelAgent) return null;
+            //     const agent = this.travelAgents.find(a => a.id === this.value.selectedTravelAgent);
+            //     return agent ? agent.name : null;
+            // },
 
-            getSelectedBusinessSourceName() {
-                if (!this.value.selectedBusinessSource) return null;
-                const source = this.businessSources.find(s => s.id === this.value.selectedBusinessSource);
-                return source ? source.name : null;
-            },
+            // getSelectedBusinessSourceName() {
+            //     if (!this.value.selectedBusinessSource) return null;
+            //     const source = this.businessSources.find(s => s.id === this.value.selectedBusinessSource);
+            //     return source ? source.name : null;
+            // },
 
             updateSelectedPaymentType() {
                 // Force a refresh of the component

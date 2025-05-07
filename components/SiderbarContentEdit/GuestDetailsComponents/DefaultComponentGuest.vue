@@ -16,11 +16,10 @@
                                 <input type="text" class="form-control" id="formGustInfoName" placeholder="Name Guest" aria-label="input text to Gust Name" v-model="formGuest.name" ref="name" :class="{ 'input-error': validationMessages.name }" />
                                 <span class="error-message small" v-if="$v.formGuest.name.$error">Name is required</span>
                             </div>
-
                             <div class="mb-3">
                                 <label for="formIdentityInfoId" class="col-form-label">ID Number</label>
                                 <input class="form-control" type="text" id="formIdentityInfoId" placeholder="Enter ID Number" aria-label="Enter ID Number Guest" v-model="formGuest.OtherInformation.idNumber" />
-                                <span class="error-message small" v-if="$v.formGuest.OtherInformation.idNumber.$error">ID Number is required</span>
+                                <!-- <span class="error-message small" v-if="$v.formGuest.OtherInformation.idNumber.$error">ID Number is required</span> -->
                             </div>
                             <div class="mb-2">
                                 <label class="form-label" for="payment_Image">Id Number Image</label>
@@ -47,7 +46,7 @@
                             <div class="mb-3">
                                 <label for="formGustInfoPhone" class="col-form-label">Phone</label>
                                 <input class="form-control rounded-2" type="text" value="Phone" id="formGustInfoPhone" placeholder="phone" aria-label="input tel to Gust Phone" v-model="formGuest.phone" ref="phone" :class="{ 'input-error': validationMessages.phone }" />
-                                <span class="error-message small" v-if="$v.formGuest.phone.$error">Phone is required</span>
+                                <!-- <span class="error-message small" v-if="$v.formGuest.phone.$error">Phone is required</span> -->
                             </div>
                         </div>
                         <div class="col-md-6 ps-0">
@@ -66,7 +65,7 @@
                                     {{ nationalType }}
                                 </option>
                             </select>
-                            <span class="error-message small" v-if="$v.formGuest.OtherInformation.idType.$error">ID Type is required</span>
+                            <!-- <span class="error-message small" v-if="$v.formGuest.OtherInformation.idType.$error">ID Type is required</span> -->
                         </div>
                         <div class="col-md-6 col-12 ps-0">
                             <label for="flatpickr-date-08" class="col-form-label">Expiry Date</label>
@@ -248,10 +247,10 @@
         validations: {
             formGuest: {
                 name: { required },
-                phone: { required },
+                // phone: { required },
                 OtherInformation: {
-                    idNumber: { required },
-                    idType: { required },
+                    // idNumber: { required },
+                    // idType: { required },
                     // expiryDate: { required },
                 },
             },
@@ -402,8 +401,7 @@
                             formData.append(`all_image[${index}]`, file);
                         });
                     }
-                    console.log('IdImages=' ,this.IdImages);
-
+                    console.log('IdImages=', this.IdImages);
 
                     // Make API call with FormData which includes both text data and files
                     // const response = await PostUpdateGuest(this.reservationData.client.id, formData);
@@ -422,85 +420,80 @@
                 }
             },
             fillFormGuest(reservationData) {
-    if (!reservationData || typeof reservationData !== 'object') {
-        console.warn('Invalid reservation data received');
-        return;
-    }
+                if (!reservationData || typeof reservationData !== 'object') {
+                    console.warn('Invalid reservation data received');
+                    return;
+                }
 
-    const client = reservationData.client || reservationData.user || {};
+                const client = reservationData.client || reservationData.user || {};
 
-    this.formGuest = {
-        ...this.formGuest,
-        image: client.image || null,
-        name: client.name || '',
-        email: client.email || '',
-        phone: client.phone || '',
-        mobile: client.mobile || '',
-        gender: client.gender || '',
-        address: client.address || '',
-        country: client.country || '',
-        state: client.state || '',
-        city: client.city || '',
-        zip: client.zip_code || '',
-        internationalNumber: client.international_phone || '',
-        OtherInformation: {
-            ...this.formGuest.OtherInformation,
-            image: client.national_id_image || null,
-            idNumber: client.national_id || '',
-            idType: client.national_type || '',
-            expiryDate: client.national_expire_date || '',
-            paymentMethod: {
-                ...this.formGuest.OtherInformation.paymentMethod,
-                birthDate: client.birth_date || '',
-                nationality: client.nationality || '',
-                vipStatus: client.vip_status || '',
+                this.formGuest = {
+                    ...this.formGuest,
+                    image: client.image || null,
+                    name: client.name || '',
+                    email: client.email || '',
+                    phone: client.phone || '',
+                    mobile: client.mobile || '',
+                    gender: client.gender || '',
+                    address: client.address || '',
+                    country: client.country || '',
+                    state: client.state || '',
+                    city: client.city || '',
+                    zip: client.zip_code || '',
+                    internationalNumber: client.international_phone || '',
+                    OtherInformation: {
+                        ...this.formGuest.OtherInformation,
+                        image: client.national_id_image || null,
+                        idNumber: client.national_id || '',
+                        idType: client.national_type || '',
+                        expiryDate: client.national_expire_date || '',
+                        paymentMethod: {
+                            ...this.formGuest.OtherInformation.paymentMethod,
+                            birthDate: client.birth_date || '',
+                            nationality: client.nationality || '',
+                            vipStatus: client.vip_status || '',
+                        },
+                    },
+                };
+
+                // Reset existing images
+                this.IdImagesPreview.forEach(preview => {
+                    if (preview.url && preview.url.startsWith('blob:')) {
+                        URL.revokeObjectURL(preview.url);
+                    }
+                });
+                this.IdImages = [];
+                this.IdImagesPreview = [];
+
+                // Handle array of server image URLs
+                if (client.userGalleries?.data && Array.isArray(client.userGalleries.data)) {
+                    const baseUrl = this.$nuxt?.$config?.baseURL;
+
+                    this.IdImagesPreview = client.userGalleries.data.map((item, index) => {
+                        // Construct full image URL
+                        const imageUrl = item.image.startsWith('http') ? item.image : `${baseUrl}${item.image.startsWith('/') ? '' : '/'}${item.image}`;
+
+                        return {
+                            url: imageUrl,
+                            name: `ServerImage-${index}`,
+                            isServerImage: true,
+                            serverId: item.id, // Store server ID for reference
+                        };
+                    });
+                }
+
+                // Handle single national_id_image if it exists
+                if (client.national_id_image) {
+                    const baseUrl = this.$nuxt?.$config?.baseURL || window.location.origin;
+                    const nationalIdUrl = client.national_id_image.startsWith('http') ? client.national_id_image : `${baseUrl}${client.national_id_image.startsWith('/') ? '' : '/'}${client.national_id_image}`;
+
+                    this.IdImagesPreview.push({
+                        url: nationalIdUrl,
+                        name: 'national-id-image',
+                        isServerImage: true,
+                    });
+                }
             },
-        },
-    };
-
-    // Reset existing images
-    this.IdImagesPreview.forEach(preview => {
-        if (preview.url && preview.url.startsWith('blob:')) {
-            URL.revokeObjectURL(preview.url);
-        }
-    });
-    this.IdImages = [];
-    this.IdImagesPreview = [];
-
-    // Handle array of server image URLs
-    if (client.userGalleries?.data && Array.isArray(client.userGalleries.data)) {
-        const baseUrl = this.$nuxt?.$config?.baseURL ;
-
-        this.IdImagesPreview = client.userGalleries.data.map((item, index) => {
-            // Construct full image URL
-            const imageUrl = item.image.startsWith('http')
-                ? item.image
-                : `${baseUrl}${item.image.startsWith('/') ? '' : '/'}${item.image}`;
-
-            return {
-                url: imageUrl,
-                name: `ServerImage-${index}`,
-                isServerImage: true,
-                serverId: item.id // Store server ID for reference
-            };
-        });
-    }
-
-    // Handle single national_id_image if it exists
-    if (client.national_id_image) {
-        const baseUrl = this.$nuxt?.$config?.baseURL || window.location.origin;
-        const nationalIdUrl = client.national_id_image.startsWith('http')
-            ? client.national_id_image
-            : `${baseUrl}${client.national_id_image.startsWith('/') ? '' : '/'}${client.national_id_image}`;
-
-        this.IdImagesPreview.push({
-            url: nationalIdUrl,
-            name: 'national-id-image',
-            isServerImage: true
-        });
-    }
-
-},
             showImg(img) {
                 this.imgs = [img];
                 this.index = 0;

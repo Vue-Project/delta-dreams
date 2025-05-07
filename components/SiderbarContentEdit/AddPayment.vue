@@ -48,7 +48,7 @@
                 </div>
                 <span class="error-message small" v-if="$v.formAddPayment.type.$error">type is required</span>
             </div>
-            <div class="col-12 mb-2">
+            <!-- <div class="col-12 mb-2">
                 <div class="input-group">
                     <select class="form-select" id="payment_accounts" v-model="formAddPayment.account">
                         <option disabled value="">Select Accounts</option>
@@ -58,8 +58,8 @@
                     </select>
                     <label class="input-group-text" for="payment_accounts">Accounts</label>
                 </div>
-            </div>
-            <div class="col-12 mb-2">
+            </div> -->
+            <!-- <div class="col-12 mb-2">
                 <div class="input-group">
                     <select class="form-select" id="travelAgent" v-model="formAddPayment.travelAgent">
                         <option disabled value="">Select</option>
@@ -69,8 +69,8 @@
                     </select>
                     <label class="input-group-text" for="payment_accounts">Travel Agent</label>
                 </div>
-            </div>
-            <div class="col-12 mb-2">
+            </div> -->
+            <!-- <div class="col-12 mb-2">
                 <div class="input-group">
                     <select class="form-select" id="businessSource" v-model="formAddPayment.businessSource">
                         <option disabled value="">Select</option>
@@ -80,7 +80,7 @@
                     </select>
                     <label class="input-group-text" for="payment_type">Business Source</label>
                 </div>
-            </div>
+            </div> -->
             <div class="col-12 mb-2">
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="Amount" aria-label="Amount (to the nearest dollar)" v-model="formAddPayment.amount" />
@@ -182,9 +182,9 @@
                         date_at: this.formAddPayment.date,
                         payment_id: this.formAddPayment.method,
                         payment_type_id: this.formAddPayment.paymentType,
-                        assigned_to: this.formAddPayment.account,
-                        travel_agent_id: this.formAddPayment.travelAgent,
-                        business_source_id: this.formAddPayment.businessSource,
+                        // assigned_to: this.formAddPayment.account,
+                        // travel_agent_id: this.formAddPayment.travelAgent,
+                        // business_source_id: this.formAddPayment.businessSource,
                         note: this.formAddPayment.comment,
                         reservation_id: this.reservationId,
                         price: this.formAddPayment.amount,
