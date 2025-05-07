@@ -1,7 +1,7 @@
 <template>
     <div class="row justify-content-between p-2 position-relative">
         <!-- Left Column - Date and Building Filter -->
-        <div class="col-lg-6 col-md-8 col-md-12">
+        <div class="col-lg-5 col-md-8 col-md-12">
             <div class="row">
                 <!-- Date Picker -->
                 <div class="col-lg-4 col-md-6 col-12">
@@ -48,7 +48,7 @@
 
                 <!-- Rate Types Filter - Desktop Only -->
                 <!-- Building Filter - Always Visible -->
-                <div class="col-lg-4 col-12">
+                <div class="col-lg-3 col-12">
                     <div class="dropdown w-100">
                         <button class="btn btn-primary dropdown-toggle w-100 filter-types" type="button" id="buildingsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fa-solid fa-filter pe-2"></i>
@@ -76,7 +76,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="d-none d-lg-block col-lg-4 order-3">
+                <div class="d-none d-lg-block col-lg-3 order-3">
                     <div class="dropdown w-100">
                         <button class="btn btn-primary dropdown-toggle w-100" type="button" id="rateTypesDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fa-solid fa-filter pe-2"></i>
@@ -97,7 +97,7 @@
                 </div>
 
                 <!-- Projects Filter - Desktop Only -->
-                <div class="d-none d-lg-block col-lg-4 order-4">
+                <div class="d-none d-lg-block col-lg-3 order-4">
                     <div class="dropdown w-100">
                         <button class="btn btn-primary dropdown-toggle w-100" type="button" id="projectsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fa-solid fa-filter pe-2"></i>
@@ -115,6 +115,64 @@
                             </li>
                         </ul>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-1 col-md-12">
+            <div @mouseenter="isHovered = true" @mouseleave="isHovered = false">
+                <button type="button" class="btn btn-outline-primary waves-effect">
+                    <i class="fa-solid fa-circle-info"></i>
+                </button>
+                <!-- Hover Menu -->
+                <div v-show="isHovered" class="position-absolute right-0 mt-2 w-40 bg-white shadow-lg">
+                    <!-- start ul -->
+                    <div class="fullbox">
+                        <div class="row">
+                            <h5>Booking Status</h5>
+                            <hr />
+                            <div class="col-6">
+                                <ul class="Booking-Status-First">
+                                    <li>
+                                        <i class="fas fa-square"></i>
+                                        Confirmed
+                                    </li>
+                                    <li>
+                                        <i class="fas fa-square"></i>
+                                        Accepted
+                                    </li>
+                                    <li>
+                                        <i class="fas fa-square"></i>
+                                        CheckIn
+                                    </li>
+                                    <li>
+                                        <i class="fas fa-square"></i>
+                                        Checkout
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-6">
+                                <ul class="Booking-Status-Secound">
+                                    <li>
+                                        <i class="fas fa-square"></i>
+                                        Cancelled
+                                    </li>
+                                    <li>
+                                        <i class="fas fa-square"></i>
+                                        DayUse
+                                    </li>
+                                    <li>
+                                        <i class="fas fa-square"></i>
+                                        Unconfirmed
+                                    </li>
+                                    <li>
+                                        <i class="fas fa-square"></i>
+                                        Block
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end ul -->
                 </div>
             </div>
         </div>
