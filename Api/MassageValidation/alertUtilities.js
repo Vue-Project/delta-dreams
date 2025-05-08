@@ -10,7 +10,28 @@ export async function showConfirmationAlert(title, text, confirmText = 'Yes', ca
         cancelButtonText: cancelText,
     });
 }
+// ... existing code ...
 
+export async function showConfirmationAlertWithSelect(title, text, selectOptions, confirmText = 'Yes', cancelText = 'No', router, routeName) {
+  return await Swal.fire({
+      title: title,
+      text: text,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: confirmText,
+      cancelButtonText: cancelText,
+      input: 'select',
+      inputOptions: selectOptions,
+      inputPlaceholder: 'Select an option',
+      showLoaderOnConfirm: true,
+      // preConfirm: (selectedValue) => {
+      //     if (!selectedValue) {
+      //         Swal.showValidationMessage('Please select an option')
+      //     }
+      //     return selectedValue
+      // }
+  });
+}
 export const showSuccessAlert = (successMessage = 'Operation completed successfully!', router, routeName) => {
     return Swal.fire({
         icon: 'success',

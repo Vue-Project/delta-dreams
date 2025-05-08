@@ -662,12 +662,13 @@
     import { dateMixin } from '../../components/Mixin/DateMixin';
     import UpdateReservation from '../../components/SiderbarContentEdit/BookingDetailsComponents/UpdateReservation.vue';
     import { GetReservationItems } from '../../Api/addResvertionApi';
-    import { showSuccessAlert, handleSubmissionError } from '../../Api/MassageValidation/alertUtilities';
+    import { showSuccessAlert, handleSubmissionError, showConfirmationAlertWithSelect } from '../../Api/MassageValidation/alertUtilities';
     import { showConfirmationAlert } from '../../Api/MassageValidation/alertUtilities';
     import WalletDetails from '../../components/SiderbarContentEdit/WalletDetails.vue';
     import Swal from 'sweetalert2';
     import { postCancelReservation, postStatusChange } from '../../Api/editResvertion';
     import UpdateDetailsAll from '../../components/SiderbarContentEdit/UpdateDetailsAll.vue';
+    import { mapGetters } from 'vuex/dist/vuex.common.js';
     // import UpdateDetailsAll from '../../components/SiderbarContentEdit/UpdateDetailsAll.vue';
 
     export default {
@@ -879,12 +880,23 @@
             },
             async cancelReservation() {
                 // Show SweetAlert2 confirmation dialog
-                const result = await showConfirmationAlert('Are you sure?', 'This Reservation will be cancelled', 'Yes, cancel it!');
+                const selectOptions = this.getReservationRejects
+      const result = await showConfirmationAlertWithSelect(
+        'Are you sure you want to cancel this Reservation?',
+        'Please select a reason for cancellation',
+        Object.fromEntries(
+          Object.entries(selectOptions).map(([key, value]) => [value.id, value.name])
+        ),
+        'Confirm',
+        'Cancel'
+      );
 
                 // Proceed only if the user confirms
                 if (result.isConfirmed) {
                     try {
-                        const response = await postCancelReservation(this.selectedReservationId);
+                      const rejectedValue = result.value; // This will now be the key/id
+
+                        const response = await postCancelReservation(this.selectedReservationId ,rejectedValue);
 
                         // Show success alert
                         await showSuccessAlert(
@@ -955,6 +967,9 @@
                 console.warn('Offcanvas ref not found during beforeDestroy.');
             }
         },
+        computed: {
+    ...mapGetters(['getReservationRejects']),
+  },
     };
 </script>
 

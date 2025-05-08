@@ -11,9 +11,11 @@ import apiClient from './apiClient';
       }
     };
 
-    export const postCancelReservation = async (id) => {
+    export const postCancelReservation = async (id, rejectedValue) => {
       try {
-        const response = await apiClient.post(`/reservations/cancel/${id}`);
+        const response = await apiClient.post(`/reservations/cancel/${id}`, {
+          reservation_reject_id: rejectedValue
+        });
         return response.data;
       } catch (error) {
         console.error(`Error cancelling reservation with ID "${id}":`, error);

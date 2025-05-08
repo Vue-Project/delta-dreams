@@ -95,6 +95,7 @@
                 genderTypes: [],
                 projects: [],
                 reservationStatus:[],
+                reservationRejects:[],
                 BlockedPermission: '',
                 unitsCounts: '',
                 remindGuestType: [],
@@ -1248,7 +1249,7 @@
                 });
             },
 
-            ...mapActions(['updateReservationTypes', 'updateRateTypes', 'updateCountries', 'updateVipStatus', 'updateNationalTypes', 'updateGenderTypes', 'updateProjects', 'updateRemindGuestType','updateReservationStatus']),
+            ...mapActions(['updateReservationTypes', 'updateRateTypes', 'updateCountries', 'updateVipStatus', 'updateNationalTypes', 'updateGenderTypes', 'updateProjects', 'updateRemindGuestType','updateReservationStatus','updateReservationRejects']),
 
             refreshCalendarData() {
                 // Implement the logic to refresh the calendar data
@@ -1407,6 +1408,7 @@
                 this.genderTypes = CalenderDataResponse.gender_type;
                 this.projects = CalenderDataResponse.projects;
                 this.reservationStatus = CalenderDataResponse.unit_status;
+                this.reservationRejects = CalenderDataResponse.reservation_rejects;
                 this.remindGuestType = CalenderDataResponse.release_type;
                 this.BlockedPermission = CalenderDataResponse.is_block;
                 this.unitsCounts = CalenderDataResponse.units_count;
@@ -1433,6 +1435,7 @@
                 this.updateProjects(this.projects);
                 this.updateRemindGuestType(this.remindGuestType);
                 this.updateReservationStatus(this.reservationStatus);
+                this.updateReservationRejects(this.reservationRejects);
 
                 // Listen for data updates from HeaderCalender
                 this.$root.$on('calendar-data-updated', this.updateCalendarData);
