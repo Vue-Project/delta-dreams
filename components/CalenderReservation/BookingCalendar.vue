@@ -337,12 +337,16 @@
                                 building.units.forEach(unit => {
                                     // Check if unit matches date filter if one is provided
                                     if (!selectedDate || (unit.date && unit.date === selectedDate)) {
+                                        // Calculate total adults and children for this building
+                                        const totalAdults = building.adults ||5 ;
+                                        const totalChildren = building.children || 5;
+
                                         resources.push({
                                             id: `${building.id}-${unit.id}`,
                                             resourceId: building.id,
                                             projectId: building?.project_id,
                                             title: `${unit.code}`,
-                                            groupId: building.name,
+                                            groupId: `${building.name} (👤${totalAdults} 👶${totalChildren})`,
                                             classNames: ['unit'],
                                             extendedProps: {
                                                 is_clean: unit.is_clean,
@@ -350,6 +354,8 @@
                                                 content: unit.content,
                                                 price: unit.price,
                                                 date: unit.date,
+                                                adults: unit.adults,
+                                                children: unit.children
                                             },
                                         });
                                     }
