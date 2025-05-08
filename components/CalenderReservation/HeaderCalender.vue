@@ -20,6 +20,9 @@
                         </button>
                     </div>
                 </div>
+
+                <!-- Reservation Status Filter -->
+
             </div>
         </div>
 
@@ -76,6 +79,25 @@
                         </ul>
                     </div>
                 </div>
+                <div class="col-lg-3 col-12">
+                    <div class="dropdown w-100">
+                        <button class="btn btn-primary dropdown-toggle w-100" type="button" id="reservationStatusDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-filter pe-2"></i>
+                            Filter Status
+                            <span v-if="selectedStatuses.length" class="badge bg-light text-dark ms-1">
+                                {{ selectedStatuses.length }}
+                            </span>
+                        </button>
+                        <ul class="dropdown-menu w-100" aria-labelledby="reservationStatusDropdown">
+                            <li v-for="(label,value) in getReservationStatus" :key="status" class="px-2">
+                                <label class="dropdown-item d-flex align-items-center">
+                                    <input type="checkbox" :value="value" v-model="selectedStatuses" class="form-check-input me-2" />
+                                    <span>{{ label }}</span>
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
                 <div class="d-none d-lg-block col-lg-3 order-3">
                     <div class="dropdown w-100">
                         <button class="btn btn-primary dropdown-toggle w-100" type="button" id="rateTypesDropdown" data-bs-toggle="dropdown" aria-expanded="false">
@@ -119,7 +141,7 @@
             </div>
         </div>
         <div class="col-lg-1 col-md-12">
-            <div @mouseenter="isHovered = true" @mouseleave="isHovered = false">
+            <div class="float-right" @mouseenter="isHovered = true" @mouseleave="isHovered = false">
                 <button type="button" class="btn btn-outline-primary waves-effect">
                     <i class="fa-solid fa-circle-info"></i>
                 </button>
@@ -175,6 +197,7 @@
                     <!-- end ul -->
                 </div>
             </div>
+
         </div>
         <!-- Quick Reservation - Always Visible -->
         <div class="col-6 col-lg-2 order-1 quick-reservation d-none d-lg-block mt-2">
@@ -250,6 +273,7 @@
                 selectedBuildings: [],
                 selectAllBuildings: true,
                 searchQuery: '', // New search query property
+                selectedStatuses: [],
             };
         },
 
@@ -415,6 +439,7 @@
                         rate_types: this.selectedRateTypes,
                         building_ids: this.selectedBuildings.length > 0 ? this.selectedBuildings : null,
                         search: this.searchQuery ? encodeURIComponent(this.searchQuery) : null, // Encode to handle Arabic characters
+                        status: this.selectedStatuses.length > 0 ? this.selectedStatuses : null,
                     };
 
                     const response = await getCalenderFilter(filterCalender);
@@ -462,7 +487,7 @@
             this.$emit('date-selected', defaultDate); // Emit the default date
         },
         computed: {
-            ...mapGetters(['getRateTypes', 'getProjects', 'getProjects']),
+            ...mapGetters(['getRateTypes', 'getProjects', 'getProjects' ,'getReservationStatus']),
         },
 
         mixins: [flatpickrMixin],
@@ -492,6 +517,12 @@
                 deep: true,
             },
             selectedProjects: {
+                handler: _.debounce(async function (newVal) {
+                    await this.getFilterData();
+                }, 500),
+                deep: true,
+            },
+            selectedStatuses: {
                 handler: _.debounce(async function (newVal) {
                     await this.getFilterData();
                 }, 500),
