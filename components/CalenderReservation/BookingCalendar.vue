@@ -94,8 +94,8 @@
                 nationalTypes: [],
                 genderTypes: [],
                 projects: [],
-                reservationStatus:[],
-                reservationRejects:[],
+                reservationStatus: [],
+                reservationRejects: [],
                 BlockedPermission: '',
                 unitsCounts: '',
                 remindGuestType: [],
@@ -340,15 +340,21 @@
                                     // Check if unit matches date filter if one is provided
                                     if (!selectedDate || (unit.date && unit.date === selectedDate)) {
                                         // Calculate total adults and children for this building
-                                        const totalAdults = building.adults ||5 ;
-                                        const totalChildren = building.children || 5;
+                                        const totalAdults = building.adults;
+                                        const totalChildren = building.children;
+
+                                        // Create group ID with adults/children counts only if data exists
+                                        let groupId = building.name;
+                                        if (totalAdults !== undefined && totalChildren !== undefined) {
+                                            groupId = `${building.name} (👤${totalAdults} 👶${totalChildren})`;
+                                        }
 
                                         resources.push({
                                             id: `${building.id}-${unit.id}`,
                                             resourceId: building.id,
                                             projectId: building?.project_id,
                                             title: `${unit.code}`,
-                                            groupId: `${building.name} (👤${totalAdults} 👶${totalChildren})`,
+                                            groupId: groupId,
                                             classNames: ['unit'],
                                             extendedProps: {
                                                 is_clean: unit.is_clean,
@@ -357,7 +363,7 @@
                                                 price: unit.price,
                                                 date: unit.date,
                                                 adults: unit.adults,
-                                                children: unit.children
+                                                children: unit.children,
                                             },
                                         });
                                     }
@@ -1249,7 +1255,7 @@
                 });
             },
 
-            ...mapActions(['updateReservationTypes', 'updateRateTypes', 'updateCountries', 'updateVipStatus', 'updateNationalTypes', 'updateGenderTypes', 'updateProjects', 'updateRemindGuestType','updateReservationStatus','updateReservationRejects']),
+            ...mapActions(['updateReservationTypes', 'updateRateTypes', 'updateCountries', 'updateVipStatus', 'updateNationalTypes', 'updateGenderTypes', 'updateProjects', 'updateRemindGuestType', 'updateReservationStatus', 'updateReservationRejects']),
 
             refreshCalendarData() {
                 // Implement the logic to refresh the calendar data
