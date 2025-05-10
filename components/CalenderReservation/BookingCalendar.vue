@@ -1294,7 +1294,7 @@
                 // Safely check if window is defined (client-side only)
                 if (typeof window !== 'undefined') {
                     const isMobile = window.innerWidth <= 768; // Mobile breakpoint
-                    return { days: 10 }; // Always load 10 days of data
+                    return isMobile ? { days: 10 } : { days: 20 }; // 10 days for mobile/tablet, 20 for desktop
                 }
                 // Default duration if window is not available (server-side)
                 return { days: 20 };
@@ -1303,13 +1303,17 @@
             updateDuration() {
                 // Only run this code on the client side
                 if (typeof window !== 'undefined') {
-                    this.calendarOptions.duration = this.getDuration();
+                    const isMobile = window.innerWidth <= 768;
+                    const duration = isMobile ? { days: 10 } : { days: 20 };
+
+                    // Update calendar options with correct duration
+                    this.calendarOptions.duration = duration;
 
                     // Update slot width based on screen size
                     const calendarApi = this.$refs.calendar?.getApi();
                     if (calendarApi) {
-                        const isMobile = window.innerWidth <= 768;
                         calendarApi.setOption('slotMinWidth', isMobile ? 150 : 70);
+                        calendarApi.setOption('duration', duration);
 
                         // Force redraw
                         this.$nextTick(() => {
@@ -1473,7 +1477,7 @@
             if (typeof window !== 'undefined') {
                 const isMobile = window.innerWidth <= 768;
                 this.calendarOptions.slotMinWidth = isMobile ? 150 : 70;
-                this.calendarOptions.duration = { days: isMobile ? 10 : 20 };
+                this.calendarOptions.duration = isMobile ? { days: 10 } : { days: 20 };
             }
         },
         computed: {
