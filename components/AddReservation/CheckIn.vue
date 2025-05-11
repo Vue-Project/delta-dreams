@@ -466,7 +466,13 @@
                             <button type="button" class="btn btn-lg btn-secondary waves-effect waves-light w-100" @click="goBack">Cancel</button>
                         </div>
                         <div class="offset-md- col-md-2 col-6 text-end">
-                            <button type="submit" class="btn btn-lg btn-primary waves-effect waves-light w-100">Reserve</button>
+                            <button type="submit" class="btn btn-lg btn-primary waves-effect waves-light w-100" :disabled="isSubmitting">
+                                <span v-if="isSubmitting">
+                                    <i class="fa fa-spinner fa-spin me-1"></i>
+                                    Reserving...
+                                </span>
+                                <span v-else>Reserve</span>
+                            </button>
                         </div>
                         <!-- <div class="col-6  text-end">
               <button type="button" class="btn btn-lg btn-secondary waves-effect waves-light" @click="goBack">
@@ -502,6 +508,8 @@
 
         data() {
             return {
+                isSubmitting: false,
+
                 searchQuery: '',
                 formAddReservation: {
                     guestInformation: {
@@ -869,8 +877,13 @@
             },
 
             async submitAddReservation() {
+                if (this.isSubmitting) {
+                    return;
+                }
                 this.$v.$touch();
                 if (this.$v.$invalid) {
+                    this.isSubmitting = false;
+
                     return;
                 }
 
@@ -949,6 +962,8 @@
                 // Log FormData contents
 
                 try {
+                    this.isSubmitting = true;
+
                     const response = await postAddReservationData(formData);
 
                     // reservation ID from the response
@@ -1285,8 +1300,7 @@
                 if (!query) {
                     return this.filteredNames;
                 }
-
-                return this.filteredNames.filter(guest => guest.name.toLowerCase().includes(query.toLowerCase()) || guest.phone.includes(query));
+                // return this.filteredNames.filter(guest => guest.name.toLowerCase().includes(query.toLowerCase()) || guest.phone.includes(query));
             },
 
             // Method to refresh all guest data if needed
