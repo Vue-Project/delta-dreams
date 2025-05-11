@@ -244,11 +244,11 @@
 
 /* start header styling */
 .switch .switch-input:checked ~ .switch-toggle-slider::after {
-    left: 4.15rem !important;
+    left: 2rem !important;
 }
 
 .switch .switch-toggle-slider::after {
-    top: 4px;
+    top: 2px;
 }
 
 .switch {
@@ -256,20 +256,20 @@
 }
 
 .switch .switch-toggle-slider {
-    width: 5.5rem;
-    height: 30px;
-    line-height: 26px;
-    top: 0;
-    left: 0;
+    width: 3.3rem;
+    height: 25px;
+}
+.switch .switch-input ~ .switch-label {
+    padding-left: 60px;
 }
 
-.switch .switch-off {
+/* .switch .switch-off {
     font-size: 15px;
 }
 
 .switch-input:checked ~ .switch-toggle-slider .switch-on {
     font-size: 15px;
-}
+} */
 
 /* .fc .fc-button-primary:not(.fc-prev-button):not(.fc-next-button) {
   position: absolute;

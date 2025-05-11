@@ -1,10 +1,10 @@
 <template>
     <div class="row justify-content-between p-2 position-relative">
         <!-- Left Column - Date and Building Filter -->
-        <div class="col-lg-5 col-md-8 col-md-12">
+        <div class="col-md-5 col-12">
             <div class="row">
                 <!-- Date Picker -->
-                <div class="col-lg-4 col-md-6 col-12">
+                <div class="col-md-5 col-12">
                     <div class="position-relative">
                         <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD" id="flatpickr-date-04" ref="datePicker4" aria-label="Select date" />
                         <i class="fa-solid fa-calendar-days date-icon"></i>
@@ -22,12 +22,11 @@
                 </div>
 
                 <!-- Reservation Status Filter -->
-
             </div>
         </div>
 
         <!-- Right Column - Filters and Info -->
-        <div class="col-lg-6 col-md-12">
+        <div class="col-md-5 col-12">
             <div class="row g-2 justify-content-end">
                 <!-- Quick Reservation - Always Visible -->
                 <div class="col-6 col-lg-6 order-1 quick-reservation d-block d-lg-none">
@@ -89,7 +88,7 @@
                             </span>
                         </button>
                         <ul class="dropdown-menu w-100" aria-labelledby="reservationStatusDropdown">
-                            <li v-for="(label,value) in getReservationStatus" :key="status" class="px-2">
+                            <li v-for="(label, value) in getReservationStatus" :key="status" class="px-2">
                                 <label class="dropdown-item d-flex align-items-center">
                                     <input type="checkbox" :value="value" v-model="selectedStatuses" class="form-check-input me-2" />
                                     <span>{{ label }}</span>
@@ -140,64 +139,84 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-1 col-md-12">
-            <div class="float-right" @mouseenter="isHovered = true" @mouseleave="isHovered = false">
-                <button type="button" class="btn btn-outline-primary waves-effect">
-                    <i class="fa-solid fa-circle-info"></i>
-                </button>
-                <!-- Hover Menu -->
-                <div v-show="isHovered" class="position-absolute right-0 mt-2 w-40 bg-white shadow-lg">
-                    <!-- start ul -->
-                    <div class="fullbox">
-                        <div class="row">
-                            <h5>Booking Status</h5>
-                            <hr />
-                            <div class="col-6">
-                                <ul class="Booking-Status-First">
-                                    <li>
-                                        <i class="fas fa-square"></i>
-                                        Confirmed
-                                    </li>
-                                    <li>
-                                        <i class="fas fa-square"></i>
-                                        Accepted
-                                    </li>
-                                    <li>
-                                        <i class="fas fa-square"></i>
-                                        CheckIn
-                                    </li>
-                                    <li>
-                                        <i class="fas fa-square"></i>
-                                        Checkout
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="col-6">
-                                <ul class="Booking-Status-Secound">
-                                    <li>
-                                        <i class="fas fa-square"></i>
-                                        Cancelled
-                                    </li>
-                                    <li>
-                                        <i class="fas fa-square"></i>
-                                        DayUse
-                                    </li>
-                                    <li>
-                                        <i class="fas fa-square"></i>
-                                        Unconfirmed
-                                    </li>
-                                    <li>
-                                        <i class="fas fa-square"></i>
-                                        Block
-                                    </li>
-                                </ul>
+        <div class="col-md-2 col-12">
+            <div class="d-flex">
+                <div class="switches-stacked d-flex justify-between align-items-center w-100">
+                    <label class="switch switch-square mb-0">
+                        <input type="radio" class="switch-input" name="switches-square-stacked-radio" checked="" v-model="viewType" value="calendar" @change="changeViewType" />
+                        <span class="switch-toggle-slider">
+                            <span class="switch-on"></span>
+                            <span class="switch-off"></span>
+                        </span>
+                        <span class="switch-label">Block</span>
+                    </label>
+
+                    <label class="switch switch-square">
+                        <input type="radio" class="switch-input" name="switches-square-stacked-radio" v-model="viewType" value="list" @change="changeViewType" />
+                        <span class="switch-toggle-slider">
+                            <span class="switch-on"></span>
+                            <span class="switch-off"></span>
+                        </span>
+                        <span class="switch-label">available</span>
+                    </label>
+                </div>
+                <div class="float-right" @mouseenter="isHovered = true" @mouseleave="isHovered = false">
+                    <button type="button" class="btn btn-outline-primary waves-effect">
+                        <i class="fa-solid fa-circle-info"></i>
+                    </button>
+                    <!-- Hover Menu -->
+                    <div v-show="isHovered" class="position-absolute right-0 mt-2 w-40 bg-white shadow-lg">
+                        <!-- start ul -->
+                        <div class="fullbox">
+                            <div class="row">
+                                <h5>Booking Status</h5>
+                                <hr />
+                                <div class="col-6">
+                                    <ul class="Booking-Status-First">
+                                        <li>
+                                            <i class="fas fa-square"></i>
+                                            Confirmed
+                                        </li>
+                                        <li>
+                                            <i class="fas fa-square"></i>
+                                            Accepted
+                                        </li>
+                                        <li>
+                                            <i class="fas fa-square"></i>
+                                            CheckIn
+                                        </li>
+                                        <li>
+                                            <i class="fas fa-square"></i>
+                                            Checkout
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-6">
+                                    <ul class="Booking-Status-Secound">
+                                        <li>
+                                            <i class="fas fa-square"></i>
+                                            Cancelled
+                                        </li>
+                                        <li>
+                                            <i class="fas fa-square"></i>
+                                            DayUse
+                                        </li>
+                                        <li>
+                                            <i class="fas fa-square"></i>
+                                            Unconfirmed
+                                        </li>
+                                        <li>
+                                            <i class="fas fa-square"></i>
+                                            Block
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
+                        <!-- end ul -->
                     </div>
-                    <!-- end ul -->
                 </div>
             </div>
-
         </div>
         <!-- Quick Reservation - Always Visible -->
         <div class="col-6 col-lg-2 order-1 quick-reservation d-none d-lg-block mt-2">
@@ -274,10 +293,40 @@
                 selectAllBuildings: true,
                 searchQuery: '', // New search query property
                 selectedStatuses: [],
+                viewType: 'calendar', // Default view type
             };
         },
 
         methods: {
+            // Add this new method to handle view type change
+            async changeViewType() {
+                try {
+                    // Prepare filter parameters including the view type
+                    const filterParams = {
+                        view_type: this.viewType,
+                        project_ids: this.selectedProjects,
+                        rate_types: this.selectedRateTypes,
+                        building_ids: this.selectedBuildings.length > 0 ? this.selectedBuildings : null,
+                        search: this.searchQuery || null,
+                        status: this.selectedStatuses.length > 0 ? this.selectedStatuses : null,
+                    };
+
+                    // Fetch data based on the selected view type
+                    const response = await getCalenderFilter(filterParams);
+
+                    // Emit event to parent component to handle view type change
+                    this.$root.$emit('view-type-changed', {
+                        viewType: this.viewType,
+                        data: response.data,
+                    });
+
+                    // Also update the calendar data
+                    this.$root.$emit('calendar-data-updated', response.data);
+                } catch (error) {
+                    console.error('Error changing view type:', error);
+                }
+            },
+
             // Remove the debounced search method and keep only the button click method
             performSearch() {
                 this.sendSearchQuery();
@@ -438,8 +487,9 @@
                         project_ids: this.selectedProjects,
                         rate_types: this.selectedRateTypes,
                         building_ids: this.selectedBuildings.length > 0 ? this.selectedBuildings : null,
-                        search: this.searchQuery ? encodeURIComponent(this.searchQuery) : null, // Encode to handle Arabic characters
+                        search: this.searchQuery ? encodeURIComponent(this.searchQuery) : null,
                         status: this.selectedStatuses.length > 0 ? this.selectedStatuses : null,
+                        view_type: this.viewType, // Include view type in filter parameters
                     };
 
                     const response = await getCalenderFilter(filterCalender);
@@ -447,6 +497,12 @@
 
                     // Emit the updated data to BookingCalendar
                     this.$root.$emit('calendar-data-updated', response.data);
+
+                    // Also emit view type change event
+                    this.$root.$emit('view-type-changed', {
+                        viewType: this.viewType,
+                        data: response.data,
+                    });
 
                     // IMPORTANT: Make sure to preserve building filter after data is updated
                     if (this.selectedBuildings.length > 0) {
@@ -487,7 +543,7 @@
             this.$emit('date-selected', defaultDate); // Emit the default date
         },
         computed: {
-            ...mapGetters(['getRateTypes', 'getProjects', 'getProjects' ,'getReservationStatus']),
+            ...mapGetters(['getRateTypes', 'getProjects', 'getProjects', 'getReservationStatus']),
         },
 
         mixins: [flatpickrMixin],
