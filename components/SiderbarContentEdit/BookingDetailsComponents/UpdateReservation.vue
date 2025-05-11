@@ -302,8 +302,17 @@
                     <!-- GUEST INFORMATION SECTION -->
                     <!-- *************************** -->
                     <h6 class="mb-2">Guest Information</h6>
+
                     <div class="row">
-                        <div class="col-md-5 col-12 px-0">
+                        <div class="col-lg-4 px-md-0">
+                            <div class="input-group">
+                                <input type="text" class="form-control searchInput" id="searchInput" v-model="searchQuery" placeholder="Enter phone number or national ID" />
+                                <button class="btn btn-primary" type="button" @click="searchByPhoneOrID">Search</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4 px-md-0">
                             <label for="nameGuest" class="col-form-label">Guest Name</label>
                             <div class="input-group">
                                 <select class="form-select" id="nameGuest">
@@ -330,25 +339,26 @@
                             </div>
                             <span class="error-message small" v-if="$v.formAddReservation.guestInformation.name.$error">Guest name is required</span>
                         </div>
-                        <div class="col-md-7">
-                            <div class="row">
-                                <div class="col-md-6 col-12 px-0 px-md-3">
-                                    <label for="insurance " class="col-form-label">Insurance</label>
-                                    <input class="form-control rounded-2" type="text" id="insurance" placeholder="insurance" v-model="formAddReservation.BillingSummary.insurance" />
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3 row">
-                                        <label for="insurance_by" class="col-form-label">Insurance By</label>
-                                        <select class="form-select rounded-2" id="paymentInsuranceBy" v-model="formAddReservation.BillingSummary.insurance_by">
-                                            <option disabled value="">Select</option>
-                                            <option v-for="account in accounts" :key="account.id" :value="account.id">
-                                                {{ account.name }}
-                                            </option>
-                                        </select>
-                                    </div>
-                                </div>
+                        <div class="col-md-4 col-12 px-0 px-md-3">
+                            <label for="insurance " class="col-form-label">Insurance</label>
+                            <input class="form-control rounded-2" type="text" id="insurance" placeholder="insurance" v-model="formAddReservation.BillingSummary.insurance" />
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3 row">
+                                <label for="insurance_by" class="col-form-label">Insurance By</label>
+                                <select class="form-select rounded-2" id="paymentInsuranceBy" v-model="formAddReservation.BillingSummary.insurance_by">
+                                    <option disabled value="">Select</option>
+                                    <option v-for="account in accounts" :key="account.id" :value="account.id">
+                                        {{ account.name }}
+                                    </option>
+                                </select>
                             </div>
                         </div>
+                        <!-- <div class="col-md-7">
+                            <div class="row">
+
+                            </div>
+                        </div> -->
                         <!-- <div class="col-md-12">
               <div class="row">
                 <div class="col-md-4 col-12 px-0 pe-md-3">
@@ -501,7 +511,7 @@
     </section>
 </template>
 <script>
-    import { getBookingSources, getBusinessSources, getGuestsInfo, PutUpdateReservation, getUnits, getUnitTypes, getAccounts, getGuestDetails, getServices, getTravelAgents } from '../../../Api/addResvertionApi';
+    import { getBookingSources, getBusinessSources, getGuestsInfo, PutUpdateReservation, getUnits, getUnitTypes, getAccounts, getGuestDetails, getServices, getTravelAgents, getGuestsInfoSearch } from '../../../Api/addResvertionApi';
     import flatpickrMixin from '../../Mixin/flatpickrMixin';
     import { dateMixin } from '../../Mixin/DateMixin';
     import { showSuccessAlert, handleSubmissionError, showConfirmationAlert } from '../../../Api/MassageValidation/alertUtilities';
@@ -535,6 +545,8 @@
 
                 // UI State
                 showSelect: false,
+                searchQuery: '',
+
                 showInput: false,
                 isSidebarOpen: false,
                 roomCount: 1,
@@ -1121,6 +1133,34 @@
             //     this.formAddReservation.units[0].rateAmount = parseFloat(value).toFixed(2);
             //   }
             // },
+            async searchByPhoneOrID() {
+                if (!this.searchQuery) return; // إذا كان الـ searchQuery فارغ
+
+                this.isLoading = true;
+
+                try {
+                    // استدعاء الـ API مع إرسال الـ searchQuery
+                    const response = await getGuestsInfoSearch(this.searchQuery);
+
+                    // استخراج الداتا من الـ API response
+                    const guests = response?.data?.data || [];
+
+                    if (guests.length > 0) {
+                        this.filteredNames = guests; // عرض الضيوف في الـ dropdown
+                        this.showDropdown = true;
+                        this.hasMore = false;
+                    } else {
+                        // إذا مفيش نتائج، عرض الرسالة دي
+                        this.filteredNames = [];
+                        this.showDropdown = true;
+                        console.log('No results found for: ' + this.searchQuery); // للتحقق
+                    }
+                } catch (error) {
+                    handleSubmissionError(error, 'There was an issue retrieving the guest information.');
+                } finally {
+                    this.isLoading = false;
+                }
+            },
             fillFormWithReservationData(reservationData) {
                 if (!reservationData || typeof reservationData !== 'object') {
                     console.warn('Invalid reservation data received');
