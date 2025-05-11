@@ -116,7 +116,13 @@
                                                 </div>
                                                 <div class="text-center">
                                                     <!-- Call transferWallet when clicked -->
-                                                    <button type="button" class="btn btn-primary px-4 rounded-pill" @click="transferWallet(walletId)">Save</button>
+                                                    <button type="button" class="btn btn-primary px-4 rounded-pill" @click="transferWallet(walletId)" :disabled="isSubmitting">
+                                                        <span v-if="isSubmitting">
+                                                            <i class="fa fa-spinner fa-spin me-1"></i>
+                                                            Saving...
+                                                        </span>
+                                                        <span v-else>Save</span>
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -156,6 +162,7 @@
         },
         data() {
             return {
+                isSubmitting: false,
                 paymentMethods: [],
                 paymentTypes: [],
                 paymentDetails: {
@@ -217,6 +224,9 @@
                 }
             },
             async transferWallet(id) {
+                if (this.isSubmitting) {
+                    return;
+                }
                 // Validate the entered payment amount
                 const payment = parseFloat(this.paymentAmount);
                 if (isNaN(payment)) {
@@ -242,6 +252,8 @@
 
                 if (result.isConfirmed) {
                     try {
+                        this.isSubmitting = true;
+
                         const transfersWalletData = {
                             price: payment || 50, // using the validated payment amount
                             reservation_id: this.reservationsId,
@@ -257,6 +269,9 @@
                         this.$emit('wallet-updated');
                     } catch (error) {
                         handleSubmissionError(error, 'Failed to transfer wallet');
+                    } finally {
+                        // Always reset the submitting state, even if there's an error
+                        this.isSubmitting = false;
                     }
                 }
             },

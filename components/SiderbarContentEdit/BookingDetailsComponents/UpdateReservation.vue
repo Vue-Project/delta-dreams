@@ -502,7 +502,13 @@
                     <!-- FORM SUBMISSION BUTTON -->
                     <div class="row">
                         <div class="offset-md-10 col-md-2 col-12 text-end">
-                            <button type="submit" class="btn btn-lg btn-primary waves-effect waves-light w-100">Update</button>
+                            <button type="submit" class="btn btn-lg btn-primary waves-effect waves-light w-100" :disabled="isSubmitting">
+                                <span v-if="isSubmitting">
+                                    <i class="fa fa-spinner fa-spin me-1"></i>
+                                    Updating...
+                                </span>
+                                <span v-else>Update</span>
+                            </button>
                         </div>
                     </div>
                 </form>
@@ -542,6 +548,7 @@
         data() {
             return {
                 testing: [],
+                isSubmitting: false,
 
                 // UI State
                 showSelect: false,
@@ -778,8 +785,12 @@
             },
             // Submit form and validate fields
             async FormUpdateReservation() {
+                if (this.isSubmitting) {
+                    return;
+                }
                 this.$v.$touch();
                 if (this.$v.$invalid) {
+                    this.isSubmitting = false;
                     return;
                 }
 
@@ -843,6 +854,8 @@
                 };
 
                 try {
+                    this.isSubmitting = true;
+
                     const response = await PutUpdateReservation(this.reservationId, bookingData);
 
                     // Show success message without redirect
@@ -852,6 +865,8 @@
                     this.$emit('reservation-updated');
                 } catch (error) {
                     handleSubmissionError(error, 'There was an issue with your reservation.');
+                } finally {
+                    this.isSubmitting = false;
                 }
             },
             navigateToEditReservation(id) {

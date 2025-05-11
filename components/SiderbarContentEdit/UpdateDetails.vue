@@ -28,7 +28,13 @@
         <p>{{ reservationData.items.id }}</p>
 
         <div class="gap-2 d-flex" style="position: absolute; bottom: 15px; right: 15px">
-            <button type="submit" class="btn btn-primary">Update</button>
+            <button type="submit" class="btn btn-primary" :disabled="isSubmitting">
+                <span v-if="isSubmitting">
+                    <i class="fa fa-spinner fa-spin me-1"></i>
+                    updating...
+                </span>
+                <span v-else>update</span>
+            </button>
         </div>
     </form>
 </template>
@@ -64,6 +70,7 @@
         data() {
             return {
                 // Form Data
+                isSubmitting: false,
                 formUpdateReservationItems: {
                     startDate: '',
                     adults: '',
@@ -102,7 +109,12 @@
         },
         methods: {
             async updatingReservationItems() {
+                if (this.isSubmitting) {
+                    return;
+                }
                 try {
+                    this.isSubmitting = true;
+
                     // Find the item by roomChargeId
                     const item = this.reservationData.items.find(item => item.id == this.roomChargeId);
 
@@ -120,11 +132,9 @@
                         rate_type: this.formUpdateReservationItems.rateType,
                         rate_amount: this.formUpdateReservationItems.rateAmount,
                     };
-                    console.log(updateReservationItems);
-
 
                     // Submit the data
-                    const response = await PostReservationItems( updateReservationItems.reservation_id, updateReservationItems);
+                    const response = await PostReservationItems(updateReservationItems.reservation_id, updateReservationItems);
 
                     // Show success message and close the form
                     await showSuccessAlert('Reservation Items updated successfully.');
@@ -132,6 +142,8 @@
                     this.$emit('close-offcanvas');
                 } catch (error) {
                     handleSubmissionError(error, 'Failed to update reservation items.');
+                } finally {
+                    this.isSubmitting = false;
                 }
             },
         },

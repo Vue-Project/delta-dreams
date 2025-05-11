@@ -182,7 +182,13 @@
             </div>
             <div class="row">
                 <div class="offset-md-10 col-md-2 col-12 text-end">
-                    <button type="submit" class="btn btn-lg btn-primary waves-effect waves-light w-100">Update</button>
+                    <button type="submit" class="btn btn-lg btn-primary waves-effect waves-light w-100" :disabled="isSubmitting">
+                        <span v-if="isSubmitting">
+                            <i class="fa fa-spinner fa-spin me-1"></i>
+                            updating...
+                        </span>
+                        <span v-else>update</span>
+                    </button>
                 </div>
             </div>
         </fieldset>
@@ -242,6 +248,7 @@
                 visible: false,
                 index: 0,
                 imgs: [],
+                isSubmitting: false,
             };
         },
         validations: {
@@ -359,9 +366,16 @@
             },
 
             async submitFormUpdateGuest() {
+                if (this.isSubmitting) {
+                    return;
+                }
                 try {
+                    this.isSubmitting = true;
+
                     this.$v.$touch();
                     if (this.$v.$invalid) {
+                        this.isSubmitting = false;
+
                         return;
                     }
                     const formData = new FormData();
@@ -411,8 +425,6 @@
 
                     // Emit event to parent component
                     this.$emit('guest-updated');
-
-                    this.isSubmitting = false;
                 } catch (error) {
                     await handleSubmissionError(error);
                 } finally {

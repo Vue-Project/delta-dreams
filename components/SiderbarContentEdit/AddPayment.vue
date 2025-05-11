@@ -98,7 +98,13 @@
             </div>
         </div>
         <div class="gap-2 d-flex" style="position: absolute; bottom: 15px; right: 20px">
-            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="submit" class="btn btn-primary" :disabled="isSubmitting">
+                <span v-if="isSubmitting">
+                    <i class="fa fa-spinner fa-spin me-1"></i>
+                    Saving...
+                </span>
+                <span v-else>Save</span>
+            </button>
         </div>
     </form>
 </template>
@@ -117,6 +123,7 @@
         layout: 'component',
         data() {
             return {
+                isSubmitting: false,
                 paymentMethods: [],
                 paymentTypes: [],
                 accounts: [],
@@ -164,13 +171,22 @@
         },
         methods: {
             async addPaymentReservation() {
+                // If already submitting, prevent multiple submissions
+                if (this.isSubmitting) {
+                    return;
+                }
+
                 try {
+                    // Set submitting state to true
+                    this.isSubmitting = true;
+
                     // Get the file from the file input
                     const paymentImageFile = this.$refs.paymentImage.files[0] || null;
                     this.formAddPayment.image = paymentImageFile;
 
                     this.$v.$touch();
                     if (this.$v.$invalid) {
+                        this.isSubmitting = false;
                         return;
                     }
 
@@ -207,10 +223,13 @@
                     this.$emit('close-offcanvas');
                 } catch (error) {
                     handleSubmissionError(error, 'Failed to add payment');
-                }
+                } finally {
+                    // Always reset the submitting state, even if there's an error
+                    this.isSubmitting = false;
 
-                // Reset the payment form
-                this.cancelPayment();
+                    // Reset the payment form
+                    this.cancelPayment();
+                }
             },
             cancelPayment() {
                 this.resetPaymentForm();
