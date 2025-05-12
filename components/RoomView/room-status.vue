@@ -30,11 +30,11 @@
                         <i class="fa-solid fa-list"></i>
                     </button>
                 </div>
-                <li class="nav-item col-6 col-md" role="presentation" v-for="tab in tabs" :key="tab">
-                    <button class="nav-link" :class="{ active: activeTab === tab }" @click="setActiveTab(tab)">
-                        {{ tab }}
+                <li class="nav-item col-6 col-md" role="presentation" v-for="(value, key) in statisticsHeaderRoomView" :key="key">
+                    <button class="nav-link" :class="{ active: activeTab === key }" @click="setActiveTab(key)">
+                        {{ key }}
                         <span class="badge rounded-pill badge-center h-px-30 w-px-30 bg-label-danger ms-1 p-2">
-                            {{ statisticsHeaderRoomView[tab] }}
+                            {{ value }}
                         </span>
                     </button>
                 </li>
