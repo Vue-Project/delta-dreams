@@ -143,7 +143,7 @@
             <div class="d-flex">
                 <div class="switches-stacked d-flex justify-between align-items-center w-100">
                     <label class="switch switch-square mb-0">
-                        <input type="radio" class="switch-input" name="switches-square-stacked-radio" checked="" v-model="viewType" value="calendar" @change="changeViewType" />
+                        <input type="radio" class="switch-input" name="view-type-radio" v-model="viewType" value="block" @change="changeViewType" />
                         <span class="switch-toggle-slider">
                             <span class="switch-on"></span>
                             <span class="switch-off"></span>
@@ -152,12 +152,12 @@
                     </label>
 
                     <label class="switch switch-square">
-                        <input type="radio" class="switch-input" name="switches-square-stacked-radio" v-model="viewType" value="list" @change="changeViewType" />
+                        <input type="radio" class="switch-input" name="view-type-radio" v-model="viewType" value="available" @change="changeViewType" />
                         <span class="switch-toggle-slider">
                             <span class="switch-on"></span>
                             <span class="switch-off"></span>
                         </span>
-                        <span class="switch-label">available</span>
+                        <span class="switch-label">Available</span>
                     </label>
                 </div>
                 <div class="float-right" @mouseenter="isHovered = true" @mouseleave="isHovered = false">
@@ -293,7 +293,7 @@
                 selectAllBuildings: true,
                 searchQuery: '', // New search query property
                 selectedStatuses: [],
-                viewType: 'calendar', // Default view type
+                // viewType: 'calendar', // Default view type
             };
         },
 
@@ -301,15 +301,23 @@
             // Add this new method to handle view type change
             async changeViewType() {
                 try {
-                    // Prepare filter parameters including the view type
+                    // Prepare filter parameters based on the selected view type
                     const filterParams = {
-                        view_type: this.viewType,
                         project_ids: this.selectedProjects,
                         rate_types: this.selectedRateTypes,
                         building_ids: this.selectedBuildings.length > 0 ? this.selectedBuildings : null,
                         search: this.searchQuery || null,
                         status: this.selectedStatuses.length > 0 ? this.selectedStatuses : null,
                     };
+
+                    // Set the appropriate filter parameter based on view type
+                    if (this.viewType === 'block') {
+                        filterParams.is_blocked = 1;
+                        filterParams.is_available = null;
+                    } else if (this.viewType === 'available') {
+                        filterParams.is_available = 1;
+                        filterParams.is_blocked = null;
+                    }
 
                     // Fetch data based on the selected view type
                     const response = await getCalenderFilter(filterParams);
