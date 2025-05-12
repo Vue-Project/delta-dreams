@@ -1002,7 +1002,7 @@ body {
     z-index: 1;
 }
 .img-fluid {
-    height: 64px;
+    height: 40px;
 }
 .hoverable-event {
     position: relative;

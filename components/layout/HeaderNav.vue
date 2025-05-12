@@ -3,22 +3,23 @@
     class="layout-navbar navbar navbar-expand-xl align-items-center bg-navbar-theme"
     id="layout-navbar"
   >
+
     <div class="container-fluid">
       <div class="navbar-brand app-brand demo d-none d-xl-flex py-0 me-4">
         <a
-          :href="`${$nuxt.$config.baseURL}/admin`"
+          :href="settingsData.admin_url"
           class="app-brand-link gap-2"
         >
           <span class="app-brand-logo demo">
             <img
-              src="../../assets/images/logo.png"
+              :src="settingsData.site_logo || require('../../assets/images/logo-sys.png')"
               alt="logo"
               class="img-fluid"
             />
           </span>
         </a>
         <a href="/" class="app-brand-link gap-2">
-          <span class="app-brand-text demo menu-text fw-bold">Delta Dream</span>
+          <span class="app-brand-text demo menu-text fw-bold">{{settingsData.site_title}}</span>
         </a>
 
         <a
@@ -429,3 +430,32 @@
     </div>
   </nav>
 </template>
+<script>
+import { getSettingsSite } from '../../Api/CalenderApi';
+export default {
+    data() {
+      return {
+        settingsData: '',
+      };
+    },
+
+  async mounted() {
+
+
+
+
+
+            try {
+              const [settingsDataResponse] = await Promise.all([getSettingsSite()]);
+                this.settingsData = settingsDataResponse;
+
+
+
+
+            } catch (error) {
+                console.error('Error loading data:', error);
+            } finally {
+                this.isLoading = false;
+            }
+        }
+}</script>
