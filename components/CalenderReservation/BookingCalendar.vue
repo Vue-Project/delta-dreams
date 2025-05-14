@@ -1,10 +1,9 @@
 <template>
     <section class="card">
-        <!-- {{ data }} -->
         <!-- <momenalert></momenalert> -->
         <Loader :visible="isLoading" />
         <div :class="{ 'loading-overlay': isLoading }">
-            <FilterCalendar ref="filterComponent" :statistics="statistics" :buildingNames="buildingNames" @show-all-resources="showAllResources" @show-building-resources="showBuildingResources" @date-selected="SelectedDateFilterCalendar" />
+            <FilterCalendar ref="filterComponent" :statistics="statistics" :allUnits="unitsCounts" :buildingNames="buildingNames" @show-all-resources="showAllResources" @show-building-resources="showBuildingResources" @date-selected="SelectedDateFilterCalendar" />
             <FullCalendar :options="calendarOptions" @select="handleSelect" ref="calendar" :selectedDate="selectedDate">
                 <template v-slot:eventContent="arg">
                     <div class="event-content">
@@ -95,7 +94,10 @@
                 nationalTypes: [],
                 genderTypes: [],
                 projects: [],
+                reservationStatus: [],
+                reservationRejects: [],
                 BlockedPermission: '',
+                unitsCounts: '',
                 remindGuestType: [],
                 isSidebarOpen: false,
                 isPopoverBodyVisible: true, // Body visibility
@@ -133,9 +135,40 @@
                     resourceOrder: 'original',
                     eventDidMount: info => {
                         this.adjustHarnessPosition(info);
+                        // Add full name as data attribute for hover tooltip
                         if (info.event.extendedProps?.fullName) {
                             info.el.setAttribute('data-full-name', info.event.extendedProps.fullName);
                         }
+                        // Check if the event spans multiple days
+                        const eventStart = new Date(info.event.start);
+                        const eventEnd = new Date(info.event.end);
+                        const daysDifference = Math.ceil((eventEnd - eventStart) / (1000 * 60 * 60 * 24));
+
+                        // Get the current view's visible range
+                        const calendarApi = this.$refs.calendar?.getApi();
+                        // if (calendarApi) {
+                        //     const viewStart = calendarApi.view.activeStart;
+                        //     const viewEnd = calendarApi.view.activeEnd;
+
+                        //     // Check if the event is partially visible (starts before view or ends after view)
+                        //     const startsBeforeView = eventStart < viewStart;
+                        //     const endsAfterView = eventEnd > viewEnd;
+
+                        //     // If event is partially visible or only one day is visible, use short name
+                        //     if (startsBeforeView || endsAfterView || daysDifference <= 2) {
+                        //         // Find the title elements and update them
+                        //         const titleElements = info.el.querySelectorAll('.event-title-full');
+                        //         titleElements.forEach(el => {
+                        //             el.style.display = 'none';
+                        //         });
+
+                        //         const shortNameElements = info.el.querySelectorAll('.event-title-short');
+                        //         shortNameElements.forEach(el => {
+                        //             el.style.display = 'block';
+                        //             el.textContent = info.event.extendedProps.shortName || '';
+                        //         });
+                        //     }
+                        // }
                     },
                     resources: this.createResources(),
                     selectable: true, // Enable date selection
@@ -143,7 +176,7 @@
                     eventOverlap: false, // Disallow overlapping events
                     slotDuration: '24:00', // Slot duration of one day
                     datesSet: this.handleDatesSet, // Listen to date changes
-                    initialDate: this.getTwoDaysAgoDate(),
+                    // initialDate: this.getTwoDaysAgoDate(),
 
                     // eventColor: 'red', // This will override individual event colors
                     slotLabelContent: arg => {
@@ -179,7 +212,7 @@
                     },
                     resourceLabelDidMount: function (info) {
                         // Get the resource's extendedProps
-                        const { is_clean, is_smoking } = info.resource.extendedProps;
+                        const { is_clean, is_smoking, price, content } = info.resource.extendedProps;
 
                         // Create container for icons
                         const iconContainer = document.createElement('span');
@@ -189,7 +222,16 @@
                         // Add icon for cleanliness status
                         const cleanIcon = document.createElement('i');
                         cleanIcon.style.paddingRight = '10px';
+                        // Add info icon to show additional content from server
+                        const infoIcon = document.createElement('i');
+                        infoIcon.className = 'fa fa-info-circle';
+                        infoIcon.style.paddingRight = '10px';
+                        infoIcon.style.color = '#00cfe8';
+                        infoIcon.setAttribute('title', content || 'No additional information available');
+                        infoIcon.setAttribute('data-bs-toggle', 'tooltip');
+                        infoIcon.setAttribute('data-bs-placement', 'top');
 
+                        iconContainer.appendChild(infoIcon);
                         if (is_clean) {
                             cleanIcon.className = 'fa fa-broom '; // FontAwesome icon for clean
                             cleanIcon.style.color = '#28c76f';
@@ -208,6 +250,8 @@
                         if (is_smoking) {
                             smokingIcon.className = 'fa fa-smoking'; // FontAwesome icon for smoking
                             smokingIcon.style.color = '#ea5455';
+                            cleanIcon.style.paddingRight = '10px';
+
                             smokingIcon.setAttribute('title', 'Smoking is allowed ');
                         } else {
                             smokingIcon.className = 'fa fa-smoking-ban'; // FontAwesome icon for no smoking
@@ -221,7 +265,35 @@
                         // Append the icon container to the resource label
                         info.el.querySelector('.fc-datagrid-cell-main').appendChild(iconContainer);
 
-                        // Initialize Bootstrap tooltips
+                        // Add tooltip to the unit code text
+                        const unitCodeElement = info.el.querySelector('.fc-datagrid-cell-main-text');
+                        if (unitCodeElement) {
+                            // Create tooltip content with unit information
+                            const tooltipContent = `
+                                <div>
+                                    <p><strong>Unit:</strong> ${info.resource.title}</p>
+                                    <p><strong>Smoking:</strong> ${is_smoking ? 'Allowed' : 'Not allowed'}</p>
+                                    <p><strong>Status:</strong> ${is_clean ? 'Clean' : 'Needs cleaning'}</p>
+                                    ${price ? `<p><strong>Price:</strong> ${price}</p>` : ''}
+                                    ${content ? `<p><strong>Info:</strong> ${content}</p>` : ''}
+                                </div>
+                            `;
+
+                            // Apply tooltip to unit code
+                            unitCodeElement.setAttribute('data-bs-toggle', 'tooltip');
+                            unitCodeElement.setAttribute('data-bs-placement', 'right');
+                            unitCodeElement.setAttribute('data-bs-html', 'true');
+                            unitCodeElement.setAttribute('title', tooltipContent);
+                            unitCodeElement.style.cursor = 'pointer';
+
+                            // Initialize tooltip for unit code
+                            new bootstrap.Tooltip(unitCodeElement, {
+                                html: true,
+                                container: 'body',
+                            });
+                        }
+
+                        // Initialize Bootstrap tooltips for icons
                         const tooltipTriggerList = [].slice.call(iconContainer.querySelectorAll('[data-bs-toggle="tooltip"]'));
                         tooltipTriggerList.forEach(function (tooltipTriggerEl) {
                             new bootstrap.Tooltip(tooltipTriggerEl); // Activate tooltip
@@ -258,58 +330,46 @@
                 const resources = [];
 
                 if (Array.isArray(this.data)) {
-                    // First, organize units by building/group
-                    const resourcesByGroup = {};
-
+                    // Process buildings and units preserving the original order
                     this.data.forEach(building => {
-                        // Only process if building is selected
+                        // Only process if building is selected or no selection is made
                         if (selectedIds.length === 0 || selectedIds.includes(building.name)) {
-                            // Create an array for this building if it doesn't exist
-                            if (!resourcesByGroup[building.name]) {
-                                resourcesByGroup[building.name] = [];
-                            }
-
-                            // Add units under the building if they exist
+                            // Process units under the building if they exist
                             if (building.units) {
                                 building.units.forEach(unit => {
+                                    // Check if unit matches date filter if one is provided
                                     if (!selectedDate || (unit.date && unit.date === selectedDate)) {
-                                        resourcesByGroup[building.name].push({
+                                        // Calculate total adults and children for this building
+                                        const totalAdults = building.adults;
+                                        const totalChildren = building.children;
+
+                                        // Create group ID with adults/children counts only if data exists
+                                        let groupId = building.name;
+                                        if (totalAdults !== undefined && totalChildren !== undefined) {
+                                            groupId = `${building.name} (👤${totalAdults} 👶${totalChildren})`;
+                                        }
+
+                                        resources.push({
                                             id: `${building.id}-${unit.id}`,
                                             resourceId: building.id,
                                             projectId: building?.project_id,
-                                            title: `${unit.building?.name}/${unit.name}`,
-                                            groupId: building.name,
+                                            title: `${unit.code}`,
+                                            groupId: groupId,
                                             classNames: ['unit'],
-                                            codeForSorting: parseInt(unit.code) || unit.code, // Store for sorting
                                             extendedProps: {
                                                 is_clean: unit.is_clean,
                                                 is_smoking: unit.is_smoking,
+                                                content: unit.content,
                                                 price: unit.price,
                                                 date: unit.date,
+                                                adults: unit.adults,
+                                                children: unit.children,
                                             },
                                         });
                                     }
                                 });
                             }
                         }
-                    });
-
-                    // Sort each group by code
-                    Object.keys(resourcesByGroup).forEach(groupName => {
-                        resourcesByGroup[groupName].sort((a, b) => {
-                            // If we have valid numbers, sort numerically
-                            if (typeof a.codeForSorting === 'number' && typeof b.codeForSorting === 'number') {
-                                return a.codeForSorting - b.codeForSorting;
-                            }
-                            // Otherwise fall back to string comparison
-                            return String(a.codeForSorting).localeCompare(String(b.codeForSorting));
-                        });
-
-                        // Remove the sorting property as it's not needed anymore
-                        resourcesByGroup[groupName].forEach(resource => {
-                            delete resource.codeForSorting;
-                            resources.push(resource);
-                        });
                     });
                 }
 
@@ -643,6 +703,9 @@
                             eventColor = '#6c757d'; // Default gray if no status color is provided
                         }
 
+                        // const fullName = reservation.client?.name || reservation.user?.name || 'Unknown';
+
+                        // Get initials by taking first letter of each word
                         const fullName = reservation.client?.name || reservation.user?.name || 'Unknown';
 
                         // Get initials by taking first letter of each word
@@ -675,6 +738,7 @@
                                 reservation: reservation,
                                 status: reservation.status,
                                 fullName: fullName, // Store full name for tooltip
+                                shortName: shortName, // Add shortName to extendedProps
                             },
                             classNames: ['custom-event', 'hoverable-event'], // Add hoverable class
                         });
@@ -781,9 +845,14 @@
                     unit_code: unitCode || event.extendedProps?.reservation?.code,
                     reservation_id: event.extendedProps?.reservation?.id,
                     building_name: buildingName || event.extendedProps?.reservation?.unit?.building?.name,
-                    booking_source_name: event.extendedProps?.reservation?.booking_source?.name,
+                    travel_agent_name: event.extendedProps?.reservation?.travel_agent?.name,
                     business_source_name: event.extendedProps?.reservation?.business_source?.name,
                     unit_data: unitData, // Include the entire unit data object
+                    price: event.extendedProps?.reservation?.price,
+                    total_service: event.extendedProps?.reservation?.service_price,
+                    permit: event.extendedProps?.reservation?.permit,
+                    permit_image: event.extendedProps?.reservation?.permit_image,
+                    reservation_name: event.extendedProps?.reservation?.name,
                 };
             },
             transformAllUnitsToEvents() {
@@ -812,6 +881,7 @@
                     const resourceId = event.getResources()[0]?.id;
                     const unitId = resourceId?.split('-')[1];
                     const unitName = this.getUnitNameById(unitId);
+                    console.log('ewf3f3f3', unitName);
 
                     // Get the original reservation times from extendedProps
                     const originalCheckinTime = event.extendedProps?.reservation?.checkin_time || '14:00:00';
@@ -866,11 +936,13 @@
                         // Get the current price from the reservation
                         const currentPrice = event.extendedProps?.reservation?.unit_price || '';
                         const buildingName = event.extendedProps?.reservation?.unit?.building?.name;
-                        const unitName = event.extendedProps?.reservation?.unit?.name;
+                        // const unitName = event.extendedProps?.reservation?.name;
+                        console.log('unitName', event);
+
                         const buildingInfo = ` ${buildingName} /${unitName} `;
                         // console.log('tesating', buildingInfo);
 
-                        const result = await showUpdateConfirmationDialog(startDate, endDate, currentPrice, buildingInfo);
+                        const result = await showUpdateConfirmationDialog(startDate, endDate, currentPrice, unitName);
 
                         if (result.isConfirmed) {
                             if (result.value) {
@@ -1183,7 +1255,7 @@
                 });
             },
 
-            ...mapActions(['updateReservationTypes', 'updateRateTypes', 'updateCountries', 'updateVipStatus', 'updateNationalTypes', 'updateGenderTypes', 'updateProjects', 'updateRemindGuestType']),
+            ...mapActions(['updateReservationTypes', 'updateRateTypes', 'updateCountries', 'updateVipStatus', 'updateNationalTypes', 'updateGenderTypes', 'updateProjects', 'updateRemindGuestType', 'updateReservationStatus', 'updateReservationRejects']),
 
             refreshCalendarData() {
                 // Implement the logic to refresh the calendar data
@@ -1222,7 +1294,7 @@
                 // Safely check if window is defined (client-side only)
                 if (typeof window !== 'undefined') {
                     const isMobile = window.innerWidth <= 768; // Mobile breakpoint
-                    return { days: 10 }; // Always load 10 days of data
+                    return isMobile ? { days: 10 } : { days: 20 }; // 10 days for mobile/tablet, 20 for desktop
                 }
                 // Default duration if window is not available (server-side)
                 return { days: 20 };
@@ -1231,13 +1303,17 @@
             updateDuration() {
                 // Only run this code on the client side
                 if (typeof window !== 'undefined') {
-                    this.calendarOptions.duration = this.getDuration();
+                    const isMobile = window.innerWidth <= 768;
+                    const duration = isMobile ? { days: 10 } : { days: 20 };
+
+                    // Update calendar options with correct duration
+                    this.calendarOptions.duration = duration;
 
                     // Update slot width based on screen size
                     const calendarApi = this.$refs.calendar?.getApi();
                     if (calendarApi) {
-                        const isMobile = window.innerWidth <= 768;
                         calendarApi.setOption('slotMinWidth', isMobile ? 150 : 70);
+                        calendarApi.setOption('duration', duration);
 
                         // Force redraw
                         this.$nextTick(() => {
@@ -1303,6 +1379,8 @@
         async mounted() {
             // mounted hook only runs on client-side, so window is available
             // Add an event listener to update duration on window resize
+            // document.body.classList.add('hide-scrollbar');
+
             window.addEventListener('resize', this.updateDuration);
 
             // Set initial slot width based on screen size
@@ -1339,8 +1417,11 @@
                 this.nationalTypes = CalenderDataResponse.national_type;
                 this.genderTypes = CalenderDataResponse.gender_type;
                 this.projects = CalenderDataResponse.projects;
+                this.reservationStatus = CalenderDataResponse.unit_status;
+                this.reservationRejects = CalenderDataResponse.reservation_rejects;
                 this.remindGuestType = CalenderDataResponse.release_type;
-                // this.BlockedPermission = CalenderDataResponse.is_block;
+                this.BlockedPermission = CalenderDataResponse.is_block;
+                this.unitsCounts = CalenderDataResponse.units_count;
                 this.buildingNames = this.getBuildingNames();
                 const events = this.transformAllUnitsToEvents();
                 this.calendarOptions = { ...this.calendarOptions, events };
@@ -1363,6 +1444,8 @@
                 this.updateGenderTypes(this.genderTypes);
                 this.updateProjects(this.projects);
                 this.updateRemindGuestType(this.remindGuestType);
+                this.updateReservationStatus(this.reservationStatus);
+                this.updateReservationRejects(this.reservationRejects);
 
                 // Listen for data updates from HeaderCalender
                 this.$root.$on('calendar-data-updated', this.updateCalendarData);
@@ -1380,6 +1463,7 @@
 
             // Clean up the event listener when component is destroyed
             this.$root.$off('calendar-data-updated', this.updateCalendarData);
+            // document.body.classList.remove('hide-scrollbar');
         },
         created() {
             // Initialize with default values for SSR
@@ -1393,7 +1477,7 @@
             if (typeof window !== 'undefined') {
                 const isMobile = window.innerWidth <= 768;
                 this.calendarOptions.slotMinWidth = isMobile ? 150 : 70;
-                this.calendarOptions.duration = { days: isMobile ? 10 : 20 };
+                this.calendarOptions.duration = isMobile ? { days: 10 } : { days: 20 };
             }
         },
         computed: {
@@ -1409,7 +1493,42 @@
 </script>
 
 <style scoped>
-    /* Existing styles... */
+    .event-title-full,
+    .event-title-short {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 
-    /* Responsive styles for event names */
+    /* Add tooltip-like behavior for hovering */
+    .fc-timeline-event {
+        position: relative;
+    }
+
+    .fc-timeline-event:hover::after {
+        content: attr(data-full-name);
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        white-space: nowrap;
+        z-index: 1000;
+        pointer-events: none;
+    }
+
+    /* By default, show full name and hide short name */
+    /* .event-title-short {
+        display: none;
+    } */
+
+    /* For very small events, always show short name */
+    .fc-timeline-event.fc-event-mirror .event-title-full,
+    .fc-timeline-event.fc-event-mirror .event-title-short {
+        font-size: 0.85em;
+    }
 </style>

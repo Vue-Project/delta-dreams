@@ -206,7 +206,13 @@
 
                         <div class="scbuttons gap-2 d-flex justify-content-end">
                             <button @click="handleClose" class="btn btn-secondary waves-effect waves-light">Close</button>
-                            <button type="submit" class="btn btn-primary waves-effect waves-light">Save</button>
+                            <button type="submit" class="btn btn-primary waves-effect waves-light" :disabled="isSubmitting">
+                                <span v-if="isSubmitting">
+                                    <i class="fa fa-spinner fa-spin me-1"></i>
+                                    Saving...
+                                </span>
+                                <span v-else>Save</span>
+                            </button>
                         </div>
                     </form>
                 </slot>
@@ -358,9 +364,16 @@
             },
 
             async submitFormGuest() {
+                if (this.isSubmitting) {
+                    return;
+                }
                 try {
+                    this.isSubmitting = true;
+
                     this.$v.$touch();
                     if (this.$v.$invalid) {
+                        this.isSubmitting = false;
+
                         return;
                     }
 

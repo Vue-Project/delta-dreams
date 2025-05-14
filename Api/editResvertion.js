@@ -11,12 +11,25 @@ import apiClient from './apiClient';
       }
     };
 
-    export const postCancelReservation = async (id) => {
+    export const postCancelReservation = async (id, rejectedValue) => {
       try {
-        const response = await apiClient.post(`/reservations/cancel/${id}`);
+        const response = await apiClient.post(`/reservations/cancel/${id}`, {
+          reservation_reject_id: rejectedValue
+        });
         return response.data;
       } catch (error) {
         console.error(`Error cancelling reservation with ID "${id}":`, error);
+        throw error;
+      }
+    };
+    export const postTransferWallet = async (id,amount,reservation_name) => {
+
+      try {
+        const response = await apiClient.post(`/wallets/transfer/${id}`,amount,reservation_name);
+        return response.data;
+
+      } catch (error) {
+        console.error(`Error Updating Wallet with ID "${id}":`, error);
         throw error;
       }
     };

@@ -165,7 +165,13 @@
 
                         <div class="scbuttons gap-2 d-flex justify-content-end">
                             <button @click="$emit('close-sidebar')" class="btn btn-secondary waves-effect waves-light">Close</button>
-                            <button type="submit" class="btn btn-primary waves-effect waves-light">Save</button>
+                            <button type="submit" class="btn btn-primary waves-effect waves-light" :disabled="isSubmitting">
+                                <span v-if="isSubmitting">
+                                    <i class="fa fa-spinner fa-spin me-1"></i>
+                                    Saving...
+                                </span>
+                                <span v-else>Save</span>
+                            </button>
                         </div>
                     </form>
                 </slot>
@@ -209,6 +215,8 @@
         },
         data() {
             return {
+                isSubmitting: false,
+
                 formGuest: {
                     profileImage: null,
                     name: '',
@@ -310,9 +318,16 @@
             },
 
             async submitFormGuest() {
+                if (this.isSubmitting) {
+                    return;
+                }
                 try {
+                    this.isSubmitting = true;
+
                     this.$v.$touch();
                     if (this.$v.$invalid) {
+                        this.isSubmitting = false;
+
                         return;
                     }
 
@@ -339,7 +354,7 @@
                         national_expire_date: this.formGuest.expiryDate,
                         national_type: this.formGuest.idType,
                         is_fast: 1,
-                        vip_status: platinum,
+                        vip_status: 'platinum',
                     };
 
                     // Append all text data to FormData

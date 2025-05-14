@@ -1,3 +1,4 @@
+import { queue } from 'jquery';
 import apiClient from './apiClient';
 
 export const getBusinessSources = async () => {
@@ -13,6 +14,16 @@ export const getBusinessSources = async () => {
 export const getBookingSources = async () => {
     try {
         const response = await apiClient.get('/booking_sources');
+        // console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching rooms:', error);
+        throw error;
+    }
+};
+export const getTravelAgents = async () => {
+    try {
+        const response = await apiClient.get('/travel_agents');
         // console.log(response.data);
         return response.data;
     } catch (error) {
@@ -78,6 +89,21 @@ export const getGuestsInfo = async () => {
         throw error;
     }
 };
+
+export const getGuestsInfoSearch = async query => {
+    try {
+        const response = await apiClient.get('/clients', {
+            params: {
+                name: query,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching guests:', error);
+        throw error;
+    }
+};
+
 export const getGuestDetails = async guestId => {
     try {
         const response = await apiClient.get(`/clients/${guestId}`);
@@ -100,6 +126,19 @@ export const GetReservationItems = async reservationId => {
 export const PostReservationItems = async (reservationId, updateReservationItems) => {
     try {
         const response = await apiClient.post(`/reservation_items/${reservationId}`, updateReservationItems, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching rooms:', error);
+        throw error;
+    }
+};
+export const PostReservationItemsAll = async (updateReservationItems) => {
+    try {
+        const response = await apiClient.post(`/reservation_items/all`, updateReservationItems, {
             headers: {
                 'Content-Type': 'application/json',
             },

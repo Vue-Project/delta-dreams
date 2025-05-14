@@ -13,7 +13,7 @@
                             <small class="text-muted ml-3 text-primary">
                                 <i class="fa-solid fa-person pr-2 text-primary"></i>
                                 {{ reservationDataById.adults }}
-                                <i class="fa-solid fa-child pr-2 text-primary"></i>
+                                <i class="fa-solid fa-baby pr-2 text-primary"></i>
                                 {{ reservationDataById.children }}
                             </small>
                         </div>
@@ -50,8 +50,8 @@
                     </div>
                     <div class="col-6 col-md-4 col-xl-1 mb-3 mb-md-0">
                         <div class="me-2">
-                            <h6>Reservation Number</h6>
-                            <small class="text-muted">{{ reservationDataById.id || '14541' }}</small>
+                            <h6>Reservation Name</h6>
+                            <small class="text-muted">{{ reservationDataById.name || '14541' }}</small>
                         </div>
                     </div>
                     <div class="col-6 col-md-6 col-xl-1 mb-3 mb-md-0">
@@ -93,9 +93,9 @@
             Credit Card
           </button>
         </li> -->
-                <li class="nav-item col-12 col-md" role="presentation">
+                <!-- <li class="nav-item col-12 col-md" role="presentation">
                     <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-AuditTrail" role="tab" aria-selected="true">Audit Trail</button>
-                </li>
+                </li> -->
                 <li class="nav-item col-12 col-md" role="presentation">
                     <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-Wallet" role="tab" aria-selected="true">Wallet</button>
                 </li>
@@ -168,7 +168,10 @@
 
                             <!--  start sidebar content for tap Room Charges -->
                             <div v-if="currentContent === 'updatedetails'">
-                                <UpdateDetails :reservationId="selectedReservationId" :reservationData="reservationsDataById[0]" @update-success="refreshReservationData" @close-offcanvas="hideOffcanvas" />
+                                <UpdateDetails :reservationData="reservationsDataById[0]" :roomChargeId="selectedRoomChargeId" @update-success="refreshReservationData" @close-offcanvas="hideOffcanvas" />
+                            </div>
+                            <div v-if="currentContent === 'updatedetailsall'">
+                                <UpdateDetailsAll :reservationData="reservationsDataById[0]" :roomChargeId="selectedRoomChargeId" :selectedIds="selectedRoomChargeIds" @update-success="refreshReservationData" @close-offcanvas="hideOffcanvas" />
                             </div>
                             <div v-if="currentContent === 'applydiscount'">
                                 <ApplyDiscount />
@@ -473,47 +476,53 @@
             </button> -->
                     </div>
 
+                    <button type="button" class="btn btn-outline-secondary waves-effect mb-2" @click="handleMultipleEdit">Multiple Edit</button>
                     <div class="table-responsive text-nowrap">
                         <table class="table">
                             <thead class="table-light">
                                 <tr>
+                                    <th>
+                                        <div class="form-check text-left">
+                                            <input class="form-check-input" type="checkbox" @change="toggleAllCheckboxes" v-model="selectAll" />
+                                        </div>
+                                    </th>
                                     <th>bookingDate</th>
                                     <th>Room</th>
                                     <th>Rate Type</th>
-                                    <th>Pax(A/C)</th>
-                                    <th>Charge</th>
-                                    <th>Discount</th>
-                                    <th>Tax</th>
-                                    <th>Adjustment</th>
+                                    <th>Adults</th>
+                                    <th>children</th>
                                     <th>Net Amount</th>
+                                    <th>Setting</th>
                                 </tr>
                             </thead>
                             <tbody class="table-border-bottom-0">
                                 <tr v-for="roomChargeData in roomChargesData" :key="roomChargeData.id">
-                                    <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('updatedetails', 'Updatedetails')">
+                                    <td>
+                                        <div class="form-check text-left">
+                                            <input class="form-check-input" type="checkbox" v-model="roomChargeData.selected" />
+                                        </div>
+                                    </td>
+                                    <!-- Update these cell click handlers to pass the specific ID -->
+                                    <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setSelectedRoomCharge(roomChargeData.id)">
                                         {{ formatDate(roomChargeData.booking_date) }}
                                     </td>
-                                    <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('updatedetails', 'Updatedetails')">
+                                    <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setSelectedRoomCharge(roomChargeData.id)">
                                         {{ roomChargeData.unit.code }}
                                     </td>
-                                    <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('updatedetails', 'Updatedetails')">
+                                    <!-- Add the same pattern to all other cells -->
+                                    <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setSelectedRoomCharge(roomChargeData.id)">
                                         {{ roomChargeData.rate_type }}
                                     </td>
-                                    <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('updatedetails', 'Updatedetails')">{{ roomChargeData.adults }}/{{ roomChargeData.children }}</td>
-                                    <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('updatedetails', 'Updatedetails')">
-                                        {{ roomChargeData.rate_amount }}
+                                    <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setSelectedRoomCharge(roomChargeData.id)">{{ roomChargeData.adults }}</td>
+                                    <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setSelectedRoomCharge(roomChargeData.id)">
+                                        {{ roomChargeData.children }}
                                     </td>
-                                    <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('updatedetails', 'Updatedetails')">
-                                        {{ roomChargeData.rate_amount }}
+                                    <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setSelectedRoomCharge(roomChargeData.id)">
+                                        {{ roomChargeData.price }}
                                     </td>
-                                    <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('updatedetails', 'Updatedetails')">
-                                        {{ roomChargeData.rate_amount }}
-                                    </td>
-                                    <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('updatedetails', 'Updatedetails')">
-                                        {{ roomChargeData.rate_amount }}
-                                    </td>
-                                    <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('updatedetails', 'Updatedetails')">
-                                        {{ roomChargeData.rate_amount }}
+
+                                    <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setSelectedRoomCharge(roomChargeData.id)">
+                                        <button type="button" class="btn btn-outline-secondary waves-effect">Edit</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -545,7 +554,7 @@
                 <!-- eND Credit Card  tab -->
 
                 <!--  Start Audit Trail tab  -->
-                <div class="tab-pane fade" id="form-tabs-AuditTrail" role="tabpanel">
+                <!-- <div class="tab-pane fade" id="form-tabs-AuditTrail" role="tabpanel">
                     <div class="table-responsive text-nowrap">
                         <table class="table">
                             <thead class="table-light">
@@ -609,7 +618,7 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
+                </div> -->
                 <!--  End Audit Trail tab  -->
                 <div class="tab-pane fade" id="form-tabs-Wallet" role="tabpanel">
                     <button class="btn btn-outline-secondary waves-effect mb-2" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('addpayment', 'Add Payment')">Add payment</button>
@@ -653,11 +662,14 @@
     import { dateMixin } from '../../components/Mixin/DateMixin';
     import UpdateReservation from '../../components/SiderbarContentEdit/BookingDetailsComponents/UpdateReservation.vue';
     import { GetReservationItems } from '../../Api/addResvertionApi';
-    import { showSuccessAlert, handleSubmissionError } from '../../Api/MassageValidation/alertUtilities';
+    import { showSuccessAlert, handleSubmissionError, showConfirmationAlertWithSelect } from '../../Api/MassageValidation/alertUtilities';
     import { showConfirmationAlert } from '../../Api/MassageValidation/alertUtilities';
     import WalletDetails from '../../components/SiderbarContentEdit/WalletDetails.vue';
     import Swal from 'sweetalert2';
     import { postCancelReservation, postStatusChange } from '../../Api/editResvertion';
+    import UpdateDetailsAll from '../../components/SiderbarContentEdit/UpdateDetailsAll.vue';
+    import { mapGetters } from 'vuex/dist/vuex.common.js';
+    // import UpdateDetailsAll from '../../components/SiderbarContentEdit/UpdateDetailsAll.vue';
 
     export default {
         name: 'EditsPage',
@@ -688,11 +700,14 @@
             AddDiscount,
             UpdateReservation,
             WalletDetails,
+            UpdateDetailsAll,
         },
         data() {
             return {
                 currentContent: null,
                 roomChargesData: [],
+                selectedRoomChargeIds: [], // Array to store multiple selected IDs
+                selectAll: false,
                 offcanvasTitle: '',
                 sidebarWidth: '400px',
                 dynamicButtonText: 'Save',
@@ -721,7 +736,46 @@
                 ],
             };
         },
+        mounted() {
+            this.roomChargesData = this.roomChargesData.map(item => ({
+                ...item,
+                selected: false,
+            }));
+        },
         methods: {
+            async handleMultipleEdit() {
+                // Get all selected room charge IDs
+                const selectedIds = this.roomChargesData.filter(item => item.selected).map(item => item.id);
+
+                // Check if any items are selected
+                if (selectedIds.length === 0) {
+                    // Show an alert if no items are selected
+                    this.$toast?.error('Please select at least one room charge to edit');
+                    return;
+                }
+
+                try {
+                    // You can either:
+                    // 2. Or open an offcanvas with the selected IDs for further editing
+                    this.selectedRoomChargeIds = selectedIds;
+                    this.setOffcanvasContent('updatedetailsall', 'Update Multiple  Room Charges');
+
+                    // Show the offcanvas
+                    const offcanvasElement = document.getElementById('offcanvasEnd');
+                    if (offcanvasElement) {
+                        const offcanvas = new bootstrap.Offcanvas(offcanvasElement);
+                        offcanvas.show();
+                    }
+                } catch (error) {
+                    console.error('Error processing multiple edit:', error);
+                    this.$toast?.error('Failed to process multiple edit request');
+                }
+            },
+            toggleAllCheckboxes() {
+                this.roomChargesData.forEach(item => {
+                    item.selected = this.selectAll;
+                });
+            },
             handleCellClick(rowData) {
                 // console.log("Clicked row data:", rowData); // Debugging: Log the row data
                 this.$emit('show-update-details', rowData); // Emit the event
@@ -729,12 +783,17 @@
             setActiveTab(tab) {
                 this.activeTab = tab;
             },
-            setOffcanvasContent(content, title, buttonText = 'Save', width = '400px') {
-                this.currentContent = content; // Set the content type
-                this.offcanvasTitle = title; // Set the title for the offcanvas
-                this.sidebarWidth = width; // Set the sidebar width
-                this.dynamicButtonText = buttonText; // Set the button text dynamically
+            setSelectedRoomCharge(roomChargeId) {
+                this.selectedRoomChargeId = roomChargeId;
+                this.setOffcanvasContent('updatedetails', 'Update Details');
             },
+            setOffcanvasContent(content, title, buttonText = 'Save', width = '400px') {
+                this.currentContent = content;
+                this.offcanvasTitle = title;
+                this.sidebarWidth = width;
+                this.dynamicButtonText = buttonText;
+            },
+
             clearOffcanvasContent() {
                 this.currentContent = null; // Reset the content
                 this.offcanvasTitle = ''; // Reset the title
@@ -821,12 +880,23 @@
             },
             async cancelReservation() {
                 // Show SweetAlert2 confirmation dialog
-                const result = await showConfirmationAlert('Are you sure?', 'This Reservation will be cancelled', 'Yes, cancel it!');
+                const selectOptions = this.getReservationRejects
+      const result = await showConfirmationAlertWithSelect(
+        'Are you sure you want to cancel this Reservation?',
+        'Please select a reason for cancellation',
+        Object.fromEntries(
+          Object.entries(selectOptions).map(([key, value]) => [value.id, value.name])
+        ),
+        'Confirm',
+        'Cancel'
+      );
 
                 // Proceed only if the user confirms
                 if (result.isConfirmed) {
                     try {
-                        const response = await postCancelReservation(this.selectedReservationId);
+                      const rejectedValue = result.value; // This will now be the key/id
+
+                        const response = await postCancelReservation(this.selectedReservationId ,rejectedValue);
 
                         // Show success alert
                         await showSuccessAlert(
@@ -897,6 +967,9 @@
                 console.warn('Offcanvas ref not found during beforeDestroy.');
             }
         },
+        computed: {
+    ...mapGetters(['getReservationRejects']),
+  },
     };
 </script>
 

@@ -26,53 +26,16 @@
             </div>
             <div class="col-12 mb-2">
                 <div class="input-group">
-                    <label class="input-group-text" for="payment_type">paymentType</label>
-
                     <select class="form-select" id="payment_type" v-model="formAddPayment.paymentType">
                         <option disabled value="">Select Type</option>
                         <option v-for="paymentType in paymentTypes" :key="paymentType.id" :value="paymentType.id">
                             {{ paymentType.name }}
                         </option>
                     </select>
+                    <label class="input-group-text" for="payment_type">paymentType</label>
                 </div>
                 <span class="error-message small" v-if="$v.formAddPayment.type.$error">payment type is required</span>
             </div>
-
-            <div class="col-12 mb-2">
-                <div class="input-group">
-                    <span class="input-group-text">EGP</span>
-                    <input type="text" class="form-control" placeholder="Amount" aria-label="Amount (to the nearest dollar)" v-model="formAddPayment.amount" />
-                </div>
-                <span class="error-message small" v-if="$v.formAddPayment.amount.$error">amount is required</span>
-            </div>
-            <!-- <div class="col-12 mb-2">
-        <div class="input-group">
-          <label class="input-group-text" for="payment_accounts"
-            >Accounts</label
-          >
-
-          <select
-            class="form-select"
-            id="payment_accounts"
-            v-model="formAddPayment.account"
-          >
-            <option disabled value="">Select Accounts</option>
-            <option
-              v-for="account in accounts"
-              :key="account.id"
-              :value="account.id"
-            >
-              {{ account.name }}
-            </option>
-          </select>
-        </div>
-        <span
-          class="error-message small"
-          v-if="$v.formAddPayment.account.$error"
-        >
-          account is required
-        </span>
-      </div> -->
             <div class="col-12 mb-2">
                 <div class="input-group">
                     <select class="form-select" id="payment_type" v-model="formAddPayment.type" value="value">
@@ -85,22 +48,69 @@
                 </div>
                 <span class="error-message small" v-if="$v.formAddPayment.type.$error">type is required</span>
             </div>
+            <!-- <div class="col-12 mb-2">
+                <div class="input-group">
+                    <select class="form-select" id="payment_accounts" v-model="formAddPayment.account">
+                        <option disabled value="">Select Accounts</option>
+                        <option v-for="account in accounts" :key="account.id" :value="account.id">
+                            {{ account.name }}
+                        </option>
+                    </select>
+                    <label class="input-group-text" for="payment_accounts">Accounts</label>
+                </div>
+            </div> -->
+            <!-- <div class="col-12 mb-2">
+                <div class="input-group">
+                    <select class="form-select" id="travelAgent" v-model="formAddPayment.travelAgent">
+                        <option disabled value="">Select</option>
+                        <option v-for="travelAgent in travelAgents" :key="travelAgent.id" :value="travelAgent.id">
+                            {{ travelAgent.name }}
+                        </option>
+                    </select>
+                    <label class="input-group-text" for="payment_accounts">Travel Agent</label>
+                </div>
+            </div> -->
+            <!-- <div class="col-12 mb-2">
+                <div class="input-group">
+                    <select class="form-select" id="businessSource" v-model="formAddPayment.businessSource">
+                        <option disabled value="">Select</option>
+                        <option v-for="businessSource in businessSources" :key="businessSource.id" :value="businessSource.id">
+                            {{ businessSource.name }}
+                        </option>
+                    </select>
+                    <label class="input-group-text" for="payment_type">Business Source</label>
+                </div>
+            </div> -->
+            <div class="col-12 mb-2">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Amount" aria-label="Amount (to the nearest dollar)" v-model="formAddPayment.amount" />
+                    <span class="input-group-text">EGP</span>
+                </div>
+                <span class="error-message small" v-if="$v.formAddPayment.amount.$error">amount is required</span>
+            </div>
+
             <div class="col-12 mb-2 mb-2">
                 <div class="input-group">
-                    <span class="input-group-text">Comment</span>
                     <textarea class="form-control" aria-label="With textarea" placeholder="Comment" v-model="formAddPayment.comment"></textarea>
+                    <span class="input-group-text">Comment</span>
                 </div>
                 <span class="error-message small" v-if="$v.formAddPayment.comment.$error">comment is required</span>
             </div>
         </div>
         <div class="gap-2 d-flex" style="position: absolute; bottom: 15px; right: 20px">
-            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="submit" class="btn btn-primary" :disabled="isSubmitting">
+                <span v-if="isSubmitting">
+                    <i class="fa fa-spinner fa-spin me-1"></i>
+                    Saving...
+                </span>
+                <span v-else>Save</span>
+            </button>
         </div>
     </form>
 </template>
 
 <script>
-    import { getAccounts, getPaymentMethods, getPaymentTypeByPaymentId, getPaymentTypes } from '../../Api/addResvertionApi';
+    import { getAccounts, getBusinessSources, getPaymentMethods, getPaymentTypeByPaymentId, getPaymentTypes, getTravelAgents } from '../../Api/addResvertionApi';
     import { postAddPayment } from '../../Api/editResvertion';
     import { handleSubmissionError, showSuccessAlert } from '../../Api/MassageValidation/alertUtilities';
     import DropzoneComponent from '../layout/DropzoneComponent.vue';
@@ -113,10 +123,13 @@
         layout: 'component',
         data() {
             return {
+                isSubmitting: false,
                 paymentMethods: [],
                 paymentTypes: [],
                 accounts: [],
                 walletsTypes: [],
+                travelAgents: [],
+                businessSources: [],
                 dateRange: '',
                 checkin_date: '',
                 checkout_date: '',
@@ -130,6 +143,8 @@
                     amount: '',
                     image: null,
                     paymentType: '',
+                    businessSource: '',
+                    travelAgent: '',
                 },
             };
         },
@@ -156,13 +171,22 @@
         },
         methods: {
             async addPaymentReservation() {
+                // If already submitting, prevent multiple submissions
+                if (this.isSubmitting) {
+                    return;
+                }
+
                 try {
+                    // Set submitting state to true
+                    this.isSubmitting = true;
+
                     // Get the file from the file input
                     const paymentImageFile = this.$refs.paymentImage.files[0] || null;
                     this.formAddPayment.image = paymentImageFile;
 
                     this.$v.$touch();
                     if (this.$v.$invalid) {
+                        this.isSubmitting = false;
                         return;
                     }
 
@@ -175,6 +199,8 @@
                         payment_id: this.formAddPayment.method,
                         payment_type_id: this.formAddPayment.paymentType,
                         // assigned_to: this.formAddPayment.account,
+                        // travel_agent_id: this.formAddPayment.travelAgent,
+                        // business_source_id: this.formAddPayment.businessSource,
                         note: this.formAddPayment.comment,
                         reservation_id: this.reservationId,
                         price: this.formAddPayment.amount,
@@ -197,10 +223,13 @@
                     this.$emit('close-offcanvas');
                 } catch (error) {
                     handleSubmissionError(error, 'Failed to add payment');
-                }
+                } finally {
+                    // Always reset the submitting state, even if there's an error
+                    this.isSubmitting = false;
 
-                // Reset the payment form
-                this.cancelPayment();
+                    // Reset the payment form
+                    this.cancelPayment();
+                }
             },
             cancelPayment() {
                 this.resetPaymentForm();
@@ -238,10 +267,12 @@
         },
         async mounted() {
             try {
-                const [paymentMethodsResponse, accountsResponse] = await Promise.all([getPaymentMethods(), getAccounts()]);
+                const [paymentMethodsResponse, accountsResponse, businessSourcesResponse, travelAgentsResponse] = await Promise.all([getPaymentMethods(), getAccounts(), getBusinessSources(), getTravelAgents()]);
 
                 this.paymentMethods = paymentMethodsResponse.data.data;
                 this.walletsTypes = paymentMethodsResponse.data.wallet_type;
+                this.businessSources = businessSourcesResponse.data.data;
+                this.travelAgents = travelAgentsResponse.data.data;
                 this.accounts = accountsResponse.data.data;
             } catch (error) {
                 console.error('Error loading data:', error);

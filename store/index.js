@@ -10,6 +10,8 @@ export const state = () => ({
   nationalTypes: [],
   genderTypes: [],
   projects: [],
+  reservationStatus:[],
+  reservationRejects:[],
   remindGuestType: [],
   code: '',
   type: '',
@@ -61,6 +63,14 @@ export const mutations = {
   {
     state.projects = projects;
   },
+  setReservationStatus( state,reservationStatus){
+    state.reservationStatus=reservationStatus;
+
+  },
+  setReservationRejects( state,reservationRejects){
+    state.reservationRejects=reservationRejects;
+
+  },
   setRemindGuestType (state, remindGuestType)
   {
     state.remindGuestType = remindGuestType;
@@ -83,6 +93,8 @@ export const getters = {
   getNationalTypes: state => state.nationalTypes,
   getGenderTypes: state => state.genderTypes,
   getProjects: state => state.projects,
+  getReservationStatus: state => state.reservationStatus,
+  getReservationRejects: state => state.reservationRejects,
   getRemindGuestType: state => state.remindGuestType,
   getCode: state => state.code,
   getType: state => state.type
@@ -116,6 +128,14 @@ export const actions = {
   updateProjects ({ commit }, projects)
   {
     commit('setProjects', projects);
+  },
+  updateReservationRejects ({ commit }, reservationRejects)
+  {
+    commit('setReservationRejects', reservationRejects);
+  },
+  updateReservationStatus ({ commit }, reservationStatus)
+  {
+    commit('setReservationStatus', reservationStatus);
   },
   updateRemindGuestType ({ commit }, remindGuestType)
   {
@@ -152,6 +172,12 @@ export const actions = {
         if (parsedData.projects) {
           commit('setProjects', parsedData.projects);
         }
+        if (parsedData.reservationStatus) {
+          commit('setReservationStatus', parsedData.reservationStatus);
+        }
+        if (parsedData.reservationRejects){
+          commit('setReservationRejects', parsedData.reservationRejects);
+        }
         if (parsedData.remindGuestType) {
           commit('setRemindGuestType', parsedData.remindGuestType);
         }
@@ -181,6 +207,8 @@ export const plugins = [
         'nationalTypes',
         'genderTypes',
         'projects',
+        'reservationRejects',
+        'reservationStatus',
         'remindGuestType',
         'code',
         'type',

@@ -8,11 +8,11 @@
                     <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD" id="flatpickr-date-04" ref="datePicker4" aria-label="input for date" v-model="selectedDate" />
                     <i class="fa-solid fa-calendar-days date-icon"></i>
                 </div>
-                <li class="nav-item col-6 col-md" role="presentation" v-for="tab in tabs" :key="tab">
-                    <button class="nav-link" :class="{ active: activeTab === tab }" @click="setActiveTab(tab)">
-                        {{ tab }}
+                <li class="nav-item col-6 col-md" role="presentation" v-for="(value, key) in statisticsHeaderRoomView" :key="key">
+                    <button class="nav-link" :class="{ active: activeTab === key }" @click="setActiveTab(key)">
+                        {{ key }}
                         <span class="badge rounded-pill badge-center h-px-30 w-px-30 bg-label-danger ms-1 p-2">
-                            {{ statisticsHeaderRoomView[tab] || 0 }}
+                            {{ value }}
                         </span>
                     </button>
                 </li>
@@ -34,7 +34,8 @@
                                     </span>
                                 </div>
                             </div>
-                            <p class="fs-5">unit Code: {{ room?.building.name }} / {{ room.code }}</p>
+                            <!-- <p class="fs-5">unit Code: {{ room?.building.name }} / {{ room.code }}</p> -->
+                            <p class="fs-5">unit Code: {{ room.code }}</p>
                         </div>
                         <div class="card-body p-1 position-relative">
                             <div class="d-flex justify-content-start align-items-start">

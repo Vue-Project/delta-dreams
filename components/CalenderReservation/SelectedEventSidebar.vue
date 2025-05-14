@@ -15,11 +15,11 @@
                     <div class="CityPhoneHeader">
                         <span class="mr-3">
                             <i class="text-secondary fa-solid fa-location-dot"></i>
-                            {{ selectedEvent.user?.country || 'Egypt' }}
+                            {{ selectedEvent.client?.country_name }}
                         </span>
                         <span>
                             <i class="text-success fa-solid fa-phone"></i>
-                            {{ selectedEvent.user?.phone || '0123456789' }}
+                            {{ selectedEvent.client?.phone }}
                         </span>
                     </div>
                     <div class="row mt-4">
@@ -37,7 +37,7 @@
                         </div>
                         <div class="col-8 pt-1">
                             <select class="form-select badge h-px-40 lh-lg text-dark StatusSideBarSelect" :value="selectedEvent.status" @change="handleStatusChange">
-                                <option v-for="(label, value) in statusOptions" :key="value" :value="value">
+                                <option v-for="(label, value) in selectedEvent.status_select" :key="value" :value="value">
                                     {{ label }}
                                 </option>
                             </select>
@@ -62,7 +62,7 @@
 
         <!-- Offcanvas Body -->
         <hr />
-        <div class="offcanvas-body mx-0 flex-grow-0 pt-0">
+        <div class="offcanvas-body mx-0 flex-grow-0 pt-0 overflow-auto scroll-hidden">
             <div class="row mb-4" v-if="selectedEvent?.is_edit">
                 <div class="col-9">
                     <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD to YYYY-MM-DD" id="flatpickr-range" ref="rangePicker1" v-model="dateRange" @change="parseDateRange" aria-label="input Text to Date" />
@@ -93,7 +93,7 @@
                                     <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                         <div class="me-2">
                                             <h6 class="mb-0">Reservation Number</h6>
-                                            <small class="text-muted">{{ selectedEvent.reservation_id }}</small>
+                                            <small class="text-muted">#{{ selectedEvent.reservation_name }}</small>
                                         </div>
                                     </div>
                                 </div>
@@ -103,7 +103,7 @@
                                     <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                         <div class="me-2">
                                             <h6 class="mb-0">Arrival Date</h6>
-                                            <small class="text-muted">{{ formatDate(selectedEvent.checkin_date || '2024-10-21') }} {{ selectedEvent.checkin_time || '12:00 PM' }}</small>
+                                            <small class="text-muted">{{ formatDate(selectedEvent.checkin_date) }} {{ selectedEvent.checkin_time }}</small>
                                         </div>
                                     </div>
                                 </div>
@@ -113,7 +113,7 @@
                                     <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                         <div class="me-2">
                                             <h6 class="mb-0">Booking Date</h6>
-                                            <small class="text-muted">{{ formatDate(selectedEvent.checkout_date || '2024-10-21') }} {{ selectedEvent.checkout_time || '12:00 PM' }}</small>
+                                            <small class="text-muted">{{ formatDate(selectedEvent.checkout_date) }} {{ selectedEvent.checkout_time }}</small>
                                         </div>
                                     </div>
                                 </div>
@@ -125,7 +125,7 @@
                                             <h6 class="mb-0">Room Number</h6>
 
                                             <small class="text-muted">
-                                                {{ selectedEvent.rooms || 5 }}
+                                                {{ selectedEvent.rooms }}
                                             </small>
                                         </div>
                                     </div>
@@ -135,10 +135,10 @@
                                 <div class="d-flex align-items-start">
                                     <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                         <div class="me-2">
-                                            <h6 class="mb-0">Booking source</h6>
+                                            <h6 class="mb-0">Travel Agent</h6>
 
                                             <small class="text-muted">
-                                                {{ selectedEvent.booking_source_name }}
+                                                {{ selectedEvent.travel_agent_name }}
                                             </small>
                                         </div>
                                     </div>
@@ -165,7 +165,8 @@
                                     <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                         <div class="me-2">
                                             <h6 class="mb-0">Unit Code</h6>
-                                            <small class="text-muted">{{ selectedEvent.unit_data?.building?.name }} / {{ selectedEvent.unit_data?.code }}</small>
+                                            <!-- <small class="text-muted">{{ selectedEvent.unit_data?.building?.name }} / {{ selectedEvent.unit_data?.code }}</small> -->
+                                            <small class="text-muted">{{ selectedEvent.unit_data?.code }}</small>
                                         </div>
                                     </div>
                                 </div>
@@ -179,7 +180,7 @@
                                                     <h6 class="mb-0">
                                                         <i class="fa-solid fa-person"></i>
                                                         -
-                                                        <i class="fa-solid fa-child"></i>
+                                                        <i class="fa-solid fa-baby"></i>
                                                     </h6>
                                                     <small class="text-muted m-1">{{ selectedEvent.adults }}- {{ selectedEvent.children }}</small>
                                                 </div>
@@ -193,7 +194,7 @@
                                     <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                         <div class="me-2">
                                             <h6 class="mb-0">Avg. Daily Rate</h6>
-                                            <small class="text-muted">{{ selectedEvent.unit_price || '0' }}</small>
+                                            <small class="text-muted">{{ selectedEvent.unit_price }}</small>
                                         </div>
                                     </div>
                                 </div>
@@ -210,6 +211,20 @@
                             </li>
                         </ul>
                     </div>
+                    <div class="col-12">
+                        <ul class="list-unstyled mb-0" v-if="selectedEvent?.permit">
+                            <li class="mb-3 pb-1">
+                                <div class="d-flex align-items-start">
+                                    <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                        <div class="me-2">
+                                            <h6>Permit Image</h6>
+                                            <img :src="`${$nuxt.$config.baseURL}/${selectedEvent.permit_image}`" style="width: 100%; height: 50px; cursor: pointer" @click="showImg(`${$nuxt.$config.baseURL}/${selectedEvent.permit_image}`)" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
                     <div class="text-center" v-if="selectedEvent?.is_cancel">
                         <button @click="cancelReservation" type="button" title="Cancel Reservation" class="btn btn-danger waves-effect waves-light mt-3 w-100 px-0 cancelBtnSideBar">Cancel Reservation</button>
                     </div>
@@ -217,16 +232,23 @@
 
                 <div class="new-div mt-lg-5 mt-md-5 mt-2 w-100 TotalPayment">
                     <dl class="row mb-0">
+                        <dt class="col-6 fw-normal text-heading">Price</dt>
+                        <dd class="col-6 text-end mb-0">{{ selectedEvent.price }} EGP</dd>
+
+                        <dt class="col-6 fw-normal text-heading">Total Services</dt>
+                        <dd class="col-6 text-end mb-0">{{ selectedEvent.total_service }} EGP</dd>
+
                         <dt class="col-6 fw-normal text-heading">Total</dt>
-                        <dd class="col-6 text-end">{{ selectedEvent.total || '0 ' }} EGP</dd>
+                        <dd class="col-6 text-end mb-0">{{ selectedEvent.total }} EGP</dd>
 
                         <dt class="col-6 fw-normal">Paid</dt>
-                        <dd class="col-6 text-end">{{ selectedEvent.paid || '0 ' }} EGP</dd>
+                        <dd class="col-6 text-end mb-0">{{ selectedEvent.paid }} EGP</dd>
 
                         <dt class="col-6 fw-normal text-danger">Balance</dt>
-                        <dd class="col-6 text-end text-danger">{{ selectedEvent.balance || '0.0 ' }} EGP</dd>
+                        <dd class="col-6 text-end mb-0 text-danger">{{ selectedEvent.balance }} EGP</dd>
                     </dl>
                 </div>
+                <vue-easy-lightbox :visible="visible" :imgs="imgs" :index="index" @hide="handleHide" />
             </template>
             <!-- Modal Payment -->
             <div class="modal fade" id="paymentModal" data-bs-backdrop="static" tabindex="-1" style="display: none" aria-hidden="true">
@@ -278,41 +300,6 @@
                                     </div>
                                     <span class="error-message small" v-if="$v.formAddPayment.paymentType.$error">payment type is required</span>
                                 </div>
-
-                                <div class="col-lg-6 col-md-6 col-12">
-                                    <div class="input-group">
-                                        <span class="input-group-text">EGP</span>
-                                        <input type="text" class="form-control" placeholder="Amount" aria-label="Amount (to the nearest dollar)" v-model="formAddPayment.amount" />
-                                    </div>
-                                    <span class="error-message small" v-if="$v.formAddPayment.amount.$error">amount is required</span>
-                                </div>
-                                <!-- <div class="col-lg-6 col-md-6 col-12 mt-2">
-                  <div class="input-group">
-                    <select
-                      class="form-select"
-                      id="payment_accounts"
-                      v-model="formAddPayment.account"
-                    >
-                      <option disabled value="">Select Accounts</option>
-                      <option
-                        v-for="account in accounts"
-                        :key="account.id"
-                        :value="account.id"
-                      >
-                        {{ account.name }}
-                      </option>
-                    </select>
-                    <label class="input-group-text" for="payment_accounts"
-                      >Accounts</label
-                    >
-                  </div>
-                  <span
-                    class="error-message small"
-                    v-if="$v.formAddPayment.account.$error"
-                  >
-                    account is required
-                  </span>
-                </div> -->
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="input-group">
                                         <select class="form-select" id="payment_type" v-model="formAddPayment.type" value="value">
@@ -325,6 +312,49 @@
                                     </div>
                                     <span class="error-message small" v-if="$v.formAddPayment.type.$error">type is required</span>
                                 </div>
+                                <div class="col-lg-6 col-md-6 col-12">
+                                    <div class="input-group">
+                                        <span class="input-group-text">EGP</span>
+                                        <input type="text" class="form-control" placeholder="Amount" aria-label="Amount (to the nearest dollar)" v-model="formAddPayment.amount" />
+                                    </div>
+                                    <span class="error-message small" v-if="$v.formAddPayment.amount.$error">amount is required</span>
+                                </div>
+                                <!-- <div class="col-lg-6 col-md-6 col-12 mt-2">
+                                    <div class="input-group">
+                                        <select class="form-select" id="payment_accounts" v-model="formAddPayment.account">
+                                            <option disabled value="">Select Accounts</option>
+                                            <option v-for="account in accounts" :key="account.id" :value="account.id">
+                                                {{ account.name }}
+                                            </option>
+                                        </select>
+                                        <label class="input-group-text" for="payment_accounts">Accounts</label>
+                                    </div>
+                                </div> -->
+
+                                <!-- <div class="col-lg-6 col-md-6 col-12">
+                                    <div class="input-group">
+                                        <select class="form-select" id="travelAgent" v-model="formAddPayment.travelAgent">
+                                            <option disabled value="">Select</option>
+                                            <option v-for="travelAgent in travelAgents" :key="travelAgent.id" :value="travelAgent.id">
+                                                {{ travelAgent.name }}
+                                            </option>
+                                        </select>
+                                        <label class="input-group-text" for="payment_type">Travel Agent</label>
+                                    </div>
+                                    <span class="error-message small" v-if="$v.formAddPayment.type.$error">type is required</span>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-12">
+                                    <div class="input-group">
+                                        <select class="form-select" id="businessSource" v-model="formAddPayment.businessSource">
+                                            <option disabled value="">Select</option>
+                                            <option v-for="businessSource in businessSources" :key="businessSource.id" :value="businessSource.id">
+                                                {{ businessSource.name }}
+                                            </option>
+                                        </select>
+                                        <label class="input-group-text" for="payment_type">Business Source</label>
+                                    </div>
+                                    <span class="error-message small" v-if="$v.formAddPayment.type.$error">type is required</span>
+                                </div> -->
                                 <div class="col-12">
                                     <div class="input-group">
                                         <span class="input-group-text">Comment</span>
@@ -348,12 +378,13 @@
 <script>
     import flatpickrMixin from '../Mixin/flatpickrMixin';
     import { postAddPayment, postCancelReservation, postStatusChange } from '../../Api/editResvertion';
-    import { showSuccessAlert, handleSubmissionError, showConfirmationAlert } from '../../Api/MassageValidation/alertUtilities';
-    import { getAccounts, getGuestsInfo, getPaymentMethods, getPaymentTypes, getPaymentTypeByPaymentId } from '../../Api/addResvertionApi';
+    import { showSuccessAlert, handleSubmissionError, showConfirmationAlert, showConfirmationAlertWithSelect } from '../../Api/MassageValidation/alertUtilities';
+    import { getAccounts, getGuestsInfo, getPaymentMethods, getPaymentTypes, getPaymentTypeByPaymentId, getBusinessSources, getTravelAgents } from '../../Api/addResvertionApi';
     import { postUpdateReservation } from '../../Api/CalenderApi';
     import DropzoneComponent from '../layout/DropzoneComponent.vue';
     import { validationMixin } from 'vuelidate';
     import { required, email } from 'vuelidate/lib/validators';
+    import { mapGetters } from 'vuex/dist/vuex.common.js';
 
     export default {
         data() {
@@ -361,6 +392,8 @@
                 paymentMethods: [],
                 paymentTypes: [],
                 accounts: [],
+                businessSources: [],
+                travelAgents: [],
                 walletsTypes: [],
                 dateRange: '',
                 checkin_date: '',
@@ -374,8 +407,13 @@
                     image: null, // Add this for the image
                     reservation_id: null,
                     type: '',
+                    businessSource: '',
+                    travelAgent: '',
                 },
                 statusOptions: [],
+                visible: false,
+                index: 0,
+                imgs: [],
             };
         },
         validations: {
@@ -401,6 +439,29 @@
         },
 
         methods: {
+            initFlatpickr() {
+                if (this.$refs.rangePicker1 && !this.$refs.rangePicker1._flatpickr) {
+                    flatpickr(this.$refs.rangePicker1, {
+                        mode: 'range',
+                        dateFormat: 'Y-m-d',
+                        defaultDate: [this.checkin_date, this.checkout_date],
+                        onChange: selectedDates => {
+                            this.parseDateRange();
+                        },
+                    });
+                }
+                if (this.$refs.datePicker1 && !this.$refs.datePicker1._flatpickr) {
+                    flatpickr(this.$refs.datePicker1, {
+                        mode: 'single',
+                        dateFormat: 'd/m/Y',
+                        defaultDate: this.formAddPayment.date,
+                        onChange: selectedDates => {
+                            this.handleDateChange(selectedDates);
+                        },
+                    });
+                }
+            },
+
             async handleStatusChange(event) {
                 const oldStatus = this.selectedEvent.status;
                 const newStatus = event.target.value;
@@ -431,12 +492,13 @@
 
             async cancelReservation() {
                 // Show SweetAlert2 confirmation dialog
-                const result = await showConfirmationAlert('Are you sure?', 'Are you sure you want to cancel this reservation? ', 'Yes, cancel it!');
-
+                const selectOptions = this.getReservationRejects;
+                const result = await showConfirmationAlertWithSelect('Are you sure you want to cancel this Reservation?', 'Please select a reason for cancellation', Object.fromEntries(Object.entries(selectOptions).map(([key, value]) => [value.id, value.name])), 'Confirm', 'Cancel');
                 // Proceed only if the user confirms
                 if (result.isConfirmed) {
                     try {
-                        const response = await postCancelReservation(this.selectedEvent.id);
+                        const rejectedValue = result.value; // This will now be the key/id
+                        const response = await postCancelReservation(this.selectedEvent.id, rejectedValue);
                         // Emit event to parent to refresh calendar
                         this.$emit('refresh-calendar');
                         // Show success alert
@@ -505,6 +567,8 @@
                         payment_id: this.formAddPayment.method,
                         payment_type_id: this.formAddPayment.paymentType,
                         // assigned_to: this.formAddPayment.account,
+                        // travel_agent_id: this.formAddPayment.travelAgent,
+                        // business_source_id: this.formAddPayment.businessSource,
                         note: this.formAddPayment.comment,
                         reservation_id: this.selectedEvent.id,
                         type: this.formAddPayment.type,
@@ -542,22 +606,32 @@
             },
             resetPaymentForm() {
                 this.formAddPayment = {
-                    date: '',
-                    method: '',
-                    type: '',
+                    date: new Date().toISOString().split('T')[0],
+                    method: null,
+                    paymentType: null,
                     comment: '',
-                    reservation_id: null,
+                    type: null,
+                    amount: null,
+                    image: null,
                 };
+                // Reset file input manually if needed
+                if (this.$refs.paymentImage) {
+                    this.$refs.paymentImage.value = null;
+                }
+                // Reset validation state
+                this.$v.$reset();
             },
             parseDateRange() {
                 try {
-                    const flatpickrInstance = this.$refs.rangePicker1._flatpickr;
+                    const flatpickrInstance = this.$refs.rangePicker1?._flatpickr;
+                    if (!flatpickrInstance) {
+                        return;
+                    }
                     const selectedDates = flatpickrInstance.selectedDates;
 
                     if (selectedDates.length === 2) {
                         const formatDate = date => {
-                            const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
-                            return localDate.toISOString().split('T')[0];
+                            return new Date(date).toLocaleDateString('en-CA'); // YYYY-MM-DD
                         };
 
                         this.checkin_date = formatDate(selectedDates[0]);
@@ -614,14 +688,24 @@
                     this.formAddPayment.paymentType = '';
                 }
             },
+            showImg(img) {
+                this.imgs = [img];
+                this.index = 0;
+                this.visible = true;
+            },
+            handleHide() {
+                this.visible = false;
+            },
         },
         async mounted() {
             try {
-                const [paymentMethodsResponse, accountsResponse] = await Promise.all([getPaymentMethods(), getAccounts()]);
+                const [paymentMethodsResponse, accountsResponse, businessSourcesResponse, travelAgentsResponse] = await Promise.all([getPaymentMethods(), getAccounts(), getBusinessSources(), getTravelAgents()]);
 
                 this.paymentMethods = paymentMethodsResponse.data.data;
                 this.walletsTypes = paymentMethodsResponse.data.wallet_type;
                 this.accounts = accountsResponse.data.data;
+                this.businessSources = businessSourcesResponse.data.data;
+                this.travelAgents = travelAgentsResponse.data.data;
             } catch (error) {
                 console.error('Error loading data:', error);
             }
@@ -629,29 +713,38 @@
         watch: {
             selectedEvent: {
                 immediate: true,
-                handler(newEvent) {
+                async handler(newEvent) {
                     if (newEvent) {
-                        // Format dates to YYYY-MM-DD while preserving local timezone
+                        await this.$nextTick();
+
                         const formatDate = date => {
-                            const d = new Date(date);
-                            const year = d.getFullYear();
-                            const month = String(d.getMonth() + 1).padStart(2, '0');
-                            const day = String(d.getDate()).padStart(2, '0');
-                            return `${year}-${month}-${day}`;
+                            return new Date(date).toLocaleDateString('en-CA');
                         };
 
                         const checkinDate = formatDate(newEvent.checkin_date);
                         const checkoutDate = formatDate(newEvent.checkout_date);
 
+                        if (this.$refs.rangePicker1 && !this.$refs.rangePicker1._flatpickr) {
+                            this.initFlatpickr();
+                        }
+
+                        setTimeout(() => {
+                            if (this.$refs.rangePicker1?._flatpickr) {
+                                this.$refs.rangePicker1._flatpickr.setDate([checkinDate, checkoutDate]);
+                            }
+                        }, 100);
                         this.checkin_date = checkinDate;
                         this.checkout_date = checkoutDate;
                         this.dateRange = `${checkinDate} to ${checkoutDate}`;
 
-                        // Update flatpickr instance with new dates
-                        if (this.$refs.rangePicker1?._flatpickr) {
-                            this.$refs.rangePicker1._flatpickr.setDate([new Date(checkinDate), new Date(checkoutDate)], true);
+                        if (this.$refs.rangePicker1 && !this.$refs.rangePicker1._flatpickr) {
+                            this.initFlatpickr();
                         }
-
+                        setTimeout(() => {
+                            if (this.$refs.rangePicker1?._flatpickr) {
+                                this.$refs.rangePicker1._flatpickr.setDate([checkinDate, checkoutDate]);
+                            }
+                        }, 100);
                         if (newEvent.status_select) {
                             this.statusOptions = newEvent.status_select;
                         }
@@ -660,6 +753,9 @@
             },
         },
         mixins: [flatpickrMixin, validationMixin],
+        computed: {
+            ...mapGetters(['getReservationRejects']),
+        },
     };
 </script>
 

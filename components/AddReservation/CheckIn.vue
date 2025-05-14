@@ -10,7 +10,6 @@
                 <form id="formReservation" class="g-3" @submit.prevent="submitAddReservation" ref="emptyForm">
                     <!--  ! Reservation  Details -->
                     <!-- change in size and icons -->
-                    <!-- {{ selectedResourceName }} -->
 
                     <div class="row">
                         <div class="col-lg-8">
@@ -81,11 +80,11 @@
                             <div class="col-lg-6 col-12 mb-4 p-0">
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6">
-                                        <label for="bookingSource" class="form-label">Booking Source</label>
-                                        <select class="form-select" id="bookingSource" v-model="formAddReservation.bookingSource" ref="bookingSource">
+                                        <label for="travelAgent" class="form-label">Travel Agents</label>
+                                        <select class="form-select" id="travelAgent" v-model="formAddReservation.travelAgent" ref="travelAgent">
                                             <option value="" disabled>Select</option>
-                                            <option v-for="source in bookingSources" :key="source.id" :value="source.id">
-                                                {{ source.name }}
+                                            <option v-for="travel in travelAgents" :key="travel.id" :value="travel.id">
+                                                {{ travel.name }}
                                             </option>
                                         </select>
                                     </div>
@@ -159,7 +158,7 @@
                                                 </th>
                                                 <th class="border-0">
                                                     Child
-                                                    <i class="fa-solid fa-child"></i>
+                                                    <i class="fa-solid fa-baby"></i>
                                                 </th>
                                                 <th class="border-0 w-20">Rate(EGP)(Tax Inc.)</th>
                                             </tr>
@@ -195,7 +194,7 @@
                                                 <td data-label="Room">
                                                     <select class="form-select" ref="unitSelect" v-model="item.unitId" :disabled="!datesSelected || !availableUnitsByRoom[index]?.length">
                                                         <option disabled value="">Select Unit</option>
-                                                        <option v-for="unit in availableUnitsByRoom[index] || []" :key="unit.id" :value="unit.id">{{ unit.building?.name }} / {{ unit.code }}</option>
+                                                        <option v-for="unit in availableUnitsByRoom[index] || []" :key="unit.id" :value="unit.id">{{ unit.code }}</option>
                                                     </select>
                                                     <span class="error-message small" v-if="$v.formAddReservation.units.$each[index].unitId.$error">Unit is required</span>
                                                 </td>
@@ -323,6 +322,12 @@
                     <!--  ! Guest Information -->
                     <h6 class="mb-2 GuestTitle">Guest Information</h6>
                     <div class="row">
+                        <div class="col-lg-5 px-md-0">
+                            <div class="input-group">
+                                <input type="text" class="form-control searchInput" id="searchInput" v-model="searchQuery" placeholder="Enter phone number or national ID" />
+                                <button class="btn btn-primary" type="button" @click="searchByPhoneOrID">Search</button>
+                            </div>
+                        </div>
                         <label for="nameGuest" class="col-form-label">Guest Name</label>
                         <div class="col-lg-5 px-md-0 GuestNameReservation">
                             <div class="input-group GuestNameInputGroup">
@@ -461,7 +466,13 @@
                             <button type="button" class="btn btn-lg btn-secondary waves-effect waves-light w-100" @click="goBack">Cancel</button>
                         </div>
                         <div class="offset-md- col-md-2 col-6 text-end">
-                            <button type="submit" class="btn btn-lg btn-primary waves-effect waves-light w-100">Reserve</button>
+                            <button type="submit" class="btn btn-lg btn-primary waves-effect waves-light w-100" :disabled="isSubmitting">
+                                <span v-if="isSubmitting">
+                                    <i class="fa fa-spinner fa-spin me-1"></i>
+                                    Reserving...
+                                </span>
+                                <span v-else>Reserve</span>
+                            </button>
                         </div>
                         <!-- <div class="col-6  text-end">
               <button type="button" class="btn btn-lg btn-secondary waves-effect waves-light" @click="goBack">
@@ -481,7 +492,7 @@
 </template>
 <script>
     import { showSuccessAlert, handleSubmissionError } from '../../Api/MassageValidation/alertUtilities';
-    import { getBookingSources, getBusinessSources, getGuestsInfo, postAddReservationData, getUnitTypes, getUnits, getGuestDetails, getServices } from '../../Api/addResvertionApi';
+    import { getBookingSources, getBusinessSources, getGuestsInfo, getGuestsInfoSearch, postAddReservationData, getUnitTypes, getUnits, getGuestDetails, getServices, getTravelAgents } from '../../Api/addResvertionApi';
     import flatpickrMixin from '../Mixin/flatpickrMixin';
     import SidebarAddGuest from '../layout/AddGuestSidebar.vue';
     import QuickAddGuestSidebar from '../layout/QuickAddGuestSidebar.vue';
@@ -497,6 +508,20 @@
 
         data() {
             return {
+                isSubmitting: false,
+
+                searchQuery: '',
+                formAddReservation: {
+                    guestInformation: {
+                        name: '',
+                    },
+                },
+                titles: ['Mr.', 'Ms.', 'Mrs.'],
+                filteredNames: [],
+                showDropdown: false,
+                isLoading: false,
+                hasMore: false,
+                // ######
                 showSelect: false,
                 showInput: false,
                 isSidebarOpen: false,
@@ -515,6 +540,7 @@
                 timePicker2Instance: null,
                 businessSources: [],
                 bookingSources: [],
+                travelAgents: [],
                 unitsTypes: [],
                 availableUnits: [],
                 servicesList: [],
@@ -531,6 +557,7 @@
                     numberRooms: '1',
                     reservationType: '',
                     businessSource: '',
+                    travelAgent: '',
                     rateOffered: {
                         rateOfferedContract: false,
                         bookAll: false,
@@ -629,6 +656,37 @@
         },
 
         methods: {
+            // Component or Vue Method
+            // Method to fetch guests by phone or national ID
+            async searchByPhoneOrID() {
+                if (!this.searchQuery) return; // إذا كان الـ searchQuery فارغ
+
+                this.isLoading = true;
+
+                try {
+                    // استدعاء الـ API مع إرسال الـ searchQuery
+                    const response = await getGuestsInfoSearch(this.searchQuery);
+
+                    // استخراج الداتا من الـ API response
+                    const guests = response?.data?.data || [];
+
+                    if (guests.length > 0) {
+                        this.filteredNames = guests; // عرض الضيوف في الـ dropdown
+                        this.showDropdown = true;
+                        this.hasMore = false;
+                    } else {
+                        // إذا مفيش نتائج، عرض الرسالة دي
+                        this.filteredNames = [];
+                        this.showDropdown = true;
+                        console.log('No results found for: ' + this.searchQuery); // للتحقق
+                    }
+                } catch (error) {
+                    handleSubmissionError(error, 'There was an issue retrieving the guest information.');
+                } finally {
+                    this.isLoading = false;
+                }
+            },
+
             updateRepeater() {
                 const currentCount = this.formAddReservation.units.length;
                 const targetCount = parseInt(this.formAddReservation.numberRooms);
@@ -819,8 +877,13 @@
             },
 
             async submitAddReservation() {
+                if (this.isSubmitting) {
+                    return;
+                }
                 this.$v.$touch();
                 if (this.$v.$invalid) {
+                    this.isSubmitting = false;
+
                     return;
                 }
 
@@ -839,6 +902,7 @@
                     rooms: this.formAddReservation.numberRooms,
                     booking_source_id: this.formAddReservation.bookingSource,
                     business_source_id: this.formAddReservation.businessSource,
+                    travel_agent_id: this.formAddReservation.travelAgent,
                     reservation_type: this.formAddReservation.reservationType,
                     is_free: this.formAddReservation.rateOffered.complimentaryRoom,
                     hold_release_date: this.formAddReservation.releaseDate,
@@ -862,8 +926,11 @@
                     note: this.paymentData.comment,
                     payment_mode: this.paymentData.paymentMode,
                     insurance: this.paymentData.insurance,
-                    assigned_to: this.paymentData.assigned_to,
+                    payment_assigned_to: this.paymentData.assigned_to,
+                    payment_travel_agent_id: this.paymentData.selectedTravelAgent,
+                    payment_business_source_id: this.paymentData.selectedBusinessSource,
                 };
+                // console.log(bookingData);
 
                 // Append simple fields to FormData
                 Object.keys(bookingData).forEach(key => {
@@ -895,10 +962,15 @@
                 // Log FormData contents
 
                 try {
+                    this.isSubmitting = true;
+
                     const response = await postAddReservationData(formData);
 
+                    // reservation ID from the response
+                    const reservationName = response?.data?.reservation?.name;
+
                     await showSuccessAlert(
-                        'Reservation submitted successfully!', // Custom message
+                        `Reservation #${reservationName} submitted successfully!`, // Include ID in message
                         this.$router,
                         'index', // Route name
                     );
@@ -1143,6 +1215,7 @@
                 try {
                     // console.log('Selected name:', name);
                     this.selectedNameId = name.id; // Add this line
+                    this.showDropdown = false; // Close dropdown immediately after selection
 
                     const response = await getGuestDetails(name.id);
 
@@ -1227,8 +1300,7 @@
                 if (!query) {
                     return this.filteredNames;
                 }
-
-                return this.filteredNames.filter(guest => guest.name.toLowerCase().includes(query.toLowerCase()) || guest.phone.includes(query));
+                // return this.filteredNames.filter(guest => guest.name.toLowerCase().includes(query.toLowerCase()) || guest.phone.includes(query));
             },
 
             // Method to refresh all guest data if needed
@@ -1360,7 +1432,7 @@
             },
             // Add this new method to format the value before sending to server
             formatValueForServer(value) {
-                return value ? value.toString().replace(/\./g, '') : '0';
+                return value ? value.toString().replace(/[.,]/g, '') : '0';
             },
         },
 
@@ -1368,18 +1440,20 @@
             try {
                 const [
                     businessSourcesResponse,
-                    bookingSourcesResponse,
+                    // bookingSourcesResponse,
                     usersResponse,
                     unitTypesResponse,
                     // servicesResponses,
                     servicesResponse,
-                ] = await Promise.all([getBusinessSources(), getBookingSources(), getGuestsInfo(), getUnitTypes(), getServices()]);
+                    travelAgentsResponse,
+                ] = await Promise.all([getBusinessSources(), getGuestsInfo(), getUnitTypes(), getServices(), getTravelAgents()]);
 
                 this.businessSources = businessSourcesResponse.data.data;
-                this.bookingSources = bookingSourcesResponse.data.data;
+                // this.bookingSources = bookingSourcesResponse.data.data;
                 this.filteredNames = usersResponse.data.data;
                 this.unitsTypes = unitTypesResponse.data.data;
                 this.servicesList = servicesResponse.data.data;
+                this.travelAgents = travelAgentsResponse.data.data;
             } catch (error) {
                 console.error('Error loading data:', error);
             }

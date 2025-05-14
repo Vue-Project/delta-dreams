@@ -28,20 +28,14 @@
         <p>{{ reservationData.items.id }}</p>
 
         <div class="gap-2 d-flex" style="position: absolute; bottom: 15px; right: 15px">
-            <button type="submit" class="btn btn-primary" :disabled="isSubmitting">
-                <span v-if="isSubmitting">
-                    <i class="fa fa-spinner fa-spin me-1"></i>
-                    updating...
-                </span>
-                <span v-else>update</span>
-            </button>
+            <button type="submit" class="btn btn-primary">Update</button>
         </div>
     </form>
 </template>
 
 <script>
     import flatpickrMixin from '../Mixin/flatpickrMixin';
-    import { PostReservationItems } from '../../Api/addResvertionApi';
+    import { PostReservationItemsAll } from '../../Api/addResvertionApi';
     import { showSuccessAlert, handleSubmissionError } from '../../Api/MassageValidation/alertUtilities';
     import { mapGetters } from 'vuex/';
 
@@ -66,11 +60,15 @@
                 type: [String, Number],
                 required: true,
             },
+            selectedIds:{
+              type:Array,
+              required:false
+
+            }
         },
         data() {
             return {
                 // Form Data
-                isSubmitting: false,
                 formUpdateReservationItems: {
                     startDate: '',
                     adults: '',
@@ -80,61 +78,27 @@
                 },
             };
         },
-        watch: {
-            'reservationData.items': {
-                immediate: true,
-                handler(newItems) {
-                    if (newItems && newItems.length > 0) {
-                        // Find the item where `id` matches `roomChargeId`
-                        const item = newItems.find(item => item.id == this.roomChargeId);
-                        if (item) {
-                            this.formUpdateReservationItems = {
-                                startDate: item.start_date || '',
-                                adults: item.adults || '',
-                                children: item.children || '',
-                                rateAmount: item.price || '',
-                                rateType: item.rate_type || '',
-                            };
-                        }
-                    }
-                },
-            },
-            // roomChargeId: {
-            //     immediate: true,
-            //     handler() {
-            //         // Re-run the logic when roomChargeId changes
-            //         this.handler(this.reservationData.items);
-            //     },
-            // },
-        },
+
         methods: {
             async updatingReservationItems() {
-                if (this.isSubmitting) {
-                    return;
-                }
                 try {
-                    this.isSubmitting = true;
-
                     // Find the item by roomChargeId
-                    const item = this.reservationData.items.find(item => item.id == this.roomChargeId);
-
-                    if (!item) {
-                        throw new Error('Reservation item not found');
-                    }
+                    const item = this.reservationData.items[0];
 
                     // Use the found item's data
                     const updateReservationItems = {
-                        id: item.id,
                         unit_id: item.unit_id,
                         reservation_id: item.reservation_id,
+                        reservation_item_id:this.selectedIds,
                         adults: this.formUpdateReservationItems.adults,
                         children: this.formUpdateReservationItems.children,
                         rate_type: this.formUpdateReservationItems.rateType,
                         rate_amount: this.formUpdateReservationItems.rateAmount,
                     };
 
+
                     // Submit the data
-                    const response = await PostReservationItems(updateReservationItems.reservation_id, updateReservationItems);
+                    const response = await PostReservationItemsAll(updateReservationItems);
 
                     // Show success message and close the form
                     await showSuccessAlert('Reservation Items updated successfully.');
@@ -142,8 +106,6 @@
                     this.$emit('close-offcanvas');
                 } catch (error) {
                     handleSubmissionError(error, 'Failed to update reservation items.');
-                } finally {
-                    this.isSubmitting = false;
                 }
             },
         },
