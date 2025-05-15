@@ -44,9 +44,9 @@ import apiClient from './apiClient';
         throw error;
       }
     };
-    export const putUpdateWallet = async (id, walletData) => {
+    export const putUpdateWallet = async (id, paymentData) => {
       try {
-        const response = await apiClient.put(`/wallets/${id}`,walletData);
+        const response = await apiClient.put(`/wallets/${id}`,paymentData);
         return response.data;
 
       } catch (error) {

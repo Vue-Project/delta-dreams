@@ -244,7 +244,7 @@ export default {
         if (paymentImageFile) {
           formData.append('image', paymentImageFile);
         }
-        await putUpdateWallet(paymentData.wallet_id, formData);
+        await putUpdateWallet(paymentData.wallet_id,paymentData );
         await showSuccessAlert('Wallet updated successfully!');
         this.$emit('wallet-updated');
         this.$emit('close-offcanvas');
@@ -253,6 +253,9 @@ export default {
       } finally {
         this.isSubmitting = false;
       }
+    },
+    onWalletUpdated() {
+      this.$emit('wallet-updated');
     },
   },
   async mounted() {
