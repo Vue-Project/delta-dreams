@@ -622,8 +622,12 @@
                 <!--  End Audit Trail tab  -->
                 <div class="tab-pane fade" id="form-tabs-Wallet" role="tabpanel">
                     <button class="btn btn-outline-secondary waves-effect mb-2" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('addpayment', 'Add Payment')">Add payment</button>
-                    <WalletDetails :reservation-id="selectedReservationId" :reservation-data="reservationsDataById[0]" @switch-content="currentContent = $event" @wallet-updated="refreshReservationData" />
-                </div>
+                    <WalletDetails
+  :reservation-id="selectedReservationId"
+  :reservation-data="reservationsDataById[0]"
+  @switch-content="currentContent = $event"
+  @wallet-updated="refreshReservationData"
+/>                </div>
             </template>
         </HeaderReservation>
         <div v-if="isRefreshing" class="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center" style="background: rgba(0, 0, 0, 0.3); z-index: 1050">
