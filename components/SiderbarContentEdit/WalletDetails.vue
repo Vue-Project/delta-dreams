@@ -82,7 +82,7 @@
                                             <div class="modal-body px-4 py-3">
                                                 <div class="mb-4">
                                                     <h6 class="fw-semibold">Reservation Name:</h6>
-                                                    <p class="mb-0 text-muted">{{ reservationData?.id }}</p>
+                                                    <p class="mb-0 text-muted">#{{ reservationData?.name }}</p>
                                                 </div>
                                                 <!-- <div class="mb-4">
                                                     <h6 class="fw-semibold">Wallet Number:</h6>
