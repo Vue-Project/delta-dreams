@@ -1,17 +1,17 @@
 <template>
   <form class="payment-form" @submit.prevent="FormUpdateWallet">
     <div class="row">
-      <div class="col-12">
+      <div class="col-12 mb-2">
         <label for="flatpickr-date-01" class="form-label">Date</label>
         <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" id="flatpickr-date-01" ref="datePicker1" aria-label="input Text to Check-in Date" v-model="formAddPayment.date" />
         <i class="fa-solid fa-calendar-days icon-date right-24"></i>
       </div>
       <span class="error-message small" v-if="$v.formAddPayment.date.$error">date is required</span>
-      <div class="col-12 mb-2">
+      <!-- <div class="col-12 mb-2">
         <label class="form-label" for="payment_Image">Payment Image</label>
         <input type="file" class="form-control" id="payment_Image" ref="paymentImage" @change="handleImageUpload" />
         <span class="error-message small" v-if="$v.formAddPayment.image.$error">Payment image is required</span>
-      </div>
+      </div> -->
       <div class="col-12 mb-2">
         <div class="input-group">
           <select class="form-select" id="payment_method" v-model="formAddPayment.method" @change="fetchPaymentTypeByMethod">
@@ -156,7 +156,7 @@ export default {
       type: { required },
       comment: { required },
       amount: { required },
-      image: { required },
+      // image: { required },
     },
   },
   methods: {
@@ -233,9 +233,10 @@ export default {
           reservation_id: this.selectedWallet.reservation_id,
           price: this.formAddPayment.amount,
           type: this.formAddPayment.type,
-          assigned_to: this.formAddPayment.account,
-          travel_agent_id: this.formAddPayment.travelAgent,
-          business_source_id: this.formAddPayment.businessSource,
+          // assigned_to: this.formAddPayment.account,
+          // travel_agent_id: this.formAddPayment.travelAgent,
+          // business_source_id: this.formAddPayment.businessSource,
+          // status :'active'
         };
         Object.keys(paymentData).forEach(key => {
           formData.append(key, paymentData[key]);
