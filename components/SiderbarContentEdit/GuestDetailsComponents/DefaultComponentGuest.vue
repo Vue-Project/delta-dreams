@@ -415,10 +415,10 @@
                             formData.append(`all_image[${index}]`, file);
                         });
                     }
-                    console.log('IdImages=', this.IdImages);
+                    // console.log('IdImages=', this.IdImages);
 
                     // Make API call with FormData which includes both text data and files
-                    // const response = await PostUpdateGuest(this.reservationData.client.id, formData);
+                    const response = await PostUpdateGuest(this.reservationData.client.id, formData);
 
                     // Show success message
                     await showSuccessAlert('Guest updated successfully.');
