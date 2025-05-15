@@ -322,7 +322,7 @@
                                     </option>
                                 </select>
                                 <div class="position-relative flex-grow-1">
-                                    <input type="text" class="form-control w-100 guestNameInput" v-model="formAddReservation.guestInformation.name" @input="handleSearch" @focus="showDropdown = true" @blur="handleBlur" ref="name" />
+                                    <input type="text" class="form-control w-100 guestNameInput" v-model="formAddReservation.guestInformation.name" @input="handleSearch" @blur="handleBlur" ref="name" />
 
                                     <!-- Suggestions Dropdown -->
                                     <div v-if="showDropdown" class="position-absolute w-100 mt-1 bg-white border rounded shadow z-5 cursor-pointer" style="max-height: 200px; overflow-y: auto; z-index: 1000" @scroll.passive="handleScroll">
@@ -1259,7 +1259,7 @@
                         paid: reservationData.paid || '0',
                         remaining: reservationData.remaining || '0',
                         insurance: reservationData.insurance || '',
-                        insurance_by: reservationData.insurance_by?.id || '',
+                        insurance_by: reservationData.insurance_by || '',
                         service_price: reservationData.service_price || '0',
                         rate_type_name: reservationData.rate_type_name || '',
                         rate_type_price: reservationData.rate_type_price || '0',
