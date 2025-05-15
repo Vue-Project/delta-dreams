@@ -625,8 +625,10 @@ export default {
     },
     resetPaymentForm ()
     {
+      // Keep the last selected date instead of resetting to today
+      const lastDate = this.formAddPayment.date;
       this.formAddPayment = {
-        date: new Date().toISOString().split('T')[0],
+        date: lastDate, // Use the last selected date
         method: null,
         paymentType: null,
         comment: '',
@@ -634,11 +636,9 @@ export default {
         amount: null,
         image: null,
       };
-      // Reset file input manually if needed
       if (this.$refs.paymentImage) {
         this.$refs.paymentImage.value = null;
       }
-      // Reset validation state
       this.$v.$reset();
     },
     parseDateRange ()
