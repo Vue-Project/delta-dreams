@@ -12,7 +12,7 @@
         >
           <span class="app-brand-logo demo">
             <img
-              :src="settingsData.site_logo || require('../../assets/images/logo-sys.png')"
+              :src="` ${$nuxt.$config.baseURL}/${settingsData.site_logo}` || require('../../assets/images/logo-sys.png')"
               alt="logo"
               class="img-fluid"
             />
