@@ -853,6 +853,7 @@
                     permit: event.extendedProps?.reservation?.permit,
                     permit_image: event.extendedProps?.reservation?.permit_image,
                     reservation_name: event.extendedProps?.reservation?.name,
+                    insurance: event.extendedProps?.reservation?.insurance,
                 };
             },
             transformAllUnitsToEvents() {
