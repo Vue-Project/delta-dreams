@@ -856,6 +856,7 @@
                     insurance: event.extendedProps?.reservation?.insurance,
                     insurance_refund: event.extendedProps?.reservation?.insurance_refund,
                     insurance_remaining: event.extendedProps?.reservation?.insurance_remaining,
+                    nights: event.extendedProps?.reservation?.nights,
                 };
             },
             transformAllUnitsToEvents() {

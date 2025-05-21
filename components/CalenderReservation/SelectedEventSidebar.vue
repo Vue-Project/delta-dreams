@@ -232,24 +232,20 @@
 
                 <div class="new-div mt-lg-5 mt-md-5 mt-2 w-100 TotalPayment">
                     <dl class="row mb-0">
-                        <dt class="col-6 fw-normal text-heading">Price</dt>
-                        <dd class="col-6 text-end mb-0">{{ selectedEvent.price }} EGP</dd>
-
-                        <dt class="col-6 fw-normal text-heading">Total Services</dt>
-                        <dd class="col-6 text-end mb-0">{{ selectedEvent.total_service }} EGP</dd>
                         <dt class="col-6 fw-normal text-heading">Insurance</dt>
                         <dd class="col-6 text-end mb-0">{{ selectedEvent.insurance || 0 }} EGP</dd>
                         <dt class="col-6 fw-normal text-heading">Insurance Refund</dt>
                         <dd class="col-6 text-end mb-0">{{ selectedEvent.insurance_refund }} EGP</dd>
                         <dt class="col-6 fw-normal text-heading">Insurance Remaining</dt>
                         <dd class="col-6 text-end mb-0">{{ selectedEvent.insurance_remaining }} EGP</dd>
-
+                        <dt class="col-6 fw-normal text-heading">Total Services</dt>
+                        <dd class="col-6 text-end mb-0">{{ selectedEvent.total_service }} EGP</dd>
+                        <dt class="col-6 fw-normal text-heading">Unit Price (Nights)</dt>
+                        <dd class="col-6 text-end mb-0">{{ selectedEvent.unit_price }} EGP {{ selectedEvent.nights }} Nights</dd>
                         <dt class="col-6 fw-normal text-heading">Total</dt>
                         <dd class="col-6 text-end mb-0">{{ selectedEvent.total }} EGP</dd>
-
                         <dt class="col-6 fw-normal">Paid</dt>
                         <dd class="col-6 text-end mb-0">{{ selectedEvent.paid }} EGP</dd>
-
                         <dt class="col-6 fw-normal text-danger">Balance</dt>
                         <dd class="col-6 text-end mb-0 text-danger">{{ selectedEvent.balance }} EGP</dd>
                     </dl>
