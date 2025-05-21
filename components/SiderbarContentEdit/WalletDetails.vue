@@ -8,7 +8,7 @@
                 </div>
                 <hr class="mt-0" />
                 <div class="offcanvas-body pt-0">
-                    <EditPayment :selectedWallet="selectedWallet" />
+                  <EditPayment :selectedWallet="selectedWallet" @wallet-updated="$emit('wallet-updated')" />
                 </div>
             </div>
             <div class="card-body">
@@ -55,15 +55,9 @@
                                             <i class="fa-solid fa-ellipsis-vertical"></i>
                                         </button>
                                         <div class="dropdown-menu" v-if="wallet.active !== 0">
-                                            <!-- <a
-                           class="dropdown-item"
-                           data-bs-toggle="offcanvas"
-                           data-bs-target="#Sidebar"
-                           data-title="Edit Payment"
-                           @click="updateWallet(wallet)"
-                        >
-                          <i class="fa-regular fa-pen-to-square me-1"></i> Edit
-                        </a> -->
+                                            <a class="dropdown-item" @click.prevent="onEditWallet(wallet)">
+                                                <i class="fa-regular fa-pen-to-square me-1"></i> Edit
+                                            </a>
                                             <a class="dropdown-item" @click="deletedWallet(wallet.id)">
                                                 <i class="fa-regular fa-trash-can me-1"></i>
                                                 cancel
@@ -88,7 +82,7 @@
                                             <div class="modal-body px-4 py-3">
                                                 <div class="mb-4">
                                                     <h6 class="fw-semibold">Reservation Name:</h6>
-                                                    <p class="mb-0 text-muted">{{ reservationData?.id }}</p>
+                                                    <p class="mb-0 text-muted">#{{ reservationData?.name }}</p>
                                                 </div>
                                                 <!-- <div class="mb-4">
                                                     <h6 class="fw-semibold">Wallet Number:</h6>
@@ -369,6 +363,14 @@
             },
             handleHide() {
                 this.visible = false;
+            },
+            onEditWallet(wallet) {
+                this.selectedWallet = wallet;
+                this.sidebarTitle = "Edit Payment";
+                // Log the selected wallet data
+                // Open the offcanvas sidebar
+                const offcanvas = new bootstrap.Offcanvas(document.getElementById('Sidebar'));
+                offcanvas.show();
             },
         },
 

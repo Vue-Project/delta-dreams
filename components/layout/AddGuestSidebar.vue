@@ -38,7 +38,7 @@
                                         <div class="mb-lg-3">
                                             <label for="formGustInfoPhone" class="col-form-label">Phone</label>
                                             <input class="form-control rounded-2" type="text" value="Phone" id="formGustInfoPhone" placeholder="phone" aria-label="input tel to Gust Phone" v-model="formGuest.phone" ref="phone" :class="{ 'input-error': validationMessages.phone }" />
-                                            <span class="error-message small" v-if="$v.formGuest.phone.$error">Phone is required</span>
+                                            <!-- <span class="error-message small" v-if="$v.formGuest.phone.$error">Phone is required</span> -->
                                         </div>
                                         <div class="mb-lg-3">
                                             <label for="formGustIdentityIdType" class="col-form-label">ID Type</label>
@@ -293,7 +293,7 @@
         validations: {
             formGuest: {
                 name: { required },
-                phone: { required },
+                // phone: { required },
                 idNumber: { required },
                 idType: { required },
                 // expiryDate: { required },

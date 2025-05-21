@@ -338,7 +338,7 @@
                                     </option>
                                 </select>
                                 <div class="position-relative flex-grow-1">
-                                    <input type="text" class="form-control w-100 guestNameInput" v-model="formAddReservation.guestInformation.name" @input="handleSearch" @focus="showDropdown = true" @blur="handleBlur" ref="name" />
+                                    <input type="text" class="form-control w-100 guestNameInput" v-model="formAddReservation.guestInformation.name" @input="handleSearch" @blur="handleBlur" ref="name" />
 
                                     <!-- Suggestions Dropdown -->
                                     <div v-if="showDropdown" class="position-absolute w-100 mt-1 bg-white border color-red rounded shadow z-5 cursor-pointer" style="max-height: 200px; overflow-y: auto" @scroll.passive="handleScroll">

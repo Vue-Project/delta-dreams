@@ -232,18 +232,20 @@
 
                 <div class="new-div mt-lg-5 mt-md-5 mt-2 w-100 TotalPayment">
                     <dl class="row mb-0">
-                        <dt class="col-6 fw-normal text-heading">Price</dt>
-                        <dd class="col-6 text-end mb-0">{{ selectedEvent.price }} EGP</dd>
-
+                        <dt class="col-6 fw-normal text-heading">Insurance</dt>
+                        <dd class="col-6 text-end mb-0">{{ selectedEvent.insurance || 0 }} EGP</dd>
+                        <dt class="col-6 fw-normal text-heading">Insurance Refund</dt>
+                        <dd class="col-6 text-end mb-0">{{ selectedEvent.insurance_refund }} EGP</dd>
+                        <dt class="col-6 fw-normal text-heading">Insurance Remaining</dt>
+                        <dd class="col-6 text-end mb-0">{{ selectedEvent.insurance_remaining }} EGP</dd>
                         <dt class="col-6 fw-normal text-heading">Total Services</dt>
                         <dd class="col-6 text-end mb-0">{{ selectedEvent.total_service }} EGP</dd>
-
+                        <dt class="col-6 fw-normal text-heading">Unit Price (Nights)</dt>
+                        <dd class="col-6 text-end mb-0">{{ selectedEvent.unit_price }} EGP {{ selectedEvent.nights }} Nights</dd>
                         <dt class="col-6 fw-normal text-heading">Total</dt>
                         <dd class="col-6 text-end mb-0">{{ selectedEvent.total }} EGP</dd>
-
                         <dt class="col-6 fw-normal">Paid</dt>
                         <dd class="col-6 text-end mb-0">{{ selectedEvent.paid }} EGP</dd>
-
                         <dt class="col-6 fw-normal text-danger">Balance</dt>
                         <dd class="col-6 text-end mb-0 text-danger">{{ selectedEvent.balance }} EGP</dd>
                     </dl>
@@ -605,8 +607,10 @@
                 this.resetPaymentForm();
             },
             resetPaymentForm() {
+                // Keep the last selected date instead of resetting to today
+                const lastDate = this.formAddPayment.date;
                 this.formAddPayment = {
-                    date: new Date().toISOString().split('T')[0],
+                    date: lastDate, // Use the last selected date
                     method: null,
                     paymentType: null,
                     comment: '',
@@ -614,11 +618,9 @@
                     amount: null,
                     image: null,
                 };
-                // Reset file input manually if needed
                 if (this.$refs.paymentImage) {
                     this.$refs.paymentImage.value = null;
                 }
-                // Reset validation state
                 this.$v.$reset();
             },
             parseDateRange() {
