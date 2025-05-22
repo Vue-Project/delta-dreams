@@ -234,6 +234,10 @@
                     <dl class="row mb-0">
                         <dt class="col-6 fw-normal text-heading">Insurance</dt>
                         <dd class="col-6 text-end mb-0">{{ selectedEvent.insurance || 0 }} EGP</dd>
+                        <dt class="col-6 fw-normal text-heading">Insurance Refund</dt>
+                        <dd class="col-6 text-end mb-0">{{ selectedEvent.insurance_refund }} EGP</dd>
+                        <dt class="col-6 fw-normal text-heading">Insurance Remaining</dt>
+                        <dd class="col-6 text-end mb-0">{{ selectedEvent.insurance_remaining }} EGP</dd>
                         <dt class="col-6 fw-normal text-heading">Total Services</dt>
                         <dd class="col-6 text-end mb-0">{{ selectedEvent.total_service }} EGP</dd>
                         <dt class="col-6 fw-normal text-heading">Unit Price (Nights)</dt>
