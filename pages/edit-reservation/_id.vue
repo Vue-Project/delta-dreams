@@ -511,7 +511,7 @@
                                     </td>
                                     <!-- Add the same pattern to all other cells -->
                                     <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setSelectedRoomCharge(roomChargeData.id)">
-                                        {{ roomChargeData.rate_type }}
+                                        {{ roomChargeData.rate_type_name }}
                                     </td>
                                     <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setSelectedRoomCharge(roomChargeData.id)">{{ roomChargeData.adults }}</td>
                                     <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setSelectedRoomCharge(roomChargeData.id)">
@@ -622,12 +622,8 @@
                 <!--  End Audit Trail tab  -->
                 <div class="tab-pane fade" id="form-tabs-Wallet" role="tabpanel">
                     <button class="btn btn-outline-secondary waves-effect mb-2" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('addpayment', 'Add Payment')">Add payment</button>
-                    <WalletDetails
-  :reservation-id="selectedReservationId"
-  :reservation-data="reservationsDataById[0]"
-  @switch-content="currentContent = $event"
-  @wallet-updated="refreshReservationData"
-/>                </div>
+                    <WalletDetails :reservation-id="selectedReservationId" :reservation-data="reservationsDataById[0]" @switch-content="currentContent = $event" @wallet-updated="refreshReservationData" />
+                </div>
             </template>
         </HeaderReservation>
         <div v-if="isRefreshing" class="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center" style="background: rgba(0, 0, 0, 0.3); z-index: 1050">
@@ -884,23 +880,15 @@
             },
             async cancelReservation() {
                 // Show SweetAlert2 confirmation dialog
-                const selectOptions = this.getReservationRejects
-      const result = await showConfirmationAlertWithSelect(
-        'Are you sure you want to cancel this Reservation?',
-        'Please select a reason for cancellation',
-        Object.fromEntries(
-          Object.entries(selectOptions).map(([key, value]) => [value.id, value.name])
-        ),
-        'Confirm',
-        'Cancel'
-      );
+                const selectOptions = this.getReservationRejects;
+                const result = await showConfirmationAlertWithSelect('Are you sure you want to cancel this Reservation?', 'Please select a reason for cancellation', Object.fromEntries(Object.entries(selectOptions).map(([key, value]) => [value.id, value.name])), 'Confirm', 'Cancel');
 
                 // Proceed only if the user confirms
                 if (result.isConfirmed) {
                     try {
-                      const rejectedValue = result.value; // This will now be the key/id
+                        const rejectedValue = result.value; // This will now be the key/id
 
-                        const response = await postCancelReservation(this.selectedReservationId ,rejectedValue);
+                        const response = await postCancelReservation(this.selectedReservationId, rejectedValue);
 
                         // Show success alert
                         await showSuccessAlert(
@@ -972,8 +960,8 @@
             }
         },
         computed: {
-    ...mapGetters(['getReservationRejects']),
-  },
+            ...mapGetters(['getReservationRejects']),
+        },
     };
 </script>
 
