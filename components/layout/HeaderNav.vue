@@ -433,29 +433,43 @@
 <script>
 import { getSettingsSite } from '../../Api/CalenderApi';
 export default {
-    data() {
-      return {
-        settingsData: '',
-      };
-    },
-
+  data() {
+    return {
+      settingsData: {
+        site_title: '',
+        site_favicon: '',
+        site_logo: ''
+      },
+      isLoading: false
+    };
+  },
   async mounted() {
+    this.isLoading = true;
+    try {
+      const [settingsDataResponse] = await Promise.all([getSettingsSite()]);
+      this.settingsData = settingsDataResponse;
 
-
-
-
-
-            try {
-              const [settingsDataResponse] = await Promise.all([getSettingsSite()]);
-                this.settingsData = settingsDataResponse;
-
-
-
-
-            } catch (error) {
-                console.error('Error loading data:', error);
-            } finally {
-                this.isLoading = false;
-            }
+      // Dynamically update favicon
+      if (this.settingsData.site_favicon) {
+        const faviconUrl = `${this.$nuxt.$config.baseURL}/${this.settingsData.site_favicon}`;
+        let link = document.querySelector("link[rel~='icon']");
+        if (!link) {
+          link = document.createElement('link');
+          link.rel = 'icon';
+          document.head.appendChild(link);
         }
-}</script>
+        link.href = faviconUrl;
+      }
+
+      // Dynamically update title
+      if (this.settingsData.site_title) {
+        document.title = this.settingsData.site_title;
+      }
+    } catch (error) {
+      console.error('Error loading data:', error);
+    } finally {
+      this.isLoading = false;
+    }
+  }
+}
+</script>
