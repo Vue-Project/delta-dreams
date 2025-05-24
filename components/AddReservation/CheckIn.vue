@@ -974,6 +974,8 @@
                         this.$router,
                         'index', // Route name
                     );
+                    // this.$root.$emit('refresh-calendar');
+                    // this.$router.push({ name: 'index' });
                 } catch (error) {
                     handleSubmissionError(
                         error,
