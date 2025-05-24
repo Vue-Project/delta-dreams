@@ -979,6 +979,8 @@
                         error,
                         'There was an issue with your reservation.', // Custom default error
                     );
+                } finally {
+                    this.isSubmitting = false;
                 }
             },
 
