@@ -13,7 +13,7 @@
 
                 <!-- Search Input - New Addition -->
                 <div class="col-lg-4 col-md-6 col-12">
-                    <div class="position-relative d-flex">
+                    <div class="position-relative d-flex mb-4">
                         <input type="text" class="form-control" placeholder="Search..." v-model="searchQuery" @keyup.enter="performSearch" aria-label="Search" />
                         <button class="btn btn-primary search-btn ms-1" @click="performSearch" title="Search">
                             <i class="fa-solid fa-search"></i>

@@ -5,7 +5,7 @@
   >
 
     <div class="container-fluid">
-      <div class="navbar-brand app-brand demo d-none d-xl-flex py-0 me-4">
+      <div class="navbar-brand app-brand demo d-xl-flex py-0 me-4">
         <a
           :href="settingsData.admin_url"
           class="app-brand-link gap-2"
@@ -22,15 +22,15 @@
           <span class="app-brand-text demo menu-text fw-bold">{{settingsData.site_title}}</span>
         </a>
 
-        <a
+        <!-- <a
           href="javascript:void(0);"
           class="layout-menu-toggle menu-link text-large ms-auto d-xl-none"
         >
           <i class="fa-solid fa-xmark fa-sm align-middle"></i>
-        </a>
+        </a> -->
       </div>
 
-      <div class="navbar-brand app-brand demo d-xl-none d-xl-flex py-0 me-4">
+      <!-- <div class="navbar-brand app-brand demo d-xl-none d-xl-flex py-0 me-4">
         <a
           href="https://deltadream.swevey.com/admin"
           class="app-brand-link gap-2"
@@ -46,7 +46,7 @@
         <a href="/" class="app-brand-link gap-2">
           <span class="app-brand-text demo menu-text fw-bold">Delta Dream</span>
         </a>
-      </div>
+      </div> -->
 
       <div
         class="navbar-nav-right d-flex align-items-center"
