@@ -1000,7 +1000,7 @@
                 try {
                     this.isSubmitting = true;
 
-                    // const response = await postAddReservationData(formData);
+                    const response = await postAddReservationData(formData);
 
                     // reservation ID from the response
                     const reservationName = response?.data?.reservation?.name;
