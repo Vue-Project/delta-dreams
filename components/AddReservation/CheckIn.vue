@@ -967,23 +967,23 @@
                 // Log services data
                 // console.log('Adding services data:');
                 this.formAddReservation.services.forEach((service, index) => {
-                    console.log(`Service ${index}:`, {
-                        service_id: service.serviceId,
-                        service_price: this.formatValueForServer(service.price),
-                    });
+                    // console.log(`Service ${index}:`, {
+                    //     service_id: service.serviceId,
+                    //     service_price: this.formatValueForServer(service.price),
+                    // });
                     formData.append(`services[${index}][service_id]`, service.serviceId);
                     formData.append(`services[${index}][service_price]`, this.formatValueForServer(service.price));
                 });
 
                 // Log building details data if they exist
-                if (this.paymentData.buildingDetails && this.paymentData.buildingDetails.length > 0) {
+                if (this.paymentData.paymentUnits && this.paymentData.paymentUnits.length > 0) {
                     // console.log('Adding building details data:');
-                    this.paymentData.buildingDetails.forEach((building, index) => {
-                        console.log(`Building Detail ${index}:`, {
-                            unit_id: building.unitId,
-                            unit_code: building.name,
-                            amount: this.formatValueForServer(building.amount),
-                        });
+                    this.paymentData.paymentUnits.forEach((building, index) => {
+                        // console.log(`paymentUnits ${index}:`, {
+                        //     unit_id: building.unitId,
+                        //     unit_code: building.name,
+                        //     amount: this.formatValueForServer(building.amount),
+                        // });
                         formData.append(`building_details[${index}][unit_id]`, building.unitId);
                         formData.append(`building_details[${index}][unit_code]`, building.name);
                         formData.append(`building_details[${index}][amount]`, this.formatValueForServer(building.amount));

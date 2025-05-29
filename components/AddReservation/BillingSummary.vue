@@ -241,11 +241,11 @@
                         <div v-for="index in numberOfRooms - 1" :key="index" class="row mb-3">
                             <div class="col-md-6">
                                 <label :for="'buildingName' + index" class="form-label">Unit Code</label>
-                                <input type="text" :id="'buildingName' + index" class="form-control" v-model="buildingDetails[index - 1].name" placeholder="Enter unit code" readonly />
+                                <input type="text" :id="'buildingName' + index" class="form-control" v-model="paymentUnits[index - 1].name" placeholder="Enter unit code" readonly />
                             </div>
                             <div class="col-md-6">
                                 <label :for="'buildingAmount' + index" class="form-label">Amount</label>
-                                <input type="number" :id="'buildingAmount' + index" class="form-control" v-model="buildingDetails[index - 1].amount" placeholder="Enter amount" min="0" @input="updateBuildingAmount(index - 1, $event)" />
+                                <input type="number" :id="'buildingAmount' + index" class="form-control" v-model="paymentUnits[index - 1].amount" placeholder="Enter amount" min="0" @input="updateBuildingAmount(index - 1, $event)" />
                             </div>
                         </div>
                     </div>
@@ -289,7 +289,7 @@
                 businessSources: [],
                 travelAgents: [],
                 datePicker1Instance: null,
-                buildingDetails: [],
+                paymentUnits: [],
                 paymentDetails: {
                     roomCharges: 0.0,
                     taxes: '0',
@@ -383,7 +383,7 @@
                 immediate: true,
                 handler(newValue) {
                     // Create array with one less than the number of rooms
-                    const newBuildingDetails = [];
+                    const newPaymentUnits = [];
                     const detailsCount = Math.max(0, newValue - 1); // One less than total rooms
 
                     // Get the CheckIn component instance
@@ -397,9 +397,9 @@
                         const unit = availableUnits.find(u => u.id === unitId);
 
                         // If we have existing data for this index, keep it
-                        const existingData = this.buildingDetails[i] || { name: '', amount: 0, unitId: '' };
+                        const existingData = this.paymentUnits[i] || { name: '', amount: 0, unitId: '' };
 
-                        newBuildingDetails.push({
+                        newPaymentUnits.push({
                             name: unit ? unit.code : existingData.name,
                             amount: existingData.amount,
                             unitId: unitId || existingData.unitId,
@@ -407,12 +407,12 @@
                         });
                     }
 
-                    this.buildingDetails = newBuildingDetails;
+                    this.paymentUnits = newPaymentUnits;
 
                     // Update payment details with new building details
                     this.$emit('input', {
                         ...this.value,
-                        buildingDetails: this.buildingDetails,
+                        paymentUnits: this.paymentUnits,
                         buildingAmount: this.calculateTotalBuildingAmount(),
                     });
                 },
@@ -424,7 +424,7 @@
                     if (!newUnits) return;
 
                     // Update building details when units change
-                    this.buildingDetails = this.buildingDetails.map((detail, index) => {
+                    this.paymentUnits = this.paymentUnits.map((detail, index) => {
                         const unitId = newUnits[index + 1]?.unitId;
                         const availableUnits = this.$parent.$refs.checkIn.availableUnitsByRoom[index + 1] || [];
                         const unit = availableUnits.find(u => u.id === unitId);
@@ -439,7 +439,7 @@
                     // Emit updated building details
                     this.$emit('input', {
                         ...this.value,
-                        buildingDetails: this.buildingDetails,
+                        paymentUnits: this.paymentUnits,
                         buildingAmount: this.calculateTotalBuildingAmount(),
                     });
                 },
@@ -551,14 +551,14 @@
                 }
             },
             calculateTotalBuildingAmount() {
-                return this.buildingDetails.reduce((sum, building) => {
+                return this.paymentUnits.reduce((sum, building) => {
                     return sum + (Number(building.amount) || 0);
                 }, 0);
             },
             updateBuildingAmount(index, event) {
                 // Ensure amount is not negative
                 const value = Math.max(0, Number(event.target.value));
-                this.buildingDetails[index].amount = value;
+                this.paymentUnits[index].amount = value;
 
                 // Calculate total building amount
                 const totalBuildingAmount = this.calculateTotalBuildingAmount();
@@ -569,7 +569,7 @@
                 // Emit updated value
                 this.$emit('input', {
                     ...this.value,
-                    buildingDetails: this.buildingDetails,
+                    paymentUnits: this.paymentUnits,
                     buildingAmount: totalBuildingAmount,
                 });
             },

@@ -43,7 +43,7 @@
                     selectedBusinessSource: '',
                     Image: null,
                     numberRooms: 1,
-                    buildingDetails: [],
+                    paymentUnits: [],
                     buildingAmount: 0,
                 },
                 redirectTimeout: null,
