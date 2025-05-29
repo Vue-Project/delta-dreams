@@ -194,6 +194,8 @@
                             <textarea class="form-control" v-model="paymentDetails.comment" rows="3"></textarea>
                         </div>
 
+                        <!-- Building Details Section - Only show when numberOfRooms > 1 -->
+
                         <!-- Payment specific fields -->
                         <!-- <template v-if="selectedPaymentType === 'bank_transfer'">
             <div class="mb-3">
@@ -232,6 +234,22 @@
           </template> -->
                     </div>
                 </div>
+                <!-- Building Details Section -->
+                <div class="row mb-3">
+                    <div v-if="numberOfRooms > 1" class="col-12">
+                        <h6 class="mb-3">Payment Details Units</h6>
+                        <div v-for="index in numberOfRooms - 1" :key="index" class="row mb-3">
+                            <div class="col-md-6">
+                                <label :for="'buildingName' + index" class="form-label">Building Name</label>
+                                <input type="text" :id="'buildingName' + index" class="form-control" v-model="buildingDetails[index - 1].name" placeholder="Enter building name" />
+                            </div>
+                            <div class="col-md-6">
+                                <label :for="'buildingAmount' + index" class="form-label">Amount</label>
+                                <input type="number" :id="'buildingAmount' + index" class="form-control" v-model="buildingDetails[index - 1].amount" placeholder="Enter amount" min="0" @input="updateBuildingAmount(index - 1, $event)" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- Dynamic form fields based on payment type -->
             </div>
@@ -257,6 +275,10 @@
                 type: Array,
                 required: true,
             },
+            numberOfRooms: {
+                type: Number,
+                default: 1,
+            },
         },
         data() {
             return {
@@ -267,6 +289,7 @@
                 businessSources: [],
                 travelAgents: [],
                 datePicker1Instance: null,
+                buildingDetails: [],
                 paymentDetails: {
                     roomCharges: 0.0,
                     taxes: '0',
@@ -353,6 +376,36 @@
                     this.$emit('input', {
                         ...this.value,
                         ...newVal,
+                    });
+                },
+            },
+            numberOfRooms: {
+                immediate: true,
+                handler(newValue) {
+                    console.log('Number of rooms changed:', newValue); // Debug log
+
+                    // Create array with one less than the number of rooms
+                    const newBuildingDetails = [];
+                    const detailsCount = Math.max(0, newValue - 1); // One less than total rooms
+
+                    for (let i = 0; i < detailsCount; i++) {
+                        // If we have existing data for this index, keep it
+                        const existingData = this.buildingDetails[i] || { name: '', amount: 0 };
+                        newBuildingDetails.push({
+                            name: existingData.name,
+                            amount: existingData.amount,
+                            roomNumber: i + 1,
+                        });
+                    }
+
+                    this.buildingDetails = newBuildingDetails;
+                    console.log('Building details updated:', this.buildingDetails); // Debug log
+
+                    // Update payment details with new building details
+                    this.$emit('input', {
+                        ...this.value,
+                        buildingDetails: this.buildingDetails,
+                        buildingAmount: this.calculateTotalBuildingAmount(),
                     });
                 },
             },
@@ -461,6 +514,29 @@
                     this.paymentTypes = [];
                     this.value.selectedPaymentType = '';
                 }
+            },
+            calculateTotalBuildingAmount() {
+                return this.buildingDetails.reduce((sum, building) => {
+                    return sum + (Number(building.amount) || 0);
+                }, 0);
+            },
+            updateBuildingAmount(index, event) {
+                // Ensure amount is not negative
+                const value = Math.max(0, Number(event.target.value));
+                this.buildingDetails[index].amount = value;
+
+                // Calculate total building amount
+                const totalBuildingAmount = this.calculateTotalBuildingAmount();
+
+                // Update payment details with total building amount
+                this.paymentDetails.buildingAmount = totalBuildingAmount;
+
+                // Emit updated value
+                this.$emit('input', {
+                    ...this.value,
+                    buildingDetails: this.buildingDetails,
+                    buildingAmount: totalBuildingAmount,
+                });
             },
         },
     };

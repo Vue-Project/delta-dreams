@@ -4,10 +4,10 @@
             <button class="btn btn-danger waves-effect waves-light countdownButton">
                 {{ formattedTime }}
             </button>
-            <CheckIn :paymentData="paymentData" @change="changeRoomCharges" :selectedDates="selectedDates" :selectedResourceName="selectedResourceName" />
+            <CheckIn :paymentData="paymentData" @change="changeRoomCharges" :selectedDates="selectedDates" :selectedResourceName="selectedResourceName" @update:numberRooms="updateNumberRooms" />
         </div>
         <div class="col-xl-4 col-md-12">
-            <BillingSummary v-model="paymentData" :selectedDates="selectedDates" @payment-image-upload="handlePaymentImageUpload" />
+            <BillingSummary v-model="paymentData" :selectedDates="selectedDates" :numberOfRooms="paymentData.numberRooms" @payment-image-upload="handlePaymentImageUpload" />
         </div>
     </div>
 </template>
@@ -42,6 +42,9 @@
                     selectedTravelAgent: '',
                     selectedBusinessSource: '',
                     Image: null,
+                    numberRooms: 1,
+                    buildingDetails: [],
+                    buildingAmount: 0,
                 },
                 redirectTimeout: null,
             };
@@ -50,6 +53,10 @@
             changeRoomCharges(charges) {
                 this.paymentData.roomCharges = charges;
                 // console.log(charges);
+            },
+
+            updateNumberRooms(newNumber) {
+                this.paymentData.numberRooms = newNumber;
             },
 
             handlePaymentImageUpload(file) {

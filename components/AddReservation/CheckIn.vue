@@ -718,6 +718,9 @@
                     this.formAddReservation.units.splice(targetCount);
                     this.availableUnitsByRoom.splice(targetCount);
                 }
+
+                // Emit the updated number of rooms
+                this.$emit('update:numberRooms', targetCount);
             },
             addUnit() {
                 const firstUnitTypeId = this.formAddReservation.units[0]?.unitTypeId;
@@ -737,6 +740,8 @@
 
                 this.$set(this.availableUnitsByRoom, newIndex, []);
                 this.formAddReservation.numberRooms = this.formAddReservation.units.length.toString();
+                // Emit the updated number of rooms
+                this.$emit('update:numberRooms', this.formAddReservation.units.length);
             },
             removeUnit(index) {
                 if (this.formAddReservation.units.length > 1) {
@@ -744,6 +749,8 @@
                     // Remove available units for this room
                     this.$delete(this.availableUnitsByRoom, index);
                     this.formAddReservation.numberRooms = this.formAddReservation.units.length.toString();
+                    // Emit the updated number of rooms
+                    this.$emit('update:numberRooms', this.formAddReservation.units.length);
                 }
             },
             addService() {
