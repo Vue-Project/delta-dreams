@@ -23,8 +23,8 @@
                         </span>
                     </div>
                     <div class="row mt-4">
-                        <div class="col-6" v-if="selectedEvent?.is_edit">
-                            <button type="button" class="btn btn-primary waves-effect waves-light btn-block EditBtnSideBar" @click="navigateToEditReservation(selectedEvent.id)">Edit</button>
+                        <div class="col-6">
+                            <button v-if="selectedEvent?.is_edit" type="button" class="btn btn-primary waves-effect waves-light btn-block EditBtnSideBar" @click="navigateToEditReservation(selectedEvent.id)">Edit</button>
                         </div>
                         <div class="col-6">
                             <button type="button" class="btn btn-primary waves-effect waves-light btn-block AddPaymentBtnSideBar" data-bs-toggle="modal" data-bs-target="#paymentModal" v-if="selectedEvent?.is_edit">Add Payment</button>
@@ -139,6 +139,19 @@
 
                                             <small class="text-muted">
                                                 {{ selectedEvent.travel_agent_name }}
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="mb-3 pb-1">
+                                <div class="d-flex align-items-start">
+                                    <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                        <div class="me-2">
+                                            <h6 class="mb-0">User</h6>
+
+                                            <small class="text-muted">
+                                                {{ selectedEvent.user_name }}
                                             </small>
                                         </div>
                                     </div>
