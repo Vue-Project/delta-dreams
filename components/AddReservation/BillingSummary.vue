@@ -240,8 +240,8 @@
                         <h6 class="mb-3">Payment Details Units</h6>
                         <div v-for="index in numberOfRooms - 1" :key="index" class="row mb-3">
                             <div class="col-md-6">
-                                <label :for="'buildingName' + index" class="form-label">Building Name</label>
-                                <input type="text" :id="'buildingName' + index" class="form-control" v-model="buildingDetails[index - 1].name" placeholder="Enter building name" />
+                                <label :for="'buildingName' + index" class="form-label">Unit Code</label>
+                                <input type="text" :id="'buildingName' + index" class="form-control" v-model="buildingDetails[index - 1].name" placeholder="Enter unit code" readonly />
                             </div>
                             <div class="col-md-6">
                                 <label :for="'buildingAmount' + index" class="form-label">Amount</label>
@@ -382,26 +382,61 @@
             numberOfRooms: {
                 immediate: true,
                 handler(newValue) {
-                    console.log('Number of rooms changed:', newValue); // Debug log
-
                     // Create array with one less than the number of rooms
                     const newBuildingDetails = [];
                     const detailsCount = Math.max(0, newValue - 1); // One less than total rooms
 
+                    // Get the CheckIn component instance
+                    const checkInComponent = this.$parent.$refs.checkIn;
+                    if (!checkInComponent) return;
+
                     for (let i = 0; i < detailsCount; i++) {
+                        // Get the unit from CheckIn component
+                        const unitId = checkInComponent.formAddReservation.units[i + 1]?.unitId;
+                        const availableUnits = checkInComponent.availableUnitsByRoom[i + 1] || [];
+                        const unit = availableUnits.find(u => u.id === unitId);
+
                         // If we have existing data for this index, keep it
-                        const existingData = this.buildingDetails[i] || { name: '', amount: 0 };
+                        const existingData = this.buildingDetails[i] || { name: '', amount: 0, unitId: '' };
+
                         newBuildingDetails.push({
-                            name: existingData.name,
+                            name: unit ? unit.code : existingData.name,
                             amount: existingData.amount,
+                            unitId: unitId || existingData.unitId,
                             roomNumber: i + 1,
                         });
                     }
 
                     this.buildingDetails = newBuildingDetails;
-                    console.log('Building details updated:', this.buildingDetails); // Debug log
 
                     // Update payment details with new building details
+                    this.$emit('input', {
+                        ...this.value,
+                        buildingDetails: this.buildingDetails,
+                        buildingAmount: this.calculateTotalBuildingAmount(),
+                    });
+                },
+            },
+            // Add a watcher for CheckIn units changes
+            '$parent.$refs.checkIn.formAddReservation.units': {
+                deep: true,
+                handler(newUnits) {
+                    if (!newUnits) return;
+
+                    // Update building details when units change
+                    this.buildingDetails = this.buildingDetails.map((detail, index) => {
+                        const unitId = newUnits[index + 1]?.unitId;
+                        const availableUnits = this.$parent.$refs.checkIn.availableUnitsByRoom[index + 1] || [];
+                        const unit = availableUnits.find(u => u.id === unitId);
+
+                        return {
+                            ...detail,
+                            name: unit ? unit.code : detail.name,
+                            unitId: unitId || detail.unitId,
+                        };
+                    });
+
+                    // Emit updated building details
                     this.$emit('input', {
                         ...this.value,
                         buildingDetails: this.buildingDetails,

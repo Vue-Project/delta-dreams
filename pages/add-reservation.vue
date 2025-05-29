@@ -4,7 +4,7 @@
             <button class="btn btn-danger waves-effect waves-light countdownButton">
                 {{ formattedTime }}
             </button>
-            <CheckIn :paymentData="paymentData" @change="changeRoomCharges" :selectedDates="selectedDates" :selectedResourceName="selectedResourceName" @update:numberRooms="updateNumberRooms" />
+            <CheckIn ref="checkIn" :paymentData="paymentData" @change="changeRoomCharges" :selectedDates="selectedDates" :selectedResourceName="selectedResourceName" @update:numberRooms="updateNumberRooms" />
         </div>
         <div class="col-xl-4 col-md-12">
             <BillingSummary v-model="paymentData" :selectedDates="selectedDates" :numberOfRooms="paymentData.numberRooms" @payment-image-upload="handlePaymentImageUpload" />
