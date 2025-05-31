@@ -77,7 +77,18 @@ export default {
                     exclude: /(node_modules)/,
                 });
             }
+            config.devtool = isDev ? 'eval-source-map' : 'source-map';
         },
+        optimization: {
+            splitChunks: {
+                chunks: 'all',
+                automaticNameDelimiter: '.',
+                name: true,
+                maxSize: 244000,
+            },
+        },
+        hardSource: true,
+        watch: ['~/**/*.vue', '~/**/*.js'],
     },
     static: {
         prefix: false, // Ensures static files are served as-is
