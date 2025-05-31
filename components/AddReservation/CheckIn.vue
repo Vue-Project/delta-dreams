@@ -1465,6 +1465,52 @@
             formatValueForServer(value) {
                 return value ? value.toString().replace(/[.,]/g, '') : '0';
             },
+            resetFormData() {
+                // Reset room selections
+                this.formAddReservation.units.forEach((unit, index) => {
+                    unit.projectId = ''; // Reset project ID
+                    unit.roomType = '';
+                    unit.unitId = '';
+                    unit.rateType = '';
+                    unit.adults = '1';
+                    unit.children = '0';
+                    unit.rateAmount = '';
+                    unit.unitTypeId = '';
+                    this.$set(this.availableUnitsByRoom, index, []);
+                    this.$set(this.filteredUnitTypesByRoom, index, []); // Reset filtered unit types
+                });
+
+                // Reset services
+                this.formAddReservation.services = [
+                    {
+                        serviceId: '',
+                        price: 0,
+                    },
+                ];
+
+                // Reset business source and travel agent
+                this.formAddReservation.businessSource = '';
+                this.formAddReservation.travelAgent = '';
+
+                // Reset guest information
+                this.formAddReservation.guestInformation = {
+                    name: '',
+                    email: '',
+                    mobile: '',
+                    address: '',
+                    country: '',
+                    state: '',
+                    city: '',
+                    zip: '',
+                };
+
+                // Reset selected name ID
+                this.selectedNameId = null;
+
+                // Clear filtered names
+                this.filteredNames = [];
+                this.showDropdown = false;
+            },
         },
 
         async mounted() {
@@ -1570,7 +1616,8 @@
                                 const newDate = this.formatDate(selectedDates[0]);
                                 if (newDate !== this.formAddReservation.checkInDate) {
                                     this.formAddReservation.checkInDate = newDate;
-                                    this.resetRoomSelections();
+                                    // Reset all form data when check-in date changes
+                                    this.resetFormData();
                                 }
                             }
                         },
@@ -1586,7 +1633,8 @@
                                 const newDate = this.formatDate(selectedDates[0]);
                                 if (newDate !== this.formAddReservation.checkOutDate) {
                                     this.formAddReservation.checkOutDate = newDate;
-                                    this.resetRoomSelections();
+                                    // Reset all form data when check-out date changes
+                                    this.resetFormData();
                                 }
                             }
                         },
