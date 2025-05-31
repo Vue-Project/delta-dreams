@@ -984,9 +984,9 @@
                         //     unit_code: building.name,
                         //     amount: this.formatValueForServer(building.amount),
                         // });
-                        formData.append(`building_details[${index}][unit_id]`, building.unitId);
-                        formData.append(`building_details[${index}][unit_code]`, building.name);
-                        formData.append(`building_details[${index}][amount]`, this.formatValueForServer(building.amount));
+                        formData.append(`payment_units[${index}][unit_id]`, building.unitId);
+                        formData.append(`payment_units[${index}][unit_code]`, building.name);
+                        formData.append(`payment_units[${index}][amount]`, this.formatValueForServer(building.amount));
                     });
                 } else {
                     console.log('No building details to add');
