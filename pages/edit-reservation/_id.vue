@@ -584,9 +584,12 @@
                                         {{ log.value }}
                                     </td>
                                     <td>
-                                        {{ log.value_old || 'No Old Value' }}
+                                        {{ log.value_old }}
                                     </td>
-                                    <td>{{ log.ip }}-</td>
+                                    <td>
+                                        <span>{{ log.userDevice.ip }} / {{ log.userDevice.browser }} / {{ log.userDevice.platform }}</span>
+                                        <span></span>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
