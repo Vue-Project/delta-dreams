@@ -862,7 +862,7 @@
                     await showSuccessAlert('Reservation submitted successfully!');
 
                     // Emit event to parent component
-                    this.$emit('reservation-updated');
+                    this.$emit('reservation-and-logs-updated');
                 } catch (error) {
                     handleSubmissionError(error, 'There was an issue with your reservation.');
                 } finally {

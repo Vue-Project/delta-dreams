@@ -93,9 +93,9 @@
             Credit Card
           </button>
         </li> -->
-                <!-- <li class="nav-item col-12 col-md" role="presentation">
+                <li class="nav-item col-12 col-md" role="presentation">
                     <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-AuditTrail" role="tab" aria-selected="true">Audit Trail</button>
-                </li> -->
+                </li>
                 <li class="nav-item col-12 col-md" role="presentation">
                     <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-Wallet" role="tab" aria-selected="true">Wallet</button>
                 </li>
@@ -376,7 +376,7 @@
                 <component :is="activeComponent" @goBack="goBack" />
               </div> -->
                         <div class="col-12">
-                            <UpdateReservation :reservationData="reservationsDataById[0]" :reservationId="selectedReservationId" @reservation-updated="refreshReservationData" />
+                            <UpdateReservation :reservationData="reservationsDataById[0]" @reservation-and-logs-updated="refreshReservationData" />
                         </div>
                         <!-- content  -->
                         <!-- <div class="tab-content">
@@ -554,71 +554,44 @@
                 <!-- eND Credit Card  tab -->
 
                 <!--  Start Audit Trail tab  -->
-                <!-- <div class="tab-pane fade" id="form-tabs-AuditTrail" role="tabpanel">
+                <div class="tab-pane fade" id="form-tabs-AuditTrail" role="tabpanel">
                     <div class="table-responsive text-nowrap">
                         <table class="table">
                             <thead class="table-light">
                                 <tr>
-                                    <th>Date/Time</th>
-                                    <th>Logs</th>
+                                    <th>Create At</th>
                                     <th>User</th>
-                                    <th>IP</th>
+                                    <th>KeyName</th>
+                                    <th>Value</th>
+                                    <th>OldValue</th>
+                                    <th>Device</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
+                                <tr v-for="log in logs" :key="log.id">
+                                    <!-- Update these cell click handlers to pass the specific ID -->
                                     <td>
-                                        <p class="fw-medium">14/12/2024</p>
-                                        <p class="fw-medium">12:23:48 PM</p>
+                                        {{ formatDate(log.created_at) }}
                                     </td>
                                     <td>
-                                        <p>Amend Stay</p>
-                                        <p>Old Stay Arrival : 02/12/2024 Departure : 07/12/2024 , New Stay Arrival : 02/12/2024 Departure : 13/12/2024</p>
+                                        {{ log.user?.name }}
+                                    </td>
+                                    <!-- Add the same pattern to all other cells -->
+                                    <td>
+                                        {{ log.key_name }}
                                     </td>
                                     <td>
-                                        <p>eslam</p>
+                                        {{ log.value }}
                                     </td>
                                     <td>
-                                        <p>45.240.157.99</p>
+                                        {{ log.value_old || 'No Old Value' }}
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <p class="fw-medium">14/12/2024</p>
-                                        <p class="fw-medium">12:23:48 PM</p>
-                                    </td>
-                                    <td>
-                                        <p>Amend Stay</p>
-                                        <p>Old Stay Arrival : 02/12/2024 Departure : 07/12/2024 , New Stay Arrival : 02/12/2024 Departure : 13/12/2024</p>
-                                    </td>
-                                    <td>
-                                        <p>eslam</p>
-                                    </td>
-                                    <td>
-                                        <p>45.240.157.99</p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <p class="fw-medium">14/12/2024</p>
-                                        <p class="fw-medium">12:23:48 PM</p>
-                                    </td>
-                                    <td>
-                                        <p>Amend Stay</p>
-                                        <p>Old Stay Arrival : 02/12/2024 Departure : 07/12/2024 , New Stay Arrival : 02/12/2024 Departure : 13/12/2024</p>
-                                    </td>
-
-                                    <td>
-                                        <p>eslam</p>
-                                    </td>
-                                    <td>
-                                        <p>45.240.157.99</p>
-                                    </td>
+                                    <td>{{ log.ip }}-</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-                </div> -->
+                </div>
                 <!--  End Audit Trail tab  -->
                 <div class="tab-pane fade" id="form-tabs-Wallet" role="tabpanel">
                     <button class="btn btn-outline-secondary waves-effect mb-2" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('addpayment', 'Add Payment')">Add payment</button>
@@ -706,6 +679,7 @@
             return {
                 currentContent: null,
                 roomChargesData: [],
+                logs: [],
                 selectedRoomChargeIds: [], // Array to store multiple selected IDs
                 selectAll: false,
                 offcanvasTitle: '',
@@ -911,12 +885,9 @@
                     const response = await getReservationDataById(id);
                     this.reservationsDataById = [response.data.data];
                     this.roomChargesData = response.data.data.items;
-
-                    // Optional: Show success toast/notification
-                    this.$toast?.success('Data refreshed successfully');
+                    this.logs = response.data.logs.data;
                 } catch (error) {
                     console.error('Error refreshing reservation data:', error);
-                    this.$toast?.error('Failed to refresh data');
                 } finally {
                     this.isRefreshing = false;
                 }
@@ -933,6 +904,7 @@
 
                 this.reservationsDataById = [ReservationDataByIdResponse.data.data];
                 this.roomChargesData = ReservationDataByIdResponse.data.data.items;
+                this.logs = ReservationDataByIdResponse.data.logs.data;
                 if (this.reservationsDataById.length > 0) {
                     this.selectedReservationId = this.reservationsDataById[0].id; // Set to the first reservation's ID
                 }
