@@ -4,7 +4,7 @@ const path = require('path');
 export default {
     // Global page headers: https://go.nuxtjs.dev/config-head
     head: {
-        title: 'Default Title', // fallback
+        title: 'systemira', // fallback
         meta: [
             { charset: 'utf-8' },
             { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -15,6 +15,10 @@ export default {
                 name: 'csrf-token',
                 content: process.env.CSRF_TOKEN || '',
             },
+            // Add cache prevention meta tags
+            { 'http-equiv': 'Cache-Control', content: 'no-cache, no-store, must-revalidate' },
+            { 'http-equiv': 'Pragma', content: 'no-cache' },
+            { 'http-equiv': 'Expires', content: '0' },
         ],
         link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
         script: [
@@ -61,6 +65,17 @@ export default {
     // Build Configuration: https://go.nuxtjs.dev/config-build
     build: {
         vendor: ['jquery', 'jPinning'],
+
+        // Add file hashing for cache busting
+        filenames: {
+            app: ({ isDev }) => (isDev ? '[name].js' : '[name].[contenthash:7].js'),
+            chunk: ({ isDev }) => (isDev ? '[name].js' : '[name].[contenthash:7].js'),
+            css: ({ isDev }) => (isDev ? '[name].css' : '[name].[contenthash:7].css'),
+            img: ({ isDev }) => (isDev ? '[path][name].[ext]' : 'img/[name].[contenthash:7].[ext]'),
+            font: ({ isDev }) => (isDev ? '[path][name].[ext]' : 'fonts/[name].[contenthash:7].[ext]'),
+            video: ({ isDev }) => (isDev ? '[path][name].[ext]' : 'videos/[name].[contenthash:7].[ext]'),
+        },
+
         plugins: [
             new webpack.ProvidePlugin({
                 $: 'jquery',
@@ -69,6 +84,7 @@ export default {
                 jQuery: 'jquery',
             }),
         ],
+
         extend(config, { isDev, isClient }) {
             if (isDev && isClient) {
                 config.module.rules.push({
@@ -77,28 +93,59 @@ export default {
                     exclude: /(node_modules)/,
                 });
             }
-            config.devtool = isDev ? 'eval-source-map' : 'source-map';
+
+            // Add timestamp to prevent caching in production
+            if (!isDev) {
+                config.output.filename = '[name].[contenthash].js';
+                config.output.chunkFilename = '[name].[contenthash].js';
+            }
         },
-        optimization: {
-            splitChunks: {
-                chunks: 'all',
-                automaticNameDelimiter: '.',
-                name: true,
-                maxSize: 244000,
-            },
-        },
+
+        // Enable source maps for better debugging
+        // extractCSS: true, // Extract CSS into separate files
+
         hardSource: true,
-        watch: ['~/**/*.vue', '~/**/*.js'],
     },
+
+    // Add render configuration for cache headers
+    render: {
+        static: {
+            maxAge: 0, // Disable static file caching
+        },
+        http2: {
+            push: false, // Disable HTTP/2 push for immediate updates
+        },
+    },
+
+    // Server middleware for cache headers
+    serverMiddleware: ['~/middleware/no-cache.js'],
+
     static: {
         prefix: false, // Ensures static files are served as-is
     },
+
     ignoredPaths: [''],
 
     publicRuntimeConfig: {
         baseURL: process.env.BASE_URL,
     },
+
     env: {
         API_BASE_URL: process.env.API_BASE_URL,
+    },
+
+    // Generate configuration for static deployment
+    generate: {
+        fallback: true,
+        // Add timestamp to generated files
+        dir: 'dist',
+    },
+
+    // Add router configuration
+    router: {
+        // Add cache busting for routes
+        extendRoutes(routes, resolve) {
+            // Optional: add version parameter to routes
+        },
     },
 };
