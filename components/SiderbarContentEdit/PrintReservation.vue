@@ -6,10 +6,11 @@
         </button>
 
         <div id="printSection" class="print-wrapper" style="display: none">
+            <!-- {{ settingsData }} -->
             <!-- Header -->
             <div class="print-header">
-                <!-- <img src="/mnt/data/Screenshot_1.png" alt="Logo" class="logo" /> -->
-                <h1 class="title">Reservation Summary</h1>
+                <img class="logo" :src="`${$nuxt.$config.baseURL}/${settingsData.site_logo}`" />
+                <h1 class="title">{{ settingsData.site_title }}</h1>
             </div>
 
             <!-- Reservation Details -->
@@ -84,10 +85,7 @@
                         <td>UnitPrice(Nights)</td>
                         <td>{{ reservationData.price }} ({{ reservationData.nights }} Nights)</td>
                     </tr>
-                    <tr>
-                        <td>User</td>
-                        <td>{{ reservationData.user?.name }}</td>
-                    </tr>
+
                     <tr>
                         <td>Total:</td>
                         <td>{{ reservationData.total }} EGP</td>
@@ -132,8 +130,15 @@
 
 <script>
     import print from 'vue-print-nb';
+    import { getSettingsSite } from '../../Api/CalenderApi';
 
     export default {
+        name: 'PrintReservation',
+        data() {
+            return {
+                settingsData: {},
+            };
+        },
         props: {
             reservationData: {
                 type: Object,
@@ -141,6 +146,17 @@
         },
         directives: {
             print,
+        },
+        async mounted() {
+            this.isLoading = true;
+            try {
+                const [settingsDataResponse] = await Promise.all([getSettingsSite()]);
+                this.settingsData = settingsDataResponse;
+
+                // Dynamically update favicon
+            } catch (error) {
+                console.error('Error loading data:', error);
+            }
         },
         computed: {
             approvedPayments() {
@@ -165,7 +181,7 @@
     .print-header {
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: space-between;
         border-bottom: 3px solid #555;
         padding-bottom: 15px;
         margin-bottom: 20px;
@@ -178,7 +194,7 @@
     .title {
         font-size: 28px;
         color: #333;
-        text-align: center;
+        text-align: right;
         flex: 1;
     }
 
@@ -223,24 +239,6 @@
         border: 1px solid #ccc;
         padding: 10px;
         text-align: center;
-    }
-
-    .status-approved {
-        color: green;
-        font-weight: bold;
-    }
-
-    /* Image Section */
-    .image-section {
-        margin-top: 40px;
-        text-align: center;
-    }
-
-    .image-section img {
-        width: 100%;
-        max-width: 600px;
-        border: 1px solid #aaa;
-        padding: 5px;
     }
 
     /* Print Specific Styles */
