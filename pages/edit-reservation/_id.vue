@@ -376,7 +376,7 @@
                 <component :is="activeComponent" @goBack="goBack" />
               </div> -->
                         <div class="col-12">
-                            <UpdateReservation :reservationData="reservationsDataById[0]" @reservation-and-logs-updated="refreshReservationData" />
+                            <UpdateReservation :reservationData="reservationsDataById[0]" :reservationId="selectedReservationId" @reservation-and-logs-updated="refreshReservationData" />
                         </div>
                         <!-- content  -->
                         <!-- <div class="tab-content">
