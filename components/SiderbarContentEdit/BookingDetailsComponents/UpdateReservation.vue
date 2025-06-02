@@ -133,7 +133,7 @@
                                         <tbody>
                                             <tr v-for="(item, index) in formAddReservation.units" :key="index" class="mb-2 selectStyle">
                                                 <td data-label="Project">
-                                                    <select class="form-select" v-model="item.projectId">
+                                                    <select class="form-select" v-model="item.projectId" :disabled="index > 0">
                                                         <option disabled value="">Select</option>
                                                         <option v-for="project in getProjects" :key="project.id" :value="project.id">
                                                             {{ project.name }}
@@ -862,7 +862,7 @@
                     await showSuccessAlert('Reservation submitted successfully!');
 
                     // Emit event to parent component
-                    this.$emit('reservation-updated');
+                    this.$emit('reservation-and-logs-updated');
                 } catch (error) {
                     handleSubmissionError(error, 'There was an issue with your reservation.');
                 } finally {
@@ -1185,36 +1185,37 @@
                 // Use spread operator to safely merge data
                 this.formAddReservation = {
                     ...this.formAddReservation,
-                    checkInDate: this.formatDateNumber(reservationData.checkin_date || ''),
-                    checkInTime: reservationData.checkin_time || '',
-                    checkOutDate: this.formatDateNumber(reservationData.checkout_date || ''),
-                    checkOutTime: reservationData.checkout_time || '',
+                    checkInDate: this.formatDateNumber(reservationData.checkin_date),
+                    checkInTime: reservationData.checkin_time,
+                    checkOutDate: this.formatDateNumber(reservationData.checkout_date),
+                    checkOutTime: reservationData.checkout_time,
                     numberRooms: reservationData.rooms || 1,
-                    reservationType: reservationData.reservation_type_name || '',
-                    bookingSource: reservationData.booking_source?.id || '',
-                    travelAgent: reservationData.travel_agent?.id || '',
-                    businessSource: reservationData.business_source?.id || '',
+                    reservationType: reservationData.reservation_type_name,
+                    bookingSource: reservationData.booking_source?.id,
+                    travelAgent: reservationData.travel_agent?.id,
+                    businessSource: reservationData.business_source?.id,
                     units: [
                         // First unit with direct reservation data
                         {
-                            projectId: reservationData.project_id || '',
-                            rateType: reservationData.rate_type || '',
-                            adults: reservationData.adults || '',
-                            children: reservationData.children || '',
-                            rateAmount: reservationData.unit_price || '',
-                            unitId: reservationData.unit_id || '',
-                            roomType: reservationData.unit_type_id || '',
-                            reservationId: reservationData.id || '',
+                            projectId: reservationData.project_id,
+                            rateType: reservationData.rate_type,
+                            adults: reservationData.adults,
+                            children: reservationData.children,
+                            rateAmount: reservationData.unit_price,
+                            unitId: reservationData.unit_id,
+                            roomType: reservationData.unit_type_id,
+                            reservationId: reservationData.id,
                         },
                         // Additional units from children array
                         ...(reservationData.childrens || []).map(unit => ({
-                            rateType: unit.rate_type || '',
-                            adults: unit.adults || '',
-                            children: unit.children || '',
-                            rateAmount: unit?.unit_price || '',
-                            unitId: unit?.unit_id || '',
-                            roomType: unit?.unit_type_id || '',
-                            reservationId: unit.id || '',
+                            projectId: unit.project_id,
+                            rateType: unit.rate_type,
+                            adults: unit.adults,
+                            children: unit.children,
+                            rateAmount: unit?.unit_price,
+                            unitId: unit?.unit_id,
+                            roomType: unit?.unit_type_id,
+                            reservationId: unit.id,
                         })),
                     ],
                     services: [

@@ -194,6 +194,8 @@
                             <textarea class="form-control" v-model="paymentDetails.comment" rows="3"></textarea>
                         </div>
 
+                        <!-- Building Details Section - Only show when numberOfRooms > 1 -->
+
                         <!-- Payment specific fields -->
                         <!-- <template v-if="selectedPaymentType === 'bank_transfer'">
             <div class="mb-3">
@@ -232,6 +234,22 @@
           </template> -->
                     </div>
                 </div>
+                <!-- Building Details Section -->
+                <div class="row mb-3">
+                    <div v-if="numberOfRooms > 1" class="col-12">
+                        <h6 class="mb-3">Payment Details Units</h6>
+                        <div v-for="index in numberOfRooms - 1" :key="index" class="row mb-3">
+                            <div class="col-md-6">
+                                <label :for="'buildingName' + index" class="form-label">Unit Code</label>
+                                <input type="text" :id="'buildingName' + index" class="form-control" v-model="paymentUnits[index - 1].name" placeholder="Enter unit code" readonly />
+                            </div>
+                            <div class="col-md-6">
+                                <label :for="'buildingAmount' + index" class="form-label">Amount</label>
+                                <input type="number" :id="'buildingAmount' + index" class="form-control" v-model="paymentUnits[index - 1].amount" placeholder="Enter amount" min="0" @input="updateBuildingAmount(index - 1, $event)" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- Dynamic form fields based on payment type -->
             </div>
@@ -257,6 +275,10 @@
                 type: Array,
                 required: true,
             },
+            numberOfRooms: {
+                type: Number,
+                default: 1,
+            },
         },
         data() {
             return {
@@ -267,6 +289,7 @@
                 businessSources: [],
                 travelAgents: [],
                 datePicker1Instance: null,
+                paymentUnits: [],
                 paymentDetails: {
                     roomCharges: 0.0,
                     taxes: '0',
@@ -353,6 +376,71 @@
                     this.$emit('input', {
                         ...this.value,
                         ...newVal,
+                    });
+                },
+            },
+            numberOfRooms: {
+                immediate: true,
+                handler(newValue) {
+                    // Create array with one less than the number of rooms
+                    const newPaymentUnits = [];
+                    const detailsCount = Math.max(0, newValue - 1); // One less than total rooms
+
+                    // Get the CheckIn component instance
+                    const checkInComponent = this.$parent.$refs.checkIn;
+                    if (!checkInComponent) return;
+
+                    for (let i = 0; i < detailsCount; i++) {
+                        // Get the unit from CheckIn component
+                        const unitId = checkInComponent.formAddReservation.units[i + 1]?.unitId;
+                        const availableUnits = checkInComponent.availableUnitsByRoom[i + 1] || [];
+                        const unit = availableUnits.find(u => u.id === unitId);
+
+                        // If we have existing data for this index, keep it
+                        const existingData = this.paymentUnits[i] || { name: '', amount: 0, unitId: '' };
+
+                        newPaymentUnits.push({
+                            name: unit ? unit.code : existingData.name,
+                            amount: existingData.amount,
+                            unitId: unitId || existingData.unitId,
+                            roomNumber: i + 1,
+                        });
+                    }
+
+                    this.paymentUnits = newPaymentUnits;
+
+                    // Update payment details with new building details
+                    this.$emit('input', {
+                        ...this.value,
+                        paymentUnits: this.paymentUnits,
+                        buildingAmount: this.calculateTotalBuildingAmount(),
+                    });
+                },
+            },
+            // Add a watcher for CheckIn units changes
+            '$parent.$refs.checkIn.formAddReservation.units': {
+                deep: true,
+                handler(newUnits) {
+                    if (!newUnits) return;
+
+                    // Update building details when units change
+                    this.paymentUnits = this.paymentUnits.map((detail, index) => {
+                        const unitId = newUnits[index + 1]?.unitId;
+                        const availableUnits = this.$parent.$refs.checkIn.availableUnitsByRoom[index + 1] || [];
+                        const unit = availableUnits.find(u => u.id === unitId);
+
+                        return {
+                            ...detail,
+                            name: unit ? unit.code : detail.name,
+                            unitId: unitId || detail.unitId,
+                        };
+                    });
+
+                    // Emit updated building details
+                    this.$emit('input', {
+                        ...this.value,
+                        paymentUnits: this.paymentUnits,
+                        buildingAmount: this.calculateTotalBuildingAmount(),
                     });
                 },
             },
@@ -461,6 +549,29 @@
                     this.paymentTypes = [];
                     this.value.selectedPaymentType = '';
                 }
+            },
+            calculateTotalBuildingAmount() {
+                return this.paymentUnits.reduce((sum, building) => {
+                    return sum + (Number(building.amount) || 0);
+                }, 0);
+            },
+            updateBuildingAmount(index, event) {
+                // Ensure amount is not negative
+                const value = Math.max(0, Number(event.target.value));
+                this.paymentUnits[index].amount = value;
+
+                // Calculate total building amount
+                const totalBuildingAmount = this.calculateTotalBuildingAmount();
+
+                // Update payment details with total building amount
+                this.paymentDetails.buildingAmount = totalBuildingAmount;
+
+                // Emit updated value
+                this.$emit('input', {
+                    ...this.value,
+                    paymentUnits: this.paymentUnits,
+                    buildingAmount: totalBuildingAmount,
+                });
             },
         },
     };

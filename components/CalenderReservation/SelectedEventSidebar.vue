@@ -23,8 +23,8 @@
                         </span>
                     </div>
                     <div class="row mt-4">
-                        <div class="col-6" v-if="selectedEvent?.is_edit">
-                            <button type="button" class="btn btn-primary waves-effect waves-light btn-block EditBtnSideBar" @click="navigateToEditReservation(selectedEvent.id)">Edit</button>
+                        <div class="col-6">
+                            <button v-if="selectedEvent?.is_edit" type="button" class="btn btn-primary waves-effect waves-light btn-block EditBtnSideBar" @click="navigateToEditReservation(selectedEvent.id)">Edit</button>
                         </div>
                         <div class="col-6">
                             <button type="button" class="btn btn-primary waves-effect waves-light btn-block AddPaymentBtnSideBar" data-bs-toggle="modal" data-bs-target="#paymentModal" v-if="selectedEvent?.is_edit">Add Payment</button>
@@ -144,6 +144,19 @@
                                     </div>
                                 </div>
                             </li>
+                            <li class="mb-3 pb-1">
+                                <div class="d-flex align-items-start">
+                                    <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                        <div class="me-2">
+                                            <h6 class="mb-0">User</h6>
+
+                                            <small class="text-muted">
+                                                {{ selectedEvent.user_name }}
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
                         </ul>
                     </div>
                     <div class="col-6">
@@ -233,13 +246,13 @@
                 <div class="new-div mt-lg-5 mt-md-5 mt-2 w-100 TotalPayment">
                     <dl class="row mb-0">
                         <dt class="col-6 fw-normal text-heading">Insurance</dt>
-                        <dd class="col-6 text-end mb-0">{{ selectedEvent.insurance || 0 }} EGP</dd>
+                        <dd class="col-6 text-end mb-0">{{ selectedEvent.insurance }} EGP</dd>
                         <dt class="col-6 fw-normal text-heading">Insurance Refund</dt>
                         <dd class="col-6 text-end mb-0">{{ selectedEvent.insurance_refund }} EGP</dd>
                         <dt class="col-6 fw-normal text-heading">Insurance Remaining</dt>
                         <dd class="col-6 text-end mb-0">{{ selectedEvent.insurance_remaining }} EGP</dd>
                         <dt class="col-6 fw-normal text-heading">Total Services</dt>
-                        <dd class="col-6 text-end mb-0">{{ selectedEvent.total_service }} EGP</dd>
+                        <dd class="col-6 text-end mb-0">{{ selectedEvent.service_price }} EGP</dd>
                         <dt class="col-6 fw-normal text-heading">Unit Price (Nights)</dt>
                         <dd class="col-6 text-end mb-0">{{ selectedEvent.unit_price }} EGP {{ selectedEvent.nights }} Nights</dd>
                         <dt class="col-6 fw-normal text-heading">Total</dt>

@@ -33,6 +33,7 @@
     "vue-cookies": "^1.8.3",
     "vue-easy-lightbox": "^0.15.2",
     "vue-fragment": "^1.6.0",
+    "vue-print-nb": "^1.7.5",
     "vue-server-renderer": "^2.7.14",
     "vue-template-compiler": "^2.7.14",
     "vue-wow": "^1.2.0",
