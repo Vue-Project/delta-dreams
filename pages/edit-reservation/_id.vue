@@ -63,9 +63,10 @@
                         </div>
                     </div>
                     <div class="col-6 col-md-5 col-xl-1 text-cente text-md-center" v-if="reservationDataById?.is_cancel">
-                        <div class="me">
-                            <button type="button" class="btn btn-label-danger waves-effect mt-3" title="Cancel Reservation" @click="cancelReservation">Cancel</button>
-                        </div>
+                        <button type="button" class="btn btn-label-danger waves-effect mt-3" title="Cancel Reservation" @click="cancelReservation">Cancel</button>
+                    </div>
+                    <div class="col-6 col-md-5 col-xl-1 text-cente text-md-center">
+                        <PrintReservation ref="printReservation" :reservationData="reservationsDataById[0]" />
                     </div>
                 </div>
             </div>
@@ -646,6 +647,7 @@
     import UpdateDetailsAll from '../../components/SiderbarContentEdit/UpdateDetailsAll.vue';
     import { mapGetters } from 'vuex/dist/vuex.common.js';
     // import UpdateDetailsAll from '../../components/SiderbarContentEdit/UpdateDetailsAll.vue';
+    import PrintReservation from '../../components/SiderbarContentEdit/PrintReservation.vue';
 
     export default {
         name: 'EditsPage',
@@ -677,11 +679,14 @@
             UpdateReservation,
             WalletDetails,
             UpdateDetailsAll,
+            PrintReservation,
         },
         data() {
             return {
                 currentContent: null,
                 roomChargesData: [],
+                printComponentRef: null,
+
                 logs: [],
                 selectedRoomChargeIds: [], // Array to store multiple selected IDs
                 selectAll: false,
@@ -894,6 +899,10 @@
                 } finally {
                     this.isRefreshing = false;
                 }
+            },
+            handlePrint() {
+                // Call the print method on the child component
+                this.$refs.printReservation.print();
             },
         },
 
