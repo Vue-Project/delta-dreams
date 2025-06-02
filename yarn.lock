@@ -8268,6 +8268,13 @@
   "resolved" "https://registry.npmjs.org/vue-no-ssr/-/vue-no-ssr-1.1.1.tgz"
   "version" "1.1.1"
 
+"vue-print-nb@^1.7.5":
+  "integrity" "sha512-iNbNyUVRWz0Ha1UTiCKxMPtHLUDGgNI8e8xmD3xqm9RlXIUeX9bT7DgNAfY8vPzqyFRHqGjxLI1rycKH366ziQ=="
+  "resolved" "https://registry.npmjs.org/vue-print-nb/-/vue-print-nb-1.7.5.tgz"
+  "version" "1.7.5"
+  dependencies:
+    "vue" "^2.6.11"
+
 "vue-router@^3.5.1":
   "integrity" "sha512-G21CKd8o/Mr3h8Xgi6zwg2ixJ5OxBG9G5w/b5McEFfLBqyQJc/7HDGsibf2FAl2enpZla+OJ3IlYipRusGN/4w=="
   "resolved" "https://registry.npmjs.org/vue-router/-/vue-router-3.6.3.tgz"
