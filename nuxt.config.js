@@ -143,6 +143,8 @@ export default {
 
     // Add router configuration
     router: {
+        middleware: ['forceParams'],
+
         // Add cache busting for routes
         extendRoutes(routes, resolve) {
             // Optional: add version parameter to routes
