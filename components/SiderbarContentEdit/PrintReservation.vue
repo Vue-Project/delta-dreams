@@ -102,7 +102,7 @@
             </div>
 
             <!-- Payment Details -->
-            <div class="section">
+            <div class="section" v-if="reservationData.wallets && approvedPayments.length > 0">
                 <h2 class="section-title">Payment Details</h2>
                 <table class="payment-table">
                     <thead>
