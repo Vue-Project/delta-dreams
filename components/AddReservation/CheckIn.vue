@@ -718,6 +718,9 @@
                     this.formAddReservation.units.splice(targetCount);
                     this.availableUnitsByRoom.splice(targetCount);
                 }
+
+                // Emit the updated number of rooms
+                this.$emit('update:numberRooms', targetCount);
             },
             addUnit() {
                 const firstUnitTypeId = this.formAddReservation.units[0]?.unitTypeId;
@@ -737,6 +740,8 @@
 
                 this.$set(this.availableUnitsByRoom, newIndex, []);
                 this.formAddReservation.numberRooms = this.formAddReservation.units.length.toString();
+                // Emit the updated number of rooms
+                this.$emit('update:numberRooms', this.formAddReservation.units.length);
             },
             removeUnit(index) {
                 if (this.formAddReservation.units.length > 1) {
@@ -744,6 +749,8 @@
                     // Remove available units for this room
                     this.$delete(this.availableUnitsByRoom, index);
                     this.formAddReservation.numberRooms = this.formAddReservation.units.length.toString();
+                    // Emit the updated number of rooms
+                    this.$emit('update:numberRooms', this.formAddReservation.units.length);
                 }
             },
             addService() {
@@ -883,7 +890,6 @@
                 this.$v.$touch();
                 if (this.$v.$invalid) {
                     this.isSubmitting = false;
-
                     return;
                 }
 
@@ -930,7 +936,6 @@
                     payment_travel_agent_id: this.paymentData.selectedTravelAgent,
                     payment_business_source_id: this.paymentData.selectedBusinessSource,
                 };
-                // console.log(bookingData);
 
                 // Append simple fields to FormData
                 Object.keys(bookingData).forEach(key => {
@@ -938,7 +943,18 @@
                 });
 
                 // Append the units array (as individual entries)
+                // Log units data
+                // console.log('Adding units data:');
                 this.formAddReservation.units.forEach((unit, index) => {
+                    // console.log(`Unit ${index}:`, {
+                    //     project_id: unit.projectId,
+                    //     unit_id: unit.unitId,
+                    //     unit_type_id: unit.unitTypeId,
+                    //     rate_type: unit.rateType,
+                    //     adults: unit.adults,
+                    //     children: unit.children,
+                    //     rate_amount: this.formatValueForServer(unit.rateAmount),
+                    // });
                     formData.append(`units[${index}][project_id]`, unit.projectId);
                     formData.append(`units[${index}][unit_id]`, unit.unitId);
                     formData.append(`units[${index}][unit_type_id]`, unit.unitTypeId);
@@ -948,18 +964,38 @@
                     formData.append(`units[${index}][rate_amount]`, this.formatValueForServer(unit.rateAmount));
                 });
 
-                // Append the services array (as individual entries)
+                // Log services data
+                // console.log('Adding services data:');
                 this.formAddReservation.services.forEach((service, index) => {
+                    // console.log(`Service ${index}:`, {
+                    //     service_id: service.serviceId,
+                    //     service_price: this.formatValueForServer(service.price),
+                    // });
                     formData.append(`services[${index}][service_id]`, service.serviceId);
                     formData.append(`services[${index}][service_price]`, this.formatValueForServer(service.price));
                 });
+
+                // Log building details data if they exist
+                if (this.paymentData.paymentUnits && this.paymentData.paymentUnits.length > 0) {
+                    // console.log('Adding building details data:');
+                    this.paymentData.paymentUnits.forEach((building, index) => {
+                        // console.log(`paymentUnits ${index}:`, {
+                        //     unit_id: building.unitId,
+                        //     unit_code: building.name,
+                        //     amount: this.formatValueForServer(building.amount),
+                        // });
+                        formData.append(`payment_units[${index}][unit_id]`, building.unitId);
+                        formData.append(`payment_units[${index}][unit_code]`, building.name);
+                        formData.append(`payment_units[${index}][amount]`, this.formatValueForServer(building.amount));
+                    });
+                } else {
+                    console.log('No building details to add');
+                }
 
                 // Append image file if it exists
                 if (imageFile) {
                     formData.append('image', imageFile);
                 }
-
-                // Log FormData contents
 
                 try {
                     this.isSubmitting = true;
@@ -969,16 +1005,11 @@
                     // reservation ID from the response
                     const reservationName = response?.data?.reservation?.name;
 
-                    await showSuccessAlert(
-                        `Reservation #${reservationName} submitted successfully!`, // Include ID in message
-                        this.$router,
-                        'index', // Route name
-                    );
+                    await showSuccessAlert(`Reservation #${reservationName} submitted successfully!`, this.$router, 'index');
                 } catch (error) {
-                    handleSubmissionError(
-                        error,
-                        'There was an issue with your reservation.', // Custom default error
-                    );
+                    handleSubmissionError(error, 'There was an issue with your reservation.');
+                } finally {
+                    this.isSubmitting = false;
                 }
             },
 
@@ -1434,6 +1465,52 @@
             formatValueForServer(value) {
                 return value ? value.toString().replace(/[.,]/g, '') : '0';
             },
+            resetFormData() {
+                // Reset room selections
+                this.formAddReservation.units.forEach((unit, index) => {
+                    unit.projectId = ''; // Reset project ID
+                    unit.roomType = '';
+                    unit.unitId = '';
+                    unit.rateType = '';
+                    unit.adults = '1';
+                    unit.children = '0';
+                    unit.rateAmount = '';
+                    unit.unitTypeId = '';
+                    this.$set(this.availableUnitsByRoom, index, []);
+                    this.$set(this.filteredUnitTypesByRoom, index, []); // Reset filtered unit types
+                });
+
+                // Reset services
+                this.formAddReservation.services = [
+                    {
+                        serviceId: '',
+                        price: 0,
+                    },
+                ];
+
+                // Reset business source and travel agent
+                this.formAddReservation.businessSource = '';
+                this.formAddReservation.travelAgent = '';
+
+                // Reset guest information
+                this.formAddReservation.guestInformation = {
+                    name: '',
+                    email: '',
+                    mobile: '',
+                    address: '',
+                    country: '',
+                    state: '',
+                    city: '',
+                    zip: '',
+                };
+
+                // Reset selected name ID
+                this.selectedNameId = null;
+
+                // Clear filtered names
+                this.filteredNames = [];
+                this.showDropdown = false;
+            },
         },
 
         async mounted() {
@@ -1539,7 +1616,8 @@
                                 const newDate = this.formatDate(selectedDates[0]);
                                 if (newDate !== this.formAddReservation.checkInDate) {
                                     this.formAddReservation.checkInDate = newDate;
-                                    this.resetRoomSelections();
+                                    // Reset all form data when check-in date changes
+                                    this.resetFormData();
                                 }
                             }
                         },
@@ -1555,7 +1633,8 @@
                                 const newDate = this.formatDate(selectedDates[0]);
                                 if (newDate !== this.formAddReservation.checkOutDate) {
                                     this.formAddReservation.checkOutDate = newDate;
-                                    this.resetRoomSelections();
+                                    // Reset all form data when check-out date changes
+                                    this.resetFormData();
                                 }
                             }
                         },

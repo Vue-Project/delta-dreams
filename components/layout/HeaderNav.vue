@@ -5,14 +5,14 @@
   >
 
     <div class="container-fluid">
-      <div class="navbar-brand app-brand demo d-none d-xl-flex py-0 me-4">
+      <div class="navbar-brand app-brand demo d-xl-flex py-0 me-4">
         <a
           :href="settingsData.admin_url"
           class="app-brand-link gap-2"
         >
           <span class="app-brand-logo demo">
             <img
-              :src="settingsData.site_logo || require('../../assets/images/logo-sys.png')"
+              :src="`${$nuxt.$config.baseURL}/${settingsData.site_logo}` || require('../../assets/images/logo-sys.png')"
               alt="logo"
               class="img-fluid"
             />
@@ -22,15 +22,15 @@
           <span class="app-brand-text demo menu-text fw-bold">{{settingsData.site_title}}</span>
         </a>
 
-        <a
+        <!-- <a
           href="javascript:void(0);"
           class="layout-menu-toggle menu-link text-large ms-auto d-xl-none"
         >
           <i class="fa-solid fa-xmark fa-sm align-middle"></i>
-        </a>
+        </a> -->
       </div>
 
-      <div class="navbar-brand app-brand demo d-xl-none d-xl-flex py-0 me-4">
+      <!-- <div class="navbar-brand app-brand demo d-xl-none d-xl-flex py-0 me-4">
         <a
           href="https://deltadream.swevey.com/admin"
           class="app-brand-link gap-2"
@@ -46,7 +46,7 @@
         <a href="/" class="app-brand-link gap-2">
           <span class="app-brand-text demo menu-text fw-bold">Delta Dream</span>
         </a>
-      </div>
+      </div> -->
 
       <div
         class="navbar-nav-right d-flex align-items-center"
@@ -433,29 +433,43 @@
 <script>
 import { getSettingsSite } from '../../Api/CalenderApi';
 export default {
-    data() {
-      return {
-        settingsData: '',
-      };
-    },
-
+  data() {
+    return {
+      settingsData: {
+        site_title: '',
+        site_favicon: '',
+        site_logo: ''
+      },
+      isLoading: false
+    };
+  },
   async mounted() {
+    this.isLoading = true;
+    try {
+      const [settingsDataResponse] = await Promise.all([getSettingsSite()]);
+      this.settingsData = settingsDataResponse;
 
-
-
-
-
-            try {
-              const [settingsDataResponse] = await Promise.all([getSettingsSite()]);
-                this.settingsData = settingsDataResponse;
-
-
-
-
-            } catch (error) {
-                console.error('Error loading data:', error);
-            } finally {
-                this.isLoading = false;
-            }
+      // Dynamically update favicon
+      if (this.settingsData.site_favicon) {
+        const faviconUrl = `${this.$nuxt.$config.baseURL}/${this.settingsData.site_favicon}`;
+        let link = document.querySelector("link[rel~='icon']");
+        if (!link) {
+          link = document.createElement('link');
+          link.rel = 'icon';
+          document.head.appendChild(link);
         }
-}</script>
+        link.href = faviconUrl;
+      }
+
+      // Dynamically update title
+      if (this.settingsData.site_title) {
+        document.title = this.settingsData.site_title;
+      }
+    } catch (error) {
+      console.error('Error loading data:', error);
+    } finally {
+      this.isLoading = false;
+    }
+  }
+}
+</script>

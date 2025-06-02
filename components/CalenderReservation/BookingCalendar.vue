@@ -857,6 +857,7 @@
                     insurance_refund: event.extendedProps?.reservation?.insurance_refund,
                     insurance_remaining: event.extendedProps?.reservation?.insurance_remaining,
                     nights: event.extendedProps?.reservation?.nights,
+                    user_name: event.extendedProps?.reservation?.user?.name,
                 };
             },
             transformAllUnitsToEvents() {
@@ -1458,8 +1459,11 @@
             } finally {
                 this.isLoading = false;
             }
+            // this.$root.$on('refresh-calendar', this.refreshCalendarData);
         },
         beforeDestroy() {
+            // this.$root.$off('refresh-calendar', this.refreshCalendarData);
+
             if (typeof window !== 'undefined') {
                 // Clean up the event listener
                 window.removeEventListener('resize', this.updateDuration);
