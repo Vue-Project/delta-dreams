@@ -5,8 +5,7 @@
             Print
         </button>
 
-        <div id="printSection" class="print-wrapper" style="display: none">
-            <!-- {{ settingsData }} -->
+        <div id="printSection" class="print-wrapper">
             <!-- Header -->
             <div class="print-header">
                 <img class="logo" :src="`${$nuxt.$config.baseURL}/${settingsData.site_logo}`" />
@@ -165,7 +164,6 @@
         },
     };
 </script>
-
 <style scoped>
     /* Page Border */
     .print-wrapper {
@@ -175,6 +173,7 @@
         max-width: 100%;
         font-family: 'Arial', sans-serif;
         background: #fff;
+        display: none;
     }
 
     /* Header Styles */
@@ -243,9 +242,9 @@
 
     /* Print Specific Styles */
     @media print {
-        body > *:not(#printSection) {
+        /* body > *:not(#printSection) {
             display: none !important;
-        }
+        } */
         #printSection {
             display: block !important;
         }
