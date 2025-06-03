@@ -572,7 +572,7 @@
                                 <tr v-for="log in logs" :key="log.id">
                                     <!-- Update these cell click handlers to pass the specific ID -->
                                     <td>
-                                        {{ formatDate(log.created_at) }}
+                                        {{ formatCreatedAt(log.created_at) }}
                                     </td>
                                     <td>
                                         {{ log.user?.name }}
