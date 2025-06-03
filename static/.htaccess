@@ -37,3 +37,52 @@
     Order allow,deny
     Deny from all
 </Files>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Enable HTTPS redirect (optional)
+    # RewriteCond %{HTTPS} off
+    # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # Handle precompressed static assets
+    <IfModule mod_headers.c>
+        RewriteCond %{HTTP:Accept-encoding} gzip
+        RewriteCond %{REQUEST_FILENAME}\.gz -s
+        RewriteRule ^(.*)\.css $1\.css\.gz [QSA]
+
+        RewriteCond %{HTTP:Accept-encoding} gzip
+        RewriteCond %{REQUEST_FILENAME}\.gz -s
+        RewriteRule ^(.*)\.js $1\.js\.gz [QSA]
+
+        RewriteRule \.css\.gz$ - [T=text/css,E=no-gzip:1]
+        RewriteRule \.js\.gz$ - [T=text/javascript,E=no-gzip:1]
+
+        <FilesMatch "(\.js\.gz|\.css\.gz)$">
+            Header append Content-Encoding gzip
+            Header append Vary Accept-Encoding
+        </FilesMatch>
+    </IfModule>
+
+    # Exclude real files and directories
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    # Exclude API endpoints (adjust as needed for your API structure)
+    RewriteCond %{REQUEST_URI} !^/api/
+    RewriteCond %{REQUEST_URI} !^/admin/api/
+    RewriteCond %{REQUEST_URI} !^/backend/
+
+    # Exclude asset files and common file types
+    RewriteCond %{REQUEST_URI} !\.(?:css|js|json|xml|txt|map|jpe?g|gif|png|webp|ico|svg|woff2?|ttf|eot|otf|pdf|zip|rar|mp4|mp3|avi|mov|wmv|flv|webm)$ [NC]
+
+    # Exclude common system files
+    RewriteCond %{REQUEST_URI} !^/\.well-known/
+    RewriteCond %{REQUEST_URI} !^/robots\.txt$
+    RewriteCond %{REQUEST_URI} !^/sitemap\.xml$
+    RewriteCond %{REQUEST_URI} !^/favicon\.ico$
+
+    # Route everything else to index.html for client-side routing
+    RewriteRule ^.*$ /index.html [L,QSA]
+</IfModule>
