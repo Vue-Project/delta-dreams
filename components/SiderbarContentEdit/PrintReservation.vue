@@ -165,89 +165,140 @@
         },
     };
 </script>
-
 <style scoped>
-    /* Page Border */
-    .print-wrapper {
-        border: 4px solid #333;
-        padding: 20px;
-        margin: 20px auto;
-        max-width: 100%;
-        font-family: 'Arial', sans-serif;
-        background: #fff;
+    /* Screen styles - hide print content on screen */
+    .print-only-wrapper {
+        display: none;
     }
 
-    /* Header Styles */
-    .print-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        border-bottom: 3px solid #555;
-        padding-bottom: 15px;
-        margin-bottom: 20px;
-    }
-
-    .logo {
-        height: 80px;
-    }
-
-    .title {
-        font-size: 28px;
-        color: #333;
-        text-align: right;
-        flex: 1;
-    }
-
-    /* Section Titles */
-    .section-title {
-        font-size: 22px;
-        color: #444;
-        border-bottom: 2px solid #ccc;
-        margin-bottom: 12px;
-        padding-bottom: 5px;
-    }
-
-    /* Details Table */
-    .details-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 30px;
-    }
-
-    .details-table td {
-        padding: 10px 5px;
-        border-bottom: 1px solid #eee;
-    }
-
-    .balance-label {
-        font-weight: bold;
-    }
-
-    .balance-value {
-        color: red;
-        font-weight: bold;
-    }
-
-    /* Payment Table */
-    .payment-table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    .payment-table th,
-    .payment-table td {
-        border: 1px solid #ccc;
-        padding: 10px;
-        text-align: center;
-    }
-
-    /* Print Specific Styles */
+    /* Print styles */
     @media print {
-        body > *:not(#printSection) {
-            display: none !important;
+        /* Hide everything except print content */
+        body * {
+            visibility: hidden;
         }
-        #printSection {
+
+        /* Show only print section */
+        .print-only-wrapper,
+        .print-only-wrapper * {
+            visibility: visible;
             display: block !important;
+        }
+
+        .print-only-wrapper {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            display: block !important;
+        }
+
+        /* Hide non-print elements */
+        .no-print {
+            display: none !important;
+            visibility: hidden !important;
+        }
+
+        /* Print specific styles */
+        .print-wrapper {
+            width: 100%;
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            line-height: 1.4;
+            color: #000;
+            background: white;
+        }
+
+        .print-header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #000;
+            padding-bottom: 20px;
+        }
+
+        .logo {
+            max-height: 60px;
+            margin-bottom: 10px;
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            break-inside: avoid;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #000;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 5px;
+        }
+
+        .details-table,
+        .payment-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 12px;
+        }
+
+        .details-table td,
+        .payment-table th,
+        .payment-table td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .details-table td:first-child {
+            font-weight: bold;
+            background-color: #f5f5f5;
+            width: 40%;
+        }
+
+        .payment-table th {
+            background-color: #000;
+            color: white;
+            font-weight: bold;
+        }
+
+        .balance-label {
+            font-weight: bold;
+            background-color: #e8f4f8;
+        }
+
+        .balance-value {
+            font-weight: bold;
+            background-color: #e8f4f8;
+            font-size: 14px;
+        }
+
+        /* Ensure proper page breaks */
+        .section {
+            page-break-inside: avoid;
+        }
+
+        /* Force print styles to override */
+        @page {
+            margin: 1cm;
+            size: A4;
+        }
+    }
+
+    /* Alternative approach - use !important for critical styles */
+    @media print {
+        .print-only-wrapper {
+            display: block !important;
+            visibility: visible !important;
         }
     }
 </style>
