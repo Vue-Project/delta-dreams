@@ -37,7 +37,7 @@
                     <div class="col-6 col-md-4 col-xl-2 mb-3 mb-md-0">
                         <div class="me-2">
                             <h6>Room Number/Room Type</h6>
-                            <small class="text-muted">{{ reservationDataById.unit.rooms }}/{{ reservationDataById.rate_type || 'Suite الفندق غرفتين وصاله' }}</small>
+                            <small class="text-muted">{{ reservationDataById.unit.rooms }}/{{ reservationDataById.rate_type_name || 'Suite الفندق غرفتين وصاله' }}</small>
                         </div>
                     </div>
                     <div class="col-6 col-md-4 col-xl-1 mb-3 mb-md-0">
