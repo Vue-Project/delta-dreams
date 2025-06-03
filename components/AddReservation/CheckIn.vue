@@ -189,7 +189,7 @@
                                                             {{ type }}
                                                         </option>
                                                     </select>
-                                                    <span class="error-message small" v-if="$v.formAddReservation.units.$each[index].rateType.$error">Rate type is required</span>
+                                                    <!-- <span class="error-message small" v-if="$v.formAddReservation.units.$each[index].rateType.$error">Rate type is required</span> -->
                                                 </td>
                                                 <td data-label="Room">
                                                     <select class="form-select" ref="unitSelect" v-model="item.unitId" :disabled="!datesSelected || !availableUnitsByRoom[index]?.length">
@@ -641,7 +641,7 @@
                 units: {
                     $each: {
                         roomType: { required },
-                        rateType: { required },
+                        // rateType: { required },
                         unitId: { required },
                         adults: { required },
                         children: { required },
