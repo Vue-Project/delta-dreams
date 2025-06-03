@@ -12,7 +12,7 @@ export const dateMixin = {
             if (!date) return 'N/A'; // Handle missing data
             return moment(date).format(format); // Format using Moment.js
         },
-        formatCreatedAt(date) {
+        formatTimeAndDate(date) {
             const d = new Date(date);
             // Format: YYYY-MM-DD HH:mm:ss
             const year = d.getFullYear();
@@ -21,7 +21,7 @@ export const dateMixin = {
             const hours = String(d.getHours()).padStart(2, '0');
             const minutes = String(d.getMinutes()).padStart(2, '0');
             const seconds = String(d.getSeconds()).padStart(2, '0');
-            return `${year}-${month}-${day}/${hours}:${minutes}:${seconds}`;
+            return `${year}-${month}-${day}${hours}:${minutes}:${seconds}`;
         },
     },
 };
