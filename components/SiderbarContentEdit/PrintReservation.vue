@@ -1,11 +1,11 @@
 <template>
     <div>
-        <button v-print="'#printSection'" class="btn btn-primary">
+        <button @click="printSection" class="btn btn-primary">
             <i class="fas fa-print"></i>
             Print
         </button>
 
-        <div id="printSection" class="print-wrapper">
+        <div id="printSection" class="print-wrapper" style="display: none">
             <!-- Header -->
             <div class="print-header">
                 <img class="logo" :src="`${$nuxt.$config.baseURL}/${settingsData.site_logo}`" />
@@ -162,6 +162,44 @@
                 return this.reservationData.wallets.filter(payment => payment.status === 'Approved');
             },
         },
+        methods: {
+            printSection() {
+                const printContents = document.getElementById('printSection').innerHTML;
+                const printWindow = window.open('', '_blank');
+                printWindow.document.write(`
+                <html>
+                    <head>
+                        <title>Print</title>
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                        <style>
+                            body { background: #fff; font-family: Arial, sans-serif; }
+                            .print-wrapper { border: 4px solid #333; padding: 20px; margin: 20px auto; max-width: 100%; }
+                            .print-header { display: flex; align-items: center; justify-content: space-between; border-bottom: 3px solid #555; padding-bottom: 15px; margin-bottom: 20px; }
+                            .logo { height: 80px; }
+                            .title { font-size: 28px; color: #333; text-align: right; flex: 1; }
+                            .section-title { font-size: 22px; color: #444; border-bottom: 2px solid #ccc; margin-bottom: 12px; padding-bottom: 5px; }
+                            .details-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+                            .details-table td { padding: 10px 5px; border-bottom: 1px solid #eee; }
+                            .balance-label { font-weight: bold; }
+                            .balance-value { color: red; font-weight: bold; }
+                            .payment-table { width: 100%; border-collapse: collapse; }
+                            .payment-table th, .payment-table td { border: 1px solid #ccc; padding: 10px; text-align: center; }
+                        </style>
+                    </head>
+                    <body>
+                        ${printContents}
+                        <script>
+                            window.onload = function() {
+                                window.print();
+                                window.onafterprint = function() { window.close(); };
+                            }
+                        <\/script>
+                    </body>
+                </html>
+            `);
+                printWindow.document.close();
+            },
+        },
     };
 </script>
 <style scoped>
@@ -241,12 +279,12 @@
     }
 
     /* Print Specific Styles */
-    @media print {
-        /* body > *:not(#printSection) {
+    /* @media print {
+        body > *:not(#printSection) {
             display: none !important;
-        } */
+        }
         #printSection {
             display: block !important;
         }
-    }
+    } */
 </style>
