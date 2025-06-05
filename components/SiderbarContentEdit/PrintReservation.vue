@@ -50,7 +50,7 @@
                     </tr>
                     <tr>
                         <td>Avg. Daily Rate:</td>
-                        <td>{{ reservationData.price }} EGP</td>
+                        <td>{{ reservationData.unit_price }} EGP</td>
                     </tr>
                     <tr>
                         <td>Travel Agent:</td>
@@ -82,7 +82,7 @@
                     </tr>
                     <tr>
                         <td>UnitPrice(Nights)</td>
-                        <td>{{ reservationData.price }} ({{ reservationData.nights }} Nights)</td>
+                        <td>{{ reservationData.unit_price }} ({{ reservationData.nights }} Nights)</td>
                     </tr>
 
                     <tr>
@@ -107,8 +107,9 @@
                     <thead>
                         <tr>
                             <th>Method</th>
+                            <th>Payment</th>
                             <th>Type</th>
-                            <th>Amount</th>
+                            <th>Price</th>
                             <th>Date</th>
                         </tr>
                     </thead>
@@ -117,6 +118,7 @@
                             <td>{{ approvedPayment.payment.name }}</td>
                             <td>{{ approvedPayment.paymentType.name }}</td>
                             <td>{{ approvedPayment.type_name }}</td>
+                            <td>{{ approvedPayment.price }}</td>
                             <td>{{ approvedPayment.date_at }}</td>
                         </tr>
                     </tbody>
