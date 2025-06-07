@@ -26,8 +26,8 @@
                         <div class="col-12 mb-3">
                             <button v-if="selectedEvent?.is_edit" type="button" class="btn btn-primary waves-effect waves-light btn-block EditBtnSideBar" @click="navigateToEditReservation(selectedEvent.id)">Edit</button>
                         </div>
-                        <div class="col-12">
-                            <button type="button" class="btn btn-primary waves-effect waves-light btn-block AddPaymentBtnSideBar" data-bs-toggle="modal" data-bs-target="#paymentModal">Add Payment</button>
+                        <div class="col-6">
+                            <button type="button" class="btn btn-primary waves-effect waves-light btn-block AddPaymentBtnSideBar" data-bs-toggle="modal" data-bs-target="#paymentModal" v-if="selectedEvent?.is_edit">Add Payment</button>
                         </div>
                     </div>
 
