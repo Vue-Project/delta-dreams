@@ -898,7 +898,7 @@
                     // Format dates correctly with local timezone
                     const startDate = `${startDateObj.getFullYear()}-${String(startDateObj.getMonth() + 1).padStart(2, '0')}-${String(startDateObj.getDate())}`;
                     const endDate = `${endDateObj.getFullYear()}-${String(endDateObj.getMonth() + 1).padStart(2, '0')}-${String(endDateObj.getDate())}`;
-                    if (event.extendedProps?.reservation?.is_edit === 1) {
+                    if (event.extendedProps?.reservation?.is_edit === 0) {
                         await showAlert({
                             title: 'Edit Not Allowed',
                             text: " you don't have permission to edit this reservation.",
@@ -1044,56 +1044,89 @@
 
                 return true;
             },
+            // adjustHarnessPosition(info) {
+            //     // Get the harness element parent
+            //     const harness = info.el.closest('.fc-timeline-event-harness');
+
+            //     if (harness) {
+            //         // Get current left position (parse as number)
+            //         const currentLeft = parseInt(harness.style.left) || 0;
+            //         const currentRight = parseInt(harness.style.right) || 0;
+
+            //         // Determine breakpoints and adjust accordingly
+            //         let leftOffset = 35; // Default value
+            //         let rightOffset = 5; // Default value
+            //         let widthAdjustment = 0;
+
+            //         const screenWidth = window.innerWidth;
+
+            //         // Example breakpoints for different screen sizes
+            //         if (screenWidth < 600) {
+            //             // Small screens (mobile)
+            //             leftOffset = 20;
+            //             rightOffset = 0;
+            //         } else if (screenWidth < 1200) {
+            //             // Medium screens (tablets)
+            //             leftOffset = 30;
+            //             rightOffset = 0;
+            //         } else {
+            //             // Large screens (desktops)
+            //             leftOffset = 50;
+            //             rightOffset = -6;
+            //         }
+
+            //         // Adjust the left and right positions
+            //         harness.style.left = `${currentLeft + leftOffset}px`;
+            //         harness.style.right = `${currentRight + rightOffset}px`;
+
+            //         // Adjust the width of the event element
+            //         const eventElement = harness.querySelector('.fc-timeline-event');
+            //         if (eventElement) {
+            //             const currentWidth = eventElement.offsetWidth;
+
+            //             // Calculate width adjustment based on the offsets
+            //             widthAdjustment = leftOffset + rightOffset;
+            //             // eventElement.style.width = `${currentWidth - widthAdjustment}px`;
+            //         }
+            //     }
+            // },
+            // ==============================================
+            // CALENDAR NAVIGATION
+            // ==============================================
             adjustHarnessPosition(info) {
                 // Get the harness element parent
                 const harness = info.el.closest('.fc-timeline-event-harness');
 
                 if (harness) {
-                    // Get current left position (parse as number)
-                    const currentLeft = parseInt(harness.style.left) || 0;
-                    const currentRight = parseInt(harness.style.right) || 0;
-
-                    // Determine breakpoints and adjust accordingly
-                    let leftOffset = 35; // Default value
-                    let rightOffset = 5; // Default value
-                    let widthAdjustment = 0;
+                    // Determine margin adjustments based on screen size
+                    let marginLeft = 35;
+                    let marginRight = 5;
 
                     const screenWidth = window.innerWidth;
 
-                    // Example breakpoints for different screen sizes
+                    // Responsive margin adjustments
                     if (screenWidth < 600) {
                         // Small screens (mobile)
-                        leftOffset = 20;
-                        rightOffset = 0;
+                        marginLeft = 20;
+                        marginRight = 0;
                     } else if (screenWidth < 1200) {
                         // Medium screens (tablets)
-                        leftOffset = 30;
-                        rightOffset = 0;
+                        marginLeft = 30;
+                        marginRight = 0;
                     } else {
                         // Large screens (desktops)
-                        leftOffset = 50;
-                        rightOffset = -6;
+                        marginLeft = 50;
+                        marginRight = -2;
                     }
 
-                    // Adjust the left and right positions
-                    harness.style.left = `${currentLeft + leftOffset}px`;
-                    harness.style.right = `${currentRight + rightOffset}px`;
-
-                    // Adjust the width of the event element
+                    // Apply margin adjustments to the event element
                     const eventElement = harness.querySelector('.fc-timeline-event');
                     if (eventElement) {
-                        const currentWidth = eventElement.offsetWidth;
-
-                        // Calculate width adjustment based on the offsets
-                        widthAdjustment = leftOffset + rightOffset;
-                        eventElement.style.width = `${currentWidth - widthAdjustment}px`;
+                        eventElement.style.marginLeft = `${marginLeft}px`;
+                        eventElement.style.marginRight = `${marginRight}px`;
                     }
                 }
             },
-            // ==============================================
-            // CALENDAR NAVIGATION
-            // ==============================================
-
             handlePrevClick() {
                 this.$refs.calendar.getApi().prev(); // Navigate to the previous time period
                 this.handleNavigation('prev'); // Update calendar data and visuals
