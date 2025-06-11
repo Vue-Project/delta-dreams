@@ -886,7 +886,6 @@
                     const resourceId = event.getResources()[0]?.id;
                     const unitId = resourceId?.split('-')[1];
                     const unitName = this.getUnitNameById(unitId);
-                    console.log('ewf3f3f3', unitName);
 
                     // Get the original reservation times from extendedProps
                     const originalCheckinTime = event.extendedProps?.reservation?.checkin_time || '14:00:00';
@@ -899,7 +898,15 @@
                     // Format dates correctly with local timezone
                     const startDate = `${startDateObj.getFullYear()}-${String(startDateObj.getMonth() + 1).padStart(2, '0')}-${String(startDateObj.getDate())}`;
                     const endDate = `${endDateObj.getFullYear()}-${String(endDateObj.getMonth() + 1).padStart(2, '0')}-${String(endDateObj.getDate())}`;
-
+                    if (event.extendedProps?.reservation?.is_edit === 1) {
+                        await showAlert({
+                            title: 'Edit Not Allowed',
+                            text: " you don't have permission to edit this reservation.",
+                            icon: 'warning',
+                        });
+                        info.revert();
+                        return;
+                    }
                     // Check if this is a blocked event or reservation
                     if (event.extendedProps?.is_blocked) {
                         // Extract reason_id from the block event
@@ -942,7 +949,7 @@
                         const currentPrice = event.extendedProps?.reservation?.unit_price || '';
                         const buildingName = event.extendedProps?.reservation?.unit?.building?.name;
                         // const unitName = event.extendedProps?.reservation?.name;
-                        console.log('unitName', event);
+                        // console.log('unitName', event);
 
                         const buildingInfo = ` ${buildingName} /${unitName} `;
                         // console.log('tesating', buildingInfo);
