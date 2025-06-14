@@ -1093,40 +1093,63 @@
             // ==============================================
             // CALENDAR NAVIGATION
             // ==============================================
-            adjustHarnessPosition(info) {
-                // Get the harness element parent
+            adjustHarnessPosition(info, retryCount = 0) {
                 const harness = info.el.closest('.fc-timeline-event-harness');
+                if (!harness) return;
 
-                if (harness) {
-                    // Determine margin adjustments based on screen size
-                    let marginLeft = 35;
-                    let marginRight = 5;
-
-                    const screenWidth = window.innerWidth;
-
-                    // Responsive margin adjustments
-                    if (screenWidth < 600) {
-                        // Small screens (mobile)
-                        marginLeft = 20;
-                        marginRight = 0;
-                    } else if (screenWidth < 1200) {
-                        // Medium screens (tablets)
-                        marginLeft = 30;
-                        marginRight = 0;
-                    } else {
-                        // Large screens (desktops)
-                        marginLeft = 50;
-                        marginRight = -2;
+                const eventElement = harness.querySelector('.fc-timeline-event');
+                if (!eventElement) {
+                    if (retryCount < 5) {
+                        setTimeout(() => {
+                            this.adjustHarnessPosition(info, retryCount + 1);
+                        }, 100);
                     }
-
-                    // Apply margin adjustments to the event element
-                    const eventElement = harness.querySelector('.fc-timeline-event');
-                    if (eventElement) {
-                        eventElement.style.marginLeft = `${marginLeft}px`;
-                        eventElement.style.marginRight = `${marginRight}px`;
-                        eventElement.style.border = ` 1px solid #F79700`;
-                    }
+                    return;
                 }
+
+                // Get the calendar view's first and last visible dates
+                let firstVisibleDate = null,
+                    lastVisibleDate = null;
+                if (this.$refs.calendar && this.$refs.calendar.getApi) {
+                    const calendarApi = this.$refs.calendar.getApi();
+                    firstVisibleDate = new Date(calendarApi.view.activeStart);
+                    firstVisibleDate.setHours(0, 0, 0, 0);
+                    lastVisibleDate = new Date(calendarApi.view.activeEnd);
+                    lastVisibleDate.setHours(0, 0, 0, 0);
+                    lastVisibleDate.setDate(lastVisibleDate.getDate() - 1); // activeEnd is exclusive
+                }
+
+                // Get event start and end dates (set to 0:00 for comparison)
+                const eventStart = new Date(info.event.start);
+                eventStart.setHours(0, 0, 0, 0);
+                const eventEnd = new Date(info.event.end);
+                eventEnd.setHours(0, 0, 0, 0);
+
+                // Responsive margin adjustments
+                let marginLeft = 35,
+                    marginRight = 5;
+                const screenWidth = window.innerWidth;
+                if (screenWidth < 600) {
+                    marginLeft = 20;
+                    marginRight = 0;
+                } else if (screenWidth < 1200) {
+                    marginLeft = 30;
+                    marginRight = 0;
+                } else {
+                    marginLeft = 50;
+                    marginRight = 45;
+                }
+
+                // Special style if only the last day is visible in the view
+                if (firstVisibleDate && lastVisibleDate && eventStart < firstVisibleDate && eventEnd.getTime() === lastVisibleDate.getTime()) {
+                    marginLeft = 5;
+                    marginRight = 5;
+                    eventElement.style.background = '#fff'; // Optional: visually distinguish
+                    eventElement.style.border = '2px solid #F79700';
+                }
+
+                eventElement.style.marginLeft = `${marginLeft}px`;
+                eventElement.style.marginRight = `${marginRight}px`;
             },
             handlePrevClick() {
                 this.$refs.calendar.getApi().prev(); // Navigate to the previous time period
