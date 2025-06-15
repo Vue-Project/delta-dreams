@@ -124,6 +124,23 @@
                     </tbody>
                 </table>
             </div>
+            <div class="section" v-if="reservationData.reservationServices && approvedPayments.length > 0">
+                <h2 class="section-title">Services Details</h2>
+                <table class="payment-table">
+                    <thead>
+                        <tr>
+                            <th>Service</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(reservationService, index) in reservationData.reservationServices" :key="index">
+                            <td>{{ reservationService.service.name }}</td>
+                            <td>{{ reservationService.service_price }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </template>
