@@ -1,6 +1,6 @@
 <template>
     <form ref="guestForm" id="formGustInfo" @submit.prevent="submitFormUpdateGuest">
-        <!-- <fieldset :disabled="!isClientEditable"> -->
+        <fieldset :disabled="!isClientEditable">
         <!-- <p>{{ isClientEditable }}</p> -->
 
         <div class="row pe-0 p-3 mb-5">
@@ -191,7 +191,7 @@
                 </button>
             </div>
         </div>
-        <!-- </fieldset> -->
+        </fieldset>
     </form>
 </template>
 
