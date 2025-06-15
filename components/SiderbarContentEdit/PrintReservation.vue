@@ -124,7 +124,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="section" v-if="reservationData.reservationServices && approvedPayments.length > 0">
+            <div class="section" v-if="reservationData && reservationData.reservationServices && reservationData.reservationServices.length > 0">
                 <h2 class="section-title">Services Details</h2>
                 <table class="payment-table">
                     <thead>
@@ -141,6 +141,7 @@
                     </tbody>
                 </table>
             </div>
+
         </div>
     </div>
 </template>
@@ -465,5 +466,15 @@
         border: 1px solid #ccc;
         padding: 10px;
         text-align: center;
+    }
+
+    .no-data-message {
+        text-align: center;
+        padding: 20px;
+        color: #666;
+        font-style: italic;
+        background: #f5f5f5;
+        border-radius: 4px;
+        margin: 10px 0;
     }
 </style>
