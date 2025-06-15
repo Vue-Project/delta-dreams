@@ -1130,8 +1130,8 @@
                     marginRight = 5;
                 const screenWidth = window.innerWidth;
                 if (screenWidth < 600) {
-                    marginLeft = 20;
-                    marginRight = 0;
+                    marginLeft = 40;
+                    marginRight = 120;
                 } else if (screenWidth < 1200) {
                     marginLeft = 30;
                     marginRight = 0;
