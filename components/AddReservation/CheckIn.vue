@@ -1003,7 +1003,7 @@
                     const response = await postAddReservationData(formData);
 
                     // reservation ID from the response
-                    const reservationName = response?.data?.reservation?.name;
+                    const reservationName = response?.data?.data?.name;
 
                     await showSuccessAlert(`Reservation #${reservationName} submitted successfully!`, this.$router, 'index');
                 } catch (error) {
