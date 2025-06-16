@@ -1,12 +1,11 @@
 <template>
     <div>
-        <button v-print="'#printSection'" class="btn btn-primary">
+        <button @click="printReservation" class="btn btn-primary">
             <i class="fas fa-print"></i>
             Print
         </button>
 
-        <div id="printSection" class="print-wrapper" style="display: none">
-            <!-- {{ settingsData }} -->
+        <div id="printSection" class="print-wrapper" :class="{ 'print-mode': isPrintMode }">
             <!-- Header -->
             <div class="print-header">
                 <img class="logo" :src="`${$nuxt.$config.baseURL}/${settingsData.site_logo}`" />
@@ -51,7 +50,7 @@
                     </tr>
                     <tr>
                         <td>Avg. Daily Rate:</td>
-                        <td>{{ reservationData.price }} EGP</td>
+                        <td>{{ reservationData.unit_price }} EGP</td>
                     </tr>
                     <tr>
                         <td>Travel Agent:</td>
@@ -83,7 +82,7 @@
                     </tr>
                     <tr>
                         <td>UnitPrice(Nights)</td>
-                        <td>{{ reservationData.price }} ({{ reservationData.nights }} Nights)</td>
+                        <td>{{ reservationData.unit_price }} ({{ reservationData.nights }} Nights)</td>
                     </tr>
 
                     <tr>
@@ -108,8 +107,9 @@
                     <thead>
                         <tr>
                             <th>Method</th>
+                            <th>Payment</th>
                             <th>Type</th>
-                            <th>Amount</th>
+                            <th>Price</th>
                             <th>Date</th>
                         </tr>
                     </thead>
@@ -118,18 +118,35 @@
                             <td>{{ approvedPayment.payment.name }}</td>
                             <td>{{ approvedPayment.paymentType.name }}</td>
                             <td>{{ approvedPayment.type_name }}</td>
+                            <td>{{ approvedPayment.price }}</td>
                             <td>{{ approvedPayment.date_at }}</td>
-                            <!-- <td class="status-approved">{{ payment.status }}</td> -->
                         </tr>
                     </tbody>
                 </table>
             </div>
+            <div class="section" v-if="reservationData && reservationData.reservationServices && reservationData.reservationServices.length > 0">
+                <h2 class="section-title">Services Details</h2>
+                <table class="payment-table">
+                    <thead>
+                        <tr>
+                            <th>Service</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(reservationService, index) in reservationData.reservationServices" :key="index">
+                            <td>{{ reservationService.service.name }}</td>
+                            <td>{{ reservationService.service_price }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
         </div>
     </div>
 </template>
 
 <script>
-    import print from 'vue-print-nb';
     import { getSettingsSite } from '../../Api/CalenderApi';
 
     export default {
@@ -137,6 +154,7 @@
         data() {
             return {
                 settingsData: {},
+                isPrintMode: false,
             };
         },
         props: {
@@ -144,30 +162,242 @@
                 type: Object,
             },
         },
-        directives: {
-            print,
-        },
         async mounted() {
             this.isLoading = true;
             try {
                 const [settingsDataResponse] = await Promise.all([getSettingsSite()]);
                 this.settingsData = settingsDataResponse;
-
-                // Dynamically update favicon
             } catch (error) {
                 console.error('Error loading data:', error);
             }
         },
         computed: {
             approvedPayments() {
-                return this.reservationData.wallets.filter(payment => payment.status === 'Approved');
+                return this.reservationData.wallets?.filter(payment => payment.status === 'Approved') || [];
+            },
+        },
+        methods: {
+            printReservation() {
+                // Check if it's a mobile device
+                const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+                if (isMobile) {
+                    // For mobile devices, open in a new window
+                    this.printOnMobile();
+                } else {
+                    // For desktop, use regular print
+                    this.printOnDesktop();
+                }
+            },
+
+            printOnDesktop() {
+                // Hide all other elements
+                const originalContents = document.body.innerHTML;
+                const printContents = document.getElementById('printSection').innerHTML;
+
+                // Create a new window for printing
+                const printWindow = window.open('', '_blank', 'width=800,height=600');
+                printWindow.document.write(`
+                  <!DOCTYPE html>
+                  <html>
+                  <head>
+                      <title>Reservation Print</title>
+                      <style>
+                          ${this.getPrintStyles()}
+                      </style>
+                  </head>
+                  <body>
+                      <div class="print-wrapper">
+                          ${printContents}
+                      </div>
+                  </body>
+                  </html>
+              `);
+
+                printWindow.document.close();
+                printWindow.focus();
+
+                // Wait for content to load then print
+                setTimeout(() => {
+                    printWindow.print();
+                    printWindow.close();
+                }, 500);
+            },
+
+            printOnMobile() {
+                // For mobile, create a dedicated print page
+                const printContents = document.getElementById('printSection').innerHTML;
+
+                // Create blob with HTML content
+                const htmlContent = `
+                  <!DOCTYPE html>
+                  <html>
+                  <head>
+                      <meta charset="UTF-8">
+                      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                      <title>Reservation Print</title>
+                      <style>
+                          ${this.getPrintStyles()}
+                          body { padding: 10px; }
+                          .print-wrapper {
+                              display: block !important;
+                              border: 2px solid #333;
+                              padding: 15px;
+                              max-width: 100%;
+                          }
+                      </style>
+                  </head>
+                  <body>
+                      <div class="print-wrapper">
+                          ${printContents}
+                      </div>
+                      <div style="text-align: center; margin-top: 20px;">
+                          <button onclick="window.print()" style="padding: 10px 20px; font-size: 16px; background: #7367f0!important; color: white; border: none; border-radius: 5px;">
+                              Print Document
+                          </button>
+                      </div>
+                  </body>
+                  </html>
+              `;
+
+                // Open in new tab
+                const blob = new Blob([htmlContent], { type: 'text/html' });
+                const url = URL.createObjectURL(blob);
+                window.open(url, '_blank');
+
+                // Clean up
+                setTimeout(() => {
+                    URL.revokeObjectURL(url);
+                }, 1000);
+            },
+
+            getPrintStyles() {
+                return `
+                  * { box-sizing: border-box; }
+                  body {
+                      font-family: 'Arial', sans-serif;
+                      margin: 0;
+                      padding: 0;
+                      background: white;
+                  }
+                  .print-wrapper {
+                      border: 4px solid #333;
+                      padding: 20px;
+                      margin: 0 auto;
+                      max-width: 100%;
+                      font-family: 'Arial', sans-serif;
+                      background: #fff;
+                      display: block;
+                  }
+                  .print-header {
+                      display: flex;
+                      align-items: center;
+                      justify-content: space-between;
+                      border-bottom: 3px solid #555;
+                      padding-bottom: 15px;
+                      margin-bottom: 20px;
+                      flex-wrap: wrap;
+                  }
+                  .logo {
+                      height: 60px;
+                      max-width: 200px;
+                      object-fit: contain;
+                  }
+                  .title {
+                      font-size: 24px;
+                      color: #333;
+                      text-align: right;
+                      flex: 1;
+                      margin: 0;
+                      margin-left: 20px;
+                  }
+                  .section {
+                      margin-bottom: 25px;
+                      page-break-inside: avoid;
+                  }
+                  .section-title {
+                      font-size: 20px;
+                      color: #444;
+                      border-bottom: 2px solid #ccc;
+                      margin-bottom: 12px;
+                      padding-bottom: 5px;
+                      margin-top: 0;
+                  }
+                  .details-table {
+                      width: 100%;
+                      border-collapse: collapse;
+                      margin-bottom: 20px;
+                  }
+                  .details-table td {
+                      padding: 8px 5px;
+                      border-bottom: 1px solid #eee;
+                      vertical-align: top;
+                  }
+                  .details-table td:first-child {
+                      font-weight: bold;
+                      width: 40%;
+                  }
+                  .balance-label {
+                      font-weight: bold;
+                  }
+                  .balance-value {
+                      color: #d32f2f;
+                      font-weight: bold;
+                  }
+                  .payment-table {
+                      width: 100%;
+                      border-collapse: collapse;
+                  }
+                  .payment-table th,
+                  .payment-table td {
+                      border: 1px solid #ccc;
+                      padding: 8px;
+                      text-align: center;
+                      font-size: 14px;
+                  }
+                  .payment-table th {
+                      background-color: #f5f5f5;
+                      font-weight: bold;
+                  }
+                  @media print {
+                      body { margin: 0; }
+                      .print-wrapper {
+                          border: 2px solid #333 !important;
+                          margin: 0 !important;
+                          padding: 15px !important;
+                      }
+                      .logo { height: 50px; }
+                      .title { font-size: 20px; }
+                      .section-title { font-size: 18px; }
+                  }
+                  @media screen and (max-width: 768px) {
+                      .print-header {
+                          flex-direction: column;
+                          text-align: center;
+                      }
+                      .title {
+                          text-align: center;
+                          margin-left: 0;
+                          margin-top: 10px;
+                      }
+                      .details-table td {
+                          padding: 6px 3px;
+                          font-size: 14px;
+                      }
+                      .payment-table th,
+                      .payment-table td {
+                          padding: 6px 4px;
+                          font-size: 12px;
+                      }
+                  }
+              `;
             },
         },
     };
 </script>
 
 <style scoped>
-    /* Page Border */
+    /* Screen display styles */
     .print-wrapper {
         border: 4px solid #333;
         padding: 20px;
@@ -175,9 +405,9 @@
         max-width: 100%;
         font-family: 'Arial', sans-serif;
         background: #fff;
+        display: none;
     }
 
-    /* Header Styles */
     .print-header {
         display: flex;
         align-items: center;
@@ -198,7 +428,6 @@
         flex: 1;
     }
 
-    /* Section Titles */
     .section-title {
         font-size: 22px;
         color: #444;
@@ -207,7 +436,6 @@
         padding-bottom: 5px;
     }
 
-    /* Details Table */
     .details-table {
         width: 100%;
         border-collapse: collapse;
@@ -228,7 +456,6 @@
         font-weight: bold;
     }
 
-    /* Payment Table */
     .payment-table {
         width: 100%;
         border-collapse: collapse;
@@ -241,13 +468,13 @@
         text-align: center;
     }
 
-    /* Print Specific Styles */
-    @media print {
-        body > *:not(#printSection) {
-            display: none !important;
-        }
-        #printSection {
-            display: block !important;
-        }
+    .no-data-message {
+        text-align: center;
+        padding: 20px;
+        color: #666;
+        font-style: italic;
+        background: #f5f5f5;
+        border-radius: 4px;
+        margin: 10px 0;
     }
 </style>

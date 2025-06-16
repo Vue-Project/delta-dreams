@@ -7,7 +7,6 @@
                     <h6>
                         <i class="fa-solid fa-user pr-2 text-primary fs-3 mb-2"></i>
                         {{ selectedEvent.client?.name }}
-
                         <!-- {{ selectedEvent?.is_edit || 0 }}
                         {{ selectedEvent?.is_show || 0 }}
                         {{ selectedEvent?.is_cancel || 0 }} -->
@@ -23,11 +22,11 @@
                         </span>
                     </div>
                     <div class="row mt-4">
-                        <div class="col-6">
+                        <div class="col-12 mb-2">
                             <button v-if="selectedEvent?.is_edit" type="button" class="btn btn-primary waves-effect waves-light btn-block EditBtnSideBar" @click="navigateToEditReservation(selectedEvent.id)">Edit</button>
                         </div>
-                        <div class="col-6">
-                            <button type="button" class="btn btn-primary waves-effect waves-light btn-block AddPaymentBtnSideBar" data-bs-toggle="modal" data-bs-target="#paymentModal" v-if="selectedEvent?.is_edit">Add Payment</button>
+                        <div class="col-12">
+                            <button type="button" class="btn btn-primary waves-effect waves-light btn-block AddPaymentBtnSideBar" data-bs-toggle="modal" data-bs-target="#paymentModal">Add Payment</button>
                         </div>
                     </div>
 
@@ -246,7 +245,7 @@
                 <div class="new-div mt-lg-5 mt-md-5 mt-2 w-100 TotalPayment">
                     <dl class="row mb-0">
                         <dt class="col-6 fw-normal text-heading">Insurance</dt>
-                        <dd class="col-6 text-end mb-0">{{ selectedEvent.insurance }} EGP</dd>
+                        <dd class="col-6 text-end mb-0">{{ selectedEvent.insurance || 0 }} EGP</dd>
                         <dt class="col-6 fw-normal text-heading">Insurance Refund</dt>
                         <dd class="col-6 text-end mb-0">{{ selectedEvent.insurance_refund }} EGP</dd>
                         <dt class="col-6 fw-normal text-heading">Insurance Remaining</dt>
@@ -468,10 +467,16 @@
                 if (this.$refs.datePicker1 && !this.$refs.datePicker1._flatpickr) {
                     flatpickr(this.$refs.datePicker1, {
                         mode: 'single',
-                        dateFormat: 'd/m/Y',
+                        dateFormat: 'Y-m-d', // Use the correct format
                         defaultDate: this.formAddPayment.date,
                         onChange: selectedDates => {
-                            this.handleDateChange(selectedDates);
+                            if (selectedDates && selectedDates.length > 0) {
+                                const dateObj = selectedDates[0];
+                                const yyyy = dateObj.getFullYear();
+                                const mm = String(dateObj.getMonth() + 1).padStart(2, '0');
+                                const dd = String(dateObj.getDate()).padStart(2, '0');
+                                this.formAddPayment.date = `${yyyy}-${mm}-${dd}`;
+                            }
                         },
                     });
                 }

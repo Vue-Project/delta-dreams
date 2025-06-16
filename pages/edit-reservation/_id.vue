@@ -3,70 +3,86 @@
         <div class="col-md-12">
             <div class="card mb-3 p-3">
                 <div class="row align-items-center" v-for="reservationDataById in reservationsDataById" :key="reservationDataById.id">
-                    <div class="col-12 col-md-4 col-xl-2 mb-3 mb-md-0">
-                        <div class="me-2 py-2 d-flex">
-                            <a href="#" @click="goBack"><i class="fa-solid fa-angle-left pr-2" style="color: #6f6b7d; float: left; font-size: 20px"></i></a>
-                            <i class="ps-3 pr-2 text-primary fs-3 fa-solid fa-user"></i>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-12 col-md-4 col-xl-4 mb-3 mb-md-0">
+                                <div class="me-2 py-2 d-flex">
+                                    <a href="#" @click="goBack"><i class="fa-solid fa-angle-left pr-2" style="color: #6f6b7d; float: left; font-size: 20px"></i></a>
+                                    <i class="ps-3 pr-2 text-primary fs-3 fa-solid fa-user"></i>
 
-                            {{ reservationDataById.client?.name || reservationDataById.user?.name }}
-                            <!-- {{ reservationDataById.id }} -->
-                            <small class="text-muted ml-3 text-primary">
-                                <i class="fa-solid fa-person pr-2 text-primary"></i>
-                                {{ reservationDataById.adults }}
-                                <i class="fa-solid fa-baby pr-2 text-primary"></i>
-                                {{ reservationDataById.children }}
-                            </small>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-4 col-xl-2 mb-3 mb-md-0">
-                        <div class="me-2">
-                            <h6>Arrival Date</h6>
-                            <small class="text-muted">{{ formatDate(reservationDataById.checkin_date) }} {{ reservationDataById.checkin_time }}</small>
-                        </div>
-                    </div>
+                                    {{ reservationDataById.client?.name || reservationDataById.user?.name }}
+                                    <!-- {{ reservationDataById.id }} -->
+                                    <small class="text-muted ml-3 text-primary">
+                                        <i class="fa-solid fa-person pr-2 text-primary"></i>
+                                        {{ reservationDataById.adults }}
+                                        <i class="fa-solid fa-baby pr-2 text-primary"></i>
+                                        {{ reservationDataById.children }}
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-3 col-xl-3 mb-3 mb-md-0">
+                                <div class="me-2">
+                                    <h6>Arrival Date</h6>
+                                    <small class="text-muted">{{ formatDate(reservationDataById.checkin_date) }} {{ reservationDataById.checkin_time }}</small>
+                                </div>
+                            </div>
 
-                    <div class="col-6 col-md-4 col-xl-2 mb-3 mb-md-0">
-                        <div class="me-2">
-                            <h6>Booking Date</h6>
-                            <small class="text-muted">
-                                {{ formatDate(reservationDataById.checkout_date) }}
-                                {{ reservationDataById.checkout_time }}
-                            </small>
+                            <div class="col-6 col-md-3 col-xl-3 mb-3 mb-md-0">
+                                <div class="me-2">
+                                    <h6>Booking Date</h6>
+                                    <small class="text-muted">
+                                        {{ formatDate(reservationDataById.checkout_date) }}
+                                        {{ reservationDataById.checkout_time }}
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-2 col-xl-2 mb-3 mb-md-0">
+                                <div class="me-2">
+                                    <h6>Create At</h6>
+                                    <small class="text-muted">
+                                        {{ formatTimeAndDate(reservationDataById.created_at) }}
+                                    </small>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-6 col-md-4 col-xl-2 mb-3 mb-md-0">
-                        <div class="me-2">
-                            <h6>Room Number/Room Type</h6>
-                            <small class="text-muted">{{ reservationDataById.unit.rooms }}/{{ reservationDataById.rate_type || 'Suite الفندق غرفتين وصاله' }}</small>
+                    <div class="col-md-6">
+                        <div class="row align-items-center">
+                            <div class="col-6 col-md-4 col-xl-2 mb-3 mb-md-0">
+                                <div class="me-2">
+                                    <h6>Room Number/Room Type</h6>
+                                    <small class="text-muted">{{ reservationDataById.unit.rooms }}/{{ reservationDataById.rate_type_name || 'Suite الفندق غرفتين وصاله' }}</small>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-4 col-xl-2 mb-3 mb-md-0">
+                                <div class="me-2">
+                                    <h6>Nights</h6>
+                                    <small class="text-muted">
+                                        {{ (new Date(reservationDataById.checkout_date) - new Date(reservationDataById.checkin_date)) / (1000 * 3600 * 24) }}
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-4 col-xl-2 mb-3 mb-md-0">
+                                <div class="me-2">
+                                    <h6>Reservation Name</h6>
+                                    <small class="text-muted">{{ reservationDataById.name || '14541' }}</small>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-6 col-xl-2 mb-3 mb-md-0">
+                                <div class="me-2">
+                                    <h6>Status</h6>
+                                    <small class="badge" :style="{ backgroundColor: reservationDataById.status_color }">
+                                        {{ reservationDataById.status_name }}
+                                    </small>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-5 col-xl-2 text-cente text-md-center" v-if="reservationDataById?.is_cancel">
+                                <button type="button" class="btn btn-label-danger waves-effect mt-3" title="Cancel Reservation" @click="cancelReservation">Cancel</button>
+                            </div>
+                            <div class="col-6 col-md-5 col-xl-2 text-cente text-md-center">
+                                <PrintReservation ref="printReservation" :reservationData="reservationsDataById[0]" />
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-6 col-md-4 col-xl-1 mb-3 mb-md-0">
-                        <div class="me-2">
-                            <h6>Nights</h6>
-                            <small class="text-muted">
-                                {{ (new Date(reservationDataById.checkout_date) - new Date(reservationDataById.checkin_date)) / (1000 * 3600 * 24) }}
-                            </small>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-4 col-xl-1 mb-3 mb-md-0">
-                        <div class="me-2">
-                            <h6>Reservation Name</h6>
-                            <small class="text-muted">{{ reservationDataById.name || '14541' }}</small>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-6 col-xl-1 mb-3 mb-md-0">
-                        <div class="me-2">
-                            <h6>Status</h6>
-                            <small class="badge" :style="{ backgroundColor: reservationDataById.status_color }">
-                                {{ reservationDataById.status_name }}
-                            </small>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-5 col-xl-1 text-cente text-md-center" v-if="reservationDataById?.is_cancel">
-                        <button type="button" class="btn btn-label-danger waves-effect mt-3" title="Cancel Reservation" @click="cancelReservation">Cancel</button>
-                    </div>
-                    <div class="col-6 col-md-5 col-xl-1 text-cente text-md-center">
-                        <PrintReservation ref="printReservation" :reservationData="reservationsDataById[0]" />
                     </div>
                 </div>
             </div>
@@ -572,7 +588,7 @@
                                 <tr v-for="log in logs" :key="log.id">
                                     <!-- Update these cell click handlers to pass the specific ID -->
                                     <td>
-                                        {{ formatDate(log.created_at) }}
+                                        {{ formatTimeAndDate(log.created_at) }}
                                     </td>
                                     <td>
                                         {{ log.user?.name }}

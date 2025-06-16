@@ -849,7 +849,7 @@
                     business_source_name: event.extendedProps?.reservation?.business_source?.name,
                     unit_data: unitData, // Include the entire unit data object
                     price: event.extendedProps?.reservation?.price,
-                    total_service: event.extendedProps?.reservation?.service_price,
+                    service_price: event.extendedProps?.reservation?.service_price,
                     permit: event.extendedProps?.reservation?.permit,
                     permit_image: event.extendedProps?.reservation?.permit_image,
                     reservation_name: event.extendedProps?.reservation?.name,
@@ -886,7 +886,6 @@
                     const resourceId = event.getResources()[0]?.id;
                     const unitId = resourceId?.split('-')[1];
                     const unitName = this.getUnitNameById(unitId);
-                    console.log('ewf3f3f3', unitName);
 
                     // Get the original reservation times from extendedProps
                     const originalCheckinTime = event.extendedProps?.reservation?.checkin_time || '14:00:00';
@@ -899,7 +898,15 @@
                     // Format dates correctly with local timezone
                     const startDate = `${startDateObj.getFullYear()}-${String(startDateObj.getMonth() + 1).padStart(2, '0')}-${String(startDateObj.getDate())}`;
                     const endDate = `${endDateObj.getFullYear()}-${String(endDateObj.getMonth() + 1).padStart(2, '0')}-${String(endDateObj.getDate())}`;
-
+                    if (event.extendedProps?.reservation?.is_edit === 0) {
+                        await showAlert({
+                            title: 'Edit Not Allowed',
+                            text: " you don't have permission to edit this reservation.",
+                            icon: 'warning',
+                        });
+                        info.revert();
+                        return;
+                    }
                     // Check if this is a blocked event or reservation
                     if (event.extendedProps?.is_blocked) {
                         // Extract reason_id from the block event
@@ -942,7 +949,7 @@
                         const currentPrice = event.extendedProps?.reservation?.unit_price || '';
                         const buildingName = event.extendedProps?.reservation?.unit?.building?.name;
                         // const unitName = event.extendedProps?.reservation?.name;
-                        console.log('unitName', event);
+                        // console.log('unitName', event);
 
                         const buildingInfo = ` ${buildingName} /${unitName} `;
                         // console.log('tesating', buildingInfo);
@@ -1037,56 +1044,113 @@
 
                 return true;
             },
-            adjustHarnessPosition(info) {
-                // Get the harness element parent
-                const harness = info.el.closest('.fc-timeline-event-harness');
+            // adjustHarnessPosition(info) {
+            //     // Get the harness element parent
+            //     const harness = info.el.closest('.fc-timeline-event-harness');
 
-                if (harness) {
-                    // Get current left position (parse as number)
-                    const currentLeft = parseInt(harness.style.left) || 0;
-                    const currentRight = parseInt(harness.style.right) || 0;
+            //     if (harness) {
+            //         // Get current left position (parse as number)
+            //         const currentLeft = parseInt(harness.style.left) || 0;
+            //         const currentRight = parseInt(harness.style.right) || 0;
 
-                    // Determine breakpoints and adjust accordingly
-                    let leftOffset = 35; // Default value
-                    let rightOffset = 5; // Default value
-                    let widthAdjustment = 0;
+            //         // Determine breakpoints and adjust accordingly
+            //         let leftOffset = 35; // Default value
+            //         let rightOffset = 5; // Default value
+            //         let widthAdjustment = 0;
 
-                    const screenWidth = window.innerWidth;
+            //         const screenWidth = window.innerWidth;
 
-                    // Example breakpoints for different screen sizes
-                    if (screenWidth < 600) {
-                        // Small screens (mobile)
-                        leftOffset = 20;
-                        rightOffset = 0;
-                    } else if (screenWidth < 1200) {
-                        // Medium screens (tablets)
-                        leftOffset = 30;
-                        rightOffset = 0;
-                    } else {
-                        // Large screens (desktops)
-                        leftOffset = 50;
-                        rightOffset = -6;
-                    }
+            //         // Example breakpoints for different screen sizes
+            //         if (screenWidth < 600) {
+            //             // Small screens (mobile)
+            //             leftOffset = 20;
+            //             rightOffset = 0;
+            //         } else if (screenWidth < 1200) {
+            //             // Medium screens (tablets)
+            //             leftOffset = 30;
+            //             rightOffset = 0;
+            //         } else {
+            //             // Large screens (desktops)
+            //             leftOffset = 50;
+            //             rightOffset = -6;
+            //         }
 
-                    // Adjust the left and right positions
-                    harness.style.left = `${currentLeft + leftOffset}px`;
-                    harness.style.right = `${currentRight + rightOffset}px`;
+            //         // Adjust the left and right positions
+            //         harness.style.left = `${currentLeft + leftOffset}px`;
+            //         harness.style.right = `${currentRight + rightOffset}px`;
 
-                    // Adjust the width of the event element
-                    const eventElement = harness.querySelector('.fc-timeline-event');
-                    if (eventElement) {
-                        const currentWidth = eventElement.offsetWidth;
+            //         // Adjust the width of the event element
+            //         const eventElement = harness.querySelector('.fc-timeline-event');
+            //         if (eventElement) {
+            //             const currentWidth = eventElement.offsetWidth;
 
-                        // Calculate width adjustment based on the offsets
-                        widthAdjustment = leftOffset + rightOffset;
-                        eventElement.style.width = `${currentWidth - widthAdjustment}px`;
-                    }
-                }
-            },
+            //             // Calculate width adjustment based on the offsets
+            //             widthAdjustment = leftOffset + rightOffset;
+            //             // eventElement.style.width = `${currentWidth - widthAdjustment}px`;
+            //         }
+            //     }
+            // },
             // ==============================================
             // CALENDAR NAVIGATION
             // ==============================================
+            adjustHarnessPosition(info, retryCount = 0) {
+                const harness = info.el.closest('.fc-timeline-event-harness');
+                if (!harness) return;
 
+                const eventElement = harness.querySelector('.fc-timeline-event');
+                if (!eventElement) {
+                    if (retryCount < 5) {
+                        setTimeout(() => {
+                            this.adjustHarnessPosition(info, retryCount + 1);
+                        }, 100);
+                    }
+                    return;
+                }
+
+                // Get the calendar view's first and last visible dates
+                let firstVisibleDate = null,
+                    lastVisibleDate = null;
+                if (this.$refs.calendar && this.$refs.calendar.getApi) {
+                    const calendarApi = this.$refs.calendar.getApi();
+                    firstVisibleDate = new Date(calendarApi.view.activeStart);
+                    firstVisibleDate.setHours(0, 0, 0, 0);
+                    lastVisibleDate = new Date(calendarApi.view.activeEnd);
+                    lastVisibleDate.setHours(0, 0, 0, 0);
+                    lastVisibleDate.setDate(lastVisibleDate.getDate() - 1); // activeEnd is exclusive
+                }
+
+                // Get event start and end dates (set to 0:00 for comparison)
+                const eventStart = new Date(info.event.start);
+                eventStart.setHours(0, 0, 0, 0);
+                const eventEnd = new Date(info.event.end);
+                eventEnd.setHours(0, 0, 0, 0);
+
+                // Responsive margin adjustments
+                let marginLeft = 35,
+                    marginRight = 5;
+                const screenWidth = window.innerWidth;
+                if (screenWidth < 600) {
+                    marginLeft = 40;
+                    marginRight = 120;
+                } else if (screenWidth < 1200) {
+                    marginLeft = 30;
+                    marginRight = 0;
+                } else {
+                    marginLeft = 50;
+                    marginRight = 45;
+                }
+
+                // Special style if only the last day is visible in the view
+                if (firstVisibleDate && lastVisibleDate && eventStart < firstVisibleDate && eventEnd.getTime() === lastVisibleDate.getTime()) {
+                    marginLeft = 5;
+                    marginRight = 5;
+                    eventElement.style.background = '#fff'; // Optional: visually distinguish
+                    eventElement.style.border = '2px solid #F79700';
+                }
+
+                eventElement.style.marginLeft = `${marginLeft}px`;
+                eventElement.style.marginRight = `${marginRight}px`;
+            },
             handlePrevClick() {
                 this.$refs.calendar.getApi().prev(); // Navigate to the previous time period
                 this.handleNavigation('prev'); // Update calendar data and visuals
