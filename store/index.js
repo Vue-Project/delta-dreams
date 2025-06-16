@@ -13,7 +13,7 @@ export const state = () => ({
     reservationStatus: [],
     reservationRejects: [],
     remindGuestType: [],
-    code: 'Iz0lUumVPWzPek7Z',
+    code: 'TueSo8mkU6if8PiK',
     type: 'admin',
     lastUpdated: null,
 });
