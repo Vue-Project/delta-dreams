@@ -51,7 +51,7 @@ export default {
     script: [],
 
     // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-    plugins: ['~/plugins/vue-wow-config', { src: '~/plugins/store-init.js', mode: 'client' }, { src: '~/plugins/vue-easy-lightbox.js', mode: 'client' }, '~/plugins/pusher.client.js', '~/plugins/global-events.js'],
+    plugins: ['~/plugins/vue-wow-config', { src: '~/plugins/store-init.js', mode: 'client' }, { src: '~/plugins/vue-easy-lightbox.js', mode: 'client' }, '~/plugins/pusher.client.js', '~/plugins/global-events.client.js'],
 
     // Auto import components: https://go.nuxtjs.dev/config-components
     components: true,
