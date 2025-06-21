@@ -147,7 +147,7 @@
                                                             {{ unitType.name }}
                                                         </option>
                                                     </select>
-                                                    <span class="error-message small" v-if="$v.formAddReservation.units[0].rateType.$error">Rate type is required</span>
+                                                    <span class="error-message small" v-if="$v.formAddReservation.units[0].roomType.$error">roomType is required</span>
                                                 </td>
                                                 <td data-label="Rate Type">
                                                     <select class="form-select" v-model="item.rateType" ref="rateType" :disabled="index > 0">
@@ -696,7 +696,7 @@
                     0: {
                         // Validate only the first unit (index 0)
                         roomType: { required },
-                        rateType: { required },
+                        // rateType: { required },
                         unitId: { required },
                         adults: { required },
                         children: { required },
