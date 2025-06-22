@@ -128,6 +128,10 @@ export default {
 
     publicRuntimeConfig: {
         baseURL: process.env.BASE_URL,
+        pusherAppKey: process.env.PUSHER_APP_KEY || '',
+        pusherAppCluster: process.env.PUSHER_APP_CLUSTER || 'mt1',
+    },
+    publicRuntimeConfig: {
         pusherKey: process.env.PUSHER_APP_KEY,
         pusherCluster: process.env.PUSHER_APP_CLUSTER,
     },

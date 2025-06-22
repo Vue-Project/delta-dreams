@@ -834,6 +834,7 @@
                     status: event.extendedProps?.reservation?.status,
                     status_name: event.extendedProps?.reservation?.status_name,
                     unit_price: unitData?.price || event.extendedProps?.reservation?.unit_price,
+                    unit_price_avg: unitData?.unit_price_avg || event.extendedProps?.reservation?.unit_price_avg,
                     total: event.extendedProps?.reservation?.total,
                     paid: event.extendedProps?.reservation?.paid,
                     balance: event.extendedProps?.reservation?.remaining,
@@ -990,7 +991,7 @@
                             });
 
                             await showSuccessAlert('Reservation updated successfully!');
-                            location.reload();
+                            // location.reload();
                         } else {
                             info.revert(); // Revert the change if not confirmed
                         }

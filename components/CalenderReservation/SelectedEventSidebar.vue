@@ -253,7 +253,7 @@
                         <dt class="col-6 fw-normal text-heading">Total Services</dt>
                         <dd class="col-6 text-end mb-0">{{ selectedEvent.service_price }} EGP</dd>
                         <dt class="col-6 fw-normal text-heading">Unit Price (Nights)</dt>
-                        <dd class="col-6 text-end mb-0">{{ selectedEvent.unit_price }} EGP {{ selectedEvent.nights }} Nights</dd>
+                        <dd class="col-6 text-end mb-0">{{ selectedEvent.unit_price_avg }} EGP {{ selectedEvent.nights }} Nights</dd>
                         <dt class="col-6 fw-normal text-heading">Total</dt>
                         <dd class="col-6 text-end mb-0">{{ selectedEvent.total }} EGP</dd>
                         <dt class="col-6 fw-normal">Paid</dt>
