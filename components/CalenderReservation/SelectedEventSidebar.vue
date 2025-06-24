@@ -7,6 +7,7 @@
                     <h6>
                         <i class="fa-solid fa-user pr-2 text-primary fs-3 mb-2"></i>
                         {{ selectedEvent.client?.name }}
+                        {{ selectedEvent.create_at }}
                         <!-- {{ selectedEvent?.is_edit || 0 }}
                         {{ selectedEvent?.is_show || 0 }}
                         {{ selectedEvent?.is_cancel || 0 }} -->
@@ -221,6 +222,16 @@
                                     </div>
                                 </div>
                             </li>
+                            <li class="mb-3 pb-1">
+                                <div class="d-flex align-items-start">
+                                    <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                        <div class="me-2">
+                                            <h6 class="mb-0">Create At</h6>
+                                            {{ formatTimeAndDate(selectedEvent.create_at) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
                         </ul>
                     </div>
                     <div class="col-12">
@@ -399,6 +410,7 @@
     import { validationMixin } from 'vuelidate';
     import { required, email } from 'vuelidate/lib/validators';
     import { mapGetters } from 'vuex/dist/vuex.common.js';
+    import { dateMixin } from '../Mixin/DateMixin';
 
     export default {
         data() {
@@ -772,7 +784,7 @@
                 },
             },
         },
-        mixins: [flatpickrMixin, validationMixin],
+        mixins: [flatpickrMixin, validationMixin, dateMixin],
         computed: {
             ...mapGetters(['getReservationRejects']),
         },
