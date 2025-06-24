@@ -322,7 +322,7 @@
                     <!--  ! Guest Information -->
                     <h6 class="mb-2 GuestTitle">Guest Information</h6>
                     <div class="row">
-                        <div class="col-lg-5 px-md-0">
+                        <div class="col-lg-7 px-md-0">
                             <div class="input-group">
                                 <input type="text" class="form-control searchInput" id="searchInput" v-model="searchQuery" placeholder="Enter phone number or national ID" />
                                 <button class="btn btn-primary" type="button" @click="searchByPhoneOrID">Search</button>
@@ -369,7 +369,11 @@
                             <button type="button" class="btn btn-primary waves-effect waves-light btn-block" @click="toggleHospitalitySidebar">ضيافه</button>
                             <HospitalitySideBar :is-sidebar-open="isHospitalitySidebarOpen" @close-sidebar="toggleHospitalitySidebar" @guest-added="handleGuestAdded" />
                         </div>
+                        <div class="col-lg-6 mt-5 px-md-0">
+                            <label class="form-label">Comment</label>
 
+                            <textarea class="form-control" aria-label="With textarea" placeholder="Comment" v-model="formAddReservation.comment"></textarea>
+                        </div>
                         <!-- <div class="offset-md-7">
             </div>
             <div class="col-lg-3 col-md-6  ps-2 ps-md-0 EmailReservation">
@@ -608,6 +612,7 @@
                     },
                     bookingSource: '',
                     paymentImage: null,
+                    comment: '',
                 },
                 // validationMessages: {
                 //   businessSource: '',
@@ -935,6 +940,7 @@
                     payment_assigned_to: this.paymentData.assigned_to,
                     payment_travel_agent_id: this.paymentData.selectedTravelAgent,
                     payment_business_source_id: this.paymentData.selectedBusinessSource,
+                    comment: this.formAddReservation.comment,
                 };
 
                 // Append simple fields to FormData
