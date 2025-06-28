@@ -7,7 +7,6 @@
                     <h6>
                         <i class="fa-solid fa-user pr-2 text-primary fs-3 mb-2"></i>
                         {{ selectedEvent.client?.name }}
-                        {{ selectedEvent.create_at }}
                         <!-- {{ selectedEvent?.is_edit || 0 }}
                         {{ selectedEvent?.is_show || 0 }}
                         {{ selectedEvent?.is_cancel || 0 }} -->
