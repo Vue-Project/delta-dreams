@@ -451,7 +451,7 @@
                         formData.append(`relatedClients[${idx}][name]`, relatedClient.name);
                         formData.append(`relatedClients[${idx}][idNumber]`, relatedClient.idNumber);
                         formData.append(`relatedClients[${idx}][relation]`, relatedClient.relation);
-                        if (client.image) {
+                        if (relatedClient.image) {
                             formData.append(`relatedClients[${idx}][image]`, relatedClient.image);
                         }
                     });
