@@ -259,6 +259,10 @@
                         const response = await postTransferWallet(transfersWalletData.wallet_id, transfersWalletData);
 
                         await showSuccessAlert('Payment Transferred Successfully!');
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('exampleModalToggle'));
+                        if (modal) {
+                            modal.hide();
+                        }
                         // Emit event to parent component instead of reloading
                         this.$emit('close-offcanvas');
 
