@@ -322,7 +322,7 @@
                     <!--  ! Guest Information -->
                     <h6 class="mb-2 GuestTitle">Guest Information</h6>
                     <div class="row">
-                        <div class="col-lg-5 px-md-0">
+                        <div class="col-lg-7 px-md-0">
                             <div class="input-group">
                                 <input type="text" class="form-control searchInput" id="searchInput" v-model="searchQuery" placeholder="Enter phone number or national ID" />
                                 <button class="btn btn-primary" type="button" @click="searchByPhoneOrID">Search</button>
@@ -369,7 +369,11 @@
                             <button type="button" class="btn btn-primary waves-effect waves-light btn-block" @click="toggleHospitalitySidebar">ضيافه</button>
                             <HospitalitySideBar :is-sidebar-open="isHospitalitySidebarOpen" @close-sidebar="toggleHospitalitySidebar" @guest-added="handleGuestAdded" />
                         </div>
+                        <div class="col-lg-6 mt-5 px-md-0">
+                            <label class="form-label">Comment</label>
 
+                            <textarea class="form-control" aria-label="With textarea" placeholder="Comment" v-model="formAddReservation.comment"></textarea>
+                        </div>
                         <!-- <div class="offset-md-7">
             </div>
             <div class="col-lg-3 col-md-6  ps-2 ps-md-0 EmailReservation">
@@ -509,6 +513,7 @@
         data() {
             return {
                 isSubmitting: false,
+                isInitialLoad: true, // Add flag to prevent reset during initial load
 
                 searchQuery: '',
                 formAddReservation: {
@@ -571,7 +576,7 @@
                             rateType: '',
                             unitId: '',
                             adults: '1',
-                            children: '1',
+                            children: '0',
                             rateAmount: '',
                             unitTypeId: '',
                         },
@@ -608,6 +613,7 @@
                     },
                     bookingSource: '',
                     paymentImage: null,
+                    comment: '',
                 },
                 // validationMessages: {
                 //   businessSource: '',
@@ -935,6 +941,7 @@
                     payment_assigned_to: this.paymentData.assigned_to,
                     payment_travel_agent_id: this.paymentData.selectedTravelAgent,
                     payment_business_source_id: this.paymentData.selectedBusinessSource,
+                    comment: this.formAddReservation.comment,
                 };
 
                 // Append simple fields to FormData
@@ -984,9 +991,9 @@
                         //     unit_code: building.name,
                         //     amount: this.formatValueForServer(building.amount),
                         // });
-                        formData.append(`payment_units[${index}][unit_id]`, building.unitId);
-                        formData.append(`payment_units[${index}][unit_code]`, building.name);
-                        formData.append(`payment_units[${index}][amount]`, this.formatValueForServer(building.amount));
+                        formData.append(`paymentUnits[${index}][unit_id]`, building.unitId);
+                        formData.append(`paymentUnits[${index}][unit_code]`, building.name);
+                        formData.append(`paymentUnits[${index}][amount]`, this.formatValueForServer(building.amount));
                     });
                 } else {
                     console.log('No building details to add');
@@ -1466,18 +1473,22 @@
                 return value ? value.toString().replace(/[.,]/g, '') : '0';
             },
             resetFormData() {
-                // Reset room selections
-                this.formAddReservation.units.forEach((unit, index) => {
-                    unit.projectId = ''; // Reset project ID
-                    unit.roomType = '';
-                    unit.unitId = '';
-                    unit.rateType = '';
-                    unit.adults = '1';
-                    unit.children = '0';
-                    unit.rateAmount = '';
-                    unit.unitTypeId = '';
+                // Reset room selections with proper Vue reactivity
+                this.formAddReservation.units = this.formAddReservation.units.map((unit, index) => {
+                    // Reset available units for this room
                     this.$set(this.availableUnitsByRoom, index, []);
-                    this.$set(this.filteredUnitTypesByRoom, index, []); // Reset filtered unit types
+                    this.$set(this.filteredUnitTypesByRoom, index, []);
+
+                    return {
+                        projectId: '',
+                        roomType: '',
+                        rateType: '',
+                        unitId: '',
+                        adults: '1',
+                        children: '0',
+                        rateAmount: '',
+                        unitTypeId: '',
+                    };
                 });
 
                 // Reset services
@@ -1507,9 +1518,27 @@
                 // Reset selected name ID
                 this.selectedNameId = null;
 
-                // Clear filtered names
+                // Clear filtered names and dropdown
                 this.filteredNames = [];
                 this.showDropdown = false;
+                this.searchQuery = '';
+
+                // Reset validation state
+                this.$v.$reset();
+
+                // Force Vue to re-render the form
+                this.$forceUpdate();
+
+                // Log for debugging
+                console.log('Form data reset successfully');
+            },
+            // Method to handle calendar navigation
+            handleCalendarNavigation() {
+                // Reset form when coming from calendar with new dates
+                if (this.selectedDates.length > 0 && !this.isInitialLoad) {
+                    console.log('Calendar navigation detected, resetting form');
+                    this.resetFormData();
+                }
             },
         },
 
@@ -1614,11 +1643,7 @@
                         onChange: selectedDates => {
                             if (selectedDates[0]) {
                                 const newDate = this.formatDate(selectedDates[0]);
-                                if (newDate !== this.formAddReservation.checkInDate) {
-                                    this.formAddReservation.checkInDate = newDate;
-                                    // Reset all form data when check-in date changes
-                                    this.resetFormData();
-                                }
+                                this.formAddReservation.checkInDate = newDate;
                             }
                         },
                     });
@@ -1631,11 +1656,7 @@
                         onChange: selectedDates => {
                             if (selectedDates[0]) {
                                 const newDate = this.formatDate(selectedDates[0]);
-                                if (newDate !== this.formAddReservation.checkOutDate) {
-                                    this.formAddReservation.checkOutDate = newDate;
-                                    // Reset all form data when check-out date changes
-                                    this.resetFormData();
-                                }
+                                this.formAddReservation.checkOutDate = newDate;
                             }
                         },
                     });
@@ -1676,6 +1697,11 @@
                     this.formAddReservation.checkInTime = '12:00';
                     this.formAddReservation.checkOutTime = '02:00';
                 }
+            });
+
+            // Set initial load to false after everything is initialized
+            this.$nextTick(() => {
+                this.isInitialLoad = false;
             });
         },
         computed: {
@@ -1759,15 +1785,32 @@
                         // Update time pickers
                         this.timePicker1Instance?.setDate(this.firstDate);
                         this.timePicker2Instance?.setDate(this.lastDate);
+
+                        // Handle calendar navigation
+                        this.handleCalendarNavigation();
                     }
                 },
                 deep: true,
             },
             'formAddReservation.checkInDate': {
-                handler(newValue) {
+                handler(newValue, oldValue) {
+                    // Only reset if the date actually changed and it's not the initial load
+                    if (newValue && oldValue && newValue !== oldValue && !this.isInitialLoad) {
+                        console.log('Check-in date changed from', oldValue, 'to', newValue);
+                        this.resetFormData();
+                    }
                     this.formAddReservation.releaseDate = newValue;
                 },
                 immediate: true,
+            },
+            'formAddReservation.checkOutDate': {
+                handler(newValue, oldValue) {
+                    // Only reset if the date actually changed and it's not the initial load
+                    if (newValue && oldValue && newValue !== oldValue && !this.isInitialLoad) {
+                        console.log('Check-out date changed from', oldValue, 'to', newValue);
+                        this.resetFormData();
+                    }
+                },
             },
             'formAddReservation.checkInTime': {
                 handler(newValue) {
@@ -1795,6 +1838,13 @@
         async created() {
             // Initialize store data from localStorage
             await this.$store.dispatch('initializeStore');
+
+            // Reset form data when coming from calendar
+            this.$nextTick(() => {
+                if (this.selectedDates.length > 0) {
+                    this.resetFormData();
+                }
+            });
         },
     };
 </script>

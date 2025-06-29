@@ -8,7 +8,7 @@
                 </div>
                 <hr class="mt-0" />
                 <div class="offcanvas-body pt-0">
-                  <EditPayment :selectedWallet="selectedWallet" @wallet-updated="$emit('wallet-updated')" />
+                    <EditPayment :selectedWallet="selectedWallet" @wallet-updated="$emit('wallet-updated')" />
                 </div>
             </div>
             <div class="card-body">
@@ -56,13 +56,14 @@
                                         </button>
                                         <div class="dropdown-menu" v-if="wallet.active !== 0">
                                             <a class="dropdown-item" @click.prevent="onEditWallet(wallet)">
-                                                <i class="fa-regular fa-pen-to-square me-1"></i> Edit
+                                                <i class="fa-regular fa-pen-to-square me-1"></i>
+                                                Edit
                                             </a>
                                             <a class="dropdown-item" @click="deletedWallet(wallet.id)">
                                                 <i class="fa-regular fa-trash-can me-1"></i>
                                                 cancel
                                             </a>
-                                            <a class="dropdown-item" @click="openTransferModal(wallet.id, wallet.price)">
+                                            <a class="dropdown-item" @click="openTransferModal(wallet)">
                                                 <i class="fa-solid fa-coins me-1"></i>
                                                 transfer
                                             </a>
@@ -251,12 +252,17 @@
                         const transfersWalletData = {
                             price: payment || 50, // using the validated payment amount
                             reservation_id: this.reservationsId,
+                            type: this.selectedTransferWallet?.paymentType?.id,
                             wallet_id: id,
                         };
                         // Call your transfer API using the wallet id and payment amount
                         const response = await postTransferWallet(transfersWalletData.wallet_id, transfersWalletData);
 
                         await showSuccessAlert('Payment Transferred Successfully!');
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('exampleModalToggle'));
+                        if (modal) {
+                            modal.hide();
+                        }
                         // Emit event to parent component instead of reloading
                         this.$emit('close-offcanvas');
 
@@ -345,14 +351,14 @@
                     );
                 }
             },
-            openTransferModal(id, price, transfer, total) {
-                this.walletId = id;
-                this.walletPrice = price;
-                this.walletTransfer = transfer;
-                this.walletTotal = total;
-                this.paymentAmount = ''; // Clear any previous input
-                this.reservationsId = ''; // Set the reservation ID
-
+            openTransferModal(wallet) {
+                this.selectedTransferWallet = wallet;
+                this.walletId = wallet.id;
+                this.walletPrice = wallet.price;
+                this.walletTransfer = wallet.transfer;
+                this.walletTotal = wallet.total;
+                this.paymentAmount = '';
+                this.reservationsId = '';
                 const modal = new bootstrap.Modal(document.getElementById('exampleModalToggle'));
                 modal.show();
             },
@@ -366,7 +372,7 @@
             },
             onEditWallet(wallet) {
                 this.selectedWallet = wallet;
-                this.sidebarTitle = "Edit Payment";
+                this.sidebarTitle = 'Edit Payment';
                 // Log the selected wallet data
                 // Open the offcanvas sidebar
                 const offcanvas = new bootstrap.Offcanvas(document.getElementById('Sidebar'));

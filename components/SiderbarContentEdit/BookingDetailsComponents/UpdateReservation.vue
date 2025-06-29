@@ -147,7 +147,7 @@
                                                             {{ unitType.name }}
                                                         </option>
                                                     </select>
-                                                    <span class="error-message small" v-if="$v.formAddReservation.units[0].rateType.$error">Rate type is required</span>
+                                                    <span class="error-message small" v-if="$v.formAddReservation.units[0].roomType.$error">roomType is required</span>
                                                 </td>
                                                 <td data-label="Rate Type">
                                                     <select class="form-select" v-model="item.rateType" ref="rateType" :disabled="index > 0">
@@ -158,19 +158,28 @@
                                                     </select>
                                                 </td>
                                                 <td data-label="Room">
-                                                    <select class="form-select" v-model="item.unitId" :disabled="!availableUnitsByRoom[0]?.length || index > 0">
-                                                        <option disabled value="">Select Unit</option>
-                                                        <option v-for="unit in availableUnitsByRoom[0] || []" :key="unit.id" :value="unit.id">{{ unit.code }}</option>
-                                                    </select>
-                                                    <span class="error-message small" v-if="$v.formAddReservation.units[0].unitId.$error">Unit is required</span>
+                                                    <!-- For the first unit (parent), show dropdown -->
+                                                    <template v-if="index === 0">
+                                                        <select class="form-select" v-model="item.unitId" :disabled="!availableUnitsByRoom[0]?.length">
+                                                            <option disabled value="">Select Unit</option>
+                                                            <option v-for="unit in availableUnitsByRoom[0] || []" :key="unit.id" :value="unit.id">{{ unit.code }}</option>
+                                                        </select>
+                                                        <span class="error-message small" v-if="$v.formAddReservation.units[0].unitId.$error">Unit is required</span>
+                                                    </template>
+                                                    <!-- For children units, show code in a disabled select -->
+                                                    <template v-else>
+                                                        <select class="form-select" :disabled="true">
+                                                            <option :value="item.unitId">{{ item.code || item.unitId }}</option>
+                                                        </select>
+                                                    </template>
                                                 </td>
                                                 <td data-label="Adult">
-                                                    <input type="number" class="form-control rounded-2" v-model="item.adults" placeholder="1" aria-label="1" min="1" max="10" ref="adults" :disabled="index > 0" />
+                                                    <input type="number" class="form-control rounded-2" v-model="item.adults" placeholder="1" aria-label="1" min="0" max="10" ref="adults" :disabled="index > 0" />
 
                                                     <span class="error-message small" v-if="$v.formAddReservation.units[0].adults.$error">Adults is required</span>
                                                 </td>
                                                 <td data-label="Child">
-                                                    <input type="number" class="form-control rounded-2" v-model="item.children" placeholder="1" aria-label="1" value="1" min="1" max="10" ref="children" :disabled="index > 0" />
+                                                    <input type="number" class="form-control rounded-2" v-model="item.children" placeholder="1" aria-label="1" value="1" min="0" max="10" ref="children" :disabled="index > 0" />
 
                                                     <span class="error-message small" v-if="$v.formAddReservation.units[0].children.$error">children is required</span>
                                                 </td>
@@ -687,7 +696,7 @@
                     0: {
                         // Validate only the first unit (index 0)
                         roomType: { required },
-                        rateType: { required },
+                        // rateType: { required },
                         unitId: { required },
                         adults: { required },
                         children: { required },
@@ -1101,25 +1110,23 @@
                     this.isLoading = false;
                 }
             },
+            // ...existing code...
             async cancelReservation(index) {
                 const result = await showConfirmationAlert('Are you sure?', 'cancel this reservation', 'Yes, cancel it!');
 
                 if (result.isConfirmed) {
                     try {
                         const reservationId = this.formAddReservation.units[index].reservationId;
-                        const response = await postCancelReservation(reservationId);
+                        await postCancelReservation(reservationId);
 
                         // Remove the cancelled reservation from the units array
-                        const cancelledIndex = this.formAddReservation.units.findIndex(unit => unit.reservationId === this.formAddReservation.units[index].reservationId);
-                        if (cancelledIndex > -1) {
-                            this.formAddReservation.units.splice(cancelledIndex, 1);
-                        }
+                        this.formAddReservation.units.splice(index, 1);
 
-                        // Update the number of rooms
-                        this.formAddReservation.numberRooms = this.formAddReservation.units.length.toString();
+                        // Remove the corresponding availableUnitsByRoom entry
+                        this.availableUnitsByRoom.splice(index, 1);
 
-                        // Update availableUnitsByRoom array
-                        this.availableUnitsByRoom.splice(cancelledIndex, 1);
+                        // Update the number of rooms (as string for v-model)
+                        this.formAddReservation.numberRooms = String(this.formAddReservation.units.length);
 
                         // Show success alert
                         await showSuccessAlert('Reservation cancelled successfully!');
@@ -1133,6 +1140,7 @@
                     }
                 }
             },
+            // ...existing code...,
 
             // ======================
             // Methods - Rate Handling
@@ -1194,8 +1202,8 @@
                     bookingSource: reservationData.booking_source?.id,
                     travelAgent: reservationData.travel_agent?.id,
                     businessSource: reservationData.business_source?.id,
+                    // ...existing code...
                     units: [
-                        // First unit with direct reservation data
                         {
                             projectId: reservationData.project_id,
                             rateType: reservationData.rate_type,
@@ -1205,17 +1213,18 @@
                             unitId: reservationData.unit_id,
                             roomType: reservationData.unit_type_id,
                             reservationId: reservationData.id,
+                            // No code for parent
                         },
-                        // Additional units from children array
                         ...(reservationData.childrens || []).map(unit => ({
                             projectId: unit.project_id,
                             rateType: unit.rate_type,
                             adults: unit.adults,
                             children: unit.children,
                             rateAmount: unit?.unit_price,
-                            unitId: unit?.unit_id,
+                            unitId: unit?.unit_id, // <-- FIXED: use unit_id, not unit_type_id
                             roomType: unit?.unit_type_id,
                             reservationId: unit.id,
+                            code: unit.unit?.code, // <-- Only children get code
                         })),
                     ],
                     services: [

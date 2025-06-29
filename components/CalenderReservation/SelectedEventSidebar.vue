@@ -221,6 +221,16 @@
                                     </div>
                                 </div>
                             </li>
+                            <li class="mb-3 pb-1">
+                                <div class="d-flex align-items-start">
+                                    <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                        <div class="me-2">
+                                            <h6 class="mb-0">Create At</h6>
+                                            {{ formatTimeAndDate(selectedEvent.create_at) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
                         </ul>
                     </div>
                     <div class="col-12">
@@ -245,7 +255,7 @@
                 <div class="new-div mt-lg-5 mt-md-5 mt-2 w-100 TotalPayment">
                     <dl class="row mb-0">
                         <dt class="col-6 fw-normal text-heading">Insurance</dt>
-                        <dd class="col-6 text-end mb-0">{{ selectedEvent.insurance || 0 }} EGP</dd>
+                        <dd class="col-6 text-end mb-0">{{ selectedEvent.insurance }} EGP</dd>
                         <dt class="col-6 fw-normal text-heading">Insurance Refund</dt>
                         <dd class="col-6 text-end mb-0">{{ selectedEvent.insurance_refund }} EGP</dd>
                         <dt class="col-6 fw-normal text-heading">Insurance Remaining</dt>
@@ -253,7 +263,7 @@
                         <dt class="col-6 fw-normal text-heading">Total Services</dt>
                         <dd class="col-6 text-end mb-0">{{ selectedEvent.service_price }} EGP</dd>
                         <dt class="col-6 fw-normal text-heading">Unit Price (Nights)</dt>
-                        <dd class="col-6 text-end mb-0">{{ selectedEvent.unit_price }} EGP {{ selectedEvent.nights }} Nights</dd>
+                        <dd class="col-6 text-end mb-0">{{ selectedEvent.unit_price_avg }} EGP {{ selectedEvent.nights }} Nights</dd>
                         <dt class="col-6 fw-normal text-heading">Total</dt>
                         <dd class="col-6 text-end mb-0">{{ selectedEvent.total }} EGP</dd>
                         <dt class="col-6 fw-normal">Paid</dt>
@@ -399,6 +409,7 @@
     import { validationMixin } from 'vuelidate';
     import { required, email } from 'vuelidate/lib/validators';
     import { mapGetters } from 'vuex/dist/vuex.common.js';
+    import { dateMixin } from '../Mixin/DateMixin';
 
     export default {
         data() {
@@ -772,7 +783,7 @@
                 },
             },
         },
-        mixins: [flatpickrMixin, validationMixin],
+        mixins: [flatpickrMixin, validationMixin, dateMixin],
         computed: {
             ...mapGetters(['getReservationRejects']),
         },
