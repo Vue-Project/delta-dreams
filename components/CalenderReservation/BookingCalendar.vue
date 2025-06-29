@@ -859,6 +859,7 @@
                     insurance_remaining: event.extendedProps?.reservation?.insurance_remaining,
                     nights: event.extendedProps?.reservation?.nights,
                     user_name: event.extendedProps?.reservation?.user?.name,
+                    create_at: event.extendedProps?.reservation?.created_at,
                 };
             },
             transformAllUnitsToEvents() {

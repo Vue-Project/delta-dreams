@@ -221,14 +221,13 @@
                     showSuccessAlert('Payment added successfully!');
                     this.$emit('payment-added');
                     this.$emit('close-offcanvas');
+                    // Reset the payment form
+                    this.cancelPayment();
                 } catch (error) {
                     handleSubmissionError(error, 'Failed to add payment');
                 } finally {
                     // Always reset the submitting state, even if there's an error
                     this.isSubmitting = false;
-
-                    // Reset the payment form
-                    this.cancelPayment();
                 }
             },
             cancelPayment() {

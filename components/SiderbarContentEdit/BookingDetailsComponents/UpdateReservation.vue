@@ -174,12 +174,12 @@
                                                     </template>
                                                 </td>
                                                 <td data-label="Adult">
-                                                    <input type="number" class="form-control rounded-2" v-model="item.adults" placeholder="1" aria-label="1" min="1" max="10" ref="adults" :disabled="index > 0" />
+                                                    <input type="number" class="form-control rounded-2" v-model="item.adults" placeholder="1" aria-label="1" min="0" max="10" ref="adults" :disabled="index > 0" />
 
                                                     <span class="error-message small" v-if="$v.formAddReservation.units[0].adults.$error">Adults is required</span>
                                                 </td>
                                                 <td data-label="Child">
-                                                    <input type="number" class="form-control rounded-2" v-model="item.children" placeholder="1" aria-label="1" value="1" min="1" max="10" ref="children" :disabled="index > 0" />
+                                                    <input type="number" class="form-control rounded-2" v-model="item.children" placeholder="1" aria-label="1" value="1" min="0" max="10" ref="children" :disabled="index > 0" />
 
                                                     <span class="error-message small" v-if="$v.formAddReservation.units[0].children.$error">children is required</span>
                                                 </td>

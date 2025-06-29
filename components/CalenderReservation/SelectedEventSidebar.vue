@@ -221,6 +221,16 @@
                                     </div>
                                 </div>
                             </li>
+                            <li class="mb-3 pb-1">
+                                <div class="d-flex align-items-start">
+                                    <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                        <div class="me-2">
+                                            <h6 class="mb-0">Create At</h6>
+                                            {{ formatTimeAndDate(selectedEvent.create_at) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
                         </ul>
                     </div>
                     <div class="col-12">
@@ -399,6 +409,7 @@
     import { validationMixin } from 'vuelidate';
     import { required, email } from 'vuelidate/lib/validators';
     import { mapGetters } from 'vuex/dist/vuex.common.js';
+    import { dateMixin } from '../Mixin/DateMixin';
 
     export default {
         data() {
@@ -772,7 +783,7 @@
                 },
             },
         },
-        mixins: [flatpickrMixin, validationMixin],
+        mixins: [flatpickrMixin, validationMixin, dateMixin],
         computed: {
             ...mapGetters(['getReservationRejects']),
         },
