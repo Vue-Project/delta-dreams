@@ -7,12 +7,22 @@
         </div>
     </div>
 </template>
-
 <script>
     export default {
         computed: {
+            userRole() {
+                if (process.client) {
+                    const params = new URLSearchParams(window.location.search);
+                    return params.get('type') || '';
+                }
+                return '';
+            },
             notifications() {
-                return this.$store.state.notifications.items;
+                const userAdmins = ['super_admin', 'admin', 'sub_admin', 'manger', 'sub_manger'];
+                if (userAdmins.includes(this.userRole)) {
+                    return this.$store.state.notifications.items;
+                }
+                return [];
             },
         },
         methods: {
