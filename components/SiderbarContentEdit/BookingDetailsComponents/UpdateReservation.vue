@@ -363,6 +363,11 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="col-lg-4 px-md-0">
+                            <label class="form-label">Comment</label>
+
+                            <textarea class="form-control" aria-label="With textarea" placeholder="Comment" v-model="formAddReservation.comment"></textarea>
+                        </div>
                         <!-- <div class="col-md-7">
                             <div class="row">
 
@@ -659,6 +664,7 @@
                         // payMentUser: ""
                     },
                 },
+                comment: '',
                 servicesList: [],
                 visible: false,
                 index: 0,
@@ -1254,6 +1260,7 @@
                     remindGuestType: reservationData.remind_before_type || '',
                     holdRelease: Boolean(reservationData.hold_release),
                     arrivalDate: Boolean(reservationData.arrival_date),
+                    Comment: reservationData.note_resveration || '',
                     guestInformation: {
                         name: reservationData.client?.name || reservationData.user?.name,
                         email: reservationData.client?.email || '',

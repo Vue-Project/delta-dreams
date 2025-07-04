@@ -941,7 +941,7 @@
                     payment_assigned_to: this.paymentData.assigned_to,
                     payment_travel_agent_id: this.paymentData.selectedTravelAgent,
                     payment_business_source_id: this.paymentData.selectedBusinessSource,
-                    comment: this.formAddReservation.comment,
+                    note_reservation: this.formAddReservation.comment,
                 };
 
                 // Append simple fields to FormData
