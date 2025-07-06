@@ -935,13 +935,13 @@
                     payment_type_id: this.paymentData.selectedPaymentType,
                     payment_price: this.paymentData.amount,
                     date_at: this.paymentData.date,
-                    note: this.paymentData.comment,
+                    payment_note: this.paymentData.comment,
                     payment_mode: this.paymentData.paymentMode,
                     insurance: this.paymentData.insurance,
                     payment_assigned_to: this.paymentData.assigned_to,
                     payment_travel_agent_id: this.paymentData.selectedTravelAgent,
                     payment_business_source_id: this.paymentData.selectedBusinessSource,
-                    note_reservation: this.formAddReservation.comment,
+                    note: this.formAddReservation.comment,
                 };
 
                 // Append simple fields to FormData
