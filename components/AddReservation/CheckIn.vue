@@ -322,7 +322,7 @@
                     <!--  ! Guest Information -->
                     <h6 class="mb-2 GuestTitle">Guest Information</h6>
                     <div class="row">
-                        <div class="col-lg-7 px-md-0">
+                        <div class="col-lg-5 px-md-0">
                             <div class="input-group">
                                 <input type="text" class="form-control searchInput" id="searchInput" v-model="searchQuery" placeholder="Enter phone number or national ID" />
                                 <button class="btn btn-primary" type="button" @click="searchByPhoneOrID">Search</button>
