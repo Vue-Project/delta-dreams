@@ -1260,7 +1260,7 @@
                     remindGuestType: reservationData.remind_before_type || '',
                     holdRelease: Boolean(reservationData.hold_release),
                     arrivalDate: Boolean(reservationData.arrival_date),
-                    Comment: reservationData.note_resveration || '',
+                    comment: reservationData.note || '',
                     guestInformation: {
                         name: reservationData.client?.name || reservationData.user?.name,
                         email: reservationData.client?.email || '',
