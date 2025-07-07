@@ -6,7 +6,7 @@ export default ({ app, store }) => {
     globalChannel.bind('request-reservation', data => {
         // console.log('Received reservation event:', data);
         store.commit('notifications/ADD_NOTIFICATION', {
-            message: data.id,
+            message: data,
             // timestamp: new Date(),
         });
     });
