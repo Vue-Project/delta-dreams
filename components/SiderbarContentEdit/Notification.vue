@@ -160,7 +160,7 @@
     }
 
     /* Different styles for different notification types */
-    .notification.new-reservation {
+    /* .notification.new-reservation {
         border-left: 4px solid #10b981;
         background: #f0fff4;
     }
@@ -173,7 +173,7 @@
     .notification.general-notification {
         border-left: 4px solid #6b7280;
         background: #f9fafb;
-    }
+    } */
 
     .info-icon {
         font-size: 1.3em;
@@ -210,7 +210,7 @@
     }
 
     /* Different progress bar colors */
-    .progress-new {
+    /* .progress-new {
         background: linear-gradient(90deg, #10b981, #34d399);
     }
 
@@ -220,5 +220,5 @@
 
     .progress-general {
         background: linear-gradient(90deg, #6b7280, #9ca3af);
-    }
+    } */
 </style>

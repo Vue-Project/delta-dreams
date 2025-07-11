@@ -229,6 +229,7 @@
     import { showSuccessAlert, handleSubmissionError } from '../../Api/MassageValidation/alertUtilities';
     import { validationMixin } from 'vuelidate';
     import { required, email } from 'vuelidate/lib/validators';
+    import { getCalenderSettings } from '../../Api/CalenderApi';
 
     export default {
         name: 'AddGuestSidebar',
@@ -288,6 +289,10 @@
                     expiryDate: '',
                 },
                 uploadedFileData: null,
+                getCountries: [],
+                getVipStatus: [],
+                getNationalTypes: [],
+                getGenderTypes: [],
             };
         },
         validations: {
@@ -440,9 +445,9 @@
             },
         },
 
-        computed: {
-            ...mapGetters(['getCountries', 'getVipStatus', 'getNationalTypes', 'getGenderTypes']),
-        },
+        // computed: {
+        // ...mapGetters(['getCountries', 'getVipStatus', 'getNationalTypes', 'getGenderTypes']),
+        // // },
         mixins: [flatpickrMixin, validationMixin],
         watch: {
             isSidebarOpen: {
@@ -458,6 +463,18 @@
                     }
                 },
             },
+        },
+        async mounted() {
+            try {
+                const [calendarSettingsResponse] = await Promise.all([getCalenderSettings()]);
+
+                this.getCountries = calendarSettingsResponse.data.countries;
+                this.getGenderTypes = calendarSettingsResponse.data.gender_type;
+                this.getNationalTypes = calendarSettingsResponse.data.national_type;
+                this.getVipStatus = calendarSettingsResponse.data.vip_status;
+            } catch (error) {
+                console.error('Error loading data:', error);
+            }
         },
     };
 </script>
