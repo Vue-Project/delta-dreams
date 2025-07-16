@@ -1,10 +1,11 @@
 <template>
-    <div class="offcanvas offcanvas-end editSidebar" tabindex="-1" id="offcanvasEnd" aria-labelledby="offcanvasEndLabel" v-if="selectedEvent?.is_show">
+    <div class="offcanvas offcanvas-end editSidebar" tabindex="-1" id="offcanvasEnd" aria-labelledby="offcanvasEndLabel">
         <!-- Offcanvas Header -->
         <div class="offcanvas-header editSideBarHeader">
             <h5 id="offcanvasEndLabel" class="offcanvas-title w-100">
                 <template v-if="selectedEvent">
                     <h6>
+                        <!-- {{ selectedEvent }} -->
                         <i class="fa-solid fa-user pr-2 text-primary fs-3 mb-2"></i>
                         {{ selectedEvent.client?.name }}
                         <!-- {{ selectedEvent?.is_edit || 0 }}
@@ -18,7 +19,7 @@
                         </span>
                         <span>
                             <i class="text-success fa-solid fa-phone"></i>
-                            {{ selectedEvent.client?.phone }}
+                            {{ selectedEvent.client?.phone || selectedEvent.client?.international_phone }}
                         </span>
                     </div>
                     <div class="row mt-4">
@@ -92,7 +93,7 @@
                                     <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                         <div class="me-2">
                                             <h6 class="mb-0">Reservation Number</h6>
-                                            <small class="text-muted">#{{ selectedEvent.reservation_name }}</small>
+                                            <small class="text-muted">#{{ selectedEvent.name }}</small>
                                         </div>
                                     </div>
                                 </div>
@@ -124,7 +125,7 @@
                                             <h6 class="mb-0">Room Number</h6>
 
                                             <small class="text-muted">
-                                                {{ selectedEvent.rooms }}
+                                                {{ selectedEvent.unit?.rooms }}
                                             </small>
                                         </div>
                                     </div>
@@ -137,7 +138,7 @@
                                             <h6 class="mb-0">Travel Agent</h6>
 
                                             <small class="text-muted">
-                                                {{ selectedEvent.travel_agent_name }}
+                                                {{ selectedEvent.travel_agent?.name }}
                                             </small>
                                         </div>
                                     </div>
@@ -147,10 +148,9 @@
                                 <div class="d-flex align-items-start">
                                     <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                         <div class="me-2">
-                                            <h6 class="mb-0">User</h6>
-
+                                            <h6>User</h6>
                                             <small class="text-muted">
-                                                {{ selectedEvent.user_name }}
+                                                {{ selectedEvent.user?.name }}
                                             </small>
                                         </div>
                                     </div>
@@ -178,7 +178,7 @@
                                         <div class="me-2">
                                             <h6 class="mb-0">Unit Code</h6>
                                             <!-- <small class="text-muted">{{ selectedEvent.unit_data?.building?.name }} / {{ selectedEvent.unit_data?.code }}</small> -->
-                                            <small class="text-muted">{{ selectedEvent.unit_data?.code }}</small>
+                                            <small class="text-muted">{{ selectedEvent.unit?.code }}</small>
                                         </div>
                                     </div>
                                 </div>
@@ -216,7 +216,31 @@
                                     <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                         <div class="me-2">
                                             <h6 class="mb-0">Business Source</h6>
-                                            <small class="text-muted">{{ selectedEvent.business_source_name }}</small>
+                                            <small class="text-muted">{{ selectedEvent.business_source?.name }}</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="mb-3 pb-1">
+                                <div class="d-flex align-items-start">
+                                    <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                        <div class="me-2">
+                                            <h6 class="mb-0">Create At</h6>
+                                            <small class="text-muted">{{ formatTimeAndDate(selectedEvent.created_at) }}</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-12">
+                        <ul class="list-unstyled mb-0">
+                            <li class="mb-3 pb-1">
+                                <div class="d-flex align-items-start">
+                                    <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
+                                        <div class="me-2">
+                                            <h6>Note</h6>
+                                            <small class="text-muted">{{ selectedEvent.note }}</small>
                                         </div>
                                     </div>
                                 </div>
@@ -269,7 +293,7 @@
                         <dt class="col-6 fw-normal">Paid</dt>
                         <dd class="col-6 text-end mb-0">{{ selectedEvent.paid }} EGP</dd>
                         <dt class="col-6 fw-normal text-danger">Balance</dt>
-                        <dd class="col-6 text-end mb-0 text-danger">{{ selectedEvent.balance }} EGP</dd>
+                        <dd class="col-6 text-end mb-0 text-danger">{{ selectedEvent.remaining }} EGP</dd>
                     </dl>
                 </div>
                 <vue-easy-lightbox :visible="visible" :imgs="imgs" :index="index" @hide="handleHide" />
