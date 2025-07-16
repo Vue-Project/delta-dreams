@@ -59,7 +59,7 @@
     import HeaderCalender from './HeaderCalender.vue';
 
     // API service for fetching calendar data
-    import { deleteBlock, getCalenderAllUnits, postUpdateBlock, postUpdateReservation, putUpdateBlock } from '../../Api/CalenderApi';
+    import { deleteBlock, getCalenderAllUnits, getReservationSidebar, postUpdateBlock, postUpdateReservation, putUpdateBlock } from '../../Api/CalenderApi';
     import Swal from 'sweetalert2';
     import { handleSubmissionError, showSuccessAlert, showConfirmationDialog, showUpdateConfirmationDialog, showAlert } from '../../Api/MassageValidation/alertUtilities';
     import { mapActions } from 'vuex';
@@ -186,10 +186,10 @@
                             const month = date.toLocaleDateString('en-US', { month: 'short' });
                             return {
                                 html: `
-              <div class="custom-slot-label">
-                <div class="slot-month">${month}</div>
-              </div>
-            `,
+                  <div class="custom-slot-label">
+                    <div class="slot-month">${month}</div>
+                  </div>
+                `,
                             };
                         }
                         // For level 1 (Days), show only the day and weekday
@@ -200,11 +200,11 @@
                             });
                             return {
                                 html: `
-              <div class="custom-slot-label">
-                <div class="slot-day">${day}</div>
-                <div class="slot-weekday">${weekday}</div>
-              </div>
-            `,
+                  <div class="custom-slot-label">
+                    <div class="slot-day">${day}</div>
+                    <div class="slot-weekday">${weekday}</div>
+                  </div>
+                `,
                             };
                         }
 
@@ -270,14 +270,14 @@
                         if (unitCodeElement) {
                             // Create tooltip content with unit information
                             const tooltipContent = `
-                                <div>
-                                    <p><strong>Unit:</strong> ${info.resource.title}</p>
-                                    <p><strong>Smoking:</strong> ${is_smoking ? 'Allowed' : 'Not allowed'}</p>
-                                    <p><strong>Status:</strong> ${is_clean ? 'Clean' : 'Needs cleaning'}</p>
-                                    ${price ? `<p><strong>Price:</strong> ${price}</p>` : ''}
-                                    ${content ? `<p><strong>Info:</strong> ${content}</p>` : ''}
-                                </div>
-                            `;
+                                    <div>
+                                        <p><strong>Unit:</strong> ${info.resource.title}</p>
+                                        <p><strong>Smoking:</strong> ${is_smoking ? 'Allowed' : 'Not allowed'}</p>
+                                        <p><strong>Status:</strong> ${is_clean ? 'Clean' : 'Needs cleaning'}</p>
+                                        ${price ? `<p><strong>Price:</strong> ${price}</p>` : ''}
+                                        ${content ? `<p><strong>Info:</strong> ${content}</p>` : ''}
+                                    </div>
+                                `;
 
                             // Apply tooltip to unit code
                             unitCodeElement.setAttribute('data-bs-toggle', 'tooltip');
@@ -585,7 +585,7 @@
             // ==============================================
             // EVENT HANDLING
             // ==============================================
-            handleEventClick(info) {
+            async handleEventClick(info) {
                 if (info.event.extendedProps.is_blocked) {
                     // Format dates for display
                     const startDate = info.event.start.toLocaleString('en-US', {
@@ -622,12 +622,12 @@
                     Swal.fire({
                         title: 'Blocked Room Details',
                         html: `
-            <div class="text-left">
-              <p><strong>Start:</strong> ${startDate}</p>
-              <p><strong>End:</strong> ${endDate}</p>
-              <p><strong>Blocked Reason:</strong> ${this.selectedBlockedEvent.title}</p>
-            </div>
-          `,
+                <div class="text-left">
+                  <p><strong>Start:</strong> ${startDate}</p>
+                  <p><strong>End:</strong> ${endDate}</p>
+                  <p><strong>Blocked Reason:</strong> ${this.selectedBlockedEvent.title}</p>
+                </div>
+              `,
                         icon: 'info',
                         showCancelButton: true,
                         confirmButtonColor: '#7367f0',
@@ -645,8 +645,8 @@
                     });
                 } else {
                     // For reservations (existing logic)
-                    this.selectedEvent = this.transformEventToReservationData(info.event);
-                    this.openOffcanvas();
+                    // this.selectedEvent = this.transformEventToReservationData(info.event);
+                    await this.transformEventToReservationData(info.event);
                 }
             },
 
@@ -787,81 +787,98 @@
 
                 return events;
             },
-            transformEventToReservationData(event) {
-                // console.log('this is the event', event);
+            async transformEventToReservationData(event) {
+                const reservationId = event.extendedProps?.reservation?.id || event.id;
+                if (!reservationId) return null;
 
-                // Get the unit data directly from this.data
-                let buildingName = '';
-                let unitCode = '';
-                let unitData = null;
-
-                // Get the resource ID from the event
-                const resourceId = event.getResources()[0]?.id;
-
-                if (resourceId) {
-                    // Parse the resourceId to get building and unit IDs
-                    const [buildingId, unitId] = resourceId.split('-');
-
-                    // Find the building and unit in the data
-                    if (Array.isArray(this.data)) {
-                        const building = this.data.find(b => b.id.toString() === buildingId);
-                        if (building) {
-                            buildingName = building.name;
-
-                            // Find the unit within the building
-                            const unit = building.units?.find(u => u.id.toString() === unitId);
-                            if (unit) {
-                                unitCode = unit.code;
-                                unitData = unit; // Store the entire unit data
-                            }
-                        }
-                    }
+                this.loadingReservation = true;
+                try {
+                    const response = await getReservationSidebar(reservationId);
+                    this.selectedEvent = response.data.data;
+                    await this.$nextTick(); // Wait for DOM update
+                    this.openReservationSidebar(); // Now the element exists
+                } catch (error) {
+                    this.selectedEvent = null;
+                    // Optionally show an error message
+                } finally {
+                    this.loadingReservation = false;
                 }
-
-                // Use the unit data directly from this.data
-                return {
-                    client: event.extendedProps?.reservation?.client,
-                    unit_id: event.extendedProps?.reservation?.unit_id,
-                    id: event.extendedProps?.reservation?.id || event.id,
-                    checkin_date: event.start,
-                    checkout_date: event.end,
-                    checkin_time: event.extendedProps?.reservation?.checkin_time,
-                    checkout_time: event.extendedProps?.reservation?.checkout_time,
-                    rooms: event.extendedProps?.reservation?.rooms,
-                    rate_type: event.extendedProps?.reservation?.rate_type,
-                    adults: event.extendedProps?.reservation?.adults,
-                    children: event.extendedProps?.reservation?.children,
-                    status: event.extendedProps?.reservation?.status,
-                    status_name: event.extendedProps?.reservation?.status_name,
-                    unit_price: unitData?.price || event.extendedProps?.reservation?.unit_price,
-                    unit_price_avg: unitData?.unit_price_avg || event.extendedProps?.reservation?.unit_price_avg,
-                    total: event.extendedProps?.reservation?.total,
-                    paid: event.extendedProps?.reservation?.paid,
-                    balance: event.extendedProps?.reservation?.remaining,
-                    status_select: event.extendedProps?.reservation?.status_select,
-                    status_color: event.extendedProps?.reservation?.status_color,
-                    is_edit: event.extendedProps?.reservation?.is_edit,
-                    is_show: event.extendedProps?.reservation?.is_show,
-                    is_cancel: event.extendedProps?.reservation?.is_cancel,
-                    unit_code: unitCode || event.extendedProps?.reservation?.code,
-                    reservation_id: event.extendedProps?.reservation?.id,
-                    building_name: buildingName || event.extendedProps?.reservation?.unit?.building?.name,
-                    travel_agent_name: event.extendedProps?.reservation?.travel_agent?.name,
-                    business_source_name: event.extendedProps?.reservation?.business_source?.name,
-                    unit_data: unitData, // Include the entire unit data object
-                    price: event.extendedProps?.reservation?.price,
-                    service_price: event.extendedProps?.reservation?.service_price,
-                    permit: event.extendedProps?.reservation?.permit,
-                    permit_image: event.extendedProps?.reservation?.permit_image,
-                    reservation_name: event.extendedProps?.reservation?.name,
-                    insurance: event.extendedProps?.reservation?.insurance,
-                    insurance_refund: event.extendedProps?.reservation?.insurance_refund,
-                    insurance_remaining: event.extendedProps?.reservation?.insurance_remaining,
-                    nights: event.extendedProps?.reservation?.nights,
-                    user_name: event.extendedProps?.reservation?.user?.name,
-                    create_at: event.extendedProps?.reservation?.created_at,
-                };
             },
+            // transformEventToReservationData(event) {
+            //     // console.log('this is the event', event);
+
+            //     // Get the unit data directly from this.data
+            //     let buildingName = '';
+            //     let unitCode = '';
+            //     let unitData = null;
+
+            //     // Get the resource ID from the event
+            //     const resourceId = event.getResources()[0]?.id;
+
+            //     if (resourceId) {
+            //         // Parse the resourceId to get building and unit IDs
+            //         const [buildingId, unitId] = resourceId.split('-');
+
+            //         // Find the building and unit in the data
+            //         if (Array.isArray(this.data)) {
+            //             const building = this.data.find(b => b.id.toString() === buildingId);
+            //             if (building) {
+            //                 buildingName = building.name;
+
+            //                 // Find the unit within the building
+            //                 const unit = building.units?.find(u => u.id.toString() === unitId);
+            //                 if (unit) {
+            //                     unitCode = unit.code;
+            //                     unitData = unit; // Store the entire unit data
+            //                 }
+            //             }
+            //         }
+            //     }
+
+            //     // Use the unit data directly from this.data
+            //     return {
+            //         client: event.extendedProps?.reservation?.client,
+            //         unit_id: event.extendedProps?.reservation?.unit_id,
+            //         id: event.extendedProps?.reservation?.id || event.id,
+            //         checkin_date: event.start,
+            //         checkout_date: event.end,
+            //         checkin_time: event.extendedProps?.reservation?.checkin_time,
+            //         checkout_time: event.extendedProps?.reservation?.checkout_time,
+            //         rooms: event.extendedProps?.reservation?.rooms,
+            //         rate_type: event.extendedProps?.reservation?.rate_type,
+            //         adults: event.extendedProps?.reservation?.adults,
+            //         children: event.extendedProps?.reservation?.children,
+            //         status: event.extendedProps?.reservation?.status,
+            //         status_name: event.extendedProps?.reservation?.status_name,
+            //         unit_price: unitData?.price || event.extendedProps?.reservation?.unit_price,
+            //         unit_price_avg: unitData?.unit_price_avg || event.extendedProps?.reservation?.unit_price_avg,
+            //         total: event.extendedProps?.reservation?.total,
+            //         paid: event.extendedProps?.reservation?.paid,
+            //         balance: event.extendedProps?.reservation?.remaining,
+            //         status_select: event.extendedProps?.reservation?.status_select,
+            //         status_color: event.extendedProps?.reservation?.status_color,
+            //         is_edit: event.extendedProps?.reservation?.is_edit,
+            //         is_show: event.extendedProps?.reservation?.is_show,
+            //         is_cancel: event.extendedProps?.reservation?.is_cancel,
+            //         unit_code: unitCode || event.extendedProps?.reservation?.code,
+            //         reservation_id: event.extendedProps?.reservation?.id,
+            //         building_name: buildingName || event.extendedProps?.reservation?.unit?.building?.name,
+            //         travel_agent_name: event.extendedProps?.reservation?.travel_agent?.name,
+            //         business_source_name: event.extendedProps?.reservation?.business_source?.name,
+            //         unit_data: unitData, // Include the entire unit data object
+            //         price: event.extendedProps?.reservation?.price,
+            //         service_price: event.extendedProps?.reservation?.service_price,
+            //         permit: event.extendedProps?.reservation?.permit,
+            //         permit_image: event.extendedProps?.reservation?.permit_image,
+            //         reservation_name: event.extendedProps?.reservation?.name,
+            //         insurance: event.extendedProps?.reservation?.insurance,
+            //         insurance_refund: event.extendedProps?.reservation?.insurance_refund,
+            //         insurance_remaining: event.extendedProps?.reservation?.insurance_remaining,
+            //         nights: event.extendedProps?.reservation?.nights,
+            //         user_name: event.extendedProps?.reservation?.user?.name,
+            //         create_at: event.extendedProps?.reservation?.created_at,
+            //     };
+            // },
             transformAllUnitsToEvents() {
                 let allEvents = [];
 
@@ -1314,16 +1331,16 @@
             // ==============================================
             // SelectedEvent Sidebar Component Methods
             // ==============================================
-            openOffcanvas() {
-                this.$nextTick(() => {
-                    const offcanvasElement = document.getElementById('offcanvasEnd');
-                    if (offcanvasElement) {
-                        const offcanvas = new bootstrap.Offcanvas(offcanvasElement);
-                        offcanvas.show();
-                    } else {
-                        console.error('Offcanvas element not found.');
-                    }
-                });
+            openReservationSidebar() {
+                console.log('tesatyhn');
+
+                const offcanvasElement = document.getElementById('offcanvasEnd');
+                if (offcanvasElement) {
+                    const offcanvas = new bootstrap.Offcanvas(offcanvasElement);
+                    offcanvas.show();
+                } else {
+                    console.error('Offcanvas element not found.');
+                }
             },
 
             ...mapActions(['updateReservationTypes', 'updateRateTypes', 'updateCountries', 'updateVipStatus', 'updateNationalTypes', 'updateGenderTypes', 'updateProjects', 'updateRemindGuestType', 'updateReservationStatus', 'updateReservationRejects']),

@@ -70,7 +70,7 @@ export const getCalenderFilter = async filterCalender => {
         });
         return response.data;
     } catch (error) {
-        console.error('Error fetching reservations:', error);
+        console.error('Error fetching calendar filter:', error);
         throw error;
     }
 };
@@ -80,6 +80,24 @@ export const getSettingsSite = async () => {
         return response.data;
     } catch (error) {
         console.error('Error fetching settings:', error);
+        throw error;
+    }
+};
+export const getReservationSidebar = async id => {
+    try {
+        const response = await apiClient.get(`reservations/single/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching reservation sidebar:', error);
+        throw error;
+    }
+};
+export const getCalenderSettings = async () => {
+    try {
+        const response = await apiClient.get(`calender/settings`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching calendar settings:', error);
         throw error;
     }
 };

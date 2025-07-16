@@ -322,7 +322,7 @@
                     <!--  ! Guest Information -->
                     <h6 class="mb-2 GuestTitle">Guest Information</h6>
                     <div class="row">
-                        <div class="col-lg-7 px-md-0">
+                        <div class="col-lg-5 px-md-0">
                             <div class="input-group">
                                 <input type="text" class="form-control searchInput" id="searchInput" v-model="searchQuery" placeholder="Enter phone number or national ID" />
                                 <button class="btn btn-primary" type="button" @click="searchByPhoneOrID">Search</button>
@@ -935,13 +935,13 @@
                     payment_type_id: this.paymentData.selectedPaymentType,
                     payment_price: this.paymentData.amount,
                     date_at: this.paymentData.date,
-                    note: this.paymentData.comment,
+                    payment_note: this.paymentData.comment,
                     payment_mode: this.paymentData.paymentMode,
                     insurance: this.paymentData.insurance,
                     payment_assigned_to: this.paymentData.assigned_to,
                     payment_travel_agent_id: this.paymentData.selectedTravelAgent,
                     payment_business_source_id: this.paymentData.selectedBusinessSource,
-                    comment: this.formAddReservation.comment,
+                    note: this.formAddReservation.comment,
                 };
 
                 // Append simple fields to FormData

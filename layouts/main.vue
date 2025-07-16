@@ -4,6 +4,7 @@
         <HeaderNav></HeaderNav>
         <!-- <PusherStatus /> -->
         <Nuxt />
+        <NotificationTest />
     </div>
 </template>
 
@@ -11,11 +12,12 @@
     import { CursorFx } from '@luxdamore/vue-cursor-fx';
     import TheHeader from '../components/layout/TheHeader.vue';
     import HeaderNav from '../components/layout/HeaderNav.vue';
+    import NotificationTest from '../components/SiderbarContentEdit/Notification.vue';
 
     // import 'themify-icons/css/themify-icons.css';
 
     export default {
-        components: { CursorFx, TheHeader, HeaderNav },
+        components: { CursorFx, TheHeader, HeaderNav, NotificationTest },
     };
 </script>
 
