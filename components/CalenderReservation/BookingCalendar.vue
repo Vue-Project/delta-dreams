@@ -603,7 +603,8 @@
                         start: info.event.start,
                         end: info.event.end,
                         title: info.event.title,
-                        room: info.event.extendedProps.room || 'Not specified',
+                        room: info.event.extendedProps.room,
+                        user: info.event.extendedProps.block.user.name,
                     };
 
                     // Show detailed confirmation dialog only if user has permission
@@ -626,6 +627,7 @@
                   <p><strong>Start:</strong> ${startDate}</p>
                   <p><strong>End:</strong> ${endDate}</p>
                   <p><strong>Blocked Reason:</strong> ${this.selectedBlockedEvent.title}</p>
+                  <p><strong>User:</strong> ${this.selectedBlockedEvent.user}</p>
                 </div>
               `,
                         icon: 'info',
