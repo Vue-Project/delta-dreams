@@ -245,16 +245,6 @@
                                     </div>
                                 </div>
                             </li>
-                            <li class="mb-3 pb-1">
-                                <div class="d-flex align-items-start">
-                                    <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
-                                        <div class="me-2">
-                                            <h6 class="mb-0">Create At</h6>
-                                            {{ formatTimeAndDate(selectedEvent.create_at) }}
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
                         </ul>
                     </div>
                     <div class="col-12">
