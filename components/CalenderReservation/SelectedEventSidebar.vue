@@ -138,7 +138,7 @@
                                             <h6 class="mb-0">Travel Agent</h6>
 
                                             <small class="text-muted">
-                                                {{ selectedEvent.travel_agent?.name }}
+                                                {{ selectedEvent.travel_agent?.name || '-' }}
                                             </small>
                                         </div>
                                     </div>
@@ -216,7 +216,7 @@
                                     <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                         <div class="me-2">
                                             <h6 class="mb-0">Business Source</h6>
-                                            <small class="text-muted">{{ selectedEvent.business_source?.name }}</small>
+                                            <small class="text-muted">{{ selectedEvent.business_source?.name || '-' }}</small>
                                         </div>
                                     </div>
                                 </div>
