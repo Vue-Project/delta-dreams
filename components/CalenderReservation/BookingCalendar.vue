@@ -1334,8 +1334,6 @@
             // SelectedEvent Sidebar Component Methods
             // ==============================================
             openReservationSidebar() {
-                console.log('tesatyhn');
-
                 const offcanvasElement = document.getElementById('offcanvasEnd');
                 if (offcanvasElement) {
                     const offcanvas = new bootstrap.Offcanvas(offcanvasElement);
