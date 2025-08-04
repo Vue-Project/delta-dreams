@@ -1,6 +1,7 @@
 <template>
     <section class="update-reservations">
         <!-- MAIN CARD CONTAINER -->
+
         <div class="card">
             <!-- CARD HEADER -->
             <h5 class="card-header">Update Reservation</h5>
@@ -282,14 +283,14 @@
                         </div> -->
                         <div class="col-md-8">
                             <div class="row">
-                                <div class="col-md-4 col-12 px-0 px-md-3">
+                                <div class="col-md-3 col-12 px-0 px-md-3">
                                     <label for="releaseTerm" class="form-label">Remind Guest before</label>
                                     <div class="input-group">
                                         <input type="number" class="form-control" placeholder="0" id="releaseTerm" v-model="formAddReservation.remindGuest" />
                                         <span class="input-group-text groupStyle">Days</span>
                                     </div>
                                 </div>
-                                <div class="col-lg-4 col-md-4 col-12 px-0 px-md-3">
+                                <div class="col-lg-3 col-md-3 col-12 px-0 px-md-3">
                                     <label for="remindGuestType" class="form-label">Remind Guest Type</label>
                                     <select class="form-select" v-model="formAddReservation.remindGuestType">
                                         <option disabled value="">Select Remind Guest Type</option>
@@ -298,6 +299,20 @@
                                         </option>
                                     </select>
                                 </div>
+                                <div class="col-md-3 col-12 px-0 px-md-3">
+                                    <label for="tax" class="form-label">Tax</label>
+                                    <input type="number" class="form-control rounded-2" id="tax" :value="formAddReservation.tax || 0" @input="formAddReservation.tax = $event.target.value" />
+                                </div>
+                                <div class="col-md-3 col-12 px-0 px-md-3">
+                                    <label for="chargeExtra" class="form-label">Charge Extra</label>
+
+                                    <input type="number" class="form-control rounded-2" id="chargeExtra" :value="formAddReservation.chargeExtra || 0" @input="formAddReservation.chargeExtra = $event.target.value" />
+                                </div>
+                            </div>
+                            <vue-easy-lightbox :visible="visible" :imgs="imgs" :index="index" @hide="handleHide" />
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row">
                                 <div class="col-lg-4 col-md-4 col-12 px-0 px-md-3" v-if="reservationData?.permit">
                                     <p class="mb-0">Permit Image</p>
                                     <img :src="`${$nuxt.$config.baseURL}/${reservationData.permit_image}`" style="width: 50px; height: 50px; cursor: pointer" @click="showImg(`${$nuxt.$config.baseURL}/${reservationData.permit_image}`)" class="w-75" />
@@ -628,6 +643,8 @@
                     releaseTerm: '',
                     releaseTermValue: '',
                     remindGuest: '',
+                    tax: '',
+                    chargeExtra: '',
                     holdRelease: false,
                     arrivalDate: false,
                     guestInformation: {
@@ -853,6 +870,8 @@
                     zip_code: this.formAddReservation.guestInformation.zip,
                     insurance: this.formAddReservation.BillingSummary.insurance,
                     insurance_by: this.formAddReservation.BillingSummary.insurance_by,
+                    tax: this.formAddReservation.tax,
+                    charge_extra: this.formAddReservation.chargeExtra,
                     // email_booking: this.showSelect,
                     // email_booking_option: this.formAddReservation.otherInformation.emailBookingOption,
                     // send_email_checkout: this.showInput,
@@ -1257,6 +1276,8 @@
                     releaseTerm: reservationData.release_term_type || '',
                     releaseTermValue: reservationData.release_term_value || '',
                     remindGuest: reservationData.remind_before_days || '',
+                    tax: reservationData.tax || '',
+                    chargeExtra: reservationData.charge_extra || '',
                     remindGuestType: reservationData.remind_before_type || '',
                     holdRelease: Boolean(reservationData.hold_release),
                     arrivalDate: Boolean(reservationData.arrival_date),

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { showAlert } from './MassageValidation/alertUtilities';
 
 // Helper function to get store safely
 function getStore() {
@@ -60,6 +61,19 @@ if (process.client) {
 const apiClient = axios.create({
     baseURL: process.env.API_BASE_URL,
 });
+apiClient.interceptors.response.use(
+    response => response,
+    error => {
+        if (error.response && error.response.status === 401) {
+            showAlert({
+                title: 'Unauthorized',
+                text: 'Your session has expired or you do not have access.',
+                icon: 'error',
+            });
+        }
+        return Promise.reject(error);
+    },
+);
 
 // Add an interceptor to ensure these params are included in every request
 apiClient.interceptors.request.use(config => {
