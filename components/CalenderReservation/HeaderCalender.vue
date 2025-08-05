@@ -143,7 +143,7 @@
             <div class="d-flex">
                 <div class="switches-stacked d-flex justify-between align-items-center w-100">
                     <label class="switch switch-square mb-0">
-                        <input type="radio" class="switch-input" name="view-type-radio" v-model="viewType" value="block" @change="changeViewType" />
+                        <input type="checkbox" class="switch-input" name="view-type-radio" v-model="viewType" value="block" @change="changeViewType" />
                         <span class="switch-toggle-slider">
                             <span class="switch-on"></span>
                             <span class="switch-off"></span>
@@ -152,7 +152,7 @@
                     </label>
 
                     <label class="switch switch-square">
-                        <input type="radio" class="switch-input" name="view-type-radio" v-model="viewType" value="available" @change="changeViewType" />
+                        <input type="checkbox" class="switch-input" name="view-type-radio" v-model="viewType" value="available" @change="changeViewType" />
                         <span class="switch-toggle-slider">
                             <span class="switch-on"></span>
                             <span class="switch-off"></span>
