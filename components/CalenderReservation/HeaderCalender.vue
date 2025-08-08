@@ -294,6 +294,7 @@
                 searchQuery: '', // New search query property
                 selectedStatuses: [],
                 viewType: null,
+                selectedDate: null,
                 // viewType: 'calendar', // Default view type
             };
         },
@@ -313,16 +314,15 @@
             // Add this new method to handle view type change
             async changeViewType() {
                 try {
-                    // Prepare filter parameters based on the selected view type
                     const filterParams = {
                         project_ids: this.selectedProjects,
                         rate_types: this.selectedRateTypes,
                         building_ids: this.selectedBuildings.length > 0 ? this.selectedBuildings : null,
                         search: this.searchQuery || null,
                         status: this.selectedStatuses.length > 0 ? this.selectedStatuses : null,
+                        start_date: this.selectedDate ? this.selectedDate : null, // Add this line
                     };
 
-                    // Set the appropriate filter parameter based on view type
                     if (this.viewType === 'block') {
                         filterParams.is_blocked = 1;
                         filterParams.is_available = 0;
@@ -334,16 +334,13 @@
                         filterParams.is_available = 0;
                     }
 
-                    // Fetch data based on the selected view type
                     const response = await getCalenderFilter(filterParams);
 
-                    // Emit event to parent component to handle view type change
                     this.$root.$emit('view-type-changed', {
                         viewType: this.viewType,
                         data: response.data,
                     });
 
-                    // Also update the calendar data
                     this.$root.$emit('calendar-data-updated', response.data);
                 } catch (error) {
                     console.error('Error changing view type:', error);
@@ -374,11 +371,13 @@
 
             filterCalenderByDate() {
                 const flatpickrInstance = flatpickr(this.$refs.datePicker4, {
-                    dateFormat: 'Y-m-d', // Format the date as YYYY-MM-DD
+                    dateFormat: 'Y-m-d',
                     onChange: selectedDates => {
                         if (selectedDates.length > 0) {
                             const selectedDate = selectedDates[0];
-                            this.$emit('date-selected', selectedDate); // Emit the selected date
+                            this.selectedDate = this.formatDate(selectedDate); // Save selected date
+                            this.$emit('date-selected', selectedDate);
+                            this.getFilterData(); // Trigger filter when date changes
                         }
                     },
                 });
@@ -442,6 +441,13 @@
                     this.$emit('show-building-resources', this.selectedBuildings);
                 }
             },
+             formatDate(date) {
+        const d = new Date(date);
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    },
 
             handleItemClick(building, event) {
                 // Only handle clicks on the text (not checkbox)
@@ -512,22 +518,20 @@
                         building_ids: this.selectedBuildings.length > 0 ? this.selectedBuildings : null,
                         search: this.searchQuery ? encodeURIComponent(this.searchQuery) : null,
                         status: this.selectedStatuses.length > 0 ? this.selectedStatuses : null,
-                        view_type: this.viewType, // Include view type in filter parameters
+                        view_type: this.viewType,
+                        start_date: this.selectedDate ? this.selectedDate : null, // Add this line
                     };
 
                     const response = await getCalenderFilter(filterCalender);
                     this.data = response.data;
 
-                    // Emit the updated data to BookingCalendar
                     this.$root.$emit('calendar-data-updated', response.data);
 
-                    // Also emit view type change event
                     this.$root.$emit('view-type-changed', {
                         viewType: this.viewType,
                         data: response.data,
                     });
 
-                    // IMPORTANT: Make sure to preserve building filter after data is updated
                     if (this.selectedBuildings.length > 0) {
                         this.$emit('show-building-resources', this.selectedBuildings);
                     }
