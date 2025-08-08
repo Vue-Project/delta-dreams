@@ -12,6 +12,7 @@
     "@fullcalendar/core": "^6.1.15",
     "@fullcalendar/daygrid": "^6.1.15",
     "@fullcalendar/interaction": "^6.1.15",
+    "@fullcalendar/resource": "^6.1.18",
     "@fullcalendar/resource-timeline": "^6.1.15",
     "@fullcalendar/vue": "^6.1.15",
     "@luxdamore/vue-cursor-fx": "^1.6.2",
