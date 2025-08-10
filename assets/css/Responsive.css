@@ -235,3 +235,18 @@
         border-radius: 4px;
     } */
 }
+/*  translate the page */
+@media (max-width: 576px) {
+    .translated-rtl .fc-toolbar-chunk {
+        text-align: end;
+    }
+    .translated-rtl .fc .fc-toolbar-title {
+        font-size: 15px;
+    }
+    .translated-rtl .badge {
+        top: 75px;
+    }
+    .translated-rtl .fc-datagrid-cell-main {
+        font-size: 13px;
+    }
+}
