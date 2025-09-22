@@ -441,13 +441,13 @@
                     this.$emit('show-building-resources', this.selectedBuildings);
                 }
             },
-             formatDate(date) {
-        const d = new Date(date);
-        const year = d.getFullYear();
-        const month = String(d.getMonth() + 1).padStart(2, '0');
-        const day = String(d.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`;
-    },
+            formatDate(date) {
+                const d = new Date(date);
+                const year = d.getFullYear();
+                const month = String(d.getMonth() + 1).padStart(2, '0');
+                const day = String(d.getDate()).padStart(2, '0');
+                return `${year}-${month}-${day}`;
+            },
 
             handleItemClick(building, event) {
                 // Only handle clicks on the text (not checkbox)
@@ -518,8 +518,8 @@
                         building_ids: this.selectedBuildings.length > 0 ? this.selectedBuildings : null,
                         search: this.searchQuery ? encodeURIComponent(this.searchQuery) : null,
                         status: this.selectedStatuses.length > 0 ? this.selectedStatuses : null,
-                        view_type: this.viewType,
-                        start_date: this.selectedDate ? this.selectedDate : null, // Add this line
+                        // view_type: this.viewType,
+                        // start_date: this.selectedDate ? this.selectedDate : null, // Add this line
                     };
 
                     const response = await getCalenderFilter(filterCalender);
