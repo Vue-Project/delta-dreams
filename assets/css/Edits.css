@@ -1,0 +1,327 @@
+/* start header styling */
+.switch .switch-input:checked ~ .switch-toggle-slider::after {
+  left: 4.15rem !important;
+}
+
+.switch .switch-toggle-slider::after {
+  top: 4px;
+}
+.switch {
+  width: 100px;
+}
+
+.switch .switch-toggle-slider {
+  width: 5.5rem;
+  height: 30px;
+  line-height: 26px;
+  top: 0;
+  left: 0;
+}
+
+.switch .switch-off {
+  font-size: 15px;
+}
+.switch-input:checked ~ .switch-toggle-slider .switch-on {
+  font-size: 15px;
+}
+
+.fc .fc-button-primary:not(.fc-prev-button):not(.fc-next-button) {
+  position: absolute;
+  left: 200px;
+  top: 60px;
+}
+.fc .fc-toolbar-title {
+  font-size: 1.5rem;
+  margin-left: 9px;
+}
+
+.calendarDate input {
+
+  font-size: 13px;
+}
+
+.calendarDate i {
+  position: absolute;
+  top: 8px;
+right:23px ;  pointer-events: none;
+}
+
+.fullbox {
+  position: relative;
+  left: -333px;
+  width: 375px;
+  background: #ffffff;
+  z-index: 10;
+  border-radius: 10px;
+}
+.fullbox ul li i {
+  margin-right: 10px;
+  border-radius: 5px;
+}
+.fullbox ul li {
+  list-style: none;
+  font-size: 12px;
+}
+.fullbox h5 {
+  margin-left: 20px;
+  margin-top: 7px;
+}
+.fullbox hr {
+  background: black;
+  width: 70%;
+  margin-left: 50px;
+}
+
+/* Booking-Status-First */
+.fullbox .Booking-Status-First li:nth-child(1) i {
+  color: #ff6666;
+}
+.fullbox .Booking-Status-First li:nth-child(2) i {
+  color: #666666;
+}
+.fullbox .Booking-Status-First li:nth-child(3) i {
+  color: #000066;
+}
+.fullbox .Booking-Status-First li:nth-child(4) i {
+  color: #33cc00;
+}
+
+/* Booking-Status-Secound */
+.fullbox .Booking-Status-Secound li:nth-child(1) i {
+  color: #3366ff;
+}
+.fullbox .Booking-Status-Secound li:nth-child(2) i {
+  color: #33cc00;
+}
+.fullbox .Booking-Status-Secound li:nth-child(3) i {
+  color: #ff6666;
+}
+.fullbox .Booking-Status-Secound li:nth-child(4) i {
+  color: #663300;
+}
+
+/* Style for the parent li to center content */
+.fullbox .Booking-Indicators-First li,
+.fullbox .Booking-Indicators-Secound li {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 8px;
+}
+
+.fullbox .Booking-Indicators-First li i,
+.fullbox .Booking-Indicators-Secound li i {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  color: #302a18;
+  font-size: 10px;
+}
+
+.fullbox .Booking-Indicators-First li:nth-child(1) i {
+  background-color: #ffe17d;
+  outline: 2px solid #d6bd6a;
+}
+.fullbox .Booking-Indicators-First li:nth-child(2) i {
+  background-color: #fe6b6b;
+  outline: 2px solid #d96969;
+}
+.fullbox .Booking-Indicators-First li:nth-child(3) i {
+  background-color: #da8aff;
+  outline: 2px solid #bc77dc;
+}
+.fullbox .Booking-Indicators-First li:nth-child(4) i {
+  background-color: #81f6ef;
+  outline: 2px solid #7fd5d0;
+}
+
+/* .Booking-Indicators-Secound */
+.fullbox .Booking-Indicators-Secound li:nth-child(1) i {
+  background-color: #d68484;
+  outline: 2px solid #d88888;
+}
+.fullbox .Booking-Indicators-Secound li:nth-child(2) i {
+  background-color: #f2994a;
+  outline: 2px solid #cb803e;
+}
+.fullbox .Booking-Indicators-Secound li:nth-child(3) i {
+  background-color: #ffffff;
+  outline: 2px solid #d6d6d6;
+  color: #fc7d0d !important;
+}
+
+/* Room-Indicators-First */
+.fullbox .Room-Indicators-First li i,
+.fullbox .Room-Indicators-Secound li i {
+  font-size: 16px;
+  margin-right: 8px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+.fullbox .Room-Indicators-First li:nth-child(2) i {
+  font-size: 14px !important;
+}
+
+/* Unclassified */
+.fullbox .Unclassified-First li:nth-child(1) i {
+  color: #bdd8ff;
+}
+.fullbox .Unclassified-First li:nth-child(2) i {
+  color: #ff5353;
+}
+.fullbox .Unclassified-Secound li:nth-child(1) i {
+  color: #ffcfcf;
+}
+
+/* end header styling */
+
+/* start calender styling */
+/* the close button */
+.popoverClose {
+  position: absolute;
+  top: 5px;
+  right: 11px;
+  padding-left: 4px;
+  padding-right: 4px;
+  border-radius: 3px;
+  color: #fd0017;
+  cursor: pointer;
+}
+.popoverClose:hover {
+  background-color: #fd0017;
+  color: white;
+  transform: scale(1);
+}
+.popoverContent button {
+  border: none;
+  background: transparent;
+  color: #2491fc;
+}
+.popover {
+  position: absolute;
+  transition: all 0.3s ease;
+  max-width: 250px;
+}
+
+/* end calender styling */
+
+/* start reservation style */
+
+.card-body input,
+.total-nights,
+select {
+  border-radius: 0px;
+}
+  .Date_Picker i {
+    position: absolute;
+    top: 36px;
+    right: 10px;
+
+}
+.Time_Picker i {
+  position: absolute;
+  top: 12px;
+  right: 67px;
+}
+
+
+.card-datatable thead tr {
+  background-color: #fafafa;
+}
+.rateOffer {
+  color: black;
+}
+
+.groupStyle {
+  color: #7367f0;
+  border-color: #7367f0;
+  border-radius: 0;
+  z-index: 10;
+}
+
+.billingMoney {
+  background-color: rgb(242, 246, 249);
+}
+/* start sidebar  */
+.sidebar-open {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.sidebar-open::-webkit-scrollbar {
+  display: none;
+}
+
+.scbuttons {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  max-width: inherit;
+  z-index: 10;
+  padding: 10px 20px;
+  box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1);
+  text-align: right;
+  background-color: #fff;
+}
+.sidebar-content {
+  height: 100vh;
+}
+
+/* end sidebar  */
+/* end reservation style */
+
+/* full calendar  */
+.fc-scrollgrid-sync-table .fc-timeline-header-row th:nth-child(7n + 5) {
+  background-color: rgb(255, 248, 225);
+}
+.fc-scrollgrid-sync-table .fc-timeline-header-row th:nth-child(7n + 6) {
+  background-color: rgb(255, 248, 225);
+}
+.selected-days-tooltip {
+  background-color: rgb(27, 21, 46);
+  color: white;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.table > :not(caption) > * > * {
+  padding: 5px;
+
+}
+
+/* full calendar  */
+
+
+.selected-days-tooltip,
+.fc-highlight {
+  border-radius: 2px;
+}
+.fc-highlight {
+  background-color: black !important;
+  color: white !important;
+}
+.selected-days-tooltip {
+  background-color: rgba(158, 75, 157, 0.199);
+  color: white;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flatpickr-current-month {
+  top: 5px;
+}
+select.form-select option {
+  background-color: transparent;
+}
+.accordion-item {
+  border-color: transparent;
+}

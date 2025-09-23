@@ -1,0 +1,123 @@
+/*
+
+.card-body .cio input, .total-nights {
+    border-radius: 0px;
+  }
+  .total-nights{
+    font-size: 12px;
+  }
+  #formValidationReservation .cio input,select,.total-nights{
+    padding:4px 8px !important;
+    height:31px !important;
+    font-size: 13px;
+  }
+  .date-icon {
+    position: absolute;
+    top:60%;
+    left:120px;
+    pointer-events: none;
+  }
+  .clock-icon{
+    position: absolute;
+    top:9px;
+    left:43%;
+    pointer-events: none;
+  }
+
+  #flatpickr-time-02{
+    width:95px !important;
+  }
+  #formValidationReservation label ,#formValidationReservation input::placeholder ,#formValidationReservation select{
+    color:black;
+  }
+  #formValidationReservation input::placeholder{
+    font-size: 12px;
+  }
+  .card-datatable thead tr{
+    background-color: #fafafa;
+  }
+  .AddButton{
+    border-radius:2px ;
+    border-color:#1890ff;
+    background-color: white;
+    color:#1890ff;
+    font-weight:400;
+    height: 32px;
+    width:92px;
+    padding: 4px 15px;
+    font-size: 13px;
+  }
+
+.datatables-projects th, .datatables-projects td {
+    padding:8px 2px;
+    color:black;
+    overflow: hidden;
+}
+.datatables-projects th{
+    font-size: 11px !important;
+    font-weight: bold;
+    color: black !important;
+  }
+.form-check-label{
+    font-size: 13px;
+}
+.rateOffer{
+    color:black;
+}
+.input-group .input-group-text ,.form-select ,.form-control {
+    height: 31px !important;
+    font-size: 12px;
+    border-radius:2px !important;
+}
+.input-group i{
+    font-size:14px;
+    height:9px;
+}
+h6{
+    color:black;
+    font-weight: bold;
+}
+.cancelButton ,.ReserverButton{
+    height: 31px !important;
+    font-size: 12px;
+    border-radius:2px !important;
+    padding:4px 15px;
+    width:120px;
+}
+.cancelButton{
+    background-color: white;
+    color:black;
+    margin-right: 10px;
+}
+.ReserverButton{
+    color: white;
+    background-color: #1890ff;
+    border: none;
+}
+.billingMoney {
+    background-color: rgb(242, 246, 249);
+}
+.summary .card{
+    color:black !important;
+}
+
+.dropzone {
+  min-height: 150px;
+  border: 2px dashed #868788;
+  border-radius: 5px;
+  padding: 0;
+  background: #f7f7f7;
+  text-align: center;
+}
+
+.dz-message {
+  color: #868788;
+  font-size: 15px;
+}
+
+.dz-image img {
+  max-width: 100px;
+  max-height: 100px;
+  border-radius: 5px;
+  margin-right: 10px;
+} */
