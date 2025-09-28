@@ -34,7 +34,6 @@
                                     </span>
                                 </div>
                             </div>
-                            <!-- <p class="fs-5">unit Code: {{ room?.building.name }} / {{ room.code }}</p> -->
                             <p class="fs-5">unit Code: {{ room.code }}</p>
                         </div>
                         <div class="card-body p-1 position-relative">
@@ -71,15 +70,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Room Details Sidebar -->
-        <!-- <RoomDetailsSidebar
-      :is-open="selectedRoom !== null"
-      :room="selectedRoom || {}"
-      @close="selectedRoom = null"
-      @book-room="handleBookRoom"
-      @view-history="handleViewHistory"
-    /> -->
     </div>
 </template>
 
@@ -89,8 +79,7 @@
     import flatpickrMixin from '../Mixin/flatpickrMixin';
 
     export default {
-        name: 'reservations',
-        layout: 'component',
+        name: 'RoomStatus',
 
         data() {
             return {
@@ -217,15 +206,3 @@
         mixins: [flatpickrMixin],
     };
 </script>
-
-<style scoped>
-    .cursor-pointer {
-        cursor: pointer;
-    }
-
-    .room:hover {
-        transform: translateY(-2px);
-        transition: transform 0.2s ease;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-</style>

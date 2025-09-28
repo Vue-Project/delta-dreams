@@ -194,15 +194,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Room Details Sidebar -->
-        <!-- <RoomDetailsSidebar
-      :is-open="selectedRoom !== null"
-      :room="selectedRoom || {}"
-      @close="selectedRoom = null"
-      @book-room="handleBookRoom"
-      @view-history="handleViewHistory"
-    /> -->
     </div>
 </template>
 
@@ -336,15 +327,3 @@
         mixins: [flatpickrMixin],
     };
 </script>
-
-<style scoped>
-    .cursor-pointer {
-        cursor: pointer;
-    }
-
-    .room:hover {
-        transform: translateY(-2px);
-        transition: transform 0.2s ease;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-</style>

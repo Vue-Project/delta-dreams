@@ -1198,4 +1198,14 @@ body {
 .fa-solid.fa-baby {
     font-size: 25px;
 }
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.room:hover {
+    transform: translateY(-2px);
+    transition: transform 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
 /* Mobile styles - show short name instead of full name */
