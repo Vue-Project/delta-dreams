@@ -19,9 +19,6 @@
                                     <label for="flatpickr-date-01" class="form-label">Check-in</label>
                                     <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" id="flatpickr-date-01" ref="datePicker1" v-model="formAddReservation.checkInDate" aria-label="input Text to Check-in Date" />
                                     <i class="fa-solid fa-calendar-days icon-date"></i>
-                                    <!-- <span class="error-message small" v-if="$v.formAddReservation.checkInDate.$error">
-                    Check-in date is required
-                  </span> -->
                                 </div>
 
                                 <!-- Check-in Time Picker-->
@@ -31,9 +28,6 @@
                                         <i class="fa-regular fa-clock icon-time"></i>
                                         <span class="input-group-text total-nights bg-primary waves-effect waves-light" id="basic-addon13">{{ totalNights }} Nights</span>
                                     </div>
-                                    <!-- <span class="error-message small" v-if="$v.formAddReservation.checkInTime.$error">
-                    Check-in time is required
-                  </span> -->
                                 </div>
 
                                 <!-- Check-out Date Picker-->
@@ -41,18 +35,12 @@
                                     <label for="flatpickr-date-02" class="form-label ms-lg-3">Check-out</label>
                                     <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" id="flatpickr-date-02" ref="datePicker2" v-model="formAddReservation.checkOutDate" aria-label="input Text to Check-out Date" />
                                     <i class="fa-solid fa-calendar-days icon-date"></i>
-                                    <!-- <span class="error-message small" v-if="$v.formAddReservation.checkOutDate.$error">
-                    Check-out date is required
-                  </span> -->
                                 </div>
 
                                 <!-- Check-out Time Picker-->
                                 <div class="col-lg-3 col-12 col-md-6 mt-4 px-0">
                                     <input type="text" class="form-control flatpickr-input" placeholder="HH:MM" id="flatpickr-time-02" ref="timePicker2" v-model="formAddReservation.checkOutTime" aria-label="input Text to Check-out Time" />
                                     <i class="fa-regular fa-clock icon-time right"></i>
-                                    <!-- <span class="error-message small" v-if="$v.formAddReservation.checkOutTime.$error">
-                    Check-out time is required
-                  </span> -->
                                 </div>
                             </div>
                         </div>
@@ -62,18 +50,6 @@
                                     <label for="roomCount" class="form-label">Room(s)</label>
                                     <input class="form-control rounded-2" type="number" id="roomCount" v-model="formAddReservation.numberRooms" min="1" @input="updateRepeater" />
                                 </div>
-
-                                <!-- <div class="col-lg-9 col-12 mb-lg-4 ps-md-2 col-md-6 p-0 pe-md-0">
-                                    <label for="reservationType" class="form-label">Reservation Type</label>
-                                    <select class="form-select" id="reservationType" v-model="formAddReservation.reservationType" ref="reservationType">
-                                        <option disabled value="">Select</option>
-                                        <option v-for="(type, index) in getReservationTypes" :key="index" :value="index">
-                                            {{ type }}
-                                        </option>
-                                    </select>
-
-                                    <span class="error-message small" v-if="$v.formAddReservation.reservationType.$error">Reservation type is required</span>
-                                </div> -->
                             </div>
                         </div>
                         <div class="p-0">
@@ -106,39 +82,6 @@
                     <!--   ! check inputs and repeater -->
                     <div class="mb-3">
                         <div class="row">
-                            <!-- <div class="col-lg-4">
-                <div class="row">
-                  <div class="col-lg-4">Rate Offered:</div>
-                  <div class="col-lg-8">
-                    <div class="form-check">
-                      <input type="checkbox" class="form-check-input" id="rateOfferedContract" v-model="formAddReservation.rateOffered.contract" />
-                      <label class="form-check-label" for="rateOfferedContract">Contract</label>
-                    </div>
-                  </div>
-                </div>
-              </div> -->
-                            <!-- <div class="col-lg-8">
-                <div class="row">
-                  <div class="col-lg-4">
-                    <div class="form-check">
-                      <input type="checkbox" class="form-check-input" id="rateOfferedBookAll" v-model="formAddReservation.rateOffered.bookAll" />
-                      <label class="form-check-label" for="rateOfferedBookAll">Book All Available Rooms</label>
-                    </div>
-                  </div>
-                  <div class="col-lg-4">
-                    <div class="form-check">
-                      <input type="checkbox" class="form-check-input" id="rateOfferedQuickGroup" v-model="formAddReservation.rateOffered.quickGroup" />
-                      <label class="form-check-label" for="rateOfferedQuickGroup">Quick Group Booking</label>
-                    </div>
-                  </div>
-                  <div class="col-lg-4">
-                    <div class="form-check">
-                      <input type="checkbox" class="form-check-input" id="rateOfferedComplimentary" v-model="formAddReservation.rateOffered.complimentaryRoom" />
-                      <label class="form-check-label" for="rateOfferedComplimentary">Complimentary Room</label>
-                    </div>
-                  </div>
-                </div>
-              </div> -->
                             <!--  ! table Header -->
                             <!-- change width delete border color  -->
                             <div class="card mt-3 border-0 px-0">
@@ -250,7 +193,7 @@
                                                 <td data-label="Price(EGP)">
                                                     <div class="row">
                                                         <div class="col-lg-10">
-                                                            <input @change="handleServicePriceChange($event, index)" type="number" class="form-control rounded-2" :disabled="!datesSelected" v-model="service.price" placeholder="0" />
+                                                            <input @change="handleServicePriceChange($event, index)" type="number" class="form-control rounded-2" :disabled="!datesSelected" v-model="service.price" placeholder="0" aria-label="Service Price" />
                                                         </div>
                                                         <div class="col-md-2 p-0">
                                                             <button class="btn btn-label-danger" type="button" v-if="index > 0" :disabled="!datesSelected" @click="removeService(index)">
@@ -270,52 +213,6 @@
                     </div>
                     <!-- <hr class="my-4" /> -->
                     <!--  ! Hold Release Date & Time -->
-                    <!-- <div class="row">
-            <div class="col-lg-5">
-              <div class="row">
-                <div class="col-lg-12">
-                  <div class="row">
-                    <div class="col-lg-7 col-12 col-md-6 px-0">
-                      <label for="flatpickr-date-03" class="form-label">Hold Release Date & Time</label>
-                      <input type="text" placeholder="YYYY-MM-DD" id="flatpickr-date-03" class="form-control flatpickr-input" ref="datePicker3" v-model="formAddReservation.releaseDate" />
-                      <i class="fa-solid fa-calendar-days icon-date"></i>
-                    </div>
-                    <div class="col-lg-5 col-12 col-md-6 px-0 mt">
-                      <input type="text" placeholder="HH:MM" id="flatpickr-time-03" class="form-control flatpickr-input" ref="timePicker3" aria-label="input Text to Time" v-model="formAddReservation.releaseTime" />
-                      <i class="fa-regular fa-clock icon-time right"></i>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-4 px-0  px-md-0 px-lg-3 col-12">
-                  <label for="releaseTerm" class="form-label">Release Term</label>
-                  <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Value" id="releaseTerm" v-model="formAddReservation.releaseTerm" />
-                    <span class="input-group-text groupStyle">%</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-7">
-              <div class="row">
-                <div class="col-lg-4 px-0 p-md-0 col-12 px-lg-3">
-                  <label for="releaseTerm" class="form-label">Remind Guest before</label>
-                  <div class="input-group">
-                    <input type="number" class="form-control" placeholder="0" id="releaseTerm" v-model="formAddReservation.remindGuest" />
-                    <span class="input-group-text groupStyle">Days</span>
-                  </div>
-                </div>
-                <div class="col-lg-8 col-12 px-md-0 ps-lg-0 remindTypeReservation">
-                  <label for="remindGuestType" class="form-label">Remind Type before</label>
-                  <select class="form-select" v-model="formAddReservation.remindGuestType">
-                    <option disabled value="">Select Remind Guest Type</option>
-                    <option v-for="(remindGuestType, index) in getRemindGuestType" :key="index" :value="index">
-                      {{ remindGuestType }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-            </div>
-          </div> -->
 
                     <!--  ! Hold Release Date & Time -->
                     <hr class="my-4" />
@@ -324,7 +221,7 @@
                     <div class="row">
                         <div class="col-lg-5 px-md-0">
                             <div class="input-group">
-                                <input type="text" class="form-control searchInput" id="searchInput" v-model="searchQuery" placeholder="Enter phone number or national ID" />
+                                <input type="text" class="form-control searchInput" id="searchInput" v-model="searchQuery" placeholder="Enter phone number or national ID" aria-label="Search by phone number or national ID" />
                                 <button class="btn btn-primary" type="button" @click="searchByPhoneOrID">Search</button>
                             </div>
                         </div>
@@ -338,7 +235,7 @@
                                     </option>
                                 </select>
                                 <div class="position-relative flex-grow-1">
-                                    <input type="text" class="form-control w-100 guestNameInput" v-model="formAddReservation.guestInformation.name" @input="handleSearch" @blur="handleBlur" ref="name" />
+                                    <input type="text" class="form-control w-100 guestNameInput" v-model="formAddReservation.guestInformation.name" @input="handleSearch" @blur="handleBlur" ref="name" aria-label="guest Name" />
 
                                     <!-- Suggestions Dropdown -->
                                     <div v-if="showDropdown" class="position-absolute w-100 mt-1 bg-white border color-red rounded shadow z-5 cursor-pointer" style="max-height: 200px; overflow-y: auto" @scroll.passive="handleScroll">
@@ -374,95 +271,11 @@
 
                             <textarea class="form-control" aria-label="With textarea" placeholder="Comment" v-model="formAddReservation.comment"></textarea>
                         </div>
-                        <!-- <div class="offset-md-7">
-            </div>
-            <div class="col-lg-3 col-md-6  ps-2 ps-md-0 EmailReservation">
-              <label for="emailGuest" class="col-form-label">Email</label>
-              <input class="form-control rounded-2 " type="email" id="emailGuest" placeholder="Email" v-model="formAddReservation.guestInformation.email" />
-            </div>
-            <div class="col-lg-3 col-md-6 ">
-              <div class="mb-lg-3 row px-2 px-md-0 reservationMobile">
-                <label for="mobileGuest" class="col-form-label ps-0">Mobile</label>
-                <input class="form-control rounded-2 mobileInput" type="tel" id="mobileGuest" placeholder="Mobile" v-model="formAddReservation.guestInformation.mobile" ref="mobile" :class="{ 'input-error': validationMessages.mobile }" />
-                <span class="error-message small" v-if="$v.formAddReservation.guestInformation.mobile.$error">
-                  Mobile is required
-                </span>
-              </div>
-            </div>
-            <div class="col-lg-6 mb-lg-3 ps-lg-3 pe-lg-0 px-md-0 AddressReservation">
-              <label for="addressGuest" class="col-form-label">Address</label>
-              <input class="form-control rounded-2" type="text" id="addressGuest" placeholder="Address" v-model="formAddReservation.guestInformation.address" />
-            </div>
-            <div class="row px-0 mx-0">
-              <div class="col-lg-3 col-md-6 ps-md-0 CountryReservation">
-                <label for="countryGuest" class="col-form-label">Country</label>
-                <select class="form-select" v-model="formAddReservation.guestInformation.country" :class="{ 'input-error': validationMessages.country }">
-                  <option disabled value="">Select Country</option>
-                  <option v-for="(country, index) in getCountries" :key="index" :value="index">
-                    {{ country }}
-                  </option>
-                </select>
-              </div>
-              <div class="col-lg-3 col-md-6 px-md-0 StateReservation">
-                <label for="stateGuest" class="col-form-label">State</label>
-                <input class="form-control rounded-2" type="text" id="stateGuest" placeholder="state" v-model="formAddReservation.guestInformation.state" />
-              </div>
-              <div class="col-lg-3 col-md-6 ps-md-0 ps-lg-3 CityReservation">
-                <label for="cityGuest" class="col-form-label">City</label>
-                <input class="form-control rounded-2" type="text" id="cityGuest" placeholder="city" v-model="formAddReservation.guestInformation.city" />
-              </div>
-              <div class="col-lg-3 col-md-6 px-md-0 ZipReservation">
-                <label for="ZipGuest" class="col-form-label">Zip</label>
-                <input class="form-control rounded-2" type="text" id="ZipGuest" placeholder="Zip" v-model="formAddReservation.guestInformation.zip" />
-              </div>
-            </div> -->
                     </div>
 
                     <!--  ! Guest Information -->
                     <!--  ! Other Information -->
-                    <!-- <hr class="my-4" /> -->
-                    <!-- <h6 class="mb-3">Other Information</h6>
-          <div class="row">
-            <div class="form-check mb-3">
-              <input class="form-check-input" type="checkbox" id="otherInformationEmailBooking" v-model="showSelect" />
-              <label class="form-check-label" for="otherInformationEmailBooking">
-                Email Booking Vouchers
-              </label>
-            </div>
-            <div v-if="showSelect" class="mb-3">
-              <select id="otherInformationEmailBookingOption" class="form-select" v-model="formAddReservation.otherInformation.emailBookingOption">
-                <option value="" disabled selected>select</option>
-                <option value="0">Thank You email to Guest/Booker upon checking out from Hotel</option>
-                <option value="1">Guest Portal Access email to Guest on Direct checkin in Hotel</option>
-              </select>
-            </div>
-            <div class="form-check mb-3">
-              <input class="form-check-input" type="checkbox" id="otherInformationSendEmail" v-model="showInput" />
-              <label class="form-check-label" for="otherInformationSendEmail">
-                Send email at Check-out
-              </label>
-            </div>
-            <div v-if="showInput" class="mb-3">
-              <div class="input-group">
-                <input type="email" id="emailInput" class="form-control" placeholder="Use comma to add multiple email address" aria-label="send email to check" v-model="formAddReservation.otherInformation.emailAddressCheckout" />
-                <button class="btn btn-primary" type="button">
-                  Preview Voucher
-                </button>
-              </div>
-            </div>
-            <div class="form-check mb-3">
-              <input class="form-check-input" type="checkbox" id="otherInformationGuestPortal" v-model="formAddReservation.otherInformation.accessToGuestPortal" />
-              <label class="form-check-label" for="otherInformationGuestPortal">
-                Access To Guest Portal
-              </label>
-            </div>
-            <div class="form-check mb-3">
-              <input class="form-check-input" type="checkbox" id="otherInformationRegistrationCard" v-model="formAddReservation.otherInformation.suppressRateOnRegistrationCard" />
-              <label class="form-check-label" for="otherInformationRegistrationCard">
-                Supress Rate on Registration Card
-              </label>
-            </div>
-          </div> -->
+
                     <!--  ! Other Information -->
                     <hr class="my-4" />
                     <div class="row">
@@ -478,16 +291,6 @@
                                 <span v-else>Reserve</span>
                             </button>
                         </div>
-                        <!-- <div class="col-6  text-end">
-              <button type="button" class="btn btn-lg btn-secondary waves-effect waves-light" @click="goBack">
-                Cancel
-              </button>
-            </div>
-            <div class="col-6  text-end">
-              <button type="submit" class="btn btn-lg btn-primary waves-effect waves-light">
-                Reserver
-              </button>
-            </div> -->
                     </div>
                 </form>
             </div>
@@ -615,16 +418,7 @@
                     paymentImage: null,
                     comment: '',
                 },
-                // validationMessages: {
-                //   businessSource: '',
-                //   reservationType: '',
-                //   name: '',
-                //   mobile: '',
-                //   adults: '',
-                //   children: '',
-                //   rateType: '',
-                //   rateAmount: '',
-                // },
+
                 selectedNameId: null,
                 showDropdown: false,
                 filteredNames: [],
@@ -805,34 +599,6 @@
                     }
                 }
             },
-            //  handleBlur ()
-            //   {
-            //     // Hide dropdown after a small delay to allow selection
-            //     setTimeout(() =>
-            //     {
-            //       this.showDropdown = false;
-            //     }, 200);
-            //   },
-            //   selectName (name)
-            //   {
-            //     // Set the name for display and store the ID
-            //     this.formAddReservation.guestInformation.name = name.name;
-            //     this.selectedNameId = name.id;
-            //     this.showDropdown = false;
-            //   },
-            //   fetchNames (query)
-            //   {
-            //     // Fetch or filter names dynamically
-            //     // Replace with your API call
-            //     const allNames = this.filteredNames
-            //     this.filteredNames = allNames.filter(item => item.name.toLowerCase().includes(query.toLowerCase()));
-            //   },
-
-            // Reset validation messages
-            // resetValidationMessages ()
-            // {
-            //   this.validationMessages = {};
-            // },
 
             // Reset the form
             resetForm() {
@@ -1111,33 +877,7 @@
                     this.formAddReservation.units[0].rateAmount = parseFloat(value).toFixed(2);
                 }
             },
-            // async handleUnitTypeChange(roomIndex, unitTypeId, checkInDate, checkOutDate, projectId) {
-            //     try {
-            //         if (unitTypeId) {
-            //             // Reset selected unit for this room
-            //             this.formAddReservation.units[roomIndex].unitId = '';
-            //             // Set the unitTypeId for this specific unit
-            //             this.formAddReservation.units[roomIndex].unitTypeId = unitTypeId;
 
-            //             // Get project ID from parameter or from the form data
-            //             const project_id = projectId || this.formAddReservation.units[roomIndex].projectId || '';
-
-            //             // Fetch units for selected type with date parameters
-            //             const response = await getUnits(unitTypeId, {
-            //                 start_date: checkInDate,
-            //                 end_date: checkOutDate,
-            //                 reservation_id: 0,
-            //                 project_id: project_id, // Include project ID in the API request
-            //             });
-            //             this.$set(this.availableUnitsByRoom, roomIndex, response.data.data);
-            //         } else {
-            //             this.$set(this.availableUnitsByRoom, roomIndex, []);
-            //         }
-            //     } catch (error) {
-            //         console.error('Error fetching units:', error);
-            //         this.$set(this.availableUnitsByRoom, roomIndex, []);
-            //     }
-            // },
             async handleProjectChange(roomIndex, projectId) {
                 try {
                     // Reset room type and unit selections
@@ -1714,20 +1454,6 @@
                 remindGuestType: state => state.remindGuestType || [],
             }),
             ...mapGetters(['getReservationTypes', 'getRateTypes', 'getCountries', 'getRemindGuestType', 'getProjects']),
-            // formattedRateAmount: {
-            //   get ()
-            //   {
-            //     // Safely handle undefined or null values by defaulting to 0
-            //     const rateAmount = this.formAddReservation.units[0].rateAmount || 0;
-            //     return Number(rateAmount).toFixed(2); // Ensure it's a number before applying toFixed
-            //   },
-            //   set (value)
-            //   {
-            //     // Strip non-numeric characters except for the decimal point
-            //     const sanitizedValue = value.replace(/[^0-9.]/g, '');
-            //     this.formAddReservation.units[0].rateAmount = parseFloat(sanitizedValue) || 0;
-            //   }
-            // },
 
             parsedDates() {
                 return this.selectedDates.map(item => {
@@ -1767,8 +1493,6 @@
             this.datePicker2Instance?.destroy();
             this.timePicker1Instance?.destroy();
             this.timePicker2Instance?.destroy();
-
-            // console.log('Component is being destroyed:', this.formAddReservation.units);
         },
         emits: ['change'],
         watch: {
@@ -1833,7 +1557,7 @@
                 required: true,
             },
         },
-        middleware: 'restrict-access', // Apply the middleware
+        // middleware: 'restrict-access', // Apply the middleware
 
         async created() {
             // Initialize store data from localStorage
@@ -1848,23 +1572,3 @@
         },
     };
 </script>
-
-<style scoped>
-    .custom-table-wrapper {
-        overflow-x: auto;
-    }
-
-    .custom-table th {
-        min-width: 150px;
-        white-space: nowrap;
-    }
-
-    .custom-table th {
-        min-width: 166px;
-    }
-
-    .custom-table th:nth-child(5),
-    .custom-table th:nth-child(6) {
-        min-width: 100px;
-    }
-</style>
