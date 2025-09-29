@@ -8,7 +8,7 @@
 
 <script>
     import HeaderNav from '../components/layout/HeaderNav.vue';
-    import NotificationTest from '../components/SiderbarContentEdit/Notification.vue';
+    import NotificationTest from '../components/Helper/partial/Notification.vue';
 
     export default {
         components: { HeaderNav, NotificationTest },
