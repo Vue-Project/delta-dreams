@@ -127,9 +127,6 @@
                     }
                 }
             },
-            // goBack() {
-            //     this.$router.go(-1);
-            // },
         },
         props: {
             reservationsData: {
@@ -148,5 +145,3 @@
         },
     };
 </script>
-
-<style lang="scss" scoped></style>
