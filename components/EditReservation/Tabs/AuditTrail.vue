@@ -43,6 +43,7 @@
 </template>
 
 <script>
+    import { dateMixin } from '../../Mixin/DateMixin';
     export default {
         name: 'RoomCharges',
         data() {
@@ -88,8 +89,9 @@
             },
         },
         props: {
-            reservationData: { type: Object, required: true },
+            logs: { type: Array, required: true },
         },
+        mixins: [dateMixin],
     };
 </script>
 

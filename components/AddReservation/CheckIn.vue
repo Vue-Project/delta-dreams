@@ -1270,7 +1270,7 @@
                 this.$forceUpdate();
 
                 // Log for debugging
-                console.log('Form data reset successfully');
+                // console.log('Form data reset successfully');
             },
             // Method to handle calendar navigation
             handleCalendarNavigation() {

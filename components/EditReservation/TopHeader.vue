@@ -1,6 +1,5 @@
 <template>
     <div>
-        reservationID: {{ reservationID }}
         <div class="row align-items-center" v-for="reservationData in reservationsData" :key="reservationData.id">
             <div class="col-md-6">
                 <div class="row">
@@ -130,7 +129,7 @@
         },
         props: {
             reservationsData: {
-                type: Object,
+                type: Array,
                 required: true,
             },
             reservationID: {
