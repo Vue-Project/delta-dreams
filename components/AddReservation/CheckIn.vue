@@ -1446,8 +1446,8 @@
         },
         computed: {
             ...mapState({
-                selectedDates: state => state.selectedDates || [],
-                selectedResourceName: state => state.selectedResourceName || '',
+                // selectedDates: state => state.selectedDates || [],
+                // selectedResourceName: state => state.selectedResourceName || '',
                 reservationTypes: state => state.reservationTypes || [],
                 rateTypes: state => state.rateTypes || [],
                 countries: state => state.countries || [],

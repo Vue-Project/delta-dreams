@@ -1,10 +1,9 @@
 <template>
     <section class="card">
-        <!-- <momenalert></momenalert> -->
         <Loader :visible="isLoading" />
         <div :class="{ 'loading-overlay': isLoading }">
-            <FilterCalendar ref="filterComponent" :statistics="statistics" :allUnits="unitsCounts" :buildingNames="buildingNames" @show-all-resources="showAllResources" @show-building-resources="showBuildingResources" @date-selected="SelectedDateFilterCalendar" />
-            <FullCalendar :options="calendarOptions" @select="handleSelect" ref="calendar" :selectedDate="selectedDate">
+            <FilterCalendar ref="filterComponent" :statistics="statistics" :allUnits="Number(unitsCounts) || 0" :buildingNames="buildingNames" @show-all-resources="showAllResources" @show-building-resources="showBuildingResources" @date-selected="SelectedDateFilterCalendar" />
+            <FullCalendar :options="computedCalendarOptions" @select="handleSelect" ref="calendar" :selectedDate="selectedDate">
                 <template v-slot:eventContent="arg">
                     <div class="event-content">
                         <span class="event-title-full">{{ arg.event.title }}</span>
@@ -12,7 +11,6 @@
                     </div>
                 </template>
             </FullCalendar>
-            <!-- <CalendarFooter :occupancyData="occupancyData" /> -->
             <div v-if="isOverlayVisible" class="overlay" @click="closePopover"></div>
             <PopoverComponent v-if="isPopoverVisible" :isPopoverVisible="isPopoverVisible" :popoverStyle="popoverStyle" :popoverArrowLeft="popoverArrowLeft" :firstSelectedDate="firstSelectedDate" :lastSelectedDate="lastSelectedDate" @go-to-add-reservation="goToAddReservation" @toggle-sidebar="toggleSidebar" @close-popover="closePopover" />
             <SidebarBlockRoom v-if="BlockedPermission !== 0" :is-sidebar-open="isSidebarOpen" title="Block Room" width="400px" @close-sidebar="toggleSidebar" height="auto">
@@ -66,7 +64,6 @@
 
     export default {
         components: {
-            // momenalert,
             FullCalendar,
             CalendarFooter,
             PopoverComponent,
@@ -82,7 +79,9 @@
                 linkToAddReservation: '/add-reservation',
                 datesBuilding: [],
                 buildingNames: [], // Store building names dynamically
+                selectedDates: [],
                 selectedDate: null,
+                status: null,
                 selectedResourceId: '',
                 selectedResourceName: '',
                 isLoading: true,
@@ -1322,7 +1321,7 @@
             goToAddReservation() {
                 this.$store.commit('setSelectedDates', this.selectedDates);
                 this.$store.commit('setSelectedResourceName', this.selectedResourceName);
-                this.$store.dispatch('allowAccess');
+                // this.$store.dispatch('allowAccess');
                 this.$router.push('/add-reservation');
                 // this.$router.push('/secret')
 
@@ -1572,7 +1571,7 @@
             }
         },
         computed: {
-            calendarOptions() {
+            computedCalendarOptions() {
                 return {
                     ...this.calendarOptions,
                     editable: this.BlockedPermission !== 0, // Disable drag and drop if no permission
@@ -1582,44 +1581,3 @@
         },
     };
 </script>
-
-<style scoped>
-    .event-title-full,
-    .event-title-short {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    /* Add tooltip-like behavior for hovering */
-    .fc-timeline-event {
-        position: relative;
-    }
-
-    .fc-timeline-event:hover::after {
-        content: attr(data-full-name);
-        position: absolute;
-        bottom: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-        background-color: rgba(0, 0, 0, 0.8);
-        color: white;
-        padding: 4px 8px;
-        border-radius: 4px;
-        font-size: 12px;
-        white-space: nowrap;
-        z-index: 1000;
-        pointer-events: none;
-    }
-
-    /* By default, show full name and hide short name */
-    /* .event-title-short {
-        display: none;
-    } */
-
-    /* For very small events, always show short name */
-    .fc-timeline-event.fc-event-mirror .event-title-full,
-    .fc-timeline-event.fc-event-mirror .event-title-short {
-        font-size: 0.85em;
-    }
-</style>
