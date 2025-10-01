@@ -1,6 +1,6 @@
 <template>
     <div>
-        <!-- {{ reservationData.items }} -->
+        <!-- {{ roomChargesData }} -->
         <button type="button" class="btn btn-outline-secondary waves-effect mb-2" @click="handleMultipleEdit">Multiple Edit</button>
         <div class="table-responsive text-nowrap">
             <table class="table">
@@ -8,23 +8,24 @@
                     <tr>
                         <th>
                             <div class="form-check text-left">
-                                <input class="form-check-input" type="checkbox" @change="toggleAllCheckboxes" v-model="selectAll" />
+                                <input class="form-check-input" type="checkbox" @change="toggleAllCheckboxes" v-model="selectAll" aria-label="Select all" />
                             </div>
                         </th>
                         <th>bookingDate</th>
                         <th>Room</th>
                         <th>Rate Type</th>
                         <th>Adults</th>
-                        <th>children</th>
+                        <th>Children</th>
                         <th>Net Amount</th>
                         <th>Setting</th>
                     </tr>
                 </thead>
+
                 <tbody class="table-border-bottom-0">
-                    <tr v-for="roomChargeData in reservationData.items" :key="roomChargeData.id">
+                    <tr v-for="roomChargeData in roomChargesData" :key="roomChargeData.id">
                         <td>
                             <div class="form-check text-left">
-                                <input class="form-check-input" type="checkbox" v-model="roomChargeData.selected" aria-label="..." />
+                                <input class="form-check-input" type="checkbox" v-model="roomChargeData.selected" />
                             </div>
                         </td>
                         <!-- Update these cell click handlers to pass the specific ID -->
@@ -69,7 +70,7 @@
         methods: {
             async handleMultipleEdit() {
                 // Get all selected room charge IDs
-                const selectedIds = this.reservationData.items.filter(item => item.selected).map(item => item.id);
+                const selectedIds = this.roomChargesData.filter(item => item.selected).map(item => item.id);
 
                 // Check if any items are selected
                 if (selectedIds.length === 0) {
@@ -96,7 +97,7 @@
                 }
             },
             toggleAllCheckboxes() {
-                this.reservationData.items.forEach(item => {
+                this.roomChargesData.forEach(item => {
                     item.selected = this.selectAll;
                 });
             },
@@ -114,24 +115,20 @@
                 // Update master checkbox based on row checkboxes
                 this.selectAll = this.rows.every(row => row.selected);
             },
-            setOffcanvasContent(content, title, buttonText = 'Save', width = '400px') {
-                this.currentContent = content;
-                this.offcanvasTitle = title;
-                this.sidebarWidth = width;
-                this.dynamicButtonText = buttonText;
-            },
-
-            clearOffcanvasContent() {
-                this.currentContent = null; // Reset the content
-                this.offcanvasTitle = ''; // Reset the title
-                this.sidebarWidth = '400px'; // Reset the sidebar width
-            },
         },
 
         props: {
-            reservationData: {
-                type: Object,
-                default: () => ({}),
+            roomChargesData: {
+                type: Array,
+                required: true,
+            },
+            setOffcanvasContent: {
+                type: Function,
+                required: true,
+            },
+            setSelectedRoomCharge: {
+                type: Function,
+                required: true,
             },
         },
         mixins: [flatpickrMixin, dateMixin],

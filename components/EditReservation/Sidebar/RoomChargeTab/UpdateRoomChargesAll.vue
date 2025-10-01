@@ -40,8 +40,7 @@
     import { mapGetters } from 'vuex/';
 
     export default {
-        name: 'UpdateDetails',
-        layout: 'component',
+        name: 'UpdateRoomChargesAll',
         mixins: [flatpickrMixin],
         props: {
             reservationId: {
@@ -56,15 +55,10 @@
                 type: Function,
                 required: true,
             },
-            roomChargeId: {
-                type: [String, Number],
-                required: true,
+            selectedIds: {
+                type: Array,
+                required: false,
             },
-            selectedIds:{
-              type:Array,
-              required:false
-
-            }
         },
         data() {
             return {
@@ -89,13 +83,12 @@
                     const updateReservationItems = {
                         unit_id: item.unit_id,
                         reservation_id: item.reservation_id,
-                        reservation_item_id:this.selectedIds,
+                        reservation_item_id: this.selectedIds,
                         adults: this.formUpdateReservationItems.adults,
                         children: this.formUpdateReservationItems.children,
                         rate_type: this.formUpdateReservationItems.rateType,
                         rate_amount: this.formUpdateReservationItems.rateAmount,
                     };
-
 
                     // Submit the data
                     const response = await PostReservationItemsAll(updateReservationItems);

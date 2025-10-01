@@ -14,7 +14,7 @@
             </div>
             <div class="col-12 col-md-6">
                 <label for="updateDetailsChildren" class="col-form-label">children</label>
-                <input id="updateDetailsChildren" type="number" class="form-control" placeholder="Number of children" aria-label="Number of adults" min="0" v-model="formUpdateReservationItems.children" />
+                <input id="updateDetailsChildren" type="number" class="form-control" placeholder="Number of children" aria-label="Number of adults" v-model="formUpdateReservationItems.children" />
             </div>
             <div class="col-12 col-md-6">
                 <label for="updateDetailsAdults" class="col-form-label">adults</label>
@@ -64,6 +64,10 @@
             },
             roomChargeId: {
                 type: [String, Number],
+                required: true,
+            },
+            setSelectedRoomCharge: {
+                type: Function,
                 required: true,
             },
         },
@@ -149,6 +153,9 @@
         },
         computed: {
             ...mapGetters(['getRateTypes']),
+        },
+        mounted() {
+            console.log(this.reservationData.items.find(item => item.id));
         },
     };
 </script>
