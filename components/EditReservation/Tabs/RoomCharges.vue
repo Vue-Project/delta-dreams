@@ -1,6 +1,5 @@
 <template>
     <div>
-        <!-- {{ roomChargesData }} -->
         <button type="button" class="btn btn-outline-secondary waves-effect mb-2" @click="handleMultipleEdit">Multiple Edit</button>
         <div class="table-responsive text-nowrap">
             <table class="table">
@@ -25,7 +24,7 @@
                     <tr v-for="roomChargeData in roomChargesData" :key="roomChargeData.id">
                         <td>
                             <div class="form-check text-left">
-                                <input class="form-check-input" type="checkbox" v-model="roomChargeData.selected" />
+                                <input class="form-check-input" type="checkbox" v-model="roomChargeData.selected" aria-label="Select room charge" />
                             </div>
                         </td>
                         <!-- Update these cell click handlers to pass the specific ID -->
@@ -65,6 +64,11 @@
         data() {
             return {
                 selectAll: false, // Tracks the state of the master checkbox
+                rows: [
+                    {
+                        selected: false, // Tracks if this row is selected
+                    },
+                ],
             };
         },
         methods: {
@@ -83,7 +87,7 @@
                     // You can either:
                     // 2. Or open an offcanvas with the selected IDs for further editing
                     this.selectedRoomChargeIds = selectedIds;
-                    this.setOffcanvasContent('updatedetailsall', 'Update Multiple  Room Charges');
+                    this.setOffcanvasContent('UpdateRoomChargesAll', 'Update Multiple Room Charges');
 
                     // Show the offcanvas
                     const offcanvasElement = document.getElementById('offcanvasEnd');
@@ -100,10 +104,6 @@
                 this.roomChargesData.forEach(item => {
                     item.selected = this.selectAll;
                 });
-            },
-            setSelectedRoomCharge(roomChargeId) {
-                this.selectedRoomChargeId = roomChargeId;
-                this.setOffcanvasContent('updatedetails', 'Update Details');
             },
             toggleAll() {
                 // Toggle all row checkboxes based on the master checkbox
@@ -134,5 +134,3 @@
         mixins: [flatpickrMixin, dateMixin],
     };
 </script>
-
-<style lang="scss" scoped></style>

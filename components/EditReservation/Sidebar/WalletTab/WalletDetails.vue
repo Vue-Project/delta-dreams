@@ -8,7 +8,7 @@
                 </div>
                 <hr class="mt-0" />
                 <div class="offcanvas-body pt-0">
-                    <EditPayment :selectedWallet="selectedWallet" @wallet-updated="$emit('wallet-updated')" />
+                    <EditPayment v-if="selectedWallet == !null" :selectedWallet="selectedWallet" @wallet-updated="$emit('wallet-updated')" />
                 </div>
             </div>
             <div class="card-body">
@@ -29,7 +29,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="wallet in reservationData.wallets" :key="wallet.id">
+                            <tr v-for="wallet in WalletsData" :key="wallet.id">
                                 <td>
                                     <img :src="`${$nuxt.$config.baseURL}/${wallet.image}`" style="width: 50px; height: 50px; cursor: pointer" @click="showImg(`${$nuxt.$config.baseURL}/${wallet.image}`)" />
                                 </td>
@@ -147,13 +147,13 @@
                 type: [String, Number],
                 required: true, // Ensure the prop is provided
             },
-            reservationData: {
+            WalletsData: {
                 type: Object,
                 default: () => ({}),
             },
         },
         components: {
-            EditPayment, // تسجيل المكون هنا
+            EditPayment,
         },
         data() {
             return {
@@ -409,16 +409,16 @@
                 this.sidebarTitle = trigger.getAttribute('data-title');
             });
         },
-        watch: {
-            reservationData: {
-                immediate: true,
-                handler(newData) {
-                    if (newData && typeof newData === 'object') {
-                        this.fillWalletsData(newData);
-                    }
-                },
-            },
-        },
+        // watch: {
+        //     reservationData: {
+        //         immediate: true,
+        //         handler(newData) {
+        //             if (newData && typeof newData === 'object') {
+        //                 this.fillWalletsData(newData);
+        //             }
+        //         },
+        //     },
+        // },
 
         provide() {
             return {
