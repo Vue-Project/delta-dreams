@@ -617,7 +617,3 @@
         },
     };
 </script>
-
-<style scoped>
-    /* Add styles for search icon */
-</style>

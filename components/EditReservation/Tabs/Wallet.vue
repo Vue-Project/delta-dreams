@@ -8,7 +8,7 @@
                 </div>
                 <hr class="mt-0" />
                 <div class="offcanvas-body pt-0">
-                    <EditPayment :selectedWallet="selectedWallet" @wallet-updated="$emit('wallet-updated')" />
+                    <EditPayment v-if="selectedWallet !== null" :selectedWallet="selectedWallet" @wallet-updated="$emit('wallet-updated')" />
                 </div>
             </div>
             <div class="card-body">

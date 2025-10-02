@@ -54,7 +54,7 @@
                     <div class="tab-pane fade active show" id="form-tabs-BookingDetails" role="tabpanel">
                         <div class="row">
                             <div class="col-12">
-                                <BookingDetails :reservationData="reservationsDataById[0]" :reservationId="selectedReservationId" @reservation-and-logs-updated="refreshReservationData" />
+                                <BookingDetails v-if="selectedReservationId !== null" :reservationData="reservationsDataById[0]" :reservationId="selectedReservationId" @reservation-and-logs-updated="refreshReservationData" />
                             </div>
                         </div>
                     </div>
@@ -138,7 +138,7 @@
                     <!--  Start Wallet tab  -->
                     <div class="tab-pane fade" id="form-tabs-Wallet" role="tabpanel">
                         <button class="btn btn-outline-secondary waves-effect mb-2" data-bs-toggle="offcanvas" data-bs-target="#offcanvasEnd" @click="setOffcanvasContent('addpayment', 'Add Payment')">Add payment</button>
-                        <Wallet :reservation-id="selectedReservationId" :reservation-data="reservationsDataById[0]" @switch-content="currentContent = $event" @wallet-updated="refreshReservationData" />
+                        <Wallet v-if="selectedReservationId !== null" :reservation-id="selectedReservationId" :reservation-data="reservationsDataById[0]" @switch-content="currentContent = $event" @wallet-updated="refreshReservationData" />
                     </div>
                     <!--  end Wallet tab  -->
                 </div>
