@@ -301,12 +301,12 @@
     import { showSuccessAlert, handleSubmissionError } from '../../Api/MassageValidation/alertUtilities';
     import { getBookingSources, getBusinessSources, getGuestsInfo, getGuestsInfoSearch, postAddReservationData, getUnitTypes, getUnits, getGuestDetails, getServices, getTravelAgents } from '../../Api/addResvertionApi';
     import flatpickrMixin from '../Mixin/flatpickrMixin';
-    import SidebarAddGuest from '../layout/AddGuestSidebar.vue';
-    import QuickAddGuestSidebar from '../layout/QuickAddGuestSidebar.vue';
+    import SidebarAddGuest from '../AddReservation/sidebar/AddGuestSidebar.vue';
+    import QuickAddGuestSidebar from '../AddReservation/sidebar/QuickAddGuestSidebar.vue';
     import { mapState, mapGetters } from 'vuex';
     import { validationMixin } from 'vuelidate';
     import { required, email } from 'vuelidate/lib/validators';
-    import HospitalitySideBar from '../layout/HospitalitySideBar.vue';
+    import HospitalitySideBar from '../AddReservation/sidebar/HospitalitySideBar.vue';
 
     export default {
         name: 'CheckIn',

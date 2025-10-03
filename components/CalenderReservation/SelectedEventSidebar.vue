@@ -75,19 +75,6 @@
                 <div class="row editSidebarDetails">
                     <div class="col-6">
                         <ul class="list-unstyled mb-0">
-                            <!-- <li class="mb-3 pb-1">
-                <div class="d-flex align-items-start">
-                  <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
-                    <div class="me-2">
-                      <h6 class="mb-0">Reservation Number</h6>
-                      <small class="text-muted">{{
-                        selectedEvent.id || "1025191591"
-                        }}</small>
-                    </div>
-                  </div>
-                </div>
-              </li> -->
-
                             <li class="mb-3 pb-1">
                                 <div class="d-flex align-items-start">
                                     <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
@@ -357,42 +344,7 @@
                                     </div>
                                     <span class="error-message small" v-if="$v.formAddPayment.amount.$error">amount is required</span>
                                 </div>
-                                <!-- <div class="col-lg-6 col-md-6 col-12 mt-2">
-                                    <div class="input-group">
-                                        <select class="form-select" id="payment_accounts" v-model="formAddPayment.account">
-                                            <option disabled value="">Select Accounts</option>
-                                            <option v-for="account in accounts" :key="account.id" :value="account.id">
-                                                {{ account.name }}
-                                            </option>
-                                        </select>
-                                        <label class="input-group-text" for="payment_accounts">Accounts</label>
-                                    </div>
-                                </div> -->
 
-                                <!-- <div class="col-lg-6 col-md-6 col-12">
-                                    <div class="input-group">
-                                        <select class="form-select" id="travelAgent" v-model="formAddPayment.travelAgent">
-                                            <option disabled value="">Select</option>
-                                            <option v-for="travelAgent in travelAgents" :key="travelAgent.id" :value="travelAgent.id">
-                                                {{ travelAgent.name }}
-                                            </option>
-                                        </select>
-                                        <label class="input-group-text" for="payment_type">Travel Agent</label>
-                                    </div>
-                                    <span class="error-message small" v-if="$v.formAddPayment.type.$error">type is required</span>
-                                </div>
-                                <div class="col-lg-6 col-md-6 col-12">
-                                    <div class="input-group">
-                                        <select class="form-select" id="businessSource" v-model="formAddPayment.businessSource">
-                                            <option disabled value="">Select</option>
-                                            <option v-for="businessSource in businessSources" :key="businessSource.id" :value="businessSource.id">
-                                                {{ businessSource.name }}
-                                            </option>
-                                        </select>
-                                        <label class="input-group-text" for="payment_type">Business Source</label>
-                                    </div>
-                                    <span class="error-message small" v-if="$v.formAddPayment.type.$error">type is required</span>
-                                </div> -->
                                 <div class="col-12">
                                     <div class="input-group">
                                         <span class="input-group-text">Comment</span>
@@ -419,7 +371,7 @@
     import { showSuccessAlert, handleSubmissionError, showConfirmationAlert, showConfirmationAlertWithSelect } from '../../Api/MassageValidation/alertUtilities';
     import { getAccounts, getGuestsInfo, getPaymentMethods, getPaymentTypes, getPaymentTypeByPaymentId, getBusinessSources, getTravelAgents } from '../../Api/addResvertionApi';
     import { postUpdateReservation } from '../../Api/CalenderApi';
-    import DropzoneComponent from '../layout/DropzoneComponent.vue';
+    import DropzoneComponent from '../Helper/partial/DropzoneComponent.vue';
     import { validationMixin } from 'vuelidate';
     import { required, email } from 'vuelidate/lib/validators';
     import { mapGetters } from 'vuex/dist/vuex.common.js';
@@ -564,33 +516,7 @@
             formatDate(isoString) {
                 return new Date(isoString).toLocaleDateString('en-GB');
             },
-            // formatDateTime (isoString)
-            // {
-            //   return new Date(isoString).toLocaleString('en-GB', {
-            //     day: 'numeric',
-            //     month: 'short',
-            //     year: 'numeric',
-            //     hour: '2-digit',
-            //     minute: '2-digit',
-            //   });
-            // },
-            // formatCurrency (amount)
-            // {
-            //   return new Intl.NumberFormat('en-US', {
-            //     style: 'currency',
-            //     currency: 'USD',
-            //   }).format(amount);
-            // },
-            // statusBadgeClass(status) {
-            //   return {
-            //     "bg-label-primary": status === "pending", // Blue for pending/waiting
-            //     "bg-label-success": status === "approved", // Green for approved
-            //     "bg-label-danger": status === "cancelled", // Red for cancelled
-            //     "bg-label-info": status === "check_in", // Light blue for check in
-            //     "bg-label-warning": status === "check_out", // Orange/yellow for check out
-            //     "bg-label-secondary": status === "finished", // Gray for finished
-            //   };
-            // },
+
             async submitPayment() {
                 try {
                     // Set the image value from the file input before validation

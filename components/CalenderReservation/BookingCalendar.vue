@@ -22,41 +22,22 @@
 </template>
 
 <script>
-    // import momenalert from "../../layouts/momenalert.vue";
-    // Main calendar component from FullCalendar library
+    // Core Calendar Imports
     import FullCalendar from '@fullcalendar/vue';
-
-    // Timeline view plugin for resource scheduling
     import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
-
-    // Plugin for calendar interactions (drag & drop, resizing)
     import interactionPlugin from '@fullcalendar/interaction';
 
-    // Custom loading spinner component
-    import Loader from '../layout/Loader.vue';
-
-    // Date/Resource filtering controls component
+    // UI Components
+    import Loader from '../Helper/partial/Loader.vue';
     import FilterCalendar from './FilterCalendar';
-
-    // Calendar bottom section with statistics/controls
-    import CalendarFooter from './CalendarFooter.vue';
-
-    // Form for blocking rooms/units in calendar
+    // import CalendarFooter from './CalendarFooter.vue';
     import BlockRoomForm from './BlockRoomForm.vue';
-
-    // Popup component for date selection feedback
     import PopoverComponent from './PopoverComponent.vue';
-
-    // Reusable sidebar component (from guest management)
-    import SidebarBlockRoom from '../layout/AddGuestSidebar.vue';
-
-    // Sidebar for displaying event details
+    import SidebarBlockRoom from '../../components/AddReservation/sidebar/AddGuestSidebar.vue';
     import SelectedEventSidebar from './SelectedEventSidebar.vue';
-
-    // Calendar header with navigation controls
     import HeaderCalender from './HeaderCalender.vue';
 
-    // API service for fetching calendar data
+    // API & Utilities
     import { deleteBlock, getCalenderAllUnits, getReservationSidebar, postUpdateBlock, postUpdateReservation, putUpdateBlock } from '../../Api/CalenderApi';
     import Swal from 'sweetalert2';
     import { handleSubmissionError, showSuccessAlert, showConfirmationDialog, showUpdateConfirmationDialog, showAlert } from '../../Api/MassageValidation/alertUtilities';
@@ -65,7 +46,6 @@
     export default {
         components: {
             FullCalendar,
-            CalendarFooter,
             PopoverComponent,
             SelectedEventSidebar,
             SidebarBlockRoom,
@@ -76,7 +56,9 @@
         },
         data() {
             return {
+                // Navigation
                 linkToAddReservation: '/add-reservation',
+
                 datesBuilding: [],
                 buildingNames: [], // Store building names dynamically
                 selectedDates: [],
@@ -108,6 +90,7 @@
                 lastSelectedDate: '',
                 occupancyData: [],
                 statistics: {},
+                // Calendar Options
                 calendarOptions: {
                     customButtons: {
                         prev: {
@@ -320,11 +303,7 @@
             // ==============================================
             // RESOURCE MANAGEMENT
             // ==============================================
-            /**
-             * Generates calendar resources from building/unit data
-             * @param {Array} selectedIds - Building IDs to filter
-             * @param {Date} selectedDate - Date to filter units
-             */
+
             createResources(selectedIds = [], selectedDate = null) {
                 const resources = [];
 
@@ -378,10 +357,6 @@
             // Updating Calendar based on selected building IDs
             // ==============================================
 
-            /**
-             * Updates calendar resources based on selected building IDs
-             * @param {Array} selectedIds - Building IDs to show
-             */
             updateCalendarResources(selectedIds = []) {
                 const resources = this.createResources(selectedIds); // Create resources based on selectedIds
                 const calendar = this.$refs.calendar?.getApi();
@@ -402,10 +377,6 @@
             // DATE & TIME MANAGEMENT
             // ==============================================
 
-            /**
-             * Handles date range selection
-             * @param {Object} info - Contains start/end dates and resource
-             */
             handleSelect(info) {
                 const { start, end, resource } = info;
 
@@ -526,15 +497,6 @@
                 // Show the popover after the overlay is visible
                 this.showPopover();
             },
-            // highlightDate (dateStr)
-            // {
-            //   const calendarEl = document.querySelector(".fc");
-            //   const dateCell = calendarEl.querySelector(`[data-date='${dateStr}']`);
-
-            //   if (dateCell) {
-            //     dateCell.classList.add("fc-highlight");
-            //   }
-            // },
 
             showPopover() {
                 this.isPopoverVisible = true;
@@ -805,81 +767,7 @@
                     this.loadingReservation = false;
                 }
             },
-            // transformEventToReservationData(event) {
-            //     // console.log('this is the event', event);
 
-            //     // Get the unit data directly from this.data
-            //     let buildingName = '';
-            //     let unitCode = '';
-            //     let unitData = null;
-
-            //     // Get the resource ID from the event
-            //     const resourceId = event.getResources()[0]?.id;
-
-            //     if (resourceId) {
-            //         // Parse the resourceId to get building and unit IDs
-            //         const [buildingId, unitId] = resourceId.split('-');
-
-            //         // Find the building and unit in the data
-            //         if (Array.isArray(this.data)) {
-            //             const building = this.data.find(b => b.id.toString() === buildingId);
-            //             if (building) {
-            //                 buildingName = building.name;
-
-            //                 // Find the unit within the building
-            //                 const unit = building.units?.find(u => u.id.toString() === unitId);
-            //                 if (unit) {
-            //                     unitCode = unit.code;
-            //                     unitData = unit; // Store the entire unit data
-            //                 }
-            //             }
-            //         }
-            //     }
-
-            //     // Use the unit data directly from this.data
-            //     return {
-            //         client: event.extendedProps?.reservation?.client,
-            //         unit_id: event.extendedProps?.reservation?.unit_id,
-            //         id: event.extendedProps?.reservation?.id || event.id,
-            //         checkin_date: event.start,
-            //         checkout_date: event.end,
-            //         checkin_time: event.extendedProps?.reservation?.checkin_time,
-            //         checkout_time: event.extendedProps?.reservation?.checkout_time,
-            //         rooms: event.extendedProps?.reservation?.rooms,
-            //         rate_type: event.extendedProps?.reservation?.rate_type,
-            //         adults: event.extendedProps?.reservation?.adults,
-            //         children: event.extendedProps?.reservation?.children,
-            //         status: event.extendedProps?.reservation?.status,
-            //         status_name: event.extendedProps?.reservation?.status_name,
-            //         unit_price: unitData?.price || event.extendedProps?.reservation?.unit_price,
-            //         unit_price_avg: unitData?.unit_price_avg || event.extendedProps?.reservation?.unit_price_avg,
-            //         total: event.extendedProps?.reservation?.total,
-            //         paid: event.extendedProps?.reservation?.paid,
-            //         balance: event.extendedProps?.reservation?.remaining,
-            //         status_select: event.extendedProps?.reservation?.status_select,
-            //         status_color: event.extendedProps?.reservation?.status_color,
-            //         is_edit: event.extendedProps?.reservation?.is_edit,
-            //         is_show: event.extendedProps?.reservation?.is_show,
-            //         is_cancel: event.extendedProps?.reservation?.is_cancel,
-            //         unit_code: unitCode || event.extendedProps?.reservation?.code,
-            //         reservation_id: event.extendedProps?.reservation?.id,
-            //         building_name: buildingName || event.extendedProps?.reservation?.unit?.building?.name,
-            //         travel_agent_name: event.extendedProps?.reservation?.travel_agent?.name,
-            //         business_source_name: event.extendedProps?.reservation?.business_source?.name,
-            //         unit_data: unitData, // Include the entire unit data object
-            //         price: event.extendedProps?.reservation?.price,
-            //         service_price: event.extendedProps?.reservation?.service_price,
-            //         permit: event.extendedProps?.reservation?.permit,
-            //         permit_image: event.extendedProps?.reservation?.permit_image,
-            //         reservation_name: event.extendedProps?.reservation?.name,
-            //         insurance: event.extendedProps?.reservation?.insurance,
-            //         insurance_refund: event.extendedProps?.reservation?.insurance_refund,
-            //         insurance_remaining: event.extendedProps?.reservation?.insurance_remaining,
-            //         nights: event.extendedProps?.reservation?.nights,
-            //         user_name: event.extendedProps?.reservation?.user?.name,
-            //         create_at: event.extendedProps?.reservation?.created_at,
-            //     };
-            // },
             transformAllUnitsToEvents() {
                 let allEvents = [];
 
@@ -1064,52 +952,7 @@
 
                 return true;
             },
-            // adjustHarnessPosition(info) {
-            //     // Get the harness element parent
-            //     const harness = info.el.closest('.fc-timeline-event-harness');
 
-            //     if (harness) {
-            //         // Get current left position (parse as number)
-            //         const currentLeft = parseInt(harness.style.left) || 0;
-            //         const currentRight = parseInt(harness.style.right) || 0;
-
-            //         // Determine breakpoints and adjust accordingly
-            //         let leftOffset = 35; // Default value
-            //         let rightOffset = 5; // Default value
-            //         let widthAdjustment = 0;
-
-            //         const screenWidth = window.innerWidth;
-
-            //         // Example breakpoints for different screen sizes
-            //         if (screenWidth < 600) {
-            //             // Small screens (mobile)
-            //             leftOffset = 20;
-            //             rightOffset = 0;
-            //         } else if (screenWidth < 1200) {
-            //             // Medium screens (tablets)
-            //             leftOffset = 30;
-            //             rightOffset = 0;
-            //         } else {
-            //             // Large screens (desktops)
-            //             leftOffset = 50;
-            //             rightOffset = -6;
-            //         }
-
-            //         // Adjust the left and right positions
-            //         harness.style.left = `${currentLeft + leftOffset}px`;
-            //         harness.style.right = `${currentRight + rightOffset}px`;
-
-            //         // Adjust the width of the event element
-            //         const eventElement = harness.querySelector('.fc-timeline-event');
-            //         if (eventElement) {
-            //             const currentWidth = eventElement.offsetWidth;
-
-            //             // Calculate width adjustment based on the offsets
-            //             widthAdjustment = leftOffset + rightOffset;
-            //             // eventElement.style.width = `${currentWidth - widthAdjustment}px`;
-            //         }
-            //     }
-            // },
             // ==============================================
             // CALENDAR NAVIGATION
             // ==============================================
@@ -1464,10 +1307,6 @@
         },
 
         async mounted() {
-            // mounted hook only runs on client-side, so window is available
-            // Add an event listener to update duration on window resize
-            // document.body.classList.add('hide-scrollbar');
-
             window.addEventListener('resize', this.updateDuration);
 
             // Set initial slot width based on screen size

@@ -7,7 +7,7 @@
 </template>
 
 <script>
-    import HeaderNav from '../components/layout/HeaderNav.vue';
+    import HeaderNav from '../components/Helper/partial/HeaderNav.vue';
     import NotificationTest from '../components/Helper/partial/Notification.vue';
 
     export default {

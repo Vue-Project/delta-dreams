@@ -4,7 +4,6 @@
             <div class="row pe-0 p-3 mb-5">
                 <div class="col-md-6">
                     <div class="row">
-
                         <div class="col-md-12 ps-0">
                             <div class="mb-3">
                                 <label for="formGustInfoName" class="col-form-label">Name</label>
@@ -111,7 +110,6 @@
 
                     <div id="accordionOne" class="accordion-collapse px-0 collapse" data-bs-parent="#accordionExample" style="">
                         <div class="row accordion-body px-0">
-
                             <div class="row">
                                 <div class="col-md-6">
                                     <label for="formGustIdentityGender" class="col-form-label">Gender</label>
@@ -211,7 +209,7 @@
 </template>
 
 <script>
-    import DropzoneComponent from '../../layout/DropzoneComponent.vue';
+    // import DropzoneComponent from '../../layout/DropzoneComponent.vue';
     import flatpickrMixin from '../../Mixin/flatpickrMixin';
     import { PostUpdateGuest } from '../../../Api/userApi';
     import { mapGetters } from 'vuex';
@@ -221,9 +219,9 @@
 
     export default {
         name: 'DefaultContent',
-        components: {
-            DropzoneComponent,
-        },
+        // components: {
+        //     DropzoneComponent,
+        // },
         data() {
             return {
                 reservationIds: '',
@@ -593,8 +591,7 @@
                     }
                 },
             },
-  },
-    mixins: [flatpickrMixin, validationMixin],
-
+        },
+        mixins: [flatpickrMixin, validationMixin],
     };
 </script>
