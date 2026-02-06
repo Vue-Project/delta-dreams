@@ -7,10 +7,8 @@
             </h5>
             <hr class="m-0" />
             <div class="card-body">
+                <!--  ! Reservation  Details -->
                 <form id="formReservation" class="g-3" @submit.prevent="submitAddReservation" ref="emptyForm">
-                    <!--  ! Reservation  Details -->
-                    <!-- change in size and icons -->
-
                     <div class="row">
                         <div class="col-lg-8">
                             <div class="row align-items-center">
@@ -79,10 +77,9 @@
                     </div>
 
                     <hr class="my-4" />
-                    <!--   ! check inputs and repeater -->
+                    <!--  ! Units  information -->
                     <div class="mb-3">
                         <div class="row">
-                            <!--  ! table Header -->
                             <!-- change width delete border color  -->
                             <div class="card mt-3 border-0 px-0">
                                 <h5 class="card-header p-2">Units Information</h5>
@@ -113,10 +110,12 @@
                                         <tbody>
                                             <tr v-for="(item, index) in formAddReservation.units" :key="index" class="mb-2 selectStyle">
                                                 <td data-label="checkIn">
-                                                    <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" id="flatpickr-date-01" ref="datePicker9" v-model="item.checkInDate" aria-label="input Text to Check-in Date" :disabled="!datesSelected" />
+                                                    <!-- Use dynamic ref with index -->
+                                                    <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" :id="'flatpickr-date-0' + index" :ref="'datePicker1' + index" v-model="item.checkInDate" aria-label="input Text to Check-in Date" :disabled="!datesSelected" />
                                                 </td>
                                                 <td data-label="checkOut">
-                                                    <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" id="flatpickr-date-02" ref="datePicker10" v-model="item.checkOutDate" aria-label="input Text to Check-out Date" :disabled="!datesSelected" />
+                                                    <!-- Use dynamic ref with index -->
+                                                    <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" :id="'flatpickr-date-0' + index" :ref="'datePicker1' + index" v-model="item.checkOutDate" aria-label="input Text to Check-out Date" :disabled="!datesSelected" />
                                                 </td>
                                                 <td data-label="Project">
                                                     <select class="form-select" :disabled="!datesSelected" v-model="item.projectId" @change="() => handleProjectChange(index, item.projectId)">
@@ -164,7 +163,7 @@
                                                     <span class="error-message small" v-if="$v.formAddReservation.units.$each[index].rateAmount.$error">Rate amount is required</span>
                                                 </td>
                                                 <td data-label="Service">
-                                                    <select class="form-select" v-model="item.serviceId" :disabled="!datesSelected">
+                                                    <select class="form-select" v-model="item.services[0].serviceId" :disabled="!datesSelected">
                                                         <option disabled value="">Select Service</option>
                                                         <option v-for="service in servicesList" :key="service.id" :value="service.id">
                                                             {{ service.name }}
@@ -174,7 +173,7 @@
                                                 <td data-label="servicePrice">
                                                     <div class="row">
                                                         <div class="col-lg-10">
-                                                            <input @change="handleServicePriceChange($event, index)" type="number" class="form-control rounded-2" :disabled="!datesSelected" v-model="item.servicePrice" placeholder="0" aria-label="Service Price" />
+                                                            <input @change="handleServicePriceChange($event, index, 0)" type="number" class="form-control rounded-2" :disabled="!datesSelected" v-model="item.services[0].servicePrice" placeholder="0" aria-label="Service Price" />
                                                         </div>
                                                         <div class="col-md-2 p-0">
                                                             <button class="btn btn-label-danger" type="button" v-if="index > 0" @click="removeUnit(index)">
@@ -191,10 +190,8 @@
                             </div>
                         </div>
                     </div>
-                    <!-- <hr class="my-4" /> -->
-                    <!--  ! Hold Release Date & Time -->
+                    <!--  ! Units  information -->
 
-                    <!--  ! Hold Release Date & Time -->
                     <hr class="my-4" />
                     <!--  ! Guest Information -->
                     <h6 class="mb-2 GuestTitle">Guest Information</h6>
@@ -254,10 +251,9 @@
                     </div>
 
                     <!--  ! Guest Information -->
-                    <!--  ! Other Information -->
 
-                    <!--  ! Other Information -->
                     <hr class="my-4" />
+                    <!--  ! Buttons for form add Reservation -->
                     <div class="row">
                         <div class="offset-md-8 col-md-2 col-6 text-end">
                             <button type="button" class="btn btn-lg btn-secondary waves-effect waves-light w-100" @click="goBack">Cancel</button>
@@ -272,7 +268,9 @@
                             </button>
                         </div>
                     </div>
+                    <!--  ! Buttons for form add Reservation -->
                 </form>
+                <!--  ! Reservation  Details -->
             </div>
         </div>
     </section>
@@ -413,6 +411,8 @@
                 availableUnitsByRoom: [],
                 allUnitTypes: [], // Store all unit types
                 filteredUnitTypesByRoom: [],
+                rowDatePickersIn: [], // Track per-row check-in datepickers
+                rowDatePickersOut: [], // Track per-row check-out datepickers
             };
         },
         mixins: [validationMixin, flatpickrMixin],
@@ -488,6 +488,11 @@
                             children: firstRoom.children,
                             rateAmount: firstRoom.rateAmount,
                             unitTypeId: firstRoom.unitTypeId, // Make sure to copy the unitTypeId
+                            // Ensure new unit dates mirror the main reservation dates (or template's dates)
+                            checkInDate: this.formAddReservation.checkInDate || firstRoom.checkInDate || '',
+                            checkOutDate: this.formAddReservation.checkOutDate || firstRoom.checkOutDate || '',
+                            // Copy services from template (deep clone) or initialize if missing
+                            services: JSON.parse(JSON.stringify(firstRoom.services || [{ serviceId: '', servicePrice: 0 }])),
                         };
 
                         this.formAddReservation.units.push(newRoom);
@@ -516,6 +521,11 @@
                     children: '0',
                     rateAmount: '',
                     unitTypeId: firstUnitTypeId,
+                    // Inherit the main check-in / check-out dates when adding a unit
+                    checkInDate: this.formAddReservation.checkInDate || '',
+                    checkOutDate: this.formAddReservation.checkOutDate || '',
+                    // Initialize services for the new unit
+                    services: [{ serviceId: '', servicePrice: 0 }],
                 };
 
                 this.formAddReservation.units.push(newRoom);
@@ -535,11 +545,6 @@
                     // Emit the updated number of rooms
                     this.$emit('update:numberRooms', this.formAddReservation.units.length);
                 }
-            },
-
-            // Remove a service row
-            removeService(index) {
-                this.formAddReservation.services.splice(index, 1);
             },
 
             // Update price when service is selected
@@ -600,6 +605,8 @@
                             children: '0',
                             rateAmount: '',
                             unitTypeId: '',
+                            services: [{ serviceId: '', servicePrice: 0 }],
+                            servicePrice: '',
                         },
                     ],
                     releaseDate: '',
@@ -712,12 +719,24 @@
                     formData.append(`units[${unitIndex}][adults]`, unit.adults);
                     formData.append(`units[${unitIndex}][children]`, unit.children);
                     formData.append(`units[${unitIndex}][rate_amount]`, this.formatValueForServer(unit.rateAmount));
+                    formData.append(`units[${unitIndex}][price]`, this.formatValueForServer(unit.rateAmount));
 
-                    // Append services for this unit
-                    if (unit.services && unit.services.length > 0) {
-                        unit.services.forEach((service, serviceIndex) => {
-                            formData.append(`units[${unitIndex}][services][${serviceIndex}][service_id]`, service.serviceId);
-                            formData.append(`units[${unitIndex}][services][${serviceIndex}][service_price]`, this.formatValueForServer(service.price));
+                    const services = unit.services || [];
+                    console.log(`Appending unit ${unitIndex} data:`, services);
+                    // Append services for this unit (safe if services missing)
+                    if (services.length > 0) {
+                        services.forEach((service, serviceIndex) => {
+                            // If there's a single service per unit, use the unit index
+                            // as the services array key so payloads look like
+                            // units[1][services][1] for unit index 1.
+                            const keyIndex = services.length === 1 ? unitIndex : serviceIndex;
+                            const serviceId = service.serviceId ?? unit.serviceId ?? '';
+                            const servicePrice = service.servicePrice ?? service.price ?? unit.servicePrice ?? 0;
+                            formData.append(`units[${unitIndex}][services][${keyIndex}][service_id]`, serviceId);
+                            formData.append(`units[${unitIndex}][services][${keyIndex}][service_price]`, this.formatValueForServer(servicePrice));
+                            formData.append(`units[${unitIndex}][services][${keyIndex}][unit_id]`, unit.unitId || '');
+                            formData.append(`units[${unitIndex}][services][${keyIndex}][checkin_date]`, unit.checkInDate);
+                            formData.append(`units[${unitIndex}][services][${keyIndex}][checkout_date]`, unit.checkOutDate);
                         });
                     }
                 });
@@ -746,7 +765,9 @@
 
                 try {
                     this.isSubmitting = true;
-
+                    const response = await postAddReservationData(formData);
+                    // reservation ID from the response
+                    const reservationName = response?.data?.data?.name;
                     await showSuccessAlert(`Reservation #${reservationName} submitted successfully!`, this.$router, 'index');
                 } catch (error) {
                     handleSubmissionError(error, 'There was an issue with your reservation.');
@@ -1006,6 +1027,11 @@
                         this.formAddReservation.checkOutDate = this.formatDate(lastDate);
                         // this.formAddReservation.checkInTime = this.formatTime(firstDate);
                         // this.formAddReservation.checkOutTime = this.formatTime(lastDate);
+                        // Also populate existing unit rows with these dates
+                        this.formAddReservation.units.forEach(unit => {
+                            unit.checkInDate = this.formAddReservation.checkInDate;
+                            unit.checkOutDate = this.formAddReservation.checkOutDate;
+                        });
                     }
                 }
 
@@ -1066,27 +1092,34 @@
                 }
             },
             // Modified handleRateChange function
-            // Add this method to handle service price changes
-            handleServicePriceChange(event, index) {
-                // Get the value from the input field and remove any dots or commas
-                const servicePrice = parseFloat(event.target.value.replace(/[.,]/g, ''));
+            // Unified handler for service price changes (updates per-unit services array)
+            handleServicePriceChange(event, unitIndex, serviceIndex = 0) {
+                const raw = event.target.value || '';
+                const numeric = parseFloat(raw.toString().replace(/[.,]/g, ''));
 
-                if (!isNaN(servicePrice)) {
-                    // Format with comma as thousands separator for display
-                    const formattedValue = servicePrice
-                        .toLocaleString('de-DE', {
-                            minimumFractionDigits: 0,
-                            maximumFractionDigits: 0,
-                            useGrouping: true,
-                        })
-                        .replace(/\./g, ',');
+                if (isNaN(numeric)) return;
 
-                    // Update this specific service's price with proper formatting
-                    this.formAddReservation.units = formattedValue;
+                const formattedValue = numeric
+                    .toLocaleString('de-DE', {
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0,
+                        useGrouping: true,
+                    })
+                    .replace(/\./g, ',');
 
-                    // Recalculate total including all room rates and service prices
-                    this.calculateAndEmitTotal();
+                // Ensure services array and service entry exist
+                if (!this.formAddReservation.units[unitIndex].services) {
+                    this.$set(this.formAddReservation.units[unitIndex], 'services', [{ serviceId: '', servicePrice: 0 }]);
                 }
+                if (!this.formAddReservation.units[unitIndex].services[serviceIndex]) {
+                    this.$set(this.formAddReservation.units[unitIndex].services, serviceIndex, { serviceId: '', servicePrice: 0 });
+                }
+
+                // Update the specific service price (both structured and legacy field for compatibility)
+                this.formAddReservation.units[unitIndex].services[serviceIndex].servicePrice = formattedValue;
+                this.formAddReservation.units[unitIndex].servicePrice = formattedValue;
+
+                this.calculateAndEmitTotal();
             },
 
             // Method to calculate and emit the total
@@ -1144,28 +1177,7 @@
                 }
             },
 
-            // Add a separate handler for service price changes
-            handleServicePriceChange(event, index) {
-                // Get the value from the input field and remove any dots or commas
-                const servicePrice = parseFloat(event.target.value.replace(/[.,]/g, ''));
-
-                if (!isNaN(servicePrice)) {
-                    // Format with comma as thousands separator for display
-                    const formattedValue = servicePrice
-                        .toLocaleString('de-DE', {
-                            minimumFractionDigits: 0,
-                            maximumFractionDigits: 0,
-                            useGrouping: true,
-                        })
-                        .replace(/\./g, ',');
-
-                    // Update only service prices
-                    this.formAddReservation.services[index].price = formattedValue;
-
-                    // Calculate and emit the total
-                    this.calculateAndEmitTotal();
-                }
-            },
+            // (previous duplicate removed) consolidated handler above
             handlePaymentImageUpload(file) {
                 this.paymentImage = file;
             },
@@ -1197,6 +1209,8 @@
                         children: '0',
                         rateAmount: '',
                         unitTypeId: '',
+                        // Ensure each reset unit has a services array
+                        services: [{ serviceId: '', servicePrice: 0 }],
                     };
                 });
 
@@ -1249,6 +1263,84 @@
                     this.resetFormData();
                 }
             },
+            // Initialize datepickers for repeater rows
+            initRowDatePickers() {
+                this.$nextTick(() => {
+                    setTimeout(() => {
+                        this.formAddReservation.units.forEach((unit, index) => {
+                            // Get check-in input by ID
+                            const checkInInput = document.getElementById(`checkInDate-${index}`);
+                            if (checkInInput) {
+                                if (this.rowDatePickersIn[index]) {
+                                    this.rowDatePickersIn[index].destroy();
+                                }
+                                this.rowDatePickersIn[index] = flatpickr(checkInInput, {
+                                    enableTime: false,
+                                    dateFormat: 'Y-m-d',
+                                    disableMobile: true,
+                                    onChange: selectedDates => {
+                                        if (selectedDates[0]) {
+                                            unit.checkInDate = this.formatDate(selectedDates[0]);
+                                        }
+                                    },
+                                });
+                            }
+
+                            // Get check-out input by ID
+                            const checkOutInput = document.getElementById(`checkOutDate-${index}`);
+                            if (checkOutInput) {
+                                if (this.rowDatePickersOut[index]) {
+                                    this.rowDatePickersOut[index].destroy();
+                                }
+                                this.rowDatePickersOut[index] = flatpickr(checkOutInput, {
+                                    enableTime: false,
+                                    dateFormat: 'Y-m-d',
+                                    disableMobile: true,
+                                    onChange: selectedDates => {
+                                        if (selectedDates[0]) {
+                                            unit.checkOutDate = this.formatDate(selectedDates[0]);
+                                        }
+                                    },
+                                });
+                            }
+                        });
+                    }, 100);
+                });
+            },
+            // Destroy datepicker at specific index
+            destroyRowDatePickerAt(index) {
+                if (this.rowDatePickersIn[index]) {
+                    this.rowDatePickersIn[index].destroy();
+                    this.$set(this.rowDatePickersIn, index, null);
+                }
+                if (this.rowDatePickersOut[index]) {
+                    this.rowDatePickersOut[index].destroy();
+                    this.$set(this.rowDatePickersOut, index, null);
+                }
+            },
+        },
+
+        // Keep unit rows' dates in sync when the main dates change
+        watch: {
+            'formAddReservation.checkInDate'(newVal) {
+                if (!newVal) return;
+                this.formAddReservation.units.forEach(unit => {
+                    unit.checkInDate = newVal;
+                });
+            },
+            'formAddReservation.checkOutDate'(newVal) {
+                if (!newVal) return;
+                this.formAddReservation.units.forEach(unit => {
+                    unit.checkOutDate = newVal;
+                });
+            },
+            // Watch units array to reinitialize row datepickers when units change
+            'formAddReservation.units': {
+                handler() {
+                    this.initRowDatePickers();
+                },
+                deep: true,
+            },
         },
 
         async mounted() {
@@ -1273,74 +1365,7 @@
                 console.error('Error loading data:', error);
             }
             this.initializeFromStore();
-            // this is for make time and date selected depended on time and data selected from calender
-            // this.$nextTick(() =>
-            // {
-            //   if (this.firstDate && this.lastDate) {
-            //     // Initialize date pickers with correct format
-            //     this.datePicker1Instance = flatpickr(this.$refs.datePicker1, {
-            //       enableTime: false,
-            //       dateFormat: "Y-m-d", // Ensure the format is YYYY-MM-DD
-            //       defaultDate: this.firstDate,
-            //       // enable: [this.firstDate],
-            //       disableMobile: true,
-            //       // onChange: (selectedDates) =>
-            //       // {
-            //       //   if (selectedDates[0]) {
-            //       //     this.formAddReservation.checkInDate = this.formatDate(selectedDates[0]);
-            //       //   }
-            //       // }
-            //     });
 
-            //     this.datePicker2Instance = flatpickr(this.$refs.datePicker2, {
-            //       enableTime: false,
-            //       dateFormat: "Y-m-d", // Ensure the format is YYYY-MM-DD
-            //       defaultDate: this.lastDate,
-            //       // enable: [this.lastDate],
-            //       disableMobile: true,
-            //       onChange: (selectedDates) =>
-            //       {
-            //         if (selectedDates[0]) {
-            //           this.formAddReservation.checkOutDate = this.formatDate(selectedDates[0]);
-            //         }
-            //       }
-            //     });
-
-            //     // Set initial values
-            //     this.formAddReservation.checkInDate = this.formatDate(this.firstDate);
-            //     this.formAddReservation.checkOutDate = this.formatDate(this.lastDate);
-
-            //     // Initialize time pickers
-            //     this.timePicker1Instance = flatpickr(this.$refs.timePicker1, {
-            //       enableTime: true,
-            //       noCalendar: true,
-            //       dateFormat: "H:i",
-            //       defaultDate: this.firstDate,
-            //       onChange: (selectedDates) =>
-            //       {
-            //         this.formAddReservation.checkInTime = selectedDates[0] ?
-            //           this.formatTime(selectedDates[0]) : '';
-            //       }
-            //     });
-
-            //     this.timePicker2Instance = flatpickr(this.$refs.timePicker2, {
-            //       enableTime: true,
-            //       noCalendar: true,
-            //       dateFormat: "H:i",
-            //       // defaultDate: this.lastDate,
-            //        defaultDate: this.lastDate,
-            //       onChange: (selectedDates) =>
-            //       {
-            //         this.formAddReservation.checkOutTime = selectedDates[0] ?
-            //           this.formatTime(selectedDates[0]) : '';
-            //       }
-            //     });
-
-            //     // Set initial times
-            //     this.formAddReservation.checkInTime = this.formatTime(this.firstDate);
-            //     this.formAddReservation.checkOutTime = this.formatTime(this.lastDate);
-            //   }
-            // });
             this.$nextTick(() => {
                 if (this.firstDate && this.lastDate) {
                     // Initialize date pickers with correct format
@@ -1405,11 +1430,15 @@
                     // This ensures the form has the default times even before user interaction
                     this.formAddReservation.checkInTime = '12:00';
                     this.formAddReservation.checkOutTime = '02:00';
+
+                    // Initialize row datepickers after main pickers
+                    this.initRowDatePickers();
                 }
             });
 
             // Set initial load to false after everything is initialized
             this.$nextTick(() => {
+                this.initRowDatePickers();
                 this.isInitialLoad = false;
             });
         },
@@ -1462,6 +1491,18 @@
             this.datePicker2Instance?.destroy();
             this.timePicker1Instance?.destroy();
             this.timePicker2Instance?.destroy();
+
+            // Cleanup row datepickers
+            this.rowDatePickersIn.forEach(picker => {
+                if (picker) {
+                    picker.destroy();
+                }
+            });
+            this.rowDatePickersOut.forEach(picker => {
+                if (picker) {
+                    picker.destroy();
+                }
+            });
         },
         emits: ['change'],
         watch: {
