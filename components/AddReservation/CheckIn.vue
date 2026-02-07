@@ -7,6 +7,7 @@
             </h5>
             <hr class="m-0" />
             <div class="card-body">
+                {{ formAddReservation }}
                 <!--  ! Reservation  Details -->
                 <form id="formReservation" class="g-3" @submit.prevent="submitAddReservation" ref="emptyForm">
                     <div class="row">
@@ -173,7 +174,7 @@
                                                 <td data-label="servicePrice">
                                                     <div class="row">
                                                         <div class="col-lg-10">
-                                                            <input @change="handleServicePriceChange($event, index, 0)" type="number" class="form-control rounded-2" :disabled="!datesSelected" v-model="item.services[0].servicePrice" placeholder="0" aria-label="Service Price" />
+                                                            <input @change="handleServicePriceChange($event, index, 0)" type="number" class="form-control rounded-2" :disabled="!datesSelected" v-model="item.services[0].price" placeholder="0" aria-label="Service Price" />
                                                         </div>
                                                         <div class="col-md-2 p-0">
                                                             <button class="btn btn-label-danger" type="button" v-if="index > 0" @click="removeUnit(index)">
@@ -365,7 +366,7 @@
                             services: [
                                 {
                                     serviceId: '',
-                                    servicePrice: 0,
+                                    price: 0,
                                 },
                             ],
                         },
@@ -492,7 +493,7 @@
                             checkInDate: this.formAddReservation.checkInDate || firstRoom.checkInDate || '',
                             checkOutDate: this.formAddReservation.checkOutDate || firstRoom.checkOutDate || '',
                             // Copy services from template (deep clone) or initialize if missing
-                            services: JSON.parse(JSON.stringify(firstRoom.services || [{ serviceId: '', servicePrice: 0 }])),
+                            services: JSON.parse(JSON.stringify(firstRoom.services || [{ serviceId: '', price: 0 }])),
                         };
 
                         this.formAddReservation.units.push(newRoom);
@@ -525,7 +526,7 @@
                     checkInDate: this.formAddReservation.checkInDate || '',
                     checkOutDate: this.formAddReservation.checkOutDate || '',
                     // Initialize services for the new unit
-                    services: [{ serviceId: '', servicePrice: 0 }],
+                    services: [{ serviceId: '', price: 0 }],
                 };
 
                 this.formAddReservation.units.push(newRoom);
@@ -605,10 +606,10 @@
                             children: '0',
                             rateAmount: '',
                             unitTypeId: '',
-                            services: [{ serviceId: '', servicePrice: 0 }],
-                            servicePrice: '',
+                            services: [{ serviceId: '', price: 0 }],
                         },
                     ],
+
                     releaseDate: '',
                     releaseTime: '',
                     releaseTerm: '',
@@ -697,7 +698,7 @@
                     formData.append(key, bookingData[key]);
                 });
 
-                // Append the units array with services (as individual entries)
+                // Append the units array (without services)
                 // Log units data
                 // console.log('Adding units data:');
                 this.formAddReservation.units.forEach((unit, unitIndex) => {
@@ -720,23 +721,23 @@
                     formData.append(`units[${unitIndex}][children]`, unit.children);
                     formData.append(`units[${unitIndex}][rate_amount]`, this.formatValueForServer(unit.rateAmount));
                     formData.append(`units[${unitIndex}][price]`, this.formatValueForServer(unit.rateAmount));
+                });
 
+                // Collect all services from all units into a flat array and send separately
+                let serviceIndex = 0;
+                this.formAddReservation.units.forEach((unit, unitIndex) => {
                     const services = unit.services || [];
-                    console.log(`Appending unit ${unitIndex} data:`, services);
-                    // Append services for this unit (safe if services missing)
                     if (services.length > 0) {
-                        services.forEach((service, serviceIndex) => {
-                            // If there's a single service per unit, use the unit index
-                            // as the services array key so payloads look like
-                            // units[1][services][1] for unit index 1.
-                            const keyIndex = services.length === 1 ? unitIndex : serviceIndex;
-                            const serviceId = service.serviceId ?? unit.serviceId ?? '';
-                            const servicePrice = service.servicePrice ?? service.price ?? unit.servicePrice ?? 0;
-                            formData.append(`units[${unitIndex}][services][${keyIndex}][service_id]`, serviceId);
-                            formData.append(`units[${unitIndex}][services][${keyIndex}][service_price]`, this.formatValueForServer(servicePrice));
-                            formData.append(`units[${unitIndex}][services][${keyIndex}][unit_id]`, unit.unitId || '');
-                            formData.append(`units[${unitIndex}][services][${keyIndex}][checkin_date]`, unit.checkInDate);
-                            formData.append(`units[${unitIndex}][services][${keyIndex}][checkout_date]`, unit.checkOutDate);
+                        services.forEach(service => {
+                            if (service.serviceId) {
+                                // Only add if service is selected
+                                formData.append(`services[${serviceIndex}][service_id]`, service.serviceId);
+                                formData.append(`services[${serviceIndex}][service_price]`, this.formatValueForServer(service.price));
+                                formData.append(`services[${serviceIndex}][unit_id]`, unit.unitId);
+                                formData.append(`services[${serviceIndex}][checkin_date]`, unit.checkInDate);
+                                formData.append(`services[${serviceIndex}][checkout_date]`, unit.checkOutDate);
+                                serviceIndex++;
+                            }
                         });
                     }
                 });
@@ -1107,18 +1108,18 @@
                     })
                     .replace(/\./g, ',');
 
-                // Ensure services array and service entry exist
+                // Ensure services array exists for this unit
                 if (!this.formAddReservation.units[unitIndex].services) {
-                    this.$set(this.formAddReservation.units[unitIndex], 'services', [{ serviceId: '', servicePrice: 0 }]);
+                    this.$set(this.formAddReservation.units[unitIndex], 'services', [{ serviceId: '', price: 0 }]);
                 }
+
+                // Ensure service entry exists at this index
                 if (!this.formAddReservation.units[unitIndex].services[serviceIndex]) {
-                    this.$set(this.formAddReservation.units[unitIndex].services, serviceIndex, { serviceId: '', servicePrice: 0 });
+                    this.$set(this.formAddReservation.units[unitIndex].services, serviceIndex, { serviceId: '', price: 0 });
                 }
 
-                // Update the specific service price (both structured and legacy field for compatibility)
-                this.formAddReservation.units[unitIndex].services[serviceIndex].servicePrice = formattedValue;
-                this.formAddReservation.units[unitIndex].servicePrice = formattedValue;
-
+                // Update the service price for this unit
+                this.formAddReservation.units[unitIndex].services[serviceIndex].price = formattedValue;
                 this.calculateAndEmitTotal();
             },
 
@@ -1130,10 +1131,14 @@
                     return total + (isNaN(unitRate) ? 0 : unitRate * this.totalNights);
                 }, 0);
 
-                // Calculate total services price
+                // Calculate total services price from all units
                 const totalServicesPrice = this.formAddReservation.units.reduce((total, unit) => {
-                    const servicePrice = parseFloat(unit.servicePrice ? unit.servicePrice.toString().replace(/[.,]/g, '') : 0);
-                    return total + (isNaN(servicePrice) ? 0 : servicePrice);
+                    const services = unit.services || [];
+                    const unitServicePrice = services.reduce((unitTotal, service) => {
+                        const servicePrice = parseFloat(service.price ? service.price.toString().replace(/[.,]/g, '') : 0);
+                        return unitTotal + (isNaN(servicePrice) ? 0 : servicePrice);
+                    }, 0);
+                    return total + unitServicePrice;
                 }, 0);
 
                 // Add room rate and services price for grand total
@@ -1210,17 +1215,9 @@
                         rateAmount: '',
                         unitTypeId: '',
                         // Ensure each reset unit has a services array
-                        services: [{ serviceId: '', servicePrice: 0 }],
+                        services: [{ serviceId: '', price: 0 }],
                     };
                 });
-
-                // Reset services
-                this.formAddReservation.services = [
-                    {
-                        serviceId: '',
-                        price: 0,
-                    },
-                ];
 
                 // Reset business source and travel agent
                 this.formAddReservation.businessSource = '';
