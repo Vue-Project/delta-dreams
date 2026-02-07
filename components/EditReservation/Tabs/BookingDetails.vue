@@ -88,6 +88,8 @@
                                     <table class="table overflow-hidden">
                                         <thead>
                                             <tr class="rounded-1">
+                                                <th class="border-0 roomHeader">checkIn</th>
+                                                <th class="border-0 roomHeader">checkout</th>
                                                 <th class="border-0 roomHeader">Project</th>
                                                 <th class="border-0 roomHeader">Room Type</th>
                                                 <th class="border-0 roomHeader">Rate Type</th>
@@ -99,6 +101,14 @@
                                         </thead>
                                         <tbody>
                                             <tr v-for="(item, index) in formAddReservation.units" :key="index" class="mb-2 selectStyle">
+                                                <td data-label="checkIn">
+                                                    <!-- Use dynamic ref with index -->
+                                                    <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" :id="'flatpickr-date-0' + index" :ref="'datePicker1' + index" v-model="item.checkInDate" aria-label="input Text to Check-in Date" :disabled="index > 0" />
+                                                </td>
+                                                <td data-label="checkOut">
+                                                    <!-- Use dynamic ref with index -->
+                                                    <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" :id="'flatpickr-date-0' + index" :ref="'datePicker1' + index" v-model="item.checkOutDate" aria-label="input Text to Check-out Date" :disabled="index > 0" />
+                                                </td>
                                                 <td data-label="Project">
                                                     <select class="form-select" v-model="item.projectId" :disabled="index > 0">
                                                         <option disabled value="">Select</option>
@@ -435,7 +445,6 @@
         name: 'updateReservation',
         layout: 'component',
 
-
         // ======================
         // Component Data
         // ======================
@@ -482,6 +491,8 @@
                     },
                     units: [
                         {
+                            checkInDate: '',
+                            checkOutDate: '',
                             rateType: '',
                             room: '',
                             adults: '',
@@ -531,7 +542,6 @@
                         rate_type_name: '',
                         rate_type_price: '',
                         insurance_by: '',
-
                     },
                 },
                 comment: '',
@@ -709,7 +719,6 @@
                     insurance_by: this.formAddReservation.BillingSummary.insurance_by,
                     tax: this.formAddReservation.tax,
                     charge_extra: this.formAddReservation.chargeExtra,
-
                 };
 
                 try {
@@ -1023,6 +1032,8 @@
                     // ...existing code...
                     units: [
                         {
+                            checkInDate: this.formatDateNumber(reservationData.checkin_date),
+                            checkOutDate: this.formatDateNumber(reservationData.checkout_date),
                             projectId: reservationData.project_id,
                             rateType: reservationData.rate_type,
                             adults: reservationData.adults,
@@ -1034,6 +1045,8 @@
                             // No code for parent
                         },
                         ...(reservationData.childrens || []).map(unit => ({
+                            checkInDate: this.formatDateNumber(unit.checkin_date),
+                            checkOutDate: this.formatDateNumber(unit.checkout_date),
                             projectId: unit.project_id,
                             rateType: unit.rate_type,
                             adults: unit.adults,
