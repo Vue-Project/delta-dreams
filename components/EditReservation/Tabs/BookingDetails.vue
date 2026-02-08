@@ -689,6 +689,8 @@
                     business_source_id: this.formAddReservation.businessSource,
                     units: [
                         {
+                            checkin_date: this.formAddReservation.units[0].checkInDate,
+                            checkout_date: this.formAddReservation.units[0].checkOutDate,
                             project_id: this.formAddReservation.units[0].projectId,
                             unit_id: this.formAddReservation.units[0].unitId,
                             unit_type_id: this.formAddReservation.units[0].roomType,
