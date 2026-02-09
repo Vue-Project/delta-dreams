@@ -703,6 +703,9 @@
                     services: this.formAddReservation.services.map(service => ({
                         service_id: service.serviceId,
                         service_price: service.price,
+                        checkin_date: this.formAddReservation.checkInDate,
+                        checkout_date: this.formAddReservation.checkOutDate,
+                        unit_id: this.formAddReservation.units[0].unitId,
                     })),
 
                     hold_release_date: this.formAddReservation.releaseDate,
