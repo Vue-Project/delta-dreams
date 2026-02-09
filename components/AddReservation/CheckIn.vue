@@ -7,7 +7,6 @@
             </h5>
             <hr class="m-0" />
             <div class="card-body">
-                {{ formAddReservation }}
                 <!--  ! Reservation  Details -->
                 <form id="formReservation" class="g-3" @submit.prevent="submitAddReservation" ref="emptyForm">
                     <div class="row">
