@@ -18,7 +18,7 @@
         "@luxdamore/vue-cursor-fx": "^1.6.2",
         "axios": "^0.27.2",
         "cookie-universal-nuxt": "^2.2.2",
-        "core-js": "^3.19.3",
+        "core-js": "^2.6.12",
         "dropzone": "^6.0.0-beta.2",
         "flatpickr": "^4.6.13",
         "jquery": "^3.6.1",

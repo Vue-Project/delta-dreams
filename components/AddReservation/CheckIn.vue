@@ -103,12 +103,11 @@
                                                     <i class="fa-solid fa-baby"></i>
                                                 </th>
                                                 <th class="border-0 w-20">Rate(EGP)(Tax Inc.)</th>
-                                                <th class="border-0 w-20">service</th>
-                                                <th class="border-0 w-20">service price</th>
+                                                <th class="border-0 w-20">services</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            <tr v-for="(item, index) in formAddReservation.units" :key="index" class="mb-2 selectStyle">
+                                        <tbody v-for="(item, index) in formAddReservation.units" :key="index">
+                                            <tr class="mb-2 selectStyle">
                                                 <td data-label="checkIn">
                                                     <!-- Use dynamic ref with index -->
                                                     <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" :id="'flatpickr-date-0' + index" :ref="'datePicker1' + index" v-model="item.checkInDate" aria-label="input Text to Check-in Date" :disabled="!datesSelected" />
@@ -159,28 +158,62 @@
                                                     <span class="error-message small" v-if="$v.formAddReservation.units.$each[index].children.$error">Children is required</span>
                                                 </td>
                                                 <td data-label="Rate(EGP)(Tax Inc.)">
-                                                    <input @change="handleRateChange($event, index)" class="form-control rounded-2" placeholder="0" id="rateAmount" v-model="item.rateAmount" aria-label="number of rateAmount" ref="rateAmount" />
-                                                    <span class="error-message small" v-if="$v.formAddReservation.units.$each[index].rateAmount.$error">Rate amount is required</span>
-                                                </td>
-                                                <td data-label="Service">
-                                                    <select class="form-select" v-model="item.services[0].serviceId" :disabled="!datesSelected">
-                                                        <option disabled value="">Select Service</option>
-                                                        <option v-for="service in servicesList" :key="service.id" :value="service.id">
-                                                            {{ service.name }}
-                                                        </option>
-                                                    </select>
-                                                </td>
-                                                <td data-label="servicePrice">
                                                     <div class="row">
-                                                        <div class="col-lg-10">
-                                                            <input @change="handleServicePriceChange($event, index, 0)" type="number" class="form-control rounded-2" :disabled="!datesSelected" v-model="item.services[0].price" placeholder="0" aria-label="Service Price" />
+                                                        <div class="col-md-10">
+                                                            <input @change="handleRateChange($event, index)" class="form-control rounded-2" placeholder="0" id="rateAmount" v-model="item.rateAmount" aria-label="number of rateAmount" ref="rateAmount" />
+                                                            <span class="error-message small" v-if="$v.formAddReservation.units.$each[index].rateAmount.$error">Rate amount is required</span>
                                                         </div>
-                                                        <div class="col-md-2 p-0">
+                                                        <div class="col-md-2">
                                                             <button class="btn btn-label-danger" type="button" v-if="index > 0" @click="removeUnit(index)">
                                                                 <i class="fa-solid fa-xmark"></i>
                                                             </button>
                                                         </div>
                                                     </div>
+                                                </td>
+
+                                                <td colspan="2">
+                                                    <button class="btn btn-sm btn-outline-primary" type="button" @click="toggleServices(index)" :disabled="!datesSelected">
+                                                        <i class="fas fa-plus-square pr-2"></i>
+                                                        {{ item.services.length }}
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr v-if="activeServiceIndex === index">
+                                                <td colspan="11" class="p-3">
+                                                    <table class="table overflow-hidden custom-table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Service</th>
+                                                                <th>Price</th>
+                                                                <th width="100">Action</th>
+                                                            </tr>
+                                                        </thead>
+
+                                                        <tbody>
+                                                            <tr v-for="(service, serviceIndex) in item.services" :key="serviceIndex">
+                                                                <td>
+                                                                    <select class="form-select" v-model="service.serviceId">
+                                                                        <option disabled value="">Select Service</option>
+                                                                        <option v-for="srv in servicesList" :key="srv.id" :value="srv.id">
+                                                                            {{ srv.name }}
+                                                                        </option>
+                                                                    </select>
+                                                                </td>
+
+                                                                <td>
+                                                                    <input type="number" class="form-control" v-model="service.price" placeholder="0" @change="handleServicePriceChange($event, index, serviceIndex)" aria-label="service price" />
+                                                                </td>
+
+                                                                <td>
+                                                                    <button class="btn btn-danger btn-sm" type="button" @click="removeService(index, sIndex)">
+                                                                        <i class="fa-solid fa-xmark"></i>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+
+                                                    <button class="btn btn-sm btn-outline-primary mt-2" type="button" @click="addService(index)">+ Add Service</button>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -319,6 +352,7 @@
                 titles: ['MR.', 'DR.', 'JN.', 'MAM.', 'MRS.', 'MS.', 'SIR.', 'SR.'],
                 formData: [{ rooms: 1 }],
                 existingItemsCount: 1,
+                activeServiceIndex: null,
                 selectedOptionBusiness: '',
                 datePicker1Instance: null,
                 datePicker2Instance: null,
@@ -350,6 +384,7 @@
                         quickGroup: false,
                         complimentaryRoom: false,
                     },
+
                     units: [
                         {
                             checkInDate: '',
@@ -362,12 +397,7 @@
                             children: '0',
                             rateAmount: '',
                             unitTypeId: '',
-                            services: [
-                                {
-                                    serviceId: '',
-                                    price: 0,
-                                },
-                            ],
+                            services: [],
                         },
                     ],
 
@@ -492,7 +522,7 @@
                             checkInDate: this.formAddReservation.checkInDate || firstRoom.checkInDate || '',
                             checkOutDate: this.formAddReservation.checkOutDate || firstRoom.checkOutDate || '',
                             // Copy services from template (deep clone) or initialize if missing
-                            services: JSON.parse(JSON.stringify(firstRoom.services || [{ serviceId: '', price: 0 }])),
+                            // services: JSON.parse(JSON.stringify(firstRoom.services || [{ serviceId: '', price: 0 }])),
                         };
 
                         this.formAddReservation.units.push(newRoom);
@@ -521,6 +551,7 @@
                     children: '0',
                     rateAmount: '',
                     unitTypeId: firstUnitTypeId,
+                    showServices: false,
                     // Inherit the main check-in / check-out dates when adding a unit
                     checkInDate: this.formAddReservation.checkInDate || '',
                     checkOutDate: this.formAddReservation.checkOutDate || '',
@@ -1093,7 +1124,7 @@
             },
             // Modified handleRateChange function
             // Unified handler for service price changes (updates per-unit services array)
-            handleServicePriceChange(event, unitIndex, serviceIndex = 0) {
+            handleServicePriceChange(event, unitIndex, serviceIndex) {
                 const raw = event.target.value || '';
                 const numeric = parseFloat(raw.toString().replace(/[.,]/g, ''));
 
@@ -1118,7 +1149,7 @@
                 }
 
                 // Update the service price for this unit
-                this.formAddReservation.units[unitIndex].services[serviceIndex].price = formattedValue;
+                this.formAddReservation.units[unitIndex].services[serviceIndex].price = numeric;
                 this.calculateAndEmitTotal();
             },
 
@@ -1313,6 +1344,24 @@
                     this.rowDatePickersOut[index].destroy();
                     this.$set(this.rowDatePickersOut, index, null);
                 }
+            },
+            toggleServices(index) {
+                if (this.activeServiceIndex === index) {
+                    this.activeServiceIndex = null;
+                } else {
+                    this.activeServiceIndex = index;
+                }
+            },
+
+            addService(unitIndex) {
+                this.formAddReservation.units[unitIndex].services.push({
+                    serviceId: '',
+                    price: 0,
+                });
+            },
+
+            removeService(unitIndex, serviceIndex) {
+                this.formAddReservation.units[unitIndex].services.splice(serviceIndex, 1);
             },
         },
 
