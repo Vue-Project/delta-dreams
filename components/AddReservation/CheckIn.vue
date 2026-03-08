@@ -1366,27 +1366,6 @@
         },
 
         // Keep unit rows' dates in sync when the main dates change
-        watch: {
-            'formAddReservation.checkInDate'(newVal) {
-                if (!newVal) return;
-                this.formAddReservation.units.forEach(unit => {
-                    unit.checkInDate = newVal;
-                });
-            },
-            'formAddReservation.checkOutDate'(newVal) {
-                if (!newVal) return;
-                this.formAddReservation.units.forEach(unit => {
-                    unit.checkOutDate = newVal;
-                });
-            },
-            // Watch units array to reinitialize row datepickers when units change
-            'formAddReservation.units': {
-                handler() {
-                    this.initRowDatePickers();
-                },
-                deep: true,
-            },
-        },
 
         async mounted() {
             try {
@@ -1596,6 +1575,12 @@
                     this.formAddReservation.releaseTime = newValue;
                 },
                 immediate: true,
+            },
+            'formAddReservation.units': {
+                handler() {
+                    this.calculateAndEmitTotal();
+                },
+                deep: true,
             },
         },
         props: {
