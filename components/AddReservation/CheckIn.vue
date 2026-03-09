@@ -110,11 +110,11 @@
                                             <tr class="mb-2 selectStyle">
                                                 <td data-label="checkIn">
                                                     <!-- Use dynamic ref with index -->
-                                                    <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" :id="'flatpickr-date-0' + index" :ref="'datePicker1' + index" v-model="item.checkInDate" aria-label="input Text to Check-in Date" :disabled="!datesSelected" />
+                                                    <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" :id="'flatpickr-date-checkin-' + index" :ref="'datePicker1' + index" v-model="item.checkInDate" aria-label="input Text to Check-in Date" :disabled="!datesSelected" />
                                                 </td>
                                                 <td data-label="checkOut">
                                                     <!-- Use dynamic ref with index -->
-                                                    <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" :id="'flatpickr-date-0' + index" :ref="'datePicker1' + index" v-model="item.checkOutDate" aria-label="input Text to Check-out Date" :disabled="!datesSelected" />
+                                                    <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" :id="'flatpickr-date-checkout-' + index" :ref="'datePicker1' + index" v-model="item.checkOutDate" aria-label="input Text to Check-out Date" :disabled="!datesSelected" />
                                                 </td>
                                                 <td data-label="Project">
                                                     <select class="form-select" :disabled="!datesSelected" v-model="item.projectId" @change="() => handleProjectChange(index, item.projectId)">
@@ -218,7 +218,7 @@
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <button class="btn btn-primary waves-effect waves-light mt-3 ml-4" type="button" @click="addUnit" :disabled="!datesSelected">Add Unit</button>
+                                    <button class="btn btn-primary waves-effect waves-light mt-3 ml-4" type="button" @click="addUnit" :disabled="!allUnitsHaveDates">Add Unit</button>
                                 </div>
                             </div>
                         </div>
@@ -566,6 +566,10 @@
                 this.formAddReservation.numberRooms = this.formAddReservation.units.length.toString();
                 // Emit the updated number of rooms
                 this.$emit('update:numberRooms', this.formAddReservation.units.length);
+                this.$nextTick(() => {
+                    const unitIndex = this.formAddReservation.units.length - 1;
+                    this.initializeFlatpickrForUnit(unitIndex);
+                });
             },
             removeUnit(index) {
                 if (this.formAddReservation.units.length > 1) {
@@ -1363,6 +1367,24 @@
             removeService(unitIndex, serviceIndex) {
                 this.formAddReservation.units[unitIndex].services.splice(serviceIndex, 1);
             },
+            initializeFlatpickrForUnit(unitIndex) {
+                const checkInInput = document.querySelector(`#flatpickr-date-checkin-${unitIndex}`);
+                const checkOutInput = document.querySelector(`#flatpickr-date-checkout-${unitIndex}`);
+
+                if (checkInInput && !checkInInput._flatpickr) {
+                    flatpickr(checkInInput, {
+                        enableTime: false,
+                        dateFormat: 'd/m/Y',
+                    });
+                }
+
+                if (checkOutInput && !checkOutInput._flatpickr) {
+                    flatpickr(checkOutInput, {
+                        enableTime: false,
+                        dateFormat: 'd/m/Y',
+                    });
+                }
+            },
         },
 
         // Keep unit rows' dates in sync when the main dates change
@@ -1507,7 +1529,12 @@
                 return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
             },
             datesSelected() {
-                return this.formAddReservation.checkInDate && this.formAddReservation.checkOutDate;
+                const mainDatesSelected = this.formAddReservation.checkInDate && this.formAddReservation.checkOutDate;
+
+                return mainDatesSelected;
+            },
+            allUnitsHaveDates() {
+                return this.formAddReservation.units.every(unit => unit.checkInDate && unit.checkOutDate);
             },
         },
         beforeDestroy() {
@@ -1550,31 +1577,36 @@
                 },
                 deep: true,
             },
-            'formAddReservation.checkInDate': {
-                handler(newValue, oldValue) {
-                    // Only reset if the date actually changed and it's not the initial load
-                    if (newValue && oldValue && newValue !== oldValue && !this.isInitialLoad) {
-                        console.log('Check-in date changed from', oldValue, 'to', newValue);
-                        this.resetFormData();
-                    }
-                    this.formAddReservation.releaseDate = newValue;
-                },
-                immediate: true,
+            // 'formAddReservation.checkInDate': {
+            //     handler(newValue, oldValue) {
+            //         // Only reset if the date actually changed and it's not the initial load
+            //         if (newValue && oldValue && newValue !== oldValue && !this.isInitialLoad) {
+            //             console.log('Check-in date changed from', oldValue, 'to', newValue);
+            //             this.resetFormData();
+            //         }
+            //         this.formAddReservation.releaseDate = newValue;
+            //     },
+            //     immediate: true,
+            // },
+            // 'formAddReservation.checkOutDate': {
+            //     handler(newValue, oldValue) {
+            //         // Only reset if the date actually changed and it's not the initial load
+            //         if (newValue && oldValue && newValue !== oldValue && !this.isInitialLoad) {
+            //             console.log('Check-out date changed from', oldValue, 'to', newValue);
+            //             this.resetFormData();
+            //         }
+            //     },
+            // },
+            'formAddReservation.checkInDate'(newDate) {
+                if (this.formAddReservation.units.length > 0) {
+                    this.formAddReservation.units[0].checkInDate = newDate;
+                }
             },
-            'formAddReservation.checkOutDate': {
-                handler(newValue, oldValue) {
-                    // Only reset if the date actually changed and it's not the initial load
-                    if (newValue && oldValue && newValue !== oldValue && !this.isInitialLoad) {
-                        console.log('Check-out date changed from', oldValue, 'to', newValue);
-                        this.resetFormData();
-                    }
-                },
-            },
-            'formAddReservation.checkInTime': {
-                handler(newValue) {
-                    this.formAddReservation.releaseTime = newValue;
-                },
-                immediate: true,
+
+            'formAddReservation.checkOutDate'(newDate) {
+                if (this.formAddReservation.units.length > 0) {
+                    this.formAddReservation.units[0].checkOutDate = newDate;
+                }
             },
             'formAddReservation.units': {
                 handler() {
