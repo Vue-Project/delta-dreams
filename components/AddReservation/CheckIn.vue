@@ -218,7 +218,7 @@
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <button class="btn btn-primary waves-effect waves-light mt-3 ml-4" type="button" @click="addUnit" :disabled="!allUnitsHaveDates">Add Unit</button>
+                                    <button class="btn btn-primary waves-effect waves-light mt-3 ml-4" type="button" @click="addUnit" :disabled="!datesSelected">Add Unit</button>
                                 </div>
                             </div>
                         </div>
@@ -1529,13 +1529,11 @@
                 return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
             },
             datesSelected() {
-                const mainDatesSelected = this.formAddReservation.checkInDate && this.formAddReservation.checkOutDate;
-
-                return mainDatesSelected;
+                return this.formAddReservation.checkInDate && this.formAddReservation.checkOutDate;
             },
-            allUnitsHaveDates() {
-                return this.formAddReservation.units.every(unit => unit.checkInDate && unit.checkOutDate);
-            },
+            // allUnitsHaveDates() {
+            //     return this.formAddReservation.units.every(unit => unit.checkInDate && unit.checkOutDate);
+            // },
         },
         beforeDestroy() {
             this.datePicker1Instance?.destroy();
