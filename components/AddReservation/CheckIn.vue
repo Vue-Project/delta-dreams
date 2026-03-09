@@ -1577,36 +1577,31 @@
                 },
                 deep: true,
             },
-            // 'formAddReservation.checkInDate': {
-            //     handler(newValue, oldValue) {
-            //         // Only reset if the date actually changed and it's not the initial load
-            //         if (newValue && oldValue && newValue !== oldValue && !this.isInitialLoad) {
-            //             console.log('Check-in date changed from', oldValue, 'to', newValue);
-            //             this.resetFormData();
-            //         }
-            //         this.formAddReservation.releaseDate = newValue;
-            //     },
-            //     immediate: true,
-            // },
-            // 'formAddReservation.checkOutDate': {
-            //     handler(newValue, oldValue) {
-            //         // Only reset if the date actually changed and it's not the initial load
-            //         if (newValue && oldValue && newValue !== oldValue && !this.isInitialLoad) {
-            //             console.log('Check-out date changed from', oldValue, 'to', newValue);
-            //             this.resetFormData();
-            //         }
-            //     },
-            // },
-            'formAddReservation.checkInDate'(newDate) {
-                if (this.formAddReservation.units.length > 0) {
-                    this.formAddReservation.units[0].checkInDate = newDate;
-                }
+            'formAddReservation.checkInDate': {
+                handler(newValue, oldValue) {
+                    // Only reset if the date actually changed and it's not the initial load
+                    if (newValue && oldValue && newValue !== oldValue && !this.isInitialLoad) {
+                        console.log('Check-in date changed from', oldValue, 'to', newValue);
+                        this.resetFormData();
+                    }
+                    this.formAddReservation.releaseDate = newValue;
+                },
+                immediate: true,
             },
-
-            'formAddReservation.checkOutDate'(newDate) {
-                if (this.formAddReservation.units.length > 0) {
-                    this.formAddReservation.units[0].checkOutDate = newDate;
-                }
+            'formAddReservation.checkOutDate': {
+                handler(newValue, oldValue) {
+                    // Only reset if the date actually changed and it's not the initial load
+                    if (newValue && oldValue && newValue !== oldValue && !this.isInitialLoad) {
+                        console.log('Check-out date changed from', oldValue, 'to', newValue);
+                        this.resetFormData();
+                    }
+                },
+            },
+            'formAddReservation.checkInTime': {
+                handler(newValue) {
+                    this.formAddReservation.releaseTime = newValue;
+                },
+                immediate: true,
             },
             'formAddReservation.units': {
                 handler() {
