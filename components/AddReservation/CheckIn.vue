@@ -218,7 +218,7 @@
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <button class="btn btn-primary waves-effect waves-light mt-3 ml-4" type="button" @click="addUnit" :disabled="!datesSelected">Add Unit</button>
+                                    <button class="btn btn-primary waves-effect waves-light mt-3 ml-4" type="button" @click="addUnit" :disabled="!allUnitsHaveDates">Add Unit</button>
                                 </div>
                             </div>
                         </div>
@@ -1507,7 +1507,12 @@
                 return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
             },
             datesSelected() {
-                return this.formAddReservation.checkInDate && this.formAddReservation.checkOutDate;
+                const mainDatesSelected = this.formAddReservation.checkInDate && this.formAddReservation.checkOutDate;
+
+                return mainDatesSelected;
+            },
+            allUnitsHaveDates() {
+                return this.formAddReservation.units.every(unit => unit.checkInDate && unit.checkOutDate);
             },
         },
         beforeDestroy() {
@@ -1550,31 +1555,36 @@
                 },
                 deep: true,
             },
-            'formAddReservation.checkInDate': {
-                handler(newValue, oldValue) {
-                    // Only reset if the date actually changed and it's not the initial load
-                    if (newValue && oldValue && newValue !== oldValue && !this.isInitialLoad) {
-                        console.log('Check-in date changed from', oldValue, 'to', newValue);
-                        this.resetFormData();
-                    }
-                    this.formAddReservation.releaseDate = newValue;
-                },
-                immediate: true,
+            // 'formAddReservation.checkInDate': {
+            //     handler(newValue, oldValue) {
+            //         // Only reset if the date actually changed and it's not the initial load
+            //         if (newValue && oldValue && newValue !== oldValue && !this.isInitialLoad) {
+            //             console.log('Check-in date changed from', oldValue, 'to', newValue);
+            //             this.resetFormData();
+            //         }
+            //         this.formAddReservation.releaseDate = newValue;
+            //     },
+            //     immediate: true,
+            // },
+            // 'formAddReservation.checkOutDate': {
+            //     handler(newValue, oldValue) {
+            //         // Only reset if the date actually changed and it's not the initial load
+            //         if (newValue && oldValue && newValue !== oldValue && !this.isInitialLoad) {
+            //             console.log('Check-out date changed from', oldValue, 'to', newValue);
+            //             this.resetFormData();
+            //         }
+            //     },
+            // },
+            'formAddReservation.checkInDate'(newDate) {
+                this.formAddReservation.units.forEach(item => {
+                    item.checkInDate = newDate;
+                });
             },
-            'formAddReservation.checkOutDate': {
-                handler(newValue, oldValue) {
-                    // Only reset if the date actually changed and it's not the initial load
-                    if (newValue && oldValue && newValue !== oldValue && !this.isInitialLoad) {
-                        console.log('Check-out date changed from', oldValue, 'to', newValue);
-                        this.resetFormData();
-                    }
-                },
-            },
-            'formAddReservation.checkInTime': {
-                handler(newValue) {
-                    this.formAddReservation.releaseTime = newValue;
-                },
-                immediate: true,
+
+            'formAddReservation.checkOutDate'(newDate) {
+                this.formAddReservation.units.forEach(item => {
+                    item.checkOutDate = newDate;
+                });
             },
             'formAddReservation.units': {
                 handler() {
