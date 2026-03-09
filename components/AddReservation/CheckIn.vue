@@ -1597,12 +1597,23 @@
                     }
                 },
             },
-            'formAddReservation.checkInTime': {
-                handler(newValue) {
-                    this.formAddReservation.releaseTime = newValue;
-                },
-                immediate: true,
+            'formAddReservation.checkInDate'(newDate) {
+                if (this.formAddReservation.units.length > 0) {
+                    this.formAddReservation.units[0].checkInDate = newDate;
+                }
             },
+
+            'formAddReservation.checkOutDate'(newDate) {
+                if (this.formAddReservation.units.length > 0) {
+                    this.formAddReservation.units[0].checkOutDate = newDate;
+                }
+            },
+            // 'formAddReservation.checkInTime': {
+            //     handler(newValue) {
+            //         this.formAddReservation.releaseTime = newValue;
+            //     },
+            //     immediate: true,
+            // },
             'formAddReservation.units': {
                 handler() {
                     this.calculateAndEmitTotal();
