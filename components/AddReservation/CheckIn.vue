@@ -1368,22 +1368,31 @@
                 this.formAddReservation.units[unitIndex].services.splice(serviceIndex, 1);
             },
             initializeFlatpickrForUnit(unitIndex) {
+                // Use Flatpickr's own formatDate method
+                const getTodayDate = () => {
+                    return flatpickr.formatDate(new Date(), 'Y/m/d');
+                };
+
                 const checkInInput = document.querySelector(`#flatpickr-date-checkin-${unitIndex}`);
                 const checkOutInput = document.querySelector(`#flatpickr-date-checkout-${unitIndex}`);
 
                 if (checkInInput && !checkInInput._flatpickr) {
                     flatpickr(checkInInput, {
                         enableTime: false,
-                        dateFormat: 'y/m/d',
-                        disableMobile: true, // 🔥 مهم جدًا
+                        dateFormat: 'Y/m/d',
+                        disableMobile: true,
+                        defaultDate: getTodayDate(),
+                        // minDate: getTodayDate(),
                     });
                 }
 
                 if (checkOutInput && !checkOutInput._flatpickr) {
                     flatpickr(checkOutInput, {
                         enableTime: false,
-                        dateFormat: 'y/m/d',
-                        disableMobile: true, // 🔥 مهم جدًا
+                        dateFormat: 'Y/m/d',
+                        disableMobile: true,
+                        defaultDate: getTodayDate(),
+                        // minDate: getTodayDate(),
                     });
                 }
             },
