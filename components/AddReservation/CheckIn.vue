@@ -110,11 +110,11 @@
                                             <tr class="mb-2 selectStyle">
                                                 <td data-label="checkIn">
                                                     <!-- Use dynamic ref with index -->
-                                                    <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" :id="'flatpickr-date-checkin-' + index" :ref="'datePicker1' + index" v-model="item.checkInDate" aria-label="input Text to Check-in Date" :disabled="!datesSelected" />
+                                                    <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" :id="'flatpickr-date-checkin-' + index" :ref="'datePicker15' + index" v-model="item.checkInDate" aria-label="input Text to Check-in Date" :disabled="!datesSelected" />
                                                 </td>
                                                 <td data-label="checkOut">
                                                     <!-- Use dynamic ref with index -->
-                                                    <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" :id="'flatpickr-date-checkout-' + index" :ref="'datePicker1' + index" v-model="item.checkOutDate" aria-label="input Text to Check-out Date" :disabled="!datesSelected" />
+                                                    <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" :id="'flatpickr-date-checkout-' + index" :ref="'datePicker16' + index" v-model="item.checkOutDate" aria-label="input Text to Check-out Date" :disabled="!datesSelected" />
                                                 </td>
                                                 <td data-label="Project">
                                                     <select class="form-select" :disabled="!datesSelected" v-model="item.projectId" @change="() => handleProjectChange(index, item.projectId)">
