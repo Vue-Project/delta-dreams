@@ -1374,14 +1374,16 @@
                 if (checkInInput && !checkInInput._flatpickr) {
                     flatpickr(checkInInput, {
                         enableTime: false,
-                        // dateFormat: 'y/m/d',
+                        dateFormat: 'y/m/d',
+                        disableMobile: true, // 🔥 مهم جدًا
                     });
                 }
 
                 if (checkOutInput && !checkOutInput._flatpickr) {
                     flatpickr(checkOutInput, {
                         enableTime: false,
-                        // dateFormat: 'y/m/d',
+                        dateFormat: 'y/m/d',
+                        disableMobile: true, // 🔥 مهم جدًا
                     });
                 }
             },
