@@ -22,6 +22,12 @@ export default {
         ],
         link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
         script: [
+            // Load runtime config FIRST - before any other scripts
+            {
+                type: 'text/javascript',
+                src: '/config.js',
+                body: false, // Load in head for early availability
+            },
             {
                 type: 'text/javascript',
                 src: '/js/bootstrap/bootstrap.min.js',
@@ -51,7 +57,7 @@ export default {
     script: [],
 
     // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-    plugins: ['~/plugins/vue-wow-config', { src: '~/plugins/store-init.js', mode: 'client' }, { src: '~/plugins/vue-easy-lightbox.js', mode: 'client' }, '~/plugins/pusher.client.js', '~/plugins/global-events.client.js'],
+    plugins: ['~/plugins/vue-wow-config', { src: '~/plugins/store-init.js', mode: 'client' }, { src: '~/plugins/vue-easy-lightbox.js', mode: 'client' }, '~/plugins/pusher.client.js', '~/plugins/global-events.client.js', '~/plugins/config.js'],
 
     // Auto import components: https://go.nuxtjs.dev/config-components
     components: true,
