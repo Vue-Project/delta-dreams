@@ -296,6 +296,7 @@
                         right: '',
                     },
                 },
+                isMobileView: false,
             };
         },
 
@@ -1231,23 +1232,29 @@
             },
 
             updateDuration() {
-                // Only run this code on the client side
                 if (typeof window !== 'undefined') {
                     const isMobile = window.innerWidth <= 768;
+
+                    // ✅ Only update if the mobile/desktop state actually changed
+                    if (this.isMobileView === isMobile) {
+                        return; // No change needed
+                    }
+
+                    this.isMobileView = isMobile;
                     const duration = isMobile ? { days: 10 } : { days: 20 };
 
-                    // Update calendar options with correct duration
+                    // Update calendar options
                     this.calendarOptions.duration = duration;
 
-                    // Update slot width based on screen size
                     const calendarApi = this.$refs.calendar?.getApi();
                     if (calendarApi) {
                         calendarApi.setOption('slotMinWidth', isMobile ? 150 : 70);
                         calendarApi.setOption('duration', duration);
 
-                        // Force redraw
+                        // ✅ Refresh data after view change
                         this.$nextTick(() => {
                             calendarApi.updateSize();
+                            this.handleNavigation(); // Reload data for new date range
                         });
                     }
                 }

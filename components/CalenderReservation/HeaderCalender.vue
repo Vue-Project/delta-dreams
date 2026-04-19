@@ -379,7 +379,7 @@
                             const selectedDate = selectedDates[0];
                             this.selectedDate = this.formatDate(selectedDate); // Save selected date
                             this.$emit('date-selected', selectedDate);
-                            this.getFilterData(); // Trigger filter when date changes
+                            // this.getFilterData(); // Trigger filter when date changes
                         }
                     },
                 });
