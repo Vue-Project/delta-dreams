@@ -140,6 +140,7 @@ export default {
 
     env: {
         API_BASE_URL: process.env.API_BASE_URL,
+        BASE_URL: process.env.BASE_URL,
     },
 
     // Generate configuration for static deployment

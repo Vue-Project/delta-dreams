@@ -31,7 +31,7 @@
                         <tbody>
                             <tr v-for="wallet in reservationData.wallets" :key="wallet.id">
                                 <td>
-                                    <img :src="`${$nuxt.$config.baseURL}/${wallet.image}`" style="width: 50px; height: 50px; cursor: pointer" @click="showImg(`${$nuxt.$config.baseURL}/${wallet.image}`)" />
+                                    <img :src="`${$nuxt.$config.BASE_URL}/${wallet.image}`" style="width: 50px; height: 50px; cursor: pointer" @click="showImg(`${$nuxt.$config.BASE_URL}/${wallet.image}`)" />
                                 </td>
                                 <td>{{ wallet.payment.name }}</td>
                                 <td>{{ wallet.paymentType.name }}</td>

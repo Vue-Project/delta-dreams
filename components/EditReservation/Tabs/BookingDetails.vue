@@ -265,7 +265,7 @@
                             <div class="row">
                                 <div class="col-lg-4 col-md-4 col-12 px-0 px-md-3" v-if="reservationData?.permit">
                                     <p class="mb-0">Permit Image</p>
-                                    <img :src="`${$nuxt.$config.baseURL}/${reservationData.permit_image}`" style="width: 50px; height: 50px; cursor: pointer" @click="showImg(`${$nuxt.$config.baseURL}/${reservationData.permit_image}`)" class="w-75" alt="Permit Image" />
+                                    <img :src="`${$nuxt.$config.BASE_URL}/${reservationData.permit_image}`" style="width: 50px; height: 50px; cursor: pointer" @click="showImg(`${$nuxt.$config.BASE_URL}/${reservationData.permit_image}`)" class="w-75" alt="Permit Image" />
                                 </div>
                             </div>
                             <vue-easy-lightbox :visible="visible" :imgs="imgs" :index="index" @hide="handleHide" />

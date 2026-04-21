@@ -13,7 +13,7 @@
         >
           <span class="app-brand-logo demo">
             <img
-              :src="`${$nuxt.$config.baseURL}/${settingsData.site_logo}` || require('../../../assets/images/logo-sys.png')"
+              :src="`${$nuxt.$config.BASE_URL}/${settingsData.site_logo}` || require('../../../assets/images/logo-sys.png')"
               alt="logo"
               class="img-fluid"
             />
@@ -431,7 +431,7 @@ export default {
 
       // Dynamically update favicon
       if (this.settingsData.site_favicon) {
-        const faviconUrl = `${this.$nuxt.$config.baseURL}/${this.settingsData.site_favicon}`;
+        const faviconUrl = `${this.$nuxt.$config.BASE_URL}/${this.settingsData.site_favicon}`;
         let link = document.querySelector("link[rel~='icon']");
         if (!link) {
           link = document.createElement('link');

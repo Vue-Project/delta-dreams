@@ -8,7 +8,7 @@
         <div id="printSection" class="print-wrapper" :class="{ 'print-mode': isPrintMode }">
             <!-- Header -->
             <div class="print-header">
-                <img class="logo" :src="`${$nuxt.$config.baseURL}/${settingsData.site_logo}`" alt="Logo" />
+                <img class="logo" :src="`${$nuxt.$config.BASE_URL}/${settingsData.site_logo}`" alt="Logo" />
                 <h1 class="title">{{ settingsData.site_title }}</h1>
             </div>
 

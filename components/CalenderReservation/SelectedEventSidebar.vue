@@ -241,7 +241,7 @@
                                     <div class="d-flex justify-content-between w-100 flex-wrap gap-2">
                                         <div class="me-2">
                                             <h6>Permit Image</h6>
-                                            <img :src="`${$nuxt.$config.baseURL}/${selectedEvent.permit_image}`" style="width: 100%; height: 50px; cursor: pointer" @click="showImg(`${$nuxt.$config.baseURL}/${selectedEvent.permit_image}`)" />
+                                            <img :src="`${$nuxt.$config.BASE_URL}/${selectedEvent.permit_image}`" style="width: 100%; height: 50px; cursor: pointer" @click="showImg(`${$nuxt.$config.BASE_URL}/${selectedEvent.permit_image}`)" />
                                         </div>
                                     </div>
                                 </div>
