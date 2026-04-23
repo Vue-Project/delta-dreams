@@ -501,8 +501,36 @@
             },
 
             updateRepeater() {
+                // Safety check - ensure units exists and is an array
+                if (!this.formAddReservation.units || !Array.isArray(this.formAddReservation.units)) {
+                    // Re-initialize if needed
+                    this.$set(this.formAddReservation, 'units', [
+                        {
+                            checkInDate: '',
+                            checkOutDate: '',
+                            projectId: '',
+                            roomType: '',
+                            rateType: '',
+                            unitId: '',
+                            adults: '1',
+                            children: '0',
+                            rateAmount: '',
+                            unitTypeId: '',
+                            services: [],
+                        },
+                    ]);
+                    return;
+                }
+
                 const currentCount = this.formAddReservation.units.length;
-                const targetCount = parseInt(this.formAddReservation.numberRooms);
+                let targetCount = parseInt(this.formAddReservation.numberRooms);
+
+                // Validate targetCount
+                if (isNaN(targetCount) || targetCount < 1) {
+                    targetCount = 1;
+                    this.formAddReservation.numberRooms = '1';
+                    return;
+                }
 
                 if (currentCount < targetCount) {
                     // Get the first room's data as a template
@@ -511,30 +539,39 @@
                     // Add new units
                     for (let i = currentCount; i < targetCount; i++) {
                         const newRoom = {
-                            roomType: firstRoom.roomType,
-                            rateType: firstRoom.rateType,
-                            unitId: '', // Leave empty as it needs to be unique
-                            adults: firstRoom.adults,
-                            children: firstRoom.children,
-                            rateAmount: firstRoom.rateAmount,
-                            unitTypeId: firstRoom.unitTypeId, // Make sure to copy the unitTypeId
-                            // Ensure new unit dates mirror the main reservation dates (or template's dates)
                             checkInDate: this.formAddReservation.checkInDate || firstRoom.checkInDate || '',
                             checkOutDate: this.formAddReservation.checkOutDate || firstRoom.checkOutDate || '',
-                            // Copy services from template (deep clone) or initialize if missing
-                            // services: JSON.parse(JSON.stringify(firstRoom.services || [{ serviceId: '', price: 0 }])),
+                            projectId: firstRoom.projectId || '',
+                            roomType: firstRoom.roomType || '',
+                            rateType: firstRoom.rateType || '',
+                            unitId: '', // Leave empty as it needs to be unique
+                            adults: firstRoom.adults || '1',
+                            children: firstRoom.children || '0',
+                            rateAmount: firstRoom.rateAmount || '',
+                            unitTypeId: firstRoom.unitTypeId || '',
+                            services: [], // Initialize empty services array for new room
                         };
 
                         this.formAddReservation.units.push(newRoom);
-                        this.$set(this.availableUnitsByRoom, i, []);
 
+                        // Initialize availableUnitsByRoom if it exists
+                        if (this.availableUnitsByRoom) {
+                            this.$set(this.availableUnitsByRoom, i, []);
+                        }
+
+                        // Handle room type change if roomType exists
                         if (newRoom.roomType) {
                             this.handleUnitTypeChange(i, newRoom.roomType);
                         }
                     }
                 } else if (currentCount > targetCount) {
+                    // Remove excess units
                     this.formAddReservation.units.splice(targetCount);
-                    this.availableUnitsByRoom.splice(targetCount);
+
+                    // Also remove from availableUnitsByRoom if it exists
+                    if (this.availableUnitsByRoom && Array.isArray(this.availableUnitsByRoom)) {
+                        this.availableUnitsByRoom.splice(targetCount);
+                    }
                 }
 
                 // Emit the updated number of rooms

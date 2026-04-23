@@ -35,7 +35,7 @@
                     dueAmount: 0.0,
                     billTo: '',
                     taxExempt: false,
-                    paymentMode: false,
+                    paymentMode: true,
                     paymentMethod: '',
                     selectedPaymentMethod: '',
                     selectedPaymentType: '',
