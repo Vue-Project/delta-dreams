@@ -753,7 +753,7 @@
                     room_charges: this.formatValueForServer(this.paymentData.roomCharges),
                     payment_id: this.paymentData.paymentMethod,
                     payment_type_id: this.paymentData.selectedPaymentType,
-                    payment_price: this.paymentData.amount,
+                    payment_price: this.paymentData.amount || 0,
                     date_at: this.paymentData.date,
                     payment_note: this.paymentData.comment,
                     payment_mode: this.paymentData.paymentMode,
