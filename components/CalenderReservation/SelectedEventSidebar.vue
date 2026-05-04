@@ -356,7 +356,13 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-label-secondary waves-effect" data-bs-dismiss="modal" @click="cancelPayment">Close</button>
-                            <button type="submit" class="btn btn-primary waves-effect waves-light">Save</button>
+                            <button type="submit" class="btn btn-primary" :disabled="isSubmitting">
+                                <span v-if="isSubmitting">
+                                    <i class="fa fa-spinner fa-spin me-1"></i>
+                                    Saving...
+                                </span>
+                                <span v-else>Save</span>
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -401,6 +407,7 @@
                     businessSource: '',
                     travelAgent: '',
                 },
+                isSubmitting: false,
                 statusOptions: [],
                 visible: false,
                 index: 0,
@@ -519,11 +526,18 @@
 
             async submitPayment() {
                 try {
+                    if (this.isSubmitting) {
+                        return;
+                    }
+                    this.isSubmitting = true;
+
                     // Set the image value from the file input before validation
                     this.formAddPayment.image = this.$refs.paymentImage.files[0] || null;
 
                     this.$v.$touch();
                     if (this.$v.$invalid) {
+                        this.isSubmitting = false;
+
                         return;
                     }
                     // Get the file from the file input
@@ -567,6 +581,8 @@
                     modalInstance.hide();
                 } catch (error) {
                     handleSubmissionError(error, 'Failed to payment');
+                } finally {
+                    this.isSubmitting = false;
                 }
 
                 // Reset the payment form
