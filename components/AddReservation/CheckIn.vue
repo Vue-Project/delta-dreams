@@ -219,10 +219,6 @@
                                         </tbody>
                                     </table>
                                     <button class="btn btn-primary waves-effect waves-light mt-3 ml-4" type="button" @click="addUnit" :disabled="!datesSelected">Add Unit</button>
-                                    <label class="form-check form-switch m-2" v-if="showSplitSwitch">
-                                        <input class="form-check-input" type="checkbox" v-model="splitAllRates" @change="handleSplitAllChange" aria-label=" splitAllRate" />
-                                        <span class="form-check-label">Split All Rates</span>
-                                    </label>
                                 </div>
                             </div>
                         </div>
@@ -332,11 +328,6 @@
             return {
                 isSubmitting: false,
                 isInitialLoad: true, // Add flag to prevent reset during initial load
-                splitAllRates: false, // Add this to track whether to split all rates
-                initialRates: [], // Add this to store initial rates
-                originalMainUnitRate: null,
-                originalRates: [],
-                showSplitSwitch: false,
                 searchQuery: '',
                 formAddReservation: {
                     guestInformation: {
@@ -1261,71 +1252,6 @@
                 }
             },
 
-            // Helper method to safely parse rate amounts
-            // Helper methods
-            parseRateValue(value) {
-                if (value === null || value === undefined || value === '') {
-                    return 0;
-                }
-
-                if (typeof value === 'number' && !isNaN(value)) {
-                    return value;
-                }
-
-                // Remove commas and any non-numeric characters except decimal point and minus sign
-                let stringValue = String(value).trim();
-                stringValue = stringValue.replace(/[^0-9.-]/g, '');
-                let parsed = parseFloat(stringValue);
-
-                return isNaN(parsed) ? 0 : parsed;
-            },
-
-            formatRateValue(value) {
-                let num = this.parseRateValue(value);
-                if (isNaN(num)) return '0';
-
-                // Format with commas for thousands
-                if (num % 1 === 0) {
-                    // Whole number - add commas
-                    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                } else {
-                    // Decimal number - add commas and keep 2 decimals
-                    return num.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                }
-            },
-
-            handleSplitAllChange() {
-                if (this.splitAllRates) {
-                    // Store original rates before splitting (keep as raw numbers)
-                    this.originalRates = this.formAddReservation.units.map(unit => {
-                        return this.parseRateValue(unit.rateAmount);
-                    });
-
-                    const totalUnits = this.formAddReservation.units.length;
-                    const mainUnitRate = this.parseRateValue(this.formAddReservation.units[0].rateAmount);
-
-                    // Calculate rate per unit
-                    const ratePerUnit = mainUnitRate / totalUnits;
-
-                    // Apply split rates with formatting
-                    for (let i = 0; i < totalUnits; i++) {
-                        this.formAddReservation.units[i].rateAmount = this.formatRateValue(ratePerUnit);
-                    }
-                } else {
-                    // Restore all units to their original rates
-                    if (this.originalRates && this.originalRates.length > 0) {
-                        for (let i = 0; i < this.formAddReservation.units.length; i++) {
-                            // Restore original value without formatting (will be formatted by display)
-                            const originalValue = this.originalRates[i];
-                            this.formAddReservation.units[i].rateAmount = this.formatRateValue(originalValue);
-                        }
-                    }
-
-                    // Clear stored rates after restore
-                    this.originalRates = [];
-                }
-            },
-
             // (previous duplicate removed) consolidated handler above
             handlePaymentImageUpload(file) {
                 this.paymentImage = file;
@@ -1734,9 +1660,8 @@
             //     immediate: true,
             // },
             'formAddReservation.units': {
-                handler(val) {
+                handler() {
                     this.calculateAndEmitTotal();
-                    this.showSplitSwitch = val && val.length > 1;
                 },
                 deep: true,
             },

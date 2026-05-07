@@ -211,6 +211,10 @@
                                 <input type="number" :id="'buildingAmount' + index" class="form-control" v-model="paymentUnits[index - 1].amount" placeholder="Enter amount" min="0" @input="updateBuildingAmount(index - 1, $event)" aria-label="Amount" />
                             </div>
                         </div>
+                        <label class="form-check form-switch m-2">
+                            <input class="form-check-input" type="checkbox" v-model="splitAllRates" @change="handleSplitAllChange" />
+                            <span class="form-check-label">Split All Rates</span>
+                        </label>
                     </div>
                 </div>
 
@@ -245,6 +249,8 @@
         },
         data() {
             return {
+                splitAllRates: false,
+                originalAmounts: [],
                 validationMessage: '',
                 paymentMethods: [],
                 paymentTypes: [],
@@ -402,6 +408,59 @@
             },
         },
         methods: {
+            handleSplitAllChange() {
+                if (this.splitAllRates) {
+                    // Store original state before splitting
+                    this.originalTotalAmount = this.paymentDetails.amount;
+                    this.originalUnitsCount = this.paymentUnits.length;
+                    this.originalUnitsAmounts = this.paymentUnits.map(unit => unit.amount);
+
+                    const totalAmount = parseFloat(this.paymentDetails.amount);
+
+                    // Check if amount is valid
+                    if (!totalAmount || isNaN(totalAmount) || totalAmount <= 0) {
+                        this.splitAllRates = false;
+                        return;
+                    }
+
+                    // Add 1 more unit (so 2 units becomes 3 units)
+                    const newTotalUnits = this.paymentUnits.length + 1;
+
+                    // Calculate amount per unit
+                    const amountPerUnit = (totalAmount / newTotalUnits).toFixed(2);
+
+                    // Add the new unit
+                    this.paymentUnits.push({
+                        name: `Unit ${this.paymentUnits.length + 1}`,
+                        amount: parseFloat(amountPerUnit),
+                    });
+
+                    // Update all units with the split amount
+                    for (let i = 0; i < this.paymentUnits.length; i++) {
+                        this.$set(this.paymentUnits[i], 'amount', parseFloat(amountPerUnit));
+                    }
+                } else {
+                    // When unchecking, restore original state
+                    if (this.originalTotalAmount) {
+                        this.paymentDetails.amount = this.originalTotalAmount;
+                    }
+
+                    // Remove the extra unit and restore original units
+                    this.paymentUnits = this.paymentUnits.slice(0, this.originalUnitsCount);
+
+                    // Restore original unit amounts
+                    if (this.originalUnitsAmounts.length > 0) {
+                        for (let i = 0; i < this.paymentUnits.length; i++) {
+                            this.$set(this.paymentUnits[i], 'amount', this.originalUnitsAmounts[i]);
+                        }
+                    }
+
+                    // Clear stored values
+                    this.originalTotalAmount = null;
+                    this.originalUnitsCount = null;
+                    this.originalUnitsAmounts = [];
+                }
+            },
             formatDate(date) {
                 return date.toISOString().split('T')[0];
             },
