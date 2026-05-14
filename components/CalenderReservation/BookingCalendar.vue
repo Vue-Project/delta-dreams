@@ -168,10 +168,10 @@
                             const month = date.toLocaleDateString('en-US', { month: 'short' });
                             return {
                                 html: `
-                  <div class="custom-slot-label">
-                    <div class="slot-month">${month}</div>
-                  </div>
-                `,
+                      <div class="custom-slot-label">
+                        <div class="slot-month">${month}</div>
+                      </div>
+                    `,
                             };
                         }
                         // For level 1 (Days), show only the day and weekday
@@ -182,11 +182,11 @@
                             });
                             return {
                                 html: `
-                  <div class="custom-slot-label">
-                    <div class="slot-day">${day}</div>
-                    <div class="slot-weekday">${weekday}</div>
-                  </div>
-                `,
+                      <div class="custom-slot-label">
+                        <div class="slot-day">${day}</div>
+                        <div class="slot-weekday">${weekday}</div>
+                      </div>
+                    `,
                             };
                         }
 
@@ -252,14 +252,14 @@
                         if (unitCodeElement) {
                             // Create tooltip content with unit information
                             const tooltipContent = `
-                                    <div>
-                                        <p><strong>Unit:</strong> ${info.resource.title}</p>
-                                        <p><strong>Smoking:</strong> ${is_smoking ? 'Allowed' : 'Not allowed'}</p>
-                                        <p><strong>Status:</strong> ${is_clean ? 'Clean' : 'Needs cleaning'}</p>
-                                        ${price ? `<p><strong>Price:</strong> ${price}</p>` : ''}
-                                        ${content ? `<p><strong>Info:</strong> ${content}</p>` : ''}
-                                    </div>
-                                `;
+                                        <div>
+                                            <p><strong>Unit:</strong> ${info.resource.title}</p>
+                                            <p><strong>Smoking:</strong> ${is_smoking ? 'Allowed' : 'Not allowed'}</p>
+                                            <p><strong>Status:</strong> ${is_clean ? 'Clean' : 'Needs cleaning'}</p>
+                                            ${price ? `<p><strong>Price:</strong> ${price}</p>` : ''}
+                                            ${content ? `<p><strong>Info:</strong> ${content}</p>` : ''}
+                                        </div>
+                                    `;
 
                             // Apply tooltip to unit code
                             unitCodeElement.setAttribute('data-bs-toggle', 'tooltip');
@@ -585,13 +585,13 @@
                     Swal.fire({
                         title: 'Blocked Room Details',
                         html: `
-                <div class="text-left">
-                  <p><strong>Start:</strong> ${startDate}</p>
-                  <p><strong>End:</strong> ${endDate}</p>
-                  <p><strong>Blocked Reason:</strong> ${this.selectedBlockedEvent.title}</p>
-                  <p><strong>User:</strong> ${this.selectedBlockedEvent.user}</p>
-                </div>
-              `,
+                    <div class="text-left">
+                      <p><strong>Start:</strong> ${startDate}</p>
+                      <p><strong>End:</strong> ${endDate}</p>
+                      <p><strong>Blocked Reason:</strong> ${this.selectedBlockedEvent.title}</p>
+                      <p><strong>User:</strong> ${this.selectedBlockedEvent.user}</p>
+                    </div>
+                  `,
                         icon: 'info',
                         showCancelButton: true,
                         confirmButtonColor: '#7367f0',
@@ -753,7 +753,6 @@
             },
             async transformEventToReservationData(event) {
                 const reservationId = event.extendedProps?.reservation?.id || event.id;
-                if (!reservationId) return null;
 
                 this.loadingReservation = true;
                 try {
@@ -763,9 +762,23 @@
                     this.openReservationSidebar(); // Now the element exists
                 } catch (error) {
                     this.selectedEvent = null;
-                    // Optionally show an error message
-                } finally {
-                    this.loadingReservation = false;
+
+                    // Handle 400 error with showAlert
+                    if (error.response?.status === 400) {
+                        const errorMessage = error.response.data?.message || error.response.data?.error || 'Bad request. Please check your input.';
+
+                        await showAlert({
+                            title: 'Error',
+                            text: errorMessage,
+                            icon: 'error',
+                        });
+                    } else {
+                        await showAlert({
+                            title: 'Error',
+                            text: error.message || 'An unexpected error occurred.',
+                            icon: 'error',
+                        });
+                    }
                 }
             },
 
@@ -1420,8 +1433,8 @@
             computedCalendarOptions() {
                 return {
                     ...this.calendarOptions,
-                    editable: this.BlockedPermission !== 0, // Disable drag and drop if no permission
-                    selectable: this.BlockedPermission !== 0, // Disable date selection if no permission
+                    editable: true, // Allow dragging events, individual permissions checked in handleEventChange
+                    selectable: true, // Allow date selection for creating reservations
                 };
             },
         },
