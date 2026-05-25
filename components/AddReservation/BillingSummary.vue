@@ -212,8 +212,8 @@
                             </div>
                         </div>
                         <label class="form-check form-switch m-2">
-                            <input class="form-check-input" type="checkbox" v-model="splitAllRates" @change="handleSplitAllChange" />
-                            <span class="form-check-label">Split All Rates</span>
+                            <input class="form-check-input" type="checkbox" v-model="splitAllRates" @change="handleSplitAllChange" aria-label="Split All Amounts" />
+                            <span class="form-check-label">Split Amount</span>
                         </label>
                     </div>
                 </div>
