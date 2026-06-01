@@ -11,7 +11,7 @@
                             <div class="row align-items-center">
                                 <div class="col-md-3 col-lg-3 col-12 px-0">
                                     <label for="flatpickr-date-01" class="form-label">Check-in</label>
-                                    <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" id="flatpickr-date-01" ref="datePicker1" v-model="formAddReservation.checkInDate" aria-label="input Text to Check-in Date" />
+                                    <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" id="flatpickr-date-01" ref="datePicker1" v-model="formAddReservation.checkInDate" aria-label="input Text to Check-in Date" disabled />
                                     <i class="fa-solid fa-calendar-days icon-date"></i>
                                 </div>
 
@@ -27,7 +27,7 @@
                                 <!-- CHECK-OUT DATE/TIME -->
                                 <div class="col-md-3 col-lg-3 col-12 px-0">
                                     <label for="flatpickr-date-02" class="form-label ms-3">Check-out</label>
-                                    <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" id="flatpickr-date-02" ref="datePicker2" v-model="formAddReservation.checkOutDate" aria-label="input Text to Check-out Date" />
+                                    <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" id="flatpickr-date-02" ref="datePicker2" v-model="formAddReservation.checkOutDate" aria-label="input Text to Check-out Date" disabled />
                                     <i class="fa-solid fa-calendar-days icon-date"></i>
                                 </div>
 
@@ -88,8 +88,8 @@
                                     <table class="table overflow-hidden">
                                         <thead>
                                             <tr class="rounded-1">
-                                                <!-- <th class="border-0 roomHeader">checkIn</th>
-                                                <th class="border-0 roomHeader">checkout</th> -->
+                                                <th class="border-0 roomHeader">checkIn</th>
+                                                <th class="border-0 roomHeader">checkout</th>
                                                 <th class="border-0 roomHeader">Project</th>
                                                 <th class="border-0 roomHeader">Room Type</th>
                                                 <th class="border-0 roomHeader">Rate Type</th>
@@ -101,14 +101,15 @@
                                         </thead>
                                         <tbody>
                                             <tr v-for="(item, index) in formAddReservation.units" :key="index" class="mb-2 selectStyle">
-                                                <!-- <td data-label="checkIn"> -->
-                                                <!-- Use dynamic ref with index -->
-                                                <!-- <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" :id="'flatpickr-date-0' + index" :ref="'datePicker1' + index" v-model="item.checkInDate" aria-label="input Text to Check-in Date" :disabled="index > 0" /> -->
-                                                <!-- </td> -->
-                                                <!-- <td data-label="checkOut"> -->
-                                                <!-- Use dynamic ref with index -->
-                                                <!-- <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" :id="'flatpickr-date-0' + index" :ref="'datePicker1' + index" v-model="item.checkOutDate" aria-label="input Text to Check-out Date" :disabled="index > 0" /> -->
-                                                <!-- </td> -->
+                                                <td data-label="checkIn">
+                                                    <!-- Use dynamic ref with index -->
+                                                    <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" :id="'flatpickr-date-0' + index" :ref="'datePicker1' + index" v-model="item.checkInDate" aria-label="input Text to Check-in Date" :disabled="index > 0" />
+                                                </td>
+                                                <td data-label="checkOut">
+                                                    <!-- Use dynamic ref with index -->
+                                                    <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" :id="'flatpickr-date-0' + index" :ref="'datePicker1' + index" v-model="item.checkOutDate" aria-label="input Text to Check-out Date" :disabled="index > 0" />
+                                                </td>
+
                                                 <td data-label="Project">
                                                     <select class="form-select" v-model="item.projectId" :disabled="index > 0">
                                                         <option disabled value="">Select</option>

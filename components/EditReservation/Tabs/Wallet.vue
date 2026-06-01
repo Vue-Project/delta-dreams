@@ -61,7 +61,7 @@
                                             </a>
                                             <a class="dropdown-item" @click="deletedWallet(wallet.id)">
                                                 <i class="fa-regular fa-trash-can me-1"></i>
-                                                cancel
+                                                void
                                             </a>
                                             <a class="dropdown-item" @click="openTransferModal(wallet)">
                                                 <i class="fa-solid fa-coins me-1"></i>

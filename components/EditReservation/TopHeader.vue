@@ -75,7 +75,7 @@
                         </div>
                     </div>
                     <div class="col-6 col-md-5 col-xl-2 text-center text-md-center" v-if="reservationData?.is_cancel">
-                        <button type="button" class="btn btn-label-danger waves-effect mt-3" title="Cancel Reservation" @click="cancelReservation">Void</button>
+                        <button type="button" class="btn btn-label-danger waves-effect mt-3" title="Cancel Reservation" @click="cancelReservation">Cancel</button>
                     </div>
                     <div class="col-6 col-md-5 col-xl-2 text-center text-md-center">
                         <PrintReservation ref="printReservation" :reservationData="reservationsData[0]" />
