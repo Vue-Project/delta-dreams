@@ -1332,19 +1332,23 @@
             },
             // Initialize datepickers for repeater rows
             initRowDatePickers() {
+                if (!this.datesSelected) {
+                    console.log('Dates not selected yet');
+                    return;
+                }
+
                 this.$nextTick(() => {
                     setTimeout(() => {
                         this.formAddReservation.units.forEach((unit, index) => {
-                            // Get check-in input by ID
-                            const checkInInput = document.getElementById(`checkInDate-${index}`);
-                            if (checkInInput) {
-                                if (this.rowDatePickersIn[index]) {
-                                    this.rowDatePickersIn[index].destroy();
-                                }
+                            const checkInInput = document.getElementById(`flatpickr-date-checkin-${index}`);
+                            const checkOutInput = document.getElementById(`flatpickr-date-checkout-${index}`);
+
+                            if (checkInInput && !checkInInput.disabled && !checkInInput._flatpickr) {
                                 this.rowDatePickersIn[index] = flatpickr(checkInInput, {
                                     enableTime: false,
-                                    dateFormat: 'Y-m-d',
+                                    dateFormat: 'Y/m/d',
                                     disableMobile: true,
+                                    defaultDate: unit.checkInDate || this.formAddReservation.checkInDate,
                                     onChange: selectedDates => {
                                         if (selectedDates[0]) {
                                             unit.checkInDate = this.formatDate(selectedDates[0]);
@@ -1353,16 +1357,13 @@
                                 });
                             }
 
-                            // Get check-out input by ID
-                            const checkOutInput = document.getElementById(`checkOutDate-${index}`);
-                            if (checkOutInput) {
-                                if (this.rowDatePickersOut[index]) {
-                                    this.rowDatePickersOut[index].destroy();
-                                }
+                            // Initialize check-out
+                            if (checkOutInput && !checkOutInput.disabled && !checkOutInput._flatpickr) {
                                 this.rowDatePickersOut[index] = flatpickr(checkOutInput, {
                                     enableTime: false,
-                                    dateFormat: 'Y-m-d',
+                                    dateFormat: 'Y/m/d',
                                     disableMobile: true,
+                                    defaultDate: unit.checkOutDate || this.formAddReservation.checkOutDate,
                                     onChange: selectedDates => {
                                         if (selectedDates[0]) {
                                             unit.checkOutDate = this.formatDate(selectedDates[0]);
@@ -1371,7 +1372,7 @@
                                 });
                             }
                         });
-                    }, 100);
+                    }, 200);
                 });
             },
             // Destroy datepicker at specific index
