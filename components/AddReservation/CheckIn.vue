@@ -326,6 +326,8 @@
 
         data() {
             return {
+                _isSyncing: false,
+
                 isSubmitting: false,
                 isInitialLoad: true, // Add flag to prevent reset during initial load
                 searchQuery: '',
@@ -1276,6 +1278,9 @@
                     this.$set(this.filteredUnitTypesByRoom, index, []);
 
                     return {
+                        // Keep the check-in/out dates from main form
+                        checkInDate: this.formAddReservation.checkInDate || '',
+                        checkOutDate: this.formAddReservation.checkOutDate || '',
                         projectId: '',
                         roomType: '',
                         rateType: '',
@@ -1284,16 +1289,13 @@
                         children: '0',
                         rateAmount: '',
                         unitTypeId: '',
-                        // Ensure each reset unit has a services array
                         services: [{ serviceId: '', price: 0 }],
                     };
                 });
 
-                // Reset business source and travel agent
+                // Reset other fields...
                 this.formAddReservation.businessSource = '';
                 this.formAddReservation.travelAgent = '';
-
-                // Reset guest information
                 this.formAddReservation.guestInformation = {
                     name: '',
                     email: '',
@@ -1304,24 +1306,14 @@
                     city: '',
                     zip: '',
                 };
-
-                // Reset selected name ID
                 this.selectedNameId = null;
-
-                // Clear filtered names and dropdown
                 this.filteredNames = [];
                 this.showDropdown = false;
                 this.searchQuery = '';
-
-                // Reset validation state
                 this.$v.$reset();
-
-                // Force Vue to re-render the form
                 this.$forceUpdate();
-
-                // Log for debugging
-                // console.log('Form data reset successfully');
             },
+
             // Method to handle calendar navigation
             handleCalendarNavigation() {
                 // Reset form when coming from calendar with new dates
@@ -1343,30 +1335,42 @@
                             const checkInInput = document.getElementById(`flatpickr-date-checkin-${index}`);
                             const checkOutInput = document.getElementById(`flatpickr-date-checkout-${index}`);
 
-                            if (checkInInput && !checkInInput.disabled && !checkInInput._flatpickr) {
+                            if (checkInInput && !checkInInput.disabled) {
+                                // Destroy existing instance if any
+                                if (this.rowDatePickersIn[index]) {
+                                    this.rowDatePickersIn[index].destroy();
+                                }
+
                                 this.rowDatePickersIn[index] = flatpickr(checkInInput, {
                                     enableTime: false,
                                     dateFormat: 'Y/m/d',
                                     disableMobile: true,
                                     defaultDate: unit.checkInDate || this.formAddReservation.checkInDate,
                                     onChange: selectedDates => {
-                                        if (selectedDates[0]) {
-                                            unit.checkInDate = this.formatDate(selectedDates[0]);
+                                        if (selectedDates[0] && !this._isSyncing) {
+                                            const formattedDate = this.formatDate(selectedDates[0]);
+                                            unit.checkInDate = formattedDate;
+                                            // This will trigger the watcher for unit[0].checkInDate
                                         }
                                     },
                                 });
                             }
 
-                            // Initialize check-out
-                            if (checkOutInput && !checkOutInput.disabled && !checkOutInput._flatpickr) {
+                            if (checkOutInput && !checkOutInput.disabled) {
+                                if (this.rowDatePickersOut[index]) {
+                                    this.rowDatePickersOut[index].destroy();
+                                }
+
                                 this.rowDatePickersOut[index] = flatpickr(checkOutInput, {
                                     enableTime: false,
                                     dateFormat: 'Y/m/d',
                                     disableMobile: true,
                                     defaultDate: unit.checkOutDate || this.formAddReservation.checkOutDate,
                                     onChange: selectedDates => {
-                                        if (selectedDates[0]) {
-                                            unit.checkOutDate = this.formatDate(selectedDates[0]);
+                                        if (selectedDates[0] && !this._isSyncing) {
+                                            const formattedDate = this.formatDate(selectedDates[0]);
+                                            unit.checkOutDate = formattedDate;
+                                            // This will trigger the watcher for unit[0].checkOutDate
                                         }
                                     },
                                 });
@@ -1432,6 +1436,25 @@
                         // minDate: getTodayDate(),
                     });
                 }
+            },
+            syncAllUnitDates() {
+                if (this._isSyncing) return;
+
+                this._isSyncing = true;
+
+                this.formAddReservation.units.forEach((unit, index) => {
+                    if (index === 0) {
+                        // Unit[0] is already synced via watchers
+                        return;
+                    }
+                    // For other units, you might want to sync them too
+                    // unit.checkInDate = this.formAddReservation.checkInDate;
+                    // unit.checkOutDate = this.formAddReservation.checkOutDate;
+                });
+
+                this.$nextTick(() => {
+                    this._isSyncing = false;
+                });
             },
         },
 
@@ -1564,17 +1587,61 @@
             },
 
             totalNights() {
-                if (!this.formAddReservation.checkInDate || !this.formAddReservation.checkOutDate) {
+                // Try to get dates from main form first
+                let checkInDate = this.formAddReservation.checkInDate;
+                let checkOutDate = this.formAddReservation.checkOutDate;
+
+                // If main dates are empty, try to get from unit[0]
+                if (!checkInDate || !checkOutDate) {
+                    if (this.formAddReservation.units && this.formAddReservation.units.length > 0) {
+                        checkInDate = this.formAddReservation.units[0].checkInDate;
+                        checkOutDate = this.formAddReservation.units[0].checkOutDate;
+                    }
+                }
+
+                // If still no dates, return 0
+                if (!checkInDate || !checkOutDate) {
                     return 0;
                 }
-                const [checkInYear, checkInMonth, checkInDay] = this.formAddReservation.checkInDate.split('-');
-                const [checkOutYear, checkOutMonth, checkOutDay] = this.formAddReservation.checkOutDate.split('-');
 
-                const checkIn = new Date(checkInYear, checkInMonth - 1, checkInDay);
-                const checkOut = new Date(checkOutYear, checkOutMonth - 1, checkOutDay);
+                try {
+                    // Parse dates (supports both YYYY-MM-DD and YYYY/MM/DD formats)
+                    let checkIn, checkOut;
 
-                const diffTime = Math.abs(checkOut - checkIn);
-                return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                    if (checkInDate.includes('-')) {
+                        const [year, month, day] = checkInDate.split('-');
+                        checkIn = new Date(year, month - 1, day);
+                    } else if (checkInDate.includes('/')) {
+                        const [year, month, day] = checkInDate.split('/');
+                        checkIn = new Date(year, month - 1, day);
+                    } else {
+                        checkIn = new Date(checkInDate);
+                    }
+
+                    if (checkOutDate.includes('-')) {
+                        const [year, month, day] = checkOutDate.split('-');
+                        checkOut = new Date(year, month - 1, day);
+                    } else if (checkOutDate.includes('/')) {
+                        const [year, month, day] = checkOutDate.split('/');
+                        checkOut = new Date(year, month - 1, day);
+                    } else {
+                        checkOut = new Date(checkOutDate);
+                    }
+
+                    // Validate dates
+                    if (isNaN(checkIn.getTime()) || isNaN(checkOut.getTime())) {
+                        return 0;
+                    }
+
+                    // Calculate difference
+                    const diffTime = Math.abs(checkOut - checkIn);
+                    const nights = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                    return nights > 0 ? nights : 0;
+                } catch (error) {
+                    console.error('Error calculating total nights:', error);
+                    return 0;
+                }
             },
             datesSelected() {
                 return this.formAddReservation.checkInDate && this.formAddReservation.checkOutDate;
@@ -1643,17 +1710,78 @@
                     }
                 },
             },
-            'formAddReservation.checkInDate'(newDate) {
-                if (this.formAddReservation.units.length > 0) {
-                    this.formAddReservation.units[0].checkInDate = newDate;
-                }
+
+            // Combined watcher for check-in - FIXED
+            'formAddReservation.checkInDate': {
+                handler(newValue, oldValue) {
+                    // Skip if syncing or same value
+                    if (this._isSyncing || newValue === oldValue) return;
+
+                    // Update unit[0] if exists
+                    if (this.formAddReservation.units && this.formAddReservation.units.length > 0) {
+                        this._isSyncing = true;
+                        this.formAddReservation.units[0].checkInDate = newValue;
+                        this.$nextTick(() => {
+                            this._isSyncing = false;
+                        });
+                    }
+
+                    // Reset logic - only if not initial load
+                    if (!this.isInitialLoad && newValue && oldValue) {
+                        console.log('Check-in date changed from', oldValue, 'to', newValue);
+                        this.resetFormData();
+                    }
+
+                    // Update release date
+                    this.formAddReservation.releaseDate = newValue;
+                },
+                immediate: true,
             },
 
-            'formAddReservation.checkOutDate'(newDate) {
-                if (this.formAddReservation.units.length > 0) {
-                    this.formAddReservation.units[0].checkOutDate = newDate;
-                }
+            // Watcher for unit[0] check-in - FIXED
+            'formAddReservation.units.0.checkInDate'(newValue, oldValue) {
+                // Skip if syncing or same value or no unit exists
+                if (this._isSyncing || newValue === oldValue) return;
+
+                // Update main check-in from unit[0]
+                this._isSyncing = true;
+                this.formAddReservation.checkInDate = newValue;
+                this.$nextTick(() => {
+                    this._isSyncing = false;
+                });
             },
+
+            // Combined watcher for check-out - FIXED
+            'formAddReservation.checkOutDate': {
+                handler(newValue, oldValue) {
+                    if (this._isSyncing || newValue === oldValue) return;
+
+                    if (this.formAddReservation.units && this.formAddReservation.units.length > 0) {
+                        this._isSyncing = true;
+                        this.formAddReservation.units[0].checkOutDate = newValue;
+                        this.$nextTick(() => {
+                            this._isSyncing = false;
+                        });
+                    }
+
+                    if (!this.isInitialLoad && newValue && oldValue) {
+                        console.log('Check-out date changed from', oldValue, 'to', newValue);
+                        this.resetFormData();
+                    }
+                },
+            },
+
+            // Watcher for unit[0] check-out - FIXED
+            'formAddReservation.units.0.checkOutDate'(newValue, oldValue) {
+                if (this._isSyncing || newValue === oldValue) return;
+
+                this._isSyncing = true;
+                this.formAddReservation.checkOutDate = newValue;
+                this.$nextTick(() => {
+                    this._isSyncing = false;
+                });
+            },
+
             // 'formAddReservation.checkInTime': {
             //     handler(newValue) {
             //         this.formAddReservation.releaseTime = newValue;
