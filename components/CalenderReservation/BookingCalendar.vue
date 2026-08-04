@@ -670,8 +670,11 @@
                         // const fullName = reservation.client?.name || reservation.user?.name || 'Unknown';
 
                         // Get initials by taking first letter of each word
-                        const fullName = reservation.client?.name || reservation.user?.name || 'Unknown';
-
+                        const fullName = (() => {
+                            const name = reservation.client?.name || reservation.user?.name || 'Unknown';
+                            const icon = reservation.type === 'clients' ? '📱' : '👤';
+                            return `${icon} ${name}`;
+                        })();
                         // Get initials by taking first letter of each word
                         let shortName = '';
                         if (fullName) {
