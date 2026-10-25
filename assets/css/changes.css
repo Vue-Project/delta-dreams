@@ -1198,8 +1198,6 @@ body {
 .fa-solid.fa-baby {
     font-size: 25px;
 }
-<<<<<<< HEAD
-=======
 .cursor-pointer {
     cursor: pointer;
 }
@@ -1417,5 +1415,4 @@ body {
     color: #dc3545;
 }
 
->>>>>>> 98b6aa331590eb32f2d219028bfdc8f8609952cd
 /* Mobile styles - show short name instead of full name */

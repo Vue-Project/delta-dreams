@@ -90,11 +90,7 @@
                         <ul class="dropdown-menu w-100" aria-labelledby="reservationStatusDropdown">
                             <li v-for="(label, value) in getReservationStatus" :key="status" class="px-2">
                                 <label class="dropdown-item d-flex align-items-center">
-<<<<<<< HEAD
-                                    <input type="checkbox" :value="value" v-model="selectedStatuses" class="form-check-input me-2" />
-=======
                                     <input type="checkbox" :value="value" v-model="selectedStatuses" class="form-check-input me-2" aria-label="Filter Status" />
->>>>>>> 98b6aa331590eb32f2d219028bfdc8f8609952cd
                                     <span>{{ label }}</span>
                                 </label>
                             </li>
@@ -113,11 +109,7 @@
                         <ul class="dropdown-menu w-100" aria-labelledby="rateTypesDropdown">
                             <li v-for="(type, index) in getRateTypes" :key="index" class="px-2">
                                 <label class="dropdown-item d-flex align-items-center">
-<<<<<<< HEAD
-                                    <input type="checkbox" :value="index" v-model="selectedRateTypes" class="form-check-input me-2" />
-=======
                                     <input type="checkbox" :value="index" v-model="selectedRateTypes" class="form-check-input me-2" aria-label="Filter Rate Types" />
->>>>>>> 98b6aa331590eb32f2d219028bfdc8f8609952cd
                                     <span>{{ type }}</span>
                                 </label>
                             </li>
@@ -138,11 +130,7 @@
                         <ul class="dropdown-menu w-100" aria-labelledby="projectsDropdown">
                             <li v-for="project in getProjects" :key="project.id" class="px-2">
                                 <label class="dropdown-item d-flex align-items-center">
-<<<<<<< HEAD
-                                    <input type="checkbox" :value="project.id" v-model="selectedProjects" class="form-check-input me-2" />
-=======
                                     <input type="checkbox" :value="project.id" v-model="selectedProjects" class="form-check-input me-2" aria-label="Filter Projects" />
->>>>>>> 98b6aa331590eb32f2d219028bfdc8f8609952cd
                                     <span>{{ project.name }}</span>
                                 </label>
                             </li>
@@ -155,11 +143,7 @@
             <div class="d-flex">
                 <div class="switches-stacked d-flex justify-between align-items-center w-100">
                     <label class="switch switch-square mb-0" :class="{ active: viewType === 'block' }">
-<<<<<<< HEAD
-                        <input type="checkbox" class="switch-input" :checked="viewType === 'block'" @change="toggleViewType('block')" />
-=======
                         <input type="checkbox" class="switch-input" :checked="viewType === 'block'" @change="toggleViewType('block')" aria-label="Block View" />
->>>>>>> 98b6aa331590eb32f2d219028bfdc8f8609952cd
                         <span class="switch-toggle-slider">
                             <span class="switch-on"></span>
                             <span class="switch-off"></span>
@@ -168,11 +152,7 @@
                     </label>
 
                     <label class="switch switch-square" :class="{ active: viewType === 'available' }">
-<<<<<<< HEAD
-                        <input type="checkbox" class="switch-input" :checked="viewType === 'available'" @change="toggleViewType('available')" />
-=======
                         <input type="checkbox" class="switch-input" :checked="viewType === 'available'" @change="toggleViewType('available')" aria-label="Available View" />
->>>>>>> 98b6aa331590eb32f2d219028bfdc8f8609952cd
                         <span class="switch-toggle-slider">
                             <span class="switch-on"></span>
                             <span class="switch-off"></span>
@@ -255,11 +235,7 @@
                     <label class="form-label">Rate Types</label>
                     <div class="filter-list">
                         <div v-for="(type, index) in getRateTypes" :key="index" class="form-check">
-<<<<<<< HEAD
-                            <input type="checkbox" :value="index" v-model="selectedRateTypes" class="form-check-input" :id="'rate-' + index" />
-=======
                             <input type="checkbox" :value="index" v-model="selectedRateTypes" class="form-check-input" :id="'rate-' + index" aria-label="Filter Rate Types" />
->>>>>>> 98b6aa331590eb32f2d219028bfdc8f8609952cd
                             <label class="form-check-label" :for="'rate-' + index">{{ type }}</label>
                         </div>
                     </div>
@@ -270,11 +246,7 @@
                     <label class="form-label">Projects</label>
                     <div class="filter-list">
                         <div v-for="project in getProjects" :key="project.id" class="form-check">
-<<<<<<< HEAD
-                            <input type="checkbox" :value="project.id" v-model="selectedProjects" class="form-check-input" :id="'project-' + project.id" />
-=======
                             <input type="checkbox" :value="project.id" v-model="selectedProjects" class="form-check-input" :id="'project-' + project.id" aria-label="Filter Projects" />
->>>>>>> 98b6aa331590eb32f2d219028bfdc8f8609952cd
                             <label class="form-check-label" :for="'project-' + project.id">{{ project.name }}</label>
                         </div>
                     </div>
@@ -323,11 +295,8 @@
                 selectedStatuses: [],
                 viewType: null,
                 selectedDate: null,
-<<<<<<< HEAD
-=======
                 status: null,
 
->>>>>>> 98b6aa331590eb32f2d219028bfdc8f8609952cd
                 // viewType: 'calendar', // Default view type
             };
         },
@@ -410,11 +379,7 @@
                             const selectedDate = selectedDates[0];
                             this.selectedDate = this.formatDate(selectedDate); // Save selected date
                             this.$emit('date-selected', selectedDate);
-<<<<<<< HEAD
-                            this.getFilterData(); // Trigger filter when date changes
-=======
                             // this.getFilterData(); // Trigger filter when date changes
->>>>>>> 98b6aa331590eb32f2d219028bfdc8f8609952cd
                         }
                     },
                 });
