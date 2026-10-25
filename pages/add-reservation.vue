@@ -1,12 +1,12 @@
 <template>
     <div class="row p-3">
-        <div class="col-xl-8 col-md-12">
+        <div class="col-xl-9 col-md-12">
             <button class="btn btn-danger waves-effect waves-light countdownButton">
                 {{ formattedTime }}
             </button>
             <CheckIn ref="checkIn" :paymentData="paymentData" @change="changeRoomCharges" :selectedDates="selectedDates" :selectedResourceName="selectedResourceName" @update:numberRooms="updateNumberRooms" />
         </div>
-        <div class="col-xl-4 col-md-12">
+        <div class="col-xl-3 col-md-12">
             <BillingSummary v-model="paymentData" :selectedDates="selectedDates" :numberOfRooms="paymentData.numberRooms" @payment-image-upload="handlePaymentImageUpload" />
         </div>
     </div>
@@ -35,7 +35,7 @@
                     dueAmount: 0.0,
                     billTo: '',
                     taxExempt: false,
-                    paymentMode: false,
+                    paymentMode: true,
                     paymentMethod: '',
                     selectedPaymentMethod: '',
                     selectedPaymentType: '',

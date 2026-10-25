@@ -7,10 +7,8 @@
             </h5>
             <hr class="m-0" />
             <div class="card-body">
+                <!--  ! Reservation  Details -->
                 <form id="formReservation" class="g-3" @submit.prevent="submitAddReservation" ref="emptyForm">
-                    <!--  ! Reservation  Details -->
-                    <!-- change in size and icons -->
-
                     <div class="row">
                         <div class="col-lg-8">
                             <div class="row align-items-center">
@@ -19,9 +17,6 @@
                                     <label for="flatpickr-date-01" class="form-label">Check-in</label>
                                     <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" id="flatpickr-date-01" ref="datePicker1" v-model="formAddReservation.checkInDate" aria-label="input Text to Check-in Date" />
                                     <i class="fa-solid fa-calendar-days icon-date"></i>
-                                    <!-- <span class="error-message small" v-if="$v.formAddReservation.checkInDate.$error">
-                    Check-in date is required
-                  </span> -->
                                 </div>
 
                                 <!-- Check-in Time Picker-->
@@ -31,9 +26,6 @@
                                         <i class="fa-regular fa-clock icon-time"></i>
                                         <span class="input-group-text total-nights bg-primary waves-effect waves-light" id="basic-addon13">{{ totalNights }} Nights</span>
                                     </div>
-                                    <!-- <span class="error-message small" v-if="$v.formAddReservation.checkInTime.$error">
-                    Check-in time is required
-                  </span> -->
                                 </div>
 
                                 <!-- Check-out Date Picker-->
@@ -41,18 +33,12 @@
                                     <label for="flatpickr-date-02" class="form-label ms-lg-3">Check-out</label>
                                     <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" id="flatpickr-date-02" ref="datePicker2" v-model="formAddReservation.checkOutDate" aria-label="input Text to Check-out Date" />
                                     <i class="fa-solid fa-calendar-days icon-date"></i>
-                                    <!-- <span class="error-message small" v-if="$v.formAddReservation.checkOutDate.$error">
-                    Check-out date is required
-                  </span> -->
                                 </div>
 
                                 <!-- Check-out Time Picker-->
                                 <div class="col-lg-3 col-12 col-md-6 mt-4 px-0">
                                     <input type="text" class="form-control flatpickr-input" placeholder="HH:MM" id="flatpickr-time-02" ref="timePicker2" v-model="formAddReservation.checkOutTime" aria-label="input Text to Check-out Time" />
                                     <i class="fa-regular fa-clock icon-time right"></i>
-                                    <!-- <span class="error-message small" v-if="$v.formAddReservation.checkOutTime.$error">
-                    Check-out time is required
-                  </span> -->
                                 </div>
                             </div>
                         </div>
@@ -62,18 +48,6 @@
                                     <label for="roomCount" class="form-label">Room(s)</label>
                                     <input class="form-control rounded-2" type="number" id="roomCount" v-model="formAddReservation.numberRooms" min="1" @input="updateRepeater" />
                                 </div>
-
-                                <!-- <div class="col-lg-9 col-12 mb-lg-4 ps-md-2 col-md-6 p-0 pe-md-0">
-                                    <label for="reservationType" class="form-label">Reservation Type</label>
-                                    <select class="form-select" id="reservationType" v-model="formAddReservation.reservationType" ref="reservationType">
-                                        <option disabled value="">Select</option>
-                                        <option v-for="(type, index) in getReservationTypes" :key="index" :value="index">
-                                            {{ type }}
-                                        </option>
-                                    </select>
-
-                                    <span class="error-message small" v-if="$v.formAddReservation.reservationType.$error">Reservation type is required</span>
-                                </div> -->
                             </div>
                         </div>
                         <div class="p-0">
@@ -103,43 +77,9 @@
                     </div>
 
                     <hr class="my-4" />
-                    <!--   ! check inputs and repeater -->
+                    <!--  ! Units  information -->
                     <div class="mb-3">
                         <div class="row">
-                            <!-- <div class="col-lg-4">
-                <div class="row">
-                  <div class="col-lg-4">Rate Offered:</div>
-                  <div class="col-lg-8">
-                    <div class="form-check">
-                      <input type="checkbox" class="form-check-input" id="rateOfferedContract" v-model="formAddReservation.rateOffered.contract" />
-                      <label class="form-check-label" for="rateOfferedContract">Contract</label>
-                    </div>
-                  </div>
-                </div>
-              </div> -->
-                            <!-- <div class="col-lg-8">
-                <div class="row">
-                  <div class="col-lg-4">
-                    <div class="form-check">
-                      <input type="checkbox" class="form-check-input" id="rateOfferedBookAll" v-model="formAddReservation.rateOffered.bookAll" />
-                      <label class="form-check-label" for="rateOfferedBookAll">Book All Available Rooms</label>
-                    </div>
-                  </div>
-                  <div class="col-lg-4">
-                    <div class="form-check">
-                      <input type="checkbox" class="form-check-input" id="rateOfferedQuickGroup" v-model="formAddReservation.rateOffered.quickGroup" />
-                      <label class="form-check-label" for="rateOfferedQuickGroup">Quick Group Booking</label>
-                    </div>
-                  </div>
-                  <div class="col-lg-4">
-                    <div class="form-check">
-                      <input type="checkbox" class="form-check-input" id="rateOfferedComplimentary" v-model="formAddReservation.rateOffered.complimentaryRoom" />
-                      <label class="form-check-label" for="rateOfferedComplimentary">Complimentary Room</label>
-                    </div>
-                  </div>
-                </div>
-              </div> -->
-                            <!--  ! table Header -->
                             <!-- change width delete border color  -->
                             <div class="card mt-3 border-0 px-0">
                                 <h5 class="card-header p-2">Units Information</h5>
@@ -148,6 +88,8 @@
                                     <table class="table overflow-hidden custom-table">
                                         <thead>
                                             <tr class="rounded-1">
+                                                <th class="border-0">checkIN</th>
+                                                <th class="border-0">checkOut</th>
                                                 <th class="border-0">Project</th>
                                                 <th class="border-0">Room Type</th>
                                                 <th class="border-0">Rate Type</th>
@@ -161,10 +103,19 @@
                                                     <i class="fa-solid fa-baby"></i>
                                                 </th>
                                                 <th class="border-0 w-20">Rate(EGP)(Tax Inc.)</th>
+                                                <th class="border-0 w-20">services</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            <tr v-for="(item, index) in formAddReservation.units" :key="index" class="mb-2 selectStyle">
+                                        <tbody v-for="(item, index) in formAddReservation.units" :key="index">
+                                            <tr class="mb-2 selectStyle">
+                                                <td data-label="checkIn">
+                                                    <!-- Use dynamic ref with index -->
+                                                    <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" :id="'flatpickr-date-checkin-' + index" :ref="'datePicker15' + index" v-model="item.checkInDate" aria-label="input Text to Check-in Date" :disabled="!datesSelected" />
+                                                </td>
+                                                <td data-label="checkOut">
+                                                    <!-- Use dynamic ref with index -->
+                                                    <input type="text" class="form-control flatpickr-input" placeholder="DD/MM/YYYY" :id="'flatpickr-date-checkout-' + index" :ref="'datePicker16' + index" v-model="item.checkOutDate" aria-label="input Text to Check-out Date" :disabled="!datesSelected" />
+                                                </td>
                                                 <td data-label="Project">
                                                     <select class="form-select" :disabled="!datesSelected" v-model="item.projectId" @change="() => handleProjectChange(index, item.projectId)">
                                                         <option disabled value="">Select</option>
@@ -208,16 +159,61 @@
                                                 </td>
                                                 <td data-label="Rate(EGP)(Tax Inc.)">
                                                     <div class="row">
-                                                        <div class="col-lg-10">
+                                                        <div class="col-md-10">
                                                             <input @change="handleRateChange($event, index)" class="form-control rounded-2" placeholder="0" id="rateAmount" v-model="item.rateAmount" aria-label="number of rateAmount" ref="rateAmount" />
                                                             <span class="error-message small" v-if="$v.formAddReservation.units.$each[index].rateAmount.$error">Rate amount is required</span>
                                                         </div>
-                                                        <div class="col-md-2 p-0">
+                                                        <div class="col-md-2">
                                                             <button class="btn btn-label-danger" type="button" v-if="index > 0" @click="removeUnit(index)">
                                                                 <i class="fa-solid fa-xmark"></i>
                                                             </button>
                                                         </div>
                                                     </div>
+                                                </td>
+
+                                                <td colspan="2">
+                                                    <button class="btn btn-sm btn-outline-primary" type="button" @click="toggleServices(index)" :disabled="!datesSelected">
+                                                        <i class="fas fa-plus-square pr-2"></i>
+                                                        {{ item.services.length }}
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr v-if="activeServiceIndex === index">
+                                                <td colspan="11" class="p-3">
+                                                    <table class="table overflow-hidden custom-table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Service</th>
+                                                                <th>Price</th>
+                                                                <th width="100">Action</th>
+                                                            </tr>
+                                                        </thead>
+
+                                                        <tbody>
+                                                            <tr v-for="(service, serviceIndex) in item.services" :key="serviceIndex">
+                                                                <td>
+                                                                    <select class="form-select" v-model="service.serviceId">
+                                                                        <option disabled value="">Select Service</option>
+                                                                        <option v-for="srv in servicesList" :key="srv.id" :value="srv.id">
+                                                                            {{ srv.name }}
+                                                                        </option>
+                                                                    </select>
+                                                                </td>
+
+                                                                <td>
+                                                                    <input type="number" class="form-control" v-model="service.price" placeholder="0" @change="handleServicePriceChange($event, index, serviceIndex)" aria-label="service price" />
+                                                                </td>
+
+                                                                <td>
+                                                                    <button class="btn btn-danger btn-sm" type="button" @click="removeService(index, sIndex)">
+                                                                        <i class="fa-solid fa-xmark"></i>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+
+                                                    <button class="btn btn-sm btn-outline-primary mt-2" type="button" @click="addService(index)">+ Add Service</button>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -225,106 +221,17 @@
                                     <button class="btn btn-primary waves-effect waves-light mt-3 ml-4" type="button" @click="addUnit" :disabled="!datesSelected">Add Unit</button>
                                 </div>
                             </div>
-                            <!-- Services Repeater -->
-                            <div class="card mt-3 border-0 px-0">
-                                <h5 class="card-header p-2">Units Services</h5>
-                                <div class="card-datatable table-responsive custom-table-wrapper">
-                                    <table class="table overflow-hidden custom-table">
-                                        <thead>
-                                            <tr class="rounded-1">
-                                                <th class="border-0">Service</th>
-                                                <th class="border-0">Price(EGP)</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr v-for="(service, index) in formAddReservation.services" :key="index" class="mb-2 selectStyle">
-                                                <td data-label="Service">
-                                                    <select class="form-select" v-model="service.serviceId" :disabled="!datesSelected">
-                                                        <option disabled value="">Select Service</option>
-                                                        <option v-for="service in servicesList" :key="service.id" :value="service.id">
-                                                            {{ service.name }}
-                                                        </option>
-                                                    </select>
-                                                </td>
-
-                                                <td data-label="Price(EGP)">
-                                                    <div class="row">
-                                                        <div class="col-lg-10">
-                                                            <input @change="handleServicePriceChange($event, index)" type="number" class="form-control rounded-2" :disabled="!datesSelected" v-model="service.price" placeholder="0" />
-                                                        </div>
-                                                        <div class="col-md-2 p-0">
-                                                            <button class="btn btn-label-danger" type="button" v-if="index > 0" :disabled="!datesSelected" @click="removeService(index)">
-                                                                <i class="fa-solid fa-xmark"></i>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <button class="btn btn-primary waves-effect waves-light mt-3 ml-4" type="button" :disabled="!datesSelected" @click="addService">Add Service</button>
-                                </div>
-                            </div>
-                            <!--   ! check inputs and repeater -->
                         </div>
                     </div>
-                    <!-- <hr class="my-4" /> -->
-                    <!--  ! Hold Release Date & Time -->
-                    <!-- <div class="row">
-            <div class="col-lg-5">
-              <div class="row">
-                <div class="col-lg-12">
-                  <div class="row">
-                    <div class="col-lg-7 col-12 col-md-6 px-0">
-                      <label for="flatpickr-date-03" class="form-label">Hold Release Date & Time</label>
-                      <input type="text" placeholder="YYYY-MM-DD" id="flatpickr-date-03" class="form-control flatpickr-input" ref="datePicker3" v-model="formAddReservation.releaseDate" />
-                      <i class="fa-solid fa-calendar-days icon-date"></i>
-                    </div>
-                    <div class="col-lg-5 col-12 col-md-6 px-0 mt">
-                      <input type="text" placeholder="HH:MM" id="flatpickr-time-03" class="form-control flatpickr-input" ref="timePicker3" aria-label="input Text to Time" v-model="formAddReservation.releaseTime" />
-                      <i class="fa-regular fa-clock icon-time right"></i>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-4 px-0  px-md-0 px-lg-3 col-12">
-                  <label for="releaseTerm" class="form-label">Release Term</label>
-                  <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Value" id="releaseTerm" v-model="formAddReservation.releaseTerm" />
-                    <span class="input-group-text groupStyle">%</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-7">
-              <div class="row">
-                <div class="col-lg-4 px-0 p-md-0 col-12 px-lg-3">
-                  <label for="releaseTerm" class="form-label">Remind Guest before</label>
-                  <div class="input-group">
-                    <input type="number" class="form-control" placeholder="0" id="releaseTerm" v-model="formAddReservation.remindGuest" />
-                    <span class="input-group-text groupStyle">Days</span>
-                  </div>
-                </div>
-                <div class="col-lg-8 col-12 px-md-0 ps-lg-0 remindTypeReservation">
-                  <label for="remindGuestType" class="form-label">Remind Type before</label>
-                  <select class="form-select" v-model="formAddReservation.remindGuestType">
-                    <option disabled value="">Select Remind Guest Type</option>
-                    <option v-for="(remindGuestType, index) in getRemindGuestType" :key="index" :value="index">
-                      {{ remindGuestType }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-            </div>
-          </div> -->
+                    <!--  ! Units  information -->
 
-                    <!--  ! Hold Release Date & Time -->
                     <hr class="my-4" />
                     <!--  ! Guest Information -->
                     <h6 class="mb-2 GuestTitle">Guest Information</h6>
                     <div class="row">
                         <div class="col-lg-5 px-md-0">
                             <div class="input-group">
-                                <input type="text" class="form-control searchInput" id="searchInput" v-model="searchQuery" placeholder="Enter phone number or national ID" />
+                                <input type="text" class="form-control searchInput" id="searchInput" v-model="searchQuery" placeholder="Enter phone number or national ID" aria-label="Search by phone number or national ID" />
                                 <button class="btn btn-primary" type="button" @click="searchByPhoneOrID">Search</button>
                             </div>
                         </div>
@@ -338,7 +245,7 @@
                                     </option>
                                 </select>
                                 <div class="position-relative flex-grow-1">
-                                    <input type="text" class="form-control w-100 guestNameInput" v-model="formAddReservation.guestInformation.name" @input="handleSearch" @blur="handleBlur" ref="name" />
+                                    <input type="text" class="form-control w-100 guestNameInput" v-model="formAddReservation.guestInformation.name" @input="handleSearch" @blur="handleBlur" ref="name" aria-label="guest Name" />
 
                                     <!-- Suggestions Dropdown -->
                                     <div v-if="showDropdown" class="position-absolute w-100 mt-1 bg-white border color-red rounded shadow z-5 cursor-pointer" style="max-height: 200px; overflow-y: auto" @scroll.passive="handleScroll">
@@ -374,97 +281,12 @@
 
                             <textarea class="form-control" aria-label="With textarea" placeholder="Comment" v-model="formAddReservation.comment"></textarea>
                         </div>
-                        <!-- <div class="offset-md-7">
-            </div>
-            <div class="col-lg-3 col-md-6  ps-2 ps-md-0 EmailReservation">
-              <label for="emailGuest" class="col-form-label">Email</label>
-              <input class="form-control rounded-2 " type="email" id="emailGuest" placeholder="Email" v-model="formAddReservation.guestInformation.email" />
-            </div>
-            <div class="col-lg-3 col-md-6 ">
-              <div class="mb-lg-3 row px-2 px-md-0 reservationMobile">
-                <label for="mobileGuest" class="col-form-label ps-0">Mobile</label>
-                <input class="form-control rounded-2 mobileInput" type="tel" id="mobileGuest" placeholder="Mobile" v-model="formAddReservation.guestInformation.mobile" ref="mobile" :class="{ 'input-error': validationMessages.mobile }" />
-                <span class="error-message small" v-if="$v.formAddReservation.guestInformation.mobile.$error">
-                  Mobile is required
-                </span>
-              </div>
-            </div>
-            <div class="col-lg-6 mb-lg-3 ps-lg-3 pe-lg-0 px-md-0 AddressReservation">
-              <label for="addressGuest" class="col-form-label">Address</label>
-              <input class="form-control rounded-2" type="text" id="addressGuest" placeholder="Address" v-model="formAddReservation.guestInformation.address" />
-            </div>
-            <div class="row px-0 mx-0">
-              <div class="col-lg-3 col-md-6 ps-md-0 CountryReservation">
-                <label for="countryGuest" class="col-form-label">Country</label>
-                <select class="form-select" v-model="formAddReservation.guestInformation.country" :class="{ 'input-error': validationMessages.country }">
-                  <option disabled value="">Select Country</option>
-                  <option v-for="(country, index) in getCountries" :key="index" :value="index">
-                    {{ country }}
-                  </option>
-                </select>
-              </div>
-              <div class="col-lg-3 col-md-6 px-md-0 StateReservation">
-                <label for="stateGuest" class="col-form-label">State</label>
-                <input class="form-control rounded-2" type="text" id="stateGuest" placeholder="state" v-model="formAddReservation.guestInformation.state" />
-              </div>
-              <div class="col-lg-3 col-md-6 ps-md-0 ps-lg-3 CityReservation">
-                <label for="cityGuest" class="col-form-label">City</label>
-                <input class="form-control rounded-2" type="text" id="cityGuest" placeholder="city" v-model="formAddReservation.guestInformation.city" />
-              </div>
-              <div class="col-lg-3 col-md-6 px-md-0 ZipReservation">
-                <label for="ZipGuest" class="col-form-label">Zip</label>
-                <input class="form-control rounded-2" type="text" id="ZipGuest" placeholder="Zip" v-model="formAddReservation.guestInformation.zip" />
-              </div>
-            </div> -->
                     </div>
 
                     <!--  ! Guest Information -->
-                    <!--  ! Other Information -->
-                    <!-- <hr class="my-4" /> -->
-                    <!-- <h6 class="mb-3">Other Information</h6>
-          <div class="row">
-            <div class="form-check mb-3">
-              <input class="form-check-input" type="checkbox" id="otherInformationEmailBooking" v-model="showSelect" />
-              <label class="form-check-label" for="otherInformationEmailBooking">
-                Email Booking Vouchers
-              </label>
-            </div>
-            <div v-if="showSelect" class="mb-3">
-              <select id="otherInformationEmailBookingOption" class="form-select" v-model="formAddReservation.otherInformation.emailBookingOption">
-                <option value="" disabled selected>select</option>
-                <option value="0">Thank You email to Guest/Booker upon checking out from Hotel</option>
-                <option value="1">Guest Portal Access email to Guest on Direct checkin in Hotel</option>
-              </select>
-            </div>
-            <div class="form-check mb-3">
-              <input class="form-check-input" type="checkbox" id="otherInformationSendEmail" v-model="showInput" />
-              <label class="form-check-label" for="otherInformationSendEmail">
-                Send email at Check-out
-              </label>
-            </div>
-            <div v-if="showInput" class="mb-3">
-              <div class="input-group">
-                <input type="email" id="emailInput" class="form-control" placeholder="Use comma to add multiple email address" aria-label="send email to check" v-model="formAddReservation.otherInformation.emailAddressCheckout" />
-                <button class="btn btn-primary" type="button">
-                  Preview Voucher
-                </button>
-              </div>
-            </div>
-            <div class="form-check mb-3">
-              <input class="form-check-input" type="checkbox" id="otherInformationGuestPortal" v-model="formAddReservation.otherInformation.accessToGuestPortal" />
-              <label class="form-check-label" for="otherInformationGuestPortal">
-                Access To Guest Portal
-              </label>
-            </div>
-            <div class="form-check mb-3">
-              <input class="form-check-input" type="checkbox" id="otherInformationRegistrationCard" v-model="formAddReservation.otherInformation.suppressRateOnRegistrationCard" />
-              <label class="form-check-label" for="otherInformationRegistrationCard">
-                Supress Rate on Registration Card
-              </label>
-            </div>
-          </div> -->
-                    <!--  ! Other Information -->
+
                     <hr class="my-4" />
+                    <!--  ! Buttons for form add Reservation -->
                     <div class="row">
                         <div class="offset-md-8 col-md-2 col-6 text-end">
                             <button type="button" class="btn btn-lg btn-secondary waves-effect waves-light w-100" @click="goBack">Cancel</button>
@@ -478,18 +300,10 @@
                                 <span v-else>Reserve</span>
                             </button>
                         </div>
-                        <!-- <div class="col-6  text-end">
-              <button type="button" class="btn btn-lg btn-secondary waves-effect waves-light" @click="goBack">
-                Cancel
-              </button>
-            </div>
-            <div class="col-6  text-end">
-              <button type="submit" class="btn btn-lg btn-primary waves-effect waves-light">
-                Reserver
-              </button>
-            </div> -->
                     </div>
+                    <!--  ! Buttons for form add Reservation -->
                 </form>
+                <!--  ! Reservation  Details -->
             </div>
         </div>
     </section>
@@ -498,12 +312,12 @@
     import { showSuccessAlert, handleSubmissionError } from '../../Api/MassageValidation/alertUtilities';
     import { getBookingSources, getBusinessSources, getGuestsInfo, getGuestsInfoSearch, postAddReservationData, getUnitTypes, getUnits, getGuestDetails, getServices, getTravelAgents } from '../../Api/addResvertionApi';
     import flatpickrMixin from '../Mixin/flatpickrMixin';
-    import SidebarAddGuest from '../layout/AddGuestSidebar.vue';
-    import QuickAddGuestSidebar from '../layout/QuickAddGuestSidebar.vue';
+    import SidebarAddGuest from '../AddReservation/sidebar/AddGuestSidebar.vue';
+    import QuickAddGuestSidebar from '../AddReservation/sidebar/QuickAddGuestSidebar.vue';
     import { mapState, mapGetters } from 'vuex';
     import { validationMixin } from 'vuelidate';
     import { required, email } from 'vuelidate/lib/validators';
-    import HospitalitySideBar from '../layout/HospitalitySideBar.vue';
+    import HospitalitySideBar from '../AddReservation/sidebar/HospitalitySideBar.vue';
 
     export default {
         name: 'CheckIn',
@@ -512,9 +326,10 @@
 
         data() {
             return {
+                _isSyncing: false,
+
                 isSubmitting: false,
                 isInitialLoad: true, // Add flag to prevent reset during initial load
-
                 searchQuery: '',
                 formAddReservation: {
                     guestInformation: {
@@ -538,6 +353,7 @@
                 titles: ['MR.', 'DR.', 'JN.', 'MAM.', 'MRS.', 'MS.', 'SIR.', 'SR.'],
                 formData: [{ rooms: 1 }],
                 existingItemsCount: 1,
+                activeServiceIndex: null,
                 selectedOptionBusiness: '',
                 datePicker1Instance: null,
                 datePicker2Instance: null,
@@ -569,8 +385,11 @@
                         quickGroup: false,
                         complimentaryRoom: false,
                     },
+
                     units: [
                         {
+                            checkInDate: '',
+                            checkOutDate: '',
                             projectId: '',
                             roomType: '',
                             rateType: '',
@@ -579,14 +398,10 @@
                             children: '0',
                             rateAmount: '',
                             unitTypeId: '',
+                            services: [],
                         },
                     ],
-                    services: [
-                        {
-                            serviceId: '',
-                            price: 0,
-                        },
-                    ],
+
                     releaseDate: '',
                     releaseTime: '',
                     releaseTerm: '',
@@ -615,16 +430,7 @@
                     paymentImage: null,
                     comment: '',
                 },
-                // validationMessages: {
-                //   businessSource: '',
-                //   reservationType: '',
-                //   name: '',
-                //   mobile: '',
-                //   adults: '',
-                //   children: '',
-                //   rateType: '',
-                //   rateAmount: '',
-                // },
+
                 selectedNameId: null,
                 showDropdown: false,
                 filteredNames: [],
@@ -636,6 +442,8 @@
                 availableUnitsByRoom: [],
                 allUnitTypes: [], // Store all unit types
                 filteredUnitTypesByRoom: [],
+                rowDatePickersIn: [], // Track per-row check-in datepickers
+                rowDatePickersOut: [], // Track per-row check-out datepickers
             };
         },
         mixins: [validationMixin, flatpickrMixin],
@@ -694,8 +502,36 @@
             },
 
             updateRepeater() {
+                // Safety check - ensure units exists and is an array
+                if (!this.formAddReservation.units || !Array.isArray(this.formAddReservation.units)) {
+                    // Re-initialize if needed
+                    this.$set(this.formAddReservation, 'units', [
+                        {
+                            checkInDate: '',
+                            checkOutDate: '',
+                            projectId: '',
+                            roomType: '',
+                            rateType: '',
+                            unitId: '',
+                            adults: '1',
+                            children: '0',
+                            rateAmount: '',
+                            unitTypeId: '',
+                            services: [],
+                        },
+                    ]);
+                    return;
+                }
+
                 const currentCount = this.formAddReservation.units.length;
-                const targetCount = parseInt(this.formAddReservation.numberRooms);
+                let targetCount = parseInt(this.formAddReservation.numberRooms);
+
+                // Validate targetCount
+                if (isNaN(targetCount) || targetCount < 1) {
+                    targetCount = 1;
+                    this.formAddReservation.numberRooms = '1';
+                    return;
+                }
 
                 if (currentCount < targetCount) {
                     // Get the first room's data as a template
@@ -704,25 +540,39 @@
                     // Add new units
                     for (let i = currentCount; i < targetCount; i++) {
                         const newRoom = {
-                            roomType: firstRoom.roomType,
-                            rateType: firstRoom.rateType,
+                            checkInDate: this.formAddReservation.checkInDate || firstRoom.checkInDate || '',
+                            checkOutDate: this.formAddReservation.checkOutDate || firstRoom.checkOutDate || '',
+                            projectId: firstRoom.projectId || '',
+                            roomType: firstRoom.roomType || '',
+                            rateType: firstRoom.rateType || '',
                             unitId: '', // Leave empty as it needs to be unique
-                            adults: firstRoom.adults,
-                            children: firstRoom.children,
-                            rateAmount: firstRoom.rateAmount,
-                            unitTypeId: firstRoom.unitTypeId, // Make sure to copy the unitTypeId
+                            adults: firstRoom.adults || '1',
+                            children: firstRoom.children || '0',
+                            rateAmount: firstRoom.rateAmount || '',
+                            unitTypeId: firstRoom.unitTypeId || '',
+                            services: [], // Initialize empty services array for new room
                         };
 
                         this.formAddReservation.units.push(newRoom);
-                        this.$set(this.availableUnitsByRoom, i, []);
 
+                        // Initialize availableUnitsByRoom if it exists
+                        if (this.availableUnitsByRoom) {
+                            this.$set(this.availableUnitsByRoom, i, []);
+                        }
+
+                        // Handle room type change if roomType exists
                         if (newRoom.roomType) {
                             this.handleUnitTypeChange(i, newRoom.roomType);
                         }
                     }
                 } else if (currentCount > targetCount) {
+                    // Remove excess units
                     this.formAddReservation.units.splice(targetCount);
-                    this.availableUnitsByRoom.splice(targetCount);
+
+                    // Also remove from availableUnitsByRoom if it exists
+                    if (this.availableUnitsByRoom && Array.isArray(this.availableUnitsByRoom)) {
+                        this.availableUnitsByRoom.splice(targetCount);
+                    }
                 }
 
                 // Emit the updated number of rooms
@@ -739,6 +589,12 @@
                     children: '0',
                     rateAmount: '',
                     unitTypeId: firstUnitTypeId,
+                    showServices: false,
+                    // Inherit the main check-in / check-out dates when adding a unit
+                    checkInDate: this.formAddReservation.checkInDate || '',
+                    checkOutDate: this.formAddReservation.checkOutDate || '',
+                    // Initialize services for the new unit
+                    services: [{ serviceId: '', price: 0 }],
                 };
 
                 this.formAddReservation.units.push(newRoom);
@@ -748,6 +604,10 @@
                 this.formAddReservation.numberRooms = this.formAddReservation.units.length.toString();
                 // Emit the updated number of rooms
                 this.$emit('update:numberRooms', this.formAddReservation.units.length);
+                this.$nextTick(() => {
+                    const unitIndex = this.formAddReservation.units.length - 1;
+                    this.initializeFlatpickrForUnit(unitIndex);
+                });
             },
             removeUnit(index) {
                 if (this.formAddReservation.units.length > 1) {
@@ -758,19 +618,6 @@
                     // Emit the updated number of rooms
                     this.$emit('update:numberRooms', this.formAddReservation.units.length);
                 }
-            },
-            addService() {
-                this.formAddReservation.services.push({
-                    serviceId: '',
-                    quantity: 1,
-                    price: 0,
-                    total: 0,
-                });
-            },
-
-            // Remove a service row
-            removeService(index) {
-                this.formAddReservation.services.splice(index, 1);
             },
 
             // Update price when service is selected
@@ -805,34 +652,6 @@
                     }
                 }
             },
-            //  handleBlur ()
-            //   {
-            //     // Hide dropdown after a small delay to allow selection
-            //     setTimeout(() =>
-            //     {
-            //       this.showDropdown = false;
-            //     }, 200);
-            //   },
-            //   selectName (name)
-            //   {
-            //     // Set the name for display and store the ID
-            //     this.formAddReservation.guestInformation.name = name.name;
-            //     this.selectedNameId = name.id;
-            //     this.showDropdown = false;
-            //   },
-            //   fetchNames (query)
-            //   {
-            //     // Fetch or filter names dynamically
-            //     // Replace with your API call
-            //     const allNames = this.filteredNames
-            //     this.filteredNames = allNames.filter(item => item.name.toLowerCase().includes(query.toLowerCase()));
-            //   },
-
-            // Reset validation messages
-            // resetValidationMessages ()
-            // {
-            //   this.validationMessages = {};
-            // },
 
             // Reset the form
             resetForm() {
@@ -859,8 +678,10 @@
                             children: '0',
                             rateAmount: '',
                             unitTypeId: '',
+                            services: [{ serviceId: '', price: 0 }],
                         },
                     ],
+
                     releaseDate: '',
                     releaseTime: '',
                     releaseTerm: '',
@@ -933,7 +754,7 @@
                     room_charges: this.formatValueForServer(this.paymentData.roomCharges),
                     payment_id: this.paymentData.paymentMethod,
                     payment_type_id: this.paymentData.selectedPaymentType,
-                    payment_price: this.paymentData.amount,
+                    payment_price: this.paymentData.amount || 0,
                     date_at: this.paymentData.date,
                     payment_note: this.paymentData.comment,
                     payment_mode: this.paymentData.paymentMode,
@@ -949,11 +770,11 @@
                     formData.append(key, bookingData[key]);
                 });
 
-                // Append the units array (as individual entries)
+                // Append the units array (without services)
                 // Log units data
                 // console.log('Adding units data:');
-                this.formAddReservation.units.forEach((unit, index) => {
-                    // console.log(`Unit ${index}:`, {
+                this.formAddReservation.units.forEach((unit, unitIndex) => {
+                    // console.log(`Unit ${unitIndex}:`, {
                     //     project_id: unit.projectId,
                     //     unit_id: unit.unitId,
                     //     unit_type_id: unit.unitTypeId,
@@ -962,24 +783,35 @@
                     //     children: unit.children,
                     //     rate_amount: this.formatValueForServer(unit.rateAmount),
                     // });
-                    formData.append(`units[${index}][project_id]`, unit.projectId);
-                    formData.append(`units[${index}][unit_id]`, unit.unitId);
-                    formData.append(`units[${index}][unit_type_id]`, unit.unitTypeId);
-                    formData.append(`units[${index}][rate_type]`, unit.rateType);
-                    formData.append(`units[${index}][adults]`, unit.adults);
-                    formData.append(`units[${index}][children]`, unit.children);
-                    formData.append(`units[${index}][rate_amount]`, this.formatValueForServer(unit.rateAmount));
+                    formData.append(`units[${unitIndex}][checkin_date]`, unit.checkInDate);
+                    formData.append(`units[${unitIndex}][checkout_date]`, unit.checkOutDate);
+                    formData.append(`units[${unitIndex}][project_id]`, unit.projectId);
+                    formData.append(`units[${unitIndex}][unit_id]`, unit.unitId);
+                    formData.append(`units[${unitIndex}][unit_type_id]`, unit.unitTypeId);
+                    formData.append(`units[${unitIndex}][rate_type]`, unit.rateType);
+                    formData.append(`units[${unitIndex}][adults]`, unit.adults);
+                    formData.append(`units[${unitIndex}][children]`, unit.children);
+                    formData.append(`units[${unitIndex}][rate_amount]`, this.formatValueForServer(unit.rateAmount));
+                    formData.append(`units[${unitIndex}][price]`, this.formatValueForServer(unit.rateAmount));
                 });
 
-                // Log services data
-                // console.log('Adding services data:');
-                this.formAddReservation.services.forEach((service, index) => {
-                    // console.log(`Service ${index}:`, {
-                    //     service_id: service.serviceId,
-                    //     service_price: this.formatValueForServer(service.price),
-                    // });
-                    formData.append(`services[${index}][service_id]`, service.serviceId);
-                    formData.append(`services[${index}][service_price]`, this.formatValueForServer(service.price));
+                // Collect all services from all units into a flat array and send separately
+                let serviceIndex = 0;
+                this.formAddReservation.units.forEach((unit, unitIndex) => {
+                    const services = unit.services || [];
+                    if (services.length > 0) {
+                        services.forEach(service => {
+                            if (service.serviceId) {
+                                // Only add if service is selected
+                                formData.append(`services[${serviceIndex}][service_id]`, service.serviceId);
+                                formData.append(`services[${serviceIndex}][service_price]`, this.formatValueForServer(service.price));
+                                formData.append(`services[${serviceIndex}][unit_id]`, unit.unitId);
+                                formData.append(`services[${serviceIndex}][checkin_date]`, unit.checkInDate);
+                                formData.append(`services[${serviceIndex}][checkout_date]`, unit.checkOutDate);
+                                serviceIndex++;
+                            }
+                        });
+                    }
                 });
 
                 // Log building details data if they exist
@@ -1006,12 +838,9 @@
 
                 try {
                     this.isSubmitting = true;
-
                     const response = await postAddReservationData(formData);
-
                     // reservation ID from the response
                     const reservationName = response?.data?.data?.name;
-
                     await showSuccessAlert(`Reservation #${reservationName} submitted successfully!`, this.$router, 'index');
                 } catch (error) {
                     handleSubmissionError(error, 'There was an issue with your reservation.');
@@ -1111,33 +940,7 @@
                     this.formAddReservation.units[0].rateAmount = parseFloat(value).toFixed(2);
                 }
             },
-            // async handleUnitTypeChange(roomIndex, unitTypeId, checkInDate, checkOutDate, projectId) {
-            //     try {
-            //         if (unitTypeId) {
-            //             // Reset selected unit for this room
-            //             this.formAddReservation.units[roomIndex].unitId = '';
-            //             // Set the unitTypeId for this specific unit
-            //             this.formAddReservation.units[roomIndex].unitTypeId = unitTypeId;
 
-            //             // Get project ID from parameter or from the form data
-            //             const project_id = projectId || this.formAddReservation.units[roomIndex].projectId || '';
-
-            //             // Fetch units for selected type with date parameters
-            //             const response = await getUnits(unitTypeId, {
-            //                 start_date: checkInDate,
-            //                 end_date: checkOutDate,
-            //                 reservation_id: 0,
-            //                 project_id: project_id, // Include project ID in the API request
-            //             });
-            //             this.$set(this.availableUnitsByRoom, roomIndex, response.data.data);
-            //         } else {
-            //             this.$set(this.availableUnitsByRoom, roomIndex, []);
-            //         }
-            //     } catch (error) {
-            //         console.error('Error fetching units:', error);
-            //         this.$set(this.availableUnitsByRoom, roomIndex, []);
-            //     }
-            // },
             async handleProjectChange(roomIndex, projectId) {
                 try {
                     // Reset room type and unit selections
@@ -1297,6 +1100,11 @@
                         this.formAddReservation.checkOutDate = this.formatDate(lastDate);
                         // this.formAddReservation.checkInTime = this.formatTime(firstDate);
                         // this.formAddReservation.checkOutTime = this.formatTime(lastDate);
+                        // Also populate existing unit rows with these dates
+                        this.formAddReservation.units.forEach(unit => {
+                            unit.checkInDate = this.formAddReservation.checkInDate;
+                            unit.checkOutDate = this.formAddReservation.checkOutDate;
+                        });
                     }
                 }
 
@@ -1357,27 +1165,34 @@
                 }
             },
             // Modified handleRateChange function
-            // Add this method to handle service price changes
-            handleServicePriceChange(event, index) {
-                // Get the value from the input field and remove any dots or commas
-                const servicePrice = parseFloat(event.target.value.replace(/[.,]/g, ''));
+            // Unified handler for service price changes (updates per-unit services array)
+            handleServicePriceChange(event, unitIndex, serviceIndex) {
+                const raw = event.target.value || '';
+                const numeric = parseFloat(raw.toString().replace(/[.,]/g, ''));
 
-                if (!isNaN(servicePrice)) {
-                    // Format with comma as thousands separator for display
-                    const formattedValue = servicePrice
-                        .toLocaleString('de-DE', {
-                            minimumFractionDigits: 0,
-                            maximumFractionDigits: 0,
-                            useGrouping: true,
-                        })
-                        .replace(/\./g, ',');
+                if (isNaN(numeric)) return;
 
-                    // Update this specific service's price with proper formatting
-                    this.formAddReservation.services[index].price = formattedValue;
+                const formattedValue = numeric
+                    .toLocaleString('de-DE', {
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0,
+                        useGrouping: true,
+                    })
+                    .replace(/\./g, ',');
 
-                    // Recalculate total including all room rates and service prices
-                    this.calculateAndEmitTotal();
+                // Ensure services array exists for this unit
+                if (!this.formAddReservation.units[unitIndex].services) {
+                    this.$set(this.formAddReservation.units[unitIndex], 'services', [{ serviceId: '', price: 0 }]);
                 }
+
+                // Ensure service entry exists at this index
+                if (!this.formAddReservation.units[unitIndex].services[serviceIndex]) {
+                    this.$set(this.formAddReservation.units[unitIndex].services, serviceIndex, { serviceId: '', price: 0 });
+                }
+
+                // Update the service price for this unit
+                this.formAddReservation.units[unitIndex].services[serviceIndex].price = numeric;
+                this.calculateAndEmitTotal();
             },
 
             // Method to calculate and emit the total
@@ -1388,10 +1203,14 @@
                     return total + (isNaN(unitRate) ? 0 : unitRate * this.totalNights);
                 }, 0);
 
-                // Calculate total services price
-                const totalServicesPrice = this.formAddReservation.services.reduce((total, service) => {
-                    const servicePrice = parseFloat(service.price ? service.price.toString().replace(/[.,]/g, '') : 0);
-                    return total + (isNaN(servicePrice) ? 0 : servicePrice);
+                // Calculate total services price from all units
+                const totalServicesPrice = this.formAddReservation.units.reduce((total, unit) => {
+                    const services = unit.services || [];
+                    const unitServicePrice = services.reduce((unitTotal, service) => {
+                        const servicePrice = parseFloat(service.price ? service.price.toString().replace(/[.,]/g, '') : 0);
+                        return unitTotal + (isNaN(servicePrice) ? 0 : servicePrice);
+                    }, 0);
+                    return total + unitServicePrice;
                 }, 0);
 
                 // Add room rate and services price for grand total
@@ -1435,28 +1254,7 @@
                 }
             },
 
-            // Add a separate handler for service price changes
-            handleServicePriceChange(event, index) {
-                // Get the value from the input field and remove any dots or commas
-                const servicePrice = parseFloat(event.target.value.replace(/[.,]/g, ''));
-
-                if (!isNaN(servicePrice)) {
-                    // Format with comma as thousands separator for display
-                    const formattedValue = servicePrice
-                        .toLocaleString('de-DE', {
-                            minimumFractionDigits: 0,
-                            maximumFractionDigits: 0,
-                            useGrouping: true,
-                        })
-                        .replace(/\./g, ',');
-
-                    // Update only service prices
-                    this.formAddReservation.services[index].price = formattedValue;
-
-                    // Calculate and emit the total
-                    this.calculateAndEmitTotal();
-                }
-            },
+            // (previous duplicate removed) consolidated handler above
             handlePaymentImageUpload(file) {
                 this.paymentImage = file;
             },
@@ -1480,6 +1278,9 @@
                     this.$set(this.filteredUnitTypesByRoom, index, []);
 
                     return {
+                        // Keep the check-in/out dates from main form
+                        checkInDate: this.formAddReservation.checkInDate || '',
+                        checkOutDate: this.formAddReservation.checkOutDate || '',
                         projectId: '',
                         roomType: '',
                         rateType: '',
@@ -1488,22 +1289,13 @@
                         children: '0',
                         rateAmount: '',
                         unitTypeId: '',
+                        services: [{ serviceId: '', price: 0 }],
                     };
                 });
 
-                // Reset services
-                this.formAddReservation.services = [
-                    {
-                        serviceId: '',
-                        price: 0,
-                    },
-                ];
-
-                // Reset business source and travel agent
+                // Reset other fields...
                 this.formAddReservation.businessSource = '';
                 this.formAddReservation.travelAgent = '';
-
-                // Reset guest information
                 this.formAddReservation.guestInformation = {
                     name: '',
                     email: '',
@@ -1514,24 +1306,14 @@
                     city: '',
                     zip: '',
                 };
-
-                // Reset selected name ID
                 this.selectedNameId = null;
-
-                // Clear filtered names and dropdown
                 this.filteredNames = [];
                 this.showDropdown = false;
                 this.searchQuery = '';
-
-                // Reset validation state
                 this.$v.$reset();
-
-                // Force Vue to re-render the form
                 this.$forceUpdate();
-
-                // Log for debugging
-                console.log('Form data reset successfully');
             },
+
             // Method to handle calendar navigation
             handleCalendarNavigation() {
                 // Reset form when coming from calendar with new dates
@@ -1540,7 +1322,143 @@
                     this.resetFormData();
                 }
             },
+            // Initialize datepickers for repeater rows
+            initRowDatePickers() {
+                if (!this.datesSelected) {
+                    console.log('Dates not selected yet');
+                    return;
+                }
+
+                this.$nextTick(() => {
+                    setTimeout(() => {
+                        this.formAddReservation.units.forEach((unit, index) => {
+                            const checkInInput = document.getElementById(`flatpickr-date-checkin-${index}`);
+                            const checkOutInput = document.getElementById(`flatpickr-date-checkout-${index}`);
+
+                            if (checkInInput && !checkInInput.disabled) {
+                                // Destroy existing instance if any
+                                if (this.rowDatePickersIn[index]) {
+                                    this.rowDatePickersIn[index].destroy();
+                                }
+
+                                this.rowDatePickersIn[index] = flatpickr(checkInInput, {
+                                    enableTime: false,
+                                    dateFormat: 'Y/m/d',
+                                    disableMobile: true,
+                                    defaultDate: unit.checkInDate || this.formAddReservation.checkInDate,
+                                    onChange: selectedDates => {
+                                        if (selectedDates[0] && !this._isSyncing) {
+                                            const formattedDate = this.formatDate(selectedDates[0]);
+                                            unit.checkInDate = formattedDate;
+                                            // This will trigger the watcher for unit[0].checkInDate
+                                        }
+                                    },
+                                });
+                            }
+
+                            if (checkOutInput && !checkOutInput.disabled) {
+                                if (this.rowDatePickersOut[index]) {
+                                    this.rowDatePickersOut[index].destroy();
+                                }
+
+                                this.rowDatePickersOut[index] = flatpickr(checkOutInput, {
+                                    enableTime: false,
+                                    dateFormat: 'Y/m/d',
+                                    disableMobile: true,
+                                    defaultDate: unit.checkOutDate || this.formAddReservation.checkOutDate,
+                                    onChange: selectedDates => {
+                                        if (selectedDates[0] && !this._isSyncing) {
+                                            const formattedDate = this.formatDate(selectedDates[0]);
+                                            unit.checkOutDate = formattedDate;
+                                            // This will trigger the watcher for unit[0].checkOutDate
+                                        }
+                                    },
+                                });
+                            }
+                        });
+                    }, 200);
+                });
+            },
+            // Destroy datepicker at specific index
+            destroyRowDatePickerAt(index) {
+                if (this.rowDatePickersIn[index]) {
+                    this.rowDatePickersIn[index].destroy();
+                    this.$set(this.rowDatePickersIn, index, null);
+                }
+                if (this.rowDatePickersOut[index]) {
+                    this.rowDatePickersOut[index].destroy();
+                    this.$set(this.rowDatePickersOut, index, null);
+                }
+            },
+            toggleServices(index) {
+                if (this.activeServiceIndex === index) {
+                    this.activeServiceIndex = null;
+                } else {
+                    this.activeServiceIndex = index;
+                }
+            },
+
+            addService(unitIndex) {
+                this.formAddReservation.units[unitIndex].services.push({
+                    serviceId: '',
+                    price: 0,
+                });
+            },
+
+            removeService(unitIndex, serviceIndex) {
+                this.formAddReservation.units[unitIndex].services.splice(serviceIndex, 1);
+            },
+            initializeFlatpickrForUnit(unitIndex) {
+                // Use Flatpickr's own formatDate method
+                const getTodayDate = () => {
+                    return flatpickr.formatDate(new Date(), 'Y/m/d');
+                };
+
+                const checkInInput = document.querySelector(`#flatpickr-date-checkin-${unitIndex}`);
+                const checkOutInput = document.querySelector(`#flatpickr-date-checkout-${unitIndex}`);
+
+                if (checkInInput && !checkInInput._flatpickr) {
+                    flatpickr(checkInInput, {
+                        enableTime: false,
+                        dateFormat: 'Y/m/d',
+                        disableMobile: true,
+                        defaultDate: getTodayDate(),
+                        // minDate: getTodayDate(),
+                    });
+                }
+
+                if (checkOutInput && !checkOutInput._flatpickr) {
+                    flatpickr(checkOutInput, {
+                        enableTime: false,
+                        dateFormat: 'Y/m/d',
+                        disableMobile: true,
+                        defaultDate: getTodayDate(),
+                        // minDate: getTodayDate(),
+                    });
+                }
+            },
+            syncAllUnitDates() {
+                if (this._isSyncing) return;
+
+                this._isSyncing = true;
+
+                this.formAddReservation.units.forEach((unit, index) => {
+                    if (index === 0) {
+                        // Unit[0] is already synced via watchers
+                        return;
+                    }
+                    // For other units, you might want to sync them too
+                    // unit.checkInDate = this.formAddReservation.checkInDate;
+                    // unit.checkOutDate = this.formAddReservation.checkOutDate;
+                });
+
+                this.$nextTick(() => {
+                    this._isSyncing = false;
+                });
+            },
         },
+
+        // Keep unit rows' dates in sync when the main dates change
 
         async mounted() {
             try {
@@ -1564,74 +1482,7 @@
                 console.error('Error loading data:', error);
             }
             this.initializeFromStore();
-            // this is for make time and date selected depended on time and data selected from calender
-            // this.$nextTick(() =>
-            // {
-            //   if (this.firstDate && this.lastDate) {
-            //     // Initialize date pickers with correct format
-            //     this.datePicker1Instance = flatpickr(this.$refs.datePicker1, {
-            //       enableTime: false,
-            //       dateFormat: "Y-m-d", // Ensure the format is YYYY-MM-DD
-            //       defaultDate: this.firstDate,
-            //       // enable: [this.firstDate],
-            //       disableMobile: true,
-            //       // onChange: (selectedDates) =>
-            //       // {
-            //       //   if (selectedDates[0]) {
-            //       //     this.formAddReservation.checkInDate = this.formatDate(selectedDates[0]);
-            //       //   }
-            //       // }
-            //     });
 
-            //     this.datePicker2Instance = flatpickr(this.$refs.datePicker2, {
-            //       enableTime: false,
-            //       dateFormat: "Y-m-d", // Ensure the format is YYYY-MM-DD
-            //       defaultDate: this.lastDate,
-            //       // enable: [this.lastDate],
-            //       disableMobile: true,
-            //       onChange: (selectedDates) =>
-            //       {
-            //         if (selectedDates[0]) {
-            //           this.formAddReservation.checkOutDate = this.formatDate(selectedDates[0]);
-            //         }
-            //       }
-            //     });
-
-            //     // Set initial values
-            //     this.formAddReservation.checkInDate = this.formatDate(this.firstDate);
-            //     this.formAddReservation.checkOutDate = this.formatDate(this.lastDate);
-
-            //     // Initialize time pickers
-            //     this.timePicker1Instance = flatpickr(this.$refs.timePicker1, {
-            //       enableTime: true,
-            //       noCalendar: true,
-            //       dateFormat: "H:i",
-            //       defaultDate: this.firstDate,
-            //       onChange: (selectedDates) =>
-            //       {
-            //         this.formAddReservation.checkInTime = selectedDates[0] ?
-            //           this.formatTime(selectedDates[0]) : '';
-            //       }
-            //     });
-
-            //     this.timePicker2Instance = flatpickr(this.$refs.timePicker2, {
-            //       enableTime: true,
-            //       noCalendar: true,
-            //       dateFormat: "H:i",
-            //       // defaultDate: this.lastDate,
-            //        defaultDate: this.lastDate,
-            //       onChange: (selectedDates) =>
-            //       {
-            //         this.formAddReservation.checkOutTime = selectedDates[0] ?
-            //           this.formatTime(selectedDates[0]) : '';
-            //       }
-            //     });
-
-            //     // Set initial times
-            //     this.formAddReservation.checkInTime = this.formatTime(this.firstDate);
-            //     this.formAddReservation.checkOutTime = this.formatTime(this.lastDate);
-            //   }
-            // });
             this.$nextTick(() => {
                 if (this.firstDate && this.lastDate) {
                     // Initialize date pickers with correct format
@@ -1696,38 +1547,28 @@
                     // This ensures the form has the default times even before user interaction
                     this.formAddReservation.checkInTime = '12:00';
                     this.formAddReservation.checkOutTime = '02:00';
+
+                    // Initialize row datepickers after main pickers
+                    this.initRowDatePickers();
                 }
             });
 
             // Set initial load to false after everything is initialized
             this.$nextTick(() => {
+                this.initRowDatePickers();
                 this.isInitialLoad = false;
             });
         },
         computed: {
             ...mapState({
-                selectedDates: state => state.selectedDates || [],
-                selectedResourceName: state => state.selectedResourceName || '',
+                // selectedDates: state => state.selectedDates || [],
+                // selectedResourceName: state => state.selectedResourceName || '',
                 reservationTypes: state => state.reservationTypes || [],
                 rateTypes: state => state.rateTypes || [],
                 countries: state => state.countries || [],
                 remindGuestType: state => state.remindGuestType || [],
             }),
             ...mapGetters(['getReservationTypes', 'getRateTypes', 'getCountries', 'getRemindGuestType', 'getProjects']),
-            // formattedRateAmount: {
-            //   get ()
-            //   {
-            //     // Safely handle undefined or null values by defaulting to 0
-            //     const rateAmount = this.formAddReservation.units[0].rateAmount || 0;
-            //     return Number(rateAmount).toFixed(2); // Ensure it's a number before applying toFixed
-            //   },
-            //   set (value)
-            //   {
-            //     // Strip non-numeric characters except for the decimal point
-            //     const sanitizedValue = value.replace(/[^0-9.]/g, '');
-            //     this.formAddReservation.units[0].rateAmount = parseFloat(sanitizedValue) || 0;
-            //   }
-            // },
 
             parsedDates() {
                 return this.selectedDates.map(item => {
@@ -1746,21 +1587,68 @@
             },
 
             totalNights() {
-                if (!this.formAddReservation.checkInDate || !this.formAddReservation.checkOutDate) {
+                // Try to get dates from main form first
+                let checkInDate = this.formAddReservation.checkInDate;
+                let checkOutDate = this.formAddReservation.checkOutDate;
+
+                // If main dates are empty, try to get from unit[0]
+                if (!checkInDate || !checkOutDate) {
+                    if (this.formAddReservation.units && this.formAddReservation.units.length > 0) {
+                        checkInDate = this.formAddReservation.units[0].checkInDate;
+                        checkOutDate = this.formAddReservation.units[0].checkOutDate;
+                    }
+                }
+
+                // If still no dates, return 0
+                if (!checkInDate || !checkOutDate) {
                     return 0;
                 }
-                const [checkInYear, checkInMonth, checkInDay] = this.formAddReservation.checkInDate.split('-');
-                const [checkOutYear, checkOutMonth, checkOutDay] = this.formAddReservation.checkOutDate.split('-');
 
-                const checkIn = new Date(checkInYear, checkInMonth - 1, checkInDay);
-                const checkOut = new Date(checkOutYear, checkOutMonth - 1, checkOutDay);
+                try {
+                    // Parse dates (supports both YYYY-MM-DD and YYYY/MM/DD formats)
+                    let checkIn, checkOut;
 
-                const diffTime = Math.abs(checkOut - checkIn);
-                return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                    if (checkInDate.includes('-')) {
+                        const [year, month, day] = checkInDate.split('-');
+                        checkIn = new Date(year, month - 1, day);
+                    } else if (checkInDate.includes('/')) {
+                        const [year, month, day] = checkInDate.split('/');
+                        checkIn = new Date(year, month - 1, day);
+                    } else {
+                        checkIn = new Date(checkInDate);
+                    }
+
+                    if (checkOutDate.includes('-')) {
+                        const [year, month, day] = checkOutDate.split('-');
+                        checkOut = new Date(year, month - 1, day);
+                    } else if (checkOutDate.includes('/')) {
+                        const [year, month, day] = checkOutDate.split('/');
+                        checkOut = new Date(year, month - 1, day);
+                    } else {
+                        checkOut = new Date(checkOutDate);
+                    }
+
+                    // Validate dates
+                    if (isNaN(checkIn.getTime()) || isNaN(checkOut.getTime())) {
+                        return 0;
+                    }
+
+                    // Calculate difference
+                    const diffTime = Math.abs(checkOut - checkIn);
+                    const nights = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                    return nights > 0 ? nights : 0;
+                } catch (error) {
+                    console.error('Error calculating total nights:', error);
+                    return 0;
+                }
             },
             datesSelected() {
                 return this.formAddReservation.checkInDate && this.formAddReservation.checkOutDate;
             },
+            // allUnitsHaveDates() {
+            //     return this.formAddReservation.units.every(unit => unit.checkInDate && unit.checkOutDate);
+            // },
         },
         beforeDestroy() {
             this.datePicker1Instance?.destroy();
@@ -1768,7 +1656,17 @@
             this.timePicker1Instance?.destroy();
             this.timePicker2Instance?.destroy();
 
-            // console.log('Component is being destroyed:', this.formAddReservation.units);
+            // Cleanup row datepickers
+            this.rowDatePickersIn.forEach(picker => {
+                if (picker) {
+                    picker.destroy();
+                }
+            });
+            this.rowDatePickersOut.forEach(picker => {
+                if (picker) {
+                    picker.destroy();
+                }
+            });
         },
         emits: ['change'],
         watch: {
@@ -1812,11 +1710,89 @@
                     }
                 },
             },
-            'formAddReservation.checkInTime': {
-                handler(newValue) {
-                    this.formAddReservation.releaseTime = newValue;
+
+            // Combined watcher for check-in - FIXED
+            'formAddReservation.checkInDate': {
+                handler(newValue, oldValue) {
+                    // Skip if syncing or same value
+                    if (this._isSyncing || newValue === oldValue) return;
+
+                    // Update unit[0] if exists
+                    if (this.formAddReservation.units && this.formAddReservation.units.length > 0) {
+                        this._isSyncing = true;
+                        this.formAddReservation.units[0].checkInDate = newValue;
+                        this.$nextTick(() => {
+                            this._isSyncing = false;
+                        });
+                    }
+
+                    // Reset logic - only if not initial load
+                    if (!this.isInitialLoad && newValue && oldValue) {
+                        console.log('Check-in date changed from', oldValue, 'to', newValue);
+                        this.resetFormData();
+                    }
+
+                    // Update release date
+                    this.formAddReservation.releaseDate = newValue;
                 },
                 immediate: true,
+            },
+
+            // Watcher for unit[0] check-in - FIXED
+            'formAddReservation.units.0.checkInDate'(newValue, oldValue) {
+                // Skip if syncing or same value or no unit exists
+                if (this._isSyncing || newValue === oldValue) return;
+
+                // Update main check-in from unit[0]
+                this._isSyncing = true;
+                this.formAddReservation.checkInDate = newValue;
+                this.$nextTick(() => {
+                    this._isSyncing = false;
+                });
+            },
+
+            // Combined watcher for check-out - FIXED
+            'formAddReservation.checkOutDate': {
+                handler(newValue, oldValue) {
+                    if (this._isSyncing || newValue === oldValue) return;
+
+                    if (this.formAddReservation.units && this.formAddReservation.units.length > 0) {
+                        this._isSyncing = true;
+                        this.formAddReservation.units[0].checkOutDate = newValue;
+                        this.$nextTick(() => {
+                            this._isSyncing = false;
+                        });
+                    }
+
+                    if (!this.isInitialLoad && newValue && oldValue) {
+                        console.log('Check-out date changed from', oldValue, 'to', newValue);
+                        this.resetFormData();
+                    }
+                },
+            },
+
+            // Watcher for unit[0] check-out - FIXED
+            'formAddReservation.units.0.checkOutDate'(newValue, oldValue) {
+                if (this._isSyncing || newValue === oldValue) return;
+
+                this._isSyncing = true;
+                this.formAddReservation.checkOutDate = newValue;
+                this.$nextTick(() => {
+                    this._isSyncing = false;
+                });
+            },
+
+            // 'formAddReservation.checkInTime': {
+            //     handler(newValue) {
+            //         this.formAddReservation.releaseTime = newValue;
+            //     },
+            //     immediate: true,
+            // },
+            'formAddReservation.units': {
+                handler() {
+                    this.calculateAndEmitTotal();
+                },
+                deep: true,
             },
         },
         props: {
@@ -1833,7 +1809,7 @@
                 required: true,
             },
         },
-        middleware: 'restrict-access', // Apply the middleware
+        // middleware: 'restrict-access', // Apply the middleware
 
         async created() {
             // Initialize store data from localStorage
@@ -1848,23 +1824,3 @@
         },
     };
 </script>
-
-<style scoped>
-    .custom-table-wrapper {
-        overflow-x: auto;
-    }
-
-    .custom-table th {
-        min-width: 150px;
-        white-space: nowrap;
-    }
-
-    .custom-table th {
-        min-width: 166px;
-    }
-
-    .custom-table th:nth-child(5),
-    .custom-table th:nth-child(6) {
-        min-width: 100px;
-    }
-</style>

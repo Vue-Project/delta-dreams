@@ -1,23 +1,20 @@
 <template>
     <div class="row px-3">
-      <div class="col-md-12 py-4">
-        <room-status />
-      </div>
+        <div class="col-md-12 py-4">
+            <UnitsData />
+        </div>
     </div>
-  </template>
-  <style scoped></style>
-  
-  <script>
-  import roomStatus from '../components/RoomView/room-status.vue';
-  
-  export default {
-    name: "RoomViewPage",
-    layout: "main",
-    components: {
-        roomStatus
-  
-    }
-  };
-  
-  </script>
-  
+</template>
+<style scoped></style>
+
+<script>
+    import UnitsData from '../components/ReservationData/UnitsData.vue';
+
+    export default {
+        name: 'RoomViewPage',
+        layout: 'main',
+        components: {
+            UnitsData,
+        },
+    };
+</script>

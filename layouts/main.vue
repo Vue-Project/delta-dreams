@@ -1,24 +1,16 @@
 <template>
     <div>
-        <!-- <TheHeader /> -->
         <HeaderNav></HeaderNav>
-        <!-- <PusherStatus /> -->
         <Nuxt />
         <NotificationTest />
     </div>
 </template>
 
 <script>
-    import { CursorFx } from '@luxdamore/vue-cursor-fx';
-    import TheHeader from '../components/layout/TheHeader.vue';
-    import HeaderNav from '../components/layout/HeaderNav.vue';
-    import NotificationTest from '../components/SiderbarContentEdit/Notification.vue';
-
-    // import 'themify-icons/css/themify-icons.css';
+    import HeaderNav from '../components/Helper/partial/HeaderNav.vue';
+    import NotificationTest from '../components/Helper/partial/Notification.vue';
 
     export default {
-        components: { CursorFx, TheHeader, HeaderNav, NotificationTest },
+        components: { HeaderNav, NotificationTest },
     };
 </script>
-
-<style src="@luxdamore/vue-cursor-fx/dist/CursorFx.css"></style>

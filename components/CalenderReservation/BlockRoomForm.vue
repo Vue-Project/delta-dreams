@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-12">
                     <label for="flatpickr-date-01" class="form-label">Date Range</label>
-                    <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD to YYYY-MM-DD" id="flatpickr-range-01" ref="rangePicker5" v-model="formBlock.dateStartAndEnd" aria-label="input Text to Date"/>
+                    <input type="text" class="form-control flatpickr-input" placeholder="YYYY-MM-DD to YYYY-MM-DD" id="flatpickr-range-01" ref="rangePicker5" v-model="formBlock.dateStartAndEnd" aria-label="input Text to Date" />
                     <div class="text-danger small" v-if="$v.formBlock.dateStartAndEnd.$error">Date range is required</div>
                 </div>
                 <div class="col-12">
@@ -33,6 +33,7 @@
 
 <script>
     import flatpickrMixin from '../Mixin/flatpickrMixin';
+    import { dateMixin } from '../Mixin/DateMixin';
     import { blockRoomService, getReasonsSources } from '../../Api/CalenderApi';
     import { dateUtils } from '../../Api/utils/data';
     import { formUtils } from '../../Api/utils/form';
@@ -42,18 +43,6 @@
 
     export default {
         name: 'BlockRoomForm',
-        layout: 'Component',
-        props: {
-            selectedDates: {
-                type: Array,
-                required: true,
-            },
-            selectedResourceId: {
-                type: String,
-                required: true,
-            },
-        },
-
         data() {
             return {
                 reasonsSources: [],
@@ -89,17 +78,10 @@
 
                 return dates.map(date => {
                     if (date instanceof Date) {
-                        return this.formatDate(date);
+                        return this.formatDateNumber(date);
                     }
                     return date;
                 });
-            },
-
-            formatDate(date) {
-                const day = String(date.getDate()).padStart(2, '0');
-                const month = String(date.getMonth() + 1).padStart(2, '0');
-                const year = date.getFullYear();
-                return `${day}-${month}-${year}`;
             },
 
             splitResourceId() {
@@ -148,7 +130,7 @@
                     },
                     onChange: selectedDates => {
                         if (selectedDates.length > 0) {
-                            const formattedDates = selectedDates.map(date => this.formatDate(date));
+                            const formattedDates = selectedDates.map(date => this.formatDateNumber(date));
                             this.formBlock.dateStartAndEnd = formattedDates.join(' to ');
                         }
                     },
@@ -202,13 +184,18 @@
             }
         },
 
-        mixins: [flatpickrMixin, validationMixin],
+        mixins: [flatpickrMixin, validationMixin, dateMixin],
+        props: {
+            selectedDates: {
+                type: Array,
+                required: true,
+            },
+            selectedResourceId: {
+                type: String,
+                required: true,
+            },
+        },
     };
 </script>
 
-<style scoped>
-    .text-danger {
-        margin-top: 5px;
-        font-size: 15px;
-    }
-</style>
+<style scoped></style>

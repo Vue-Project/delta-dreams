@@ -182,7 +182,7 @@
                         <div class="mb-3">
                             <label class="form-label">Date</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="YYYY-MM-DD" ref="datePicker1" v-model="paymentDetails.date" />
+                                <input type="text" class="form-control" placeholder="YYYY-MM-DD" ref="datePicker1" v-model="paymentDetails.date" aria-label="Payment Date" />
                                 <span class="input-group-text">
                                     <i class="fa-solid fa-calendar-days"></i>
                                 </span>
@@ -195,43 +195,6 @@
                         </div>
 
                         <!-- Building Details Section - Only show when numberOfRooms > 1 -->
-
-                        <!-- Payment specific fields -->
-                        <!-- <template v-if="selectedPaymentType === 'bank_transfer'">
-            <div class="mb-3">
-              <label class="form-label">Bank Name</label>
-              <input type="text" class="form-control" v-model="paymentDetails.bankName">
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Account Number</label>
-              <input type="text" class="form-control" v-model="paymentDetails.accountNumber">
-            </div>
-          </template> -->
-
-                        <!-- <template v-if="['vodafone', 'we', 'orange', 'etisalat'].includes(selectedPaymentType)">
-            <div class="mb-3">
-              <label class="form-label">Phone Number</label>
-              <input type="tel" class="form-control" v-model="paymentDetails.phoneNumber">
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Transaction ID</label>
-              <input type="text" class="form-control" v-model="paymentDetails.transactionId">
-            </div>
-          </template> -->
-
-                        <!-- <template v-if="selectedPaymentType === 'visa'">
-            <div class="mb-3">
-              <label class="form-label">Card Number</label>
-              <input type="text" class="form-control" v-model="paymentDetails.cardNumber">
-            </div>
-          </template> -->
-
-                        <!-- <template v-if="['apple_pay', 'google_pay', 'instapay', 'fawry'].includes(selectedPaymentType)">
-            <div class="mb-3">
-              <label class="form-label">Transaction ID</label>
-              <input type="text" class="form-control" v-model="paymentDetails.transactionId">
-            </div>
-          </template> -->
                     </div>
                 </div>
                 <!-- Building Details Section -->
@@ -241,13 +204,17 @@
                         <div v-for="index in numberOfRooms - 1" :key="index" class="row mb-3">
                             <div class="col-md-6">
                                 <label :for="'buildingName' + index" class="form-label">Unit Code</label>
-                                <input type="text" :id="'buildingName' + index" class="form-control" v-model="paymentUnits[index - 1].name" placeholder="Enter unit code" readonly />
+                                <input type="text" :id="'buildingName' + index" class="form-control" v-model="paymentUnits[index - 1].name" placeholder="Enter unit code" readonly aria-label="Unit Code" />
                             </div>
                             <div class="col-md-6">
                                 <label :for="'buildingAmount' + index" class="form-label">Amount</label>
-                                <input type="number" :id="'buildingAmount' + index" class="form-control" v-model="paymentUnits[index - 1].amount" placeholder="Enter amount" min="0" @input="updateBuildingAmount(index - 1, $event)" />
+                                <input type="number" :id="'buildingAmount' + index" class="form-control" v-model="paymentUnits[index - 1].amount" placeholder="Enter amount" min="0" @input="updateBuildingAmount(index - 1, $event)" aria-label="Amount" />
                             </div>
                         </div>
+                        <label class="form-check form-switch m-2">
+                            <input class="form-check-input" type="checkbox" v-model="splitAllRates" @change="handleSplitAllChange" aria-label="Split All Amounts" />
+                            <span class="form-check-label">Split Amount</span>
+                        </label>
                     </div>
                 </div>
 
@@ -282,6 +249,8 @@
         },
         data() {
             return {
+                splitAllRates: false,
+                originalAmounts: [],
                 validationMessage: '',
                 paymentMethods: [],
                 paymentTypes: [],
@@ -349,13 +318,6 @@
             });
         },
         watch: {
-            // "value.paymentMode": function (newVal) {
-            //   if (!newVal) {
-            //     this.validationMessage = "Payment Mode is required.";
-            //   } else {
-            //     this.validationMessage = "";
-            //   }
-            // },
             'value.roomCharges': function (value) {
                 this.paymentDetails.roomCharges = value;
             },
@@ -446,6 +408,59 @@
             },
         },
         methods: {
+            handleSplitAllChange() {
+                if (this.splitAllRates) {
+                    // Store original state before splitting
+                    this.originalTotalAmount = this.paymentDetails.amount;
+                    this.originalUnitsCount = this.paymentUnits.length;
+                    this.originalUnitsAmounts = this.paymentUnits.map(unit => unit.amount);
+
+                    const totalAmount = parseFloat(this.paymentDetails.amount);
+
+                    // Check if amount is valid
+                    if (!totalAmount || isNaN(totalAmount) || totalAmount <= 0) {
+                        this.splitAllRates = false;
+                        return;
+                    }
+
+                    // Add 1 more unit (so 2 units becomes 3 units)
+                    const newTotalUnits = this.paymentUnits.length + 1;
+
+                    // Calculate amount per unit
+                    const amountPerUnit = (totalAmount / newTotalUnits).toFixed(2);
+
+                    // Add the new unit
+                    this.paymentUnits.push({
+                        name: `Unit ${this.paymentUnits.length + 1}`,
+                        amount: parseFloat(amountPerUnit),
+                    });
+
+                    // Update all units with the split amount
+                    for (let i = 0; i < this.paymentUnits.length; i++) {
+                        this.$set(this.paymentUnits[i], 'amount', parseFloat(amountPerUnit));
+                    }
+                } else {
+                    // When unchecking, restore original state
+                    if (this.originalTotalAmount) {
+                        this.paymentDetails.amount = this.originalTotalAmount;
+                    }
+
+                    // Remove the extra unit and restore original units
+                    this.paymentUnits = this.paymentUnits.slice(0, this.originalUnitsCount);
+
+                    // Restore original unit amounts
+                    if (this.originalUnitsAmounts.length > 0) {
+                        for (let i = 0; i < this.paymentUnits.length; i++) {
+                            this.$set(this.paymentUnits[i], 'amount', this.originalUnitsAmounts[i]);
+                        }
+                    }
+
+                    // Clear stored values
+                    this.originalTotalAmount = null;
+                    this.originalUnitsCount = null;
+                    this.originalUnitsAmounts = [];
+                }
+            },
             formatDate(date) {
                 return date.toISOString().split('T')[0];
             },
@@ -576,26 +591,3 @@
         },
     };
 </script>
-
-<style scoped>
-    .payment-summary {
-        background-color: #f8f9fa;
-        padding: 1rem;
-        border-radius: 0.375rem;
-        margin-bottom: 1rem;
-    }
-
-    .payment-summary dt {
-        font-weight: 500;
-        color: #566a7f;
-    }
-
-    .payment-summary dd {
-        text-align: right;
-        margin-bottom: 0.5rem;
-    }
-
-    .billingMoney {
-        background-color: #f8f9fa;
-    }
-</style>

@@ -1198,4 +1198,224 @@ body {
 .fa-solid.fa-baby {
     font-size: 25px;
 }
+<<<<<<< HEAD
+=======
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.room:hover {
+    transform: translateY(-2px);
+    transition: transform 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.custom-table-wrapper {
+    overflow-x: auto;
+}
+
+.custom-table th {
+    min-width: 150px;
+    white-space: nowrap;
+}
+
+.custom-table th {
+    min-width: 166px;
+}
+
+.custom-table th:nth-child(5),
+.custom-table th:nth-child(6) {
+    min-width: 100px;
+}
+.payment-summary {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 0.375rem;
+    margin-bottom: 1rem;
+}
+
+.payment-summary dt {
+    font-weight: 500;
+    color: #566a7f;
+}
+
+.payment-summary dd {
+    text-align: right;
+    margin-bottom: 0.5rem;
+}
+
+.billingMoney {
+    background-color: #f8f9fa;
+}
+.event-title-full,
+.event-title-short {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Add tooltip-like behavior for hovering */
+.fc-timeline-event {
+    position: relative;
+}
+
+.fc-timeline-event:hover::after {
+    content: attr(data-full-name);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+/* By default, show full name and hide short name */
+/* .event-title-short {
+        display: none;
+    } */
+
+/* For very small events, always show short name */
+.fc-timeline-event.fc-event-mirror .event-title-full,
+.fc-timeline-event.fc-event-mirror .event-title-short {
+    font-size: 0.85em;
+}
+@media (max-width: 768px) {
+    /* .dropdown-menu {
+    position: fixed !important;
+    left: 50% !important;
+    transform: translateX(-50%);
+    min-width: 90vw;
+    max-width: 95vw;
+  } */
+
+    .btn {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+@media (max-width: 576px) {
+    .btn {
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+
+    .badge {
+        font-size: 10px;
+        padding: 4px 6px;
+    }
+
+    /* .position-absolute {
+        position: fixed !important;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-top: 5px;
+    } */
+}
+
+.mobile-sidebar {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 85%;
+    height: 100vh;
+    background-color: white;
+    z-index: 1050;
+    transition: right 0.3s ease;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    overflow-y: auto;
+}
+
+.mobile-sidebar.show {
+    right: 0;
+}
+
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.filter-list {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.sidebar-content {
+    padding: 1rem 0;
+}
+
+@media (min-width: 992px) {
+    .mobile-sidebar {
+        display: none;
+    }
+}
+
+@media (max-width: 991px) {
+    .mobile-sidebar {
+        top: 0;
+        height: 100vh;
+        padding-top: 1rem;
+    }
+
+    .sidebar-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1040;
+        display: none;
+    }
+
+    .sidebar-overlay.show {
+        display: block;
+    }
+}
+
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1049;
+}
+.text-danger {
+    margin-top: 5px;
+    font-size: 15px;
+}
+.badge {
+    padding: 0.5em 0.75em;
+    font-size: 0.875em;
+}
+
+.bg-label-primary {
+    background-color: rgba(13, 110, 253, 0.1);
+    color: #0d6efd;
+}
+
+.bg-label-success {
+    background-color: rgba(25, 135, 84, 0.1);
+    color: #198754;
+}
+
+.bg-label-danger {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+}
+
+>>>>>>> 98b6aa331590eb32f2d219028bfdc8f8609952cd
 /* Mobile styles - show short name instead of full name */

@@ -1,10 +1,9 @@
 <template>
     <section class="card">
-        <!-- <momenalert></momenalert> -->
         <Loader :visible="isLoading" />
         <div :class="{ 'loading-overlay': isLoading }">
-            <FilterCalendar ref="filterComponent" :statistics="statistics" :allUnits="unitsCounts" :buildingNames="buildingNames" @show-all-resources="showAllResources" @show-building-resources="showBuildingResources" @date-selected="SelectedDateFilterCalendar" />
-            <FullCalendar :options="calendarOptions" @select="handleSelect" ref="calendar" :selectedDate="selectedDate">
+            <FilterCalendar ref="filterComponent" :statistics="statistics" :allUnits="Number(unitsCounts) || 0" :buildingNames="buildingNames" @show-all-resources="showAllResources" @show-building-resources="showBuildingResources" @date-selected="SelectedDateFilterCalendar" />
+            <FullCalendar :options="computedCalendarOptions" @select="handleSelect" ref="calendar" :selectedDate="selectedDate">
                 <template v-slot:eventContent="arg">
                     <div class="event-content">
                         <span class="event-title-full">{{ arg.event.title }}</span>
@@ -12,7 +11,6 @@
                     </div>
                 </template>
             </FullCalendar>
-            <!-- <CalendarFooter :occupancyData="occupancyData" /> -->
             <div v-if="isOverlayVisible" class="overlay" @click="closePopover"></div>
             <PopoverComponent v-if="isPopoverVisible" :isPopoverVisible="isPopoverVisible" :popoverStyle="popoverStyle" :popoverArrowLeft="popoverArrowLeft" :firstSelectedDate="firstSelectedDate" :lastSelectedDate="lastSelectedDate" @go-to-add-reservation="goToAddReservation" @toggle-sidebar="toggleSidebar" @close-popover="closePopover" />
             <SidebarBlockRoom v-if="BlockedPermission !== 0" :is-sidebar-open="isSidebarOpen" title="Block Room" width="400px" @close-sidebar="toggleSidebar" height="auto">
@@ -24,41 +22,22 @@
 </template>
 
 <script>
-    // import momenalert from "../../layouts/momenalert.vue";
-    // Main calendar component from FullCalendar library
+    // Core Calendar Imports
     import FullCalendar from '@fullcalendar/vue';
-
-    // Timeline view plugin for resource scheduling
     import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
-
-    // Plugin for calendar interactions (drag & drop, resizing)
     import interactionPlugin from '@fullcalendar/interaction';
 
-    // Custom loading spinner component
-    import Loader from '../layout/Loader.vue';
-
-    // Date/Resource filtering controls component
+    // UI Components
+    import Loader from '../Helper/partial/Loader.vue';
     import FilterCalendar from './FilterCalendar';
-
-    // Calendar bottom section with statistics/controls
-    import CalendarFooter from './CalendarFooter.vue';
-
-    // Form for blocking rooms/units in calendar
+    // import CalendarFooter from './CalendarFooter.vue';
     import BlockRoomForm from './BlockRoomForm.vue';
-
-    // Popup component for date selection feedback
     import PopoverComponent from './PopoverComponent.vue';
-
-    // Reusable sidebar component (from guest management)
-    import SidebarBlockRoom from '../layout/AddGuestSidebar.vue';
-
-    // Sidebar for displaying event details
+    import SidebarBlockRoom from '../../components/AddReservation/sidebar/AddGuestSidebar.vue';
     import SelectedEventSidebar from './SelectedEventSidebar.vue';
-
-    // Calendar header with navigation controls
     import HeaderCalender from './HeaderCalender.vue';
 
-    // API service for fetching calendar data
+    // API & Utilities
     import { deleteBlock, getCalenderAllUnits, getReservationSidebar, postUpdateBlock, postUpdateReservation, putUpdateBlock } from '../../Api/CalenderApi';
     import Swal from 'sweetalert2';
     import { handleSubmissionError, showSuccessAlert, showConfirmationDialog, showUpdateConfirmationDialog, showAlert } from '../../Api/MassageValidation/alertUtilities';
@@ -66,9 +45,7 @@
 
     export default {
         components: {
-            // momenalert,
             FullCalendar,
-            CalendarFooter,
             PopoverComponent,
             SelectedEventSidebar,
             SidebarBlockRoom,
@@ -79,10 +56,14 @@
         },
         data() {
             return {
+                // Navigation
                 linkToAddReservation: '/add-reservation',
+
                 datesBuilding: [],
                 buildingNames: [], // Store building names dynamically
+                selectedDates: [],
                 selectedDate: null,
+                status: null,
                 selectedResourceId: '',
                 selectedResourceName: '',
                 isLoading: true,
@@ -109,6 +90,7 @@
                 lastSelectedDate: '',
                 occupancyData: [],
                 statistics: {},
+                // Calendar Options
                 calendarOptions: {
                     customButtons: {
                         prev: {
@@ -186,10 +168,10 @@
                             const month = date.toLocaleDateString('en-US', { month: 'short' });
                             return {
                                 html: `
-                  <div class="custom-slot-label">
-                    <div class="slot-month">${month}</div>
-                  </div>
-                `,
+                      <div class="custom-slot-label">
+                        <div class="slot-month">${month}</div>
+                      </div>
+                    `,
                             };
                         }
                         // For level 1 (Days), show only the day and weekday
@@ -200,11 +182,11 @@
                             });
                             return {
                                 html: `
-                  <div class="custom-slot-label">
-                    <div class="slot-day">${day}</div>
-                    <div class="slot-weekday">${weekday}</div>
-                  </div>
-                `,
+                      <div class="custom-slot-label">
+                        <div class="slot-day">${day}</div>
+                        <div class="slot-weekday">${weekday}</div>
+                      </div>
+                    `,
                             };
                         }
 
@@ -270,14 +252,14 @@
                         if (unitCodeElement) {
                             // Create tooltip content with unit information
                             const tooltipContent = `
-                                    <div>
-                                        <p><strong>Unit:</strong> ${info.resource.title}</p>
-                                        <p><strong>Smoking:</strong> ${is_smoking ? 'Allowed' : 'Not allowed'}</p>
-                                        <p><strong>Status:</strong> ${is_clean ? 'Clean' : 'Needs cleaning'}</p>
-                                        ${price ? `<p><strong>Price:</strong> ${price}</p>` : ''}
-                                        ${content ? `<p><strong>Info:</strong> ${content}</p>` : ''}
-                                    </div>
-                                `;
+                                        <div>
+                                            <p><strong>Unit:</strong> ${info.resource.title}</p>
+                                            <p><strong>Smoking:</strong> ${is_smoking ? 'Allowed' : 'Not allowed'}</p>
+                                            <p><strong>Status:</strong> ${is_clean ? 'Clean' : 'Needs cleaning'}</p>
+                                            ${price ? `<p><strong>Price:</strong> ${price}</p>` : ''}
+                                            ${content ? `<p><strong>Info:</strong> ${content}</p>` : ''}
+                                        </div>
+                                    `;
 
                             // Apply tooltip to unit code
                             unitCodeElement.setAttribute('data-bs-toggle', 'tooltip');
@@ -314,6 +296,7 @@
                         right: '',
                     },
                 },
+                isMobileView: false,
             };
         },
 
@@ -321,11 +304,6 @@
             // ==============================================
             // RESOURCE MANAGEMENT
             // ==============================================
-            /**
-             * Generates calendar resources from building/unit data
-             * @param {Array} selectedIds - Building IDs to filter
-             * @param {Date} selectedDate - Date to filter units
-             */
             createResources(selectedIds = [], selectedDate = null) {
                 const resources = [];
 
@@ -379,10 +357,6 @@
             // Updating Calendar based on selected building IDs
             // ==============================================
 
-            /**
-             * Updates calendar resources based on selected building IDs
-             * @param {Array} selectedIds - Building IDs to show
-             */
             updateCalendarResources(selectedIds = []) {
                 const resources = this.createResources(selectedIds); // Create resources based on selectedIds
                 const calendar = this.$refs.calendar?.getApi();
@@ -403,10 +377,6 @@
             // DATE & TIME MANAGEMENT
             // ==============================================
 
-            /**
-             * Handles date range selection
-             * @param {Object} info - Contains start/end dates and resource
-             */
             handleSelect(info) {
                 const { start, end, resource } = info;
 
@@ -527,15 +497,6 @@
                 // Show the popover after the overlay is visible
                 this.showPopover();
             },
-            // highlightDate (dateStr)
-            // {
-            //   const calendarEl = document.querySelector(".fc");
-            //   const dateCell = calendarEl.querySelector(`[data-date='${dateStr}']`);
-
-            //   if (dateCell) {
-            //     dateCell.classList.add("fc-highlight");
-            //   }
-            // },
 
             showPopover() {
                 this.isPopoverVisible = true;
@@ -623,13 +584,13 @@
                     Swal.fire({
                         title: 'Blocked Room Details',
                         html: `
-                <div class="text-left">
-                  <p><strong>Start:</strong> ${startDate}</p>
-                  <p><strong>End:</strong> ${endDate}</p>
-                  <p><strong>Blocked Reason:</strong> ${this.selectedBlockedEvent.title}</p>
-                  <p><strong>User:</strong> ${this.selectedBlockedEvent.user}</p>
-                </div>
-              `,
+                    <div class="text-left">
+                      <p><strong>Start:</strong> ${startDate}</p>
+                      <p><strong>End:</strong> ${endDate}</p>
+                      <p><strong>Blocked Reason:</strong> ${this.selectedBlockedEvent.title}</p>
+                      <p><strong>User:</strong> ${this.selectedBlockedEvent.user}</p>
+                    </div>
+                  `,
                         icon: 'info',
                         showCancelButton: true,
                         confirmButtonColor: '#7367f0',
@@ -708,8 +669,11 @@
                         // const fullName = reservation.client?.name || reservation.user?.name || 'Unknown';
 
                         // Get initials by taking first letter of each word
-                        const fullName = reservation.client?.name || reservation.user?.name || 'Unknown';
-
+                        const fullName = (() => {
+                            const name = reservation.client?.name || reservation.user?.name || 'Unknown';
+                            const icon = reservation.type === 'clients' ? '📱' : '👤';
+                            return `${icon} ${name}`;
+                        })();
                         // Get initials by taking first letter of each word
                         let shortName = '';
                         if (fullName) {
@@ -791,7 +755,6 @@
             },
             async transformEventToReservationData(event) {
                 const reservationId = event.extendedProps?.reservation?.id || event.id;
-                if (!reservationId) return null;
 
                 this.loadingReservation = true;
                 try {
@@ -801,86 +764,26 @@
                     this.openReservationSidebar(); // Now the element exists
                 } catch (error) {
                     this.selectedEvent = null;
-                    // Optionally show an error message
-                } finally {
-                    this.loadingReservation = false;
+
+                    // Handle 400 error with showAlert
+                    if (error.response?.status === 400) {
+                        const errorMessage = error.response.data?.message || error.response.data?.error || 'Bad request. Please check your input.';
+
+                        await showAlert({
+                            title: 'Error',
+                            text: errorMessage,
+                            icon: 'error',
+                        });
+                    } else {
+                        await showAlert({
+                            title: 'Error',
+                            text: error.message || 'An unexpected error occurred.',
+                            icon: 'error',
+                        });
+                    }
                 }
             },
-            // transformEventToReservationData(event) {
-            //     // console.log('this is the event', event);
 
-            //     // Get the unit data directly from this.data
-            //     let buildingName = '';
-            //     let unitCode = '';
-            //     let unitData = null;
-
-            //     // Get the resource ID from the event
-            //     const resourceId = event.getResources()[0]?.id;
-
-            //     if (resourceId) {
-            //         // Parse the resourceId to get building and unit IDs
-            //         const [buildingId, unitId] = resourceId.split('-');
-
-            //         // Find the building and unit in the data
-            //         if (Array.isArray(this.data)) {
-            //             const building = this.data.find(b => b.id.toString() === buildingId);
-            //             if (building) {
-            //                 buildingName = building.name;
-
-            //                 // Find the unit within the building
-            //                 const unit = building.units?.find(u => u.id.toString() === unitId);
-            //                 if (unit) {
-            //                     unitCode = unit.code;
-            //                     unitData = unit; // Store the entire unit data
-            //                 }
-            //             }
-            //         }
-            //     }
-
-            //     // Use the unit data directly from this.data
-            //     return {
-            //         client: event.extendedProps?.reservation?.client,
-            //         unit_id: event.extendedProps?.reservation?.unit_id,
-            //         id: event.extendedProps?.reservation?.id || event.id,
-            //         checkin_date: event.start,
-            //         checkout_date: event.end,
-            //         checkin_time: event.extendedProps?.reservation?.checkin_time,
-            //         checkout_time: event.extendedProps?.reservation?.checkout_time,
-            //         rooms: event.extendedProps?.reservation?.rooms,
-            //         rate_type: event.extendedProps?.reservation?.rate_type,
-            //         adults: event.extendedProps?.reservation?.adults,
-            //         children: event.extendedProps?.reservation?.children,
-            //         status: event.extendedProps?.reservation?.status,
-            //         status_name: event.extendedProps?.reservation?.status_name,
-            //         unit_price: unitData?.price || event.extendedProps?.reservation?.unit_price,
-            //         unit_price_avg: unitData?.unit_price_avg || event.extendedProps?.reservation?.unit_price_avg,
-            //         total: event.extendedProps?.reservation?.total,
-            //         paid: event.extendedProps?.reservation?.paid,
-            //         balance: event.extendedProps?.reservation?.remaining,
-            //         status_select: event.extendedProps?.reservation?.status_select,
-            //         status_color: event.extendedProps?.reservation?.status_color,
-            //         is_edit: event.extendedProps?.reservation?.is_edit,
-            //         is_show: event.extendedProps?.reservation?.is_show,
-            //         is_cancel: event.extendedProps?.reservation?.is_cancel,
-            //         unit_code: unitCode || event.extendedProps?.reservation?.code,
-            //         reservation_id: event.extendedProps?.reservation?.id,
-            //         building_name: buildingName || event.extendedProps?.reservation?.unit?.building?.name,
-            //         travel_agent_name: event.extendedProps?.reservation?.travel_agent?.name,
-            //         business_source_name: event.extendedProps?.reservation?.business_source?.name,
-            //         unit_data: unitData, // Include the entire unit data object
-            //         price: event.extendedProps?.reservation?.price,
-            //         service_price: event.extendedProps?.reservation?.service_price,
-            //         permit: event.extendedProps?.reservation?.permit,
-            //         permit_image: event.extendedProps?.reservation?.permit_image,
-            //         reservation_name: event.extendedProps?.reservation?.name,
-            //         insurance: event.extendedProps?.reservation?.insurance,
-            //         insurance_refund: event.extendedProps?.reservation?.insurance_refund,
-            //         insurance_remaining: event.extendedProps?.reservation?.insurance_remaining,
-            //         nights: event.extendedProps?.reservation?.nights,
-            //         user_name: event.extendedProps?.reservation?.user?.name,
-            //         create_at: event.extendedProps?.reservation?.created_at,
-            //     };
-            // },
             transformAllUnitsToEvents() {
                 let allEvents = [];
 
@@ -1065,52 +968,6 @@
 
                 return true;
             },
-            // adjustHarnessPosition(info) {
-            //     // Get the harness element parent
-            //     const harness = info.el.closest('.fc-timeline-event-harness');
-
-            //     if (harness) {
-            //         // Get current left position (parse as number)
-            //         const currentLeft = parseInt(harness.style.left) || 0;
-            //         const currentRight = parseInt(harness.style.right) || 0;
-
-            //         // Determine breakpoints and adjust accordingly
-            //         let leftOffset = 35; // Default value
-            //         let rightOffset = 5; // Default value
-            //         let widthAdjustment = 0;
-
-            //         const screenWidth = window.innerWidth;
-
-            //         // Example breakpoints for different screen sizes
-            //         if (screenWidth < 600) {
-            //             // Small screens (mobile)
-            //             leftOffset = 20;
-            //             rightOffset = 0;
-            //         } else if (screenWidth < 1200) {
-            //             // Medium screens (tablets)
-            //             leftOffset = 30;
-            //             rightOffset = 0;
-            //         } else {
-            //             // Large screens (desktops)
-            //             leftOffset = 50;
-            //             rightOffset = -6;
-            //         }
-
-            //         // Adjust the left and right positions
-            //         harness.style.left = `${currentLeft + leftOffset}px`;
-            //         harness.style.right = `${currentRight + rightOffset}px`;
-
-            //         // Adjust the width of the event element
-            //         const eventElement = harness.querySelector('.fc-timeline-event');
-            //         if (eventElement) {
-            //             const currentWidth = eventElement.offsetWidth;
-
-            //             // Calculate width adjustment based on the offsets
-            //             widthAdjustment = leftOffset + rightOffset;
-            //             // eventElement.style.width = `${currentWidth - widthAdjustment}px`;
-            //         }
-            //     }
-            // },
             // ==============================================
             // CALENDAR NAVIGATION
             // ==============================================
@@ -1322,7 +1179,7 @@
             goToAddReservation() {
                 this.$store.commit('setSelectedDates', this.selectedDates);
                 this.$store.commit('setSelectedResourceName', this.selectedResourceName);
-                this.$store.dispatch('allowAccess');
+                // this.$store.dispatch('allowAccess');
                 this.$router.push('/add-reservation');
                 // this.$router.push('/secret')
 
@@ -1389,23 +1246,29 @@
             },
 
             updateDuration() {
-                // Only run this code on the client side
                 if (typeof window !== 'undefined') {
                     const isMobile = window.innerWidth <= 768;
+
+                    // ✅ Only update if the mobile/desktop state actually changed
+                    if (this.isMobileView === isMobile) {
+                        return; // No change needed
+                    }
+
+                    this.isMobileView = isMobile;
                     const duration = isMobile ? { days: 10 } : { days: 20 };
 
-                    // Update calendar options with correct duration
+                    // Update calendar options
                     this.calendarOptions.duration = duration;
 
-                    // Update slot width based on screen size
                     const calendarApi = this.$refs.calendar?.getApi();
                     if (calendarApi) {
                         calendarApi.setOption('slotMinWidth', isMobile ? 150 : 70);
                         calendarApi.setOption('duration', duration);
 
-                        // Force redraw
+                        // ✅ Refresh data after view change
                         this.$nextTick(() => {
                             calendarApi.updateSize();
+                            this.handleNavigation(); // Reload data for new date range
                         });
                     }
                 }
@@ -1465,10 +1328,6 @@
         },
 
         async mounted() {
-            // mounted hook only runs on client-side, so window is available
-            // Add an event listener to update duration on window resize
-            // document.body.classList.add('hide-scrollbar');
-
             window.addEventListener('resize', this.updateDuration);
 
             // Set initial slot width based on screen size
@@ -1572,54 +1431,13 @@
             }
         },
         computed: {
-            calendarOptions() {
+            computedCalendarOptions() {
                 return {
                     ...this.calendarOptions,
-                    editable: this.BlockedPermission !== 0, // Disable drag and drop if no permission
-                    selectable: this.BlockedPermission !== 0, // Disable date selection if no permission
+                    editable: true, // Allow dragging events, individual permissions checked in handleEventChange
+                    selectable: true, // Allow date selection for creating reservations
                 };
             },
         },
     };
 </script>
-
-<style scoped>
-    .event-title-full,
-    .event-title-short {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    /* Add tooltip-like behavior for hovering */
-    .fc-timeline-event {
-        position: relative;
-    }
-
-    .fc-timeline-event:hover::after {
-        content: attr(data-full-name);
-        position: absolute;
-        bottom: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-        background-color: rgba(0, 0, 0, 0.8);
-        color: white;
-        padding: 4px 8px;
-        border-radius: 4px;
-        font-size: 12px;
-        white-space: nowrap;
-        z-index: 1000;
-        pointer-events: none;
-    }
-
-    /* By default, show full name and hide short name */
-    /* .event-title-short {
-        display: none;
-    } */
-
-    /* For very small events, always show short name */
-    .fc-timeline-event.fc-event-mirror .event-title-full,
-    .fc-timeline-event.fc-event-mirror .event-title-short {
-        font-size: 0.85em;
-    }
-</style>

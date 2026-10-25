@@ -9,6 +9,15 @@ function getStore() {
     return null;
 }
 
+// Get API base URL from runtime config or fallback to env
+function getApiBaseUrl() {
+    if (process.client && window.APP_CONFIG && window.APP_CONFIG.API_BASE_URL) {
+        return window.APP_CONFIG.API_BASE_URL;
+    }
+    // Fallback to build-time env var
+    return process.env.API_BASE_URL || '';
+}
+
 // Function to check and save URL parameters
 function checkAndSaveUrlParams() {
     const store = getStore();
@@ -59,7 +68,7 @@ if (process.client) {
 }
 
 const apiClient = axios.create({
-    baseURL: process.env.API_BASE_URL,
+    baseURL: process.env.API_BASE_URL, // Default, will be overridden by interceptor
 });
 apiClient.interceptors.response.use(
     response => response,
@@ -77,6 +86,9 @@ apiClient.interceptors.response.use(
 
 // Add an interceptor to ensure these params are included in every request
 apiClient.interceptors.request.use(config => {
+    // Use runtime config for baseURL (editable on server without rebuild)
+    config.baseURL = getApiBaseUrl();
+
     // Ensure params object exists
     config.params = config.params || {};
 
